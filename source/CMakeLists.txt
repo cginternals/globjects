@@ -5,20 +5,40 @@ message(STATUS "lib ${target}")
 set(HEADER_PATH "${GLOW_INCLUDE_DIR}/${target}")
 set(SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
-configure_file(${SOURCE_PATH}/meta.h.in meta.h)
+configure_file(${HEADER_PATH}/meta.h.in meta.h)
 
 set(HEADERS
-
-    ${HEADER_PATH}/Dummy.h
+    ${HEADER_PATH}/declspec.h
+    
+    ${HEADER_PATH}/FileAssociatedShader.h
+    ${HEADER_PATH}/GpuQuery.h
+    ${HEADER_PATH}/Object.h
+    ${HEADER_PATH}/ArrayData.h
+    ${HEADER_PATH}/Array.hpp
+    ${HEADER_PATH}/Buffer.h
+    ${HEADER_PATH}/Error.h
+    ${HEADER_PATH}/Program.h
+    ${HEADER_PATH}/Shader.h
+    ${HEADER_PATH}/Texture.h
+    ${HEADER_PATH}/VertexArrayObject.h
 )
 
 set(SOURCES
 
-    ${SOURCE_PATH}/declspec.h
-
-    ${SOURCE_PATH}/Dummy.cpp
+    ${SOURCE_PATH}/FileAssociatedShader.cpp
+    ${SOURCE_PATH}/GpuQuery.cpp
+    ${SOURCE_PATH}/Program.cpp
+    ${SOURCE_PATH}/Shader.cpp
 
     ${SOURCE_PATH}/internal/Dummy.cpp
+    
+    ${SOURCE_PATH}/Object.cpp
+    ${SOURCE_PATH}/Buffer.cpp
+    ${SOURCE_PATH}/Error.cpp
+    ${SOURCE_PATH}/Program.cpp
+    ${SOURCE_PATH}/Shader.cpp
+    ${SOURCE_PATH}/Texture.cpp
+    ${SOURCE_PATH}/VertexArrayObject.cpp
 )
 
 
@@ -32,7 +52,7 @@ source_group_by_path(${SOURCE_PATH} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 # setup target
 
 include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR})
+    ${CMAKE_CURRENT_BINARY_DIR} ${GLOW_INCLUDE_DIR})
 
 if(OPTION_BUILD_STATIC)
     add_library(${target} ${HEADERS} ${SOURCES})
