@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <set>
@@ -14,35 +13,26 @@ namespace glow
 class GLOW_API FileAssociatedShader : public Shader
 {
 public:
-    FileAssociatedShader(
-        const GLenum type
-    ,   const std::string & filePath);
+	FileAssociatedShader(GLenum type);
+	FileAssociatedShader(GLenum type, const std::string& filePath, bool compile = false);
 
-    virtual ~FileAssociatedShader();
+	virtual ~FileAssociatedShader();
+
+	void setSourceFile(const std::string& filePath, bool compile = false);
+	const std::string& filePath() const;
 
 	void reload();
-
 	static void reloadAll();
-
 protected:
-    const bool setSourceFromFile(const bool update = true);
+	bool loadSourceFile(bool compile);
 
-    static void registerShader(
-		const std::string & filePath
-	,	FileAssociatedShader * shader);
-
-    static void unregisterShader(
-		const std::string & filePath
-	,	FileAssociatedShader * shader);
-
+	static void registerShader(FileAssociatedShader* shader);
+	static void deregisterShader(FileAssociatedShader* shader);
 protected:
-	const std::string m_filePath;
-
+	std::string _filePath;
 protected:
-	typedef std::set<FileAssociatedShader *> t_shaders;
-    typedef std::unordered_map<std::string, t_shaders *> t_shadersByFilePath;
-
-	static t_shadersByFilePath shadersByFilePath;
+	typedef std::unordered_map<std::string, std::set<FileAssociatedShader*>> ShaderRegistry;
+	static ShaderRegistry _shaderRegistry;
 };
 
 } // namespace glow

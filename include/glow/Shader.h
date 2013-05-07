@@ -19,6 +19,8 @@ public:
 	GLenum type() const;
 
 	void setSource(const std::string& source, bool compile = true);
+	const std::string& source() const;
+
 	void compile();
 	bool isCompiled() const;
 
@@ -29,6 +31,7 @@ protected:
 protected:
 	GLenum _type;
 	bool _compiled;
+	std::string _source;
 	std::set<Program*> _programs;
 };
 

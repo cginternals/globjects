@@ -20,7 +20,7 @@ GLenum Error::code() const
 	return _errorCode;
 }
 
-const char* Error::name() const
+std::string Error::name() const
 {
 	return errorString(_errorCode);
 }
@@ -46,7 +46,7 @@ bool Error::isError() const
 	return _errorCode != GL_NO_ERROR;
 }
 
-const char* Error::errorString(GLenum errorCode)
+std::string Error::errorString(GLenum errorCode)
 {
 	switch(errorCode)
 	{

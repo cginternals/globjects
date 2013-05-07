@@ -119,6 +119,8 @@ configure_file(${HEADER_PATH}/meta.h.in meta.h)
 set(HEADERS
     ${HEADER_PATH}/declspec.h
     
+    ${HEADER_PATH}/internal/FileReader.h
+    
     ${HEADER_PATH}/FileAssociatedShader.h
     ${HEADER_PATH}/GpuQuery.h
     ${HEADER_PATH}/Object.h
@@ -130,13 +132,10 @@ set(HEADERS
     ${HEADER_PATH}/Shader.h
     ${HEADER_PATH}/Texture.h
     ${HEADER_PATH}/VertexArrayObject.h
-    
-    ${HEADER_PATH}/Program2.h
-    ${HEADER_PATH}/Shader2.h
 )
 
 set(SOURCES
-    ${SOURCE_PATH}/internal/Dummy.cpp
+    ${SOURCE_PATH}/internal/FileReader.cpp
     
     ${SOURCE_PATH}/FileAssociatedShader.cpp
     ${SOURCE_PATH}/GpuQuery.cpp
@@ -147,9 +146,6 @@ set(SOURCES
     ${SOURCE_PATH}/Error.cpp
     ${SOURCE_PATH}/Texture.cpp
     ${SOURCE_PATH}/VertexArrayObject.cpp
-    
-    ${SOURCE_PATH}/Program2.cpp
-    ${SOURCE_PATH}/Shader2.cpp
 )
 
 # group source files

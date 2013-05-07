@@ -25,12 +25,19 @@ GLenum Shader::type() const
 
 void Shader::setSource(const std::string& source, bool compile)
 {
+	_source = source;
 	const char* sourcePointer = source.c_str();
 	glShaderSource(_id, 1, &sourcePointer, 0);
+
 	if (compile)
 	{
 		this->compile();
 	}
+}
+
+const std::string& Shader::source() const
+{
+	return _source;
 }
 
 void Shader::compile()
