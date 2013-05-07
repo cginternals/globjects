@@ -10,6 +10,10 @@ configure_file(${SOURCE_PATH}/meta.h.in meta.h)
 set(HEADERS
 
     ${HEADER_PATH}/Dummy.h
+    ${HEADER_PATH}/FileAssociatedShader.h
+    ${HEADER_PATH}/GpuQuery.h
+    ${HEADER_PATH}/Program.h
+    ${HEADER_PATH}/Shader.h
 )
 
 set(SOURCES
@@ -17,6 +21,10 @@ set(SOURCES
     ${SOURCE_PATH}/declspec.h
 
     ${SOURCE_PATH}/Dummy.cpp
+    ${SOURCE_PATH}/FileAssociatedShader.cpp
+    ${SOURCE_PATH}/GpuQuery.cpp
+    ${SOURCE_PATH}/Program.cpp
+    ${SOURCE_PATH}/Shader.cpp
 
     ${SOURCE_PATH}/internal/Dummy.cpp
 )
