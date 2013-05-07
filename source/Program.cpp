@@ -1,217 +1,183 @@
-
-#include <algorithm>
-#include <cassert>
-
-#include <glm/gtc/type_ptr.hpp>
-
 #include <glow/Program.h>
 
-#include <glow/Shader.h>
-#include <glow/GpuQuery.h>
+#include <iostream>
+#include <glm/gtc/type_ptr.hpp>
 
-
-namespace glow
-{
+using namespace glow;
 
 Program::Program()
-:   m_program(-1)
-,   m_linked(false)
-,   m_dirty(true)
+: _linked(false)
+, _dirty(true)
 {
-    m_program = glCreateProgram();
-    glError();
+	_id = glCreateProgram();
 }
 
 Program::~Program()
 {
-    if(isProgram())
-    {
-        while(m_shaders.cend() != m_shaders.cbegin())
-            detach(*(m_shaders.begin()));
-
-        glDeleteProgram(m_program);
-        glError();
-
-        m_program = 0;
-    }
+	for (Shader* shader: _shaders)
+	{
+		detach(shader);
+	}
+	if (_id) glDeleteProgram(_id);
 }
 
-inline const bool Program::isProgram() const
+void Program::use()
 {
-    return m_program != -1;
+	glUseProgram(_id);
 }
 
-const bool Program::isUsed() const
+void Program::release()
 {
-    GLint program(-1);
-    glGetIntegerv(GL_CURRENT_PROGRAM, &program);
-
-    if(-1 == program)
-        return false;
-
-    return program == m_program;
+	glUseProgram(0);
 }
 
-const bool Program::use() const
+bool Program::isUsed() const
 {
-    if(m_dirty)
-        link();
+	GLint currentProgram = 0;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
 
-    if(!m_linked)
-        return false;
-
-    if(isUsed())
-        return true;
-
-    glUseProgram(m_program);
-    return !glError();
+	return currentProgram>0 && currentProgram == _id;
 }
 
-const bool Program::release() const
+bool Program::isLinked() const
 {
-    assert(isUsed());
-
-    glUseProgram(0);
-    return !glError();
-}
-
-const bool Program::link() const
-{
-    if(!m_dirty)
-        return isLinked();
-
-    for(const Shader * shader : m_shaders)
-        if(!shader->isCompiled())
-            return false;
-
-    m_dirty = false;
-
-    glLinkProgram(m_program);
-    glError();
-
-    GLint status(GL_FALSE);
-    glGetProgramiv(m_program, GL_LINK_STATUS, &status);
-    glError();
-
-    m_linked = (GL_TRUE == status);
-    m_log = "";
-
-    // check for compile errors
-
-    GLint maxLength(0);
-    GLint logLength(0);
-
-    glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &maxLength);
-    glError();
-
-    if(!maxLength)
-        return isLinked();
-
-    GLchar *log = new GLchar[maxLength];
-    glGetProgramInfoLog(m_program, maxLength, &logLength, log);
-    glError();
-
-    m_log = log;
-
-//    if(!m_log.empty() && m_log != "No errors.\n")
-//        qWarning("%s", log);
-
-    return isLinked();
-}
-
-const bool Program::attach(Shader * shader)
-{
-    if(!shader)
-        return false;
-
-    if(m_shaders.end() != m_shaders.find(shader))
-        return true;
-
-    m_shaders.insert(shader);
-    shader->programs().insert(this);
-
-    glAttachShader(m_program, shader->shader());
-    m_dirty = true;
-
-    return !glError();
-}
-
-const bool Program::detach(Shader * shader)
-{
-    if(!shader)
-        return false;
-    if(m_shaders.end() == m_shaders.find(shader))
-        return true;
-
-    glDetachShader(m_program, shader->shader());
-    const bool result(glError());
-
-    m_dirty = true;
-
-    //shader->programs().remove(this);
-//    m_shaders.remove(shader);
-
-    if(shader->programs().empty())
-        delete shader;
-
-    return !result;
-}
-
-const Program::t_shaders & Program::shaders()
-{
-    return m_shaders;
-}
-
-const GLuint Program::program() const
-{
-    return m_program;
+	return _linked;
 }
 
 void Program::invalidate()
 {
-    m_dirty = true;
-    link();
+	_dirty = true;
 }
 
-const bool Program::isLinked() const
+void Program::checkDirty()
 {
-    return m_linked;
+	if (_dirty)
+	{
+		link();
+	}
 }
 
-const GLint Program::attributeLocation(const std::string & name) const
+void Program::attach(Shader* shader)
 {
-    if(m_dirty || !m_linked)
-        link();
+	glAttachShader(_id, shader->id());
 
-    const GLchar * chr(name.c_str());
-    const GLint location = glGetAttribLocation(m_program, chr);
-    glError();
+	shader->_programs.insert(this);
+	_shaders.push_back(shader);
 
-    return location;
+	invalidate();
 }
 
-const GLint Program::uniformLocation(const std::string & name) const
+void Program::detach(Shader* shader)
 {
-    if(m_dirty || !m_linked)
-        link();
+	glDetachShader(_id, shader->id());
 
-    use();
+	shader->_programs.erase(this);
+	if (shader->_programs.empty())
+	{
+		delete shader;
+	}
 
-    const GLchar * chr(name.c_str());
-    const GLint location = glGetUniformLocation(m_program, chr);
-    glError();
-
-    return location;
+	invalidate();
 }
 
-//void Program::setUniform(
-//    const QString & name
-//,   const float value) const
-//{
-//    const GLint location(uniformLocation(name));
-//
-//    glUniform1f(location, value);
-//    glError();
-//}
+const std::vector<Shader*>& Program::shaders() const
+{
+	return _shaders;
+}
 
-} // namespace glow
+void Program::link()
+{
+	glLinkProgram(_id);
+	checkLinkStatus();
+	_dirty = false;
+}
+
+void Program::bindFragDataLocation(GLuint index, const std::string& name)
+{
+	glBindFragDataLocation(_id, index, name.c_str());
+}
+
+void Program::bindAttributeLocation(GLuint index, const std::string& name)
+{
+	glBindAttribLocation(_id, index, name.c_str());
+}
+
+GLint Program::uniformLocation(const std::string& name)
+{
+	checkDirty();
+	return glGetUniformLocation(_id, name.c_str());
+}
+
+GLint Program::attributeLocation(const std::string& name)
+{
+	checkDirty();
+	return glGetAttribLocation(_id, name.c_str());
+}
+
+void Program::enableVertexAttribArray(GLint index)
+{
+	glEnableVertexAttribArray(index);
+}
+
+void Program::disableVertexAttribArray(GLint index)
+{
+	glDisableVertexAttribArray(index);
+}
+
+void Program::enableVertexAttribArray(const std::string& name)
+{
+	enableVertexAttribArray(attributeLocation(name));
+}
+
+void Program::disableVertexAttribArray(const std::string& name)
+{
+	disableVertexAttribArray(attributeLocation(name));
+}
+
+void Program::setUniform(const std::string& name, int value)
+{
+	use();
+	glUniform1i(uniformLocation(name), value);
+	release();
+}
+
+void Program::setUniform(const std::string& name, float value)
+{
+	use();
+	glUniform1f(uniformLocation(name), value);
+	release();
+}
+
+void Program::setUniform(const std::string& name, const glm::mat4& value)
+{
+	use();
+        glUniformMatrix4fv(uniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+        release();
+}
+
+std::string Program::infoLog() const
+{
+	GLsizei length;
+	glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &length);
+
+	std::vector<char> log(length);
+
+	glGetProgramInfoLog(_id, length, &length, log.data());
+
+	return std::string(log.data(), length);
+}
+
+void Program::checkLinkStatus()
+{
+	GLint status = 0;
+	glGetProgramiv(_id, GL_LINK_STATUS, &status);
+
+	_linked = (status == GL_TRUE);
+
+	if (!_linked)
+	{
+		std::cout
+			<< "Linker error:" << std::endl
+			<< infoLog() << std::endl;
+	}
+}

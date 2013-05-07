@@ -130,6 +130,9 @@ set(HEADERS
     ${HEADER_PATH}/Shader.h
     ${HEADER_PATH}/Texture.h
     ${HEADER_PATH}/VertexArrayObject.h
+    
+    ${HEADER_PATH}/Program2.h
+    ${HEADER_PATH}/Shader2.h
 )
 
 set(SOURCES
@@ -144,6 +147,9 @@ set(SOURCES
     ${SOURCE_PATH}/Error.cpp
     ${SOURCE_PATH}/Texture.cpp
     ${SOURCE_PATH}/VertexArrayObject.cpp
+    
+    ${SOURCE_PATH}/Program2.cpp
+    ${SOURCE_PATH}/Shader2.cpp
 )
 
 # group source files

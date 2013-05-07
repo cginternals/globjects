@@ -1,66 +1,57 @@
-
 #pragma once
 
-#include <GL/glew.h>
+#include <glow/Shader.h>
 
 #include <glm/glm.hpp>
 
-#include <set>
-#include <string>
+#include <vector>
 
-#include <glow/declspec.h>
+namespace glow {
 
-
-namespace glow
-{
-class Shader;
-
-class GLOW_API Program
+class Program : public Object
 {
 public:
-    typedef std::set<Shader *> t_shaders;
+	Program();
+	~Program();
 
-public:
-    Program();
-    virtual ~Program();
+	void use();
+	void release();
 
-    const bool use() const;
-    const bool release() const;
+	bool isUsed() const;
+	bool isLinked() const;
 
-    const GLuint program() const;
+	void attach(Shader* shader);
+	void detach(Shader* shader);
 
-    const bool attach(Shader * shader);
-    const bool detach(Shader * shader);
+	const std::vector<Shader*>& shaders() const;
 
-    const t_shaders & shaders();
+	void link();
 
-    const bool link() const;
-    const bool isLinked() const;
-    const bool isUsed() const;
+	void invalidate();
 
-    void invalidate();
+	std::string infoLog() const;
 
-    // location access
+	GLint attributeLocation(const std::string& name);
+	GLint uniformLocation(const std::string& name);
 
-    // TODO: location cache
+	void bindAttributeLocation(GLuint index, const std::string& name);
+	void bindFragDataLocation(GLuint index, const std::string& name);
 
-    const GLint attributeLocation(const std::string & name) const;
-    const GLint uniformLocation(const std::string & name) const;
+	void enableVertexAttribArray(GLint index);
+	void disableVertexAttribArray(GLint index);
+	void enableVertexAttribArray(const std::string& name);
+	void disableVertexAttribArray(const std::string& name);
 
-    // TODO: value access
-
+	void setUniform(const std::string& name, int value);
+	void setUniform(const std::string& name, float value);
+	void setUniform(const std::string& name, const glm::mat4& value);
 protected:
-    inline const bool isProgram() const;
+	std::vector<Shader*> _shaders;
+	bool _linked;
+	bool _dirty;
 
-protected:
-    GLuint m_program;
-
-    mutable std::string m_log;
-
-	mutable bool m_linked;
-    mutable bool m_dirty;
-
-    t_shaders m_shaders;
+	void checkLinkStatus();
+	void checkDirty();
 };
 
 } // namespace glow

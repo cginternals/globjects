@@ -1,63 +1,35 @@
-
 #pragma once
 
-#include <GL/glew.h>
+#include <glow/Object.h>
 
 #include <string>
-#include <unordered_map>
 #include <set>
 
-#include <glow/declspec.h>
-
-
-namespace glow
-{
+namespace glow {
 
 class Program;
 
-class GLOW_API Shader
+class Shader : public Object
 {
+	friend class Program;
 public:
-    typedef std::set<Program *> t_programs;
+	Shader(GLenum type);
+	~Shader();
 
-public:
-    Shader(const GLenum type);
-    virtual ~Shader();
+	GLenum type() const;
 
-    const bool setSource(
-        const std::string & source
-    ,   const bool update = true);
-    const std::string & source() const;
+	void setSource(const std::string& source, bool compile = true);
+	void compile();
+	bool isCompiled() const;
 
-    void update();
-
-    const GLenum type() const;
-    const GLuint shader() const;
-
-    const bool isCompiled() const;
-
-    const t_programs & programs() const;
-    t_programs & programs();
-
+	std::string infoLog() const;
 protected:
-    inline const bool isShader() const;
-
+	void checkCompileStatus();
+	std::string typeString();
 protected:
-    const GLenum m_type;
-    GLuint m_shader;
-
-    std::string m_source;
-    std::string m_log;
-    
-    bool m_compiled;
-
-    t_programs m_programs;
-
-protected:
-    typedef std::unordered_map<GLenum, std::string> t_typeStrings;
-    static const t_typeStrings typeStrings;
-
-    static const t_typeStrings initializeTypeStrings();
+	GLenum _type;
+	bool _compiled;
+	std::set<Program*> _programs;
 };
 
 } // namespace glow
