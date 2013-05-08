@@ -35,8 +35,11 @@ protected:
 	GLenum _type;
 	bool _compiled;
 	std::string _source;
-	ShaderFile* _sourceFile;
+	ref_ptr<ShaderFile> _sourceFile;
 	std::set<Program*> _programs;
+
+	void addToProgram(Program* program);
+	void removeFromProgram(Program* program);
 };
 
 } // namespace glow

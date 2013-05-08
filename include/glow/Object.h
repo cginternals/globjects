@@ -2,11 +2,11 @@
 
 #include <GL/glew.h>
 
-#include <glow/Error.h>
+#include <glow/Referenced.h>
 
 namespace glow {
 
-class Object
+class Object : public Referenced
 {
 public:
 	Object();

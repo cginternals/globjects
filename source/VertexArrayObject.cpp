@@ -9,10 +9,6 @@ VertexArrayObject::VertexArrayObject()
 
 VertexArrayObject::~VertexArrayObject()
 {
-	for (std::pair<std::string, Buffer*> bufferPair: _buffers)
-	{
-		delete bufferPair.second;
-	}
 	glDeleteVertexArrays(1, &_id);
 }
 

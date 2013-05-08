@@ -125,3 +125,14 @@ std::string Shader::typeString()
 			return "unknown";
 	}
 }
+
+void Shader::addToProgram(Program* program)
+{
+	_programs.insert(program);
+}
+
+void Shader::removeFromProgram(Program* program)
+{
+	_programs.erase(program);
+}
+

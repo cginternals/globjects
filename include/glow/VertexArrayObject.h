@@ -2,8 +2,10 @@
 
 #include <glow/Object.h>
 #include <glow/Buffer.h>
+#include <glow/ref_ptr.hpp>
 
 #include <unordered_map>
+#include <string>
 
 namespace glow {
 
@@ -23,7 +25,7 @@ public:
 protected:
 	Buffer* createBuffer(const std::string& name, GLenum target);
 protected:
-	std::unordered_map<std::string, Buffer*> _buffers;
+	std::unordered_map<std::string, ref_ptr<Buffer>> _buffers;
 };
 
 } // namespace glow

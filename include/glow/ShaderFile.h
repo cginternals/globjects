@@ -4,6 +4,7 @@
 #include <string>
 
 #include <glow/declspec.h>
+#include <glow/Referenced.h>
 
 
 namespace glow
@@ -11,7 +12,7 @@ namespace glow
 
 class Shader;
 
-class GLOW_API ShaderFile
+class GLOW_API ShaderFile : public Referenced
 {
 public:
 	ShaderFile(const std::string& filePath);

@@ -1,5 +1,6 @@
 #include <glow/Program.h>
 
+#include <vector>
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -14,7 +15,7 @@ Program::Program()
 
 Program::~Program()
 {
-	for (Shader* shader: _shaders)
+	for (ref_ptr<Shader> shader: _shaders)
 	{
 		detach(shader);
 	}
@@ -61,8 +62,8 @@ void Program::attach(Shader* shader)
 {
 	glAttachShader(_id, shader->id());
 
-	shader->_programs.insert(this);
-	_shaders.push_back(shader);
+	shader->addToProgram(this);
+	_shaders.insert(shader);
 
 	invalidate();
 }
@@ -71,18 +72,10 @@ void Program::detach(Shader* shader)
 {
 	glDetachShader(_id, shader->id());
 
-	shader->_programs.erase(this);
-	if (shader->_programs.empty())
-	{
-		delete shader;
-	}
+	shader->removeFromProgram(this);
+	_shaders.erase(shader);
 
 	invalidate();
-}
-
-const std::vector<Shader*>& Program::shaders() const
-{
-	return _shaders;
 }
 
 void Program::link()

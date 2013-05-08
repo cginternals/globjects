@@ -2,6 +2,7 @@
 
 #include <glow/Array.hpp>
 #include <glow/ShaderFile.h>
+#include <glow/Error.h>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -26,6 +27,8 @@ Widget::~Widget()
 {
 	delete computeProgram;
 	delete shaderProgram;
+	delete vertexArrayObject;
+	delete texture;
 }
 
 QGLFormat Widget::createFormat()
@@ -58,7 +61,6 @@ void Widget::initializeShaders()
 	glow::ShaderFile* vertexShaderFile = new glow::ShaderFile("data/test.vert");
 	glow::ShaderFile* fragmentShaderFile = new glow::ShaderFile("data/test.frag");
 	glow::ShaderFile* computeShaderFile = new glow::ShaderFile("data/test.comp");
-
 
 	glow::Shader* vertexShader = new glow::Shader(GL_VERTEX_SHADER);
 	vertexShader->setSourceFile(vertexShaderFile, true);
@@ -102,17 +104,6 @@ void Widget::initializeGL()
 	CHECK_ERROR;
 
 	initializeShaders();
-
-	float vertices[3][3] = {
-		{0,0,0},
-		{0.5,0,0},
-		{0,0.5,0}
-	};
-	float texCoords[3][2] = {
-		{0,0},
-		{1,0},
-		{0,1}
-	};
 
 	auto vertexArray = new glow::Vec3Array;
 	*vertexArray << glm::vec3(0,0,0) << glm::vec3(0.5,0,0) << glm::vec3(0,0.5,0);

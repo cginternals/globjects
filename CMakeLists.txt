@@ -121,6 +121,8 @@ set(HEADERS
     
     ${HEADER_PATH}/internal/FileReader.h
     
+    ${HEADER_PATH}/Referenced.h
+    ${HEADER_PATH}/ref_ptr.hpp
     ${HEADER_PATH}/GpuQuery.h
     ${HEADER_PATH}/Object.h
     ${HEADER_PATH}/ArrayData.h
@@ -137,6 +139,7 @@ set(HEADERS
 set(SOURCES
     ${SOURCE_PATH}/internal/FileReader.cpp
     
+    ${SOURCE_PATH}/Referenced.cpp
     ${SOURCE_PATH}/GpuQuery.cpp
     ${SOURCE_PATH}/Program.cpp
     ${SOURCE_PATH}/Shader.cpp

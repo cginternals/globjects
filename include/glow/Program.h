@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <vector>
+#include <set>
 
 namespace glow {
 
@@ -22,8 +22,6 @@ public:
 
 	void attach(Shader* shader);
 	void detach(Shader* shader);
-
-	const std::vector<Shader*>& shaders() const;
 
 	void link();
 
@@ -46,7 +44,7 @@ public:
 	void setUniform(const std::string& name, float value);
 	void setUniform(const std::string& name, const glm::mat4& value);
 protected:
-	std::vector<Shader*> _shaders;
+	std::set<ref_ptr<Shader>> _shaders;
 	bool _linked;
 	bool _dirty;
 
