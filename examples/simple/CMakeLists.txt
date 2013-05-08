@@ -1,8 +1,8 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-PROJECT(computeshader_example)
+PROJECT(simpleexample)
 
-SET(target computeshader_example)
+SET(target simpleexample)
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 SET(CMAKE_AUTOMOC ON)
@@ -39,6 +39,5 @@ QT5_USE_MODULES(${target} Widgets OpenGL)
 
 ADD_CUSTOM_COMMAND(
 	TARGET ${target} POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
 	COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data
 )

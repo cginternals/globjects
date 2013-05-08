@@ -8,24 +8,18 @@
 
 #include <Widget.h>
 
-#include <QFile>
-#include <QTimer>
+#include <QApplication>
 #include <QDebug>
 
 
 Widget::Widget(QWidget* parent)
 : QGLWidget(createFormat(), parent)
-, computeProgram(nullptr)
 , shaderProgram(nullptr)
 {
-	QTimer* timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(next()));
-	timer->start(10);
 }
 
 Widget::~Widget()
 {
-	delete computeProgram;
 	delete shaderProgram;
 	delete vertexArrayObject;
 	delete texture;
@@ -44,23 +38,12 @@ QSize Widget::sizeHint() const
 	return QSize(800, 600);
 }
 
-void Widget::next()
-{
-	if (!computeProgram) return;
-
-	frame++;
-	frame %= 1024;
-
-	computeProgram->setUniform("roll", (float)frame*0.01f);
-
-	update();
-}
-
 void Widget::initializeShaders()
 {
-	glow::ShaderFile* vertexShaderFile = new glow::ShaderFile("data/test.vert");
-	glow::ShaderFile* fragmentShaderFile = new glow::ShaderFile("data/test.frag");
-	glow::ShaderFile* computeShaderFile = new glow::ShaderFile("data/test.comp");
+	QString path = QApplication::applicationDirPath();
+
+	glow::ShaderFile* vertexShaderFile = new glow::ShaderFile((path+"/data/test.vert").toStdString());
+	glow::ShaderFile* fragmentShaderFile = new glow::ShaderFile((path+"/data/test.frag").toStdString());
 
 	glow::Shader* vertexShader = new glow::Shader(GL_VERTEX_SHADER);
 	vertexShader->setSourceFile(vertexShaderFile, true);
@@ -73,17 +56,6 @@ void Widget::initializeShaders()
 	shaderProgram->attach(fragmentShader);
 	shaderProgram->bindFragDataLocation(0, "outColor");
 	shaderProgram->link();
-
-	computeProgram = new glow::Program();
-	glow::Shader* computeShader = new glow::Shader(GL_COMPUTE_SHADER);
-	computeShader->setSourceFile(computeShaderFile, true);
-
-	computeProgram->attach(computeShader);
-	computeProgram->link();
-
-	frame = 0;
-	computeProgram->setUniform("roll", (float)frame*0.01f);
-	computeProgram->setUniform("destTex", 0);
 
 	shaderProgram->setUniform("texture", 0);
 }
@@ -100,16 +72,13 @@ void Widget::initializeGL()
 	texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
 
-	texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
-	CHECK_ERROR;
-
 	initializeShaders();
 
 	auto vertexArray = new glow::Vec3Array;
-	*vertexArray << glm::vec3(0,0,0) << glm::vec3(0.5,0,0) << glm::vec3(0,0.5,0);
+	*vertexArray << glm::vec3(0,0,0) << glm::vec3(1,0,0) << glm::vec3(1,1,0) << glm::vec3(0,1,0);
 
 	auto texCoordArray = new glow::Vec2Array;
-	*texCoordArray << glm::vec2(0,0) << glm::vec2(1,0) << glm::vec2(0,1);
+	*texCoordArray << glm::vec2(0,0) << glm::vec2(1,0) << glm::vec2(0,1) << glm::vec2(1,1);
 
 	vertexArrayObject = new glow::VertexArrayObject();
 	glow::Buffer* vertexBuffer = vertexArrayObject->addArrayBuffer("vertices");
@@ -136,7 +105,7 @@ void Widget::resizeGL(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(-0.5, +0.5, -0.5, +0.5, 0, 1);
+	glOrtho(0,1,0,1,0,1);
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -150,14 +119,6 @@ void Widget::paintGL()
 	shaderProgram->setUniform("modelView", modelViewMatrix);
 	shaderProgram->setUniform("projection", projectionMatrix);
 
-	// compute
-
-	computeProgram->use();
-	texture->bind();
-	glDispatchCompute(512/16, 512/16, 1); // 512^2 threads in blocks of 16^2
-	texture->unbind();
-	computeProgram->release();
-
 	// render
 
 	texture->bind();
@@ -165,7 +126,7 @@ void Widget::paintGL()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	vertexArrayObject->buffer("vertices")->drawArrays(GL_TRIANGLES, 0, 3);
+	vertexArrayObject->buffer("vertices")->drawArrays(GL_TRIANGLE_FAN, 0, 4);
 
         shaderProgram->release();
 	texture->unbind();

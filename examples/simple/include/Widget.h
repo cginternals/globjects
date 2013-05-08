@@ -14,8 +14,6 @@ public:
 	~Widget();
 
 	QSize sizeHint() const;
-protected slots:
-	void next();
 protected:
 	static QGLFormat createFormat();
 
@@ -26,10 +24,7 @@ protected:
 	void initializeShaders();
 protected:
 	glow::Texture* texture;
-	glow::Program* computeProgram;
 	glow::Program* shaderProgram;
 	glow::VertexArrayObject* vertexArrayObject;
-
-	int frame;
 };
 

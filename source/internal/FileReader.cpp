@@ -14,8 +14,6 @@ bool FileReader::readFile(const std::string& filePath, std::string& content)
 
 	if (!in)
 	{
-		std::cout << filePath << " " << in.good() << std::endl;
-		exit(1);
 		return false;
 	}
 

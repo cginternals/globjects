@@ -1,1 +1,1 @@
-add_subdirectory("computeshader")
+add_subdirectory("simple")
