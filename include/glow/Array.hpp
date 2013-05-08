@@ -1,18 +1,11 @@
 #pragma once
 
+#include <glow/ArrayData.h>
+
 #include <vector>
 #include <glm/glm.hpp>
 
 namespace glow {
-
-class ArrayData
-{
-public:
-	virtual void* rawData() = 0;
-	virtual GLenum type() = 0;
-	virtual GLint elementSize() = 0;
-	virtual GLint byteSize() = 0;
-};
 
 template <typename T, GLenum Type, GLint ElementSize = 1>
 class Array : public ArrayData, public std::vector<T>
