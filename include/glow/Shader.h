@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glow/Object.h>
+#include <glow/ShaderFile.h>
 
 #include <string>
 #include <set>
@@ -21,6 +22,8 @@ public:
 	void setSource(const std::string& source, bool compile = true);
 	const std::string& source() const;
 
+	void setSourceFile(ShaderFile* sourceFile, bool compile = true);
+
 	void compile();
 	bool isCompiled() const;
 
@@ -32,6 +35,7 @@ protected:
 	GLenum _type;
 	bool _compiled;
 	std::string _source;
+	ShaderFile* _sourceFile;
 	std::set<Program*> _programs;
 };
 

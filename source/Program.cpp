@@ -102,13 +102,13 @@ void Program::bindAttributeLocation(GLuint index, const std::string& name)
 	glBindAttribLocation(_id, index, name.c_str());
 }
 
-GLint Program::uniformLocation(const std::string& name)
+GLint Program::getUniformLocation(const std::string& name)
 {
 	checkDirty();
 	return glGetUniformLocation(_id, name.c_str());
 }
 
-GLint Program::attributeLocation(const std::string& name)
+GLint Program::getAttributeLocation(const std::string& name)
 {
 	checkDirty();
 	return glGetAttribLocation(_id, name.c_str());
@@ -126,32 +126,32 @@ void Program::disableVertexAttribArray(GLint index)
 
 void Program::enableVertexAttribArray(const std::string& name)
 {
-	enableVertexAttribArray(attributeLocation(name));
+	enableVertexAttribArray(getAttributeLocation(name));
 }
 
 void Program::disableVertexAttribArray(const std::string& name)
 {
-	disableVertexAttribArray(attributeLocation(name));
+	disableVertexAttribArray(getAttributeLocation(name));
 }
 
 void Program::setUniform(const std::string& name, int value)
 {
 	use();
-	glUniform1i(uniformLocation(name), value);
+	glUniform1i(getUniformLocation(name), value);
 	release();
 }
 
 void Program::setUniform(const std::string& name, float value)
 {
 	use();
-	glUniform1f(uniformLocation(name), value);
+	glUniform1f(getUniformLocation(name), value);
 	release();
 }
 
 void Program::setUniform(const std::string& name, const glm::mat4& value)
 {
 	use();
-        glUniformMatrix4fv(uniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+        glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
         release();
 }
 

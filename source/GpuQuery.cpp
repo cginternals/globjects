@@ -54,7 +54,7 @@ const GLint GPUQuery::memoryInfo(const GLenum penum)
 
     GLint memory(0); // in kb
     glGetIntegerv(penum, &memory);
-    glError();
+//    glError();
 
     return memory;
 }
@@ -64,7 +64,7 @@ const GLint GPUQuery::queryi(const GLenum penum)
     GLint result;
     glGetIntegerv(penum, &result);
 
-    glError();
+//    glError();
 
     return result;
 }

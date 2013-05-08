@@ -30,7 +30,7 @@ Error Error::current()
 	return Error(glGetError());
 }
 
-void Error::check(const char* file, const char* line)
+void Error::check(const char* file, int line)
 {
 	Error error = Error::current();
 

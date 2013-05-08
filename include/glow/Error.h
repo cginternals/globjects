@@ -4,7 +4,7 @@
 
 #include <string>
 
-#define CHECK_ERROR GL::Error::check(__FILE__, __LINE__);
+#define CHECK_ERROR glow::Error::check(__FILE__, __LINE__);
 
 namespace glow {
 
@@ -15,7 +15,7 @@ public:
 	Error(GLenum errorCode);
 
 	static Error current();
-	static void check(const char* file, const char* line);
+	static void check(const char* file, int line);
 
 	GLenum code() const;
 	std::string name() const;

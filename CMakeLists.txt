@@ -121,7 +121,6 @@ set(HEADERS
     
     ${HEADER_PATH}/internal/FileReader.h
     
-    ${HEADER_PATH}/FileAssociatedShader.h
     ${HEADER_PATH}/GpuQuery.h
     ${HEADER_PATH}/Object.h
     ${HEADER_PATH}/ArrayData.h
@@ -130,6 +129,7 @@ set(HEADERS
     ${HEADER_PATH}/Error.h
     ${HEADER_PATH}/Program.h
     ${HEADER_PATH}/Shader.h
+    ${HEADER_PATH}/ShaderFile.h
     ${HEADER_PATH}/Texture.h
     ${HEADER_PATH}/VertexArrayObject.h
 )
@@ -137,10 +137,10 @@ set(HEADERS
 set(SOURCES
     ${SOURCE_PATH}/internal/FileReader.cpp
     
-    ${SOURCE_PATH}/FileAssociatedShader.cpp
     ${SOURCE_PATH}/GpuQuery.cpp
     ${SOURCE_PATH}/Program.cpp
     ${SOURCE_PATH}/Shader.cpp
+    ${SOURCE_PATH}/ShaderFile.cpp
     ${SOURCE_PATH}/Object.cpp
     ${SOURCE_PATH}/Buffer.cpp
     ${SOURCE_PATH}/Error.cpp

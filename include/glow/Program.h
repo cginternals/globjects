@@ -31,8 +31,8 @@ public:
 
 	std::string infoLog() const;
 
-	GLint attributeLocation(const std::string& name);
-	GLint uniformLocation(const std::string& name);
+	GLint getAttributeLocation(const std::string& name);
+	GLint getUniformLocation(const std::string& name);
 
 	void bindAttributeLocation(GLuint index, const std::string& name);
 	void bindFragDataLocation(GLuint index, const std::string& name);

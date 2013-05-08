@@ -12,9 +12,14 @@ bool FileReader::readFile(const std::string& filePath, std::string& content)
 
 	std::ifstream in(filePath, std::ios::in | std::ios::binary);
 
-	if (!in) return false;
+	if (!in)
+	{
+		std::cout << filePath << " " << in.good() << std::endl;
+		exit(1);
+		return false;
+	}
 
-	content = std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+	content = std::string(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
 
 	return true;
 }

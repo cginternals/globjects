@@ -3,7 +3,7 @@
 #include <glow/Object.h>
 #include <glow/Buffer.h>
 
-#include <vector>
+#include <unordered_map>
 
 namespace glow {
 
@@ -16,12 +16,14 @@ public:
 	void bind();
 	void unbind();
 
-	Buffer* addArrayBuffer();
-	Buffer* addElementBuffer();
+	Buffer* addArrayBuffer(const std::string& name);
+	Buffer* addElementBuffer(const std::string& name);
+
+	Buffer* buffer(const std::string& name);
 protected:
-	Buffer* createBuffer(GLenum target);
+	Buffer* createBuffer(const std::string& name, GLenum target);
 protected:
-	std::vector<Buffer*> _buffers;
+	std::unordered_map<std::string, Buffer*> _buffers;
 };
 
 } // namespace glow

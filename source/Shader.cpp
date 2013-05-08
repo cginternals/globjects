@@ -8,6 +8,7 @@ using namespace glow;
 
 Shader::Shader(GLenum type)
 : _type(type)
+, _sourceFile(nullptr)
 , _compiled(false)
 {
 	_id = glCreateShader(type);
@@ -15,6 +16,10 @@ Shader::Shader(GLenum type)
 
 Shader::~Shader()
 {
+	if (_sourceFile)
+	{
+		_sourceFile->deregisterShader(this);
+	}
 	if (_id) glDeleteShader(_id);
 }
 
@@ -28,6 +33,17 @@ void Shader::setSource(const std::string& source, bool compile)
 	_source = source;
 	const char* sourcePointer = source.c_str();
 	glShaderSource(_id, 1, &sourcePointer, 0);
+
+	if (compile)
+	{
+		this->compile();
+	}
+}
+
+void Shader::setSourceFile(ShaderFile* sourceFile, bool compile)
+{
+	_sourceFile = sourceFile;
+	_sourceFile->registerShader(this);
 
 	if (compile)
 	{

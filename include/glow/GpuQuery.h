@@ -25,14 +25,14 @@ public:
     static const bool isCoreProfile();
 
     // Checks for an opengl error and prints to console if one occurred
-    static const bool error(
-        const char * file
-    ,   const int line);
+//    static const bool error(
+//        const char * file
+//    ,   const int line);
 
     static const std::string glewError(const GLenum penum);
 
     // Extension Info
-    
+
     static const bool extensionSupported(const char * extension);
     static const bool extensionSupported(const std::string & extension);
 
