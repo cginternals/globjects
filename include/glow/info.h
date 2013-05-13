@@ -5,6 +5,7 @@
 #include <glow/declspec.h>
 
 #include <string>
+#include <vector>
 
 
 namespace glow {
@@ -30,8 +31,14 @@ public:
 		std::string toString() const;
 	};
 public:
-	static GLint getInteger(GLenum pname);
 	static std::string getString(GLenum pname);
+	static GLint getInteger(GLenum pname);
+	static GLfloat getFloat(GLenum pname);
+	static GLdouble getDouble(GLenum pname);
+	static GLboolean getBoolean(GLenum pname);
+
+	static GLint getInteger(GLenum pname, unsigned index);
+	static std::vector<GLint> getIntegers(GLenum pname, unsigned size);
 
 	static std::string vendor();
 	static std::string renderer();

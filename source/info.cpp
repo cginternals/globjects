@@ -74,16 +74,53 @@ std::string info::Version::toString() const
 	return stream.str();
 }
 
-GLint info::getInteger(GLenum pname)
-{
-	GLint i;
-	glGetIntegerv(pname, &i);
-	return i;
-}
-
 std::string info::getString(GLenum pname)
 {
 	return reinterpret_cast<const char*>(glGetString(pname));
+}
+
+GLint info::getInteger(GLenum pname)
+{
+	GLint value;
+	glGetIntegerv(pname, &value);
+	return value;
+}
+
+GLfloat info::getFloat(GLenum pname)
+{
+	GLfloat value;
+	glGetFloatv(pname, &value);
+	return value;
+}
+
+GLdouble info::getDouble(GLenum pname)
+{
+	GLdouble value;
+	glGetDoublev(pname, &value);
+	return value;
+}
+
+GLboolean info::getBoolean(GLenum pname)
+{
+	GLboolean value;
+	glGetBooleanv(pname, &value);
+	return value;
+}
+
+GLint info::getInteger(GLenum pname, unsigned index)
+{
+	GLint value;
+	glGetIntegeri_v(pname, index, &value);
+	return value;
+}
+
+std::vector<GLint> info::getIntegers(GLenum pname, unsigned size)
+{
+	GLint* values = new GLint[size];
+	glGetIntegerv(pname, values);
+	std::vector<GLint> result(values, values+size);
+	delete[] values;
+	return result;
 }
 
 std::string info::vendor()
