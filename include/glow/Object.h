@@ -15,6 +15,9 @@ public:
 	GLuint id() const;
 protected:
 	GLuint _id;
+private:
+	Object(const Object&);
+	Object& operator=(const Object&);
 };
 
 } // namespace glow

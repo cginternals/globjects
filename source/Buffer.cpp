@@ -7,7 +7,6 @@ using namespace glow;
 
 Buffer::Buffer(GLenum target)
 : _target(target)
-, _size(-1)
 {
 	glGenBuffers(1, &_id);
 }
@@ -15,11 +14,6 @@ Buffer::Buffer(GLenum target)
 Buffer::~Buffer()
 {
 	glDeleteBuffers(1, &_id);
-}
-
-GLsizeiptr Buffer::size() const
-{
-	return _size;
 }
 
 void Buffer::bind()
@@ -32,25 +26,23 @@ void Buffer::unbind()
 	glBindBuffer(_target, 0);
 }
 
-void Buffer::data(GLsizeiptr size, const GLvoid* data, GLenum usage)
+void Buffer::setData(ArrayData* data, GLenum usage)
 {
+	_data = data;
 	bind();
-	glBufferData(_target, size, data, usage);
-	_size = size;
+	glBufferData(_target, data->byteSize(), data->rawData(), usage);
 	unbind();
 }
 
-void Buffer::vertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* pointer)
+ArrayData* Buffer::data()
 {
-	bind();
-	glVertexAttribPointer(index, size, type, normalized, stride, pointer);
-	unbind();
+	return _data;
 }
 
 void Buffer::drawArrays(GLenum mode, GLint first, GLsizei count)
 {
 	bind();
-	glDrawArrays(mode, first, count<0?_size:count);
+	glDrawArrays(mode, first, count<0?_data->elementSize():count);
 	unbind();
 }
 

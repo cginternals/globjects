@@ -17,6 +17,9 @@ public:
 	int refCounter() const;
 private:
 	int _refCounter;
+protected:
+	Referenced(const Referenced&);
+	Referenced& operator=(const Referenced&);
 };
 
 } // namespace glow

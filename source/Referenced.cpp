@@ -7,8 +7,20 @@ Referenced::Referenced()
 {
 }
 
+Referenced::Referenced(const Referenced&)
+: _refCounter(0)
+{
+}
+
+
 Referenced::~Referenced()
 {
+}
+
+Referenced& Referenced::operator=(const Referenced&)
+{
+	_refCounter = 0;
+	return *this;
 }
 
 void Referenced::ref()

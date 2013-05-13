@@ -1,10 +1,12 @@
 #pragma once
 
 #include <glow/Shader.h>
+#include <glow/VertexAttribute.h>
 
 #include <glm/glm.hpp>
 
 #include <set>
+#include <map>
 
 namespace glow {
 
@@ -35,16 +37,15 @@ public:
 	void bindAttributeLocation(GLuint index, const std::string& name);
 	void bindFragDataLocation(GLuint index, const std::string& name);
 
-	void enableVertexAttribArray(GLint index);
-	void disableVertexAttribArray(GLint index);
-	void enableVertexAttribArray(const std::string& name);
-	void disableVertexAttribArray(const std::string& name);
+	VertexAttribute* attribute(GLint index);
+	VertexAttribute* attribute(const std::string& name);
 
 	void setUniform(const std::string& name, int value);
 	void setUniform(const std::string& name, float value);
 	void setUniform(const std::string& name, const glm::mat4& value);
 protected:
 	std::set<ref_ptr<Shader>> _shaders;
+	std::map<unsigned, ref_ptr<VertexAttribute>> _vertexAttributes;
 	bool _linked;
 	bool _dirty;
 

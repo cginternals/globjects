@@ -1,10 +1,11 @@
 #pragma once
 
 #include <GL/glew.h>
+#include <glow/Referenced.h>
 
 namespace glow {
 
-class ArrayData
+class ArrayData : public Referenced
 {
 public:
 	virtual void* rawData() = 0;

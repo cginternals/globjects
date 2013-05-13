@@ -82,20 +82,16 @@ void Widget::initializeGL()
 
 	vertexArrayObject = new glow::VertexArrayObject();
 	glow::Buffer* vertexBuffer = vertexArrayObject->addArrayBuffer("vertices");
-	vertexBuffer->data(vertexArray->byteSize(), vertexArray->rawData(), GL_STATIC_DRAW);
-	vertexBuffer->vertexAttribPointer(shaderProgram->getAttributeLocation("position"), 3, GL_FLOAT);
-	shaderProgram->enableVertexAttribArray("position");
+	vertexBuffer->setData(vertexArray, GL_STATIC_DRAW);
 
-//	vertexArrayObject = new glow::VertexArray();
-//	glow::Buffer* vertexBuffer = vertexArrayObject->createArrayBuffer("vertices");
-//	vertexBuffer->data(vertexArray, GL_STATIC_DRAW);
-//	shaderProgram->vertexAttrib("position")->enable();
-//	shaderProgram->vertexAttrib("position")->bindBuffer(vertexBuffer, 3, GL_FLOAT);
+	shaderProgram->attribute("position")->enable();
+	shaderProgram->attribute("position")->setBuffer(vertexBuffer);
 
 	glow::Buffer* texCoordsBuffer = vertexArrayObject->addArrayBuffer("texCoords");
-	texCoordsBuffer->data(texCoordArray->byteSize(), texCoordArray->rawData(), GL_STATIC_DRAW);
-	texCoordsBuffer->vertexAttribPointer(shaderProgram->getAttributeLocation("texCoord0"), 2, GL_FLOAT);
-	shaderProgram->enableVertexAttribArray("texCoord0");
+	texCoordsBuffer->setData(texCoordArray, GL_STATIC_DRAW);
+
+	shaderProgram->attribute("texCoord0")->enable();
+	shaderProgram->attribute("texCoord0")->setBuffer(texCoordsBuffer);
 }
 
 void Widget::resizeGL(int width, int height)

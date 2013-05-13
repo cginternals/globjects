@@ -107,24 +107,18 @@ GLint Program::getAttributeLocation(const std::string& name)
 	return glGetAttribLocation(_id, name.c_str());
 }
 
-void Program::enableVertexAttribArray(GLint index)
+VertexAttribute* Program::attribute(GLint index)
 {
-	glEnableVertexAttribArray(index);
+        if (!_vertexAttributes[index])
+	{
+		_vertexAttributes[index] = new VertexAttribute(index, this);
+	}
+	return _vertexAttributes[index];
 }
 
-void Program::disableVertexAttribArray(GLint index)
+VertexAttribute* Program::attribute(const std::string& name)
 {
-	glDisableVertexAttribArray(index);
-}
-
-void Program::enableVertexAttribArray(const std::string& name)
-{
-	enableVertexAttribArray(getAttributeLocation(name));
-}
-
-void Program::disableVertexAttribArray(const std::string& name)
-{
-	disableVertexAttribArray(getAttributeLocation(name));
+	return attribute(getAttributeLocation(name));
 }
 
 void Program::setUniform(const std::string& name, int value)
