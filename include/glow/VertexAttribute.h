@@ -24,7 +24,6 @@ public:
 	void disable();
 	void setEnabled(bool state);
 
-	//void setPointer(GLuint index, GLint size, GLenum type, GLboolean normalized = GL_FALSE, GLsizei stride = 0, const GLvoid* pointer = nullptr);
 	void setBuffer(Buffer* buffer, GLboolean normalized = GL_FALSE, GLsizei stride = 0, const GLvoid* pointer = nullptr);
 protected:
 	Program* _program;

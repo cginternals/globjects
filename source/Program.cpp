@@ -15,7 +15,7 @@ Program::Program()
 
 Program::~Program()
 {
-	for (ref_ptr<Shader> shader: _shaders)
+	for (ref_ptr<Shader> shader: std::set<ref_ptr<Shader>>(_shaders))
 	{
 		detach(shader);
 	}

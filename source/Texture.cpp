@@ -34,12 +34,7 @@ void Texture::bind()
 
 void Texture::unbind()
 {
-	unbind(_target);
-}
-
-void Texture::unbind(GLenum target)
-{
-	glBindTexture(target, 0);
+	glBindTexture(_target, 0);
 }
 
 void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data)

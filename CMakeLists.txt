@@ -119,7 +119,7 @@ configure_file(${HEADER_PATH}/meta.h.in meta.h)
 set(HEADERS
     ${HEADER_PATH}/declspec.h
     ${HEADER_PATH}/internal/FileReader.h
-    ${HEADER_PATH}/GpuQuery.h
+    ${HEADER_PATH}/info.h
     
     ${HEADER_PATH}/Array.hpp
     ${HEADER_PATH}/ArrayData.h
@@ -138,7 +138,7 @@ set(HEADERS
 
 set(SOURCES
     ${SOURCE_PATH}/internal/FileReader.cpp
-    ${SOURCE_PATH}/GpuQuery.cpp
+    ${SOURCE_PATH}/info.cpp
     
     ${SOURCE_PATH}/Buffer.cpp
     ${SOURCE_PATH}/Error.cpp

@@ -11,6 +11,10 @@ template <typename T, GLenum Type, GLint ElementSize = 1>
 class Array : public ArrayData, public std::vector<T>
 {
 public:
+	Array() {}
+	Array(T* data, unsigned size) : std::vector<T>(data, data+size/sizeof(T)) {}
+	Array(void* data, unsigned size) : std::vector<T>((T*)data, (T*)data+size/sizeof(T)) {}
+
 	virtual void* rawData() {return (void*)std::vector<T>::data();}
 	virtual GLenum type() {return Type;}
 	virtual GLint elementSize() {return ElementSize;}
