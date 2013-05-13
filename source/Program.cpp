@@ -107,20 +107,6 @@ GLint Program::getAttributeLocation(const std::string& name)
 	return glGetAttribLocation(_id, name.c_str());
 }
 
-VertexAttribute* Program::attribute(GLint index)
-{
-        if (!_vertexAttributes[index])
-	{
-		_vertexAttributes[index] = new VertexAttribute(index, this);
-	}
-	return _vertexAttributes[index];
-}
-
-VertexAttribute* Program::attribute(const std::string& name)
-{
-	return attribute(getAttributeLocation(name));
-}
-
 void Program::setUniform(const std::string& name, int value)
 {
 	use();

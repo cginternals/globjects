@@ -25,7 +25,7 @@ Window::~Window()
 void Window::initializeShaders(const std::string& applicationPath)
 {
 	std::string path = applicationPath.substr(0, applicationPath.rfind('/'));
-	
+
 	glow::ShaderFile* vertexShaderFile = new glow::ShaderFile(path+"/data/test.vert");
 	glow::ShaderFile* fragmentShaderFile = new glow::ShaderFile(path+"/data/test.frag");
 
@@ -62,17 +62,14 @@ void Window::initializeGL(const std::string& applicationPath)
 	*texCoordArray << glm::vec2(0,0) << glm::vec2(1,0) << glm::vec2(0,1) << glm::vec2(1,1);
 
 	vertexArrayObject = new glow::VertexArrayObject();
-	glow::Buffer* vertexBuffer = vertexArrayObject->addArrayBuffer("vertices");
+
+	glow::VertexAttributeArray* vertexBuffer = vertexArrayObject->createAttributeArray("vertices", shaderProgram->getAttributeLocation("position"));
 	vertexBuffer->setData(vertexArray, GL_STATIC_DRAW);
+	vertexBuffer->enable();
 
-	shaderProgram->attribute("position")->enable();
-	shaderProgram->attribute("position")->setBuffer(vertexBuffer);
-
-	glow::Buffer* texCoordsBuffer = vertexArrayObject->addArrayBuffer("texCoords");
+	glow::VertexAttributeArray* texCoordsBuffer = vertexArrayObject->createAttributeArray("texCoords", shaderProgram->getAttributeLocation("texCoord0"));
 	texCoordsBuffer->setData(texCoordArray, GL_STATIC_DRAW);
-
-	shaderProgram->attribute("texCoord0")->enable();
-	shaderProgram->attribute("texCoord0")->setBuffer(texCoordsBuffer);
+	texCoordsBuffer->enable();
 }
 
 void Window::resizeGL(int width, int height)
@@ -94,7 +91,9 @@ void Window::paintGL()
 	texture->bind();
 	shaderProgram->use();
 
-	vertexArrayObject->buffer("vertices")->drawArrays(GL_TRIANGLE_FAN, 0, 4);
+	vertexArrayObject->bind();
+	vertexArrayObject->attributeArray("vertices")->drawArrays(GL_TRIANGLE_FAN, 0, 4);
+	vertexArrayObject->unbind();
 
         shaderProgram->release();
 	texture->unbind();

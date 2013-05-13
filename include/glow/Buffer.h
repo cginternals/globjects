@@ -15,9 +15,7 @@ public:
 	void bind();
 	void unbind();
 
-	void data(GLsizeiptr size, const GLvoid* data, GLenum usage);
-
-	void setData(ArrayData* data, GLenum usage);
+	virtual void setData(ArrayData* data, GLenum usage);
 	ArrayData* data();
 
 	void drawArrays(GLenum mode, GLint first = 0, GLsizei count = -1);

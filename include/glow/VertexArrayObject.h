@@ -9,6 +9,24 @@
 
 namespace glow {
 
+class VertexArrayObject;
+
+class VertexAttributeArray : public Buffer
+{
+public:
+	VertexAttributeArray(GLuint index, VertexArrayObject* vao);
+
+	void setData(ArrayData* data, GLenum usage, GLboolean normalized = GL_FALSE, GLsizei stride = 0, const GLvoid* offset = nullptr);
+	void setDataI(ArrayData* data, GLenum usage, GLsizei stride = 0, const GLvoid* offset = nullptr);
+	void setDataL(ArrayData* data, GLenum usage, GLsizei stride = 0, const GLvoid* offset = nullptr);
+
+	void enable();
+	void disable();
+protected:
+	GLuint _index;
+	VertexArrayObject* _vao;
+};
+
 class VertexArrayObject : public Object
 {
 public:
@@ -18,14 +36,14 @@ public:
 	void bind();
 	void unbind();
 
-	Buffer* addArrayBuffer(const std::string& name);
-	Buffer* addElementBuffer(const std::string& name);
+	VertexAttributeArray* createAttributeArray(const std::string& name, GLuint index);
+	VertexAttributeArray* attributeArray(const std::string& name);
 
-	Buffer* buffer(const std::string& name);
+	Buffer* createElementBuffer(const std::string& name);
+	Buffer* elementBuffer(const std::string& name);
 protected:
-	Buffer* createBuffer(const std::string& name, GLenum target);
-protected:
-	std::unordered_map<std::string, ref_ptr<Buffer>> _buffers;
+	std::unordered_map<std::string, ref_ptr<VertexAttributeArray>> _attributeArrays;
+	std::unordered_map<std::string, ref_ptr<Buffer>> _indexBuffers;
 };
 
 } // namespace glow
