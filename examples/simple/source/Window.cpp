@@ -8,44 +8,30 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <Widget.h>
+#include <Window.h>
 
-#include <QApplication>
-#include <QDebug>
+#include <iostream>
 
-
-Widget::Widget(QWidget* parent)
-: QGLWidget(createFormat(), parent)
-, shaderProgram(nullptr)
+Window::Window()
+: shaderProgram(nullptr)
+, vertexArrayObject(nullptr)
+, texture(nullptr)
 {
 }
 
-Widget::~Widget()
+Window::~Window()
 {
 	delete shaderProgram;
 	delete vertexArrayObject;
 	delete texture;
 }
 
-QGLFormat Widget::createFormat()
+void Window::initializeShaders(const std::string& applicationPath)
 {
-	QGLFormat format;
-	format.setVersion(4, 2);
-
-	return format;
-}
-
-QSize Widget::sizeHint() const
-{
-	return QSize(800, 600);
-}
-
-void Widget::initializeShaders()
-{
-	QString path = QApplication::applicationDirPath();
-
-	glow::ShaderFile* vertexShaderFile = new glow::ShaderFile((path+"/data/test.vert").toStdString());
-	glow::ShaderFile* fragmentShaderFile = new glow::ShaderFile((path+"/data/test.frag").toStdString());
+	std::string path = applicationPath.substr(0, applicationPath.rfind('/'));
+	
+	glow::ShaderFile* vertexShaderFile = new glow::ShaderFile(path+"/data/test.vert");
+	glow::ShaderFile* fragmentShaderFile = new glow::ShaderFile(path+"/data/test.frag");
 
 	glow::Shader* vertexShader = new glow::Shader(GL_VERTEX_SHADER);
 	vertexShader->setSourceFile(vertexShaderFile, true);
@@ -62,7 +48,7 @@ void Widget::initializeShaders()
 	shaderProgram->setUniform("texture", 0);
 }
 
-void Widget::initializeGL()
+void Window::initializeGL(const std::string& applicationPath)
 {
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -74,7 +60,7 @@ void Widget::initializeGL()
 	texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
 
-	initializeShaders();
+	initializeShaders(applicationPath);
 
 	auto vertexArray = new glow::Vec3Array;
 	*vertexArray << glm::vec3(0,0,0) << glm::vec3(1,0,0) << glm::vec3(1,1,0) << glm::vec3(0,1,0);
@@ -96,16 +82,16 @@ void Widget::initializeGL()
 	shaderProgram->attribute("texCoord0")->setBuffer(texCoordsBuffer);
 }
 
-void Widget::resizeGL(int width, int height)
+void Window::resizeGL(int width, int height)
 {
-	int side = qMin(width, height);
+	int side = std::min(width, height);
 	glViewport((width - side) / 2, (height - side) / 2, side, side);
 
 	projection = glm::mat4();
 	modelView = glm::ortho(0, 1, 0, 1, 0, 1);
 }
 
-void Widget::paintGL()
+void Window::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
