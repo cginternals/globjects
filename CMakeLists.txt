@@ -72,14 +72,14 @@ find_package(GLEW REQUIRED)
 
 # SOURCES AND INCLUDES
 
-set(GLOW_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
+set(GLOW_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 include_directories(
     ${CMAKE_BINARY_DIR} # for Meta.h
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_PATH}
     ${GLEW_INCLUDE_PATH}
-    ${CMAKE_SOURCE_DIR}/libs)
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
 set(GLOW_HEADER_GROUP "Header Files (API)")
 set(GLOW_SOURCE_GROUP "Source Files")
@@ -89,16 +89,16 @@ set(GLOW_SOURCE_GROUP "Source Files")
 
 if(MSVC)
     message(STATUS "Configuring for platform Windows/MSVC.")
-    include(${CMAKE_SOURCE_DIR}/cmake/PlatformWindowsMSVC.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsMSVC.cmake)
 elseif(WIN32 AND CMAKE_COMPILER_IS_GNUCXX)
     message(STATUS "Configuring for platform Windows/GCC.")
-    include(${CMAKE_SOURCE_DIR}/cmake/PlatformWindowsGCC.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsGCC.cmake)
 elseif(LINUX AND CMAKE_COMPILER_IS_GNUCXX)
     message(STATUS "Configuring for platform Linux/GCC.")
-    include(${CMAKE_SOURCE_DIR}/cmake/PlatformLinuxGCC.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformLinuxGCC.cmake)
 elseif(APPLE)
     message(STATUS "Configuring for platform MacOS.")
-    include(${CMAKE_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
 else()
     # TODO configure for apple        
     message(WARNING "Unsupported platform/compiler combination")
