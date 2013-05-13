@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include <glow/Array.hpp>
 #include <glow/ShaderFile.h>
 #include <glow/Error.h>
@@ -9,8 +7,6 @@
 #include <glm/gtx/transform.hpp>
 
 #include <Window.h>
-
-#include <iostream>
 
 Window::Window()
 : shaderProgram(nullptr)
@@ -50,9 +46,6 @@ void Window::initializeShaders(const std::string& applicationPath)
 
 void Window::initializeGL(const std::string& applicationPath)
 {
-	glewExperimental = GL_TRUE;
-	glewInit();
-
 	glClearColor(1,1,1,1);
 
 	texture = new glow::Texture(GL_TEXTURE_2D);
