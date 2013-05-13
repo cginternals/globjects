@@ -63,12 +63,14 @@ void Window::initializeGL(const std::string& applicationPath)
 
 	vertexArrayObject = new glow::VertexArrayObject();
 
-	glow::VertexAttributeArray* vertexBuffer = vertexArrayObject->createAttributeArray("vertices", shaderProgram->getAttributeLocation("position"));
+	glow::VertexAttributeArray* vertexBuffer = vertexArrayObject->createAttributeArray("vertices");
 	vertexBuffer->setData(vertexArray, GL_STATIC_DRAW);
+	vertexBuffer->bindToIndex(shaderProgram->getAttributeLocation("position"));
 	vertexBuffer->enable();
 
-	glow::VertexAttributeArray* texCoordsBuffer = vertexArrayObject->createAttributeArray("texCoords", shaderProgram->getAttributeLocation("texCoord0"));
+	glow::VertexAttributeArray* texCoordsBuffer = vertexArrayObject->createAttributeArray("texCoords");
 	texCoordsBuffer->setData(texCoordArray, GL_STATIC_DRAW);
+	texCoordsBuffer->bindToIndex(shaderProgram->getAttributeLocation("texCoord0"));
 	texCoordsBuffer->enable();
 }
 
