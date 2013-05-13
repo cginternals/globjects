@@ -26,5 +26,7 @@ protected:
 	glow::Texture* texture;
 	glow::Program* shaderProgram;
 	glow::VertexArrayObject* vertexArrayObject;
+	glm::mat4 projection;
+	glm::mat4 modelView;
 };
 

@@ -5,6 +5,8 @@
 #include <glow/Error.h>
 
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
 
 #include <Widget.h>
 
@@ -99,28 +101,19 @@ void Widget::resizeGL(int width, int height)
 	int side = qMin(width, height);
 	glViewport((width - side) / 2, (height - side) / 2, side, side);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0,1,0,1,0,1);
-	glMatrixMode(GL_MODELVIEW);
+	projection = glm::mat4();
+	modelView = glm::ortho(0, 1, 0, 1, 0, 1);
 }
 
 void Widget::paintGL()
 {
-	glm::mat4 modelViewMatrix;
-	glm::mat4 projectionMatrix;
-	glGetFloatv(GL_MODELVIEW_MATRIX, glm::value_ptr(modelViewMatrix));
-	glGetFloatv(GL_PROJECTION_MATRIX, glm::value_ptr(projectionMatrix));
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	shaderProgram->setUniform("modelView", modelViewMatrix);
-	shaderProgram->setUniform("projection", projectionMatrix);
-
-	// render
+	shaderProgram->setUniform("modelView", modelView);
+	shaderProgram->setUniform("projection", projection);
 
 	texture->bind();
 	shaderProgram->use();
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	vertexArrayObject->buffer("vertices")->drawArrays(GL_TRIANGLE_FAN, 0, 4);
 
