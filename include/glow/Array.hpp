@@ -7,7 +7,7 @@
 
 namespace glow {
 
-template <typename T, GLenum Type, GLint ElementSize = 1>
+template <typename T, GLenum Type, GLint TypeCountPerElement = 1>
 class Array : public ArrayData, public std::vector<T>
 {
 public:
@@ -15,10 +15,13 @@ public:
 	Array(T* data, unsigned size) : std::vector<T>(data, data+size) {}
 	Array(void* data, unsigned size) : std::vector<T>((T*)data, (T*)data+size/sizeof(T)) {}
 
-	virtual void* rawData() {return (void*)std::vector<T>::data();}
-	virtual GLenum type() {return Type;}
-	virtual GLint elementSize() {return ElementSize;}
-	virtual GLint byteSize() { return std::vector<T>::size()*sizeof(T);}
+	virtual const void* rawData() const {return (void*)std::vector<T>::data();}
+	virtual GLenum type() const {return Type;}
+	virtual GLint byteSize() const { return std::vector<T>::size()*sizeof(T);}
+
+	virtual GLint elementCount() const { return  std::vector<T>::size(); }
+	virtual GLint typeCountPerElement() const { return TypeCountPerElement; }
+	virtual GLint sizeofElement() const { return sizeof(T); }
 
 	Array& operator<<(const T& element) {std::vector<T>::push_back(element); return *this;}
 };

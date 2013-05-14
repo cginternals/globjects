@@ -42,7 +42,7 @@ ArrayData* Buffer::data()
 void Buffer::drawArrays(GLenum mode, GLint first, GLsizei count)
 {
 	bind();
-	glDrawArrays(mode, first, count<0?_data->elementSize():count);
+	glDrawArrays(mode, first, count<0?_data->elementCount():count);
 	unbind();
 }
 

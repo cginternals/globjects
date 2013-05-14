@@ -81,14 +81,14 @@ void Window::resizeGL(int width, int height)
 
 	projection = glm::mat4();
 	modelView = glm::ortho(0, 1, 0, 1, 0, 1);
+
+	shaderProgram->setUniform("modelView", modelView);
+	shaderProgram->setUniform("projection", projection);
 }
 
 void Window::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	shaderProgram->setUniform("modelView", modelView);
-	shaderProgram->setUniform("projection", projection);
 
 	texture->bind();
 	shaderProgram->use();

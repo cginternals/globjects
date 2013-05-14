@@ -5,42 +5,95 @@
 namespace glow {
 
 class VertexArrayObject;
+class VertexAttributeBindingImplementation;
 
 class VertexAttributeBinding : public Referenced
 {
 public:
-	VertexAttributeBinding(VertexArrayObject* vao, GLint index);
+	VertexAttributeBinding(VertexArrayObject* vao, GLint attributeIndex);
+	~VertexAttributeBinding();
 
 	void setBuffer(VertexBuffer* vbo);
 
-	void setFormat(GLboolean normalized = GL_FALSE, GLsizei stride = 0, const GLvoid* offset = nullptr);
-	void setFormatL(GLsizei stride = 0, const GLvoid* offset = nullptr);
-	void setFormatI(GLsizei stride = 0, const GLvoid* offset = nullptr);
+	void setFormat(GLint size, GLenum type, GLboolean normalized = GL_FALSE, GLuint relativeoffset = 0);
+	void setIFormat(GLint size, GLenum type, GLuint relativeoffset = 0);
+	void setLFormat(GLint size, GLuint relativeoffset = 0);
 
 	void enable();
 	void disable();
+
+	GLint attributeIndex() const;
+	VertexArrayObject* vao() const;
+	VertexBuffer* vbo() const;
+protected:
+	GLint _attributeIndex;
+	VertexArrayObject* _vao;
+	VertexBuffer* _vbo;
+
+	VertexAttributeBindingImplementation* _implementation;
+};
+
+// GL version specific implementations
+
+class VertexAttributeBindingImplementation
+{
+public:
+	VertexAttributeBindingImplementation(VertexAttributeBinding* binding);
+
+	virtual void bindBuffer(VertexBuffer* vbo) = 0;
+
+	virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset) = 0;
+	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset) = 0;
+	virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset) = 0;
+protected:
+	VertexAttributeBinding* _binding;
+};
+
+class VertexAttributeBinding_GL_4_3 : public VertexAttributeBindingImplementation
+{
+public:
+	VertexAttributeBinding_GL_4_3(VertexAttributeBinding* binding);
+
+	virtual void bindBuffer(VertexBuffer* vbo);
+
+	virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
+	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
+	virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset);
+};
+
+class VertexAttributeBinding_GL_3_2 : public VertexAttributeBindingImplementation
+{
+public:
+	VertexAttributeBinding_GL_3_2(VertexAttributeBinding* binding);
+
+	virtual void bindBuffer(VertexBuffer* vbo);
+
+	virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
+	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
+	virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset);
 protected:
 	struct Format
 	{
-		enum Type {
-			Normal = 0,
+		enum Method {
+			O = 0,
 			I = 1,
 			L = 2
 		};
 
 		Format();
-		Format(Type type, GLboolean normalized, GLsizei stride , const GLvoid* offset);
+		Format(Method method, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
 
-		Type type;
+		Method method;
+
+		GLint size;
+		GLenum type;
 		GLboolean normalized;
-		GLsizei stride;
-		const GLvoid* offset;
+		GLuint relativeoffset;
+
+		bool initialized;
 	};
 
-	GLint _index;
 	Format _format;
-	VertexArrayObject* _vao;
-	VertexBuffer* _vbo;
 
 	void bindIndex();
 };
