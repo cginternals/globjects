@@ -4,6 +4,7 @@ using namespace glow;
 
 
 VertexArrayObject::VertexArrayObject()
+: _nextBindingIndex(0)
 {
 	glGenVertexArrays(1, &_id);
 }
@@ -23,18 +24,16 @@ void VertexArrayObject::unbind()
 	glBindVertexArray(0);
 }
 
-VertexAttributeArray* VertexArrayObject::createAttributeArray(const std::string& name)
+VertexBuffer* VertexArrayObject::createVertexBuffer(const std::string& name)
 {
-	bind();
-	VertexAttributeArray* attributeArray = new VertexAttributeArray(this);
-	_attributeArrays[name] = attributeArray;
-	unbind();
-	return attributeArray;
+	VertexBuffer* vbo = VertexBuffer::create(this, _nextBindingIndex++);
+	_vertexBuffers[name] = vbo;
+	return vbo;
 }
 
-VertexAttributeArray* VertexArrayObject::attributeArray(const std::string& name)
+VertexBuffer* VertexArrayObject::vertexBuffer(const std::string& name)
 {
-	return _attributeArrays[name];
+	return _vertexBuffers[name];
 }
 
 Buffer* VertexArrayObject::createElementBuffer(const std::string& name)
@@ -49,4 +48,14 @@ Buffer* VertexArrayObject::createElementBuffer(const std::string& name)
 Buffer* VertexArrayObject::elementBuffer(const std::string& name)
 {
 	return _indexBuffers[name];
+}
+
+VertexAttributeBinding* VertexArrayObject::binding(GLint attributeLocation)
+{
+	if (!_bindings[attributeLocation])
+	{
+		_bindings[attributeLocation] = new VertexAttributeBinding(this, attributeLocation);
+	}
+
+	return _bindings[attributeLocation];
 }

@@ -2,6 +2,7 @@
 #include <GL/freeglut.h>
 
 #include <Window.h>
+#include <glow/Error.h>
 
 namespace {
 	Window window;
@@ -29,6 +30,8 @@ int main(int argc, char** argv)
 
 	glewExperimental = GL_TRUE;
 	glewInit();
+
+	CHECK_ERROR;
 
 	window.initializeGL(argv[0]);
 

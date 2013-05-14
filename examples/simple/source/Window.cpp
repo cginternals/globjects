@@ -61,17 +61,17 @@ void Window::initializeGL(const std::string& applicationPath)
 	auto texCoordArray = new glow::Vec2Array;
 	*texCoordArray << glm::vec2(0,0) << glm::vec2(1,0) << glm::vec2(0,1) << glm::vec2(1,1);
 
+
 	vertexArrayObject = new glow::VertexArrayObject();
 
-	glow::VertexAttributeArray* vertexBuffer = vertexArrayObject->createAttributeArray("vertices");
-	vertexBuffer->setData(vertexArray, GL_STATIC_DRAW);
-	vertexBuffer->bindToIndex(shaderProgram->getAttributeLocation("position"));
-	vertexBuffer->enable();
+	glow::VertexBuffer* positions = vertexArrayObject->createVertexBuffer("positions");
+	positions->setData(vertexArray, GL_STATIC_DRAW);
 
-	glow::VertexAttributeArray* texCoordsBuffer = vertexArrayObject->createAttributeArray("texCoords");
+	glow::VertexBuffer* texCoordsBuffer = vertexArrayObject->createVertexBuffer("texCoords");
 	texCoordsBuffer->setData(texCoordArray, GL_STATIC_DRAW);
-	texCoordsBuffer->bindToIndex(shaderProgram->getAttributeLocation("texCoord0"));
-	texCoordsBuffer->enable();
+
+	positions->bindToAttribute(shaderProgram->getAttributeLocation("position"))->enable();
+	texCoordsBuffer->bindToAttribute(shaderProgram->getAttributeLocation("texCoord0"))->enable();
 }
 
 void Window::resizeGL(int width, int height)
@@ -94,7 +94,7 @@ void Window::paintGL()
 	shaderProgram->use();
 
 	vertexArrayObject->bind();
-	vertexArrayObject->attributeArray("vertices")->drawArrays(GL_TRIANGLE_FAN, 0, 4);
+	vertexArrayObject->vertexBuffer("positions")->drawArrays(GL_TRIANGLE_FAN, 0, 4);
 	vertexArrayObject->unbind();
 
         shaderProgram->release();

@@ -133,7 +133,8 @@ set(HEADERS
     ${HEADER_PATH}/ShaderFile.h
     ${HEADER_PATH}/Texture.h
     ${HEADER_PATH}/VertexArrayObject.h
-    ${HEADER_PATH}/VertexAttributeArray.h
+    ${HEADER_PATH}/VertexAttributeBinding.h
+    ${HEADER_PATH}/VertexBuffer.h
 )
 
 set(SOURCES
@@ -149,7 +150,8 @@ set(SOURCES
     ${SOURCE_PATH}/Texture.cpp
     ${SOURCE_PATH}/Object.cpp
     ${SOURCE_PATH}/VertexArrayObject.cpp
-    ${SOURCE_PATH}/VertexAttributeArray.cpp
+    ${SOURCE_PATH}/VertexAttributeBinding.cpp
+    ${SOURCE_PATH}/VertexBuffer.cpp
 )
 
 # group source files
