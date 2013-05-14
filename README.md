@@ -12,3 +12,7 @@ The following dev-libraries and programs need to be provided for correct CMake c
 * CMake: http://www.cmake.org/
 * OpenGL Extension Wrangler (GLEW): http://glew.sourceforge.net/
 * OpenGL Mathematics (GLM): http://glm.g-truc.net/
+
+### Extensions
+
+Useful features which are an addition to a pure objects wrapper around OpenGL are developed in [glow-utils](https://github.com/cgcostume/glow-utils).
