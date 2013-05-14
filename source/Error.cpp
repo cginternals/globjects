@@ -36,7 +36,9 @@ void Error::check(const char* file, int line)
 
 	if (error.isError())
 	{
+		std::cout.flags(std::ios::hex | std::ios::showbase);
 		std::cout << "OpenGL error " << error.code() << " : " << error.name() << std::endl;
+		std::cout.unsetf(std::ios::hex | std::ios::showbase);
 		std::cout << "in " << file << ":" << line << std::endl;
 	}
 }
