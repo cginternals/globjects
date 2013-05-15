@@ -90,7 +90,7 @@ void Window::initializeGL(const std::string& applicationPath)
 
 	initializeShaders(applicationPath);
 
-	auto vertexArray = new glow::Array<Vertex, GL_FLOAT, 5>;
+	auto vertexArray = new glow::Array<Vertex>;
 
 	*vertexArray
 		<< Vertex(glm::vec3(0,0,0), glm::vec2(0,0))

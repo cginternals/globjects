@@ -7,7 +7,7 @@
 
 namespace glow {
 
-template <typename T, GLenum Type, GLint TypeCountPerElement = 1>
+template <typename T, GLenum Type = GL_UNSIGNED_BYTE, GLint TypeCountPerElement = 1>
 class Array : public ArrayData, public std::vector<T>
 {
 public:
