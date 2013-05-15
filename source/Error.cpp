@@ -43,6 +43,11 @@ void Error::check(const char* file, int line)
 	}
 }
 
+void Error::clear()
+{
+	while (Error::current().isError());
+}
+
 bool Error::isError() const
 {
 	return _errorCode != GL_NO_ERROR;

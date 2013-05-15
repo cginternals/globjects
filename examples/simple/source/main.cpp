@@ -3,6 +3,9 @@
 
 #include <Window.h>
 #include <glow/Error.h>
+#include <glow/info.h>
+
+#include <iostream>
 
 namespace {
 	Window window;
@@ -21,7 +24,7 @@ int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
 	glutInitContextVersion(4, 2);
-	glutInitContextFlags(GLUT_DEBUG);
+	glutInitContextFlags(GLUT_DEBUG | GLUT_FORWARD_COMPATIBLE);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	glutInitWindowPosition(100,100);
@@ -31,7 +34,10 @@ int main(int argc, char** argv)
 	glewExperimental = GL_TRUE;
 	glewInit();
 
-	CHECK_ERROR;
+	//CHECK_ERROR;
+	glow::Error::clear();
+
+	std::cout << glow::info::versionString() << std::endl;
 
 	window.initializeGL(argv[0]);
 

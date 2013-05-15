@@ -95,16 +95,19 @@ void VertexAttributeBinding_GL_3_2::bindBuffer(VertexBuffer* vbo)
 void VertexAttributeBinding_GL_3_2::setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset)
 {
 	_format = Format(Format::O, size, type, normalized, relativeoffset);
+	bindIndex();
 }
 
 void VertexAttributeBinding_GL_3_2::setIFormat(GLint size, GLenum type, GLuint relativeoffset)
 {
 	_format = Format(Format::I, size, type, GL_FALSE, relativeoffset);
+	bindIndex();
 }
 
 void VertexAttributeBinding_GL_3_2::setLFormat(GLint size, GLenum type, GLuint relativeoffset)
 {
 	_format = Format(Format::L, size, type, GL_FALSE, relativeoffset);
+	bindIndex();
 }
 
 VertexAttributeBinding_GL_3_2::Format::Format()

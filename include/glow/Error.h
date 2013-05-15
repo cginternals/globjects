@@ -16,6 +16,7 @@ public:
 
 	static Error current();
 	static void check(const char* file, int line);
+	static void clear();
 
 	GLenum code() const;
 	std::string name() const;

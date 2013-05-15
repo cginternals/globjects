@@ -8,6 +8,16 @@
 
 #include <Window.h>
 
+Vertex::Vertex()
+{
+}
+
+Vertex::Vertex(const glm::vec3& pos, const glm::vec2& texCoord)
+: position(pos)
+, texCoord0(texCoord)
+{
+}
+
 Window::Window()
 : shaderProgram(nullptr)
 , vertexArrayObject(nullptr)
@@ -48,30 +58,60 @@ void Window::initializeGL(const std::string& applicationPath)
 {
 	glClearColor(1,1,1,1);
 
+	unsigned char img_data[16*4] = {
+		255,0,0,100,
+		255,255,0,255,
+		255,0,255,255,
+		255,0,100,255,
+		0,0,80,255,
+		255,0,0,255,
+		255,255,0,0,
+		255,0,255,255,
+		255,0,100,255,
+		0,0,80,255,
+		255,0,0,255,
+		255,255,0,0,
+		255,0,255,255,
+		255,0,100,255,
+		0,0,80,255,
+		0,0,80,255
+	};
+
 	texture = new glow::Texture(GL_TEXTURE_2D);
+
 	texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
+
+	texture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	texture->image2D(0, GL_RGBA8, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data);
 
 	initializeShaders(applicationPath);
 
-	auto vertexArray = new glow::Vec3Array;
-	*vertexArray << glm::vec3(0,0,0) << glm::vec3(1,0,0) << glm::vec3(1,1,0) << glm::vec3(0,1,0);
+	auto vertexArray = new glow::Array<Vertex, GL_FLOAT, 5>;
 
-	auto texCoordArray = new glow::Vec2Array;
-	*texCoordArray << glm::vec2(0,0) << glm::vec2(1,0) << glm::vec2(0,1) << glm::vec2(1,1);
-
+	*vertexArray
+		<< Vertex(glm::vec3(0,0,0), glm::vec2(0,0))
+		<< Vertex(glm::vec3(1,0,0), glm::vec2(1,0))
+		<< Vertex(glm::vec3(1,1,0), glm::vec2(1,1))
+		<< Vertex(glm::vec3(0,1,0), glm::vec2(0,1));
 
 	vertexArrayObject = new glow::VertexArrayObject();
 
-	glow::VertexBuffer* positions = vertexArrayObject->createVertexBuffer("positions");
-	positions->setData(vertexArray, GL_STATIC_DRAW);
+	glow::VertexBuffer* vertices = vertexArrayObject->createVertexBuffer("vertices");
+	vertices->setData(vertexArray, GL_STATIC_DRAW);
 
-	glow::VertexBuffer* texCoordsBuffer = vertexArrayObject->createVertexBuffer("texCoords");
-	texCoordsBuffer->setData(texCoordArray, GL_STATIC_DRAW);
+	auto binding = vertexArrayObject->binding(shaderProgram->getAttributeLocation("position"));
+	binding->setBuffer(vertices);
+	binding->setFormat(3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
+	binding->enable();
 
-	positions->bindToAttribute(shaderProgram->getAttributeLocation("position"))->enable();
-	texCoordsBuffer->bindToAttribute(shaderProgram->getAttributeLocation("texCoord0"))->enable();
+	auto binding2 = vertexArrayObject->binding(shaderProgram->getAttributeLocation("texCoord0"));
+	binding2->setBuffer(vertices);
+	binding2->setFormat(2, GL_FLOAT, GL_FALSE, offsetof(Vertex, texCoord0));
+	binding2->enable();
 }
 
 void Window::resizeGL(int width, int height)
@@ -94,7 +134,7 @@ void Window::paintGL()
 	shaderProgram->use();
 
 	vertexArrayObject->bind();
-	vertexArrayObject->vertexBuffer("positions")->drawArrays(GL_TRIANGLE_FAN, 0, 4);
+	vertexArrayObject->vertexBuffer("vertices")->drawArrays(GL_TRIANGLE_FAN, 0, 4);
 	vertexArrayObject->unbind();
 
         shaderProgram->release();

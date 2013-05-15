@@ -57,3 +57,10 @@ void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLin
 	glBindImageTexture(unit, _id, level, layered, layer, access, format);
 	unbind();
 }
+
+void Texture::generateMipmap()
+{
+	bind();
+	glGenerateMipmap(_target);
+	unbind();
+}

@@ -8,8 +8,9 @@ out vec4 outColor;
 
 void main()
 {
-	//vec4 col = texture2D(texture, texCoord);
+	vec4 col = texture2D(texture, texCoord);
 	//outColor = vec4(col.xy, 1.0, 1.0);
-	outColor = vec4(texCoord, 1.0, 1.0);
+	//outColor = vec4(texCoord, 1.0, 1.0);
 	//outColor = vec4(0.0,1.0, 1.0, 1.0);
+	outColor = col;
 }

@@ -15,8 +15,6 @@ public:
 	GLint bindingIndex() const;
 	VertexArrayObject* vao();
 
-	VertexAttributeBinding* bindToAttribute(GLint attributeLocation);
-
 	void setBaseOffset(GLintptr baseOffset, GLintptr stride = 0);
 
 	GLintptr baseOffset() const;

@@ -31,13 +31,6 @@ VertexArrayObject* VertexBuffer::vao()
 	return _vao;
 }
 
-VertexAttributeBinding* VertexBuffer::bindToAttribute(GLint attributeLocation)
-{
-	VertexAttributeBinding* binding = _vao->binding(attributeLocation);
-	binding->setBuffer(this);
-	return binding;
-}
-
 void VertexBuffer::setBaseOffset(GLintptr baseOffset, GLintptr stride)
 {
 	_baseOffset = baseOffset;

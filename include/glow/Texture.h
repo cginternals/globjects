@@ -20,6 +20,8 @@ public:
 	void storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height);
 
 	void bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format);
+
+	void generateMipmap();
 protected:
 	GLenum  _target;
 };
