@@ -13,7 +13,9 @@ public:
 	~FrameBufferObject();
 
 	void bind(GLenum target = GL_FRAMEBUFFER);
-	void unbind(GLenum target = GL_FRAMEBUFFER);
+	void unbind();
+protected:
+	GLenum _target;
 };
 
 /*

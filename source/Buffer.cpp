@@ -21,6 +21,12 @@ void Buffer::bind()
 	glBindBuffer(_target, _id);
 }
 
+void Buffer::bind(GLenum target)
+{
+	_target = target;
+	bind();
+}
+
 void Buffer::unbind()
 {
 	glBindBuffer(_target, 0);

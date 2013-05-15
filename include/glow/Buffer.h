@@ -13,6 +13,7 @@ public:
 	~Buffer();
 
 	void bind();
+	void bind(GLenum target);
 	void unbind();
 
 	virtual void setData(ArrayData* data, GLenum usage);
