@@ -7,6 +7,8 @@
 #include <set>
 #include <map>
 
+// http://www.opengl.org/wiki/Program_Object
+
 namespace glow {
 
 class Program : public Object

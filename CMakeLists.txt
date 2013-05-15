@@ -125,10 +125,12 @@ set(HEADERS
     ${HEADER_PATH}/ArrayData.h
     ${HEADER_PATH}/Buffer.h
     ${HEADER_PATH}/Error.h
+    ${HEADER_PATH}/FrameBufferObject.h
     ${HEADER_PATH}/Object.h
     ${HEADER_PATH}/Program.h
     ${HEADER_PATH}/ref_ptr.hpp
     ${HEADER_PATH}/Referenced.h
+    ${HEADER_PATH}/RenderBufferObject.h
     ${HEADER_PATH}/Shader.h
     ${HEADER_PATH}/ShaderFile.h
     ${HEADER_PATH}/Texture.h
@@ -143,12 +145,14 @@ set(SOURCES
     
     ${SOURCE_PATH}/Buffer.cpp
     ${SOURCE_PATH}/Error.cpp
+    ${SOURCE_PATH}/FrameBufferObject.cpp
+    ${SOURCE_PATH}/Object.cpp
     ${SOURCE_PATH}/Program.cpp
     ${SOURCE_PATH}/Referenced.cpp
+    ${SOURCE_PATH}/RenderBufferObject.cpp
     ${SOURCE_PATH}/Shader.cpp
     ${SOURCE_PATH}/ShaderFile.cpp
     ${SOURCE_PATH}/Texture.cpp
-    ${SOURCE_PATH}/Object.cpp
     ${SOURCE_PATH}/VertexArrayObject.cpp
     ${SOURCE_PATH}/VertexAttributeBinding.cpp
     ${SOURCE_PATH}/VertexBuffer.cpp

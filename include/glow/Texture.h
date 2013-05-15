@@ -2,6 +2,8 @@
 
 #include <glow/Object.h>
 
+// http://www.opengl.org/wiki/Texture
+
 namespace glow {
 
 class Texture : public Object

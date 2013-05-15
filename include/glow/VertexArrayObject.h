@@ -10,6 +10,8 @@
 #include <map>
 #include <string>
 
+// http://www.opengl.org/wiki/Vertex_Array_Object
+
 namespace glow {
 
 class VertexArrayObject : public Object

@@ -6,6 +6,8 @@
 #include <string>
 #include <set>
 
+// http://www.opengl.org/wiki/Shader
+
 namespace glow {
 
 class Program;
