@@ -119,7 +119,7 @@ std::string Shader::typeString()
 			return "GL_TESS_CONTROL_SHADER";
 		#ifdef GL_COMPUTE_SHADER
 		case GL_COMPUTE_SHADER:
-			return "GL_TESS_EVALUATION_SHADER";
+			return "GL_COMPUTE_SHADER";
 		#endif
 		default:
 			return "unknown";

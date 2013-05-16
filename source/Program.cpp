@@ -24,6 +24,7 @@ Program::~Program()
 
 void Program::use()
 {
+	checkDirty();
 	glUseProgram(_id);
 }
 
