@@ -90,9 +90,9 @@ void Window::initializeGL(const std::string& applicationPath)
 
 	initializeShaders(applicationPath);
 
-	auto vertexArray = new glow::Array<Vertex>;
+	glow::Array<Vertex> vertexArray;
 
-	*vertexArray
+	vertexArray
 		<< Vertex(glm::vec3(0,0,0), glm::vec2(0,0))
 		<< Vertex(glm::vec3(1,0,0), glm::vec2(1,0))
 		<< Vertex(glm::vec3(1,1,0), glm::vec2(1,1))
@@ -101,15 +101,15 @@ void Window::initializeGL(const std::string& applicationPath)
 	vertexArrayObject = new glow::VertexArrayObject();
 
 	glow::VertexBuffer* vertices = vertexArrayObject->createVertexBuffer("vertices");
-	vertices->setData(vertexArray, GL_STATIC_DRAW);
+	vertices->setData(vertexArray);
 
 	auto binding = vertexArrayObject->binding(shaderProgram->getAttributeLocation("position"));
-	binding->setBuffer(vertices);
+	binding->setBuffer(vertices, 0, sizeof(Vertex));
 	binding->setFormat(3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
 	binding->enable();
 
 	auto binding2 = vertexArrayObject->binding(shaderProgram->getAttributeLocation("texCoord0"));
-	binding2->setBuffer(vertices);
+	binding2->setBuffer(vertices, 0, sizeof(Vertex));
 	binding2->setFormat(2, GL_FLOAT, GL_FALSE, offsetof(Vertex, texCoord0));
 	binding2->enable();
 }

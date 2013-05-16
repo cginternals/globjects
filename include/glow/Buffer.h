@@ -17,11 +17,11 @@ public:
 	void bind(GLenum target);
 	void unbind();
 
-	virtual void setData(ArrayData* data, GLenum usage);
-	ArrayData* data();
+	void setData(const ArrayData& data, GLenum usage = GL_STATIC_DRAW);
+	void setData(GLsizei size, const GLvoid* data, GLenum usage = GL_STATIC_DRAW);
 
 	// drawing
-	void drawArrays(GLenum mode, GLint first = 0, GLsizei count = -1);
+	void drawArrays(GLenum mode, GLint first, GLsizei count);
 	void drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices = nullptr);
 
 	// indexed buffer binding
@@ -29,7 +29,6 @@ public:
 	void bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size);
 protected:
 	GLenum _target;
-	ref_ptr<ArrayData> _data;
 };
 
 } // namespace glow

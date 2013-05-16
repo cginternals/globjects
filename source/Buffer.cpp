@@ -37,23 +37,22 @@ void Buffer::unbind()
 	glBindBuffer(_target, 0);
 }
 
-void Buffer::setData(ArrayData* data, GLenum usage)
+void Buffer::setData(const ArrayData& data, GLenum usage)
 {
-	_data = data;
-	bind();
-	glBufferData(_target, data->byteSize(), data->rawData(), usage);
-	unbind();
+	setData(data.byteSize(), data.rawData(), usage);
 }
 
-ArrayData* Buffer::data()
+void Buffer::setData(GLsizei size, const GLvoid* data, GLenum usage)
 {
-	return _data;
+	bind();
+	glBufferData(_target, size, data, usage);
+	unbind();
 }
 
 void Buffer::drawArrays(GLenum mode, GLint first, GLsizei count)
 {
 	bind();
-	glDrawArrays(mode, first, count<0?_data->elementCount():count);
+	glDrawArrays(mode, first, count);
 	unbind();
 }
 

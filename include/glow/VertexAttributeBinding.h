@@ -13,7 +13,7 @@ public:
 	VertexAttributeBinding(VertexArrayObject* vao, GLint attributeIndex);
 	~VertexAttributeBinding();
 
-	void setBuffer(VertexBuffer* vbo);
+	void setBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride);
 
 	void setFormat(GLint size, GLenum type, GLboolean normalized = GL_FALSE, GLuint relativeoffset = 0);
 	void setIFormat(GLint size, GLenum type, GLuint relativeoffset = 0);
@@ -40,7 +40,7 @@ class VertexAttributeBindingImplementation
 public:
 	VertexAttributeBindingImplementation(VertexAttributeBinding* binding);
 
-	virtual void bindBuffer(VertexBuffer* vbo) = 0;
+	virtual void bindBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride) = 0;
 
 	virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset) = 0;
 	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset) = 0;
@@ -54,7 +54,7 @@ class VertexAttributeBinding_GL_4_3 : public VertexAttributeBindingImplementatio
 public:
 	VertexAttributeBinding_GL_4_3(VertexAttributeBinding* binding);
 
-	virtual void bindBuffer(VertexBuffer* vbo);
+	virtual void bindBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride);
 
 	virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
 	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
@@ -66,7 +66,7 @@ class VertexAttributeBinding_GL_3_2 : public VertexAttributeBindingImplementatio
 public:
 	VertexAttributeBinding_GL_3_2(VertexAttributeBinding* binding);
 
-	virtual void bindBuffer(VertexBuffer* vbo);
+	virtual void bindBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride);
 
 	virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
 	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
@@ -94,6 +94,8 @@ protected:
 	};
 
 	Format _format;
+	GLint _baseoffset;
+	GLint _stride;
 
 	void bindIndex();
 };

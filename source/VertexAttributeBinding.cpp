@@ -32,10 +32,10 @@ VertexBuffer* VertexAttributeBinding::vbo() const
 	return _vbo;
 }
 
-void VertexAttributeBinding::setBuffer(VertexBuffer* vbo)
+void VertexAttributeBinding::setBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride)
 {
 	_vbo = vbo;
-	_implementation->bindBuffer(vbo);
+	_implementation->bindBuffer(vbo, baseoffset, stride);
 }
 
 void VertexAttributeBinding::enable()
@@ -77,19 +77,19 @@ VertexAttributeBindingImplementation::VertexAttributeBindingImplementation(Verte
 
 VertexAttributeBinding_GL_3_2::VertexAttributeBinding_GL_3_2(VertexAttributeBinding* binding)
 : VertexAttributeBindingImplementation(binding)
+, _baseoffset(0)
+, _stride(0)
 {
 }
 
-void VertexAttributeBinding_GL_3_2::bindBuffer(VertexBuffer* vbo)
+void VertexAttributeBinding_GL_3_2::bindBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride)
 {
-	if (!_format.initialized)
+	_baseoffset = baseoffset;
+	_stride = stride;
+	if (_format.initialized)
 	{
-		_format.size = vbo->data()->typeCountPerElement();
-		_format.type = vbo->data()->type();
-		_format.initialized = true;
+		bindIndex();
 	}
-
-	bindIndex();
 }
 
 void VertexAttributeBinding_GL_3_2::setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset)
@@ -140,13 +140,13 @@ void VertexAttributeBinding_GL_3_2::bindIndex()
 	switch (_format.method)
 	{
 		case Format::I:
-			glVertexAttribIPointer(_binding->attributeIndex(), _format.size, _format.type, _binding->vbo()->stride(), reinterpret_cast<void*>(_binding->vbo()->baseOffset()+_format.relativeoffset));
+			glVertexAttribIPointer(_binding->attributeIndex(), _format.size, _format.type, _stride, reinterpret_cast<void*>(_baseoffset+_format.relativeoffset));
 			break;
 		case Format::L:
-			glVertexAttribLPointer(_binding->attributeIndex(), _format.size, _format.type, _binding->vbo()->stride(), reinterpret_cast<void*>(_binding->vbo()->baseOffset()+_format.relativeoffset));
+			glVertexAttribLPointer(_binding->attributeIndex(), _format.size, _format.type, _stride, reinterpret_cast<void*>(_baseoffset+_format.relativeoffset));
 			break;
 		default:
-			glVertexAttribPointer(_binding->attributeIndex(), _format.size, _format.type, _format.normalized, _binding->vbo()->stride(), reinterpret_cast<void*>(_binding->vbo()->baseOffset()+_format.relativeoffset));
+			glVertexAttribPointer(_binding->attributeIndex(), _format.size, _format.type, _format.normalized, _stride, reinterpret_cast<void*>(_baseoffset+_format.relativeoffset));
 	}
 	_binding->vbo()->unbind();
 	_binding->vao()->unbind();
@@ -161,13 +161,13 @@ VertexAttributeBinding_GL_4_3::VertexAttributeBinding_GL_4_3(VertexAttributeBind
 {
 }
 
-void VertexAttributeBinding_GL_4_3::bindBuffer(VertexBuffer* vbo)
+void VertexAttributeBinding_GL_4_3::bindBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride)
 {
 	_binding->vao()->bind();
 
 	glVertexAttribBinding(_binding->attributeIndex(), vbo->bindingIndex());
 
-	_binding->vbo()->bindVertexBuffer();
+	_binding->vbo()->bindVertexBuffer(baseoffset, stride);
 
 	_binding->vao()->unbind();
 }
