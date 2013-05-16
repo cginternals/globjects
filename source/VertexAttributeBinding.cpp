@@ -136,7 +136,7 @@ void VertexAttributeBinding_GL_3_2::bindIndex()
 
 
 	_binding->vao()->bind();
-	_binding->vbo()->bind();
+	_binding->vbo()->bind(GL_ARRAY_BUFFER);
 	switch (_format.method)
 	{
 		case Format::I:

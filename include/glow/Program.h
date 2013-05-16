@@ -35,12 +35,16 @@ public:
 	GLint getAttributeLocation(const std::string& name);
 	GLint getUniformLocation(const std::string& name);
 
+	GLuint getResourceIndex(GLenum programInterface, const std::string& name);
+
 	void bindAttributeLocation(GLuint index, const std::string& name);
 	void bindFragDataLocation(GLuint index, const std::string& name);
 
 	void setUniform(const std::string& name, int value);
 	void setUniform(const std::string& name, float value);
 	void setUniform(const std::string& name, const glm::mat4& value);
+
+	void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding);
 protected:
 	std::set<ref_ptr<Shader>> _shaders;
 	bool _linked;

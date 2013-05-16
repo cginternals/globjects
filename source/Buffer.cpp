@@ -4,6 +4,11 @@
 
 using namespace glow;
 
+Buffer::Buffer()
+: _target(0)
+{
+	glGenBuffers(1, &_id);
+}
 
 Buffer::Buffer(GLenum target)
 : _target(target)
@@ -57,4 +62,14 @@ void Buffer::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid*
 	bind();
 	glDrawElements(mode, count, type, indices);
 	unbind();
+}
+
+void Buffer::bindBase(GLenum target, GLuint index)
+{
+	glBindBufferBase(target, index, _id);
+}
+
+void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size)
+{
+	glBindBufferRange(target, index, _id, offset, size);
 }

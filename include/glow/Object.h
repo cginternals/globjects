@@ -13,6 +13,8 @@ public:
 	virtual ~Object();
 
 	GLuint id() const;
+
+	operator GLuint() const;
 protected:
 	GLuint _id;
 private:

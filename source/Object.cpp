@@ -15,3 +15,8 @@ GLuint Object::id() const
 {
 	return _id;
 }
+
+Object::operator GLuint() const
+{
+	return _id;
+}

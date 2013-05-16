@@ -107,6 +107,12 @@ GLint Program::getAttributeLocation(const std::string& name)
 	return glGetAttribLocation(_id, name.c_str());
 }
 
+GLuint Program::getResourceIndex(GLenum programInterface, const std::string& name)
+{
+	checkDirty();
+	return glGetProgramResourceIndex(_id, programInterface, name.c_str());
+}
+
 void Program::setUniform(const std::string& name, int value)
 {
 	use();
@@ -153,4 +159,10 @@ void Program::checkLinkStatus()
 			<< "Linker error:" << std::endl
 			<< infoLog() << std::endl;
 	}
+}
+
+void Program::setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding)
+{
+	checkDirty();
+	glShaderStorageBlockBinding(_id, storageBlockIndex, storageBlockBinding);
 }
