@@ -1,6 +1,8 @@
 #pragma once
 
-#include <glow/Object.h>
+#include "declspec.h"
+
+#include "glow/Object.h"
 #include <glow/Buffer.h>
 #include <glow/VertexBuffer.h>
 #include <glow/VertexAttributeBinding.h>
@@ -14,7 +16,7 @@
 
 namespace glow {
 
-class VertexArrayObject : public Object
+class GLOW_API VertexArrayObject : public Object
 {
 public:
 	VertexArrayObject();

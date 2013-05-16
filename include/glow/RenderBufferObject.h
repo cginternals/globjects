@@ -1,12 +1,14 @@
 #pragma once
 
+#include "declspec.h"
+
 #include <glow/Object.h>
 
 // http://www.opengl.org/wiki/Renderbuffer_Objects
 
 namespace glow {
 
-class RenderBufferObject : public Object
+class GLOW_API RenderBufferObject : public Object
 {
 public:
 	RenderBufferObject();

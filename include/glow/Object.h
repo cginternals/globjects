@@ -2,11 +2,14 @@
 
 #include <GL/glew.h>
 
-#include <glow/Referenced.h>
+#include "declspec.h"
 
-namespace glow {
+#include "glow/Referenced.h"
 
-class Object : public Referenced
+namespace glow 
+{
+
+class GLOW_API Object : public Referenced
 {
 public:
 	Object();

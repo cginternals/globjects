@@ -4,11 +4,14 @@
 
 #include <string>
 
+#include "declspec.h"
+
+
 #define CHECK_ERROR glow::Error::check(__FILE__, __LINE__);
 
 namespace glow {
 
-class Error
+class GLOW_API Error
 {
 public:
 	Error();

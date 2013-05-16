@@ -1,5 +1,7 @@
 #pragma once
 
+#include "declspec.h"
+
 #include <glow/Buffer.h>
 
 namespace glow {
@@ -7,7 +9,7 @@ namespace glow {
 class VertexArrayObject;
 class VertexAttributeBinding;
 
-class VertexBuffer : public Buffer
+class GLOW_API VertexBuffer : public Buffer
 {
 public:
 	static VertexBuffer* create(VertexArrayObject* vao, GLint bindingIndex);

@@ -16,7 +16,7 @@
     #define __API_IMPORT_DECLARATION
 #endif
 
-#ifdef CGSEE_EXPORTS
+#ifdef GLOW_EXPORTS
     #define GLOW_API __API_EXPORT_DECLARATION
 #else
     #define GLOW_API __API_IMPORT_DECLARATION

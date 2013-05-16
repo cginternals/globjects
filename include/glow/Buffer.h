@@ -1,12 +1,15 @@
+
 #pragma once
 
-#include <glow/Object.h>
-#include <glow/ArrayData.h>
+#include "declspec.h"
 
+#include "Object.h"
+#include "ArrayData.h"
 
-namespace glow {
+namespace glow 
+{
 
-class Buffer : public Object
+class GLOW_API Buffer : public Object
 {
 public:
 	Buffer();
@@ -32,4 +35,3 @@ protected:
 };
 
 } // namespace glow
-

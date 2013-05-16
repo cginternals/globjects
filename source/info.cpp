@@ -1,3 +1,6 @@
+
+#include <GL/glew.h>
+
 #ifdef WIN32
 #include <GL/wglew.h>
 #else
@@ -23,9 +26,10 @@
 #define GPU_MEMORY_INFO_EVICTION_COUNT_NVX				0x904A
 #define GPU_MEMORY_INFO_EVICTED_MEMORY_NVX				0x904B
 
-
-#include <glow/info.h>
 #include <sstream>
+
+#include "glow/info.h"
+
 
 using namespace glow;
 
@@ -172,12 +176,12 @@ bool extensions::isSupported(const char* extension)
 		return false;
 	}
 
-	bool supported = glewIsSupported(extension);
+	bool supported = glewIsSupported(extension) == GL_TRUE;
 
 	#ifdef WIN32
-	supported |= wglewIsSupported(extension);
+    supported |= wglewIsSupported(extension) == GL_TRUE;
 	#elif defined(LINUX)
-	supported |= glxewIsSupported(extension);
+	supported |= glxewIsSupported(extension) == GL_TRUE;
 	#endif
 
 	return supported;
@@ -243,4 +247,3 @@ std::string glew::version()
 ////    const QString result = reinterpret_cast<const char*>(glewGetErrorString(pname));
 ////    return result;
 ////}
-

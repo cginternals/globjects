@@ -79,6 +79,7 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_PATH}
     ${GLEW_INCLUDE_PATH}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
 set(GLOW_HEADER_GROUP "Header Files (API)")
@@ -114,10 +115,11 @@ message(STATUS "lib ${target}")
 set(HEADER_PATH "${GLOW_INCLUDE_DIR}/${target}")
 set(SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
-configure_file(${HEADER_PATH}/meta.h.in meta.h)
+configure_file(${SOURCE_PATH}/meta.h.in meta.h)
 
 set(HEADERS
     ${HEADER_PATH}/declspec.h
+
     ${HEADER_PATH}/internal/FileReader.h
     ${HEADER_PATH}/info.h
     
@@ -140,6 +142,7 @@ set(HEADERS
 )
 
 set(SOURCES
+
     ${SOURCE_PATH}/internal/FileReader.cpp
     ${SOURCE_PATH}/info.cpp
     

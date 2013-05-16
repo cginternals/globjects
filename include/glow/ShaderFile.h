@@ -3,7 +3,8 @@
 #include <set>
 #include <string>
 
-#include <glow/declspec.h>
+#include "declspec.h"
+
 #include <glow/Referenced.h>
 
 

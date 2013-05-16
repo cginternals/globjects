@@ -1,7 +1,8 @@
 #pragma once
 
 #include <GL/glew.h>
-#include <glow/Referenced.h>
+
+#include "Referenced.h"
 
 namespace glow {
 

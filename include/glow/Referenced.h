@@ -1,10 +1,12 @@
 #pragma once
 
+#include "declspec.h"
+
 #include <glow/ref_ptr.hpp>
 
 namespace glow {
 
-class Referenced
+class GLOW_API Referenced
 {
 public:
 	Referenced();

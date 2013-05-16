@@ -1,12 +1,14 @@
 #pragma once
 
+#include "declspec.h"
+
 #include <glow/Object.h>
 
 // http://www.opengl.org/wiki/Framebuffer_Object
 
 namespace glow {
 
-class FrameBufferObject : public Object
+class GLOW_API FrameBufferObject : public Object
 {
 public:
 	FrameBufferObject();

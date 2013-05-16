@@ -1,5 +1,7 @@
 #pragma once
 
+#include "declspec.h"
+
 #include <glow/VertexBuffer.h>
 
 namespace glow {
@@ -7,7 +9,7 @@ namespace glow {
 class VertexArrayObject;
 class VertexAttributeBindingImplementation;
 
-class VertexAttributeBinding : public Referenced
+class GLOW_API VertexAttributeBinding : public Referenced
 {
 public:
 	VertexAttributeBinding(VertexArrayObject* vao, GLint attributeIndex);

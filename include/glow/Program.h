@@ -1,5 +1,7 @@
 #pragma once
 
+#include "declspec.h"
+
 #include <glow/Shader.h>
 
 #include <glm/glm.hpp>
@@ -11,7 +13,7 @@
 
 namespace glow {
 
-class Program : public Object
+class GLOW_API Program : public Object
 {
 public:
 	Program();
