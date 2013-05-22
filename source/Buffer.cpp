@@ -7,12 +7,14 @@ using namespace glow;
 
 Buffer::Buffer()
 : _target(0)
+, _size(0)
 {
 	glGenBuffers(1, &_id);
 }
 
 Buffer::Buffer(GLenum target)
 : _target(target)
+, _size(0)
 {
 	glGenBuffers(1, &_id);
 }
@@ -38,6 +40,11 @@ void Buffer::unbind()
 	glBindBuffer(_target, 0);
 }
 
+GLsizei Buffer::size() const
+{
+	return _size;
+}
+
 void Buffer::setData(const ArrayData& data, GLenum usage)
 {
 	setData(data.byteSize(), data.rawData(), usage);
@@ -47,12 +54,13 @@ void Buffer::setData(GLsizei size, const GLvoid* data, GLenum usage)
 {
 	bind();
 	glBufferData(_target, size, data, usage);
+	_size = size;
 }
 
 void Buffer::drawArrays(GLenum mode, GLint first, GLsizei count)
 {
 	bind();
-	glDrawArrays(mode, first, count);
+	glDrawArrays(mode, first, count<0?_size:count);
 }
 
 void Buffer::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices)
