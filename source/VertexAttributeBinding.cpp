@@ -42,14 +42,12 @@ void VertexAttributeBinding::enable()
 {
 	_vao->bind();
 	glEnableVertexAttribArray(_attributeIndex);
-	_vao->unbind();
 }
 
 void VertexAttributeBinding::disable()
 {
 	_vao->bind();
 	glDisableVertexAttribArray(_attributeIndex);
-	_vao->unbind();
 }
 
 void VertexAttributeBinding::setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset)
@@ -148,8 +146,6 @@ void VertexAttributeBinding_GL_3_2::bindIndex()
 		default:
 			glVertexAttribPointer(_binding->attributeIndex(), _format.size, _format.type, _format.normalized, _stride, reinterpret_cast<void*>(_baseoffset+_format.relativeoffset));
 	}
-	_binding->vbo()->unbind();
-	_binding->vao()->unbind();
 }
 
 // GL 4.3 implementation
@@ -168,8 +164,6 @@ void VertexAttributeBinding_GL_4_3::bindBuffer(VertexBuffer* vbo, GLint baseoffs
 	glVertexAttribBinding(_binding->attributeIndex(), vbo->bindingIndex());
 
 	_binding->vbo()->bindVertexBuffer(baseoffset, stride);
-
-	_binding->vao()->unbind();
 }
 
 void VertexAttributeBinding_GL_4_3::setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset)
@@ -177,8 +171,6 @@ void VertexAttributeBinding_GL_4_3::setFormat(GLint size, GLenum type, GLboolean
 	_binding->vao()->bind();
 
 	glVertexAttribFormat(_binding->attributeIndex(), size, type, normalized, relativeoffset);
-
-	_binding->vao()->unbind();
 }
 
 void VertexAttributeBinding_GL_4_3::setIFormat(GLint size, GLenum type, GLuint relativeoffset)
@@ -186,8 +178,6 @@ void VertexAttributeBinding_GL_4_3::setIFormat(GLint size, GLenum type, GLuint r
 	_binding->vao()->bind();
 
 	glVertexAttribIFormat(_binding->attributeIndex(), size, type, relativeoffset);
-
-	_binding->vao()->unbind();
 }
 
 void VertexAttributeBinding_GL_4_3::setLFormat(GLint size, GLenum type, GLuint relativeoffset)
@@ -195,8 +185,6 @@ void VertexAttributeBinding_GL_4_3::setLFormat(GLint size, GLenum type, GLuint r
 	_binding->vao()->bind();
 
 	glVertexAttribLFormat(_binding->attributeIndex(), size, type, relativeoffset);
-
-	_binding->vao()->unbind();
 }
 
 #endif

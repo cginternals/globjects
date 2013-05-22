@@ -47,21 +47,18 @@ void Buffer::setData(GLsizei size, const GLvoid* data, GLenum usage)
 {
 	bind();
 	glBufferData(_target, size, data, usage);
-	unbind();
 }
 
 void Buffer::drawArrays(GLenum mode, GLint first, GLsizei count)
 {
 	bind();
 	glDrawArrays(mode, first, count);
-	unbind();
 }
 
 void Buffer::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices)
 {
 	bind();
 	glDrawElements(mode, count, type, indices);
-	unbind();
 }
 
 void Buffer::bindBase(GLenum target, GLuint index)

@@ -118,21 +118,18 @@ void Program::setUniform(const std::string& name, int value)
 {
 	use();
 	glUniform1i(getUniformLocation(name), value);
-	release();
 }
 
 void Program::setUniform(const std::string& name, float value)
 {
 	use();
 	glUniform1f(getUniformLocation(name), value);
-	release();
 }
 
 void Program::setUniform(const std::string& name, const glm::mat4& value)
 {
 	use();
         glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
-        release();
 }
 
 std::string Program::infoLog() const

@@ -17,14 +17,12 @@ void Texture::setParameter(GLenum name, GLint value)
 {
 	bind();
 	glTexParameteri(_target, name, value);
-	unbind();
 }
 
 void Texture::setParameter(GLenum name, GLfloat value)
 {
 	bind();
 	glTexParameterf(_target, name, value);
-	unbind();
 }
 
 void Texture::bind()
@@ -41,26 +39,22 @@ void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei 
 {
 	bind();
 	glTexImage2D(_target, level, internalFormat, width, height, border, format, type, data);
-	unbind();
 }
 
 void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height)
 {
 	bind();
 	glTexStorage2D(_target, levels, internalFormat, width, height);
-	unbind();
 }
 
 void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)
 {
 	bind();
 	glBindImageTexture(unit, _id, level, layered, layer, access, format);
-	unbind();
 }
 
 void Texture::generateMipmap()
 {
 	bind();
 	glGenerateMipmap(_target);
-	unbind();
 }

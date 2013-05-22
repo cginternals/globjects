@@ -41,7 +41,6 @@ Buffer* VertexArrayObject::createElementBuffer(const std::string& name)
 	bind();
 	Buffer* buffer = new Buffer(GL_ELEMENT_ARRAY_BUFFER);
 	_indexBuffers[name] = buffer;
-	unbind();
 	return buffer;
 }
 

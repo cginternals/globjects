@@ -15,7 +15,6 @@ VertexBuffer* VertexBuffer::create(VertexArrayObject* vao, GLint bindingIndex)
 {
 	vao->bind();
 	VertexBuffer* vbo = new VertexBuffer(vao, bindingIndex);
-	vao->unbind();
 	return vbo;
 }
 
