@@ -8,10 +8,10 @@ GLOW is a cross-platform library licenced under the [MIT license](http://opensou
 ### Dependencies
 
 The following dev-libraries and programs need to be provided for correct CMake configuration:
-* C++11 compatible compiler
-* CMake: http://www.cmake.org/
-* OpenGL Extension Wrangler (GLEW): http://glew.sourceforge.net/
-* OpenGL Mathematics (GLM): http://glm.g-truc.net/
+* C++11 compatible compiler (e.g. gcc 4.7, VS 2012)
+* CMake (>=2.8.9): http://www.cmake.org/
+* OpenGL Extension Wrangler (GLEW, >=1.9.0): http://glew.sourceforge.net/
+* OpenGL Mathematics (GLM, >=0.9.3): http://glm.g-truc.net/
 
 ### Extensions
 
