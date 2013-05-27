@@ -1,6 +1,7 @@
 #include <glow/Array.hpp>
 #include <glow/ShaderFile.h>
 #include <glow/Error.h>
+#include <glow/Log.h>
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>

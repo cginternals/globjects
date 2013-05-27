@@ -1,7 +1,7 @@
 #include <glow/Shader.h>
 #include <glow/Program.h>
+#include <glow/Log.h>
 
-#include <iostream>
 #include <vector>
 
 using namespace glow;
@@ -107,10 +107,10 @@ void Shader::checkCompileStatus()
 
 	if (!_compiled)
 	{
-		std::cout
+		error()
 			<< "Compiler error:" << std::endl
 			<< "Type " << typeString() << std::endl
-			<< infoLog() << std::endl;
+			<< infoLog();
 	}
 }
 

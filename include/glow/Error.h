@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include "declspec.h"
+#include <glow/declspec.h>
 
 
 #define CHECK_ERROR glow::Error::check(__FILE__, __LINE__);

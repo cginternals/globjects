@@ -128,6 +128,7 @@ set(HEADERS
     ${HEADER_PATH}/Buffer.h
     ${HEADER_PATH}/Error.h
     ${HEADER_PATH}/FrameBufferObject.h
+    ${HEADER_PATH}/Log.h
     ${HEADER_PATH}/Object.h
     ${HEADER_PATH}/Program.h
     ${HEADER_PATH}/ref_ptr.hpp
@@ -150,6 +151,7 @@ set(SOURCES
     ${SOURCE_PATH}/Buffer.cpp
     ${SOURCE_PATH}/Error.cpp
     ${SOURCE_PATH}/FrameBufferObject.cpp
+    ${SOURCE_PATH}/Log.cpp
     ${SOURCE_PATH}/Object.cpp
     ${SOURCE_PATH}/Program.cpp
     ${SOURCE_PATH}/Referenced.cpp

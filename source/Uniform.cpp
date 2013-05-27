@@ -1,8 +1,8 @@
 #include <glow/Uniform.h>
 #include <glow/Program.h>
+#include <glow/Log.h>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <iostream>
 
 using namespace glow;
 
@@ -176,6 +176,6 @@ void Uniform::setUniform(GLint location)
         		glUniformMatrix4x3fv(location, _value.mat4x3_array_value.size(), GL_FALSE, reinterpret_cast<const float*>(_value.mat4x3_array_value.rawData()));
         		break;
 		default:
-			;
+			warning() << "Attempted to set untyped uniform";
 	}
 }

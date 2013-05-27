@@ -1,7 +1,8 @@
 #include <glow/Error.h>
 
 //#include <stdexcept>
-#include <iostream>
+#include <glow/Log.h>
+#include <sstream>
 
 using namespace glow;
 
@@ -36,10 +37,13 @@ void Error::check(const char* file, int line)
 
 	if (error.isError())
 	{
-		std::cout.flags(std::ios::hex | std::ios::showbase);
-		std::cout << "OpenGL error " << error.code() << " : " << error.name() << std::endl;
-		std::cout.unsetf(std::ios::hex | std::ios::showbase);
-		std::cout << "in " << file << ":" << line << std::endl;
+		std::stringstream ss;
+		ss.flags(std::ios::hex | std::ios::showbase);
+		ss << "OpenGL error " << error.code() << " : " << error.name() << std::endl;
+		ss.unsetf(std::ios::hex | std::ios::showbase);
+		ss << "in " << file << ":" << line << std::endl;
+
+		::error() << ss.str();
 	}
 }
 

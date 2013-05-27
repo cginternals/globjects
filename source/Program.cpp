@@ -1,7 +1,7 @@
 #include <glow/Program.h>
+#include <glow/Log.h>
 
 #include <vector>
-#include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
 using namespace glow;
@@ -136,7 +136,8 @@ Uniform* Program::getUniform(const std::string& name)
 	if (!_uniforms[name])
 	{
 		Uniform* uniform = new Uniform(name);
-		addUniform(uniform);
+		_uniforms[uniform->name()] = uniform;
+		uniform->addTo(this);
 	}
 	return _uniforms[name];
 }
@@ -170,9 +171,9 @@ void Program::checkLinkStatus()
 
 	if (!_linked)
 	{
-		std::cout
+		error()
 			<< "Linker error:" << std::endl
-			<< infoLog() << std::endl;
+			<< infoLog();
 	}
 }
 

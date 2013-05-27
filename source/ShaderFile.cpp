@@ -1,8 +1,7 @@
 #include <glow/ShaderFile.h>
 #include <glow/Shader.h>
 #include <glow/internal/FileReader.h>
-
-#include <iostream>
+#include <glow/Log.h>
 
 using namespace glow;
 
@@ -64,7 +63,7 @@ bool ShaderFile::loadFileContent()
 {
 	if (!internal::FileReader::readFile(_filePath, _fileContent))
 	{
-		std::cerr << "Read from \"" << _filePath << "\" failed." << std::endl;
+		error() << "Read from \"" << _filePath << "\" failed.";
 		return false;
 	}
 
