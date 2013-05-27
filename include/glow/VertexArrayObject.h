@@ -38,6 +38,8 @@ protected:
 	std::unordered_map<std::string, ref_ptr<Buffer>> _indexBuffers;
 
 	std::map<GLint, ref_ptr<VertexAttributeBinding>> _bindings;
+
+	static GLuint genVertexArray();
 };
 
 } // namespace glow

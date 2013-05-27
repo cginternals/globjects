@@ -31,6 +31,8 @@ public:
 	void bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size);
 protected:
 	GLenum _target;
+
+	static GLuint genBuffer();
 };
 
 } // namespace glow

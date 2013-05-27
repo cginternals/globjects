@@ -3,9 +3,16 @@
 using namespace glow;
 
 Texture::Texture(GLenum  target)
-: _target(target)
+: Object(genTexture())
+, _target(target)
 {
-	glGenTextures(1, &_id);
+}
+
+GLuint Texture::genTexture()
+{
+	GLuint id = 0;
+	glGenTextures(1, &id);
+	return id;
 }
 
 Texture::~Texture()

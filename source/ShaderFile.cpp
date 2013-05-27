@@ -28,7 +28,6 @@ const std::string& ShaderFile::content() const
 void ShaderFile::registerShader(Shader* shader)
 {
 	_shaders.insert(shader);
-	shader->setSource(_fileContent);
 }
 
 void ShaderFile::deregisterShader(Shader* shader)
@@ -38,11 +37,17 @@ void ShaderFile::deregisterShader(Shader* shader)
 
 void ShaderFile::reload()
 {
+	std::string backup = _fileContent;
 	if (loadFileContent())
 	{
 		for (Shader* shader: _shaders)
 		{
-			shader->setSource(_fileContent, true);
+			bool previouslyCompiled = shader->isCompiled();
+			shader->setSource(_fileContent);
+			if (!shader->isCompiled() && previouslyCompiled)
+			{
+				shader->setSource(backup);
+			}
 		}
 	}
 }

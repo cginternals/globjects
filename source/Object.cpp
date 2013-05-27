@@ -7,6 +7,11 @@ Object::Object()
 {
 }
 
+Object::Object(GLuint id)
+: _id(id)
+{
+}
+
 Object::~Object()
 {
 }

@@ -4,14 +4,21 @@ using namespace glow;
 
 
 VertexArrayObject::VertexArrayObject()
-: _nextBindingIndex(0)
+: Object(genVertexArray())
+, _nextBindingIndex(0)
 {
-	glGenVertexArrays(1, &_id);
 }
 
 VertexArrayObject::~VertexArrayObject()
 {
-	glDeleteVertexArrays(1, &_id);
+	if (_id) glDeleteVertexArrays(1, &_id);
+}
+
+GLuint VertexArrayObject::genVertexArray()
+{
+	GLuint id = 0;
+	glGenVertexArrays(1, &id);
+	return id;
 }
 
 void VertexArrayObject::bind()

@@ -3,14 +3,21 @@
 using namespace glow;
 
 FrameBufferObject::FrameBufferObject()
-: _target(GL_FRAMEBUFFER)
+: Object(genFrameBuffer())
+, _target(GL_FRAMEBUFFER)
 {
-	glGenFramebuffers(1, &_id);
 }
 
 FrameBufferObject::~FrameBufferObject()
 {
-	glDeleteFramebuffers(1, &_id);
+	if (_id) glDeleteFramebuffers(1, &_id);
+}
+
+GLuint FrameBufferObject::genFrameBuffer()
+{
+	GLuint id = 0;
+	glGenFramebuffers(1, &id);
+	return id;
 }
 
 void FrameBufferObject::bind(GLenum target)

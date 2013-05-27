@@ -6,13 +6,14 @@
 
 #include "glow/Referenced.h"
 
-namespace glow 
+namespace glow
 {
 
 class GLOW_API Object : public Referenced
 {
 public:
 	Object();
+	Object(GLuint id);
 	virtual ~Object();
 
 	GLuint id() const;

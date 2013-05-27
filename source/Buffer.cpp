@@ -5,20 +5,27 @@
 using namespace glow;
 
 Buffer::Buffer()
-: _target(0)
+: Object(genBuffer())
+, _target(0)
 {
-	glGenBuffers(1, &_id);
 }
 
 Buffer::Buffer(GLenum target)
-: _target(target)
+: Object(genBuffer())
+, _target(target)
 {
-	glGenBuffers(1, &_id);
+}
+
+GLuint Buffer::genBuffer()
+{
+	GLuint id = 0;
+	glGenBuffers(1, &id);
+	return id;
 }
 
 Buffer::~Buffer()
 {
-	glDeleteBuffers(1, &_id);
+	if (_id) glDeleteBuffers(1, &_id);
 }
 
 void Buffer::bind()

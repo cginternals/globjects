@@ -18,6 +18,8 @@ public:
 	void unbind();
 protected:
 	GLenum _target;
+
+	static GLuint genFrameBuffer();
 };
 
 /*

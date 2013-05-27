@@ -7,10 +7,10 @@
 using namespace glow;
 
 Program::Program()
-: _linked(false)
+: Object(createProgram())
+, _linked(false)
 , _dirty(true)
 {
-	_id = glCreateProgram();
 }
 
 Program::~Program()
@@ -24,6 +24,11 @@ Program::~Program()
 		uniformPair.second->removeFrom(this);
 	}
 	if (_id) glDeleteProgram(_id);
+}
+
+GLuint Program::createProgram()
+{
+	return glCreateProgram();
 }
 
 void Program::use()

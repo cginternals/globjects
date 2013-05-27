@@ -30,7 +30,6 @@ public:
 	void detach(Shader* shader);
 
 	void link();
-
 	void invalidate();
 
 	std::string infoLog() const;
@@ -47,20 +46,22 @@ public:
 	void addUniform(Uniform* uniform);
 
 	void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding);
-
-	// convenience
-	template<typename... Rest> void addUniforms(Uniform* uniform, Rest... rest) { addUniform(uniform); addUniforms(rest...); }
-	template<typename... Rest> void attach(Shader* shader, Rest... rest) { attach(shader); attach(rest...); }
 protected:
 	std::set<ref_ptr<Shader>> _shaders;
+	std::unordered_map<std::string, ref_ptr<Uniform>> _uniforms;
 	bool _linked;
 	bool _dirty;
-	std::unordered_map<std::string, ref_ptr<Uniform>> _uniforms;
 
 	void checkLinkStatus();
 	void checkDirty();
 	void updateUniforms();
 
+	static GLuint createProgram();
+public:
+	// convenience
+	template<typename... Rest> void addUniforms(Uniform* uniform, Rest... rest) { addUniform(uniform); addUniforms(rest...); }
+	template<typename... Rest> void attach(Shader* shader, Rest... rest) { attach(shader); attach(rest...); }
+protected:
 	// break conditions
 	void addUniforms() {}
 	void attach() {}

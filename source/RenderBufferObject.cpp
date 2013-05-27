@@ -3,13 +3,20 @@
 using namespace glow;
 
 RenderBufferObject::RenderBufferObject()
+: Object(genRenderBuffer())
 {
-	glGenRenderbuffers(1, &_id);
 }
 
-RenderBufferObject::~RenderBufferObject()
+void RenderBufferObject::deleteGLObject()
 {
 	glDeleteRenderbuffers(1, &_id);
+}
+
+GLuint RenderBufferObject::genRenderBuffer()
+{
+	GLuint id = 0;
+	glGenRenderbuffers(1, &id);
+	return id;
 }
 
 void RenderBufferObject::bind()

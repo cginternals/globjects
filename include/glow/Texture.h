@@ -28,6 +28,8 @@ public:
 	void generateMipmap();
 protected:
 	GLenum  _target;
+
+	static GLuint genTexture();
 };
 
 } // namespace glow

@@ -21,14 +21,14 @@ public:
 	Shader(GLenum type);
 	~Shader();
 
-	static Shader* fromFile(GLenum type, const std::string& filenam, bool compile = true);
+	static Shader* fromFile(GLenum type, const std::string& filename);
 
 	GLenum type() const;
 
-	void setSource(const std::string& source, bool compile = true);
+	void setSource(const std::string& source);
 	const std::string& source() const;
 
-	void setSourceFile(ShaderFile* sourceFile, bool compile = true);
+	void setSourceFile(ShaderFile* sourceFile);
 	ShaderFile* sourceFile();
 
 	void compile();
@@ -47,6 +47,8 @@ protected:
 
 	void addToProgram(Program* program);
 	void removeFromProgram(Program* program);
+
+	static GLuint createShader(GLenum type);
 };
 
 } // namespace glow

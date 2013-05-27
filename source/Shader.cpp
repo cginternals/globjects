@@ -7,11 +7,11 @@
 using namespace glow;
 
 Shader::Shader(GLenum type)
-: _type(type)
+: Object(createShader(type))
+, _type(type)
 , _sourceFile(nullptr)
 , _compiled(false)
 {
-	_id = glCreateShader(type);
 }
 
 Shader::~Shader()
@@ -23,11 +23,16 @@ Shader::~Shader()
 	if (_id) glDeleteShader(_id);
 }
 
-Shader* Shader::fromFile(GLenum type, const std::string& filename, bool compile)
+GLuint Shader::createShader(GLenum type)
+{
+	return glCreateShader(type);
+}
+
+Shader* Shader::fromFile(GLenum type, const std::string& filename)
 {
 	Shader* shader = new Shader(type);
 	ShaderFile* file = new ShaderFile(filename);
-	shader->setSourceFile(file, compile);
+	shader->setSourceFile(file);
 	return shader;
 }
 
@@ -36,32 +41,25 @@ GLenum Shader::type() const
 	return _type;
 }
 
-void Shader::setSource(const std::string& source, bool compile)
+void Shader::setSource(const std::string& source)
 {
 	_source = source;
 	const char* sourcePointer = source.c_str();
 	glShaderSource(_id, 1, &sourcePointer, 0);
 
-	if (compile)
-	{
-		this->compile();
-	}
+	compile();
 }
 
-void Shader::setSourceFile(ShaderFile* sourceFile, bool compile)
+void Shader::setSourceFile(ShaderFile* sourceFile)
 {
 	_sourceFile = sourceFile;
 	_sourceFile->registerShader(this);
-
-	if (compile)
-	{
-		this->compile();
-	}
+	setSource(_sourceFile->content());
 }
 
 const std::string& Shader::source() const
 {
-	return _sourceFile ? _sourceFile->content() : _source;
+	return _source;
 }
 
 ShaderFile* Shader::sourceFile()
