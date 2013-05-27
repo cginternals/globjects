@@ -12,6 +12,7 @@ class Array : public ArrayData, public std::vector<T>
 {
 public:
 	Array() {}
+	Array(const std::vector<T>& vector) : std::vector<T>(vector) {}
 	Array(T* data, unsigned size) : std::vector<T>(data, data+size) {}
 	Array(void* data, unsigned size) : std::vector<T>((T*)data, (T*)data+size/sizeof(T)) {}
 

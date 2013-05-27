@@ -25,9 +25,7 @@ public:
 protected:
 	void initializeShaders(const std::string& applicationPath);
 
-	glow::Texture* texture;
-	glow::Program* shaderProgram;
-	glow::VertexArrayObject* vertexArrayObject;
-	glm::mat4 projection;
-	glm::mat4 modelView;
+	glow::ref_ptr<glow::Texture> texture;
+	glow::ref_ptr<glow::Program> shaderProgram;
+	glow::ref_ptr<glow::VertexArrayObject> vertexArrayObject;
 };

@@ -19,6 +19,10 @@ Program::~Program()
 	{
 		detach(shader);
 	}
+	for (std::pair<std::string, ref_ptr<Uniform>> uniformPair: _uniforms)
+	{
+		uniformPair.second->removeFrom(this);
+	}
 	if (_id) glDeleteProgram(_id);
 }
 
@@ -84,6 +88,7 @@ void Program::link()
 	glLinkProgram(_id);
 	checkLinkStatus();
 	_dirty = false;
+	updateUniforms();
 }
 
 void Program::bindFragDataLocation(GLuint index, const std::string& name)
@@ -114,22 +119,29 @@ GLuint Program::getResourceIndex(GLenum programInterface, const std::string& nam
 	return glGetProgramResourceIndex(_id, programInterface, name.c_str());
 }
 
-void Program::setUniform(const std::string& name, int value)
+void Program::addUniform(Uniform* uniform)
 {
-	use();
-	glUniform1i(getUniformLocation(name), value);
+	_uniforms[uniform->name()] = uniform;
+	uniform->addTo(this);
+	if (_linked) uniform->updateFor(this);
 }
 
-void Program::setUniform(const std::string& name, float value)
+Uniform* Program::getUniform(const std::string& name)
 {
-	use();
-	glUniform1f(getUniformLocation(name), value);
+	if (!_uniforms[name])
+	{
+		Uniform* uniform = new Uniform(name);
+		addUniform(uniform);
+	}
+	return _uniforms[name];
 }
 
-void Program::setUniform(const std::string& name, const glm::mat4& value)
+void Program::updateUniforms()
 {
-	use();
-        glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+	for (std::pair<std::string, ref_ptr<Uniform>> uniformPair: _uniforms)
+	{
+		uniformPair.second->updateFor(this);
+	}
 }
 
 std::string Program::infoLog() const

@@ -3,11 +3,12 @@
 #include "declspec.h"
 
 #include <glow/Shader.h>
+#include <glow/Uniform.h>
 
 #include <glm/glm.hpp>
 
 #include <set>
-#include <map>
+#include <unordered_map>
 
 // http://www.opengl.org/wiki/Program_Object
 
@@ -42,18 +43,22 @@ public:
 	void bindAttributeLocation(GLuint index, const std::string& name);
 	void bindFragDataLocation(GLuint index, const std::string& name);
 
-	void setUniform(const std::string& name, int value);
-	void setUniform(const std::string& name, float value);
-	void setUniform(const std::string& name, const glm::mat4& value);
+	Uniform* getUniform(const std::string& name);
+	void addUniform(Uniform* uniform);
+	template<typename... Rest> void addUniforms(Uniform* uniform, Rest... rest) { addUniform(uniform); addUniforms(rest...); }
 
 	void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding);
 protected:
 	std::set<ref_ptr<Shader>> _shaders;
 	bool _linked;
 	bool _dirty;
+	std::unordered_map<std::string, ref_ptr<Uniform>> _uniforms;
 
 	void checkLinkStatus();
 	void checkDirty();
+	void updateUniforms();
+
+	void addUniforms() {}
 };
 
 } // namespace glow

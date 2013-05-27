@@ -1,10 +1,9 @@
-
 #pragma once
 
-#include "declspec.h"
+#include <glow/declspec.h>
 
-#include "Object.h"
-#include "ArrayData.h"
+#include <glow/Object.h>
+#include <glow/ArrayData.h>
 
 namespace glow
 {

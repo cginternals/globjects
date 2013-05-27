@@ -19,17 +19,11 @@ Vertex::Vertex(const glm::vec3& pos, const glm::vec2& texCoord)
 }
 
 Window::Window()
-: shaderProgram(nullptr)
-, vertexArrayObject(nullptr)
-, texture(nullptr)
 {
 }
 
 Window::~Window()
 {
-	delete shaderProgram;
-	delete vertexArrayObject;
-	delete texture;
 }
 
 void Window::initializeShaders(const std::string& applicationPath)
@@ -51,7 +45,7 @@ void Window::initializeShaders(const std::string& applicationPath)
 	shaderProgram->bindFragDataLocation(0, "outColor");
 	shaderProgram->link();
 
-	shaderProgram->setUniform("texture", 0);
+	shaderProgram->getUniform("texture")->set(0);
 }
 
 void Window::initializeGL(const std::string& applicationPath)
@@ -119,11 +113,8 @@ void Window::resizeGL(int width, int height)
 	int side = std::min(width, height);
 	glViewport((width - side) / 2, (height - side) / 2, side, side);
 
-	projection = glm::mat4();
-	modelView = glm::ortho(0, 1, 0, 1, 0, 1);
-
-	shaderProgram->setUniform("modelView", modelView);
-	shaderProgram->setUniform("projection", projection);
+	shaderProgram->getUniform("modelView")->set(glm::mat4());
+	shaderProgram->getUniform("projection")->set(glm::ortho(0.f, 1.f, 0.f, 1.f, 0.f, 1.f));
 }
 
 void Window::paintGL()
