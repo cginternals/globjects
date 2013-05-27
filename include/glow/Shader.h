@@ -21,12 +21,15 @@ public:
 	Shader(GLenum type);
 	~Shader();
 
+	static Shader* fromFile(GLenum type, const std::string& filenam, bool compile = true);
+
 	GLenum type() const;
 
 	void setSource(const std::string& source, bool compile = true);
 	const std::string& source() const;
 
 	void setSourceFile(ShaderFile* sourceFile, bool compile = true);
+	ShaderFile* sourceFile();
 
 	void compile();
 	bool isCompiled() const;

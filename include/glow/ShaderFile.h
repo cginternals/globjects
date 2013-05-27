@@ -17,8 +17,9 @@ class GLOW_API ShaderFile : public Referenced
 {
 public:
 	ShaderFile(const std::string& filePath);
+	~ShaderFile();
 
-	virtual ~ShaderFile();
+	const std::string& content() const;
 
 	void registerShader(Shader* shader);
 	void deregisterShader(Shader* shader);

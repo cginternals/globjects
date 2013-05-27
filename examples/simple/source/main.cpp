@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 
 	std::cout << glow::info::versionString() << std::endl;
 
-	window.initializeGL(argv[0]);
+	window.initializeGL();
 
 	glutDisplayFunc(paint);
 	glutReshapeFunc(resize);

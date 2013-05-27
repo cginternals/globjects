@@ -20,6 +20,11 @@ ShaderFile::~ShaderFile()
 	deregisterFile(this);
 }
 
+const std::string& ShaderFile::content() const
+{
+	return _fileContent;
+}
+
 void ShaderFile::registerShader(Shader* shader)
 {
 	_shaders.insert(shader);

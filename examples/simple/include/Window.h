@@ -16,14 +16,13 @@ struct Vertex
 class Window
 {
 public:
-	Window();
-	~Window();
-
-	void initializeGL(const std::string& applicationPath);
+	void initializeGL();
 	void resizeGL(int width, int height);
 	void paintGL();
 protected:
-	void initializeShaders(const std::string& applicationPath);
+	void createTexture();
+	void createShaders();
+	void createVertices();
 
 	glow::ref_ptr<glow::Texture> texture;
 	glow::ref_ptr<glow::Program> shaderProgram;

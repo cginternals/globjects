@@ -18,40 +18,17 @@ Vertex::Vertex(const glm::vec3& pos, const glm::vec2& texCoord)
 {
 }
 
-Window::Window()
-{
-}
-
-Window::~Window()
-{
-}
-
-void Window::initializeShaders(const std::string& applicationPath)
-{
-	std::string path = applicationPath.substr(0, applicationPath.rfind('/'));
-
-	glow::ShaderFile* vertexShaderFile = new glow::ShaderFile(path+"/data/test.vert");
-	glow::ShaderFile* fragmentShaderFile = new glow::ShaderFile(path+"/data/test.frag");
-
-	glow::Shader* vertexShader = new glow::Shader(GL_VERTEX_SHADER);
-	vertexShader->setSourceFile(vertexShaderFile, true);
-
-	glow::Shader* fragmentShader = new glow::Shader(GL_FRAGMENT_SHADER);
-	fragmentShader->setSourceFile(fragmentShaderFile, true);
-
-	shaderProgram = new glow::Program();
-	shaderProgram->attach(vertexShader);
-	shaderProgram->attach(fragmentShader);
-	shaderProgram->bindFragDataLocation(0, "outColor");
-	shaderProgram->link();
-
-	shaderProgram->getUniform("texture")->set(0);
-}
-
-void Window::initializeGL(const std::string& applicationPath)
+void Window::initializeGL()
 {
 	glClearColor(1,1,1,1);
 
+	createTexture();
+	createShaders();
+	createVertices();
+}
+
+void Window::createTexture()
+{
 	unsigned char img_data[16*4] = {
 		255,0,0,100,
 		255,255,0,255,
@@ -81,9 +58,22 @@ void Window::initializeGL(const std::string& applicationPath)
 	texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	texture->image2D(0, GL_RGBA8, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data);
+}
 
-	initializeShaders(applicationPath);
+void Window::createShaders()
+{
+	glow::Shader* vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/test.vert");
+	glow::Shader* fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/test.frag");
 
+	shaderProgram = new glow::Program();
+	shaderProgram->attach(vertexShader, fragmentShader);
+	shaderProgram->bindFragDataLocation(0, "outColor");
+
+	shaderProgram->getUniform("texture")->set(0);
+}
+
+void Window::createVertices()
+{
 	glow::Array<Vertex> vertexArray;
 
 	vertexArray

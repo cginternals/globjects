@@ -45,9 +45,12 @@ public:
 
 	Uniform* getUniform(const std::string& name);
 	void addUniform(Uniform* uniform);
-	template<typename... Rest> void addUniforms(Uniform* uniform, Rest... rest) { addUniform(uniform); addUniforms(rest...); }
 
 	void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding);
+
+	// convenience
+	template<typename... Rest> void addUniforms(Uniform* uniform, Rest... rest) { addUniform(uniform); addUniforms(rest...); }
+	template<typename... Rest> void attach(Shader* shader, Rest... rest) { attach(shader); attach(rest...); }
 protected:
 	std::set<ref_ptr<Shader>> _shaders;
 	bool _linked;
@@ -58,7 +61,9 @@ protected:
 	void checkDirty();
 	void updateUniforms();
 
+	// break conditions
 	void addUniforms() {}
+	void attach() {}
 };
 
 } // namespace glow

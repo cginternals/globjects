@@ -23,6 +23,14 @@ Shader::~Shader()
 	if (_id) glDeleteShader(_id);
 }
 
+Shader* Shader::fromFile(GLenum type, const std::string& filename, bool compile)
+{
+	Shader* shader = new Shader(type);
+	ShaderFile* file = new ShaderFile(filename);
+	shader->setSourceFile(file, compile);
+	return shader;
+}
+
 GLenum Shader::type() const
 {
 	return _type;
@@ -53,7 +61,12 @@ void Shader::setSourceFile(ShaderFile* sourceFile, bool compile)
 
 const std::string& Shader::source() const
 {
-	return _source;
+	return _sourceFile ? _sourceFile->content() : _source;
+}
+
+ShaderFile* Shader::sourceFile()
+{
+	return _sourceFile;
 }
 
 void Shader::compile()
