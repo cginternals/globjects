@@ -64,6 +64,10 @@ public:
 	LogMessage& operator<<(int i);
 	LogMessage& operator<<(float f);
 	LogMessage& operator<<(double d);
+	LogMessage& operator<<(unsigned u);
+	LogMessage& operator<<(long l);
+	LogMessage& operator<<(unsigned long ul);
+	LogMessage& operator<<(unsigned char uc);
 	LogMessage& operator<<(void* pointer);
 
 	LogMessage& operator<<(std::ostream& (*manipulator)(std::ostream&));

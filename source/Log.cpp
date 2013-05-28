@@ -152,6 +152,30 @@ LogMessage& LogMessage::operator<<(double d)
 	return *this;
 }
 
+LogMessage& LogMessage::operator<<(unsigned u)
+{
+	_stream << u;
+	return *this;
+}
+
+LogMessage& LogMessage::operator<<(long l)
+{
+	_stream << l;
+	return *this;
+}
+
+LogMessage& LogMessage::operator<<(unsigned long ul)
+{
+	_stream << ul;
+	return *this;
+}
+
+LogMessage& LogMessage::operator<<(unsigned char uc)
+{
+	_stream << uc;
+	return *this;
+}
+
 LogMessage& LogMessage::operator<<(void* pointer)
 {
 	_stream << pointer;
