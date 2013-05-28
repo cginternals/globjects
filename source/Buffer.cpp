@@ -44,6 +44,11 @@ void Buffer::unbind()
 	glBindBuffer(_target, 0);
 }
 
+void Buffer::unmap()
+{
+	glUnmapBuffer(_target);
+}
+
 void Buffer::setData(const ArrayData& data, GLenum usage)
 {
 	setData(data.byteSize(), data.rawData(), usage);
