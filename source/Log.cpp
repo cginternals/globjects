@@ -140,6 +140,18 @@ LogMessage& LogMessage::operator<<(int i)
 	return *this;
 }
 
+LogMessage& LogMessage::operator<<(float f)
+{
+	_stream << f;
+	return *this;
+}
+
+LogMessage& LogMessage::operator<<(double d)
+{
+	_stream << d;
+	return *this;
+}
+
 LogMessage& LogMessage::operator<<(void* pointer)
 {
 	_stream << pointer;

@@ -62,6 +62,8 @@ public:
 	LogMessage& operator<<(const std::string& str);
 	LogMessage& operator<<(char c);
 	LogMessage& operator<<(int i);
+	LogMessage& operator<<(float f);
+	LogMessage& operator<<(double d);
 	LogMessage& operator<<(void* pointer);
 
 	LogMessage& operator<<(std::ostream& (*manipulator)(std::ostream&));
