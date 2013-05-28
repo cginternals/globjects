@@ -126,6 +126,8 @@ set(HEADERS
     ${HEADER_PATH}/Array.hpp
     ${HEADER_PATH}/ArrayData.h
     ${HEADER_PATH}/Buffer.h
+    ${HEADER_PATH}/Changeable.h
+    ${HEADER_PATH}/ChangeListener.h
     ${HEADER_PATH}/Error.h
     ${HEADER_PATH}/FrameBufferObject.h
     ${HEADER_PATH}/Log.h
@@ -150,6 +152,7 @@ set(SOURCES
     ${SOURCE_PATH}/info.cpp
     
     ${SOURCE_PATH}/Buffer.cpp
+    ${SOURCE_PATH}/Changeable.cpp
     ${SOURCE_PATH}/Error.cpp
     ${SOURCE_PATH}/FrameBufferObject.cpp
     ${SOURCE_PATH}/Log.cpp

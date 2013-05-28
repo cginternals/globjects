@@ -18,7 +18,7 @@ Shader::~Shader()
 {
 	if (_source)
 	{
-		_source->removeFrom(this);
+		_source->deregisterListener(this);
 	}
 	if (_id) glDeleteShader(_id);
 }
@@ -42,11 +42,11 @@ GLenum Shader::type() const
 
 void Shader::setSource(ShaderSource* source)
 {
-	if (_source) _source->removeFrom(this);
+	if (_source) _source->deregisterListener(this);
 	_source = source;
-	if (_source) _source->addTo(this);
+	if (_source) _source->registerListener(this);
 
-	sourceChanged();
+	updateSource();
 }
 
 void Shader::setSource(const std::string& source)
@@ -54,7 +54,12 @@ void Shader::setSource(const std::string& source)
 	setSource(new ShaderCode(source));
 }
 
-void Shader::sourceChanged()
+void Shader::notifyChanged()
+{
+	updateSource();
+}
+
+void Shader::updateSource()
 {
 	std::string backup = _internalSource;
 
@@ -87,10 +92,7 @@ void Shader::compile()
 
 	if (_compiled)
 	{
-		for (Program* program: _programs)
-		{
-			program->invalidate();
-		}
+		changed();
 	}
 }
 
@@ -152,13 +154,4 @@ std::string Shader::typeString()
 	}
 }
 
-void Shader::addToProgram(Program* program)
-{
-	_programs.insert(program);
-}
-
-void Shader::removeFromProgram(Program* program)
-{
-	_programs.erase(program);
-}
 

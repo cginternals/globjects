@@ -21,7 +21,7 @@ Program::~Program()
 	}
 	for (std::pair<std::string, ref_ptr<Uniform>> uniformPair: _uniforms)
 	{
-		uniformPair.second->removeFrom(this);
+		uniformPair.second->deregisterProgram(this);
 	}
 	if (_id) glDeleteProgram(_id);
 }
@@ -60,6 +60,11 @@ void Program::invalidate()
 	_dirty = true;
 }
 
+void Program::notifyChanged()
+{
+	invalidate();
+}
+
 void Program::checkDirty()
 {
 	if (_dirty)
@@ -72,7 +77,7 @@ void Program::attach(Shader* shader)
 {
 	glAttachShader(_id, shader->id());
 
-	shader->addToProgram(this);
+	shader->registerListener(this);
 	_shaders.insert(shader);
 
 	invalidate();
@@ -82,7 +87,7 @@ void Program::detach(Shader* shader)
 {
 	glDetachShader(_id, shader->id());
 
-	shader->removeFromProgram(this);
+	shader->deregisterListener(this);
 	_shaders.erase(shader);
 
 	invalidate();
@@ -127,8 +132,9 @@ GLuint Program::getResourceIndex(GLenum programInterface, const std::string& nam
 void Program::addUniform(Uniform* uniform)
 {
 	_uniforms[uniform->name()] = uniform;
-	uniform->addTo(this);
-	if (_linked) uniform->updateFor(this);
+	uniform->registerProgram(this);
+
+	if (_linked) uniform->setFor(this);
 }
 
 Uniform* Program::getUniform(const std::string& name)
@@ -136,8 +142,9 @@ Uniform* Program::getUniform(const std::string& name)
 	if (!_uniforms[name])
 	{
 		Uniform* uniform = new Uniform(name);
+
 		_uniforms[uniform->name()] = uniform;
-		uniform->addTo(this);
+		uniform->registerProgram(this);
 	}
 	return _uniforms[name];
 }
@@ -146,7 +153,7 @@ void Program::updateUniforms()
 {
 	for (std::pair<std::string, ref_ptr<Uniform>> uniformPair: _uniforms)
 	{
-		uniformPair.second->updateFor(this);
+		uniformPair.second->setFor(this);
 	}
 }
 

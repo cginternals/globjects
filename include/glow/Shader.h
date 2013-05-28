@@ -5,6 +5,7 @@
 #include <glow/Object.h>
 #include <glow/ShaderFile.h>
 #include <glow/ShaderSource.h>
+#include <glow/ChangeListener.h>
 
 #include <string>
 #include <set>
@@ -15,10 +16,9 @@ namespace glow {
 
 class Program;
 
-class GLOW_API Shader : public Object
+class GLOW_API Shader : public Object, protected ChangeListener, public Changeable
 {
 	friend class Program;
-	friend class ShaderSource;
 public:
 	Shader(GLenum type);
 	~Shader();
@@ -34,8 +34,10 @@ public:
 	bool isCompiled() const;
 
 	std::string infoLog() const;
+
 protected:
-	void sourceChanged();
+	void notifyChanged();
+	void updateSource();
 	void basicSetSource(const std::string& source);
 	bool checkCompileStatus();
 	std::string typeString();
@@ -44,10 +46,6 @@ protected:
 	bool _compiled;
 	ref_ptr<ShaderSource> _source;
 	std::string _internalSource;
-	std::set<Program*> _programs;
-
-	void addToProgram(Program* program);
-	void removeFromProgram(Program* program);
 
 	static GLuint createShader(GLenum type);
 };

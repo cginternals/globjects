@@ -28,7 +28,7 @@ void ShaderFile::reload()
 {
 	if (loadFileContent())
 	{
-		updateShaders();
+		changed();
 	}
 }
 

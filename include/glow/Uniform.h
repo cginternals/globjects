@@ -13,7 +13,7 @@
 	void set(const type& value) {\
 		_type = type_name;\
 		_value.member = value;\
-		update();\
+		changed();\
 	}
 
 namespace glow {
@@ -28,6 +28,9 @@ public:
 	~Uniform();
 
 	const std::string& name() const;
+
+        void registerProgram(Program* program);
+        void deregisterProgram(Program* program);
 
 	UNIFORM_SET(float, Float, float_value);
 	UNIFORM_SET(int, Int, int_value);
@@ -170,12 +173,9 @@ protected:
 
         std::set<Program*> _programs;
 
-	void update();
-	void updateFor(Program* program);
+	void changed();
+	void setFor(Program* program);
         void setUniform(GLint location);
-
-        void addTo(Program* program);
-        void removeFrom(Program* program);
 };
 
 } // namespace glow

@@ -21,25 +21,25 @@ const std::string& Uniform::name() const
 	return _name;
 }
 
-void Uniform::addTo(Program* program)
+void Uniform::registerProgram(Program* program)
 {
 	_programs.insert(program);
 }
 
-void Uniform::removeFrom(Program* program)
+void Uniform::deregisterProgram(Program* program)
 {
 	_programs.erase(program);
 }
 
-void Uniform::update()
+void Uniform::changed()
 {
 	for (Program* program: _programs)
 	{
-		updateFor(program);
+		setFor(program);
 	}
 }
 
-void Uniform::updateFor(Program* program)
+void Uniform::setFor(Program* program)
 {
 	program->use();
 	setUniform(program->getUniformLocation(_name));

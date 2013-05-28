@@ -3,26 +3,18 @@
 #include <glow/declspec.h>
 
 #include <glow/Referenced.h>
+#include <glow/Changeable.h>
 
 #include <string>
 #include <set>
 
 namespace glow {
 
-class Shader;
 
-class GLOW_API ShaderSource : public Referenced
+class GLOW_API ShaderSource : public Referenced, public Changeable
 {
-	friend class Shader;
 public:
 	virtual const std::string& source() = 0;
-protected:
-	std::set<Shader*> _shaders;
-
-	void addTo(Shader* shader);
-	void removeFrom(Shader* shader);
-
-	void updateShaders();
 };
 
 

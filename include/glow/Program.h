@@ -4,6 +4,7 @@
 
 #include <glow/Shader.h>
 #include <glow/Uniform.h>
+#include <glow/ChangeListener.h>
 
 #include <glm/glm.hpp>
 
@@ -14,7 +15,7 @@
 
 namespace glow {
 
-class GLOW_API Program : public Object
+class GLOW_API Program : public Object, protected ChangeListener
 {
 public:
 	Program();
@@ -54,7 +55,10 @@ protected:
 
 	void checkLinkStatus();
 	void checkDirty();
+
 	void updateUniforms();
+
+	void notifyChanged();
 
 	static GLuint createProgram();
 public:
