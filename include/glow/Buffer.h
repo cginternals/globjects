@@ -20,7 +20,7 @@ public:
 	void unbind();
 
 	void setData(const ArrayData& data, GLenum usage = GL_STATIC_DRAW);
-	void setData(GLsizei size, const GLvoid* data, GLenum usage = GL_STATIC_DRAW);
+	void setData(GLsizei size, const GLvoid* data = nullptr, GLenum usage = GL_STATIC_DRAW);
 
 	// drawing
 	void drawArrays(GLenum mode, GLint first, GLsizei count);
