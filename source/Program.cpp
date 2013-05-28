@@ -47,7 +47,7 @@ bool Program::isUsed() const
 	GLint currentProgram = 0;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
 
-	return currentProgram>0 && currentProgram == _id;
+	return currentProgram > 0 && currentProgram == _id;
 }
 
 bool Program::isLinked() const
@@ -181,4 +181,13 @@ void Program::setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint stor
 {
 	checkDirty();
 	glShaderStorageBlockBinding(_id, storageBlockIndex, storageBlockBinding);
+}
+
+void Program::attach(Shader* shader1, Shader* shader2, Shader* shader3, Shader* shader4, Shader* shader5)
+{
+	if (shader1) attach(shader1);
+	if (shader2) attach(shader2);
+	if (shader3) attach(shader3);
+	if (shader4) attach(shader4);
+	if (shader5) attach(shader5);
 }

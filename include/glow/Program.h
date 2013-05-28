@@ -59,12 +59,7 @@ protected:
 	static GLuint createProgram();
 public:
 	// convenience
-	template<typename... Rest> void addUniforms(Uniform* uniform, Rest... rest) { addUniform(uniform); addUniforms(rest...); }
-	template<typename... Rest> void attach(Shader* shader, Rest... rest) { attach(shader); attach(rest...); }
-protected:
-	// break conditions
-	void addUniforms() {}
-	void attach() {}
+	void attach(Shader* shader1, Shader* shader2, Shader* shader3 = nullptr, Shader* shader4 = nullptr, Shader* shader5 = nullptr);
 };
 
 } // namespace glow
