@@ -9,16 +9,16 @@ using namespace glow;
 Shader::Shader(GLenum type)
 : Object(createShader(type))
 , _type(type)
-, _sourceFile(nullptr)
+, _source(nullptr)
 , _compiled(false)
 {
 }
 
 Shader::~Shader()
 {
-	if (_sourceFile)
+	if (_source)
 	{
-		_sourceFile->deregisterShader(this);
+		_source->removeFrom(this);
 	}
 	if (_id) glDeleteShader(_id);
 }
@@ -31,8 +31,7 @@ GLuint Shader::createShader(GLenum type)
 Shader* Shader::fromFile(GLenum type, const std::string& filename)
 {
 	Shader* shader = new Shader(type);
-	ShaderFile* file = new ShaderFile(filename);
-	shader->setSourceFile(file);
+	shader->setSource(new ShaderFile(filename));
 	return shader;
 }
 
@@ -41,36 +40,50 @@ GLenum Shader::type() const
 	return _type;
 }
 
+void Shader::setSource(ShaderSource* source)
+{
+	if (_source) _source->removeFrom(this);
+	_source = source;
+	if (_source) _source->addTo(this);
+
+	sourceChanged();
+}
+
 void Shader::setSource(const std::string& source)
 {
-	_source = source;
-	const char* sourcePointer = source.c_str();
-	glShaderSource(_id, 1, &sourcePointer, 0);
+	setSource(new ShaderCode(source));
+}
+
+void Shader::sourceChanged()
+{
+	std::string backup = _internalSource;
+
+	if (_source)
+	{
+		basicSetSource(_source->source());
+	}
 
 	compile();
+
+	if (!isCompiled())
+	{
+		basicSetSource(backup);
+
+		compile();
+	}
 }
 
-void Shader::setSourceFile(ShaderFile* sourceFile)
+void Shader::basicSetSource(const std::string& source)
 {
-	_sourceFile = sourceFile;
-	_sourceFile->registerShader(this);
-	setSource(_sourceFile->content());
-}
-
-const std::string& Shader::source() const
-{
-	return _source;
-}
-
-ShaderFile* Shader::sourceFile()
-{
-	return _sourceFile;
+	_internalSource = source;
+	const char* sourcePointer = source.c_str();
+	glShaderSource(_id, 1, &sourcePointer, 0);
 }
 
 void Shader::compile()
 {
 	glCompileShader(_id);
-	checkCompileStatus();
+	_compiled = checkCompileStatus();
 
 	if (_compiled)
 	{
@@ -98,20 +111,22 @@ std::string Shader::infoLog() const
 	return std::string(log.data(), length);
 }
 
-void Shader::checkCompileStatus()
+bool Shader::checkCompileStatus()
 {
 	GLint status = 0;
 	glGetShaderiv(_id, GL_COMPILE_STATUS, &status);
 
-	_compiled = (status == GL_TRUE);
+	bool compiled = (status == GL_TRUE);
 
-	if (!_compiled)
+	if (!compiled)
 	{
 		error()
 			<< "Compiler error:" << std::endl
 			<< "Type " << typeString() << std::endl
 			<< infoLog();
 	}
+
+	return compiled;
 }
 
 std::string Shader::typeString()

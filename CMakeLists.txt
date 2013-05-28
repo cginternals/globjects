@@ -136,6 +136,7 @@ set(HEADERS
     ${HEADER_PATH}/RenderBufferObject.h
     ${HEADER_PATH}/Shader.h
     ${HEADER_PATH}/ShaderFile.h
+    ${HEADER_PATH}/ShaderSource.h
     ${HEADER_PATH}/Texture.h
     ${HEADER_PATH}/Uniform.h
     ${HEADER_PATH}/VertexArrayObject.h
@@ -158,6 +159,7 @@ set(SOURCES
     ${SOURCE_PATH}/RenderBufferObject.cpp
     ${SOURCE_PATH}/Shader.cpp
     ${SOURCE_PATH}/ShaderFile.cpp
+    ${SOURCE_PATH}/ShaderSource.cpp
     ${SOURCE_PATH}/Texture.cpp
     ${SOURCE_PATH}/Uniform.cpp
     ${SOURCE_PATH}/VertexArrayObject.cpp

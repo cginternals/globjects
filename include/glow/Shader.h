@@ -1,9 +1,10 @@
 #pragma once
 
-#include "declspec.h"
+#include <glow/declspec.h>
 
 #include <glow/Object.h>
 #include <glow/ShaderFile.h>
+#include <glow/ShaderSource.h>
 
 #include <string>
 #include <set>
@@ -17,6 +18,7 @@ class Program;
 class GLOW_API Shader : public Object
 {
 	friend class Program;
+	friend class ShaderSource;
 public:
 	Shader(GLenum type);
 	~Shader();
@@ -25,24 +27,23 @@ public:
 
 	GLenum type() const;
 
+	void setSource(ShaderSource* source);
 	void setSource(const std::string& source);
-	const std::string& source() const;
-
-	void setSourceFile(ShaderFile* sourceFile);
-	ShaderFile* sourceFile();
 
 	void compile();
 	bool isCompiled() const;
 
 	std::string infoLog() const;
 protected:
-	void checkCompileStatus();
+	void sourceChanged();
+	void basicSetSource(const std::string& source);
+	bool checkCompileStatus();
 	std::string typeString();
 protected:
 	GLenum _type;
 	bool _compiled;
-	std::string _source;
-	ref_ptr<ShaderFile> _sourceFile;
+	ref_ptr<ShaderSource> _source;
+	std::string _internalSource;
 	std::set<Program*> _programs;
 
 	void addToProgram(Program* program);

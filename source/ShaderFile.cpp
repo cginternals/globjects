@@ -19,35 +19,16 @@ ShaderFile::~ShaderFile()
 	deregisterFile(this);
 }
 
-const std::string& ShaderFile::content() const
+const std::string& ShaderFile::source()
 {
 	return _fileContent;
 }
 
-void ShaderFile::registerShader(Shader* shader)
-{
-	_shaders.insert(shader);
-}
-
-void ShaderFile::deregisterShader(Shader* shader)
-{
-	_shaders.erase(shader);
-}
-
 void ShaderFile::reload()
 {
-	std::string backup = _fileContent;
 	if (loadFileContent())
 	{
-		for (Shader* shader: _shaders)
-		{
-			bool previouslyCompiled = shader->isCompiled();
-			shader->setSource(_fileContent);
-			if (!shader->isCompiled() && previouslyCompiled)
-			{
-				shader->setSource(backup);
-			}
-		}
+		updateShaders();
 	}
 }
 
@@ -63,7 +44,7 @@ bool ShaderFile::loadFileContent()
 {
 	if (!internal::FileReader::readFile(_filePath, _fileContent))
 	{
-		error() << "Read from \"" << _filePath << "\" failed.";
+		error() << "Reading from file \"" << _filePath << "\" failed.";
 		return false;
 	}
 
