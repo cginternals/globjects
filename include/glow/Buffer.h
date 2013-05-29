@@ -21,19 +21,19 @@ public:
 
 	void setData(const ArrayData& data, GLenum usage = GL_STATIC_DRAW);
 	void setData(GLsizei size, const GLvoid* data = nullptr, GLenum usage = GL_STATIC_DRAW);
-	
+
 	// mapping
 	template<class ReturnType>
 	ReturnType map(unsigned size, GLenum access = GL_READ_ONLY) {
 		return map<ReturnType>(_target, size, access);
 	};
-	
+
 	template<class ReturnType>
 	ReturnType map(GLenum target, unsigned size, GLenum access = GL_READ_ONLY) {
 		bind(target);
-		
+
 		void* data = glMapBuffer(_target, access);
-		
+
 		if (data)
 		{
 			return ReturnType(data, size);
@@ -43,7 +43,8 @@ public:
 			return ReturnType();
 		}
 	};
-	
+
+	void* map(GLenum access = GL_READ_ONLY);
 	void unmap();
 
 	// drawing
