@@ -184,6 +184,12 @@ void Program::checkLinkStatus()
 	}
 }
 
+void Program::dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ)
+{
+	use();
+	glDispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
+}
+
 void Program::setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding)
 {
 	checkDirty();

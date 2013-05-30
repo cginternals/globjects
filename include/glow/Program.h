@@ -47,6 +47,8 @@ public:
 	void addUniform(Uniform* uniform);
 
 	void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding);
+
+	void dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ);
 protected:
 	std::set<ref_ptr<Shader>> _shaders;
 	std::unordered_map<std::string, ref_ptr<Uniform>> _uniforms;
