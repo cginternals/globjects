@@ -46,7 +46,7 @@ void Buffer::unbind()
 
 void* Buffer::map(GLenum access)
 {
-	bind(_target);
+	bind();
 	return glMapBuffer(_target, access);
 }
 
