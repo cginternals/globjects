@@ -50,6 +50,12 @@ void* Buffer::map(GLenum access)
 	return glMapBuffer(_target, access);
 }
 
+void* Buffer::map(GLenum target, GLenum access)
+{
+	bind(target);
+	return glMapBuffer(target, access);
+}
+
 void Buffer::unmap()
 {
 	glUnmapBuffer(_target);

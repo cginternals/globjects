@@ -23,29 +23,12 @@ public:
 	void setData(GLsizei size, const GLvoid* data = nullptr, GLenum usage = GL_STATIC_DRAW);
 
 	// mapping
-	template<class ReturnType>
-	ReturnType map(unsigned size, GLenum access = GL_READ_ONLY) {
-		return map<ReturnType>(_target, size, access);
-	};
-
-	template<class ReturnType>
-	ReturnType map(GLenum target, unsigned size, GLenum access = GL_READ_ONLY) {
-		bind(target);
-
-		void* data = glMapBuffer(_target, access);
-
-		if (data)
-		{
-			return ReturnType(data, size);
-		}
-		else
-		{
-			return ReturnType();
-		}
-	};
-
 	void* map(GLenum access = GL_READ_ONLY);
+	void* map(GLenum target, GLenum access);
 	void unmap();
+
+//	template<typename T> T* map(GLenum access = GL_READ_ONLY) { return reinterpret_cast<T*>(map(access));}
+//	template<typename T> T* map(GLenum target, GLenum access = GL_READ_ONLY) { return reinterpret_cast<T*>(map(target, access));}
 
 	// drawing
 	void drawArrays(GLenum mode, GLint first, GLsizei count);
