@@ -128,6 +128,12 @@ LogMessage& LogMessage::operator<<(const std::string& str)
 	return *this;
 }
 
+LogMessage& LogMessage::operator<<(bool b)
+{
+	_stream << b?"true":"false";
+	return *this;
+}
+
 LogMessage& LogMessage::operator<<(char c)
 {
 	_stream << c;
@@ -185,5 +191,23 @@ LogMessage& LogMessage::operator<<(void* pointer)
 LogMessage& LogMessage::operator<<(std::ostream& (*manipulator)(std::ostream&))
 {
 	_stream << manipulator;
+	return *this;
+}
+
+LogMessage& LogMessage::operator<<(const glm::vec2& v)
+{
+	_stream << "vec2(" << v.x << "," << v.y << ")";
+	return *this;
+}
+
+LogMessage& LogMessage::operator<<(const glm::vec3& v)
+{
+	_stream << "vec3(" << v.x << "," << v.y << "," << v.z << ")";
+	return *this;
+}
+
+LogMessage& LogMessage::operator<<(const glm::vec4& v)
+{
+	_stream << "vec4(" << v.x << "," << v.y << "," << v.z << "," << v.w << ")";
 	return *this;
 }
