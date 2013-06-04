@@ -10,6 +10,8 @@
 
 #include <glow/declspec.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 
 namespace glow {
 
@@ -69,6 +71,7 @@ public:
 	LogMessage& operator<<(unsigned long ul);
 	LogMessage& operator<<(unsigned char uc);
 	LogMessage& operator<<(void* pointer);
+	LogMessage& operator<<(const glm::vec4& v);
 
 	LogMessage& operator<<(std::ostream& (*manipulator)(std::ostream&));
 

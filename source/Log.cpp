@@ -176,6 +176,12 @@ LogMessage& LogMessage::operator<<(unsigned char uc)
 	return *this;
 }
 
+LogMessage& LogMessage::operator<<(const glm::vec4& v)
+{
+	_stream << v.x << "," << v.y << "," << v.z << "," << v.w;
+	return *this;
+}
+
 LogMessage& LogMessage::operator<<(void* pointer)
 {
 	_stream << pointer;
