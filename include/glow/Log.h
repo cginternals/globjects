@@ -62,6 +62,7 @@ public:
 
 	LogMessage& operator<<(const char* c);
 	LogMessage& operator<<(const std::string& str);
+	LogMessage& operator<<(bool b);
 	LogMessage& operator<<(char c);
 	LogMessage& operator<<(int i);
 	LogMessage& operator<<(float f);
@@ -77,6 +78,11 @@ public:
 
 	template <typename T>
 	LogMessage& operator<<(T* t_pointer) {return *this << static_cast<void*>(t_pointer); }
+
+	// glm types
+	LogMessage& operator<<(const glm::vec2& v);
+	LogMessage& operator<<(const glm::vec3& v);
+	LogMessage& operator<<(const glm::vec4& v);
 protected:
 	Log::Level _level;
 	std::stringstream _stream;
