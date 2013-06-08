@@ -130,7 +130,7 @@ LogMessage& LogMessage::operator<<(const std::string& str)
 
 LogMessage& LogMessage::operator<<(bool b)
 {
-	_stream << b?"true":"false";
+	_stream << (b ? "true" : "false");
 	return *this;
 }
 

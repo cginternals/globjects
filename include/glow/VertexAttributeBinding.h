@@ -41,6 +41,7 @@ class VertexAttributeBindingImplementation
 {
 public:
 	VertexAttributeBindingImplementation(VertexAttributeBinding* binding);
+	virtual ~VertexAttributeBindingImplementation();
 
 	virtual void bindBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride) = 0;
 

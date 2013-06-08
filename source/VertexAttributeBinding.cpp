@@ -71,6 +71,10 @@ VertexAttributeBindingImplementation::VertexAttributeBindingImplementation(Verte
 {
 }
 
+VertexAttributeBindingImplementation::~VertexAttributeBindingImplementation()
+{
+}
+
 // GL 3.2 implementation
 
 VertexAttributeBinding_GL_3_2::VertexAttributeBinding_GL_3_2(VertexAttributeBinding* binding)

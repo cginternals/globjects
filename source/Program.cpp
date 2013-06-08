@@ -47,7 +47,7 @@ bool Program::isUsed() const
 	GLint currentProgram = 0;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
 
-	return currentProgram > 0 && currentProgram == _id;
+	return currentProgram > 0 && currentProgram == (int)_id;
 }
 
 bool Program::isLinked() const
