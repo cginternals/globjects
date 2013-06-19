@@ -20,6 +20,11 @@ Texture::~Texture()
 	if (_id) glDeleteTextures(1, &_id);
 }
 
+GLenum Texture::target() const
+{
+	return _target;
+}
+
 void Texture::setParameter(GLenum name, GLint value)
 {
 	bind();

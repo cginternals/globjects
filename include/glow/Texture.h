@@ -20,6 +20,8 @@ public:
 	void bind();
 	void unbind();
 
+	GLenum target() const;
+
 	void image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data);
 	void storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height);
 
