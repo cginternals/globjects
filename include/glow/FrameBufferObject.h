@@ -46,7 +46,8 @@ public:
 	FrameBufferObject();
 	~FrameBufferObject();
 
-	void bind(GLenum target = GL_FRAMEBUFFER);
+	void bind();
+	void bind(GLenum target);
 	void unbind();
 
 	void setParameter(GLenum pname, GLint param);

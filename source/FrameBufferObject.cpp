@@ -46,6 +46,11 @@ GLuint FrameBufferObject::genFrameBuffer()
 	return id;
 }
 
+void FrameBufferObject::bind()
+{
+	glBindFramebuffer(_target, _id);
+}
+
 void FrameBufferObject::bind(GLenum target)
 {
 	_target = target;
@@ -105,7 +110,6 @@ void FrameBufferObject::attach(ColorAttachment* attachment)
 
 void FrameBufferObject::blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter)
 {
-	bind();
 	glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, destX0, destY0, destX1, destY1, mask, filter);
 }
 
@@ -129,19 +133,19 @@ std::string FrameBufferObject::statusString(GLenum status)
 		case GL_FRAMEBUFFER_UNDEFINED:
 			return "GL_FRAMEBUFFER_UNDEFINED";
 		case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-			return "GL_FRAMEBUFFER_UNDEFINED";
+			return "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT";
 		case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-			return "GL_FRAMEBUFFER_UNDEFINED";
+			return "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT";
 		case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-			return "GL_FRAMEBUFFER_UNDEFINED";
+			return "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER";
 		case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-			return "GL_FRAMEBUFFER_UNDEFINED";
+			return "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER";
 		case GL_FRAMEBUFFER_UNSUPPORTED:
-			return "GL_FRAMEBUFFER_UNDEFINED";
+			return "GL_FRAMEBUFFER_UNSUPPORTED";
 		case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
-			return "GL_FRAMEBUFFER_UNDEFINED";
+			return "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE";
 		case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
-			return "GL_FRAMEBUFFER_UNDEFINED";
+			return "GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS";
 		default:
 			return "unknown framebuffer error";
 	}
