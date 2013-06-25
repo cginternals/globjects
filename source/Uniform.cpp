@@ -65,7 +65,7 @@ void Uniform::setUniform(GLint location)
         		glUniform3fv(location, 1, glm::value_ptr(_value.vec3_value));
         		break;
         	case Vec4:
-        		glUniform3fv(location, 1, glm::value_ptr(_value.vec3_value));
+        		glUniform4fv(location, 1, glm::value_ptr(_value.vec4_value));
         		break;
         	case IVec2:
         		glUniform2iv(location, 1, glm::value_ptr(_value.ivec2_value));
