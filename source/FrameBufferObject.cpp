@@ -99,6 +99,7 @@ void FrameBufferObject::attachTextureLayer(GLenum attachment, Texture* texture, 
 void FrameBufferObject::attachRenderBuffer(GLenum attachment, RenderBufferObject* renderBuffer)
 {
 	bind();
+	renderBuffer->bind();
 	glFramebufferRenderbuffer(_target, attachment, GL_RENDERBUFFER, renderBuffer->id());
 	attach(new RenderBufferAttachment(renderBuffer, attachment));
 }
