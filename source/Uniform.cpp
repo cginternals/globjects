@@ -12,6 +12,7 @@ Uniform::Uniform(const std::string& name)
 
 Uniform::~Uniform()
 {
+	delete _setter;
 }
 
 const std::string& Uniform::name() const
