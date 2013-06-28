@@ -121,6 +121,8 @@ set(HEADERS
     ${HEADER_PATH}/declspec.h
 
     ${HEADER_PATH}/internal/FileReader.h
+    ${HEADER_PATH}/internal/UniformSetter.hpp
+    
     ${HEADER_PATH}/info.h
     
     ${HEADER_PATH}/Array.hpp
@@ -149,6 +151,7 @@ set(HEADERS
 set(SOURCES
 
     ${SOURCE_PATH}/internal/FileReader.cpp
+    ${SOURCE_PATH}/internal/UniformSetter.cpp
     ${SOURCE_PATH}/info.cpp
     
     ${SOURCE_PATH}/Buffer.cpp
