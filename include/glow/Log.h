@@ -82,6 +82,10 @@ public:
 	LogMessage& operator<<(const glm::vec2& v);
 	LogMessage& operator<<(const glm::vec3& v);
 	LogMessage& operator<<(const glm::vec4& v);
+
+	LogMessage& operator<<(const glm::mat2& m);
+	LogMessage& operator<<(const glm::mat3& m);
+	LogMessage& operator<<(const glm::mat4& m);
 protected:
 	Log::Level _level;
 	std::stringstream _stream;
