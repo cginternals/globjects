@@ -91,10 +91,10 @@ protected:
 	std::stringstream _stream;
 };
 
-LogMessage log(Log::Level level = Log::Debug);
-LogMessage warning();
-LogMessage error();
-LogMessage fatal();
+GLOW_API LogMessage log(Log::Level level = Log::Debug);
+GLOW_API LogMessage warning();
+GLOW_API LogMessage error();
+GLOW_API LogMessage fatal();
 
 
 } // namespace glow
