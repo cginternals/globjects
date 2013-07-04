@@ -13,6 +13,7 @@ class GLOW_API Buffer : public Object
 public:
 	Buffer();
 	Buffer(GLenum target);
+	Buffer(GLuint id, GLenum target, bool ownsGLObject = true);
 	~Buffer();
 
 	void bind();

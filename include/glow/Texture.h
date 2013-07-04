@@ -12,10 +12,11 @@ class GLOW_API Texture : public Object
 {
 public:
 	Texture(GLenum  target = GL_TEXTURE_2D);
+	Texture(GLuint id, GLenum  target, bool ownsGLObject = true);
 	~Texture();
 
-	void setParameter(GLenum name,  GLint value);
-	void setParameter(GLenum name,  GLfloat value);
+	void setParameter(GLenum name, GLint value);
+	void setParameter(GLenum name, GLfloat value);
 
 	void bind();
 	void unbind();

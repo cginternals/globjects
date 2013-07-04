@@ -16,6 +16,13 @@ Buffer::Buffer(GLenum target)
 {
 }
 
+Buffer::Buffer(GLuint id, GLenum target, bool ownsGLObject)
+: Object(id, ownsGLObject)
+, _target(target)
+{
+
+}
+
 GLuint Buffer::genBuffer()
 {
 	GLuint id = 0;

@@ -9,9 +9,19 @@ VertexArrayObject::VertexArrayObject()
 {
 }
 
+VertexArrayObject::VertexArrayObject(GLuint id, bool ownsGLObject)
+: Object(id, ownsGLObject)
+, _nextBindingIndex(0)
+{
+
+}
+
 VertexArrayObject::~VertexArrayObject()
 {
-	if (_id) glDeleteVertexArrays(1, &_id);
+	if (ownsGLObject())
+    {
+        glDeleteVertexArrays(1, &_id);
+    }
 }
 
 GLuint VertexArrayObject::genVertexArray()

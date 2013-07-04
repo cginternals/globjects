@@ -8,16 +8,18 @@ Texture::Texture(GLenum  target)
 {
 }
 
-GLuint Texture::genTexture()
+Texture::Texture(GLuint id, GLenum  target, bool ownsGLObject)
+: Object(id, ownsGLObject)
+, _target(target)
 {
-	GLuint id = 0;
-	glGenTextures(1, &id);
-	return id;
 }
 
 Texture::~Texture()
 {
-	if (_id) glDeleteTextures(1, &_id);
+	if (ownsGLObject())
+    {
+        glDeleteTextures(1, &_id);
+    }
 }
 
 GLenum Texture::target() const
@@ -69,4 +71,11 @@ void Texture::generateMipmap()
 {
 	bind();
 	glGenerateMipmap(_target);
+}
+
+GLuint Texture::genTexture()
+{
+	GLuint id = 0;
+	glGenTextures(1, &id);
+	return id;
 }

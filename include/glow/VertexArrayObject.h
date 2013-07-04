@@ -20,6 +20,7 @@ class GLOW_API VertexArrayObject : public Object
 {
 public:
 	VertexArrayObject();
+	VertexArrayObject(GLuint id, bool ownsGLObject = true);
 	~VertexArrayObject();
 
 	void bind();
