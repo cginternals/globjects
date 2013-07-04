@@ -13,7 +13,7 @@ class GLOW_API Object : public Referenced
 {
 public:
 	Object();
-	Object(GLuint id);
+	Object(GLuint id, bool ownsGLObject = true);
 	virtual ~Object();
 
 	GLuint id() const;
@@ -21,6 +21,9 @@ public:
 	operator GLuint() const;
 protected:
 	GLuint _id;
+	bool _ownsGLObject;
+
+	bool ownsGLObject() const;
 private:
 	Object(const Object&);
 	Object& operator=(const Object&);

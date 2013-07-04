@@ -44,7 +44,10 @@ class GLOW_API FrameBufferObject : public Object
 {
 public:
 	FrameBufferObject();
+	FrameBufferObject(GLuint id, bool ownsGLObject = true);
 	~FrameBufferObject();
+
+	static FrameBufferObject* defaultFBO();
 
 	void bind();
 	void bind(GLenum target);
@@ -58,7 +61,12 @@ public:
 	void attachTextureLayer(GLenum attachment, Texture* texture, GLint level = 0, GLint layer = 0);
 	void attachRenderBuffer(GLenum attachment, RenderBufferObject* renderBuffer);
 
-	void blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter);
+	void setReadBuffer(GLenum mode);
+	void setDrawBuffer(GLenum mode);
+	void setDrawBuffers(GLsizei n, const GLenum* modes);
+
+	static void readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* data = nullptr);
+	static void blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter);
 
 	GLenum checkStatus();
 	std::string statusString();
@@ -71,6 +79,8 @@ protected:
 	void attach(ColorAttachment* attachment);
 
 	static GLuint genFrameBuffer();
+
+	static FrameBufferObject _defaultFBO;
 };
 
 } // namespace glow

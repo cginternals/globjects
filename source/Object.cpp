@@ -4,11 +4,13 @@ using namespace glow;
 
 Object::Object()
 : _id(0)
+, _ownsGLObject(false)
 {
 }
 
-Object::Object(GLuint id)
+Object::Object(GLuint id, bool ownsGLObject)
 : _id(id)
+, _ownsGLObject(ownsGLObject)
 {
 }
 
@@ -24,4 +26,9 @@ GLuint Object::id() const
 Object::operator GLuint() const
 {
 	return _id;
+}
+
+bool Object::ownsGLObject() const
+{
+    return _ownsGLObject && _id>0;
 }

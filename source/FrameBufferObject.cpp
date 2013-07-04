@@ -28,15 +28,31 @@ RenderBufferAttachment::RenderBufferAttachment(RenderBufferObject* renderBuffer,
 }
 
 
+FrameBufferObject FrameBufferObject::_defaultFBO(0, false);
+
 FrameBufferObject::FrameBufferObject()
 : Object(genFrameBuffer())
 , _target(GL_FRAMEBUFFER)
 {
 }
 
+FrameBufferObject::FrameBufferObject(GLuint id, bool ownsGLObject)
+: Object(id, ownsGLObject)
+, _target(GL_FRAMEBUFFER)
+{
+}
+
+FrameBufferObject* FrameBufferObject::defaultFBO()
+{
+    return &_defaultFBO;
+}
+
 FrameBufferObject::~FrameBufferObject()
 {
-	if (_id) glDeleteFramebuffers(1, &_id);
+	if (ownsGLObject())
+    {
+        glDeleteFramebuffers(1, &_id);
+    }
 }
 
 GLuint FrameBufferObject::genFrameBuffer()
@@ -107,6 +123,29 @@ void FrameBufferObject::attachRenderBuffer(GLenum attachment, RenderBufferObject
 void FrameBufferObject::attach(ColorAttachment* attachment)
 {
 	_attachments[attachment->attachment()] = attachment;
+}
+
+void FrameBufferObject::setReadBuffer(GLenum mode)
+{
+    bind(GL_READ_FRAMEBUFFER);
+    glReadBuffer(mode);
+}
+
+void FrameBufferObject::setDrawBuffer(GLenum mode)
+{
+    bind(GL_DRAW_FRAMEBUFFER);
+    glDrawBuffer(mode);
+}
+
+void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum* modes)
+{
+    bind(GL_DRAW_FRAMEBUFFER);
+    glDrawBuffers(n, modes);
+}
+
+void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* data)
+{
+    glReadPixels(x, y, width, height, format, type, data);
 }
 
 void FrameBufferObject::blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter)
