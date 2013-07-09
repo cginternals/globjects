@@ -75,9 +75,9 @@ void Window::createShaders()
 
 void Window::createVertices()
 {
-	glow::Array<Vertex> vertexArray;
+	glow::Array<Vertex> vertices;
 
-	vertexArray
+	vertices
 		<< Vertex(glm::vec3(0,0,0), glm::vec2(0,0))
 		<< Vertex(glm::vec3(1,0,0), glm::vec2(1,0))
 		<< Vertex(glm::vec3(1,1,0), glm::vec2(1,1))
@@ -85,18 +85,21 @@ void Window::createVertices()
 
 	vertexArrayObject = new glow::VertexArrayObject();
 
-	glow::VertexBuffer* vertices = vertexArrayObject->createVertexBuffer("vertices");
-	vertices->setData(vertexArray);
+	vertexBuffer = new glow::Buffer(GL_ARRAY_BUFFER);
+	vertexBuffer->setData(vertices);
 
-	auto binding = vertexArrayObject->binding(shaderProgram->getAttributeLocation("position"));
-	binding->setBuffer(vertices, 0, sizeof(Vertex));
-	binding->setFormat(3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
-	binding->enable();
+	auto binding1 = vertexArrayObject->binding(0);
+	binding1->setAttribute(shaderProgram->getAttributeLocation("position"));
+	binding1->setBuffer(vertexBuffer, 0, sizeof(Vertex));
+	binding1->setFormat(3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
 
-	auto binding2 = vertexArrayObject->binding(shaderProgram->getAttributeLocation("texCoord0"));
-	binding2->setBuffer(vertices, 0, sizeof(Vertex));
+	auto binding2 = vertexArrayObject->binding(1);
+	binding2->setAttribute(shaderProgram->getAttributeLocation("texCoord0"));
+	binding2->setBuffer(vertexBuffer, 0, sizeof(Vertex));
 	binding2->setFormat(2, GL_FLOAT, GL_FALSE, offsetof(Vertex, texCoord0));
-	binding2->enable();
+
+	vertexArrayObject->enable(shaderProgram->getAttributeLocation("position"));
+	vertexArrayObject->enable(shaderProgram->getAttributeLocation("texCoord0"));
 }
 
 void Window::resizeGL(int width, int height)
@@ -116,7 +119,7 @@ void Window::paintGL()
 	shaderProgram->use();
 
 	vertexArrayObject->bind();
-	vertexArrayObject->vertexBuffer("vertices")->drawArrays(GL_TRIANGLE_FAN, 0, 4);
+	vertexBuffer->drawArrays(GL_TRIANGLE_FAN, 0, 4);
 	vertexArrayObject->unbind();
 
         shaderProgram->release();

@@ -3,6 +3,7 @@
 #include <glow/Program.h>
 #include <glow/Texture.h>
 #include <glow/VertexArrayObject.h>
+#include <glow/Buffer.h>
 
 struct Vertex
 {
@@ -27,4 +28,5 @@ protected:
 	glow::ref_ptr<glow::Texture> texture;
 	glow::ref_ptr<glow::Program> shaderProgram;
 	glow::ref_ptr<glow::VertexArrayObject> vertexArrayObject;
+	glow::ref_ptr<glow::Buffer> vertexBuffer;
 };
