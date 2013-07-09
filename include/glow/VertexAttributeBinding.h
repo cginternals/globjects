@@ -2,7 +2,7 @@
 
 #include "declspec.h"
 
-#include <glow/VertexBuffer.h>
+#include <glow/Buffer.h>
 
 namespace glow {
 
@@ -11,26 +11,26 @@ class VertexAttributeBindingImplementation;
 
 class GLOW_API VertexAttributeBinding : public Referenced
 {
+	friend class VertexAttributeBindingImplementation;
 public:
-	VertexAttributeBinding(VertexArrayObject* vao, GLint attributeIndex);
+	VertexAttributeBinding(VertexArrayObject* vao, GLuint bindingIndex);
 	~VertexAttributeBinding();
 
-	void setBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride);
+	void setAttribute(GLint attributeIndex);
+	void setBuffer(Buffer* vbo, GLint baseoffset, GLint stride);
 
 	void setFormat(GLint size, GLenum type, GLboolean normalized = GL_FALSE, GLuint relativeoffset = 0);
 	void setIFormat(GLint size, GLenum type, GLuint relativeoffset = 0);
 	void setLFormat(GLint size, GLuint relativeoffset = 0);
 
-	void enable();
-	void disable();
-
 	GLint attributeIndex() const;
-	VertexArrayObject* vao() const;
-	VertexBuffer* vbo() const;
+	GLuint bindingIndex() const;
+	Buffer* buffer() const;
 protected:
 	GLint _attributeIndex;
+	GLuint _bindingIndex;
 	VertexArrayObject* _vao;
-	VertexBuffer* _vbo;
+	Buffer* _vbo;
 
 	VertexAttributeBindingImplementation* _implementation;
 };
@@ -43,7 +43,14 @@ public:
 	VertexAttributeBindingImplementation(VertexAttributeBinding* binding);
 	virtual ~VertexAttributeBindingImplementation();
 
-	virtual void bindBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride) = 0;
+	GLint attributeIndex() const;
+	GLuint bindingIndex() const;
+
+	VertexArrayObject* vao() const;
+	Buffer* vbo() const;
+
+	virtual void bindAttribute(GLint attributeIndex) = 0;
+	virtual void bindBuffer(Buffer* vbo, GLint baseoffset, GLint stride) = 0;
 
 	virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset) = 0;
 	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset) = 0;
@@ -52,29 +59,22 @@ protected:
 	VertexAttributeBinding* _binding;
 };
 
-class VertexAttributeBinding_GL_4_3 : public VertexAttributeBindingImplementation
-{
-public:
-	VertexAttributeBinding_GL_4_3(VertexAttributeBinding* binding);
-
-	virtual void bindBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride);
-
-	virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
-	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
-	virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset);
-};
-
 class VertexAttributeBinding_GL_3_2 : public VertexAttributeBindingImplementation
 {
 public:
 	VertexAttributeBinding_GL_3_2(VertexAttributeBinding* binding);
 
-	virtual void bindBuffer(VertexBuffer* vbo, GLint baseoffset, GLint stride);
+	virtual void bindAttribute(GLint attributeIndex);
+	virtual void bindBuffer(Buffer* vbo, GLint baseoffset, GLint stride);
 
 	virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
 	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
 	virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset);
 protected:
+	bool _hasFormat;
+	bool _hasBuffer;
+	bool _hasAttribute;
+
 	struct Format
 	{
 		enum Method {
@@ -92,15 +92,31 @@ protected:
 		GLenum type;
 		GLboolean normalized;
 		GLuint relativeoffset;
-
-		bool initialized;
 	};
 
 	Format _format;
 	GLint _baseoffset;
 	GLint _stride;
 
-	void bindIndex();
+	void finishIfComplete();
+	void finish();
 };
+
+#ifdef GL_VERSION_4_3
+
+class VertexAttributeBinding_GL_4_3 : public VertexAttributeBindingImplementation
+{
+public:
+	VertexAttributeBinding_GL_4_3(VertexAttributeBinding* binding);
+
+	virtual void bindAttribute(GLint attributeIndex);
+	virtual void bindBuffer(Buffer* vbo, GLint baseoffset, GLint stride);
+
+	virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
+	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
+	virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset);
+};
+
+#endif
 
 } // namespace glow

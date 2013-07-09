@@ -2,15 +2,14 @@
 
 #include "declspec.h"
 
-#include "glow/Object.h"
+#include <glow/Object.h>
 #include <glow/Buffer.h>
-#include <glow/VertexBuffer.h>
+#include <glow/Buffer.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/ref_ptr.hpp>
 
-#include <unordered_map>
 #include <map>
-#include <string>
+#include <set>
 
 // http://www.opengl.org/wiki/Vertex_Array_Object
 
@@ -26,19 +25,13 @@ public:
 	void bind();
 	void unbind();
 
-	VertexBuffer* createVertexBuffer(const std::string& name);
-	VertexBuffer* vertexBuffer(const std::string& name);
+	VertexAttributeBinding* binding(GLuint bindingIndex);
 
-	Buffer* createElementBuffer(const std::string& name);
-	Buffer* elementBuffer(const std::string& name);
-
-	VertexAttributeBinding* binding(GLint attributeLocation);
+	void enable(GLint attributeIndex);
+	void disable(GLint attributeIndex);
 protected:
 	GLuint _nextBindingIndex;
-	std::unordered_map<std::string, ref_ptr<VertexBuffer>> _vertexBuffers;
-	std::unordered_map<std::string, ref_ptr<Buffer>> _indexBuffers;
-
-	std::map<GLint, ref_ptr<VertexAttributeBinding>> _bindings;
+	std::map<GLuint, ref_ptr<VertexAttributeBinding>> _bindings;
 
 	static GLuint genVertexArray();
 };

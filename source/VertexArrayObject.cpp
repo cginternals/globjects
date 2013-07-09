@@ -13,7 +13,6 @@ VertexArrayObject::VertexArrayObject(GLuint id, bool ownsGLObject)
 : Object(id, ownsGLObject)
 , _nextBindingIndex(0)
 {
-
 }
 
 VertexArrayObject::~VertexArrayObject()
@@ -41,37 +40,24 @@ void VertexArrayObject::unbind()
 	glBindVertexArray(0);
 }
 
-VertexBuffer* VertexArrayObject::createVertexBuffer(const std::string& name)
+VertexAttributeBinding* VertexArrayObject::binding(GLuint bindingIndex)
 {
-	VertexBuffer* vbo = VertexBuffer::create(this, _nextBindingIndex++);
-	_vertexBuffers[name] = vbo;
-	return vbo;
-}
-
-VertexBuffer* VertexArrayObject::vertexBuffer(const std::string& name)
-{
-	return _vertexBuffers[name];
-}
-
-Buffer* VertexArrayObject::createElementBuffer(const std::string& name)
-{
-	bind();
-	Buffer* buffer = new Buffer(GL_ELEMENT_ARRAY_BUFFER);
-	_indexBuffers[name] = buffer;
-	return buffer;
-}
-
-Buffer* VertexArrayObject::elementBuffer(const std::string& name)
-{
-	return _indexBuffers[name];
-}
-
-VertexAttributeBinding* VertexArrayObject::binding(GLint attributeLocation)
-{
-	if (!_bindings[attributeLocation])
+	if (!_bindings[bindingIndex])
 	{
-		_bindings[attributeLocation] = new VertexAttributeBinding(this, attributeLocation);
+		_bindings[bindingIndex] = new VertexAttributeBinding(this, _nextBindingIndex++);
 	}
 
-	return _bindings[attributeLocation];
+	return _bindings[bindingIndex];
+}
+
+void VertexArrayObject::enable(GLint attributeIndex)
+{
+	bind();
+	glEnableVertexAttribArray(attributeIndex);
+}
+
+void VertexArrayObject::disable(GLint attributeIndex)
+{
+	bind();
+	glDisableVertexAttribArray(attributeIndex);
 }
