@@ -18,6 +18,7 @@ VertexAttributeBinding::VertexAttributeBinding(VertexArrayObject* vao, GLuint bi
 		? (VertexAttributeBindingImplementation*)new VertexAttributeBinding_GL_4_3(this)
 		: (VertexAttributeBindingImplementation*)new VertexAttributeBinding_GL_3_2(this);
 #endif
+	setAttribute(bindingIndex); // as default
 }
 
 VertexAttributeBinding::~VertexAttributeBinding()
