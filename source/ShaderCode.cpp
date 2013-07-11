@@ -1,4 +1,4 @@
-#include <glow/ShaderSource.h>
+#include <glow/ShaderCode.h>
 #include <glow/Shader.h>
 
 using namespace glow;

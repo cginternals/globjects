@@ -1,6 +1,7 @@
 #include <glow/Shader.h>
 #include <glow/Program.h>
 #include <glow/Log.h>
+#include <glow/ShaderCode.h>
 
 #include <vector>
 

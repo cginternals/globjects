@@ -139,6 +139,7 @@ set(HEADERS
     ${HEADER_PATH}/Referenced.h
     ${HEADER_PATH}/RenderBufferObject.h
     ${HEADER_PATH}/Shader.h
+    ${HEADER_PATH}/ShaderCode.h
     ${HEADER_PATH}/ShaderFile.h
     ${HEADER_PATH}/ShaderSource.h
     ${HEADER_PATH}/Texture.h
@@ -163,8 +164,8 @@ set(SOURCES
     ${SOURCE_PATH}/Referenced.cpp
     ${SOURCE_PATH}/RenderBufferObject.cpp
     ${SOURCE_PATH}/Shader.cpp
+    ${SOURCE_PATH}/ShaderCode.cpp
     ${SOURCE_PATH}/ShaderFile.cpp
-    ${SOURCE_PATH}/ShaderSource.cpp
     ${SOURCE_PATH}/Texture.cpp
     ${SOURCE_PATH}/Uniform.cpp
     ${SOURCE_PATH}/VertexArrayObject.cpp
