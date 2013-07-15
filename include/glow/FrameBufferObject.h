@@ -4,6 +4,7 @@
 
 #include <glow/Object.h>
 #include <glow/Texture.h>
+#include <glow/Buffer.h>
 #include <glow/RenderBufferObject.h>
 
 #include <string>
@@ -65,7 +66,9 @@ public:
 	void setDrawBuffer(GLenum mode);
 	void setDrawBuffers(GLsizei n, const GLenum* modes);
 
-	static void readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* data = nullptr);
+	void readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* data = nullptr);
+	void readPixelsToBuffer(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, Buffer* pbo);
+
 	static void blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter);
 
 	GLenum checkStatus();

@@ -145,7 +145,15 @@ void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum* modes)
 
 void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* data)
 {
+	bind(GL_FRAMEBUFFER);
     glReadPixels(x, y, width, height, format, type, data);
+}
+
+void FrameBufferObject::readPixelsToBuffer(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, Buffer* pbo)
+{
+	pbo->bind(GL_PIXEL_PACK_BUFFER);
+	readPixels(x, y, width, height, format, type, 0);
+	pbo->unbind();
 }
 
 void FrameBufferObject::blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter)
