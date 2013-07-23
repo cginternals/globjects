@@ -1,46 +1,63 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8)
 
-PROJECT(simpleexample)
+# Project
+project(simpleexample)
+set(target simpleexample)
 
-SET(target simpleexample)
+# Find externals
+find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(FREEGLUT REQUIRED)
 
-SET(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-FIND_PACKAGE(OpenGL REQUIRED)
-FIND_PACKAGE(GLEW REQUIRED)
-FIND_PACKAGE(FREEGLUT REQUIRED)
-
-INCLUDE_DIRECTORIES("include" ${GLOW_INCLUDE_DIR})
-
-set(HEADER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/include")
-set(SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/source")
-
-SET(HEADERS
-	include/Window.h
+# Include directories
+include_directories(
+	${GLOW_INCLUDE_DIR}
+	include
 )
 
-SET(SOURCES
-	source/main.cpp
-	source/Window.cpp
+# Libraries
+set(libs
+	${GLEW_LIBRARIES}
+	${FREEGLUT_LIBRARY}
+	glow
 )
 
-source_group_by_path(${HEADER_PATH} "\\\\.h$|\\\\.hpp$" 
-    "examples h" ${HEADERS})
-source_group_by_path(${SOURCE_PATH} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
-    "examples src" ${SOURCES})
+# Definitions
+#add_definitions("-D...")
 
-ADD_EXECUTABLE(${target} ${HEADERS} ${SOURCES})
+# Sources
+set(header_path "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
+set(headers
+	${header_path}/Window.h
+)
+set(sources
+	${source_path}/main.cpp
+	${source_path}/Window.cpp
+)
 
-TARGET_LINK_LIBRARIES(${target} ${GLEW_LIBRARIES} ${FREEGLUT_LIBRARY} glow)
+# Group source files
+set(header_group "Example Header Files")
+set(source_group "Example Source Files")
+source_group_by_path(${header_path} "\\\\.h$|\\\\.hpp$" 
+    ${header_group} ${headers})
+source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
+    ${source_group} ${sources})
 
-ADD_CUSTOM_TARGET(
+# Build executable
+add_executable(${target} ${headers} ${sources})
+target_link_libraries(${target} ${libs})
+
+# Copy data
+# [TODO] REMOVE!
+add_custom_target(
 	CopyResources ALL DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/data"
 )
 
-ADD_CUSTOM_COMMAND(
+add_custom_command(
 	TARGET CopyResources
 	COMMAND ${CMAKE_COMMAND} -E echo ${CMAKE_COMMAND} -E copy_directory
-		"${CMAKE_CURRENT_SOURCE_DIR}/data" "${CMAKE_CURRENT_BINARY_DIR}/data"
+		"${CMAKE_CURRENT_SOURCE_DIR}/data" "${CMAKE_BINARY_DIR}/data"
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
-		"${CMAKE_CURRENT_SOURCE_DIR}/data" "${CMAKE_CURRENT_BINARY_DIR}/data"
+		"${CMAKE_CURRENT_SOURCE_DIR}/data" "${CMAKE_BINARY_DIR}/data"
 )
