@@ -79,3 +79,31 @@ GLuint Texture::genTexture()
 	glGenTextures(1, &id);
 	return id;
 }
+
+#ifdef GL_NV_bindless_texture
+
+GLuint64 Texture::textureHandle() const
+{
+	return glGetTextureHandleNV(_id);
+}
+
+bool Texture::isResident() const
+{
+	return glIsTextureHandleResidentNV(textureHandle());
+}
+
+GLuint64 Texture::makeResident()
+{
+	GLuint64 handle = textureHandle();
+	
+	glMakeTextureHandleResidentNV(handle);
+	
+	return handle;
+}
+
+void Texture::makeNonResident()
+{
+	glMakeTextureHandleNonResidentNV(textureHandle());
+}
+
+#endif

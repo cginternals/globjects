@@ -52,3 +52,28 @@ void Uniform::setFor(Program* program)
 		_setter->set(program->getUniformLocation(_name));
 	}
 }
+
+#ifdef GL_NV_bindless_texture
+void Uniform::setHandle(GLuint64 value)
+{
+	Texture::Handle handle;
+	handle.value = value;
+	
+	set(handle);
+}
+
+void Uniform::setHandles(const Array<GLuint64>& values)
+{
+	Array<Texture::Handle> handles;
+	
+	for (GLuint64 value : values)
+	{
+		Texture::Handle handle;
+		handle.value = value;
+		
+		handles << handle;
+	}
+	
+	set(handles);
+}
+#endif

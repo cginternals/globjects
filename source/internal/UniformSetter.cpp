@@ -46,5 +46,10 @@ template<> void setUniform<glow::Array<glm::mat4x2>>(int location, const glow::A
 template<> void setUniform<glow::Array<glm::mat3x4>>(int location, const glow::Array<glm::mat3x4>& value) { glUniformMatrix3x4fv(location, value.size(), GL_FALSE, reinterpret_cast<const float*>(value.rawData())); }
 template<> void setUniform<glow::Array<glm::mat4x3>>(int location, const glow::Array<glm::mat4x3>& value) { glUniformMatrix4x3fv(location, value.size(), GL_FALSE, reinterpret_cast<const float*>(value.rawData())); }
 
+#ifdef GL_NV_bindless_texture
+template<> void setUniform<Texture::Handle>(int location, const Texture::Handle& value) { glUniformHandleui64NV(location, value.value); }
+template<> void setUniform<glow::Array<Texture::Handle>>(int location, const glow::Array<Texture::Handle>& value) { glUniformHandleui64vNV(location, value.size(), (GLuint64*)value.data()); }
+#endif
+
 } // namespace internal
 } // namespace glow
