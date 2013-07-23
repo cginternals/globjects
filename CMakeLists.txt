@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 
 
 ########################################
-# Project configuration
+# Project description
 ########################################
 set(META_PROJECT_NAME        "glow")
 set(META_VERSION_MAJOR       "0")
@@ -15,6 +15,7 @@ set(META_AUTHOR_DOMAIN       "https://github.com/cgcostume/glow/")
 # Options
 ########################################
 option(OPTION_LIMIT_CONFIGS  "Generate limited configs (Release; Debug)" ON)
+option(OPTION_LOCAL_INSTALL  "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
 option(OPTION_BUILD_EXAMPLES "Build examples" ON)
 
@@ -77,6 +78,49 @@ elseif(APPLE)
 else()
     # Unsupported system/compiler
     message(WARNING "Unsupported platform/compiler combination")
+endif()
+
+
+########################################
+# Install locations
+########################################
+set(project ${META_PROJECT_NAME})
+if(WIN32)
+    set(INSTALL_BIN           ".")                      # C:\Programme\<project>
+    set(INSTALL_SHARED        ".")                      # C:\Programme\<project>
+    set(INSTALL_LIB           "lib")                    # C:\Programme\<project>\lib
+    set(INSTALL_INCLUDE       "include")                # C:\Programme\<project>\include
+    set(INSTALL_DOC           "doc")                    # C:\Programme\<project>\doc
+    set(INSTALL_APPLICATIONS  "")                       # Not available under Windows
+    set(INSTALL_ICONS         "")                       # Not available under Windows
+    set(INSTALL_INIT          "")                       # Not available under Windows
+    set(INSTALL_DATA          ".")                      # C:\Programme\<project>
+elseif(LINUX)
+    set(INSTALL_BIN           "bin")                    # /usr/[local]/bin
+    set(INSTALL_SHARED        "lib")                    # /usr/[local]/lib
+    set(INSTALL_LIB           "lib")                    # /usr/[local]/lib
+    set(INSTALL_INCLUDE       "include")                # /usr/[local]/include
+    set(INSTALL_DOC           "share/doc/${project}")   # /usr/[local]/share/doc/<project>
+    set(INSTALL_APPLICATIONS  "share/applications")     # /usr/[local]/share/applications
+    set(INSTALL_ICONS         "share/pixmaps")          # /usr/[local]/share/pixmaps
+    set(INSTALL_INIT          "/etc/init")              # /etc/init (upstart init scripts)
+    set(INSTALL_DATA          "share/${project}")       # /usr/[local]/share/<project>
+
+    # Adjust target paths for Local installs
+    if(OPTION_LOCAL_INSTALL)
+        # Put binaries in root directory and keep data directory name
+        set(INSTALL_BIN                       ".")           # /<INSTALL_PREFIX>
+        set(INSTALL_DATA                      ".")           # /<INSTALL_PREFIX>
+
+        # We have to change the RPATH of binaries to achieve a usable local install.
+        # [TODO] For binaries, "$ORIGIN/lib" is right, so that libraries are found in ./lib.
+        #        However, I have not yet tested what happens when libraries use other libraries.
+        #        In that case, they might need the rpath $ORIGIN instead ...
+        set(CMAKE_SKIP_BUILD_RPATH            FALSE)         # Use automatic rpath for build
+        set(CMAKE_BUILD_WITH_INSTALL_RPATH    FALSE)         # Use specific rpath for INSTALL
+        set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)         # NO automatic rpath for INSTALL
+        set(CMAKE_INSTALL_RPATH               "$ORIGIN/lib") # Libraries are relative to binary
+    endif()
 endif()
 
 
@@ -217,10 +261,11 @@ set_target_properties(${target}
 
 # Deployment
 install(TARGETS ${target}
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION ${INSTALL_BIN}
+    LIBRARY DESTINATION ${INSTALL_SHARED}
+    ARCHIVE DESTINATION ${INSTALL_LIB}
 )
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${INSTALL_INCLUDE})
 
 ########################################
 # glow examples
@@ -235,7 +280,7 @@ endif()
 ########################################
 # Data files
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/data
-    DESTINATION share/glow
+    DESTINATION ${INSTALL_DATA}
 )
 
 

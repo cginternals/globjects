@@ -50,7 +50,7 @@ target_link_libraries(${target} ${libs})
 
 # Deployment
 install(TARGETS ${target}
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION ${INSTALL_BIN}
+    LIBRARY DESTINATION ${INSTALL_SHARED}
+    ARCHIVE DESTINATION ${INSTALL_LIB}
 )
