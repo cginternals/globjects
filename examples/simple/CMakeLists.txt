@@ -48,16 +48,9 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 add_executable(${target} ${headers} ${sources})
 target_link_libraries(${target} ${libs})
 
-# Copy data
-# [TODO] REMOVE!
-add_custom_target(
-	CopyResources ALL DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/data"
-)
-
-add_custom_command(
-	TARGET CopyResources
-	COMMAND ${CMAKE_COMMAND} -E echo ${CMAKE_COMMAND} -E copy_directory
-		"${CMAKE_CURRENT_SOURCE_DIR}/data" "${CMAKE_BINARY_DIR}/data"
-	COMMAND ${CMAKE_COMMAND} -E copy_directory
-		"${CMAKE_CURRENT_SOURCE_DIR}/data" "${CMAKE_BINARY_DIR}/data"
+# Deployment
+install(TARGETS ${target}
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
 )

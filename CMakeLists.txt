@@ -91,7 +91,9 @@ get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 # Generate a shorter, googlelike variation for rev
 string(SUBSTRING ${GIT_SHA1} 0 12 GIT_REV)
 file(WRITE ${CMAKE_BINARY_DIR}/revision ${GIT_REV})
-install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION .)
+
+# [TODO] Really?? Do we want this deployed?
+#install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION .)
 
 # [TODO] Deal with GIT-NOTFOUND
 
@@ -213,6 +215,12 @@ set_target_properties(${target}
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
 
+# Deployment
+install(TARGETS ${target}
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
 
 ########################################
 # glow examples
@@ -225,6 +233,15 @@ endif()
 ########################################
 # Deployment
 ########################################
+# Data files
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/data
+    DESTINATION share/glow
+)
+
+
+########################################
+# Packaging
+########################################
 set(CPACK_GENERATOR "ZIP")
 set(CPACK_SOURCE_GENERATOR "ZIP")
 set(CPACK_PACKAGE_VERSION_MAJOR ${META_VERSION_MAJOR})
@@ -233,5 +250,4 @@ set(CPACK_PACKAGE_VERSION_PATCH ${GIT_REV})
 set(CPACK_INSTALL_DIRECTORIES ${CMAKE_BINARY_DIR}/install)
 set(CPACK_IGNORE_FILES "/.pdb/;/.ilk/;/.svn/;/.hg/;/.git/;.swp$;.#;/#")
 set(CPACK_OUTPUT_FILE_PREFIX ${CMAKE_BINARY_DIR}/install)
-
 include(CPack)

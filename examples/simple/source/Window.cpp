@@ -63,8 +63,8 @@ void Window::createTexture()
 
 void Window::createShaders()
 {
-	glow::Shader* vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/test.vert");
-	glow::Shader* fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/test.frag");
+	glow::Shader* vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/simple/test.vert");
+	glow::Shader* fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/simple/test.frag");
 
 	shaderProgram = new glow::Program();
 	shaderProgram->attach(vertexShader, fragmentShader);
