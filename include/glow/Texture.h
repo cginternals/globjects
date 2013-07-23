@@ -29,6 +29,18 @@ public:
 	void bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format);
 
 	void generateMipmap();
+
+#ifdef GL_NV_bindless_texture
+	GLuint64 textureHandle() const;
+	bool isResident() const;
+	GLuint64 makeResident();
+	void makeNonResident();
+	
+	struct Handle
+	{
+		GLuint64 value;
+	};
+#endif
 protected:
 	GLenum  _target;
 

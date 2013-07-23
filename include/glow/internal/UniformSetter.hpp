@@ -3,6 +3,7 @@
 #include <glow/Log.h>
 #include <glow/Array.hpp>
 #include <glm/glm.hpp>
+#include <glow/Texture.h>
 
 #define DECLARE_UNIFORM_SETTER_SPECIALIZATION(type) \
 	template<> void setUniform<type>(int location, const type& value);
@@ -72,6 +73,11 @@ DECLARE_UNIFORM_SETTER_SPECIALIZATION(Array<glm::mat2x4>);
 DECLARE_UNIFORM_SETTER_SPECIALIZATION(Array<glm::mat4x2>);
 DECLARE_UNIFORM_SETTER_SPECIALIZATION(Array<glm::mat3x4>);
 DECLARE_UNIFORM_SETTER_SPECIALIZATION(Array<glm::mat4x3>);
+
+#ifdef GL_NV_bindless_texture
+DECLARE_UNIFORM_SETTER_SPECIALIZATION(Texture::Handle);
+DECLARE_UNIFORM_SETTER_SPECIALIZATION(Array<Texture::Handle>);
+#endif
 
 } // namespace internal
 } // namespace glow

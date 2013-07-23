@@ -5,6 +5,7 @@
 #include <glow/Referenced.h>
 #include <glow/Array.hpp>
 #include <glow/internal/UniformSetter.hpp>
+#include <glow/Texture.h>
 #include <glm/glm.hpp>
 
 #include <string>
@@ -69,11 +70,21 @@ public:
 	SETTER(Array<glm::mat4x2>);
 	SETTER(Array<glm::mat3x4>);
 	SETTER(Array<glm::mat4x3>);
+	
+#ifdef GL_NV_bindless_texture
+	void setHandle(GLuint64 value);
+	void setHandles(const Array<GLuint64>& values);
+#endif
 
 protected:
-        std::string _name;
+	std::string _name;
         internal::AbstractUniformSetter* _setter;
         std::set<Program*> _programs;
+	
+#ifdef GL_NV_bindless_texture
+	SETTER(Texture::Handle);
+	SETTER(Array<Texture::Handle>);
+#endif
 
         void setUniformSetter(internal::AbstractUniformSetter* setter);
 
