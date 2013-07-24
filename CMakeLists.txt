@@ -97,6 +97,7 @@ if(WIN32)
     set(INSTALL_ICONS         "")                       # Not available under Windows
     set(INSTALL_INIT          "")                       # Not available under Windows
     set(INSTALL_DATA          ".")                      # C:\Programme\<project>
+    set(INSTALL_EXAMPLES      ".")                      # C:\Programme\<project>
 elseif(LINUX)
     set(INSTALL_BIN           "bin")                    # /usr/[local]/bin
     set(INSTALL_SHARED        "lib")                    # /usr/[local]/lib
@@ -107,6 +108,7 @@ elseif(LINUX)
     set(INSTALL_ICONS         "share/pixmaps")          # /usr/[local]/share/pixmaps
     set(INSTALL_INIT          "/etc/init")              # /etc/init (upstart init scripts)
     set(INSTALL_DATA          "share/${project}")       # /usr/[local]/share/<project>
+    set(INSTALL_EXAMPLES      "share/${project}")       # /usr/[local]/share/<project>
 
     # Adjust target paths for Local installs
     if(OPTION_LOCAL_INSTALL)
