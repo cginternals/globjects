@@ -7,6 +7,8 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 set(META_PROJECT_NAME        "glow")
 set(META_VERSION_MAJOR       "0")
 set(META_VERSION_MINOR       "1")
+set(META_VERSION_PATCH       "0")
+set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "glow group")
 set(META_AUTHOR_DOMAIN       "https://github.com/cgcostume/glow/")
 
@@ -143,7 +145,7 @@ file(WRITE ${CMAKE_BINARY_DIR}/revision ${GIT_REV})
 
 
 ########################################
-# glow library
+# glowMETA_VERSION library
 ########################################
 
 # Target
@@ -271,7 +273,7 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${INSTALL_INCLUDE})
 # glow examples
 ########################################
 if(OPTION_BUILD_EXAMPLES)
-    add_subdirectory("examples")
+    add_subdirectory(examples)
 endif()
 
 
@@ -287,12 +289,4 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/data
 ########################################
 # Packaging
 ########################################
-set(CPACK_GENERATOR "ZIP")
-set(CPACK_SOURCE_GENERATOR "ZIP")
-set(CPACK_PACKAGE_VERSION_MAJOR ${META_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${META_VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${GIT_REV})
-set(CPACK_INSTALL_DIRECTORIES ${CMAKE_BINARY_DIR}/install)
-set(CPACK_IGNORE_FILES "/.pdb/;/.ilk/;/.svn/;/.hg/;/.git/;.swp$;.#;/#")
-set(CPACK_OUTPUT_FILE_PREFIX ${CMAKE_BINARY_DIR}/install)
-include(CPack)
+add_subdirectory(packages)
