@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# ./configure clean
+if [ "$1" = "clean" ]
+then
+    # Clean build
+    echo "cleaning build files..."
+    if [ -d "./build" ]
+    then
+        rm -rf ./build
+    fi
+else
+    # Default options
+    GENERATOR="Unix Makefiles"
+    BUILDTYPE="Release"
+    INSTALL=""
+    EXTRA=""
+
+    # Configure build
+    echo "configuring..."
+
+    # Create build directory
+    if [ ! -d "./build" ]
+    then
+        mkdir build
+    fi
+
+    # Parse command line arguments
+    for ARG in "$@"
+    do
+        # --codeblocks / --cb
+        if [ "$ARG" = "--cb" -o "$ARG" = "--codeblocks" ]
+        then
+            GENERATOR="CodeBlocks - Unix Makefiles"
+        fi
+
+        # --debug
+        if [ "$ARG" = "--debug" ]
+        then
+            BUILDTYPE="Debug"
+        fi
+
+        # --local
+        if [ "$ARG" = "--local" ]
+        then
+            INSTALL="-DCMAKE_INSTALL_PREFIX:PATH=./install -DOPTION_LOCAL_INSTALL=ON"
+        fi
+    done
+
+    # Configure project
+    cd build
+    cmake -G "$GENERATOR" "-DCMAKE_BUILD_TYPE=$BUILDTYPE" $INSTALL $EXTRA ..
+    cd ..
+fi
