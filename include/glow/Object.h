@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "declspec.h"
+#include "glow.h"
 
 #include "glow/Referenced.h"
 

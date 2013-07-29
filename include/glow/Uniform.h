@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glow/declspec.h>
+#include <glow/glow.h>
 
 #include <glow/Referenced.h>
 #include <glow/Array.hpp>

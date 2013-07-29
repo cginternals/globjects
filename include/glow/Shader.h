@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glow/declspec.h>
+#include <glow/glow.h>
 
 #include <glow/Object.h>
 #include <glow/ShaderFile.h>

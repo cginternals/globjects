@@ -185,7 +185,7 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 configure_file(${source_path}/meta.h.in meta.h)
 
 set(headers
-    ${header_path}/declspec.h
+    ${header_path}/glow.h
 
     ${header_path}/internal/FileReader.h
     ${header_path}/internal/UniformSetter.hpp
