@@ -9,6 +9,13 @@
 namespace glow 
 {
 
+
+class TemplateError {
+	private:
+		TemplateError();
+};
+
+
 template<typename T>
 Uniform<T>::Uniform(const std::string & name)
 :	Uniform(name, T())
@@ -44,7 +51,7 @@ void Uniform<T>::set(const T & value)
 template<typename T>
 void Uniform<T>::set(const int location, const T & value)
 {
-	THROW_COMPILE_ERROR("Uniform: type not supported"); 
+	TemplateError e;
 }
 
 template<> void Uniform<float>::set(const int location, const float& value) 
