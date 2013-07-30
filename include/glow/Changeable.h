@@ -1,19 +1,22 @@
 #pragma once
 
-#include <glow/glow.h>
-
-#include <glow/ChangeListener.h>
 #include <set>
 
-namespace glow {
+#include <glow/glow.h>
+#include <glow/ChangeListener.h>
+
+
+namespace glow 
+{
 
 class GLOW_API Changeable
 {
 public:
 	void changed();
 
-	void registerListener(ChangeListener* listener);
-	void deregisterListener(ChangeListener* listener);
+	void registerListener(ChangeListener * listener);
+	void deregisterListener(ChangeListener * listener);
+
 protected:
 	std::set<ChangeListener*> _listeners;
 };

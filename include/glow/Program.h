@@ -1,19 +1,21 @@
 #pragma once
 
-#include "glow.h"
-
-#include <glow/Shader.h>
-#include <glow/Uniform.h>
-#include <glow/ChangeListener.h>
-
-#include <glm/glm.hpp>
-
 #include <set>
 #include <unordered_map>
 
+#include <glm/glm.hpp>
+
+#include <glow/glow.h>
+#include <glow/Shader.h>
+#include <glow/AbstractUniform.h>
+#include <glow/ChangeListener.h>
+
 // http://www.opengl.org/wiki/Program_Object
 
-namespace glow {
+namespace glow 
+{
+template<typename T>
+class Uniform;
 
 class GLOW_API Program : public Object, protected ChangeListener
 {
@@ -43,15 +45,16 @@ public:
 	void bindAttributeLocation(GLuint index, const std::string& name);
 	void bindFragDataLocation(GLuint index, const std::string& name);
 
-	Uniform* getUniform(const std::string& name);
-	void addUniform(Uniform* uniform);
+	template<typename T>
+	Uniform<T> * getUniform(const std::string & name);
+	void addUniform(AbstractUniform * uniform);
 
 	void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding);
 
 	void dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ);
 protected:
 	std::set<ref_ptr<Shader>> _shaders;
-	std::unordered_map<std::string, ref_ptr<Uniform>> _uniforms;
+	std::unordered_map<std::string, ref_ptr<AbstractUniform>> _uniforms;
 	bool _linked;
 	bool _dirty;
 
@@ -69,3 +72,5 @@ public:
 };
 
 } // namespace glow
+
+#include <glow/Program.hpp>

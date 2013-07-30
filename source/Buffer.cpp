@@ -32,7 +32,8 @@ GLuint Buffer::genBuffer()
 
 Buffer::~Buffer()
 {
-	if (_id) glDeleteBuffers(1, &_id);
+	if (_id)
+		glDeleteBuffers(1, &_id);
 }
 
 void Buffer::bind()

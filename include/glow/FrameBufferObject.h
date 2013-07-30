@@ -27,7 +27,7 @@ protected:
 class GLOW_API TextureAttachment : public ColorAttachment
 {
 public:
-	TextureAttachment(Texture* texture, GLenum attachment);
+	TextureAttachment(Texture * texture, GLenum attachment);
 protected:
 	ref_ptr<Texture> _texture;
 };

@@ -188,10 +188,10 @@ set(headers
     ${header_path}/glow.h
 
     ${header_path}/internal/FileReader.h
-    ${header_path}/internal/UniformSetter.hpp
     
     ${header_path}/info.h
     
+    ${header_path}/AbstractUniform.h
     ${header_path}/Array.hpp
     ${header_path}/ArrayData.h
     ${header_path}/Buffer.h
@@ -202,6 +202,7 @@ set(headers
     ${header_path}/Log.h
     ${header_path}/Object.h
     ${header_path}/Program.h
+    ${header_path}/Program.hpp
     ${header_path}/ref_ptr.hpp
     ${header_path}/Referenced.h
     ${header_path}/RenderBufferObject.h
@@ -211,15 +212,16 @@ set(headers
     ${header_path}/ShaderSource.h
     ${header_path}/Texture.h
     ${header_path}/Uniform.h
+    ${header_path}/Uniform.hpp
     ${header_path}/VertexArrayObject.h
     ${header_path}/VertexAttributeBinding.h
 )
 
 set(sources
     ${source_path}/internal/FileReader.cpp
-    ${source_path}/internal/UniformSetter.cpp
     ${source_path}/info.cpp
     
+    ${source_path}/AbstractUniform.cpp
     ${source_path}/Buffer.cpp
     ${source_path}/Changeable.cpp
     ${source_path}/Error.cpp

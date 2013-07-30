@@ -1,10 +1,13 @@
+
+#include <vector>
+
+#include <glm/gtc/type_ptr.hpp>
+
 #include <glow/Program.h>
 #include <glow/Log.h>
 
-#include <vector>
-#include <glm/gtc/type_ptr.hpp>
-
-using namespace glow;
+namespace glow
+{
 
 Program::Program()
 : Object(createProgram())
@@ -19,9 +22,9 @@ Program::~Program()
 	{
 		detach(shader);
 	}
-	for (std::pair<std::string, ref_ptr<Uniform>> uniformPair: _uniforms)
+	for (std::pair<std::string, ref_ptr<AbstractUniform>> uniformPair: _uniforms)
 	{
-		uniformPair.second->deregisterProgram(this);
+		uniformPair.second->unregisterProgram(this);
 	}
 	if (_id) glDeleteProgram(_id);
 }
@@ -129,32 +132,21 @@ GLuint Program::getResourceIndex(GLenum programInterface, const std::string& nam
 	return glGetProgramResourceIndex(_id, programInterface, name.c_str());
 }
 
-void Program::addUniform(Uniform* uniform)
+void Program::addUniform(AbstractUniform * uniform)
 {
 	_uniforms[uniform->name()] = uniform;
 	uniform->registerProgram(this);
 
-	if (_linked) uniform->setFor(this);
-}
-
-Uniform* Program::getUniform(const std::string& name)
-{
-	if (!_uniforms[name])
-	{
-		Uniform* uniform = new Uniform(name);
-
-		_uniforms[uniform->name()] = uniform;
-		uniform->registerProgram(this);
-	}
-	return _uniforms[name];
+	// NOTE: this is not nice... thats the cause for friend relationship
+	if (_linked) 
+		uniform->update(this);
 }
 
 void Program::updateUniforms()
 {
-	for (std::pair<std::string, ref_ptr<Uniform>> uniformPair: _uniforms)
-	{
-		uniformPair.second->setFor(this);
-	}
+	// NOTE: this is not nice... thats the cause for friend relationship
+	for (std::pair < std::string, ref_ptr<AbstractUniform>> uniformPair : _uniforms)
+		uniformPair.second->update(this);
 }
 
 std::string Program::infoLog() const
@@ -204,3 +196,5 @@ void Program::attach(Shader* shader1, Shader* shader2, Shader* shader3, Shader* 
 	if (shader4) attach(shader4);
 	if (shader5) attach(shader5);
 }
+
+} // namespace glow
