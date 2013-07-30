@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glow/Log.h>
+
 namespace glow 
 {
 
