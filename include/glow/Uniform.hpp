@@ -11,8 +11,14 @@ namespace glow
 
 template<typename T>
 Uniform<T>::Uniform(const std::string & name)
+:	Uniform(name, T())
+{
+}
+
+template<typename T>
+Uniform<T>::Uniform(const std::string & name, const T & value)
 :	AbstractUniform(name)
-,	_value()
+,	_value(value)
 {
 }
 

@@ -27,7 +27,7 @@ public:
 	const std::string & name() const;
 
 	void registerProgram(Program * program);
-	void unregisterProgram(Program * program);
+	void deregisterProgram(Program * program);
 
 	template<typename T> Uniform<T> * as();
 

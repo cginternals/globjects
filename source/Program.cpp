@@ -24,7 +24,7 @@ Program::~Program()
 	}
 	for (std::pair<std::string, ref_ptr<AbstractUniform>> uniformPair: _uniforms)
 	{
-		uniformPair.second->unregisterProgram(this);
+		uniformPair.second->deregisterProgram(this);
 	}
 	if (_id) glDeleteProgram(_id);
 }
@@ -134,7 +134,12 @@ GLuint Program::getResourceIndex(GLenum programInterface, const std::string& nam
 
 void Program::addUniform(AbstractUniform * uniform)
 {
-	_uniforms[uniform->name()] = uniform;
+	ref_ptr<AbstractUniform> & u(_uniforms[uniform->name()]);
+
+	if (u)
+		u->deregisterProgram(this);
+
+	u = uniform;
 	uniform->registerProgram(this);
 
 	// NOTE: this is not nice... thats the cause for friend relationship

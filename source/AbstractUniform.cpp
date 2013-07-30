@@ -25,7 +25,7 @@ void AbstractUniform::registerProgram(Program * program)
 	_programs.insert(program);
 }
 
-void AbstractUniform::unregisterProgram(Program * program)
+void AbstractUniform::deregisterProgram(Program * program)
 {
 	_programs.erase(program);
 }

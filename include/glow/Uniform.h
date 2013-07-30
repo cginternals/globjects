@@ -11,6 +11,7 @@ class GLOW_API Uniform : public AbstractUniform
 {
 public:
 	Uniform(const std::string & name);
+	Uniform(const std::string & name, const T & value);
 	virtual ~Uniform();
 
 	void set(const T & value);
