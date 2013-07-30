@@ -143,19 +143,17 @@ void Program::addUniform(AbstractUniform * uniform)
 	u = uniform;
 	uniform->registerProgram(this);
 
-	// NOTE: this is not nice... thats the cause for friend relationship
 	if (m_linked) 
 		uniform->update(this);
 }
 
 void Program::updateUniforms()
 {
-	// NOTE: this is not nice... thats the cause for friend relationship
 	for (std::pair < std::string, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
 		uniformPair.second->update(this);
 }
 
-std::string Program::infoLog() const
+const std::string Program::infoLog() const
 {
 	GLsizei length;
 	glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &length);

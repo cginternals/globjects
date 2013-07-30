@@ -21,7 +21,7 @@ public:
 	operator GLuint() const;
 protected:
 	GLuint m_id;
-	bool _ownsGLObject;
+	bool m_ownsGLObject;
 
 	bool ownsGLObject() const;
 private:
