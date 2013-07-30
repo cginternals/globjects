@@ -26,6 +26,8 @@ option(OPTION_BUILD_EXAMPLES "Build examples" ON)
 # CMake configuration
 ########################################
 
+set(GLOW_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
 # Include cmake modules from ./cmake
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
