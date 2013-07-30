@@ -270,7 +270,7 @@ install(TARGETS ${target}
     LIBRARY DESTINATION ${INSTALL_SHARED}
     ARCHIVE DESTINATION ${INSTALL_LIB}
 )
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${INSTALL_INCLUDE})
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION ${INSTALL_INCLUDE})
 
 ########################################
 # glow examples
@@ -284,7 +284,7 @@ endif()
 # Deployment
 ########################################
 # Data files
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/data
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data
     DESTINATION ${INSTALL_DATA}
 )
 
