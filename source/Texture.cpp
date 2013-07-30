@@ -82,7 +82,7 @@ GLuint Texture::genTexture()
 
 #ifdef GL_NV_bindless_texture
 
-GLuint64 Texture::textureHandle() const
+Texture::Handle Texture::textureHandle() const
 {
 	return glGetTextureHandleNV(_id);
 }
@@ -92,10 +92,10 @@ bool Texture::isResident() const
 	return glIsTextureHandleResidentNV(textureHandle());
 }
 
-GLuint64 Texture::makeResident()
+Texture::Handle Texture::makeResident()
 {
-	GLuint64 handle = textureHandle();
-	
+	Handle handle = textureHandle();
+
 	glMakeTextureHandleResidentNV(handle);
 	
 	return handle;

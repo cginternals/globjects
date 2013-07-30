@@ -46,7 +46,10 @@ public:
 	void bindFragDataLocation(GLuint index, const std::string& name);
 
 	template<typename T>
+	void setUniform(const std::string & name, const T & value);
+	template<typename T>
 	Uniform<T> * getUniform(const std::string & name);
+
 	void addUniform(AbstractUniform * uniform);
 
 	void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding);
