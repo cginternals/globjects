@@ -32,13 +32,13 @@ GLuint Buffer::genBuffer()
 
 Buffer::~Buffer()
 {
-	if (_id)
-		glDeleteBuffers(1, &_id);
+	if (m_id)
+		glDeleteBuffers(1, &m_id);
 }
 
 void Buffer::bind()
 {
-	glBindBuffer(_target, _id);
+	glBindBuffer(_target, m_id);
 }
 
 void Buffer::bind(GLenum target)
@@ -94,10 +94,10 @@ void Buffer::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid*
 
 void Buffer::bindBase(GLenum target, GLuint index)
 {
-	glBindBufferBase(target, index, _id);
+	glBindBufferBase(target, index, m_id);
 }
 
 void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size)
 {
-	glBindBufferRange(target, index, _id, offset, size);
+	glBindBufferRange(target, index, m_id, offset, size);
 }

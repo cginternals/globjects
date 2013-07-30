@@ -7,7 +7,7 @@ namespace glow
 {
 
 AbstractUniform::AbstractUniform(const std::string & name)
-:	_name(name)
+:	m_name(name)
 {
 }
 
@@ -17,22 +17,22 @@ AbstractUniform::~AbstractUniform()
 
 const std::string & AbstractUniform::name() const
 {
-	return _name;
+	return m_name;
 }
 
 void AbstractUniform::registerProgram(Program * program)
 {
-	_programs.insert(program);
+	m_programs.insert(program);
 }
 
 void AbstractUniform::deregisterProgram(Program * program)
 {
-	_programs.erase(program);
+	m_programs.erase(program);
 }
 
 void AbstractUniform::changed()
 {
-	for (Program * program : _programs)
+	for (Program * program : m_programs)
 		update(program);
 }
 

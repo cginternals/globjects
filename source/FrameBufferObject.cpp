@@ -51,7 +51,7 @@ FrameBufferObject::~FrameBufferObject()
 {
 	if (ownsGLObject())
     {
-        glDeleteFramebuffers(1, &_id);
+        glDeleteFramebuffers(1, &m_id);
     }
 }
 
@@ -64,13 +64,13 @@ GLuint FrameBufferObject::genFrameBuffer()
 
 void FrameBufferObject::bind()
 {
-	glBindFramebuffer(_target, _id);
+	glBindFramebuffer(_target, m_id);
 }
 
 void FrameBufferObject::bind(GLenum target)
 {
 	_target = target;
-	glBindFramebuffer(target, _id);
+	glBindFramebuffer(target, m_id);
 }
 
 void FrameBufferObject::unbind()

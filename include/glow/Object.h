@@ -20,7 +20,7 @@ public:
 
 	operator GLuint() const;
 protected:
-	GLuint _id;
+	GLuint m_id;
 	bool _ownsGLObject;
 
 	bool ownsGLObject() const;

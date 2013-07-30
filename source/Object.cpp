@@ -3,13 +3,13 @@
 using namespace glow;
 
 Object::Object()
-: _id(0)
+: m_id(0)
 , _ownsGLObject(false)
 {
 }
 
 Object::Object(GLuint id, bool ownsGLObject)
-: _id(id)
+: m_id(id)
 , _ownsGLObject(ownsGLObject)
 {
 }
@@ -20,15 +20,15 @@ Object::~Object()
 
 GLuint Object::id() const
 {
-	return _id;
+	return m_id;
 }
 
 Object::operator GLuint() const
 {
-	return _id;
+	return m_id;
 }
 
 bool Object::ownsGLObject() const
 {
-    return _ownsGLObject && _id>0;
+    return _ownsGLObject && m_id>0;
 }

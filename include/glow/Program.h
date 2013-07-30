@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <set>
@@ -55,12 +56,8 @@ public:
 	void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding);
 
 	void dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ);
-protected:
-	std::set<ref_ptr<Shader>> _shaders;
-	std::unordered_map<std::string, ref_ptr<AbstractUniform>> _uniforms;
-	bool _linked;
-	bool _dirty;
 
+protected:
 	void checkLinkStatus();
 	void checkDirty();
 
@@ -72,6 +69,13 @@ protected:
 public:
 	// convenience
 	void attach(Shader* shader1, Shader* shader2, Shader* shader3 = nullptr, Shader* shader4 = nullptr, Shader* shader5 = nullptr);
+
+protected:
+	std::set<ref_ptr<Shader>> m_shaders;
+	std::unordered_map<std::string, ref_ptr<AbstractUniform>> m_uniforms;
+
+	bool m_linked;
+	bool m_dirty;
 };
 
 } // namespace glow

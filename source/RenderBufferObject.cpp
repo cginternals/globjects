@@ -9,7 +9,7 @@ RenderBufferObject::RenderBufferObject()
 
 void RenderBufferObject::deleteGLObject()
 {
-	glDeleteRenderbuffers(1, &_id);
+	glDeleteRenderbuffers(1, &m_id);
 }
 
 GLuint RenderBufferObject::genRenderBuffer()
@@ -21,7 +21,7 @@ GLuint RenderBufferObject::genRenderBuffer()
 
 void RenderBufferObject::bind()
 {
-	glBindRenderbuffer(GL_RENDERBUFFER, _id);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_id);
 }
 
 void RenderBufferObject::unbind()

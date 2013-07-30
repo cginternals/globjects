@@ -22,16 +22,16 @@ void Program::setUniform(const std::string & name, const T & value)
 template<typename T>
 Uniform<T> * Program::getUniform(const std::string & name)
 {
-	if (!_uniforms[name])
+	if (!m_uniforms[name])
 	{
 		Uniform<T> * uniform = new Uniform<T>(name);
 
-		_uniforms[uniform->name()] = uniform;
+		m_uniforms[uniform->name()] = uniform;
 		uniform->registerProgram(this);
 
 		return uniform;
 	}
-	return _uniforms[name]->as<T>();
+	return m_uniforms[name]->as<T>();
 }
 
 } // namespace glow

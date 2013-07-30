@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glm/glm.hpp>
@@ -25,7 +26,7 @@ Uniform<T>::Uniform(const std::string & name)
 template<typename T>
 Uniform<T>::Uniform(const std::string & name, const T & value)
 :	AbstractUniform(name)
-,	_value(value)
+,	m_value(value)
 {
 }
 
@@ -38,13 +39,13 @@ template<typename T>
 void Uniform<T>::update(Program * program)
 {
 	program->use();
-	set(program->getUniformLocation(_name), _value);
+	set(program->getUniformLocation(m_name), m_value);
 }
 
 template<typename T>
 void Uniform<T>::set(const T & value)
 {
-	_value = value;
+	m_value = value;
 	changed();
 }
 
