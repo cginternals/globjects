@@ -21,6 +21,3 @@
 #else
 #	define GLOW_API __API_IMPORT_DECLARATION
 #endif
-
-// TODO: check out alexandrescu
-#define THROW_COMPILE_ERROR(message) void p;
