@@ -12,6 +12,8 @@
 
 namespace glow 
 {
+
+template<typename T> class Uniform;
 class Program;
 
 class GLOW_API AbstractUniform : public Referenced
@@ -27,6 +29,8 @@ public:
 	void registerProgram(Program * program);
 	void unregisterProgram(Program * program);
 
+	template<typename T> Uniform<T> * as();
+
 protected:
 	void setUniform(const GLint location);
 
@@ -39,3 +43,5 @@ protected:
 };
 
 } // namespace glow
+
+#include <glow/AbstractUniform.hpp>

@@ -14,7 +14,7 @@ Uniform<T> * Program::getUniform(const std::string & name)
 
 		return uniform;
 	}
-	return dynamic_cast<Uniform<T>*>(_uniforms[name].get());
+	return _uniforms[name]->as<T>();
 }
 
 } // namespace glow
