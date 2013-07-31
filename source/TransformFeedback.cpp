@@ -82,7 +82,7 @@ void TransformFeedback::setVaryings(Program* program, GLsizei count, const char*
 
 void TransformFeedback::setVaryings(Program* program, const Array<const char*>& varyingNames, GLenum bufferMode)
 {
-	setVaryings(program, varyingNames.size(), varyingNames.data(), bufferMode);
+	setVaryings(program, varyingNames.size(), (const char**)varyingNames.data(), bufferMode);
 }
 
 } // namespace glow
