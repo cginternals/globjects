@@ -1,14 +1,14 @@
 #pragma once
 
+#include <string>
+#include <set>
+
 #include <glow/glow.h>
 
 #include <glow/Object.h>
 #include <glow/ShaderFile.h>
 #include <glow/ShaderSource.h>
 #include <glow/ChangeListener.h>
-
-#include <string>
-#include <set>
 
 // http://www.opengl.org/wiki/Shader
 

@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "Referenced.h"
+#include <glow/Referenced.h>
 
 namespace glow {
 

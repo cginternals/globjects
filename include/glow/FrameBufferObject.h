@@ -1,14 +1,14 @@
 #pragma once
 
-#include "glow.h"
+#include <string>
+#include <unordered_map>
 
+#include <glow/glow.h>
 #include <glow/Object.h>
 #include <glow/Texture.h>
 #include <glow/Buffer.h>
 #include <glow/RenderBufferObject.h>
 
-#include <string>
-#include <unordered_map>
 
 // http://www.opengl.org/wiki/Framebuffer_Object
 

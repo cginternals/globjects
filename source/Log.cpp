@@ -1,6 +1,8 @@
+
 #include <glow/Log.h>
 
-using namespace glow;
+namespace glow
+{
 
 Log::Log()
 : device(nullptr)
@@ -241,3 +243,5 @@ LogMessage& LogMessage::operator<<(const glm::mat4& m)
 		<< ")";
 	return *this;
 }
+
+} // namespace glow

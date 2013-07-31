@@ -1,15 +1,15 @@
 #pragma once
 
-#include "glow.h"
+#include <map>
+#include <set>
+
+#include <glow/glow.h>
 
 #include <glow/Object.h>
 #include <glow/Buffer.h>
 #include <glow/Buffer.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/ref_ptr.hpp>
-
-#include <map>
-#include <set>
 
 // http://www.opengl.org/wiki/Vertex_Array_Object
 

@@ -1,10 +1,11 @@
-#include <glow/Error.h>
 
-//#include <stdexcept>
-#include <glow/Log.h>
 #include <sstream>
 
-using namespace glow;
+#include <glow/Log.h>
+#include <glow/Error.h>
+
+namespace glow
+{
 
 Error::Error()
 : _errorCode(GL_NO_ERROR)
@@ -43,7 +44,7 @@ void Error::check(const char* file, int line)
 		ss.unsetf(std::ios::hex | std::ios::showbase);
 		ss << "in " << file << ":" << line << std::endl;
 
-		::error() << ss.str();
+		glow::error() << ss.str();
 	}
 }
 
@@ -77,3 +78,5 @@ std::string Error::errorString(GLenum errorCode)
 			return "unknown";
 	}
 }
+
+} // namespace glow

@@ -31,7 +31,9 @@
 #include "glow/info.h"
 
 
-using namespace glow;
+namespace glow
+{
+
 
 // info
 
@@ -167,6 +169,7 @@ bool info::isCoreProfile()
 	return (getInteger(GL_CONTEXT_PROFILE_MASK) & GL_CONTEXT_CORE_PROFILE_BIT) != 0;
 }
 
+
 // extensions
 
 bool extensions::isSupported(const char* extension)
@@ -192,8 +195,8 @@ bool extensions::isSupported(const std::string& extension)
 	return isSupported(extension.c_str());
 }
 
-// memory
 
+// memory
 
 GLint memory::total()
 {
@@ -230,6 +233,7 @@ GLint memory::memoryInfo(GLenum pname)
 	return info::getInteger(pname);
 }
 
+
 // glew
 
 std::string glew::getString(GLenum pname)
@@ -247,3 +251,5 @@ std::string glew::version()
 ////    const QString result = reinterpret_cast<const char*>(glewGetErrorString(pname));
 ////    return result;
 ////}
+
+} // namespace glow

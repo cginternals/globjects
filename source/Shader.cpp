@@ -1,11 +1,13 @@
+
+#include <vector>
+
 #include <glow/Shader.h>
 #include <glow/Program.h>
 #include <glow/Log.h>
 #include <glow/ShaderCode.h>
 
-#include <vector>
-
-using namespace glow;
+namespace glow
+{
 
 Shader::Shader(GLenum type)
 : Object(createShader(type))
@@ -155,4 +157,4 @@ std::string Shader::typeString()
 	}
 }
 
-
+} // namespace glow

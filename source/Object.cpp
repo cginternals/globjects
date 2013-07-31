@@ -1,6 +1,8 @@
+
 #include <glow/Object.h>
 
-using namespace glow;
+namespace glow
+{
 
 Object::Object()
 : m_id(0)
@@ -32,3 +34,5 @@ bool Object::ownsGLObject() const
 {
     return m_ownsGLObject && m_id>0;
 }
+
+} // namespace glow

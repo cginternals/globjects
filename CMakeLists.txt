@@ -177,11 +177,8 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 # Generate meta-header
 configure_file(${source_path}/meta.h.in meta.h)
 
-set(headers
+set(api_includes
     ${header_path}/glow.h
-
-    ${header_path}/internal/FileReader.h
-    
     ${header_path}/info.h
     
     ${header_path}/AbstractUniform.h
@@ -211,7 +208,6 @@ set(headers
 )
 
 set(sources
-    ${source_path}/internal/FileReader.cpp
     ${source_path}/info.cpp
     
     ${source_path}/AbstractUniform.cpp
@@ -219,6 +215,8 @@ set(sources
     ${source_path}/Changeable.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferObject.cpp
+	${source_path}/FileReader.cpp
+	${source_path}/FileReader.h
     ${source_path}/Log.cpp
     ${source_path}/Object.cpp
     ${source_path}/Program.cpp
@@ -236,15 +234,15 @@ set(sources
 set(glow_header_group "Header Files (API)")
 set(glow_source_group "Source Files")
 source_group_by_path(${header_path} "\\\\.h$|\\\\.hpp$" 
-    ${glow_header_group} ${headers})
+    ${glow_header_group} ${api_includes})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${glow_source_group} ${sources})
 
 # Build library
 if(OPTION_BUILD_STATIC)
-    add_library(${target} ${headers} ${sources})
+    add_library(${target} ${api_includes} ${sources})
 else()
-    add_library(${target} SHARED ${headers} ${sources})
+    add_library(${target} SHARED ${api_includes} ${sources})
 endif()
 target_link_libraries(${target} ${libs})
 set_target_properties(${target}
@@ -271,7 +269,7 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION ${INSTALL_INC
 set(GLOW_EXAMPLES_FOLDER "Examples")
 
 unset(sources)
-unset(headers)
+unset(api_includes)
 
 if(OPTION_BUILD_EXAMPLES)
     add_subdirectory(examples)

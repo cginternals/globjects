@@ -8,9 +8,9 @@
 #include <fstream>
 #include <string>
 
-#include <glow/glow.h>
-
 #include <glm/gtc/type_ptr.hpp>
+
+#include <glow/glow.h>
 
 
 namespace glow {

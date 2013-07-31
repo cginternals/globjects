@@ -1,8 +1,10 @@
+
 #include <glow/VertexAttributeBinding.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/info.h>
 
-using namespace glow;
+namespace glow
+{
 
 VertexAttributeBinding::VertexAttributeBinding(VertexArrayObject* vao, GLuint bindingIndex)
 : _vao(vao)
@@ -242,3 +244,4 @@ void VertexAttributeBinding_GL_4_3::setLFormat(GLint size, GLenum type, GLuint r
 
 #endif
 
+} // namespace glow

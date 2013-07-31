@@ -1,11 +1,13 @@
 #pragma once
 
-#include <glow/ArrayData.h>
-
 #include <vector>
+
 #include <glm/glm.hpp>
 
-namespace glow {
+#include <glow/ArrayData.h>
+
+namespace glow 
+{
 
 template <typename T>
 class Array : public ArrayData, public std::vector<T>

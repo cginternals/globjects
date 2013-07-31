@@ -1,7 +1,8 @@
+
 #include <glow/VertexArrayObject.h>
 
-using namespace glow;
-
+namespace glow
+{
 
 VertexArrayObject::VertexArrayObject()
 : Object(genVertexArray())
@@ -61,3 +62,5 @@ void VertexArrayObject::disable(GLint attributeIndex)
 	bind();
 	glDisableVertexAttribArray(attributeIndex);
 }
+
+} // namespace glow

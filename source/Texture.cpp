@@ -1,7 +1,8 @@
 
 #include <glow/Texture.h>
 
-using namespace glow;
+namespace glow
+{
 
 Texture::Texture(GLenum  target)
 : Object(genTexture())
@@ -108,3 +109,5 @@ void Texture::makeNonResident()
 }
 
 #endif
+
+} // namespace glow

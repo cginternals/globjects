@@ -1,6 +1,8 @@
+
 #include <glow/RenderBufferObject.h>
 
-using namespace glow;
+namespace glow
+{
 
 RenderBufferObject::RenderBufferObject()
 : Object(genRenderBuffer())
@@ -42,3 +44,5 @@ void RenderBufferObject::storageMultisample(GLsizei samples, GLenum internalform
 	glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, internalformat, width, height);
 	unbind();
 }
+
+} // namespace glow

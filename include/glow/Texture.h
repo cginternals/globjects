@@ -1,7 +1,6 @@
 #pragma once
 
-#include "glow.h"
-
+#include <glow/glow.h>
 #include <glow/Object.h>
 
 // http://www.opengl.org/wiki/Texture

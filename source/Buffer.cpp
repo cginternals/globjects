@@ -1,8 +1,11 @@
-#include <glow/Buffer.h>
 
 #include <iostream>
 
-using namespace glow;
+#include <glow/Buffer.h>
+
+
+namespace glow
+{
 
 Buffer::Buffer()
 : Object(genBuffer())
@@ -101,3 +104,5 @@ void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr 
 {
 	glBindBufferRange(target, index, m_id, offset, size);
 }
+
+} // namespace glow

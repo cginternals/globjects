@@ -1,9 +1,11 @@
-#include <glow/FrameBufferObject.h>
-#include <glow/Log.h>
 
 #include <sstream>
 
-using namespace glow;
+#include <glow/FrameBufferObject.h>
+#include <glow/Log.h>
+
+namespace glow
+{
 
 ColorAttachment::ColorAttachment(GLenum attachment)
 : _attachment(attachment)
@@ -218,3 +220,5 @@ void FrameBufferObject::printStatus(bool onlyErrors)
 		error() << statusString(status) << " (" << ss.str() << ")";
 	}
 }
+
+} // namespace glow

@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <glm/glm.hpp>
@@ -10,8 +9,8 @@
 namespace glow 
 {
 
-
-class TemplateError {
+class TemplateError 
+{
 	private:
 		TemplateError();
 };
