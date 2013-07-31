@@ -1,5 +1,5 @@
 
-#include <Window.h>
+#include <CreateContext.h>
 #include <algorithm>
 
 #include <glm/glm.hpp>
@@ -112,8 +112,8 @@ void Window::resizeGL(int width, int height)
 	int side = std::min(width, height);
 	glViewport((width - side) / 2, (height - side) / 2, side, side);
 
-	shaderProgram->setUniform("modelView", glm::mat4());
-	shaderProgram->setUniform("projection", glm::ortho(0.f, 1.f, 0.f, 1.f, 0.f, 1.f));
+	shaderProgram->getUniform<glm::mat4>("modelView")->set(glm::mat4());
+	shaderProgram->getUniform<glm::mat4>("projection")->set(glm::ortho(0.f, 1.f, 0.f, 1.f, 0.f, 1.f));
 }
 
 void Window::paintGL()

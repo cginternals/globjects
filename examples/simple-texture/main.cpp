@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include <Window.h>
+#include "SimpleTexture.h"
 #include <glow/Error.h>
 #include <glow/info.h>
 
