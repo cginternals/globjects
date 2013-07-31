@@ -239,6 +239,7 @@ set(sources
     ${source_path}/ShaderFile.cpp
     ${source_path}/Texture.cpp
     ${source_path}/TransformFeedback.cpp
+	${source_path}/Uniform.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
 )

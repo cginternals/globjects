@@ -8,16 +8,15 @@
 
 #include <glow/glow.h>
 #include <glow/Shader.h>
-#include <glow/AbstractUniform.h>
 #include <glow/ChangeListener.h>
 
 // http://www.opengl.org/wiki/Program_Object
 
-namespace glow 
+namespace glow
 {
-template<typename T>
-class Uniform;
 
+class AbstractUniform;
+template<typename T> class Uniform;
 
 class GLOW_API Program : public Object, protected ChangeListener
 {
@@ -53,15 +52,15 @@ public:
 
 	template<typename T>
 	void setUniform(const std::string & name, const T & value);
-	
-	/** Retrieves the existing or creates a new typed uniform, named <name>. 
+
+	/** Retrieves the existing or creates a new typed uniform, named <name>.
 	*/
 	template<typename T>
 	Uniform<T> * getUniform(const std::string & name);
 
 	/** Adds the uniform to the internal list of named uniforms. If an equally
 		named uniform already exists, this program derigisters itself and the uniform
-		gets replaced (and by this the old one gets dereferenced). If the current 
+		gets replaced (and by this the old one gets dereferenced). If the current
 		program is linked, the uniforms value will be passed to the program object.
 	*/
 	void addUniform(AbstractUniform * uniform);
