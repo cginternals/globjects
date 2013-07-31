@@ -3,7 +3,7 @@
 #include <set>
 #include <string>
 
-#include <glow/declspec.h>
+#include <glow/glow.h>
 #include <glow/ShaderSource.h>
 
 namespace glow

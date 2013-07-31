@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "declspec.h"
+#include "glow.h"
 
 #include "glow/Referenced.h"
 
@@ -20,8 +20,8 @@ public:
 
 	operator GLuint() const;
 protected:
-	GLuint _id;
-	bool _ownsGLObject;
+	GLuint m_id;
+	bool m_ownsGLObject;
 
 	bool ownsGLObject() const;
 private:
