@@ -1,6 +1,6 @@
 #pragma once
 
-#include "declspec.h"
+#include "glow.h"
 
 #include <glow/Object.h>
 
@@ -31,16 +31,30 @@ public:
 	void generateMipmap();
 
 #ifdef GL_NV_bindless_texture
-	GLuint64 textureHandle() const;
-	bool isResident() const;
-	GLuint64 makeResident();
-	void makeNonResident();
-	
+
 	struct Handle
 	{
+		Handle();
+		Handle(const GLuint64 & value)
+		:	value(value)
+		{
+		}
+
+		operator GLuint64() const
+		{
+			return value;
+		}
 		GLuint64 value;
 	};
+
+	Handle textureHandle() const;
+	
+	bool isResident() const;
+	Handle makeResident();
+	void makeNonResident();
+
 #endif
+
 protected:
 	GLenum  _target;
 

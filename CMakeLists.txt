@@ -26,6 +26,8 @@ option(OPTION_BUILD_EXAMPLES "Build examples" ON)
 # CMake configuration
 ########################################
 
+set(GLOW_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
 # Include cmake modules from ./cmake
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -185,13 +187,13 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 configure_file(${source_path}/meta.h.in meta.h)
 
 set(headers
-    ${header_path}/declspec.h
+    ${header_path}/glow.h
 
     ${header_path}/internal/FileReader.h
-    ${header_path}/internal/UniformSetter.hpp
     
     ${header_path}/info.h
     
+    ${header_path}/AbstractUniform.h
     ${header_path}/Array.hpp
     ${header_path}/ArrayData.h
     ${header_path}/Buffer.h
@@ -202,6 +204,7 @@ set(headers
     ${header_path}/Log.h
     ${header_path}/Object.h
     ${header_path}/Program.h
+    ${header_path}/Program.hpp
     ${header_path}/ref_ptr.hpp
     ${header_path}/Referenced.h
     ${header_path}/RenderBufferObject.h
@@ -211,15 +214,16 @@ set(headers
     ${header_path}/ShaderSource.h
     ${header_path}/Texture.h
     ${header_path}/Uniform.h
+    ${header_path}/Uniform.hpp
     ${header_path}/VertexArrayObject.h
     ${header_path}/VertexAttributeBinding.h
 )
 
 set(sources
     ${source_path}/internal/FileReader.cpp
-    ${source_path}/internal/UniformSetter.cpp
     ${source_path}/info.cpp
     
+    ${source_path}/AbstractUniform.cpp
     ${source_path}/Buffer.cpp
     ${source_path}/Changeable.cpp
     ${source_path}/Error.cpp
@@ -233,7 +237,6 @@ set(sources
     ${source_path}/ShaderCode.cpp
     ${source_path}/ShaderFile.cpp
     ${source_path}/Texture.cpp
-    ${source_path}/Uniform.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
 )
@@ -269,7 +272,7 @@ install(TARGETS ${target}
     LIBRARY DESTINATION ${INSTALL_SHARED}
     ARCHIVE DESTINATION ${INSTALL_LIB}
 )
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${INSTALL_INCLUDE})
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION ${INSTALL_INCLUDE})
 
 ########################################
 # glow examples
@@ -283,7 +286,7 @@ endif()
 # Deployment
 ########################################
 # Data files
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/data
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data
     DESTINATION ${INSTALL_DATA}
 )
 

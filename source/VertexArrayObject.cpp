@@ -19,7 +19,7 @@ VertexArrayObject::~VertexArrayObject()
 {
 	if (ownsGLObject())
     {
-        glDeleteVertexArrays(1, &_id);
+        glDeleteVertexArrays(1, &m_id);
     }
 }
 
@@ -32,7 +32,7 @@ GLuint VertexArrayObject::genVertexArray()
 
 void VertexArrayObject::bind()
 {
-	glBindVertexArray(_id);
+	glBindVertexArray(m_id);
 }
 
 void VertexArrayObject::unbind()
