@@ -25,6 +25,7 @@ namespace glow
 
 	\see AbstractUniform
 	\see Program
+	\see http://www.opengl.org/wiki/Uniform
 */
 template<typename T>
 class GLOW_API Uniform : public AbstractUniform

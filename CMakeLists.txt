@@ -187,6 +187,8 @@ set(api_includes
     ${header_path}/Buffer.h
     ${header_path}/Changeable.h
     ${header_path}/ChangeListener.h
+    ${header_path}/Context.h
+    ${header_path}/ContextFormat.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferObject.h
     ${header_path}/Log.h
@@ -213,6 +215,8 @@ set(sources
     ${source_path}/AbstractUniform.cpp
     ${source_path}/Buffer.cpp
     ${source_path}/Changeable.cpp
+    ${source_path}/Context.cpp
+    ${source_path}/ContextFormat.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferObject.cpp
 	${source_path}/FileReader.cpp
