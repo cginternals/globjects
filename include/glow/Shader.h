@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glow/declspec.h>
+#include <glow/glow.h>
 
 #include <glow/Object.h>
 #include <glow/ShaderFile.h>
@@ -21,7 +21,7 @@ class GLOW_API Shader : public Object, protected ChangeListener, public Changeab
 	friend class Program;
 public:
 	Shader(GLenum type);
-	~Shader();
+	virtual ~Shader();
 
 	static Shader* fromFile(GLenum type, const std::string& filename);
 

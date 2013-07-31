@@ -31,6 +31,11 @@ void Referenced::ref()
 void Referenced::unref()
 {
 	_refCounter--;
+
+	if (_refCounter <= 0)
+	{
+		delete this;
+	}
 }
 
 int Referenced::refCounter() const

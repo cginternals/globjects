@@ -1,25 +1,29 @@
+
 #pragma once
-
-#include "declspec.h"
-
-#include <glow/Shader.h>
-#include <glow/Uniform.h>
-#include <glow/ChangeListener.h>
-
-#include <glm/glm.hpp>
 
 #include <set>
 #include <unordered_map>
 
+#include <glm/glm.hpp>
+
+#include <glow/glow.h>
+#include <glow/Shader.h>
+#include <glow/AbstractUniform.h>
+#include <glow/ChangeListener.h>
+
 // http://www.opengl.org/wiki/Program_Object
 
-namespace glow {
+namespace glow 
+{
+template<typename T>
+class Uniform;
+
 
 class GLOW_API Program : public Object, protected ChangeListener
 {
 public:
 	Program();
-	~Program();
+	virtual ~Program();
 
 	void use();
 	void release();
@@ -27,45 +31,68 @@ public:
 	bool isUsed() const;
 	bool isLinked() const;
 
+
 	void attach(Shader* shader);
+	void attach(Shader* shader1, Shader* shader2, Shader* shader3 = nullptr, Shader* shader4 = nullptr, Shader* shader5 = nullptr);
 	void detach(Shader* shader);
 
 	void link();
 	void invalidate();
 
-	std::string infoLog() const;
+	const std::string infoLog() const;
+
 
 	GLint getAttributeLocation(const std::string& name);
 	GLint getUniformLocation(const std::string& name);
 
-	GLuint getResourceIndex(GLenum programInterface, const std::string& name);
-
 	void bindAttributeLocation(GLuint index, const std::string& name);
 	void bindFragDataLocation(GLuint index, const std::string& name);
 
-	Uniform* getUniform(const std::string& name);
-	void addUniform(Uniform* uniform);
+	GLuint getResourceIndex(GLenum programInterface, const std::string& name);
+
+
+	template<typename T>
+	void setUniform(const std::string & name, const T & value);
+	
+	/** Retrieves the existing or creates a new typed uniform, named <name>. 
+	*/
+	template<typename T>
+	Uniform<T> * getUniform(const std::string & name);
+
+	/** Adds the uniform to the internal list of named uniforms. If an equally
+		named uniform already exists, this program derigisters itself and the uniform
+		gets replaced (and by this the old one gets dereferenced). If the current 
+		program is linked, the uniforms value will be passed to the program object.
+	*/
+	void addUniform(AbstractUniform * uniform);
+
 
 	void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding);
 
 	void dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ);
+
 protected:
-	std::set<ref_ptr<Shader>> _shaders;
-	std::unordered_map<std::string, ref_ptr<Uniform>> _uniforms;
-	bool _linked;
-	bool _dirty;
 
 	void checkLinkStatus();
 	void checkDirty();
 
 	void updateUniforms();
 
-	void notifyChanged();
+	// ChangeListener Interface
 
+	virtual void notifyChanged();
+
+protected:
 	static GLuint createProgram();
-public:
-	// convenience
-	void attach(Shader* shader1, Shader* shader2, Shader* shader3 = nullptr, Shader* shader4 = nullptr, Shader* shader5 = nullptr);
+
+protected:
+	std::set<ref_ptr<Shader>> m_shaders;
+	std::unordered_map<std::string, ref_ptr<AbstractUniform>> m_uniforms;
+
+	bool m_linked;
+	bool m_dirty;
 };
 
 } // namespace glow
+
+#include <glow/Program.hpp>

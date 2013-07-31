@@ -1,13 +1,18 @@
+
+#include <Window.h>
+#include <algorithm>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
+
+#include <glow/Uniform.h>
 #include <glow/Array.hpp>
 #include <glow/ShaderFile.h>
 #include <glow/Error.h>
 #include <glow/Log.h>
 
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/transform.hpp>
-
-#include <Window.h>
 
 Vertex::Vertex()
 {
@@ -63,14 +68,14 @@ void Window::createTexture()
 
 void Window::createShaders()
 {
-	glow::Shader* vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/test.vert");
-	glow::Shader* fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/test.frag");
+	glow::Shader* vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/simple/test.vert");
+	glow::Shader* fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/simple/test.frag");
 
 	shaderProgram = new glow::Program();
 	shaderProgram->attach(vertexShader, fragmentShader);
 	shaderProgram->bindFragDataLocation(0, "outColor");
 
-	shaderProgram->getUniform("texture")->set(0);
+	shaderProgram->getUniform<GLint>("texture")->set(0);
 }
 
 void Window::createVertices()
@@ -107,8 +112,8 @@ void Window::resizeGL(int width, int height)
 	int side = std::min(width, height);
 	glViewport((width - side) / 2, (height - side) / 2, side, side);
 
-	shaderProgram->getUniform("modelView")->set(glm::mat4());
-	shaderProgram->getUniform("projection")->set(glm::ortho(0.f, 1.f, 0.f, 1.f, 0.f, 1.f));
+	shaderProgram->setUniform("modelView", glm::mat4());
+	shaderProgram->setUniform("projection", glm::ortho(0.f, 1.f, 0.f, 1.f, 0.f, 1.f));
 }
 
 void Window::paintGL()

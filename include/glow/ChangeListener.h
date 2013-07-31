@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glow/declspec.h>
+#include <glow/glow.h>
 
 namespace glow {
 

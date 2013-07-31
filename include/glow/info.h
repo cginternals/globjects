@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include <glow/declspec.h>
+#include <glow/glow.h>
 
 #include <string>
 #include <vector>

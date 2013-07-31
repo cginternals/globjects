@@ -1,93 +1,72 @@
 cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 
 
-# PROJECT CONFIG
-
-set(META_PROJECT_NAME "glow")
-
-set(META_VERSION_MAJOR "0")
-set(META_VERSION_MINOR "0")
-
-set(META_AUTHOR_ORGANIZATION "glow Group")
-set(META_AUTHOR_DOMAIN "https://github.com/cgcostume/glow/")
-
-
-
-option(OPTION_LIMIT_CONFIGS "Generate limited configs (Release; Debug)" ON)
-
-option(OPTION_LOCAL_INSTALL "Install to local directory instead of system" OFF)
-
-option(OPTION_BUILD_STATIC "Build static libraries" OFF)
-option(OPTION_BUILD_EXAMPLES "Build examples" OFF)
+########################################
+# Project description
+########################################
+set(META_PROJECT_NAME        "glow")
+set(META_VERSION_MAJOR       "0")
+set(META_VERSION_MINOR       "1")
+set(META_VERSION_PATCH       "0")
+set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
+set(META_AUTHOR_ORGANIZATION "glow group")
+set(META_AUTHOR_DOMAIN       "https://github.com/cgcostume/glow/")
 
 
+########################################
+# Options
+########################################
+option(OPTION_LIMIT_CONFIGS  "Generate limited configs (Release; Debug)" ON)
+option(OPTION_LOCAL_INSTALL  "Install to a local directory instead of the system" OFF)
+option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
+option(OPTION_BUILD_EXAMPLES "Build examples" ON)
 
+
+########################################
+# CMake configuration
+########################################
+
+set(GLOW_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
+# Include cmake modules from ./cmake
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+# Set output directories
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+# Set configuration types
 if(OPTION_LIMIT_CONFIGS)
     set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Limited Configs" FORCE)
 endif()
 
-set(PROJECT_NAME ${META_PROJECT_NAME})  
-project(${PROJECT_NAME} C CXX)
+# Project
+project(${META_PROJECT_NAME} C CXX)
 
-# check if x64 and provide this information
+# Generate folders
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+# Include custom cmake functions
+include(cmake/Custom.cmake)
+
+
+########################################
+# Platform and architecture
+########################################
+
+# Architecture (32/64 bit)
 set(X64 OFF)
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-  set(X64 ON)
+    set(X64 ON)
 endif()
 
-# check for linux
-
+# Check for linux
 if(UNIX AND NOT APPLE)
     set(LINUX 1)
 endif()
 
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-set(CMAKE_MODULE_PATH 
-    ${CMAKE_MODULE_PATH}
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
-
-# RETRIEVE REPOSITORY VERSION AND GENERATE META HEADER
-
-# add a revision file containing the git-head tag for cpack and install
-
-include(GetGitRevisionDescription)
-get_git_head_revision(GIT_REFSPEC GIT_SHA1)
-
-# generate a shorter, googlelike variation for rev
-
-string(SUBSTRING ${GIT_SHA1} 0 12 GIT_REV)
-file(WRITE ${CMAKE_BINARY_DIR}/revision ${GIT_REV})
-install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION .)
-
-
-# THIRD PARTIES
-
-find_package(OpenGL REQUIRED)
-find_package(GLM REQUIRED)
-find_package(GLEW REQUIRED)
-
-
-# SOURCES AND INCLUDES
-
-set(GLOW_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-include_directories(
-    ${CMAKE_BINARY_DIR} # for Meta.h
-    ${OPENGL_INCLUDE_DIR}
-    ${GLM_INCLUDE_PATH}
-    ${GLEW_INCLUDE_PATH}
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/libs)
-
-set(GLOW_HEADER_GROUP "Header Files (API)")
-set(GLOW_SOURCE_GROUP "Source Files")
-
-
-# setup platform specifics (compile flags, etc., ...)
-
+# Setup platform specifics (compile flags, etc., ...)
 if(MSVC)
     message(STATUS "Configuring for platform Windows/MSVC.")
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsMSVC.cmake)
@@ -101,100 +80,182 @@ elseif(APPLE)
     message(STATUS "Configuring for platform MacOS.")
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
 else()
-    # TODO configure for apple        
+    # Unsupported system/compiler
     message(WARNING "Unsupported platform/compiler combination")
 endif()
 
 
-include(cmake/Custom.cmake)
+########################################
+# Install locations
+########################################
+set(project ${META_PROJECT_NAME})
+if(WIN32)
+    set(INSTALL_BIN           ".")                      # C:\Programme\<project>
+    set(INSTALL_SHARED        ".")                      # C:\Programme\<project>
+    set(INSTALL_LIB           "lib")                    # C:\Programme\<project>\lib
+    set(INSTALL_INCLUDE       "include")                # C:\Programme\<project>\include
+    set(INSTALL_DOC           "doc")                    # C:\Programme\<project>\doc
+    set(INSTALL_APPLICATIONS  "")                       # Not available under Windows
+    set(INSTALL_ICONS         "")                       # Not available under Windows
+    set(INSTALL_INIT          "")                       # Not available under Windows
+    set(INSTALL_DATA          ".")                      # C:\Programme\<project>
+    set(INSTALL_EXAMPLES      ".")                      # C:\Programme\<project>
+elseif(LINUX)
+    set(INSTALL_BIN           "bin")                    # /usr/[local]/bin
+    set(INSTALL_SHARED        "lib")                    # /usr/[local]/lib
+    set(INSTALL_LIB           "lib")                    # /usr/[local]/lib
+    set(INSTALL_INCLUDE       "include")                # /usr/[local]/include
+    set(INSTALL_DOC           "share/doc/${project}")   # /usr/[local]/share/doc/<project>
+    set(INSTALL_APPLICATIONS  "share/applications")     # /usr/[local]/share/applications
+    set(INSTALL_ICONS         "share/pixmaps")          # /usr/[local]/share/pixmaps
+    set(INSTALL_INIT          "/etc/init")              # /etc/init (upstart init scripts)
+    set(INSTALL_DATA          "share/${project}")       # /usr/[local]/share/<project>
+    set(INSTALL_EXAMPLES      "share/${project}")       # /usr/[local]/share/<project>
+
+    # Adjust target paths for Local installs
+    if(OPTION_LOCAL_INSTALL)
+        # Put binaries in root directory and keep data directory name
+        set(INSTALL_BIN                       ".")           # /<INSTALL_PREFIX>
+        set(INSTALL_DATA                      ".")           # /<INSTALL_PREFIX>
+
+        # We have to change the RPATH of binaries to achieve a usable local install.
+        # [TODO] For binaries, "$ORIGIN/lib" is right, so that libraries are found in ./lib.
+        #        However, I have not yet tested what happens when libraries use other libraries.
+        #        In that case, they might need the rpath $ORIGIN instead ...
+        set(CMAKE_SKIP_BUILD_RPATH            FALSE)         # Use automatic rpath for build
+        set(CMAKE_BUILD_WITH_INSTALL_RPATH    FALSE)         # Use specific rpath for INSTALL
+        set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)         # NO automatic rpath for INSTALL
+        set(CMAKE_INSTALL_RPATH               "$ORIGIN/lib") # Libraries are relative to binary
+    endif()
+endif()
 
 
+########################################
+# Get repository version
+########################################
+
+# Add a revision file containing the git-head tag for cpack and install
+include(GetGitRevisionDescription)
+get_git_head_revision(GIT_REFSPEC GIT_SHA1)
+
+# Generate a shorter, googlelike variation for rev
+string(SUBSTRING ${GIT_SHA1} 0 12 GIT_REV)
+file(WRITE ${CMAKE_BINARY_DIR}/revision ${GIT_REV})
+
+# [TODO] Really?? Do we want this deployed?
+#install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION .)
+
+# [TODO] Deal with GIT-NOTFOUND
+
+
+########################################
+# glowMETA_VERSION library
+########################################
+
+# Target
 set(target glow)
 message(STATUS "lib ${target}")
 
-set(HEADER_PATH "${GLOW_INCLUDE_DIR}/${target}")
-set(SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/source")
+# Find externals
+find_package(OpenGL REQUIRED)
+find_package(GLM REQUIRED)
+find_package(GLEW REQUIRED)
 
-configure_file(${SOURCE_PATH}/meta.h.in meta.h)
-
-set(HEADERS
-    ${HEADER_PATH}/declspec.h
-
-    ${HEADER_PATH}/internal/FileReader.h
-    ${HEADER_PATH}/internal/UniformSetter.hpp
-    
-    ${HEADER_PATH}/info.h
-    
-    ${HEADER_PATH}/Array.hpp
-    ${HEADER_PATH}/ArrayData.h
-    ${HEADER_PATH}/Buffer.h
-    ${HEADER_PATH}/Changeable.h
-    ${HEADER_PATH}/ChangeListener.h
-    ${HEADER_PATH}/Error.h
-    ${HEADER_PATH}/FrameBufferObject.h
-    ${HEADER_PATH}/Log.h
-    ${HEADER_PATH}/Object.h
-    ${HEADER_PATH}/Program.h
-    ${HEADER_PATH}/ref_ptr.hpp
-    ${HEADER_PATH}/Referenced.h
-    ${HEADER_PATH}/RenderBufferObject.h
-    ${HEADER_PATH}/Shader.h
-    ${HEADER_PATH}/ShaderCode.h
-    ${HEADER_PATH}/ShaderFile.h
-    ${HEADER_PATH}/ShaderSource.h
-    ${HEADER_PATH}/Texture.h
-    ${HEADER_PATH}/Uniform.h
-    ${HEADER_PATH}/VertexArrayObject.h
-    ${HEADER_PATH}/VertexAttributeBinding.h
-)
-
-set(SOURCES
-
-    ${SOURCE_PATH}/internal/FileReader.cpp
-    ${SOURCE_PATH}/internal/UniformSetter.cpp
-    ${SOURCE_PATH}/info.cpp
-    
-    ${SOURCE_PATH}/Buffer.cpp
-    ${SOURCE_PATH}/Changeable.cpp
-    ${SOURCE_PATH}/Error.cpp
-    ${SOURCE_PATH}/FrameBufferObject.cpp
-    ${SOURCE_PATH}/Log.cpp
-    ${SOURCE_PATH}/Object.cpp
-    ${SOURCE_PATH}/Program.cpp
-    ${SOURCE_PATH}/Referenced.cpp
-    ${SOURCE_PATH}/RenderBufferObject.cpp
-    ${SOURCE_PATH}/Shader.cpp
-    ${SOURCE_PATH}/ShaderCode.cpp
-    ${SOURCE_PATH}/ShaderFile.cpp
-    ${SOURCE_PATH}/Texture.cpp
-    ${SOURCE_PATH}/Uniform.cpp
-    ${SOURCE_PATH}/VertexArrayObject.cpp
-    ${SOURCE_PATH}/VertexAttributeBinding.cpp
-)
-
-# group source files
-
-source_group_by_path(${HEADER_PATH} "\\\\.h$|\\\\.hpp$" 
-    ${GLOW_HEADER_GROUP} ${HEADERS})
-source_group_by_path(${SOURCE_PATH} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
-    ${GLOW_SOURCE_GROUP} ${SOURCES})
-
-# setup target
-
+# Include directories
 include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR} ${GLOW_INCLUDE_DIR})
+    ${CMAKE_BINARY_DIR} # for Meta.h
+    ${OPENGL_INCLUDE_DIR}
+    ${GLM_INCLUDE_PATH}
+    ${GLEW_INCLUDE_PATH}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
-if(OPTION_BUILD_STATIC)
-    add_library(${target} ${HEADERS} ${SOURCES})
-else()
-    add_library(${target} SHARED ${HEADERS} ${SOURCES})
-endif()
-
-target_link_libraries(${target}
+# Libraries
+set(libs
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARY}
 )
 
+# Definitions
+add_definitions("-DGLOW_EXPORTS")
+
+# Sources
+set(header_path "${CMAKE_CURRENT_SOURCE_DIR}/include/glow")
+set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
+
+# Generate meta-header
+configure_file(${source_path}/meta.h.in meta.h)
+
+set(headers
+    ${header_path}/glow.h
+
+    ${header_path}/internal/FileReader.h
+    
+    ${header_path}/info.h
+    
+    ${header_path}/AbstractUniform.h
+    ${header_path}/Array.hpp
+    ${header_path}/ArrayData.h
+    ${header_path}/Buffer.h
+    ${header_path}/Changeable.h
+    ${header_path}/ChangeListener.h
+    ${header_path}/Error.h
+    ${header_path}/FrameBufferObject.h
+    ${header_path}/Log.h
+    ${header_path}/Object.h
+    ${header_path}/Program.h
+    ${header_path}/Program.hpp
+    ${header_path}/ref_ptr.hpp
+    ${header_path}/Referenced.h
+    ${header_path}/RenderBufferObject.h
+    ${header_path}/Shader.h
+    ${header_path}/ShaderCode.h
+    ${header_path}/ShaderFile.h
+    ${header_path}/ShaderSource.h
+    ${header_path}/Texture.h
+    ${header_path}/Uniform.h
+    ${header_path}/Uniform.hpp
+    ${header_path}/VertexArrayObject.h
+    ${header_path}/VertexAttributeBinding.h
+)
+
+set(sources
+    ${source_path}/internal/FileReader.cpp
+    ${source_path}/info.cpp
+    
+    ${source_path}/AbstractUniform.cpp
+    ${source_path}/Buffer.cpp
+    ${source_path}/Changeable.cpp
+    ${source_path}/Error.cpp
+    ${source_path}/FrameBufferObject.cpp
+    ${source_path}/Log.cpp
+    ${source_path}/Object.cpp
+    ${source_path}/Program.cpp
+    ${source_path}/Referenced.cpp
+    ${source_path}/RenderBufferObject.cpp
+    ${source_path}/Shader.cpp
+    ${source_path}/ShaderCode.cpp
+    ${source_path}/ShaderFile.cpp
+    ${source_path}/Texture.cpp
+    ${source_path}/VertexArrayObject.cpp
+    ${source_path}/VertexAttributeBinding.cpp
+)
+
+# Group source files
+set(glow_header_group "Header Files (API)")
+set(glow_source_group "Source Files")
+source_group_by_path(${header_path} "\\\\.h$|\\\\.hpp$" 
+    ${glow_header_group} ${headers})
+source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
+    ${glow_source_group} ${sources})
+
+# Build library
+if(OPTION_BUILD_STATIC)
+    add_library(${target} ${headers} ${sources})
+else()
+    add_library(${target} SHARED ${headers} ${sources})
+endif()
+target_link_libraries(${target} ${libs})
 set_target_properties(${target}
     PROPERTIES
     LINKER_LANGUAGE CXX
@@ -203,29 +264,34 @@ set_target_properties(${target}
     COMPILE_FLAGS               "${DEFAULT_COMPILE_FLAGS}"
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
-    DEBUG_POSTFIX "d${DEBUG_POSTFIX}"
-    INCLUDE_PATH "${GLOW_INCLUDE_DIR}")
+    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
 
-add_definitions("-DGLOW_EXPORTS")
+# Deployment
+install(TARGETS ${target}
+    RUNTIME DESTINATION ${INSTALL_BIN}
+    LIBRARY DESTINATION ${INSTALL_SHARED}
+    ARCHIVE DESTINATION ${INSTALL_LIB}
+)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION ${INSTALL_INCLUDE})
 
-
-
+########################################
+# glow examples
+########################################
 if(OPTION_BUILD_EXAMPLES)
-    add_subdirectory("examples")
+    add_subdirectory(examples)
 endif()
 
 
-# CPACK DEPLOY
+########################################
+# Deployment
+########################################
+# Data files
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data
+    DESTINATION ${INSTALL_DATA}
+)
 
-set(CPACK_GENERATOR "ZIP")
-set(CPACK_SOURCE_GENERATOR "ZIP")
 
-set(CPACK_PACKAGE_VERSION_MAJOR ${META_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${META_VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${GIT_REV})
-
-set(CPACK_INSTALL_DIRECTORIES ${CMAKE_BINARY_DIR}/install)
-set(CPACK_IGNORE_FILES "/.pdb/;/.ilk/;/.svn/;/.hg/;/.git/;.swp$;.#;/#")
-set(CPACK_OUTPUT_FILE_PREFIX ${CMAKE_BINARY_DIR}/install)
-
-include(CPack)
+########################################
+# Packaging
+########################################
+add_subdirectory(packages)
