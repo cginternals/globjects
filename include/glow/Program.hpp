@@ -1,8 +1,9 @@
 #pragma once
 
 #include <glow/Log.h>
+#include <glow/Uniform.h>
 
-namespace glow 
+namespace glow
 {
 
 template<typename T>
