@@ -10,6 +10,7 @@ ELSE()
 	IF(X64)
 
 	    FIND_PATH(GLOW_INCLUDE_PATH glow/ref_ptr.hpp
+		${GLOW_HOME}/include
 		$ENV{GLOW_DIR}/include
 		$ENV{GLOW_HOME}/include
 		$ENV{PROGRAMFILES}/GLOW/include
@@ -22,6 +23,7 @@ ELSE()
 	    FIND_LIBRARY(GLOW_LIBRARY
 		NAMES GLOW glow
 		PATHS
+		${GLOW_HOME}/lib
 		$ENV{GLOW_DIR}/lib
 		$ENV{GLOW_HOME}/lib
 		/usr/lib64
@@ -33,9 +35,10 @@ ELSE()
 	ELSE()
 
 	    FIND_PATH( GLOW_INCLUDE_PATH glow/ref_ptr.hpp
+		${GLOW_HOME}/include
 		$ENV{GLOW_DIR}/include
 		$ENV{GLOW_HOME}/include
-		$ENV{PROGRAMFILES}/GLOW/include
+		$ENV{PROGRAMFILES}/glow/include
 		/usr/include
 		/usr/local/include
 		/sw/include
@@ -45,8 +48,9 @@ ELSE()
 	    FIND_LIBRARY(GLOW_LIBRARY
 		NAMES GLOW glow
 		PATHS
+		${GLOW_HOME}/lib
 		$ENV{GLOW_DIR}/lib
-		$ENV{GLOW_HOME}/lib
+		$ENV{GLOW_HOME}/lib		
 		/usr/lib
 		/usr/local/lib
 		/sw/lib
