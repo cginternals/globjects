@@ -56,6 +56,7 @@ void Uniform<T>::set(const GLint location, const T & value)
 template<> void Uniform<float>::set(const GLint location, const float& value);
 template<> void Uniform<int>::set(const GLint location, const int & value);
 template<> void Uniform<unsigned int>::set(const GLint location, const unsigned int & value);
+template<> void Uniform<bool>::set(const GLint location, const bool & value);
 
 template<> void Uniform<glm::vec2>::set(const GLint location, const glm::vec2 & value);
 template<> void Uniform<glm::vec3>::set(const GLint location, const glm::vec3 & value);

@@ -15,6 +15,10 @@ template<> void Uniform<unsigned int>::set(const GLint location, const unsigned 
 {
 	glUniform1ui(location, value);
 }
+template<> void Uniform<bool>::set(const GLint location, const bool & value)
+{
+	glUniform1i(location, value ? 1 : 0);
+}
 
 template<> void Uniform<glm::vec2>::set(const GLint location, const glm::vec2 & value)
 {
