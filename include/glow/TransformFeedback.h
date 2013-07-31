@@ -4,7 +4,7 @@
 
 #include <glow/Object.h>
 #include <glow/Program.h>
-#include <glow/Array.h>
+#include <glow/Array.hpp>
 
 namespace glow
 {
@@ -26,7 +26,7 @@ public:
 	void draw(GLenum primitiveMode);
 	
 	void setVaryings(Program* program, GLsizei count, const char** varyingNames, GLenum bufferMode);
-	void setVaryings(Program* program, const Array<std::string>& varyingNames, GLenum bufferMode);
+	void setVaryings(Program* program, const Array<const char*>& varyingNames, GLenum bufferMode);
 protected:
 	static GLuint genTransformFeedback();
 };
