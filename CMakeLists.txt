@@ -264,7 +264,8 @@ set_target_properties(${target}
     COMPILE_FLAGS               "${DEFAULT_COMPILE_FLAGS}"
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
-    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
+    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
+    GLOW_INCLUDE_PATH	"${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Deployment
 install(TARGETS ${target}
