@@ -27,12 +27,12 @@ Referenced& Referenced::operator=(const Referenced&)
 
 void Referenced::ref()
 {
-	_refCounter++;
+	++_refCounter;
 }
 
 void Referenced::unref()
 {
-	_refCounter--;
+	--_refCounter;
 
 	if (_refCounter <= 0)
 	{
