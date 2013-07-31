@@ -114,10 +114,6 @@ protected:
 		if (_referenced)
 		{
 			_referenced->unref();
-			if ( _referenced->refCounter()<=0)
-			{
-				delete _referenced;
-			}
 		}
 	}
 };

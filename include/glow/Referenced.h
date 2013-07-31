@@ -1,6 +1,6 @@
 #pragma once
 
-#include "declspec.h"
+#include "glow.h"
 
 #include <glow/ref_ptr.hpp>
 

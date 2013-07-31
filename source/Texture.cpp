@@ -1,3 +1,4 @@
+
 #include <glow/Texture.h>
 
 using namespace glow;
@@ -18,7 +19,7 @@ Texture::~Texture()
 {
 	if (ownsGLObject())
     {
-        glDeleteTextures(1, &_id);
+        glDeleteTextures(1, &m_id);
     }
 }
 
@@ -41,7 +42,7 @@ void Texture::setParameter(GLenum name, GLfloat value)
 
 void Texture::bind()
 {
-	glBindTexture(_target, _id);
+	glBindTexture(_target, m_id);
 }
 
 void Texture::unbind()
@@ -64,7 +65,7 @@ void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GL
 void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)
 {
 	bind();
-	glBindImageTexture(unit, _id, level, layered, layer, access, format);
+	glBindImageTexture(unit, m_id, level, layered, layer, access, format);
 }
 
 void Texture::generateMipmap()
@@ -82,9 +83,9 @@ GLuint Texture::genTexture()
 
 #ifdef GL_NV_bindless_texture
 
-GLuint64 Texture::textureHandle() const
+Texture::Handle Texture::textureHandle() const
 {
-	return glGetTextureHandleNV(_id);
+	return glGetTextureHandleNV(m_id);
 }
 
 bool Texture::isResident() const
@@ -92,10 +93,10 @@ bool Texture::isResident() const
 	return glIsTextureHandleResidentNV(textureHandle());
 }
 
-GLuint64 Texture::makeResident()
+Texture::Handle Texture::makeResident()
 {
-	GLuint64 handle = textureHandle();
-	
+	Handle handle = textureHandle();
+
 	glMakeTextureHandleResidentNV(handle);
 	
 	return handle;

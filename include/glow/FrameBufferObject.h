@@ -1,6 +1,6 @@
 #pragma once
 
-#include "declspec.h"
+#include "glow.h"
 
 #include <glow/Object.h>
 #include <glow/Texture.h>
@@ -27,7 +27,7 @@ protected:
 class GLOW_API TextureAttachment : public ColorAttachment
 {
 public:
-	TextureAttachment(Texture* texture, GLenum attachment);
+	TextureAttachment(Texture * texture, GLenum attachment);
 protected:
 	ref_ptr<Texture> _texture;
 };

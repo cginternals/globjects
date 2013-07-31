@@ -12,6 +12,7 @@ find_package(FREEGLUT REQUIRED)
 # Include directories
 include_directories(
 	${GLOW_INCLUDE_DIR}
+	${FREEGLUT_INCLUDE_PATH}
 	include
 )
 

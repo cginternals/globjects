@@ -8,7 +8,7 @@
 #include <fstream>
 #include <string>
 
-#include <glow/declspec.h>
+#include <glow/glow.h>
 
 #include <glm/gtc/type_ptr.hpp>
 

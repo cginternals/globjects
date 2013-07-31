@@ -21,7 +21,7 @@ Shader::~Shader()
 	{
 		_source->deregisterListener(this);
 	}
-	if (_id) glDeleteShader(_id);
+	if (m_id) glDeleteShader(m_id);
 }
 
 GLuint Shader::createShader(GLenum type)
@@ -83,12 +83,12 @@ void Shader::basicSetSource(const std::string& source)
 {
 	_internalSource = source;
 	const char* sourcePointer = source.c_str();
-	glShaderSource(_id, 1, &sourcePointer, 0);
+	glShaderSource(m_id, 1, &sourcePointer, 0);
 }
 
 void Shader::compile()
 {
-	glCompileShader(_id);
+	glCompileShader(m_id);
 	_compiled = checkCompileStatus();
 
 	if (_compiled)
@@ -105,11 +105,11 @@ bool Shader::isCompiled() const
 std::string Shader::infoLog() const
 {
 	GLsizei length;
-	glGetShaderiv(_id, GL_INFO_LOG_LENGTH, &length);
+	glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &length);
 
 	std::vector<char> log(length);
 
-	glGetShaderInfoLog(_id, length, &length, log.data());
+	glGetShaderInfoLog(m_id, length, &length, log.data());
 
 	return std::string(log.data(), length);
 }
@@ -117,7 +117,7 @@ std::string Shader::infoLog() const
 bool Shader::checkCompileStatus()
 {
 	GLint status = 0;
-	glGetShaderiv(_id, GL_COMPILE_STATUS, &status);
+	glGetShaderiv(m_id, GL_COMPILE_STATUS, &status);
 
 	bool compiled = (status == GL_TRUE);
 
