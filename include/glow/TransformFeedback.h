@@ -13,7 +13,7 @@ class GLOW_API TransformFeedback : public Object
 {
 public:
 	TransformFeedback();
-	~TransformFeedback();
+	virtual ~TransformFeedback();
 	
 	void bind();
 	void unbind();
