@@ -38,28 +38,28 @@ void TransformFeedback::unbind()
 
 void TransformFeedback::begin(GLenum primitiveMode)
 {
-	bind();
+	//~ bind(); // no autobind?
 	
 	glBeginTransformFeedback(primitiveMode);
 }
 
 void TransformFeedback::pause()
 {
-	bind();
+	//~ bind(); // no autobind?
 	
 	glPauseTransformFeedback();
 }
 
 void TransformFeedback::resume()
 {
-	bind();
+	//~ bind(); // no autobind?
 	
 	glResumeTransformFeedback();
 }
 
 void TransformFeedback::end()
 {
-	bind();
+	//~ bind(); // no autobind?
 	
 	glEndTransformFeedback();
 }
