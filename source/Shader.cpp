@@ -36,6 +36,13 @@ Shader* Shader::fromFile(GLenum type, const std::string& filename)
 	return shader;
 }
 
+Shader* Shader::fromSource(GLenum type, const std::string& source)
+{
+	Shader* shader = new Shader(type);
+	shader->setSource(source);
+	return shader;
+}
+
 GLenum Shader::type() const
 {
 	return _type;
