@@ -42,6 +42,7 @@ namespace glow
  * transformFeeback->draw(GL_POINTS);
  * \endcode
  * 
+ * \see http://www.opengl.org/registry/specs/EXT/transform_feedback.txt
  * \see http://www.opengl.org/registry/specs/ARB/transform_feedback2.txt
  * \see http://www.opengl.org/registry/specs/ARB/transform_feedback3.txt
  */
