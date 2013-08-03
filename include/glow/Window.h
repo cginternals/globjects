@@ -23,14 +23,34 @@ public:
 
     const bool create(
         const std::string & title = ""
-    ,   const BYTE bgRed   = 1.f
-    ,   const BYTE bgGreen = 1.f
-    ,   const BYTE bgBlue  = 1.f);
+    ,   const unsigned int width = 1280
+    ,   const unsigned int height = 720);
 
-    void toggleFullScreen(const bool fullScreen);
+    /** Shows and updates the window 
+    */
+    void show() const;
 
+    void update() const;
+    
+    /** Hides the window. 
+    */
+    void hide() const;
 
-    // design similar to http://www.codeproject.com/Articles/2556/A-Simple-Win32-Window-Wrapper-Class
+    void fullScreen();
+    void windowed();
+
+    const unsigned int width() const;
+    const unsigned int height() const;
+
+    // design similar to:
+    // http://www.codeproject.com/Articles/2556/A-Simple-Win32-Window-Wrapper-Class
+    // http://members.gamedev.net/sicrane/articles/WindowClass.html
+
+    static LRESULT CALLBACK InitialProc(
+        HWND hWnd
+    ,   UINT message
+    ,   WPARAM wParam
+    ,   LPARAM lParam);
 
     static LRESULT CALLBACK Proc(
         HWND hWnd       ///< Unique handle of the window. Check this against own handle.
@@ -46,15 +66,17 @@ protected:
     ,   WPARAM wParam
     ,   LPARAM lParam);
 
-    static void CheckChangeDisplaySettingsResult(const LONG result);
+    static void PrintChangeDisplaySettingsErrorResult(const LONG result);
 
 protected:
-    HGLRC   m_hRC;
-    HDC     m_hDC;
+    HGLRC m_hRC;
+    HDC   m_hDC;
 
-    HWND    m_hWnd;
+    HWND  m_hWnd;
+    RECT  m_rect;
 
-    bool    m_fullScreen;
+    bool  m_windowed;
+
 };
 
 } // namespace glow

@@ -13,6 +13,7 @@ namespace glow
 {
 
 /** The Screen class provides static inquiries for primary screen properties.
+    All information should be available at anytime.
 */
 class GLOW_API Screen
 {
