@@ -56,12 +56,12 @@ const bool Window::create(
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(NULL, IDI_APPLICATION);
-    wcex.hCursor        = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground  = reinterpret_cast<HBRUSH>(COLOR_WINDOW);
+    wcex.hIcon          = NULL;
+    wcex.hCursor        = LoadCursor(NULL, IDC_CROSS);
+    wcex.hbrBackground  = NULL;
     wcex.lpszMenuName   = NULL;
     wcex.lpszClassName  = className;
-    wcex.hIconSm        = LoadIcon(NULL, IDI_APPLICATION);
+    wcex.hIconSm        = NULL;
 
     if (!RegisterClassEx(&wcex))
     {
@@ -70,10 +70,10 @@ const bool Window::create(
     }
 
     m_hWnd = CreateWindowEx(
-        WS_EX_CLIENTEDGE
+        WS_EX_APPWINDOW | WS_EX_WINDOWEDGE
     ,   className
     ,   wtitle.c_str()
-    ,   WS_OVERLAPPEDWINDOW
+    ,   WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN
     ,   CW_USEDEFAULT
     ,   CW_USEDEFAULT
     ,   width
@@ -148,10 +148,12 @@ void Window::fullScreen()
     rect.top    = 0L;
     rect.bottom = height();
 
-    if (0 == AdjustWindowRectEx(&rect, WS_POPUP, NULL, WS_EX_APPWINDOW))
-        fatal() << "Adjusting window rect failed (AdjustWindowRectEx).";
+    SetWindowLongPtr(m_hWnd, GWL_STYLE
+        , WS_SYSMENU | WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE);
+    MoveWindow(m_hWnd, 0, 0, width(), height(), TRUE);
 
-//    SetWindowPos(m_hWnd, HWND_TOP, rect.left, rect.top, 0, 0, SWP_NOSIZE);
+    SetForegroundWindow(m_hWnd);
+    SetFocus(m_hWnd);
 
     update();
 }
@@ -172,7 +174,11 @@ void Window::windowed()
         return;
     }
 
-    AdjustWindowRectEx(&m_rect, WS_OVERLAPPEDWINDOW, NULL, WS_EX_APPWINDOW | WS_EX_WINDOWEDGE);
+    SetWindowLongPtr(m_hWnd, GWL_STYLE
+        , WS_OVERLAPPEDWINDOW | WS_VISIBLE);
+
+    MoveWindow(m_hWnd, m_rect.left, m_rect.top, width(), height(), TRUE);
+
     update();
 }
 

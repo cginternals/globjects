@@ -75,6 +75,7 @@ protected:
     HWND  m_hWnd;
     RECT  m_rect;
 
+
     bool  m_windowed;
 
 };
