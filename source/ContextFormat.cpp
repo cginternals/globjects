@@ -1,6 +1,8 @@
 
 #include <cassert>
+#include <sstream>
 
+#include <glow/Log.h>
 #include <glow/ContextFormat.h>
 
 
@@ -36,29 +38,31 @@ ContextFormat::~ContextFormat()
 {
 }
 
-const ContextFormat::MinorsByMajors ContextFormat::validVersions()
+ContextFormat::MinorsByMajors ContextFormat::validVersions()
 {
 	MinorsByMajors minorsByMajors;
 
-	minorsByMajors.insert(1, 0);
-	minorsByMajors.insert(1, 1);
-	minorsByMajors.insert(1, 2);
-	minorsByMajors.insert(1, 3);
-	minorsByMajors.insert(1, 4);
-	minorsByMajors.insert(1, 5);
+    typedef std::pair<unsigned int, unsigned int> Version;
 
-	minorsByMajors.insert(2, 0);
-	minorsByMajors.insert(2, 1);
+	minorsByMajors.insert(Version(1, 0));
+	minorsByMajors.insert(Version(1, 1));
+	minorsByMajors.insert(Version(1, 2));
+	minorsByMajors.insert(Version(1, 3));
+	minorsByMajors.insert(Version(1, 4));
+	minorsByMajors.insert(Version(1, 5));
 
-	minorsByMajors.insert(3, 0);
-	minorsByMajors.insert(3, 1);
-	minorsByMajors.insert(3, 2);
-	minorsByMajors.insert(3, 3);
+	minorsByMajors.insert(Version(2, 0));
+	minorsByMajors.insert(Version(2, 1));
 
-	minorsByMajors.insert(4, 0);
-	minorsByMajors.insert(4, 1);
-	minorsByMajors.insert(4, 2);
-	minorsByMajors.insert(4, 3);
+	minorsByMajors.insert(Version(3, 0));
+	minorsByMajors.insert(Version(3, 1));
+	minorsByMajors.insert(Version(3, 2));
+	minorsByMajors.insert(Version(3, 3));
+
+	minorsByMajors.insert(Version(4, 0));
+	minorsByMajors.insert(Version(4, 1));
+	minorsByMajors.insert(Version(4, 2));
+	minorsByMajors.insert(Version(4, 3));
 
 	return minorsByMajors;
 }
@@ -85,11 +89,8 @@ void ContextFormat::setVersion(
             m_minorVersion = m;
     }
 
-//    if (minor != m_minorVersion
-  //      || major != m_majorVersion)
-        // TODO: log should support this!
-		//warning("Unknown OpenGL Version %i.%i was adjusted to %i.%i."
-        //  , major, minor, m_majorVersion, m_minorVersion);
+    if (minor != m_minorVersion || major != m_majorVersion)
+		warning() << "Unknown OpenGL Version " << major << "." << minor << " was adjusted to " << m_majorVersion << "." << m_minorVersion << ".";
 }
 
 unsigned int ContextFormat::majorVersion() const
@@ -200,6 +201,155 @@ int ContextFormat::samples() const
 void ContextFormat::setSamples(const int samples)
 {
 	m_samples = samples;
+}
+
+const std::string ContextFormat::profileString(const Profile profile)
+{
+    switch (profile)
+    {
+    case NoProfile:
+        return "NoProfile";
+    case CoreProfile:
+        return "CoreProfile";
+    case CompatibilityProfile:
+        return "CompatibilityProfile";
+    default:
+        return "";
+    }
+}
+
+const std::string ContextFormat::swapBehaviorString(const SwapBehavior swapb)
+{
+    switch (swapb)
+    {
+	case SingleBuffer:
+        return "SingleBuffer";
+    case DoubleBuffer:
+        return "DoubleBuffer";
+    case TripleBuffer:
+        return "TripleBuffer";
+    default:
+        return "";
+    }
+}
+
+bool ContextFormat::verify(
+	const ContextFormat & requested
+,   const ContextFormat & created)
+{
+	bool result = true;
+
+	//    const Format & current = format();
+
+	result &= verifyVersionAndProfile(requested, created);
+	result &= verifyPixelFormat(requested, created);
+
+	return result;
+}
+
+bool ContextFormat::verifyVersionAndProfile(
+	const ContextFormat & requested
+,   const ContextFormat & current)
+{
+	const bool sameProfiles(requested.profile() == current.profile());
+
+	if (!sameProfiles)
+	{
+		warning() << "A context with a different profile as requested was created: "
+            << profileString(requested.profile()) << " requested, "
+            << profileString(current.profile()) << " created.";
+	}
+
+	if (requested.majorVersion() != current.majorVersion()
+     || requested.minorVersion() != current.minorVersion())
+	{
+		warning() << "A context with a different OpenGL Version as requested was created: "
+		    << requested.majorVersion() << "." << requested.minorVersion() << " requested, "
+            << current.majorVersion() << "." << current.minorVersion() << "  created.";
+
+		if (requested.profile() == CoreProfile)
+			return false;
+	}
+	return sameProfiles;
+}
+
+inline void ContextFormat::verifyBufferSize(
+	const unsigned int sizeRequested
+,   const unsigned int sizeInitialized
+,   const std::string & warning
+,   std::vector<std::string> & issues)
+{
+	if (sizeRequested == sizeInitialized)
+		return;
+
+    std::stringstream ss;
+    ss << warning << " size mismatch: " << sizeRequested << " requested, " << sizeInitialized << " created.";
+
+    issues.push_back(ss.str());
+}
+
+bool ContextFormat::verifyPixelFormat(
+	const ContextFormat & requested
+,   const ContextFormat & current)
+{
+	std::vector<std::string> issues;
+
+	const bool sameSwapBehaviors(requested.swapBehavior() == current.swapBehavior());
+
+	if (!sameSwapBehaviors)
+	{
+		warning() << "A context with a different swap behavior as requested was initialized: "
+            << swapBehaviorString(requested.swapBehavior()) << " requested, "
+            << swapBehaviorString(current.swapBehavior()) << " created.";
+	}
+
+	if (requested.depthBufferSize())
+	{
+		if (!current.depthBufferSize())
+			issues.push_back("Depth Buffer requested, but none created.");
+		else
+            verifyBufferSize(requested.depthBufferSize(), current.depthBufferSize()
+			    , "Depth Buffer", issues);
+	}
+
+	verifyBufferSize(requested.redBufferSize(), current.redBufferSize()
+		, "Red Buffer", issues);
+	verifyBufferSize(requested.greenBufferSize(), current.greenBufferSize()
+		, "Green Buffer", issues);
+	verifyBufferSize(requested.blueBufferSize(), current.blueBufferSize()
+		, "Blue Buffer", issues);
+	verifyBufferSize(requested.alphaBufferSize(), current.alphaBufferSize()
+		, "Alpha Buffer", issues);
+
+	if (requested.stencilBufferSize())
+	{
+		if (!current.stencilBufferSize())
+			issues.push_back("Stencil Buffer requested, but none created.");
+		else
+			verifyBufferSize(requested.stencilBufferSize(), current.stencilBufferSize()
+			    , "Stencil Buffer", issues);
+	}
+
+	if (requested.stereo() && !current.stereo())
+		issues.push_back("Stereo Buffering requested, but not initialized.");
+
+	if (requested.samples())
+	{
+		if (!current.samples())
+			issues.push_back("Sample Buffers requested, but none initialized.");
+		else
+			verifyBufferSize(requested.samples(), current.samples()
+			    , "Samples ", issues);
+	}
+
+	if (issues.empty())
+		return true;
+
+	warning() << "Initialized Pixelformat did not match the Requested One:";
+	for(const std::string & issue : issues)
+		warning() << issue;
+
+	return false;
 }
 
 } // namespace glow

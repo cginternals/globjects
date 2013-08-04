@@ -1,4 +1,5 @@
 
+#include <cassert>
 #include <sstream>
 
 #include <glow/Log.h>
@@ -7,24 +8,24 @@
 namespace glow
 {
 
-Error::Error()
-: _errorCode(GL_NO_ERROR)
+Error::Error(GLenum errorCode)
+:   m_errorCode(errorCode)
 {
 }
 
-Error::Error(GLenum errorCode)
-: _errorCode(errorCode)
+Error::Error()
+:   Error(GL_NO_ERROR)
 {
 }
 
 GLenum Error::code() const
 {
-	return _errorCode;
+	return m_errorCode;
 }
 
 std::string Error::name() const
 {
-	return errorString(_errorCode);
+	return errorString(m_errorCode);
 }
 
 Error Error::current()
@@ -55,7 +56,7 @@ void Error::clear()
 
 bool Error::isError() const
 {
-	return _errorCode != GL_NO_ERROR;
+	return m_errorCode != GL_NO_ERROR;
 }
 
 std::string Error::errorString(GLenum errorCode)
@@ -75,7 +76,8 @@ std::string Error::errorString(GLenum errorCode)
 		case GL_OUT_OF_MEMORY:
 			return "GL_OUT_OF_MEMORY";
 		default:
-			return "unknown";
+            assert(false);
+			return "Unknown GLenum.";
 	}
 }
 

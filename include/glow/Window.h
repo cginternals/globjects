@@ -27,12 +27,12 @@ public:
     Window();
     virtual ~Window();
 
-    const bool create(
+    bool create(
         const std::string & title = ""
     ,   const unsigned int width = 1280
     ,   const unsigned int height = 720);
 
-    const int handle() const;
+    int handle() const;
 
     void show() const;
     void hide() const;
@@ -42,8 +42,8 @@ public:
     void fullScreen();
     void windowed();
 
-    const unsigned int width() const;
-    const unsigned int height() const;
+    unsigned int width() const;
+    unsigned int height() const;
 
     /** Attaching an eventhandler dispatches an dettach event to the current 
         handler, sets the new handler and dispatches an attach event. The old 

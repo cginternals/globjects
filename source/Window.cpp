@@ -33,7 +33,7 @@ Window::~Window()
         restoreDisplaySettings();
 }
 
-const bool Window::create(
+bool Window::create(
     const std::string & title
 ,   const unsigned int width
 ,   const unsigned int height)
@@ -97,7 +97,7 @@ const bool Window::create(
     return true;
 }
 
-const int Window::handle() const
+int Window::handle() const
 {
     return reinterpret_cast<int>(m_hWnd);
 }
@@ -198,12 +198,12 @@ void Window::windowed()
     update();
 }
 
-const unsigned int Window::width() const
+unsigned int Window::width() const
 {
     return m_rect.right - m_rect.left;
 }
 
-const unsigned int Window::height() const
+unsigned int Window::height() const
 {
     return m_rect.bottom- m_rect.top;
 }

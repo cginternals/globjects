@@ -7,9 +7,8 @@
 #include <glow/glow.h>
 
 
-#define CHECK_ERROR glow::Error::check(__FILE__, __LINE__);
-
-namespace glow {
+namespace glow 
+{
 
 class GLOW_API Error
 {
@@ -28,7 +27,10 @@ public:
 
 	static std::string errorString(GLenum errorCode);
 protected:
-	GLenum _errorCode;
+	GLenum m_errorCode;
 };
+
+
+#define CHECK_ERROR glow::Error::check(__FILE__, __LINE__)
 
 } // namespace glow

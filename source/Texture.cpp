@@ -89,9 +89,9 @@ Texture::Handle Texture::textureHandle() const
 	return glGetTextureHandleNV(m_id);
 }
 
-bool Texture::isResident() const
+GLboolean Texture::isResident() const
 {
-	return glIsTextureHandleResidentNV(textureHandle());
+    return glIsTextureHandleResidentNV(textureHandle());
 }
 
 Texture::Handle Texture::makeResident()

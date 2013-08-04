@@ -1,6 +1,8 @@
 #pragma once
 
 #include <map>
+#include <vector>
+#include <string>
 
 #include <glow/glow.h>
 
@@ -15,9 +17,9 @@ public:
 	// This is based on QSurfaceFormat::OpenGLContextProfile
 	enum Profile
 	{
-	    NoProfile       ///< OpenGL version is lower than 3.2.
-	,   CoreProfile     ///< Functionality deprecated in OpenGL version 3.0 is not available.
-	,   SurfaceFormat   ///< Functionality from earlier OpenGL versions is available.
+	    NoProfile            ///< OpenGL version is lower than 3.2.
+	,   CoreProfile          ///< Functionality deprecated in OpenGL version 3.0 is not available.
+	,   CompatibilityProfile ///< Functionality from earlier OpenGL versions is available.
 	};
 
 	// This is based on QSurfaceFormat::SwapBehavior
@@ -27,6 +29,9 @@ public:
 	,   DoubleBuffer    ///< Rendering is done to the back buffer, which is then swapped with the front buffer.
 	,   TripleBuffer    ///< Sometimes used in order to decrease the risk of skipping a frame when the rendering rate is just barely keeping up with the screen refresh rate.
 	};
+
+    static const std::string profileString(const Profile profile);
+    static const std::string swapBehaviorString(const SwapBehavior swapb);
 
 public:
 	ContextFormat();
@@ -78,8 +83,36 @@ public:
 	void setSwapBehavior(const SwapBehavior behavior);
 
 protected:
+
+    /** Compares the created format against the requested one.
+    */
+    static bool verify(
+        const ContextFormat & requested
+    ,   const ContextFormat & created);
+
+    /** Compares (logged if erroneous) version and profile between both formats
+    */
+    static bool verifyVersionAndProfile(
+        const ContextFormat & requested
+    ,   const ContextFormat & current);
+
+    /** Compares (logged if erroneous) buffer sizes and more between both formats
+    */
+    static bool verifyPixelFormat(
+        const ContextFormat & requested
+    ,   const ContextFormat & current);
+
+    /** Used as inline by verifyPixelFormat 
+    */
+    static void verifyBufferSize(
+        const unsigned int sizeRequested
+    ,   const unsigned int sizeInitialized
+    ,   const std::string & warning
+    ,   std::vector<std::string> & issues);
+
+protected:
 	typedef std::multimap<unsigned int, unsigned int> MinorsByMajors;
-	static const MinorsByMajors validVersions();
+	static MinorsByMajors validVersions();
 
 protected:
 	unsigned int m_majorVersion;
