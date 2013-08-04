@@ -13,9 +13,10 @@
 #include <GL/GLUx.h>
 #endif
 
-#include <glow/Window.h>
+#include <glow/Screen.h>
 #include <glow/Log.h>
 
+#include <glow/Window.h>
 
 namespace glow
 {
@@ -32,7 +33,7 @@ Window::Window()
 Window::~Window()
 {
     if (!m_windowed)
-        windowed();
+        restoreDisplaySettings();
 }
 
 const bool Window::create(
@@ -57,7 +58,7 @@ const bool Window::create(
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
     wcex.hIcon          = NULL;
-    wcex.hCursor        = LoadCursor(NULL, IDC_CROSS);
+    wcex.hCursor        = LoadCursor(NULL, IDC_ARROW);
     wcex.hbrBackground  = NULL;
     wcex.lpszMenuName   = NULL;
     wcex.lpszClassName  = className;
@@ -122,25 +123,39 @@ void Window::fullScreen()
 
     m_windowed = false;
 
-    DEVMODE dm;
-    ZeroMemory(&dm, sizeof(DEVMODE));
+    // check current desktop size
 
-    dm.dmSize = sizeof(DEVMODE);
+    unsigned int screenWidth;
+    unsigned int screenHeight;
 
-    dm.dmPelsWidth  = width();
-    dm.dmPelsHeight = height();
-    dm.dmBitsPerPel = 32;
+    Screen::getDesktopResolution(screenWidth, screenHeight);
 
-    dm.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+    // only change display settings on different resolutions.
 
-    const LONG result = ChangeDisplaySettings(&dm, CDS_FULLSCREEN);
-    if (DISP_CHANGE_SUCCESSFUL != result)
+    if (width() != screenWidth || height() != screenHeight)
     {
-        fatal() << "Toggling to fullscreen mode failed (ChangeDisplaySettings).";
-        PrintChangeDisplaySettingsErrorResult(result);
+        DEVMODE dm;
+        ZeroMemory(&dm, sizeof(DEVMODE));
 
-        return;
+        dm.dmSize = sizeof(DEVMODE);
+
+        dm.dmPelsWidth  = width();
+        dm.dmPelsHeight = height();
+        dm.dmBitsPerPel = 32;
+
+        dm.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+
+        const LONG result = ChangeDisplaySettings(&dm, CDS_FULLSCREEN);
+        if (DISP_CHANGE_SUCCESSFUL != result)
+        {
+            fatal() << "Toggling to fullscreen mode failed (ChangeDisplaySettings).";
+            printChangeDisplaySettingsErrorResult(result);
+
+            return;
+        }
     }
+
+    // move window to screen origin
 
     RECT rect;
     rect.left   = 0L;
@@ -165,17 +180,16 @@ void Window::windowed()
 
     m_windowed = true;
 
-    const LONG result = ChangeDisplaySettings(nullptr, NULL);   // Return to the default mode after a dynamic mode change.
-    if (DISP_CHANGE_SUCCESSFUL != result)
-    {
-        fatal() << "Toggling to windowed mode failed (ChangeDisplaySettings).";
-        PrintChangeDisplaySettingsErrorResult(result);
-
-        return;
-    }
+    restoreDisplaySettings();
 
     SetWindowLongPtr(m_hWnd, GWL_STYLE
         , WS_OVERLAPPEDWINDOW | WS_VISIBLE);
+
+    // NOTE: do not use AdjustWindowRect.. 
+    // It somehow messes up the position restore (client origin instead of 
+    // window origin). Working solution here: 
+
+    // http://stackoverflow.com/questions/7193197/is-there-a-graceful-way-to-handle-toggling-between-fullscreen-and-windowed-mode
 
     MoveWindow(m_hWnd, m_rect.left, m_rect.top, width(), height(), TRUE);
 
@@ -192,7 +206,17 @@ const unsigned int Window::height() const
     return m_rect.bottom- m_rect.top;
 }
 
-void Window::PrintChangeDisplaySettingsErrorResult(const LONG result)
+void Window::restoreDisplaySettings()
+{
+    const LONG result = ChangeDisplaySettings(nullptr, NULL);   // Return to the default mode after a dynamic mode change.
+    if (DISP_CHANGE_SUCCESSFUL == result)
+        return;
+
+    fatal() << "Toggling to windowed mode failed (ChangeDisplaySettings).";
+    printChangeDisplaySettingsErrorResult(result);
+}
+
+void Window::printChangeDisplaySettingsErrorResult(const LONG result)
 {
     switch (result)
     {
@@ -226,20 +250,26 @@ void Window::PrintChangeDisplaySettingsErrorResult(const LONG result)
     }
 }
 
-LRESULT CALLBACK Window::MessageHandler(
+LRESULT CALLBACK Window::handleEvent(
     HWND hWnd
 ,   UINT message
 ,   WPARAM wParam
 ,   LPARAM lParam)
 {
+    // Windows Messages: http://msdn.microsoft.com/en-us/library/windows/desktop/ms644927(v=vs.85).aspx#windows_messages
     switch (message)
     {
     case WM_CLOSE:
-        DestroyWindow(m_hWnd);
+        closeEvent();
         break;
 
     case WM_DESTROY:
-        PostQuitMessage(0);
+        destroyEvent();
+        break;
+
+    case WM_SIZING:
+        GetWindowRect(m_hWnd, &m_rect);
+        resizeEvent(width(), height());
         break;
 
     default:
@@ -265,7 +295,7 @@ LRESULT CALLBACK Window::InitialProc(
     SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(window));
     SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&Window::Proc));
 
-    return window->MessageHandler(hWnd, message, wParam, lParam);
+    return window->handleEvent(hWnd, message, wParam, lParam);
 }
 
 LRESULT CALLBACK Window::Proc(
@@ -279,7 +309,24 @@ LRESULT CALLBACK Window::Proc(
 
     assert(window);
 
-    return window->MessageHandler(hWnd, message, wParam, lParam);
+    return window->handleEvent(hWnd, message, wParam, lParam);
+}
+
+
+void Window::closeEvent()
+{
+    DestroyWindow(m_hWnd);
+}
+
+void Window::destroyEvent()
+{
+    PostQuitMessage(0);
+}
+
+void Window::resizeEvent(
+    const unsigned int width
+,   const unsigned int height)
+{
 }
 
 } // namespace glow

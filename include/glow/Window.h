@@ -15,6 +15,10 @@ namespace std
 namespace glow 
 {
 
+/**
+
+    Specialize this class and overwrite virtual event methods for event handling.
+*/
 class GLOW_API Window
 {
 public:
@@ -60,13 +64,23 @@ public:
 
 protected:
 
-    LRESULT CALLBACK MessageHandler(
+    LRESULT CALLBACK handleEvent(
         HWND hWnd       ///< Unique handle of the window. Check this against own handle.
     ,   UINT message
     ,   WPARAM wParam
     ,   LPARAM lParam);
 
-    static void PrintChangeDisplaySettingsErrorResult(const LONG result);
+    static void printChangeDisplaySettingsErrorResult(const LONG result);
+    static void restoreDisplaySettings();
+
+protected:  // Events:
+
+    virtual void closeEvent();
+    virtual void destroyEvent();
+
+    virtual void resizeEvent(
+        const unsigned int width
+    ,   const unsigned int height);
 
 protected:
     HGLRC m_hRC;
@@ -74,7 +88,6 @@ protected:
 
     HWND  m_hWnd;
     RECT  m_rect;
-
 
     bool  m_windowed;
 
