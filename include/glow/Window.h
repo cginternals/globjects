@@ -15,9 +15,11 @@ namespace std
 namespace glow 
 {
 
+class WindowEventHandler;
+
 /**
 
-    Specialize this class and overwrite virtual event methods for event handling.
+    Attach a WindowEventHandler specialization for event handling.
 */
 class GLOW_API Window
 {
@@ -30,21 +32,25 @@ public:
     ,   const unsigned int width = 1280
     ,   const unsigned int height = 720);
 
-    /** Shows and updates the window 
-    */
+    const int handle() const;
+
     void show() const;
+    void hide() const;
 
     void update() const;
     
-    /** Hides the window. 
-    */
-    void hide() const;
-
     void fullScreen();
     void windowed();
 
     const unsigned int width() const;
     const unsigned int height() const;
+
+    /** Attaching an eventhandler dispatches an dettach event to the current 
+        handler, sets the new handler and dispatches an attach event. The old 
+        handler will not be deleted.
+    */
+    void attachEventHandler(WindowEventHandler * eventHandler);
+    WindowEventHandler * eventHandler();
 
     // design similar to:
     // http://www.codeproject.com/Articles/2556/A-Simple-Win32-Window-Wrapper-Class
@@ -64,23 +70,14 @@ public:
 
 protected:
 
-    LRESULT CALLBACK handleEvent(
-        HWND hWnd       ///< Unique handle of the window. Check this against own handle.
+    LRESULT CALLBACK dispatch(
+        HWND hWnd
     ,   UINT message
     ,   WPARAM wParam
     ,   LPARAM lParam);
 
     static void printChangeDisplaySettingsErrorResult(const LONG result);
     static void restoreDisplaySettings();
-
-protected:  // Events:
-
-    virtual void closeEvent();
-    virtual void destroyEvent();
-
-    virtual void resizeEvent(
-        const unsigned int width
-    ,   const unsigned int height);
 
 protected:
     HGLRC m_hRC;
@@ -91,6 +88,7 @@ protected:
 
     bool  m_windowed;
 
+    WindowEventHandler * m_eventHandler;
 };
 
 } // namespace glow

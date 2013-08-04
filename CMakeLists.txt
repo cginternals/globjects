@@ -198,6 +198,7 @@ set(api_includes
     ${header_path}/ref_ptr.hpp
     ${header_path}/Referenced.h
     ${header_path}/RenderBufferObject.h
+    ${header_path}/Screen.h
     ${header_path}/Shader.h
     ${header_path}/ShaderCode.h
     ${header_path}/ShaderFile.h
@@ -207,6 +208,8 @@ set(api_includes
     ${header_path}/Uniform.hpp
     ${header_path}/VertexArrayObject.h
     ${header_path}/VertexAttributeBinding.h
+    ${header_path}/Window.h
+    ${header_path}/WindowEventHandler.h
 )
 
 set(sources
@@ -226,12 +229,15 @@ set(sources
     ${source_path}/Program.cpp
     ${source_path}/Referenced.cpp
     ${source_path}/RenderBufferObject.cpp
+    ${source_path}/Screen.cpp
     ${source_path}/Shader.cpp
     ${source_path}/ShaderCode.cpp
     ${source_path}/ShaderFile.cpp
     ${source_path}/Texture.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
+    ${source_path}/Window.cpp
+    ${source_path}/WindowEventHandler.cpp
 )
 
 # Group source files

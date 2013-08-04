@@ -47,8 +47,8 @@ public:
 	};
 
 	Handle textureHandle() const;
-	
-	bool isResident() const;
+
+	GLboolean isResident() const;
 	Handle makeResident();
 	void makeNonResident();
 

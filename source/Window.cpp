@@ -2,19 +2,14 @@
 #include <cassert>
 #include <string>
 
-#include <GL/glew.h>
-
 #ifdef WIN32
-#include <windows.h>
-#include <gl/GL.h>
-#include <gl/GLU.h>
+#include <Windows.h>
 #else
-#include <GL/glx.h>
-#include <GL/GLUx.h>
 #endif
 
 #include <glow/Screen.h>
 #include <glow/Log.h>
+#include <glow/WindowEventHandler.h>
 
 #include <glow/Window.h>
 
@@ -27,6 +22,8 @@ Window::Window()
 ,   m_hRC(0)
 
 ,   m_windowed(true)
+
+,   m_eventHandler(nullptr)
 {
 }
 
@@ -98,6 +95,11 @@ const bool Window::create(
     assert(this->height() == height);
 
     return true;
+}
+
+const int Window::handle() const
+{
+    return reinterpret_cast<int>(m_hWnd);
 }
 
 void Window::show() const
@@ -250,26 +252,49 @@ void Window::printChangeDisplaySettingsErrorResult(const LONG result)
     }
 }
 
-LRESULT CALLBACK Window::handleEvent(
+void Window::attachEventHandler(WindowEventHandler * eventHandler)
+{
+    if (m_eventHandler == eventHandler)
+        return;
+
+    if (m_eventHandler)
+        m_eventHandler->dettachEvent(this);
+
+    m_eventHandler = eventHandler;
+
+    if (m_eventHandler)
+        m_eventHandler->attachEvent(this);
+}
+
+WindowEventHandler * Window::eventHandler()
+{
+    return m_eventHandler;
+}
+
+LRESULT CALLBACK Window::dispatch(
     HWND hWnd
 ,   UINT message
 ,   WPARAM wParam
 ,   LPARAM lParam)
 {
+    if (!m_eventHandler)
+        return DefWindowProc(hWnd, message, wParam, lParam);
+
     // Windows Messages: http://msdn.microsoft.com/en-us/library/windows/desktop/ms644927(v=vs.85).aspx#windows_messages
     switch (message)
     {
     case WM_CLOSE:
-        closeEvent();
+        m_eventHandler->closeEvent();
+        DestroyWindow(m_hWnd);
         break;
 
     case WM_DESTROY:
-        destroyEvent();
+        m_eventHandler->destroyEvent();
         break;
 
     case WM_SIZING:
         GetWindowRect(m_hWnd, &m_rect);
-        resizeEvent(width(), height());
+        m_eventHandler->resizeEvent(width(), height());
         break;
 
     default:
@@ -295,7 +320,7 @@ LRESULT CALLBACK Window::InitialProc(
     SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(window));
     SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&Window::Proc));
 
-    return window->handleEvent(hWnd, message, wParam, lParam);
+    return window->dispatch(hWnd, message, wParam, lParam);
 }
 
 LRESULT CALLBACK Window::Proc(
@@ -309,24 +334,7 @@ LRESULT CALLBACK Window::Proc(
 
     assert(window);
 
-    return window->handleEvent(hWnd, message, wParam, lParam);
-}
-
-
-void Window::closeEvent()
-{
-    DestroyWindow(m_hWnd);
-}
-
-void Window::destroyEvent()
-{
-    PostQuitMessage(0);
-}
-
-void Window::resizeEvent(
-    const unsigned int width
-,   const unsigned int height)
-{
+    return window->dispatch(hWnd, message, wParam, lParam);
 }
 
 } // namespace glow

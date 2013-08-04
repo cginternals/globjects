@@ -1,7 +1,5 @@
 #pragma once
 
-#include <GL/glew.h>
-
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -95,6 +93,5 @@ GLOW_API LogMessage log(Log::Level level = Log::Debug);
 GLOW_API LogMessage warning();
 GLOW_API LogMessage error();
 GLOW_API LogMessage fatal();
-
 
 } // namespace glow
