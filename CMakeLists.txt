@@ -213,6 +213,7 @@ set(headers
     ${header_path}/ShaderFile.h
     ${header_path}/ShaderSource.h
     ${header_path}/Texture.h
+    ${header_path}/TransformFeedback.h
     ${header_path}/Uniform.h
     ${header_path}/Uniform.hpp
     ${header_path}/VertexArrayObject.h
@@ -237,7 +238,8 @@ set(sources
     ${source_path}/ShaderCode.cpp
     ${source_path}/ShaderFile.cpp
     ${source_path}/Texture.cpp
-    ${source_path}/Uniform.cpp
+    ${source_path}/TransformFeedback.cpp
+	${source_path}/Uniform.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
 )
