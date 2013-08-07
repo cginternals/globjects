@@ -25,9 +25,9 @@ public:
 	// This is based on QSurfaceFormat::SwapBehavior
 	enum SwapBehavior
 	{
-	    SingleBuffer    ///< Might result in flickering when is done directly to screen without an intermediate offscreen buffer.
-	,   DoubleBuffer    ///< Rendering is done to the back buffer, which is then swapped with the front buffer.
-	,   TripleBuffer    ///< Sometimes used in order to decrease the risk of skipping a frame when the rendering rate is just barely keeping up with the screen refresh rate.
+	    SingleBuffering     ///< Might result in flickering when is done directly to screen without an intermediate offscreen buffer.
+	,   DoubleBuffering     ///< Rendering is done to the back buffer, which is then swapped with the front buffer.
+	,   TripleBuffering     ///< Sometimes used in order to decrease the risk of skipping a frame when the rendering rate is just barely keeping up with the screen refresh rate.
 	};
 
     static const std::string profileString(const Profile profile);
@@ -78,7 +78,7 @@ public:
 	bool stereo() const;
 	void setStereo(const bool enable);
 
-	// default: SwapBehavior::DoubleBuffer
+	// default: SwapBehavior::DoubleBuffering
 	SwapBehavior swapBehavior() const;
 	void setSwapBehavior(const SwapBehavior behavior);
 

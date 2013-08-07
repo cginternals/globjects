@@ -18,11 +18,7 @@ namespace glow
 
 Window::Window()
 :   m_hWnd(0)
-,   m_hDC(0)
-,   m_hRC(0)
-
 ,   m_windowed(true)
-
 ,   m_eventHandler(nullptr)
 {
 }
@@ -296,6 +292,24 @@ LRESULT CALLBACK Window::dispatch(
         GetWindowRect(m_hWnd, &m_rect);
         m_eventHandler->resizeEvent(width(), height());
         break;
+
+    case WM_ACTIVATE:
+        // Check for minimization.
+        if (!HIWORD(wParam))
+            m_eventHandler->activateEvent();
+        else
+            m_eventHandler->minimizeEvent();
+        break;
+
+    case WM_SYSCOMMAND: 
+        // Absorb some system commands.
+        switch (wParam)
+        {
+        case SC_SCREENSAVE:
+        case SC_MONITORPOWER:
+            return 0;
+        }
+        break; 
 
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);

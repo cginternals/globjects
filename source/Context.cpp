@@ -20,17 +20,148 @@
 namespace glow
 {
 
-Context::Context()
+Context::Context(const int hWnd)
 :   m_swapInterval(VerticalSyncronization)
 ,   m_id(0)
+,   m_hWnd(hWnd)
+,   m_hRC(0)
+,   m_hDC(0)
 {
 }
 
 Context::~Context()
 {
+    if (isValid())
+        release();
 }
 
-GLuint Context::id() const
+// NOTE: This is not part of the context interface, to avoid platform specific member functions.
+static inline PIXELFORMATDESCRIPTOR pixelFormatDescriptor(const ContextFormat & format)
+{
+    // NTOE: TrippleBufferig not supported yet.
+    // NOTE: Accumulation buffer is not supported.
+
+    // http://msdn.microsoft.com/en-us/library/windows/desktop/dd368826(v=vs.85).aspx
+    PIXELFORMATDESCRIPTOR pfd = 
+    {
+        sizeof(PIXELFORMATDESCRIPTOR)   // WORD  nSize
+    ,   1                               // WORD  nVersion
+    ,   PFD_DRAW_TO_WINDOW              // DWORD dwFlags
+      | PFD_SUPPORT_OPENGL
+      | (format.swapBehavior() == ContextFormat::DoubleBuffering ? PFD_DOUBLEBUFFER : NULL)
+    ,   PFD_TYPE_RGBA                   // BYTE  iPixelType
+    ,   32                              // BYTE  cColorBits;
+    ,   format.redBufferSize()          // BYTE  cRedBits
+    ,   0                               // BYTE  cRedShift
+    ,   format.greenBufferSize()        // BYTE  cGreenBits
+    ,   0                               // BYTE  cGreenShift
+    ,   format.blueBufferSize()         // BYTE  cBlueBits
+    ,   0                               // BYTE  cBlueShift
+    ,   format.alphaBufferSize()        // BYTE  cAlphaBits
+    ,   0                               // BYTE  cAlphaShift
+    ,   0                               // BYTE  cAccumBits
+    ,   0                               // BYTE  cAccumRedBits
+    ,   0                               // BYTE  cAccumGreenBits
+    ,   0                               // BYTE  cAccumBlueBits
+    ,   0                               // BYTE  cAccumAlphaBits
+    ,   format.depthBufferSize()        // BYTE  cDepthBits
+    ,   format.stencilBufferSize()      // BYTE  cStencilBits
+    ,   0                               // BYTE  cAuxBuffers
+    ,   PFD_MAIN_PLANE                  // BYTE  iLayerType
+    ,   0                               // BYTE  bReserved
+    ,   0                               // DWORD dwLayerMask
+    ,   0                               // DWORD dwVisibleMask
+    ,   0                               // DWORD dwDamageMask
+    };
+
+    return pfd;
+}
+
+bool Context::create(const ContextFormat & format)
+{
+    if (isValid())
+    {
+        warning() << "Context is already valid. Create was probably called before.";
+        return false;
+    }
+
+    m_id = NULL;
+
+    PIXELFORMATDESCRIPTOR pfd(pixelFormatDescriptor(format));
+
+    HWND hWnd = reinterpret_cast<HWND>(m_hWnd);
+    m_hDC = GetDC(hWnd);
+
+    if (NULL == m_hDC)
+    {
+        fatal() << "Obtaining a device context failed (GetDC). Error: " << GetLastError();
+        release();
+        return false;
+    }
+
+    int iPixelFormat = ChoosePixelFormat(m_hDC, &pfd);
+    if (0 == iPixelFormat)
+    {
+        fatal() << "Choosing a suitable pixelformat failed (ChoosePixelFormat). Error: " << GetLastError();
+        release();
+        return false;
+    }
+
+    if (FALSE == SetPixelFormat(m_hDC, iPixelFormat, &pfd))
+    {
+        fatal() << "Setting pixel format failed (SetPixelFormat). Error: " << GetLastError();
+        release();
+        return false;
+    }
+
+    // finally create ogl context
+
+    m_hRC = wglCreateContext(m_hDC);
+    if (NULL == m_hRC)
+    {
+        fatal() << "Creating OpenGL context failed (wglCreateContext). Error: " << GetLastError();
+        release();
+        return false;
+    }
+
+    if (FALSE == wglMakeCurrent(m_hDC, m_hRC))
+    {
+        fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
+        release();
+        return false;
+    }
+
+    m_id = reinterpret_cast<int>(m_hRC);
+
+    return true;
+}
+
+void Context::release()
+{
+    if (!wglMakeCurrent(NULL, NULL))
+        warning() << "Release of DC and RC failed (wglMakeCurrent). Error: " << GetLastError();
+
+    if (m_hRC && !wglDeleteContext(m_hRC))
+        warning() << "Deleting OpenGL context failed (wglDeleteContext). Error: " << GetLastError();
+
+    m_hRC = NULL;
+
+    HWND hWnd = reinterpret_cast<HWND>(m_hWnd);
+    if (m_hDC && !ReleaseDC(hWnd, m_hDC))
+        warning() << "Releasing device context failed (ReleaseDC). Error: " << GetLastError();
+
+    m_hDC = NULL;
+}
+
+void Context::swap()
+{
+    assert(isValid());
+
+    if(FALSE == SwapBuffers(m_hDC))
+        warning() << "Swapping buffers failed (SwapBuffers). Error: " << GetLastError();
+}
+
+int Context::id() const
 {
     return m_id;
 }
@@ -43,6 +174,21 @@ bool Context::isValid() const
 const ContextFormat & Context::format() const
 {
 	return m_format;
+}
+
+const std::string Context::swapIntervalString(const SwapInterval swapInterval)
+{
+	switch(swapInterval)
+	{
+    case NoVerticalSyncronization:
+        return "NoVerticalSyncronization";
+    case VerticalSyncronization:
+        return "VerticalSyncronization";
+    case AdaptiveVerticalSyncronization:
+        return "AdaptiveVerticalSyncronization";
+    default:
+        return "";
+	};
 }
 
 Context::SwapInterval Context::swapInterval() const
@@ -88,7 +234,7 @@ bool Context::setSwapInterval(const SwapInterval interval)
 
 	if (!result)
 	{
-		warning() << "Setting swap interval to " << interval << " failed.";
+		warning() << "Setting swap interval to " << swapIntervalString(interval) << " failed.";
         CHECK_ERROR;
 	}
 	else

@@ -15,7 +15,6 @@ class GLOW_API Context
 {
 public:
 
-	// Swap Interval
 	enum SwapInterval
 	{
 	    NoVerticalSyncronization       =  0
@@ -23,10 +22,10 @@ public:
 	,   AdaptiveVerticalSyncronization = -1 ///< requires EXT_swap_control_tear
 	};
 
-public:
+    static const std::string swapIntervalString(const SwapInterval swapInterval);
 
 public:
-    Context();
+    Context(const int hWnd);
     virtual ~Context();
 
     /** Tries to create a context with the given format on the given handle.
@@ -34,24 +33,17 @@ public:
 
         \return isValid() is returned
     */
-    bool create(
-        const int windowHandle
-    ,   const ContextFormat & format);
+    bool create(const ContextFormat & format);
+    void release();
 
     /** returns the context id. 
     */
-    GLuint id() const;
+    int id() const;
 
     bool makeCurrent();
     void doneCurrent();
 
-    //typedef std::set<const std::string> Extensions;
-    //Extensions & extensions();
-
-    //void setExtensions(const Extensions & extensions);
-    //const Extensions & extensions() const;
-
-    //virtual bool hasExtension(const QByteArray & extension) const;
+    void swap();
 
     /** The returned format refers to the created context, not the requested one.
     */
@@ -72,7 +64,11 @@ protected:
 	SwapInterval m_swapInterval;
     ContextFormat m_format;
 
-    GLuint m_id;
+    HGLRC m_hRC;
+    HDC   m_hDC;
+
+    const int m_hWnd;
+    int m_id;
 };
 
 } // namespace glow

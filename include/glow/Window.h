@@ -80,9 +80,6 @@ protected:
     static void restoreDisplaySettings();
 
 protected:
-    HGLRC m_hRC;
-    HDC   m_hDC;
-
     HWND  m_hWnd;
     RECT  m_rect;
 

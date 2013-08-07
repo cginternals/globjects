@@ -20,6 +20,9 @@ public:
     virtual void closeEvent();
     virtual void destroyEvent();
 
+    virtual void activateEvent();
+    virtual void minimizeEvent();
+
     virtual void resizeEvent(
         const unsigned int width
     ,   const unsigned int height);

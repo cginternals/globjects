@@ -34,6 +34,16 @@ void WindowEventHandler::dettachEvent(Window * window)
     m_window = nullptr;
 }
 
+void WindowEventHandler::activateEvent()
+{
+
+}
+
+void WindowEventHandler::minimizeEvent()
+{
+
+}
+
 void WindowEventHandler::closeEvent()
 {
     assert(m_window);

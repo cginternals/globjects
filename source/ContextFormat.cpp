@@ -28,7 +28,7 @@ ContextFormat::ContextFormat()
 ,	m_stencilBufferSize(0)
 
 ,	m_stereo(false)
-,	m_swapBehavior(DoubleBuffer)
+,	m_swapBehavior(DoubleBuffering)
 
 ,	m_samples(0)
 {
@@ -222,12 +222,12 @@ const std::string ContextFormat::swapBehaviorString(const SwapBehavior swapb)
 {
     switch (swapb)
     {
-	case SingleBuffer:
-        return "SingleBuffer";
-    case DoubleBuffer:
-        return "DoubleBuffer";
-    case TripleBuffer:
-        return "TripleBuffer";
+	case SingleBuffering:
+        return "SingleBuffering";
+    case DoubleBuffering:
+        return "DoubleBuffering";
+    case TripleBuffering:
+        return "TripleBuffering";
     default:
         return "";
     }
