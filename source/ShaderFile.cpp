@@ -1,7 +1,7 @@
 #include <glow/ShaderFile.h>
 #include <glow/Shader.h>
 #include <glow/internal/FileReader.h>
-#include <glow/Log.h>
+#include <glow/logging.h>
 
 using namespace glow;
 

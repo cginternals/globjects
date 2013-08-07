@@ -11,7 +11,7 @@
 #include <glow/Array.hpp>
 #include <glow/ShaderFile.h>
 #include <glow/Error.h>
-#include <glow/Log.h>
+#include <glow/logging.h>
 
 
 Vertex::Vertex()

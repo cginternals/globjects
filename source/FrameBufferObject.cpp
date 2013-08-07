@@ -1,5 +1,5 @@
 #include <glow/FrameBufferObject.h>
-#include <glow/Log.h>
+#include <glow/logging.h>
 
 #include <sstream>
 

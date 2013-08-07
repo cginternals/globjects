@@ -199,9 +199,12 @@ set(headers
     ${header_path}/Buffer.h
     ${header_path}/Changeable.h
     ${header_path}/ChangeListener.h
+    ${header_path}/ConsoleLogger.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferObject.h
-    ${header_path}/Log.h
+    ${header_path}/logging.h
+    ${header_path}/LoggingInterface.h
+    ${header_path}/LogMessage.h
     ${header_path}/Object.h
     ${header_path}/Program.h
     ${header_path}/Program.hpp
@@ -227,9 +230,11 @@ set(sources
     ${source_path}/AbstractUniform.cpp
     ${source_path}/Buffer.cpp
     ${source_path}/Changeable.cpp
+    ${source_path}/ConsoleLogger.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferObject.cpp
-    ${source_path}/Log.cpp
+    ${source_path}/logging.cpp
+    ${source_path}/LogMessage.cpp
     ${source_path}/Object.cpp
     ${source_path}/Program.cpp
     ${source_path}/Referenced.cpp
@@ -239,7 +244,7 @@ set(sources
     ${source_path}/ShaderFile.cpp
     ${source_path}/Texture.cpp
     ${source_path}/TransformFeedback.cpp
-	${source_path}/Uniform.cpp
+    ${source_path}/Uniform.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
 )

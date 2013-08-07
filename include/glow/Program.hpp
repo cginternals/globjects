@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glow/Log.h>
+#include <glow/logging.h>
 #include <glow/Uniform.h>
 
 namespace glow

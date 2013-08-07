@@ -4,7 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glow/Program.h>
-#include <glow/Log.h>
+#include <glow/logging.h>
 #include <glow/Uniform.h>
 
 namespace glow

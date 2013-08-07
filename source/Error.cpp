@@ -1,7 +1,7 @@
 #include <glow/Error.h>
 
 //#include <stdexcept>
-#include <glow/Log.h>
+#include <glow/logging.h>
 #include <sstream>
 
 using namespace glow;
