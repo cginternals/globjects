@@ -8,6 +8,13 @@
 
 namespace glow {
 
+/** \brief The LogMessage class encapsulates a simple log message and its severity level.
+
+	LogMessages are handled and dispatched by the global logging handler which has to be a subclass of LoggingInterface.
+
+	\see logging.h
+	\see LoggingInterface
+*/
 class GLOW_API LogMessage
 {
 public:
@@ -28,6 +35,24 @@ protected:
 	std::string _message;
 };
 
+/** \brief The LogMessageBuilder class builds a LogMessage from different kinds of primitive types.
+
+	The LogMessageBuilder is  usually created by one of the global functions log, debug, warning, error or fatal.
+	It works similar to streams and accepts a number of different types which will be converted to strings automatically.
+	When it goes out of scope, it creates a LogMessage from all streamed objects and sends it to the default log handler.
+
+	Typeical usage of the LogMessageBuilder:
+	\code{.cpp}
+		warning() << "This is warning number " << 3;
+	\endcode
+
+	\see logging.h
+	\see LogMessage
+	\see setLoggingHandler
+	\see log
+	\see debug
+	\see warning
+*/
 class GLOW_API LogMessageBuilder
 {
 public:

@@ -4,6 +4,13 @@
 
 namespace glow {
 
+/** \brief The ConsoleLogger class writes LogMessages to stdout.
+
+	This is the default LogMessage handler of glow.
+
+	\see setLoggingHandler
+	\see logging.h
+*/
 class ConsoleLogger : public LoggingInterface
 {
 public:
