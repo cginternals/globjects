@@ -5,36 +5,52 @@
 
 #include <glow/Screen.h>
 #include <glow/Window.h>
-#include <glow/Context.h>
+#include <glow/ContextFormat.h>
+#include <glow/WindowEventHandler.h>
 
 using namespace glow;
+
+class EventHandler : public WindowEventHandler
+{
+public:
+    EventHandler()
+    {
+    }
+    
+    virtual ~EventHandler()
+    {
+    }
+
+    virtual void initializeEvent()
+    {
+        glClearColor(1.f, 1.f, 1.f, 1.f);
+    }
+    
+    virtual void resizeEvent(
+        const unsigned int width
+    ,   const unsigned int height)
+    {
+        glViewport(0, 0, width, height);
+    }
+
+    virtual void paintEvent()
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+};
 
 int main(int argc, char** argv)
 {
     unsigned int width, height;
     Screen::getDesktopResolution(width, height);
 
-    glow::Window w;
-    w.create("test", width, height);
-    w.show();
+    ContextFormat format;
+    EventHandler events;
 
-    Sleep(2000);
+    Window window;
 
-    glow::ContextFormat f;
+    window.create(format, "Create Context Example", 1280, 720);
+    window.show();
 
-    glow::Context c(w.handle());
-    c.create(f);
-
-    w.fullScreen();
-
-    glViewport(0, 0, width, height);
-
-    glClearColor(0.f, 0.f, 0.f, 0.f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    c.swap();
-
-    Sleep(2000);
-
-    return 0;
+    return window.run(&events);
 }

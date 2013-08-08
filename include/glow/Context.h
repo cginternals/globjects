@@ -25,7 +25,7 @@ public:
     static const std::string swapIntervalString(const SwapInterval swapInterval);
 
 public:
-    Context(const int hWnd);
+    Context();
     virtual ~Context();
 
     /** Tries to create a context with the given format on the given handle.
@@ -33,7 +33,9 @@ public:
 
         \return isValid() is returned
     */
-    bool create(const ContextFormat & format);
+    bool create(
+        const int hWnd
+    ,   const ContextFormat & format);
     void release();
 
     /** returns the context id. 
@@ -41,7 +43,7 @@ public:
     int id() const;
 
     bool makeCurrent();
-    void doneCurrent();
+    bool doneCurrent();
 
     void swap();
 
@@ -67,7 +69,7 @@ protected:
     HGLRC m_hRC;
     HDC   m_hDC;
 
-    const int m_hWnd;
+    int m_hWnd;
     int m_id;
 };
 

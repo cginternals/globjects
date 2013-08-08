@@ -16,6 +16,8 @@ namespace glow
 {
 
 class WindowEventHandler;
+class ContextFormat;
+class Context;
 
 /**
 
@@ -28,7 +30,8 @@ public:
     virtual ~Window();
 
     bool create(
-        const std::string & title = ""
+        const ContextFormat & format
+    ,   const std::string & title = ""
     ,   const unsigned int width = 1280
     ,   const unsigned int height = 720);
 
@@ -38,19 +41,21 @@ public:
     void hide() const;
 
     void update() const;
-    
+
+    /** This enters the (main) windows message loop and dispatches events to
+        the attached WindowEventHandler instance.
+    */
+    int run(
+        WindowEventHandler * eventHandler = nullptr
+    ,   const unsigned int paintInterval = 0);
+
+    void paint();
+
+    int width() const;
+    int height() const;
+
     void fullScreen();
     void windowed();
-
-    unsigned int width() const;
-    unsigned int height() const;
-
-    /** Attaching an eventhandler dispatches an dettach event to the current 
-        handler, sets the new handler and dispatches an attach event. The old 
-        handler will not be deleted.
-    */
-    void attachEventHandler(WindowEventHandler * eventHandler);
-    WindowEventHandler * eventHandler();
 
     // design similar to:
     // http://www.codeproject.com/Articles/2556/A-Simple-Win32-Window-Wrapper-Class
@@ -81,11 +86,17 @@ protected:
 
 protected:
     HWND  m_hWnd;
-    RECT  m_rect;
+
+    int m_left;
+    int m_top;
+
+    int m_width;
+    int m_height;
 
     bool  m_windowed;
 
     WindowEventHandler * m_eventHandler;
+    Context * m_context;
 };
 
 } // namespace glow

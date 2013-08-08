@@ -20,10 +20,10 @@
 namespace glow
 {
 
-Context::Context(const int hWnd)
+Context::Context()
 :   m_swapInterval(VerticalSyncronization)
 ,   m_id(0)
-,   m_hWnd(hWnd)
+,   m_hWnd(0)
 ,   m_hRC(0)
 ,   m_hDC(0)
 {
@@ -77,7 +77,9 @@ static inline PIXELFORMATDESCRIPTOR pixelFormatDescriptor(const ContextFormat & 
     return pfd;
 }
 
-bool Context::create(const ContextFormat & format)
+bool Context::create(
+    const int hWnd
+,   const ContextFormat & format)
 {
     if (isValid())
     {
@@ -85,12 +87,12 @@ bool Context::create(const ContextFormat & format)
         return false;
     }
 
+    m_hWnd = hWnd;
     m_id = NULL;
 
     PIXELFORMATDESCRIPTOR pfd(pixelFormatDescriptor(format));
 
-    HWND hWnd = reinterpret_cast<HWND>(m_hWnd);
-    m_hDC = GetDC(hWnd);
+    m_hDC = GetDC(reinterpret_cast<HWND>(m_hWnd));
 
     if (NULL == m_hDC)
     {
@@ -124,9 +126,8 @@ bool Context::create(const ContextFormat & format)
         return false;
     }
 
-    if (FALSE == wglMakeCurrent(m_hDC, m_hRC))
+    if (makeCurrent())
     {
-        fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
         release();
         return false;
     }
@@ -138,6 +139,9 @@ bool Context::create(const ContextFormat & format)
 
 void Context::release()
 {
+    if (!isValid())
+        return;
+
     if (!wglMakeCurrent(NULL, NULL))
         warning() << "Release of DC and RC failed (wglMakeCurrent). Error: " << GetLastError();
 
@@ -145,6 +149,7 @@ void Context::release()
         warning() << "Deleting OpenGL context failed (wglDeleteContext). Error: " << GetLastError();
 
     m_hRC = NULL;
+    m_id = 0;
 
     HWND hWnd = reinterpret_cast<HWND>(m_hWnd);
     if (m_hDC && !ReleaseDC(hWnd, m_hDC))
@@ -241,6 +246,30 @@ bool Context::setSwapInterval(const SwapInterval interval)
 		m_swapInterval = interval;
 
 	return result;
+}
+
+bool Context::makeCurrent()
+{
+    if (!isValid())
+        return false;
+
+    const BOOL result = wglMakeCurrent(m_hDC, m_hRC);
+    if (!result)
+        fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
+
+    return TRUE == result;
+}
+
+bool Context::doneCurrent()
+{
+    if (!isValid())
+        return false;
+
+    const BOOL result = wglMakeCurrent(m_hDC, NULL);
+    if (!result)
+        warning() << "Release of RC failed (wglMakeCurrent). Error: " << GetLastError();
+
+    return TRUE == result;
 }
 
 } // namespace glow

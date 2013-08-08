@@ -10,6 +10,7 @@
 #include <glow/Screen.h>
 #include <glow/Log.h>
 #include <glow/WindowEventHandler.h>
+#include <glow/Context.h>
 
 #include <glow/Window.h>
 
@@ -18,19 +19,33 @@ namespace glow
 
 Window::Window()
 :   m_hWnd(0)
-,   m_windowed(true)
 ,   m_eventHandler(nullptr)
+,   m_context(nullptr)
+,   m_windowed(true)
+,   m_left(-1)
+,   m_top(-1)
+,   m_width(-1)
+,   m_height(-1)
 {
 }
 
 Window::~Window()
 {
+    if (m_context)
+    {
+        m_context->release();
+        delete m_context;
+
+        m_context = nullptr;
+    }
+
     if (!m_windowed)
         restoreDisplaySettings();
 }
 
 bool Window::create(
-    const std::string & title
+    const ContextFormat & format
+,   const std::string & title
 ,   const unsigned int width
 ,   const unsigned int height)
 {
@@ -85,12 +100,34 @@ bool Window::create(
 
     update();
 
-    GetWindowRect(m_hWnd, &m_rect);
+    // retrieve window rect
+
+    RECT rect;
+    GetWindowRect(m_hWnd, &rect);
+
+    m_left = rect.left;
+    m_top = rect.top;
+
+    m_width  = rect.right - rect.left;
+    m_height = rect.bottom - rect.top;
 
     assert(this->width()  == width);
     assert(this->height() == height);
 
-    return true;
+    // setup context
+
+    m_context = new Context();
+    return m_context->create(handle(), format);
+}
+
+int Window::width() const
+{
+    return m_width;
+}
+
+int Window::height() const
+{
+    return m_height;
 }
 
 int Window::handle() const
@@ -101,7 +138,12 @@ int Window::handle() const
 void Window::show() const
 {
     ShowWindow(m_hWnd, SW_SHOWNORMAL);
-    update();
+    UpdateWindow(m_hWnd);
+}
+
+void Window::hide() const
+{
+    ShowWindow(m_hWnd, 0);
 }
 
 void Window::update() const
@@ -109,9 +151,67 @@ void Window::update() const
     UpdateWindow(m_hWnd);
 }
 
-void Window::hide() const
+int Window::run(
+    WindowEventHandler * eventHandler
+,   const unsigned int paintInterval)
 {
-    ShowWindow(m_hWnd, 0);
+    assert(nullptr == m_eventHandler);
+    m_eventHandler = eventHandler;
+
+    if (m_eventHandler)
+    {
+        m_context->makeCurrent();
+        m_eventHandler->initializeEvent();
+        m_eventHandler->resizeEvent(m_width, m_height);
+        m_context->doneCurrent();
+    }
+
+
+    // TODO: use timer if paintInterval is noteq 0
+    
+    MSG  msg;
+    do
+    {
+        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+        else if (0 == paintInterval)
+            InvalidateRect(m_hWnd, NULL, FALSE);
+        else if (m_eventHandler)
+            m_eventHandler->idleEvent();
+
+    } while (WM_CLOSE != msg.message && WM_QUIT != msg.message);
+
+    if (m_eventHandler)
+    {
+        m_context->makeCurrent();
+        m_eventHandler->deinitializeEvent();
+        m_context->doneCurrent();
+    }
+        
+
+    return static_cast<int>(msg.wParam);
+}
+
+void Window::paint()
+{
+    assert(nullptr != m_context);
+
+    // http://stackoverflow.com/questions/2842319/swapbuffers-causes-redraw
+
+    PAINTSTRUCT ps;
+    HDC hDC = BeginPaint(m_hWnd, &ps);
+
+    m_context->makeCurrent();
+            
+    m_eventHandler->paintEvent();
+    m_context->swap();
+
+    m_context->doneCurrent();
+
+    EndPaint(m_hWnd,&ps);
 }
 
 void Window::fullScreen()
@@ -189,19 +289,9 @@ void Window::windowed()
 
     // http://stackoverflow.com/questions/7193197/is-there-a-graceful-way-to-handle-toggling-between-fullscreen-and-windowed-mode
 
-    MoveWindow(m_hWnd, m_rect.left, m_rect.top, width(), height(), TRUE);
+    MoveWindow(m_hWnd, m_left, m_top, m_width, m_height, TRUE);
 
     update();
-}
-
-unsigned int Window::width() const
-{
-    return m_rect.right - m_rect.left;
-}
-
-unsigned int Window::height() const
-{
-    return m_rect.bottom- m_rect.top;
 }
 
 void Window::restoreDisplaySettings()
@@ -248,25 +338,6 @@ void Window::printChangeDisplaySettingsErrorResult(const LONG result)
     }
 }
 
-void Window::attachEventHandler(WindowEventHandler * eventHandler)
-{
-    if (m_eventHandler == eventHandler)
-        return;
-
-    if (m_eventHandler)
-        m_eventHandler->dettachEvent(this);
-
-    m_eventHandler = eventHandler;
-
-    if (m_eventHandler)
-        m_eventHandler->attachEvent(this);
-}
-
-WindowEventHandler * Window::eventHandler()
-{
-    return m_eventHandler;
-}
-
 LRESULT CALLBACK Window::dispatch(
     HWND hWnd
 ,   UINT message
@@ -280,26 +351,37 @@ LRESULT CALLBACK Window::dispatch(
     switch (message)
     {
     case WM_CLOSE:
-        m_eventHandler->closeEvent();
         DestroyWindow(m_hWnd);
         break;
 
     case WM_DESTROY:
-        m_eventHandler->destroyEvent();
         break;
 
+    case WM_SIZE:
     case WM_SIZING:
-        GetWindowRect(m_hWnd, &m_rect);
-        m_eventHandler->resizeEvent(width(), height());
+        m_width  = HIWORD(lParam);
+        m_height = LOWORD(lParam);
+
+        if (m_context)
+        {
+            m_context->makeCurrent();
+            m_eventHandler->resizeEvent(m_width, m_height);
+            m_context->doneCurrent();
+        }
         break;
 
-    case WM_ACTIVATE:
-        // Check for minimization.
-        if (!HIWORD(wParam))
-            m_eventHandler->activateEvent();
-        else
-            m_eventHandler->minimizeEvent();
+    case WM_PAINT:
+        assert(hWnd == m_hWnd);
+        paint();
         break;
+
+    //case WM_ACTIVATE:
+    //    // Check for minimization.
+    //    if (!HIWORD(wParam))
+    //        m_eventHandler->activateEvent();
+    //    else
+    //        m_eventHandler->minimizeEvent();
+    //    break;
 
     case WM_SYSCOMMAND: 
         // Absorb some system commands.
@@ -309,7 +391,6 @@ LRESULT CALLBACK Window::dispatch(
         case SC_MONITORPOWER:
             return 0;
         }
-        break; 
 
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
