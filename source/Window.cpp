@@ -71,16 +71,7 @@ Window::Window()
 
 Window::~Window()
 {
-    if (m_context)
-    {
-        m_context->release();
-        delete m_context;
-
-        m_context = nullptr;
-    }
-
-    if (!m_windowed)
-        restoreDisplaySettings();
+    destroy();
 }
 
 bool Window::create(
@@ -160,6 +151,20 @@ bool Window::create(
     return m_context->create(handle(), format);
 }
 
+void Window::destroy()
+{
+    if (m_context)
+    {
+        m_context->release();
+        delete m_context;
+
+        m_context = nullptr;
+    }
+
+    if (!m_windowed)
+        restoreDisplaySettings();
+}
+
 int Window::width() const
 {
     return m_width;
@@ -222,7 +227,7 @@ int Window::run(
         else if (m_eventHandler)
             m_eventHandler->idleEvent();
 
-    } while (WM_CLOSE != msg.message && WM_QUIT != msg.message);
+    } while (WM_QUIT != msg.message);
 
     if (m_eventHandler)
     {
@@ -230,7 +235,7 @@ int Window::run(
         m_eventHandler->deinitializeEvent();
         m_context->doneCurrent();
     }
-        
+    DestroyWindow(m_hWnd);        
 
     return static_cast<int>(msg.wParam);
 }
@@ -357,10 +362,11 @@ LRESULT CALLBACK Window::dispatch(
     switch (message)
     {
     case WM_CLOSE:
-        DestroyWindow(m_hWnd);
+        PostQuitMessage(0);
         break;
 
     case WM_DESTROY:
+        destroy();
         break;
 
     case WM_SIZE:

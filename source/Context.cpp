@@ -130,12 +130,6 @@ bool Context::create(
         return false;
     }
 
-    if (makeCurrent())
-    {
-        release();
-        return false;
-    }
-
     m_id = reinterpret_cast<int>(m_hRC);
 
     return true;
@@ -146,7 +140,7 @@ void Context::release()
     if (!isValid())
         return;
 
-    if (!wglMakeCurrent(NULL, NULL))
+    if(m_hRC == wglGetCurrentContext() && !wglMakeCurrent(NULL, NULL))
         warning() << "Release of DC and RC failed (wglMakeCurrent). Error: " << GetLastError();
 
     if (m_hRC && !wglDeleteContext(m_hRC))

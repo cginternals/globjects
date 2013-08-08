@@ -36,6 +36,8 @@ public:
     ,   const unsigned int width = 1280
     ,   const unsigned int height = 720);
 
+    void destroy();
+
     int handle() const;
 
     void show() const;
