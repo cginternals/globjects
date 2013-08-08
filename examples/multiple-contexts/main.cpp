@@ -65,8 +65,8 @@ int main(int argc, char** argv)
         windows[i].show();
 
         // make some random windows post quit on destroy ;)
-        if (0 == rand() % 3)
-            windows[i].setQuitOnDestroy(true);
+        if (0 == rand() % 2)
+            windows[i].setQuitOnDestroy(false);
     }
     return Window::run();
 }

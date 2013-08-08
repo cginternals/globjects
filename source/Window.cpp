@@ -64,6 +64,17 @@ static inline void printChangeDisplaySettingsErrorResult(const LONG result)
     }
 }
 
+Window::Rect::Rect(
+    int left
+,   int top
+,   int width
+,   int height)
+:   left(left)
+,   top(top)
+,   width(width)
+,   height(height)
+{
+}
 
 Window::Window()
 :   m_hWnd(0)
@@ -71,13 +82,8 @@ Window::Window()
 ,   m_eventHandler(nullptr)
 ,   m_context(nullptr)
 
-,   m_windowed(true)
-,   m_quitOnDestroy(false)
-
-,   m_left(-1)
-,   m_top(-1)
-,   m_width(-1)
-,   m_height(-1)
+,   m_mode(WindowMode)
+,   m_quitOnDestroy(true)
 {
     s_windows.insert(this);
 }
@@ -159,14 +165,10 @@ bool Window::create(
     RECT rect;
     GetWindowRect(m_hWnd, &rect);
 
-    m_left = rect.left;
-    m_top = rect.top;
+    m_rect = Rect(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
 
-    m_width  = rect.right - rect.left;
-    m_height = rect.bottom - rect.top;
-
-    assert(this->width()  == width);
-    assert(this->height() == height);
+    assert(m_rect.width  == width);
+    assert(m_rect.height == height);
 
     // setup context
 
@@ -210,18 +212,8 @@ void Window::onDestroy()
 {
     m_hWnd = 0;
 
-    if (!m_windowed)
+    if (m_mode != WindowMode)
         restoreDisplaySettings();
-}
-
-int Window::width() const
-{
-    return m_width;
-}
-
-int Window::height() const
-{
-    return m_height;
 }
 
 int Window::handle() const
@@ -325,7 +317,7 @@ void Window::onValidContext()
     m_context->makeCurrent();
 
     m_eventHandler->initializeEvent(*this);
-    m_eventHandler->resizeEvent(*this, width(), height());
+    m_eventHandler->resizeEvent(*this, m_rect.width, m_rect.height);
 
     m_context->doneCurrent();
 }
@@ -334,16 +326,16 @@ void Window::onResize(
     const int width
 ,   const int height)
 {
-    if (width == m_width && height == m_height)
+    if (width == m_rect.width && height == m_rect.height)
         return;
 
-    m_width  = width;
-    m_height = height;
+    m_rect.width  = width;
+    m_rect.height = height;
 
     if (m_context && m_eventHandler)
     {
         m_context->makeCurrent();
-        m_eventHandler->resizeEvent(*this, m_width, m_height);
+        m_eventHandler->resizeEvent(*this, m_rect.width, m_rect.height);
         m_context->doneCurrent();
     }
 }
@@ -356,10 +348,20 @@ void Window::onIdle()
 
 void Window::fullScreen()
 {
-    if (!m_windowed)
+    if (WindowMode != m_mode)
         return;
 
-    m_windowed = false;
+    m_mode = TransitionMode;
+
+    // backup window rect
+
+    RECT rect;
+    GetWindowRect(m_hWnd, &rect);
+
+    m_backup = Rect(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
+
+    SetWindowLongPtr(m_hWnd, GWL_STYLE
+        , WS_SYSMENU | WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE);
 
     // check current desktop size
 
@@ -368,17 +370,20 @@ void Window::fullScreen()
 
     Screen::getDesktopResolution(screenWidth, screenHeight);
 
+
     // only change display settings on different resolutions.
 
-    if (width() != screenWidth || height() != screenHeight)
+    if (m_rect.width != screenWidth || m_rect.height != screenHeight)
     {
+        // TODO: retrieve nearest supported resolution
+
         DEVMODE dm;
         ZeroMemory(&dm, sizeof(DEVMODE));
 
         dm.dmSize = sizeof(DEVMODE);
 
-        dm.dmPelsWidth  = width();
-        dm.dmPelsHeight = height();
+        dm.dmPelsWidth  = m_rect.width;
+        dm.dmPelsHeight = m_rect.height;
         dm.dmBitsPerPel = 32;
 
         dm.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
@@ -393,45 +398,48 @@ void Window::fullScreen()
         }
     }
 
-    // move window to screen origin
-
-    RECT rect;
-    rect.left   = 0L;
-    rect.right  = width();
-    rect.top    = 0L;
-    rect.bottom = height();
-
-    SetWindowLongPtr(m_hWnd, GWL_STYLE
-        , WS_SYSMENU | WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE);
-    MoveWindow(m_hWnd, 0, 0, width(), height(), TRUE);
+    MoveWindow(m_hWnd, 0, 0, m_rect.width, m_rect.height, TRUE);
 
     SetForegroundWindow(m_hWnd);
     SetFocus(m_hWnd);
 
-    UpdateWindow(m_hWnd);
+    m_mode = FullScreenMode;
 }
 
 void Window::windowed()
 {
-    if (m_windowed)
+    if (FullScreenMode != m_mode)
         return;
 
-    m_windowed = true;
+    m_mode = TransitionMode;
+
+    // http://stackoverflow.com/questions/7193197/is-there-a-graceful-way-to-handle-toggling-between-fullscreen-and-windowed-mode
 
     restoreDisplaySettings();
-
-    SetWindowLongPtr(m_hWnd, GWL_STYLE
-        , WS_OVERLAPPEDWINDOW | WS_VISIBLE);
 
     // NOTE: do not use AdjustWindowRect.. 
     // It somehow messes up the position restore (client origin instead of 
     // window origin). Working solution here: 
 
-    // http://stackoverflow.com/questions/7193197/is-there-a-graceful-way-to-handle-toggling-between-fullscreen-and-windowed-mode
+    MoveWindow(m_hWnd, m_backup.left, m_backup.top, m_backup.width, m_backup.height, TRUE);
 
-    MoveWindow(m_hWnd, m_left, m_top, m_width, m_height, TRUE);
-    
-    UpdateWindow(m_hWnd);
+    SetWindowLongPtr(m_hWnd, GWL_STYLE
+        , WS_OVERLAPPEDWINDOW | WS_VISIBLE);
+
+    m_mode = WindowMode;
+}
+
+void Window::toggleMode()
+{
+    switch (m_mode)
+    {
+    case TransitionMode:
+        return;
+    case FullScreenMode:
+        return windowed();
+    case WindowMode:
+        return fullScreen();
+    }
 }
 
 void Window::restoreDisplaySettings()
@@ -468,8 +476,7 @@ LRESULT CALLBACK Window::dispatch(
         break;
 
     case WM_SIZE:
-    case WM_SIZING:
-        onResize(HIWORD(lParam), LOWORD(lParam));
+        onResize(LOWORD(lParam), HIWORD(lParam));
         break;
 
     case WM_PAINT:
@@ -482,22 +489,14 @@ LRESULT CALLBACK Window::dispatch(
 
     case WM_KEYDOWN:
     case WM_SYSKEYDOWN:
-        {
-            KeyEvent kEvent(KeyEvent::KeyPress, LOWORD(wParam));
-            processKeyEvent(kEvent, m_eventHandler);
-            if (!kEvent.isAccepted())
-                return DefWindowProc(hWnd, message, wParam, lParam);
-        }
+        if(!onKeyPress(LOWORD(wParam)))
+            DefWindowProc(hWnd, message, wParam, lParam);
         break;
 
     case WM_KEYUP:
     case WM_SYSKEYUP:
-        {
-            KeyEvent kEvent(KeyEvent::KeyRelease, LOWORD(wParam));
-            processKeyEvent(kEvent, m_eventHandler);
-            if (!kEvent.isAccepted())
-                return DefWindowProc(hWnd, message, wParam, lParam);
-        }
+        if(!onKeyRelease(LOWORD(wParam)))
+            DefWindowProc(hWnd, message, wParam, lParam);
         break;
 
     //case WM_ACTIVATE:
@@ -557,20 +556,44 @@ LRESULT CALLBACK Window::Proc(
     return window->dispatch(hWnd, message, wParam, lParam);
 }
 
-void Window::processKeyEvent(
-    KeyEvent & event
-,   WindowEventHandler * eventHandler)
+bool Window::onKeyPress(const unsigned short key)
 {
-    switch (event.key())
+    KeyEvent kpe(KeyEvent::KeyPress, key);
+    
+
+    m_keysPressed.insert(kpe.key());
+    return kpe.isAccepted();
+}
+
+
+bool Window::onKeyRelease(const unsigned short key)
+{
+    KeyEvent kre(KeyEvent::KeyRelease, key);
+
+    switch (kre.key())
     {
     case KeyEvent::KeyEscape:
-        event.accept();
-        PostQuitMessage(0);
-        return;
+        kre.accept();
+        SendMessage(m_hWnd, WM_CLOSE, NULL, NULL);
+        break;
 
-    default:
-        event.discard();
+    case KeyEvent::KeyReturn:
+        if (m_keysPressed.find(KeyEvent::KeyAlt) != m_keysPressed.cend())
+        {
+            kre.accept();
+            toggleMode();
+        }
+        break;
+
+    default: 
+        break;
     }
+
+    const auto f = m_keysPressed.find(kre.key());
+    if (f != m_keysPressed.cend())
+        m_keysPressed.erase(f);
+
+    return kre.isAccepted();
 }
 
 } // namespace glow

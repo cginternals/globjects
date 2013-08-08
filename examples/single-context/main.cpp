@@ -23,7 +23,7 @@ public:
 
     virtual void initializeEvent(Window & window)
     {
-        glClearColor(1.f, 1.f, 1.f, 1.f);
+        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
     }
     
     virtual void resizeEvent(
@@ -31,7 +31,7 @@ public:
     ,   const unsigned int width
     ,   const unsigned int height)
     {
-        glViewport(0, 0, width, height);
+        glViewport(2, 2, width - 4, height - 4);
     }
 
     virtual void paintEvent(Window & window)
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
     Window window;
     window.attach(&handler);
 
-    window.create(format, "Single Context Example", 1280, 720);
+    window.create(format, "Single Context Example", 1280, 800);
     window.show();
 
     return Window::run();

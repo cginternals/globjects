@@ -9,6 +9,8 @@
 
 #include <glow/glow.h>
 
+#include <glow/KeyEvent.h>
+
 
 namespace std
 {
@@ -21,7 +23,6 @@ namespace glow
 class WindowEventHandler;
 class ContextFormat;
 class Context;
-class KeyEvent;
 
 /**
 
@@ -29,6 +30,21 @@ class KeyEvent;
 */
 class GLOW_API Window
 {
+public:
+    struct Rect
+    {
+        Rect(
+            int left   = 0
+        ,   int top    = 0 
+        ,   int width  = 0
+        ,   int height = 0);
+
+        int left;
+        int top;
+        int width;
+        int height;
+    };
+
 public:
     Window();
     virtual ~Window();
@@ -51,11 +67,9 @@ public:
     void show() const;
     void hide() const;
 
-    int width() const;
-    int height() const;
-
     void fullScreen();
     void windowed();
+    void toggleMode();
     
     /** If enabled, this causes an application wide quit message to be posted
         when the window gets destroyed. Hence, the static window loop (run) 
@@ -100,6 +114,9 @@ protected:
 
     void onValidContext();
 
+    bool onKeyPress(const unsigned short key);
+    bool onKeyRelease(const unsigned short key);
+
 protected:
     LRESULT CALLBACK dispatch(
         HWND hWnd
@@ -119,14 +136,23 @@ protected:
     WindowEventHandler * m_eventHandler;
     Context * m_context;
 
-    bool m_windowed;
     bool m_quitOnDestroy;
 
-    int m_left;
-    int m_top;
+    std::set<KeyEvent::Key> m_keysPressed;
 
-    int m_width;
-    int m_height;
+    // Window modes (fullscreen/windowed)
+
+    enum Mode
+    {
+        WindowMode
+    ,   FullScreenMode
+    ,   TransitionMode
+    };
+
+    Mode m_mode;
+
+    Rect m_rect;
+    Rect m_backup;
 
 protected:
     static std::set<Window*> s_windows;
