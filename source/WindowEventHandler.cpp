@@ -19,33 +19,38 @@ WindowEventHandler::~WindowEventHandler()
 {
 }
 
-void WindowEventHandler::initializeEvent()
+void WindowEventHandler::initializeEvent(Window &)
 {
 }
 
-void WindowEventHandler::deinitializeEvent()
+void WindowEventHandler::deinitializeEvent(Window &)
 {
 }
 
 void WindowEventHandler::resizeEvent(
-    const unsigned int width
-,   const unsigned int height)
+    Window &
+,   const unsigned int
+,   const unsigned int)
 {
 }
 
-void WindowEventHandler::paintEvent()
+void WindowEventHandler::paintEvent(Window &)
 {
 }
 
-void WindowEventHandler::idleEvent()
+void WindowEventHandler::idleEvent(Window &)
 {
 }
 
-void WindowEventHandler::keyPressEvent(KeyEvent & event)
+void WindowEventHandler::keyPressEvent(
+    Window &
+,   KeyEvent &)
 {
 }
 
-void WindowEventHandler::keyReleaseEvent(KeyEvent & event)
+void WindowEventHandler::keyReleaseEvent(
+    Window &
+,   KeyEvent &)
 {
 }
 

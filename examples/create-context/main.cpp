@@ -16,24 +16,25 @@ public:
     EventHandler()
     {
     }
-    
+
     virtual ~EventHandler()
     {
     }
 
-    virtual void initializeEvent()
+    virtual void initializeEvent(Window & window)
     {
         glClearColor(1.f, 1.f, 1.f, 1.f);
     }
     
     virtual void resizeEvent(
-        const unsigned int width
+        Window & window
+    ,   const unsigned int width
     ,   const unsigned int height)
     {
         glViewport(0, 0, width, height);
     }
 
-    virtual void paintEvent()
+    virtual void paintEvent(Window & window)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
@@ -41,16 +42,14 @@ public:
 
 int main(int argc, char** argv)
 {
-    unsigned int width, height;
-    Screen::getDesktopResolution(width, height);
-
     ContextFormat format;
-    EventHandler events;
+    EventHandler handler;
 
     Window window;
+    window.attach(&handler);
 
     window.create(format, "Create Context Example", 1280, 720);
     window.show();
 
-    return window.run(&events);
+    return Window::run();
 }

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <set>
+
+// TODO: remove 
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -30,6 +33,8 @@ public:
     Window();
     virtual ~Window();
 
+    void attach(WindowEventHandler * eventHandler);
+
     bool create(
         const ContextFormat & format
     ,   const std::string & title = ""
@@ -39,26 +44,20 @@ public:
     void destroy();
 
     int handle() const;
+    Context * context();
+
+    void repaint();
 
     void show() const;
     void hide() const;
-
-    void update() const;
-
-    /** This enters the (main) windows message loop and dispatches events to
-        the attached WindowEventHandler instance.
-    */
-    int run(
-        WindowEventHandler * eventHandler = nullptr
-    ,   const unsigned int paintInterval = 0);
-
-    void paint();
 
     int width() const;
     int height() const;
 
     void fullScreen();
     void windowed();
+
+    void setContinuousRepaint(const bool enable);
 
     // design similar to:
     // http://www.codeproject.com/Articles/2556/A-Simple-Win32-Window-Wrapper-Class
@@ -76,8 +75,28 @@ public:
     ,   WPARAM wParam
     ,   LPARAM lParam);
 
-protected:
+public:
+    
+    /** This enters the (main) windows message loop and dispatches events to
+        the attached WindowEventHandler instance.
+    */
+    static int run();
+    static void quit(const int code = 0);
 
+protected:
+    void onResize(
+        const int width
+    ,   const int height);
+
+    void onRepaint();
+    void onIdle();
+
+    void onClose();
+    void onDestroy();
+
+    void onValidContext();
+
+protected:
     LRESULT CALLBACK dispatch(
         HWND hWnd
     ,   UINT message
@@ -93,16 +112,21 @@ protected:
 protected:
     HWND  m_hWnd;
 
+    WindowEventHandler * m_eventHandler;
+    Context * m_context;
+
+    bool m_continuous;
+
+    bool  m_windowed;
+
     int m_left;
     int m_top;
 
     int m_width;
     int m_height;
 
-    bool  m_windowed;
-
-    WindowEventHandler * m_eventHandler;
-    Context * m_context;
+protected:
+    static std::set<Window*> s_windows;
 };
 
 } // namespace glow

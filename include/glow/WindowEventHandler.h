@@ -6,6 +6,7 @@
 namespace glow 
 {
 
+class Window;
 class KeyEvent;
 
 class GLOW_API WindowEventHandler
@@ -17,13 +18,13 @@ public:
     /** The initialize event is called only once when starting to run a window.
         The window's context is made current before and done current afterwards.
     */
-    virtual void initializeEvent();
+    virtual void initializeEvent(Window & window);
     
     /** The initialize event is called only once, just before a window returns 
         from running. The window's context is made current before and done 
         current afterwards.
     */
-    virtual void deinitializeEvent();
+    virtual void deinitializeEvent(Window & window);
 
     //virtual void activateEvent();
     //virtual void minimizeEvent();
@@ -31,23 +32,29 @@ public:
     /** The window's context is made current before and done current afterwards.
     */
     virtual void resizeEvent(
-        const unsigned int width
+        Window & window
+    ,   const unsigned int width
     ,   const unsigned int height);
 
     /** Swap buffers gets called afterwards, and window's context is made 
         current before and done current afterwards.
     */
-    virtual void paintEvent();
+    virtual void paintEvent(Window & window);
 
     /** The idle event is called when no painting within the attached window's 
         main message loop is called. This might happen for fixed repaint time 
         intervals.
     */
-    virtual void idleEvent();
+    virtual void idleEvent(Window & window);
 
 
-    virtual void keyPressEvent(KeyEvent & event);
-    virtual void keyReleaseEvent(KeyEvent & event);
+    virtual void keyPressEvent(
+        Window & window
+    ,   KeyEvent & event);
+
+    virtual void keyReleaseEvent(
+        Window & window
+    ,   KeyEvent & event);
 };
 
 } // namespace glow

@@ -18,6 +18,14 @@
 namespace glow
 {
 
+namespace
+{
+#define WM_USER_IDLE            WM_USER + 1
+#define WM_USER_VALID_CONTEXT   WM_USER + 2
+}
+
+std::set<Window*> Window::s_windows;
+
 /** NOTE: These static inline functions are not part of the window interface,
     to provide identical interfaces over all supported platforms.
 */
@@ -62,16 +70,20 @@ Window::Window()
 ,   m_eventHandler(nullptr)
 ,   m_context(nullptr)
 ,   m_windowed(true)
+,   m_continuous(true)
 ,   m_left(-1)
 ,   m_top(-1)
 ,   m_width(-1)
 ,   m_height(-1)
 {
+    s_windows.insert(this);
 }
 
 Window::~Window()
 {
     destroy();
+
+    s_windows.erase(s_windows.find(this));
 }
 
 bool Window::create(
@@ -129,7 +141,7 @@ bool Window::create(
         return false;
     }
 
-    update();
+    UpdateWindow(m_hWnd);
 
     // retrieve window rect
 
@@ -148,21 +160,55 @@ bool Window::create(
     // setup context
 
     m_context = new Context();
-    return m_context->create(handle(), format);
+    const bool result = m_context->create(handle(), format);
+
+    SendMessage(m_hWnd, WM_USER_VALID_CONTEXT, NULL, NULL);
+
+    return result;
+}
+
+void Window::onClose()
+{
+    destroy();
 }
 
 void Window::destroy()
 {
     if (m_context)
     {
+        if (m_eventHandler)
+        {
+            m_context->makeCurrent();
+            m_eventHandler->deinitializeEvent(*this);
+            m_context->doneCurrent();
+        }
+
         m_context->release();
         delete m_context;
 
         m_context = nullptr;
     }
 
+    DestroyWindow(m_hWnd);
+}
+
+void Window::onDestroy()
+{
+    m_hWnd = 0;
+
     if (!m_windowed)
         restoreDisplaySettings();
+}
+
+void Window::setContinuousRepaint(const bool enable)
+{
+    if (enable == m_continuous)
+        return;
+
+    m_continuous = enable;
+
+    if (m_continuous)
+        repaint();
 }
 
 int Window::width() const
@@ -180,6 +226,11 @@ int Window::handle() const
     return reinterpret_cast<int>(m_hWnd);
 }
 
+Context * Window::context()
+{
+    return m_context;
+}
+
 void Window::show() const
 {
     ShowWindow(m_hWnd, SW_SHOWNORMAL);
@@ -191,29 +242,24 @@ void Window::hide() const
     ShowWindow(m_hWnd, 0);
 }
 
-void Window::update() const
+void Window::attach(WindowEventHandler * eventHandler)
 {
-    UpdateWindow(m_hWnd);
-}
-
-int Window::run(
-    WindowEventHandler * eventHandler
-,   const unsigned int paintInterval)
-{
-    assert(nullptr == m_eventHandler);
     m_eventHandler = eventHandler;
 
-    if (m_eventHandler)
-    {
-        m_context->makeCurrent();
-        m_eventHandler->initializeEvent();
-        m_eventHandler->resizeEvent(m_width, m_height);
-        m_context->doneCurrent();
-    }
+    if (!m_eventHandler)
+        return;
 
+    if (!m_context)
+        return;
 
-    // TODO: use timer if paintInterval is noteq 0
-    
+    warning() << "Consider attaching window event handler earlier.";
+
+    assert(m_hWnd);
+    SendMessage(m_hWnd, WM_USER_VALID_CONTEXT, NULL, NULL);
+}
+
+int Window::run()
+{
     MSG  msg;
     do
     {
@@ -221,31 +267,36 @@ int Window::run(
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
+
+            continue;
         }
-        else if (0 == paintInterval)
-            InvalidateRect(m_hWnd, NULL, FALSE);
-        else if (m_eventHandler)
-            m_eventHandler->idleEvent();
+
+        msg.message = WM_USER_IDLE;
+        for (Window * window : s_windows)
+        {
+            msg.hwnd = reinterpret_cast<HWND>(window->handle());
+            DispatchMessage(&msg);
+        }
 
     } while (WM_QUIT != msg.message);
-
-    if (m_eventHandler)
-    {
-        m_context->makeCurrent();
-        m_eventHandler->deinitializeEvent();
-        m_context->doneCurrent();
-    }
-    DestroyWindow(m_hWnd);        
 
     return static_cast<int>(msg.wParam);
 }
 
-void Window::paint()
+void Window::quit(const int code)
 {
-    if (!m_eventHandler)
-        return;
+    PostQuitMessage(code);
+}
 
-    assert(nullptr != m_context);
+void Window::repaint()
+{
+    InvalidateRect(m_hWnd, NULL, FALSE);
+}
+
+void Window::onRepaint()
+{
+    if (!m_context)
+        return;
 
     // http://stackoverflow.com/questions/2842319/swapbuffers-causes-redraw
 
@@ -253,13 +304,54 @@ void Window::paint()
     HDC hDC = BeginPaint(m_hWnd, &ps);
 
     m_context->makeCurrent();
-            
-    m_eventHandler->paintEvent();
+
+    if (m_eventHandler)
+        m_eventHandler->paintEvent(*this);
+
     m_context->swap();
 
     m_context->doneCurrent();
 
     EndPaint(m_hWnd,&ps);
+}
+
+void Window::onValidContext()
+{
+    if(!m_context || !m_eventHandler)
+        return;
+
+    m_context->makeCurrent();
+
+    m_eventHandler->initializeEvent(*this);
+    m_eventHandler->resizeEvent(*this, width(), height());
+
+    m_context->doneCurrent();
+}
+
+void Window::onResize(
+    const int width
+,   const int height)
+{
+    if (width == m_width && height == m_height)
+        return;
+
+    m_width  = width;
+    m_height = height;
+
+    if (m_context && m_eventHandler)
+    {
+        m_context->makeCurrent();
+        m_eventHandler->resizeEvent(*this, m_width, m_height);
+        m_context->doneCurrent();
+    }
+}
+
+void Window::onIdle()
+{
+    if (m_continuous)
+        repaint();
+    else if (m_eventHandler)
+        m_eventHandler->idleEvent(*this);
 }
 
 void Window::fullScreen()
@@ -316,7 +408,7 @@ void Window::fullScreen()
     SetForegroundWindow(m_hWnd);
     SetFocus(m_hWnd);
 
-    update();
+    UpdateWindow(m_hWnd);
 }
 
 void Window::windowed()
@@ -338,8 +430,8 @@ void Window::windowed()
     // http://stackoverflow.com/questions/7193197/is-there-a-graceful-way-to-handle-toggling-between-fullscreen-and-windowed-mode
 
     MoveWindow(m_hWnd, m_left, m_top, m_width, m_height, TRUE);
-
-    update();
+    
+    UpdateWindow(m_hWnd);
 }
 
 void Window::restoreDisplaySettings()
@@ -358,33 +450,34 @@ LRESULT CALLBACK Window::dispatch(
 ,   WPARAM wParam
 ,   LPARAM lParam)
 {
+    assert(!m_hWnd || hWnd == m_hWnd);
+
     // Windows Messages: http://msdn.microsoft.com/en-us/library/windows/desktop/ms644927(v=vs.85).aspx#windows_messages
     switch (message)
     {
     case WM_CLOSE:
-        PostQuitMessage(0);
+        onClose();
         break;
 
     case WM_DESTROY:
-        destroy();
+        onDestroy();
+        break;
+
+    case WM_USER_VALID_CONTEXT:
+        onValidContext();
         break;
 
     case WM_SIZE:
     case WM_SIZING:
-        m_width  = HIWORD(lParam);
-        m_height = LOWORD(lParam);
-
-        if (m_eventHandler && m_context)
-        {
-            m_context->makeCurrent();
-            m_eventHandler->resizeEvent(m_width, m_height);
-            m_context->doneCurrent();
-        }
+        onResize(HIWORD(lParam), LOWORD(lParam));
         break;
 
     case WM_PAINT:
-        assert(hWnd == m_hWnd);
-        paint();
+        onRepaint();
+        break;
+
+    case WM_USER_IDLE:
+        onIdle();
         break;
 
     case WM_KEYDOWN:
