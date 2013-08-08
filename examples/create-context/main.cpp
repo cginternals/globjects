@@ -50,7 +50,7 @@ int main(int argc, char** argv)
     Window window;
 
     window.create(format, "Create Context Example", 1280, 720);
-    window.show();
+    window.fullScreen();
 
     return window.run(&events);
 }

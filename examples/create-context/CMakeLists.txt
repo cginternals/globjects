@@ -12,20 +12,16 @@ find_package(FREEGLUT REQUIRED)
 # Include directories
 include_directories(
 	${GLOW_INCLUDE_DIR}
-	${FREEGLUT_INCLUDE_PATH}
 	${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 # Build executable
 add_executable(${target} 
 	main.cpp
-	CreateContext.cpp
-	CreateContext.h
 )
 
 target_link_libraries(${target} 
 	${GLEW_LIBRARIES}
-	${FREEGLUT_LIBRARY}
 	glow
 )
 

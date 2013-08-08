@@ -11,11 +11,51 @@
 #include <glow/Log.h>
 #include <glow/WindowEventHandler.h>
 #include <glow/Context.h>
+#include <glow/KeyEvent.h>
 
 #include <glow/Window.h>
 
 namespace glow
 {
+
+/** NOTE: These static inline functions are not part of the window interface,
+    to provide identical interfaces over all supported platforms.
+*/
+
+static inline void printChangeDisplaySettingsErrorResult(const LONG result)
+{
+    switch (result)
+    {
+    // http://msdn.microsoft.com/en-us/library/windows/desktop/dd183411(v=vs.85).aspx
+    case DISP_CHANGE_BADDUALVIEW:
+        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADDUALVIEW): The settings change was unsuccessful because the system is DualView capable.";
+        break;
+    case DISP_CHANGE_BADFLAGS:
+        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADFLAGS): An invalid set of flags was passed in.";
+        break;
+    case DISP_CHANGE_BADMODE:
+        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADMODE): The graphics mode is not supported.";
+        break;
+    case DISP_CHANGE_BADPARAM:
+        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADPARAM): An invalid parameter was passed in. This can include an invalid flag or combination of flags.";
+        break;
+    case DISP_CHANGE_FAILED:
+        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_FAILED): The display driver failed the specified graphics mode.";
+        break;
+    case DISP_CHANGE_NOTUPDATED:
+        fatal() << "ChangeDisplaySettings failed(DISP_CHANGE_NOTUPDATED): Unable to write settings to the registry.";
+        break;
+    case DISP_CHANGE_RESTART:
+        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_RESTART): The computer must be restarted for the graphics mode to work.";
+        break;
+
+    case DISP_CHANGE_SUCCESSFUL:
+        // "DISP_CHANGE_SUCCESSFUL: The settings change was successful."
+    default:
+        break;
+    }
+}
+
 
 Window::Window()
 :   m_hWnd(0)
@@ -197,6 +237,9 @@ int Window::run(
 
 void Window::paint()
 {
+    if (!m_eventHandler)
+        return;
+
     assert(nullptr != m_context);
 
     // http://stackoverflow.com/questions/2842319/swapbuffers-causes-redraw
@@ -304,49 +347,12 @@ void Window::restoreDisplaySettings()
     printChangeDisplaySettingsErrorResult(result);
 }
 
-void Window::printChangeDisplaySettingsErrorResult(const LONG result)
-{
-    switch (result)
-    {
-    // http://msdn.microsoft.com/en-us/library/windows/desktop/dd183411(v=vs.85).aspx
-    case DISP_CHANGE_BADDUALVIEW:
-        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADDUALVIEW): The settings change was unsuccessful because the system is DualView capable.";
-        break;
-    case DISP_CHANGE_BADFLAGS:
-        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADFLAGS): An invalid set of flags was passed in.";
-        break;
-    case DISP_CHANGE_BADMODE:
-        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADMODE): The graphics mode is not supported.";
-        break;
-    case DISP_CHANGE_BADPARAM:
-        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADPARAM): An invalid parameter was passed in. This can include an invalid flag or combination of flags.";
-        break;
-    case DISP_CHANGE_FAILED:
-        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_FAILED): The display driver failed the specified graphics mode.";
-        break;
-    case DISP_CHANGE_NOTUPDATED:
-        fatal() << "ChangeDisplaySettings failed(DISP_CHANGE_NOTUPDATED): Unable to write settings to the registry.";
-        break;
-    case DISP_CHANGE_RESTART:
-        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_RESTART): The computer must be restarted for the graphics mode to work.";
-        break;
-
-    case DISP_CHANGE_SUCCESSFUL:
-        // "DISP_CHANGE_SUCCESSFUL: The settings change was successful."
-    default:
-        break;
-    }
-}
-
 LRESULT CALLBACK Window::dispatch(
     HWND hWnd
 ,   UINT message
 ,   WPARAM wParam
 ,   LPARAM lParam)
 {
-    if (!m_eventHandler)
-        return DefWindowProc(hWnd, message, wParam, lParam);
-
     // Windows Messages: http://msdn.microsoft.com/en-us/library/windows/desktop/ms644927(v=vs.85).aspx#windows_messages
     switch (message)
     {
@@ -362,7 +368,7 @@ LRESULT CALLBACK Window::dispatch(
         m_width  = HIWORD(lParam);
         m_height = LOWORD(lParam);
 
-        if (m_context)
+        if (m_eventHandler && m_context)
         {
             m_context->makeCurrent();
             m_eventHandler->resizeEvent(m_width, m_height);
@@ -373,6 +379,26 @@ LRESULT CALLBACK Window::dispatch(
     case WM_PAINT:
         assert(hWnd == m_hWnd);
         paint();
+        break;
+
+    case WM_KEYDOWN:
+    case WM_SYSKEYDOWN:
+        {
+            KeyEvent kEvent(KeyEvent::KeyPress, LOWORD(wParam));
+            processKeyEvent(kEvent, m_eventHandler);
+            if (!kEvent.isAccepted())
+                return DefWindowProc(hWnd, message, wParam, lParam);
+        }
+        break;
+
+    case WM_KEYUP:
+    case WM_SYSKEYUP:
+        {
+            KeyEvent kEvent(KeyEvent::KeyRelease, LOWORD(wParam));
+            processKeyEvent(kEvent, m_eventHandler);
+            if (!kEvent.isAccepted())
+                return DefWindowProc(hWnd, message, wParam, lParam);
+        }
         break;
 
     //case WM_ACTIVATE:
@@ -430,6 +456,22 @@ LRESULT CALLBACK Window::Proc(
     assert(window);
 
     return window->dispatch(hWnd, message, wParam, lParam);
+}
+
+void Window::processKeyEvent(
+    KeyEvent & event
+,   WindowEventHandler * eventHandler)
+{
+    switch (event.key())
+    {
+    case KeyEvent::KeyEscape:
+        event.accept();
+        PostQuitMessage(0);
+        return;
+
+    default:
+        event.discard();
+    }
 }
 
 } // namespace glow

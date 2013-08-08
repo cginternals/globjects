@@ -18,6 +18,7 @@ namespace glow
 class WindowEventHandler;
 class ContextFormat;
 class Context;
+class KeyEvent;
 
 /**
 
@@ -81,8 +82,11 @@ protected:
     ,   WPARAM wParam
     ,   LPARAM lParam);
 
-    static void printChangeDisplaySettingsErrorResult(const LONG result);
     static void restoreDisplaySettings();
+
+    void processKeyEvent(
+        KeyEvent & event
+    ,   WindowEventHandler * eventHandler);
 
 protected:
     HWND  m_hWnd;

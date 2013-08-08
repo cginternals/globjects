@@ -191,6 +191,7 @@ set(api_includes
     ${header_path}/ContextFormat.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferObject.h
+    ${header_path}/KeyEvent.h
     ${header_path}/Log.h
     ${header_path}/Object.h
     ${header_path}/Program.h
@@ -224,6 +225,7 @@ set(sources
     ${source_path}/FrameBufferObject.cpp
 	${source_path}/FileReader.cpp
 	${source_path}/FileReader.h
+    ${source_path}/KeyEvent.cpp
     ${source_path}/Log.cpp
     ${source_path}/Object.cpp
     ${source_path}/Program.cpp

@@ -20,22 +20,10 @@
 namespace glow
 {
 
-Context::Context()
-:   m_swapInterval(VerticalSyncronization)
-,   m_id(0)
-,   m_hWnd(0)
-,   m_hRC(0)
-,   m_hDC(0)
-{
-}
+/** NOTE: These static inline functions are not part of the context interface,
+    to provide identical interfaces over all supported platforms.
+*/
 
-Context::~Context()
-{
-    if (isValid())
-        release();
-}
-
-// NOTE: This is not part of the context interface, to avoid platform specific member functions.
 static inline PIXELFORMATDESCRIPTOR pixelFormatDescriptor(const ContextFormat & format)
 {
     // NTOE: TrippleBufferig not supported yet.
@@ -75,6 +63,22 @@ static inline PIXELFORMATDESCRIPTOR pixelFormatDescriptor(const ContextFormat & 
     };
 
     return pfd;
+}
+
+
+Context::Context()
+:   m_swapInterval(VerticalSyncronization)
+,   m_id(0)
+,   m_hWnd(0)
+,   m_hRC(0)
+,   m_hDC(0)
+{
+}
+
+Context::~Context()
+{
+    if (isValid())
+        release();
 }
 
 bool Context::create(

@@ -41,4 +41,12 @@ void WindowEventHandler::idleEvent()
 {
 }
 
+void WindowEventHandler::keyPressEvent(KeyEvent & event)
+{
+}
+
+void WindowEventHandler::keyReleaseEvent(KeyEvent & event)
+{
+}
+
 } // namespace glow
