@@ -38,8 +38,16 @@ public:
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
+
+    virtual void idleEvent(Window & window)
+    {
+        window.repaint();
+    }
 };
 
+/** This example shows how to create a single window, probably in fullscreen
+    mode. All window and system events are handled with the event handler.
+*/
 int main(int argc, char** argv)
 {
     ContextFormat format;
@@ -48,7 +56,7 @@ int main(int argc, char** argv)
     Window window;
     window.attach(&handler);
 
-    window.create(format, "Create Context Example", 1280, 720);
+    window.create(format, "Single Context Example", 1280, 720);
     window.show();
 
     return Window::run();

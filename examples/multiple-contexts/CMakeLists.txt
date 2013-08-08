@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 # Project
-set(target create-context)
+set(target multiple-contexts)
 project(${target})
 
 # Find externals

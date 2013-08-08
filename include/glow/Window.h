@@ -56,8 +56,12 @@ public:
 
     void fullScreen();
     void windowed();
-
-    void setContinuousRepaint(const bool enable);
+    
+    /** If enabled, this causes an application wide quit message to be posted
+        when the window gets destroyed. Hence, the static window loop (run) 
+        will receive a quit event and destroy all other remaining windows.
+    */
+    void setQuitOnDestroy(const bool enable);
 
     // design similar to:
     // http://www.codeproject.com/Articles/2556/A-Simple-Win32-Window-Wrapper-Class
@@ -115,9 +119,8 @@ protected:
     WindowEventHandler * m_eventHandler;
     Context * m_context;
 
-    bool m_continuous;
-
-    bool  m_windowed;
+    bool m_windowed;
+    bool m_quitOnDestroy;
 
     int m_left;
     int m_top;

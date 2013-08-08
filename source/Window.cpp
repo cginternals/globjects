@@ -67,10 +67,13 @@ static inline void printChangeDisplaySettingsErrorResult(const LONG result)
 
 Window::Window()
 :   m_hWnd(0)
+
 ,   m_eventHandler(nullptr)
 ,   m_context(nullptr)
+
 ,   m_windowed(true)
-,   m_continuous(true)
+,   m_quitOnDestroy(false)
+
 ,   m_left(-1)
 ,   m_top(-1)
 ,   m_width(-1)
@@ -84,6 +87,11 @@ Window::~Window()
     destroy();
 
     s_windows.erase(s_windows.find(this));
+}
+
+void Window::setQuitOnDestroy(const bool enable)
+{
+    m_quitOnDestroy = enable;
 }
 
 bool Window::create(
@@ -100,25 +108,28 @@ bool Window::create(
     WNDCLASSEX wcex;
     ZeroMemory(&wcex, sizeof(WNDCLASSEX));
 
-    // register window class
-
-    wcex.cbSize         = sizeof(WNDCLASSEX);
-    wcex.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-    wcex.lpfnWndProc    = InitialProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = NULL;
-    wcex.hCursor        = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground  = NULL;
-    wcex.lpszMenuName   = NULL;
-    wcex.lpszClassName  = className;
-    wcex.hIconSm        = NULL;
-
-    if (!RegisterClassEx(&wcex))
+    if (FALSE == GetClassInfoEx(hInstance, className, &wcex))
     {
-        fatal() << "Registering the window class failed (RegisterClassEx). Error: " << GetLastError();
-        return false;
+        // register window class
+
+        wcex.cbSize         = sizeof(WNDCLASSEX);
+        wcex.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+        wcex.lpfnWndProc    = InitialProc;
+        wcex.cbClsExtra     = 0;
+        wcex.cbWndExtra     = 0;
+        wcex.hInstance      = hInstance;
+        wcex.hIcon          = NULL;
+        wcex.hCursor        = LoadCursor(NULL, IDC_ARROW);
+        wcex.hbrBackground  = NULL;
+        wcex.lpszMenuName   = NULL;
+        wcex.lpszClassName  = className;
+        wcex.hIconSm        = NULL;
+
+        if (!RegisterClassEx(&wcex))
+        {
+            fatal() << "Registering the window class failed (RegisterClassEx). Error: " << GetLastError();
+            return false;
+        }
     }
 
     m_hWnd = CreateWindowEx(
@@ -190,6 +201,9 @@ void Window::destroy()
     }
 
     DestroyWindow(m_hWnd);
+
+    if (m_quitOnDestroy)
+        quit(0);
 }
 
 void Window::onDestroy()
@@ -198,17 +212,6 @@ void Window::onDestroy()
 
     if (!m_windowed)
         restoreDisplaySettings();
-}
-
-void Window::setContinuousRepaint(const bool enable)
-{
-    if (enable == m_continuous)
-        return;
-
-    m_continuous = enable;
-
-    if (m_continuous)
-        repaint();
 }
 
 int Window::width() const
@@ -309,7 +312,6 @@ void Window::onRepaint()
         m_eventHandler->paintEvent(*this);
 
     m_context->swap();
-
     m_context->doneCurrent();
 
     EndPaint(m_hWnd,&ps);
@@ -348,9 +350,7 @@ void Window::onResize(
 
 void Window::onIdle()
 {
-    if (m_continuous)
-        repaint();
-    else if (m_eventHandler)
+    if (m_eventHandler)
         m_eventHandler->idleEvent(*this);
 }
 
