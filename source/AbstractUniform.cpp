@@ -36,4 +36,10 @@ void AbstractUniform::changed()
 		update(program);
 }
 
+void AbstractUniform::update(Program * program)
+{
+	program->use();
+	setLocation(program->getUniformLocation(m_name));
+}
+
 } // namespace glow

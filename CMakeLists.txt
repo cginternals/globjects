@@ -215,7 +215,7 @@ set(api_includes
 
 set(sources
     ${source_path}/info.cpp
-
+    
     ${source_path}/AbstractUniform.cpp
     ${source_path}/AbstractNativeWindow.cpp
     ${source_path}/AbstractNativeWindow.h
@@ -242,6 +242,7 @@ set(sources
     ${source_path}/ShaderCode.cpp
     ${source_path}/ShaderFile.cpp
     ${source_path}/Texture.cpp
+    ${source_path}/Uniform.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
     ${source_path}/Window.cpp
@@ -273,7 +274,8 @@ set_target_properties(${target}
     COMPILE_FLAGS               "${DEFAULT_COMPILE_FLAGS}"
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
-    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
+    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
+    INCLUDE_PATH	"${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Deployment
 install(TARGETS ${target}

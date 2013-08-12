@@ -5,6 +5,7 @@
 
 #include <glow/Program.h>
 #include <glow/Log.h>
+#include <glow/Uniform.h>
 
 namespace glow
 {
@@ -26,7 +27,7 @@ Program::~Program()
 	{
 		uniformPair.second->deregisterProgram(this);
 	}
-	if (m_id) 
+	if (m_id)
 		glDeleteProgram(m_id);
 }
 
@@ -143,7 +144,7 @@ void Program::addUniform(AbstractUniform * uniform)
 	u = uniform;
 	uniform->registerProgram(this);
 
-	if (m_linked) 
+	if (m_linked)
 		uniform->update(this);
 }
 
@@ -194,15 +195,15 @@ void Program::setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint stor
 
 void Program::attach(Shader* shader1, Shader* shader2, Shader* shader3, Shader* shader4, Shader* shader5)
 {
-	if (shader1) 
+	if (shader1)
 		attach(shader1);
-	if (shader2) 
+	if (shader2)
 		attach(shader2);
-	if (shader3) 
+	if (shader3)
 		attach(shader3);
-	if (shader4) 
+	if (shader4)
 		attach(shader4);
-	if (shader5) 
+	if (shader5)
 		attach(shader5);
 }
 

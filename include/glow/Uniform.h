@@ -38,9 +38,9 @@ public:
 	void set(const T & value);
 
 protected:
-	virtual void update(Program * program);
+	virtual void setLocation(const GLint location);
 	void set(
-		const int location
+		const GLint location
 	,	const T & value);
 
 protected:
