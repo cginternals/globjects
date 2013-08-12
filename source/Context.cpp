@@ -5,14 +5,17 @@
 
 #ifdef WIN32
 #include <windows.h>
-#include <gl/GL.h>
-#include <gl/GLU.h>
+#include <GL/wglew.h>
+#include <GL/GL.h>
+#include <GL/GLU.h>
 #else
+#include <GL/glxew.h>
 #include <GL/glx.h>
 #include <GL/GLUx.h>
 #endif
 
 #include <glow/Log.h>
+#include <glow/info.h>
 #include <glow/Error.h>
 #include <glow/Context.h>
 
@@ -91,10 +94,12 @@ bool Context::create(
         return false;
     }
 
+    m_format = format;
+
     m_hWnd = hWnd;
     m_id = NULL;
 
-    PIXELFORMATDESCRIPTOR pfd(pixelFormatDescriptor(format));
+    PIXELFORMATDESCRIPTOR pfd(pixelFormatDescriptor(m_format));
 
     m_hDC = GetDC(reinterpret_cast<HWND>(m_hWnd));
 
@@ -120,18 +125,73 @@ bool Context::create(
         return false;
     }
 
-    // finally create ogl context
+    // create temporary ogl context
 
-    m_hRC = wglCreateContext(m_hDC);
-    if (NULL == m_hRC)
+    HGLRC tempRC = wglCreateContext(m_hDC);
+
+    if (NULL == tempRC)
     {
-        fatal() << "Creating OpenGL context failed (wglCreateContext). Error: " << GetLastError();
+        fatal() << "Creating temporary OpenGL context failed (wglCreateContext). Error: " << GetLastError();
         release();
         return false;
     }
 
-    m_id = reinterpret_cast<int>(m_hRC);
+    // check for WGL_ARB_create_context extension
 
+    if (!wglMakeCurrent(m_hDC, tempRC))
+    {
+        fatal() << "Making temporary OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
+        release();
+        return false;
+    }
+
+    // http://www.opengl.org/wiki/Tutorial:_OpenGL_3.1_The_First_Triangle_(C%2B%2B/Win)
+
+    GLenum error = glewInit();
+    if (GLEW_OK != error)
+    {
+        fatal() << "GLEW initialization failed (glewInit).";
+        release();
+        return false;
+    }
+
+    if (!WGLEW_ARB_create_context)
+    {
+        fatal() << "Mandatory extension WGL_ARB_create_context not supported.";
+        release();
+        return false;
+    }
+
+    // NOTE: this assumes that the driver creates a "defaulted" context with
+    // the highest available opengl version.
+    m_format.setVersionFallback(info::majorVersion(), info::minorVersion());
+
+    wglMakeCurrent(NULL, NULL);
+    wglDeleteContext(tempRC);
+
+    const int attributes[] =
+    {
+        WGL_CONTEXT_MAJOR_VERSION_ARB, m_format.majorVersion()
+    ,   WGL_CONTEXT_MINOR_VERSION_ARB, m_format.minorVersion()
+    ,   WGL_CONTEXT_PROFILE_MASK_ARB,  m_format.profile() == ContextFormat::CoreProfile ? 
+            WGL_CONTEXT_CORE_PROFILE_BIT_ARB : WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB
+    ,   WGL_CONTEXT_FLAGS_ARB, 0, 0
+    };
+
+    m_hRC = wglCreateContextAttribsARB(m_hDC, 0, attributes);
+    if (NULL == m_hRC)
+    {
+        fatal() << "Creating OpenGL context with attributes failed (wglCreateContextAttribsARB). Error: " << GetLastError();
+        release();
+        return false;
+    }
+
+    // Version Disclaimer
+    if (3 > m_format.majorVersion() || (3 == m_format.majorVersion() && 2 > m_format.minorVersion()))
+        fatal() << "OpenGL Versions prior to 3.2 (" << m_format.majorVersion() << "." << m_format.minorVersion() << " created)"
+            << " are not supported within glow. This might result in erroneous behaviour.";
+
+    m_id = reinterpret_cast<int>(m_hRC);
     return true;
 }
 

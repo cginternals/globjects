@@ -9,13 +9,13 @@
 namespace glow
 {
 
-const ContextFormat::MinorsByMajors ContextFormat::m_validVersions
+const ContextFormat::MinorsByMajors ContextFormat::s_validVersions
 	= ContextFormat::validVersions();
 
 
 ContextFormat::ContextFormat()
-:	m_majorVersion(3)
-,	m_minorVersion(2)
+:	m_majorVersion(0)
+,	m_minorVersion(0)
 
 ,	m_profile(CoreProfile)
 
@@ -32,6 +32,7 @@ ContextFormat::ContextFormat()
 
 ,	m_samples(0)
 {
+    setVersion(4, 1);   // Use setter to avoid invalid initialization.
 }
 
 ContextFormat::~ContextFormat()
@@ -56,6 +57,7 @@ ContextFormat::MinorsByMajors ContextFormat::validVersions()
 
 	minorsByMajors.insert(Version(3, 0));
 	minorsByMajors.insert(Version(3, 1));
+
 	minorsByMajors.insert(Version(3, 2));
 	minorsByMajors.insert(Version(3, 3));
 
@@ -63,34 +65,79 @@ ContextFormat::MinorsByMajors ContextFormat::validVersions()
 	minorsByMajors.insert(Version(4, 1));
 	minorsByMajors.insert(Version(4, 2));
 	minorsByMajors.insert(Version(4, 3));
+    minorsByMajors.insert(Version(4, 4));
 
 	return minorsByMajors;
+}
+
+bool ContextFormat::nearestValidVersion(
+    unsigned int & major
+,   unsigned int & minor)
+{
+    typedef std::pair<MinorsByMajors::const_iterator, MinorsByMajors::const_iterator> MinorsRange;
+
+    auto f = s_validVersions.lower_bound(major);
+
+    assert(!s_validVersions.empty());
+
+    if (s_validVersions.cend() == f)
+    {
+        --f;
+
+        major = f->first;
+        minor = f->second;
+
+        return true;
+    }
+
+	// retrieve nearest valid major
+	unsigned int ma = f->first;
+	const MinorsRange minors(s_validVersions.equal_range(ma));
+
+	assert(minors.first != s_validVersions.cend());
+
+    // get nearest valid minor if m_majorVersion is major, else get highest valid minor
+	unsigned int mi = 0;
+    for (MinorsByMajors::const_iterator i = minors.first; i != minors.second; ++i)
+    {
+        const unsigned int m(i->second);
+
+        if (mi <= m && (major == ma && m <= minor))
+            mi = m;
+    }
+
+    const bool changed = !(ma == major && mi == minor);
+    
+    major = ma;
+    minor = mi;
+
+    return changed;
 }
 
 void ContextFormat::setVersion(
 	const unsigned int major
 ,	const unsigned int minor)
 {
-    typedef std::pair<MinorsByMajors::const_iterator, MinorsByMajors::const_iterator> MinorsRange;
+    m_majorVersion = major;
+    m_minorVersion = minor;
 
-	// retrieve nearest valid major
-	m_majorVersion = m_validVersions.lower_bound(major)->first;
-	const MinorsRange minors(m_validVersions.equal_range(m_majorVersion));
+    if(nearestValidVersion(m_majorVersion, m_minorVersion))
+		fatal() << "Unknown OpenGL Version " << major << "." << minor << " was adjusted to " << m_majorVersion << "." << m_minorVersion << ".";
+}
 
-	assert(minors.first != m_validVersions.cend());
+void ContextFormat::setVersionFallback(
+    unsigned int major
+,	unsigned int minor)
+{
+    nearestValidVersion(major, minor);
 
-    // get nearest valid minor if m_majorVersion is major, else get highest valid minor
-	m_minorVersion = 0;
-    for (MinorsByMajors::const_iterator i = minors.first; i != minors.second; ++i)
-    {
-        const unsigned int m(i->second);
+    if (major > m_majorVersion || (major == m_majorVersion && minor >= m_minorVersion))
+        return;
 
-        if (m_minorVersion <= m && (major == m_majorVersion && m <= minor))
-            m_minorVersion = m;
-    }
+    fatal() << "Unsupported OpenGL Version " << m_majorVersion << "." << m_minorVersion << " was adjusted to " << major << "." << minor << ".";
 
-    if (minor != m_minorVersion || major != m_majorVersion)
-		warning() << "Unknown OpenGL Version " << major << "." << minor << " was adjusted to " << m_majorVersion << "." << m_minorVersion << ".";
+    m_majorVersion = major;
+    m_minorVersion = minor;
 }
 
 unsigned int ContextFormat::majorVersion() const
@@ -207,8 +254,6 @@ const std::string ContextFormat::profileString(const Profile profile)
 {
     switch (profile)
     {
-    case NoProfile:
-        return "NoProfile";
     case CoreProfile:
         return "CoreProfile";
     case CompatibilityProfile:

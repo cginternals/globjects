@@ -17,8 +17,7 @@ public:
 	// This is based on QSurfaceFormat::OpenGLContextProfile
 	enum Profile
 	{
-	    NoProfile            ///< OpenGL version is lower than 3.2.
-	,   CoreProfile          ///< Functionality deprecated in OpenGL version 3.0 is not available.
+	    CoreProfile          ///< Functionality deprecated in OpenGL version 3.0 is not available.
 	,   CompatibilityProfile ///< Functionality from earlier OpenGL versions is available.
 	};
 
@@ -58,11 +57,16 @@ public:
 	int	samples() const;
 	void setSamples(int samples);
 
-	// only valid version pairs are allowed, on invalid pairs, 
-	// nearest major and minor are set.
+	/** For major and minor parameters only valid version pairs are allowed,
+        on invalid pairs, nearest major and minor are set.
+    */
 	void setVersion(
 	    const unsigned int major
 	,   const unsigned int minor);
+
+    void setVersionFallback(
+        unsigned int major
+    ,	unsigned int minor);
 
 	unsigned int majorVersion() const; 
 	unsigned int minorVersion() const;
@@ -110,15 +114,24 @@ protected:
     ,   const std::string & warning
     ,   std::vector<std::string> & issues);
 
+
 protected:
 	typedef std::multimap<unsigned int, unsigned int> MinorsByMajors;
-	static MinorsByMajors validVersions();
+	
+    /** Note: OpenGL versions previous to 3.2. is not supported and might not 
+        work. It is not taken into account in the development of glow.
+    */
+    static MinorsByMajors validVersions();
+
+    static bool nearestValidVersion(
+        unsigned int & major
+    ,   unsigned int & minor);
+
+    static const MinorsByMajors s_validVersions;
 
 protected:
 	unsigned int m_majorVersion;
 	unsigned int m_minorVersion;
-
-	static const MinorsByMajors m_validVersions;
 
 	Profile m_profile;
 
