@@ -11,9 +11,9 @@ namespace glow
 {
 
 Program::Program()
-:	Object(createProgram())
-,	m_linked(false)
-,	m_dirty(true)
+: Object(createProgram())
+, m_linked(false)
+, m_dirty(true)
 {
 }
 
@@ -27,8 +27,11 @@ Program::~Program()
 	{
 		uniformPair.second->deregisterProgram(this);
 	}
+
 	if (m_id)
+	{
 		glDeleteProgram(m_id);
+	}
 }
 
 GLuint Program::createProgram()
@@ -136,22 +139,29 @@ GLuint Program::getResourceIndex(GLenum programInterface, const std::string& nam
 
 void Program::addUniform(AbstractUniform * uniform)
 {
-	ref_ptr<AbstractUniform> & u(m_uniforms[uniform->name()]);
+	ref_ptr<AbstractUniform>& uniformReference = m_uniforms[uniform->name()];
 
-	if (u)
-		u->deregisterProgram(this);
+	if (uniformReference)
+	{
+		uniformReference->deregisterProgram(this);
+	}
 
-	u = uniform;
+	uniformReference = uniform;
+
 	uniform->registerProgram(this);
 
 	if (m_linked)
+	{
 		uniform->update(this);
+	}
 }
 
 void Program::updateUniforms()
 {
 	for (std::pair < std::string, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
+	{
 		uniformPair.second->update(this);
+	}
 }
 
 const std::string Program::infoLog() const

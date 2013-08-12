@@ -37,6 +37,8 @@ public:
 
 	void set(const T & value);
 
+	const T& value() const;
+
 protected:
 	virtual void setLocation(const GLint location);
 	void set(

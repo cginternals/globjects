@@ -35,6 +35,12 @@ Uniform<T>::~Uniform()
 }
 
 template<typename T>
+const T& Uniform<T>::value() const
+{
+	return m_value;
+}
+
+template<typename T>
 void Uniform<T>::setLocation(const GLint location)
 {
 	set(location, m_value);
