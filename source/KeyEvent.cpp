@@ -61,6 +61,8 @@ const KeyEvent::Key KeyEvent::translate(const unsigned short key)
 {
     static const std::map<unsigned short, KeyEvent::Key> keys =
     {
+#ifdef WIN32
+
         { VK_BACK   , KeyBackspace }
     ,   { VK_TAB    , KeyTab       }
     ,   { VK_CLEAR  , KeyClear     }
@@ -173,6 +175,12 @@ const KeyEvent::Key KeyEvent::translate(const unsigned short key)
     //,   { VK_OEM_8, } 
 
     //,   { VK_OEM_102, } //  angle bracket or the backslash 
+
+#elif __APPLE__
+
+#else
+
+#endif
 
     };
 

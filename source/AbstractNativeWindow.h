@@ -1,9 +1,6 @@
 #pragma once
 
-namespace std
-{
-    string;
-}
+#include <glow/KeyEvent.h>
 
 namespace glow 
 {
@@ -46,12 +43,16 @@ protected:
     WindowEventHandler * eventHandler();
     Context * context();
 
+    bool isFullScreen() const;
+    bool isWindowed() const;
+
     virtual void onClose();
-
     virtual void onIdle();
-
     virtual void onRepaint();
     virtual void onResize();
+
+    virtual bool onKeyPress(const unsigned short key);
+    virtual bool onKeyRelease(const unsigned short key);
 
 private:
     Window & m_window;

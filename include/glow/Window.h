@@ -1,5 +1,6 @@
 #pragma once
 
+#include <set>
 #include <string>
 
 #include <glow/glow.h>
@@ -60,8 +61,12 @@ public:
     void hide();
 
     void fullScreen();
+    bool isFullScreen() const;
     void windowed();
-    
+    bool isWindowed() const;
+
+    void toggleMode();
+
 public:
     /** This enters the (main) windows message loop and dispatches events to
         the attached WindowEventHandler instance.
@@ -81,8 +86,8 @@ protected:
     void onIdle();
     void onClose();
 
-    //bool onKeyPress(const unsigned short key);
-    //bool onKeyRelease(const unsigned short key);
+    bool onKeyPress(const unsigned short key);
+    bool onKeyRelease(const unsigned short key);
 
 protected:
     void processKeyEvent(
@@ -95,7 +100,16 @@ protected:
 
     bool m_quitOnDestroy;
 
-    //std::set<KeyEvent::Key> m_keysPressed;
+    std::set<KeyEvent::Key> m_keysPressed;
+
+    enum Mode
+    {
+        WindowMode
+    ,   FullScreenMode
+    ,   TransitionMode
+    };
+
+    Mode m_mode;
 
 private:
     AbstractNativeWindow  * m_window;

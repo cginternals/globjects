@@ -27,7 +27,6 @@ namespace
 WinWindow::WinWindow(Window & window)
 :   AbstractNativeWindow(window)
 ,   m_hWnd(0)
-,   m_mode(WindowMode)
 {
     s_windows.insert(this);
 }
@@ -105,11 +104,17 @@ bool WinWindow::create(
 
 int WinWindow::width() const
 {
+    if (m_rect.right < 0)
+        return 0;
+
     return m_rect.right - m_rect.left;
 }
 
 int WinWindow::height() const
 {
+    if (m_rect.bottom < 0)
+        return 0;
+
     return m_rect.bottom - m_rect.top;
 }
 
@@ -117,10 +122,10 @@ int WinWindow::handle() const
 {
     return reinterpret_cast<int>(m_hWnd);
 }
-
+    
 void WinWindow::close()
 {
-    CloseWindow(m_hWnd);
+    SendMessage(m_hWnd, WM_CLOSE, NULL, NULL);
 }
 
 void WinWindow::destroy()
@@ -141,11 +146,6 @@ void WinWindow::hide()
 
 void WinWindow::fullScreen()
 {
-    if (WindowMode != m_mode)
-        return;
-
-    m_mode = TransitionMode;
-
     GetWindowRect(m_hWnd, &m_backup);
 
     SetWindowLongPtr(m_hWnd, GWL_STYLE
@@ -188,17 +188,10 @@ void WinWindow::fullScreen()
 
     SetForegroundWindow(m_hWnd);
     SetFocus(m_hWnd);
-
-    m_mode = FullScreenMode;
 }
 
 void WinWindow::windowed()
 {
-    if (FullScreenMode != m_mode)
-        return;
-
-    m_mode = TransitionMode;
-
     // http://stackoverflow.com/questions/7193197/is-there-a-graceful-way-to-handle-toggling-between-fullscreen-and-windowed-mode
 
     restoreDisplaySettings();
@@ -213,21 +206,6 @@ void WinWindow::windowed()
     MoveWindow(m_hWnd, m_backup.left, m_backup.top, w, h, TRUE);
 
     SetWindowLongPtr(m_hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
-
-    m_mode = WindowMode;
-}
-
-void WinWindow::toggleMode()
-{
-    switch (m_mode)
-    {
-    case TransitionMode:
-        return;
-    case FullScreenMode:
-        return windowed();
-    case WindowMode:
-        return fullScreen();
-    }
 }
 
 void WinWindow::restoreDisplaySettings()
@@ -315,7 +293,7 @@ void WinWindow::onDestroy()
 {
     m_hWnd = 0;
 
-    if (m_mode != WindowMode)
+    if (isFullScreen())
         restoreDisplaySettings();
 }
 
@@ -343,9 +321,6 @@ void WinWindow::onResize(
         return;
 
     GetWindowRect(m_hWnd, &m_rect);
-
-    assert(this->width() == width);
-    assert(this->height() == height);
 
     AbstractNativeWindow::onResize();
 }
@@ -384,17 +359,17 @@ LRESULT CALLBACK WinWindow::dispatch(
         onIdle();
         break;
 
-    //case WM_KEYDOWN:
-    //case WM_SYSKEYDOWN:
-    //    if(!onKeyPress(LOWORD(wParam)))
-    //        DefWindowProc(hWnd, message, wParam, lParam);
-    //    break;
+    case WM_KEYDOWN:
+    case WM_SYSKEYDOWN:
+        if(!onKeyPress(LOWORD(wParam)))
+            DefWindowProc(hWnd, message, wParam, lParam);
+        break;
 
-    //case WM_KEYUP:
-    //case WM_SYSKEYUP:
-    //    if(!onKeyRelease(LOWORD(wParam)))
-    //        DefWindowProc(hWnd, message, wParam, lParam);
-    //    break;
+    case WM_KEYUP:
+    case WM_SYSKEYUP:
+        if(!onKeyRelease(LOWORD(wParam)))
+            DefWindowProc(hWnd, message, wParam, lParam);
+        break;
 
     //case WM_ACTIVATE:
     //    // Check for minimization.
@@ -452,47 +427,6 @@ LRESULT CALLBACK WinWindow::Proc(
 
     return window->dispatch(hWnd, message, wParam, lParam);
 }
-
-//
-//bool Window::onKeyPress(const unsigned short key)
-//{
-//    KeyEvent kpe(KeyEvent::KeyPress, key);
-//    
-//
-//    m_keysPressed.insert(kpe.key());
-//    return kpe.isAccepted();
-//}
-//
-//
-//bool Window::onKeyRelease(const unsigned short key)
-//{
-//    KeyEvent kre(KeyEvent::KeyRelease, key);
-//
-//    switch (kre.key())
-//    {
-//    case KeyEvent::KeyEscape:
-//        kre.accept();
-//        SendMessage(m_hWnd, WM_CLOSE, NULL, NULL);
-//        break;
-//
-//    case KeyEvent::KeyReturn:
-//        if (m_keysPressed.find(KeyEvent::KeyAlt) != m_keysPressed.cend())
-//        {
-//            kre.accept();
-//            toggleMode();
-//        }
-//        break;
-//
-//    default: 
-//        break;
-//    }
-//
-//    const auto f = m_keysPressed.find(kre.key());
-//    if (f != m_keysPressed.cend())
-//        m_keysPressed.erase(f);
-//
-//    return kre.isAccepted();
-//}
 
 } // namespace glow
 

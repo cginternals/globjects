@@ -3,7 +3,6 @@
 #ifdef WIN32
 
 #include <set>
-
 #include <windows.h>
 
 #include <glow/glow.h>
@@ -84,6 +83,9 @@ protected:
     static void printChangeDisplaySettingsErrorResult(const LONG result);
 
 protected:
+    static std::set<WinWindow*> s_windows;
+
+protected:
     void onRepaint();
     void onResize(
         const int width
@@ -91,33 +93,11 @@ protected:
 
     void onDestroy();
 
-    //    bool onKeyPress(const unsigned short key);
-//    bool onKeyRelease(const unsigned short key);
-//
-protected:
-    void toggleMode();
-
-//    void processKeyEvent(
-//        KeyEvent & event
-//    ,   WindowEventHandler * eventHandler);
-//
-protected:
-    static std::set<WinWindow*> s_windows;
-
 protected:
     HWND  m_hWnd;
 
     RECT m_rect;
     RECT m_backup;
-
-    enum Mode
-    {
-        WindowMode
-    ,   FullScreenMode
-    ,   TransitionMode
-    };
-
-    Mode m_mode;
 };
 
 } // namespace glow

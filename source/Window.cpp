@@ -23,6 +23,7 @@ Window::Window()
 :   m_eventHandler(nullptr)
 ,   m_context(nullptr)
 ,   m_quitOnDestroy(true)
+,   m_mode(WindowMode)
 {
 #ifdef WIN32
     m_window = new WinWindow(*this);
@@ -129,12 +130,45 @@ void Window::hide()
 
 void Window::fullScreen()
 {
+    if (WindowMode != m_mode)
+        return;
+
+    m_mode = TransitionMode;
     m_window->fullScreen();
+    m_mode = FullScreenMode;
 }
 
 void Window::windowed()
 {
+    if (FullScreenMode != m_mode)
+        return;
+
+    m_mode = TransitionMode;
     m_window->windowed();
+    m_mode = WindowMode;
+}
+
+bool Window::isFullScreen() const
+{
+    return FullScreenMode == m_mode;
+}
+
+bool Window::isWindowed() const
+{
+    return WindowMode == m_mode;
+}
+
+void Window::toggleMode()
+{
+    switch (m_mode)
+    {
+    case TransitionMode:
+        return;
+    case FullScreenMode:
+        return windowed();
+    case WindowMode:
+        return fullScreen();
+    }
 }
 
 void Window::attach(WindowEventHandler * eventHandler)
@@ -230,44 +264,42 @@ void Window::onClose()
         quit(0);
 }
 
-//bool Window::onKeyPress(const unsigned short key)
-//{
-//    KeyEvent kpe(KeyEvent::KeyPress, key);
-//    
-//
-//    m_keysPressed.insert(kpe.key());
-//    return kpe.isAccepted();
-//}
-//
-//
-//bool Window::onKeyRelease(const unsigned short key)
-//{
-//    KeyEvent kre(KeyEvent::KeyRelease, key);
-//
-//    switch (kre.key())
-//    {
-//    case KeyEvent::KeyEscape:
-//        kre.accept();
-//        SendMessage(m_hWnd, WM_CLOSE, NULL, NULL);
-//        break;
-//
-//    case KeyEvent::KeyReturn:
-//        if (m_keysPressed.find(KeyEvent::KeyAlt) != m_keysPressed.cend())
-//        {
-//            kre.accept();
-//            toggleMode();
-//        }
-//        break;
-//
-//    default: 
-//        break;
-//    }
-//
-//    const auto f = m_keysPressed.find(kre.key());
-//    if (f != m_keysPressed.cend())
-//        m_keysPressed.erase(f);
-//
-//    return kre.isAccepted();
-//}
+bool Window::onKeyPress(const unsigned short key)
+{
+    KeyEvent kpe(KeyEvent::KeyPress, key);
+
+    m_keysPressed.insert(kpe.key());
+    return kpe.isAccepted();
+}
+
+bool Window::onKeyRelease(const unsigned short key)
+{
+    KeyEvent kre(KeyEvent::KeyRelease, key);
+
+    switch (kre.key())
+    {
+    case KeyEvent::KeyEscape:
+        kre.accept();
+        close();
+        break;
+
+    case KeyEvent::KeyReturn:
+        if (m_keysPressed.find(KeyEvent::KeyAlt) != m_keysPressed.cend())
+        {
+            kre.accept();
+            toggleMode();
+        }
+        break;
+
+    default: 
+        break;
+    }
+
+    const auto f = m_keysPressed.find(kre.key());
+    if (f != m_keysPressed.cend())
+        m_keysPressed.erase(f);
+
+    return kre.isAccepted();
+}
 
 } // namespace glow

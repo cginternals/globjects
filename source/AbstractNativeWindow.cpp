@@ -45,4 +45,24 @@ void AbstractNativeWindow::onResize()
     return m_window.onResize();
 }
 
+bool AbstractNativeWindow::onKeyPress(const unsigned short key)
+{
+    return m_window.onKeyPress(key);
+}
+
+bool AbstractNativeWindow::onKeyRelease(const unsigned short key)
+{
+    return m_window.onKeyRelease(key);
+}
+
+bool AbstractNativeWindow::isFullScreen() const
+{
+    return m_window.isFullScreen();
+}
+
+bool AbstractNativeWindow::isWindowed() const
+{
+    return m_window.isWindowed();
+}
+
 } // namespace glow
