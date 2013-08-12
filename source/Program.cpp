@@ -175,7 +175,7 @@ void Program::checkLinkStatus()
 
 	if (!m_linked)
 	{
-		error()
+		critical()
 			<< "Linker error:" << std::endl
 			<< infoLog();
 	}

@@ -237,7 +237,7 @@ void FrameBufferObject::printStatus(bool onlyErrors)
 
 	if (status == GL_FRAMEBUFFER_COMPLETE)
 	{
-		log() << statusString(GL_FRAMEBUFFER_COMPLETE);
+		info() << statusString(GL_FRAMEBUFFER_COMPLETE);
 	}
 	else
 	{
@@ -245,7 +245,7 @@ void FrameBufferObject::printStatus(bool onlyErrors)
 		ss.flags(std::ios::hex | std::ios::showbase);
 		ss << status;
 
-		error() << statusString(status) << " (" << ss.str() << ")";
+		critical() << statusString(status) << " (" << ss.str() << ")";
 	}
 }
 

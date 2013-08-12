@@ -20,10 +20,11 @@ class GLOW_API LogMessage
 public:
 	enum Level
 	{
-		Debug,
+		Fatal,
+		Critical,
 		Warning,
-		Error,
-		Fatal
+		Debug,
+		Info
 	};
 
 	LogMessage(Level level, const std::string& message);
@@ -31,15 +32,17 @@ public:
 	Level level() const;
 	const std::string& message() const;
 protected:
-	Level _level;
-	std::string _message;
+	Level m_level;
+	std::string m_message;
 };
+
+class LoggingInterface;
 
 /** \brief The LogMessageBuilder class builds a LogMessage from different kinds of primitive types.
 
 	The LogMessageBuilder is  usually created by one of the global functions log, debug, warning, error or fatal.
 	It works similar to streams and accepts a number of different types which will be converted to strings automatically.
-	When it goes out of scope, it creates a LogMessage from all streamed objects and sends it to the default log handler.
+	When it goes out of scope, it creates a LogMessage from all streamed objects and sends it to the log handler.
 
 	Typeical usage of the LogMessageBuilder:
 	\code{.cpp}
@@ -56,7 +59,7 @@ protected:
 class GLOW_API LogMessageBuilder
 {
 public:
-	LogMessageBuilder(LogMessage::Level level);
+	LogMessageBuilder(LogMessage::Level level, LoggingInterface* handler);
 	LogMessageBuilder(const LogMessageBuilder& builder);
 	~LogMessageBuilder();
 
@@ -90,8 +93,9 @@ public:
 	LogMessageBuilder& operator<<(const glm::mat3& m);
 	LogMessageBuilder& operator<<(const glm::mat4& m);
 protected:
-	LogMessage::Level _level;
-	std::stringstream _stream;
+	LogMessage::Level m_level;
+	LoggingInterface* m_handler;
+	std::stringstream m_stream;
 };
 
 } // namespace glow

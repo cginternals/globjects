@@ -43,7 +43,7 @@ void Error::check(const char* file, int line)
 		ss.unsetf(std::ios::hex | std::ios::showbase);
 		ss << "in " << file << ":" << line << std::endl;
 
-		::error() << ss.str();
+		critical() << ss.str();
 	}
 }
 

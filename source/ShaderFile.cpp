@@ -44,7 +44,7 @@ bool ShaderFile::loadFileContent()
 {
 	if (!internal::FileReader::readFile(_filePath, _fileContent))
 	{
-		error() << "Reading from file \"" << _filePath << "\" failed.";
+		critical() << "Reading from file \"" << _filePath << "\" failed.";
 		return false;
 	}
 

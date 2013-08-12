@@ -130,7 +130,7 @@ bool Shader::checkCompileStatus()
 
 	if (!compiled)
 	{
-		error()
+		critical()
 			<< "Compiler error:" << std::endl
 			<< "Type " << typeString() << std::endl
 			<< infoLog();

@@ -6,44 +6,55 @@ namespace glow {
 
 namespace {
 
-LoggingInterface* logHandler = new ConsoleLogger();
+LogMessage::Level g_verbosityLevel = LogMessage::Info;
+LoggingInterface* g_logHandler = new ConsoleLogger();
 
 }
 
-LogMessageBuilder log(LogMessage::Level level)
+LogMessageBuilder info(LogMessage::Level level)
 {
-	return LogMessageBuilder(level);
+	return LogMessageBuilder(level, level <= g_verbosityLevel ? g_logHandler : nullptr);
 }
 
 LogMessageBuilder debug()
 {
-	return log(LogMessage::Debug);
+	return info(LogMessage::Debug);
 }
 
 LogMessageBuilder warning()
 {
-	return log(LogMessage::Warning);
+	return info(LogMessage::Warning);
 }
 
-LogMessageBuilder error()
+LogMessageBuilder critical()
 {
-	return log(LogMessage::Error);
+	return info(LogMessage::Critical);
 }
 
 LogMessageBuilder fatal()
 {
-	return log(LogMessage::Fatal);
+	return info(LogMessage::Fatal);
 }
 
 LoggingInterface* loggingHandler()
 {
-	return logHandler;
+	return g_logHandler;
 }
 
 void setLoggingHandler(LoggingInterface* handler)
 {
-	delete logHandler;
-	logHandler = handler;
+	delete g_logHandler;
+	g_logHandler = handler;
+}
+
+GLOW_API void setVerbosityLevel(LogMessage::Level verbosity)
+{
+	g_verbosityLevel = verbosity;
+}
+
+GLOW_API LogMessage::Level verbosityLevel()
+{
+	return g_verbosityLevel;
 }
 
 } // namespace glow

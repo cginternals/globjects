@@ -13,12 +13,12 @@ std::string ConsoleLogger::levelString(LogMessage::Level level)
 {
 	switch (level)
 	{
-		case LogMessage::Warning:
-			return "#warning: ";
-		case LogMessage::Error:
-			return "#error: ";
 		case LogMessage::Fatal:
 			return "#fatal: ";
+		case LogMessage::Critical:
+			return "#critical: ";
+		case LogMessage::Warning:
+			return "#warning: ";
 		default:
 			return "";
 	}

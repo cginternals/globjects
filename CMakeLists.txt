@@ -191,7 +191,7 @@ set(headers
 
     ${header_path}/internal/FileReader.h
     
-    ${header_path}/info.h
+    ${header_path}/query.h
     
     ${header_path}/AbstractUniform.h
     ${header_path}/Array.hpp
@@ -219,13 +219,14 @@ set(headers
     ${header_path}/TransformFeedback.h
     ${header_path}/Uniform.h
     ${header_path}/Uniform.hpp
+    ${header_path}/Version.h
     ${header_path}/VertexArrayObject.h
     ${header_path}/VertexAttributeBinding.h
 )
 
 set(sources
     ${source_path}/internal/FileReader.cpp
-    ${source_path}/info.cpp
+    ${source_path}/query.cpp
     
     ${source_path}/AbstractUniform.cpp
     ${source_path}/Buffer.cpp
@@ -245,6 +246,7 @@ set(sources
     ${source_path}/Texture.cpp
     ${source_path}/TransformFeedback.cpp
     ${source_path}/Uniform.cpp
+    ${source_path}/Version.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
 )

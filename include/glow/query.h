@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 
 #include <glow/glow.h>
+#include <glow/Version.h>
 
 #include <string>
 #include <vector>
@@ -10,26 +11,8 @@
 
 namespace glow {
 
-class GLOW_API info
+class GLOW_API query
 {
-public:
-	class Version
-	{
-	public:
-		Version(GLint majorVersion, GLint minorversion);
-
-		GLint majorVersion;
-		GLint minorVersion;
-
-		bool operator<(const Version& version) const;
-		bool operator>(const Version& version) const;
-		bool operator==(const Version& version) const;
-		bool operator!=(const Version& version) const;
-		bool operator>=(const Version& version) const;
-		bool operator<=(const Version& version) const;
-
-		std::string toString() const;
-	};
 public:
 	static std::string getString(GLenum pname);
 	static GLint getInteger(GLenum pname);

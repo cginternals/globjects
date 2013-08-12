@@ -26,99 +26,54 @@
 #define GPU_MEMORY_INFO_EVICTION_COUNT_NVX				0x904A
 #define GPU_MEMORY_INFO_EVICTED_MEMORY_NVX				0x904B
 
-#include <sstream>
-
-#include "glow/info.h"
+#include <glow/query.h>
 
 
 using namespace glow;
 
-// info
+// query
 
-info::Version::Version(GLint majorVersion, GLint minorVersion)
-: majorVersion(majorVersion)
-, minorVersion(minorVersion)
-{
-}
-
-bool info::Version::operator<(const Version& version) const
-{
-	return majorVersion<version.majorVersion || (majorVersion==version.majorVersion && minorVersion<version.minorVersion);
-}
-
-bool info::Version::operator>(const Version& version) const
-{
-	return majorVersion>version.majorVersion || (majorVersion==version.majorVersion && minorVersion>version.minorVersion);
-}
-
-bool info::Version::operator==(const Version& version) const
-{
-	return majorVersion==version.majorVersion && minorVersion==version.minorVersion;
-}
-
-bool info::Version::operator!=(const Version& version) const
-{
-	return majorVersion!=version.majorVersion || minorVersion!=version.minorVersion;
-}
-
-bool info::Version::operator>=(const Version& version) const
-{
-	return *this>version || *this==version;
-}
-
-bool info::Version::operator<=(const Version& version) const
-{
-	return *this<version || *this==version;
-}
-
-std::string info::Version::toString() const
-{
-	std::stringstream stream;
-	stream << majorVersion << "." << minorVersion;
-	return stream.str();
-}
-
-std::string info::getString(GLenum pname)
+std::string query::getString(GLenum pname)
 {
 	return reinterpret_cast<const char*>(glGetString(pname));
 }
 
-GLint info::getInteger(GLenum pname)
+GLint query::getInteger(GLenum pname)
 {
 	GLint value;
 	glGetIntegerv(pname, &value);
 	return value;
 }
 
-GLfloat info::getFloat(GLenum pname)
+GLfloat query::getFloat(GLenum pname)
 {
 	GLfloat value;
 	glGetFloatv(pname, &value);
 	return value;
 }
 
-GLdouble info::getDouble(GLenum pname)
+GLdouble query::getDouble(GLenum pname)
 {
 	GLdouble value;
 	glGetDoublev(pname, &value);
 	return value;
 }
 
-GLboolean info::getBoolean(GLenum pname)
+GLboolean query::getBoolean(GLenum pname)
 {
 	GLboolean value;
 	glGetBooleanv(pname, &value);
 	return value;
 }
 
-GLint info::getInteger(GLenum pname, unsigned index)
+GLint query::getInteger(GLenum pname, unsigned index)
 {
 	GLint value;
 	glGetIntegeri_v(pname, index, &value);
 	return value;
 }
 
-std::vector<GLint> info::getIntegers(GLenum pname, unsigned size)
+std::vector<GLint> query::getIntegers(GLenum pname, unsigned size)
 {
 	GLint* values = new GLint[size];
 	glGetIntegerv(pname, values);
@@ -127,37 +82,37 @@ std::vector<GLint> info::getIntegers(GLenum pname, unsigned size)
 	return result;
 }
 
-std::string info::vendor()
+std::string query::vendor()
 {
 	return getString(GL_VENDOR);
 }
 
-std::string info::renderer()
+std::string query::renderer()
 {
 	return getString(GL_RENDERER);
 }
 
-std::string info::versionString()
+std::string query::versionString()
 {
 	return getString(GL_VERSION);
 }
 
-info::Version info::version()
+Version query::version()
 {
 	return Version(majorVersion(), minorVersion());
 }
 
-GLint info::majorVersion()
+GLint query::majorVersion()
 {
 	return getInteger(GL_MAJOR_VERSION);
 }
 
-GLint info::minorVersion()
+GLint query::minorVersion()
 {
 	return getInteger(GL_MINOR_VERSION);
 }
 
-bool info::isCoreProfile()
+bool query::isCoreProfile()
 {
 	if (version()<Version(3,2))
 	{
@@ -171,7 +126,7 @@ bool info::isCoreProfile()
 
 bool extensions::isSupported(const char* extension)
 {
-	if (info::isCoreProfile())
+	if (query::isCoreProfile())
 	{
 		return false;
 	}
@@ -227,7 +182,7 @@ GLint memory::memoryInfo(GLenum pname)
 		return -1;
 	}
 
-	return info::getInteger(pname);
+	return query::getInteger(pname);
 }
 
 // glew
