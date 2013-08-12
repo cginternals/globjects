@@ -15,6 +15,12 @@ Shader::Shader(GLenum type)
 {
 }
 
+Shader::Shader(GLenum type, ShaderSource* source)
+: Shader(type)
+{
+	setSource(source);
+}
+
 Shader::~Shader()
 {
 	if (_source)
