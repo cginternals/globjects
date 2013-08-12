@@ -215,8 +215,10 @@ set(api_includes
 
 set(sources
     ${source_path}/info.cpp
-    
+
     ${source_path}/AbstractUniform.cpp
+    ${source_path}/AbstractNativeWindow.cpp
+    ${source_path}/AbstractNativeWindow.h
     ${source_path}/Buffer.cpp
     ${source_path}/Changeable.cpp
     ${source_path}/Context.cpp
@@ -226,7 +228,11 @@ set(sources
 	${source_path}/FileReader.cpp
 	${source_path}/FileReader.h
     ${source_path}/KeyEvent.cpp
+    ${source_path}/LinWindow.cpp
+    ${source_path}/LinWindow.h
     ${source_path}/Log.cpp
+    ${source_path}/MacWindow.cpp
+    ${source_path}/MacWindow.h
     ${source_path}/Object.cpp
     ${source_path}/Program.cpp
     ${source_path}/Referenced.cpp
@@ -239,6 +245,8 @@ set(sources
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
     ${source_path}/Window.cpp
+    ${source_path}/WinWindow.cpp
+    ${source_path}/WinWindow.h
     ${source_path}/WindowEventHandler.cpp
 )
 

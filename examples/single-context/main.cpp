@@ -58,6 +58,8 @@ int main(int argc, char** argv)
 
     window.create(format, "Single Context Example", 1280, 800);
     window.show();
+    window.fullScreen();
+    window.windowed();
 
     return Window::run();
 }
