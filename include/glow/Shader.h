@@ -21,9 +21,11 @@ class GLOW_API Shader : public Object, protected ChangeListener, public Changeab
 	friend class Program;
 public:
 	Shader(GLenum type);
+	Shader(GLenum type, ShaderSource* source);
 	virtual ~Shader();
 
 	static Shader* fromFile(GLenum type, const std::string& filename);
+	static Shader* fromSource(GLenum type, const std::string& source);
 
 	GLenum type() const;
 

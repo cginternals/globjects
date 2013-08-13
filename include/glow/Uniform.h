@@ -3,15 +3,15 @@
 #include <glow/glow.h>
 #include <glow/AbstractUniform.h>
 
-namespace glow 
+namespace glow
 {
 
 /** \brief The Uniform template class wraps access to typed global GLSL variables.
 
-	The Uniform class wraps access to typed global GLSL variables (uniforms). 
-	These are stored in the OpenGL program objects itself. 
+	The Uniform class wraps access to typed global GLSL variables (uniforms).
+	These are stored in the OpenGL program objects itself.
 
-	Supported OpenGL uniform setters are wrapped via specialized template set 
+	Supported OpenGL uniform setters are wrapped via specialized template set
 	implementations. Note that unsupported uniform types result in compile time
 	errors due to the default implementation of set.
 
@@ -36,6 +36,8 @@ public:
 	virtual ~Uniform();
 
 	void set(const T & value);
+
+	const T & value() const;
 
 protected:
 	virtual void setLocation(const GLint location);

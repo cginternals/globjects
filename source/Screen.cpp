@@ -2,7 +2,7 @@
 #include <set>
 #include <functional>
 
-#include <glow/Log.h>
+#include <glow/logging.h>
 #include <glow/Screen.h>
 
 #include <stdio.h>

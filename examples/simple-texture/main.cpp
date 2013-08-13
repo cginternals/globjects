@@ -4,7 +4,7 @@
 
 #include "SimpleTexture.h"
 #include <glow/Error.h>
-#include <glow/info.h>
+#include <glow/query.h>
 
 #include <iostream>
 
@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 	//CHECK_ERROR;
 	glow::Error::clear();
 
-	std::cout << glow::info::versionString() << std::endl;
+	std::cout << glow::query::versionString() << std::endl;
 
 	window.initializeGL();
 

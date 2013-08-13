@@ -18,6 +18,8 @@ public:
 	GLuint id() const;
 
 	operator GLuint() const;
+	
+	bool isTransformFeedback() const;
 protected:
 	GLuint m_id;
 	bool m_ownsGLObject;

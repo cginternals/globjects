@@ -1,7 +1,7 @@
 
 #include <glow/VertexAttributeBinding.h>
 #include <glow/VertexArrayObject.h>
-#include <glow/info.h>
+#include <glow/Version.h>
 
 namespace glow
 {
@@ -16,7 +16,7 @@ VertexAttributeBinding::VertexAttributeBinding(VertexArrayObject* vao, GLuint bi
 #ifndef GL_VERSION_4_3
 	_implementation = new VertexAttributeBinding_GL_3_2(this);
 #else
-	_implementation = info::version() >= info::Version(4, 3)
+	_implementation = Version::current() >= Version(4, 3)
 		? (VertexAttributeBindingImplementation*)new VertexAttributeBinding_GL_4_3(this)
 		: (VertexAttributeBindingImplementation*)new VertexAttributeBinding_GL_3_2(this);
 #endif

@@ -2,7 +2,7 @@
 #include <cassert>
 #include <sstream>
 
-#include <glow/Log.h>
+#include <glow/logging.h>
 #include <glow/Error.h>
 
 namespace glow
@@ -45,7 +45,7 @@ void Error::check(const char* file, int line)
 		ss.unsetf(std::ios::hex | std::ios::showbase);
 		ss << " in " << file << "(" << line << ")";
 
-		glow::error() << ss.str();
+		critical() << ss.str();
 	}
 }
 

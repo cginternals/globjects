@@ -10,7 +10,7 @@
 #include "LinWindow.h"
 #endif
 
-#include <glow/Log.h>
+#include <glow/logging.h>
 #include <glow/Context.h>
 #include <glow/WindowEventHandler.h>
 #include <glow/Window.h>

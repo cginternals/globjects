@@ -20,6 +20,9 @@ public:
 	ColorAttachment(GLenum attachment);
 
 	GLenum attachment() const;
+
+	virtual bool isTextureAttachment() const;
+	virtual bool isRenderBufferAttachment() const;
 protected:
 	GLenum _attachment;
 };
@@ -28,6 +31,9 @@ class GLOW_API TextureAttachment : public ColorAttachment
 {
 public:
 	TextureAttachment(Texture * texture, GLenum attachment);
+
+	virtual bool isTextureAttachment() const;
+	Texture* texture();
 protected:
 	ref_ptr<Texture> _texture;
 };
@@ -36,6 +42,9 @@ class GLOW_API RenderBufferAttachment : public ColorAttachment
 {
 public:
 	RenderBufferAttachment(RenderBufferObject* renderBuffer, GLenum attachment);
+
+	virtual bool isRenderBufferAttachment() const;
+	RenderBufferObject* renderBuffer();
 protected:
 	ref_ptr<RenderBufferObject> _renderBuffer;
 };
@@ -75,6 +84,8 @@ public:
 	std::string statusString();
 	std::string statusString(GLenum status);
 	void printStatus(bool onlyErrors = false);
+
+	ColorAttachment* attachment(GLenum attachment);
 protected:
 	GLenum _target;
 	std::unordered_map<GLenum, ref_ptr<ColorAttachment>> _attachments;

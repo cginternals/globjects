@@ -3,7 +3,7 @@
 
 #include <glow/Shader.h>
 #include <glow/Program.h>
-#include <glow/Log.h>
+#include <glow/logging.h>
 #include <glow/ShaderCode.h>
 
 namespace glow
@@ -15,6 +15,12 @@ Shader::Shader(GLenum type)
 , _source(nullptr)
 , _compiled(false)
 {
+}
+
+Shader::Shader(GLenum type, ShaderSource* source)
+: Shader(type)
+{
+	setSource(source);
 }
 
 Shader::~Shader()
@@ -35,6 +41,13 @@ Shader* Shader::fromFile(GLenum type, const std::string& filename)
 {
 	Shader* shader = new Shader(type);
 	shader->setSource(new ShaderFile(filename));
+	return shader;
+}
+
+Shader* Shader::fromSource(GLenum type, const std::string& source)
+{
+	Shader* shader = new Shader(type);
+	shader->setSource(source);
 	return shader;
 }
 
@@ -125,7 +138,7 @@ bool Shader::checkCompileStatus()
 
 	if (!compiled)
 	{
-		error()
+		critical()
 			<< "Compiler error:" << std::endl
 			<< "Type " << typeString() << std::endl
 			<< infoLog();

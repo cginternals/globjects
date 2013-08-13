@@ -4,7 +4,7 @@
 #include <map>
 #include <windows.h>
 
-#include <glow/Log.h>
+#include <glow/logging.h>
 #include <glow/KeyEvent.h>
 
 

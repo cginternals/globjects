@@ -14,8 +14,8 @@
 #include <GL/GLUx.h>
 #endif
 
-#include <glow/Log.h>
-#include <glow/info.h>
+#include <glow/logging.h>
+#include <glow/query.h>
 #include <glow/Error.h>
 #include <glow/Context.h>
 
@@ -167,7 +167,7 @@ bool Context::create(
 
     // NOTE: this assumes that the driver creates a "defaulted" context with
     // the highest available opengl version.
-    m_format.setVersionFallback(info::majorVersion(), info::minorVersion());
+    m_format.setVersionFallback(query::majorVersion(), query::minorVersion());
 
     CHECK_ERROR;
 

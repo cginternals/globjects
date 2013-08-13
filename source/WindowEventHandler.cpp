@@ -5,7 +5,7 @@
 #include <Windows.h>
 #endif 
 
-#include <glow/Log.h>
+#include <glow/logging.h>
 #include <glow/WindowEventHandler.h>
 
 namespace glow

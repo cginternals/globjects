@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include <glow/FrameBufferObject.h>
-#include <glow/Log.h>
+#include <glow/logging.h>
 
 namespace glow
 {
@@ -17,16 +17,46 @@ GLenum ColorAttachment::attachment() const
 	return _attachment;
 }
 
+bool ColorAttachment::isTextureAttachment() const
+{
+	return false;
+}
+
+bool ColorAttachment::isRenderBufferAttachment() const
+{
+	return false;
+}
+
 TextureAttachment::TextureAttachment(Texture* texture, GLenum attachment)
 : ColorAttachment(attachment)
 , _texture(texture)
 {
 }
 
+bool TextureAttachment::isTextureAttachment() const
+{
+	return true;
+}
+
+Texture* TextureAttachment::texture()
+{
+	return _texture;
+}
+
 RenderBufferAttachment::RenderBufferAttachment(RenderBufferObject* renderBuffer, GLenum attachment)
 : ColorAttachment(attachment)
 , _renderBuffer(renderBuffer)
 {
+}
+
+bool RenderBufferAttachment::isRenderBufferAttachment() const
+{
+	return true;
+}
+
+RenderBufferObject* RenderBufferAttachment::renderBuffer()
+{
+	return _renderBuffer;
 }
 
 
@@ -209,7 +239,7 @@ void FrameBufferObject::printStatus(bool onlyErrors)
 
 	if (status == GL_FRAMEBUFFER_COMPLETE)
 	{
-		log() << statusString(GL_FRAMEBUFFER_COMPLETE);
+		info() << statusString(GL_FRAMEBUFFER_COMPLETE);
 	}
 	else
 	{
@@ -217,8 +247,13 @@ void FrameBufferObject::printStatus(bool onlyErrors)
 		ss.flags(std::ios::hex | std::ios::showbase);
 		ss << status;
 
-		error() << statusString(status) << " (" << ss.str() << ")";
+		critical() << statusString(status) << " (" << ss.str() << ")";
 	}
+	}
+
+ColorAttachment* FrameBufferObject::attachment(GLenum attachment)
+{
+	return _attachments[attachment];
 }
 
 } // namespace glow

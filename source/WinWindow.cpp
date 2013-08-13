@@ -6,7 +6,7 @@
 
 #include <Windows.h>
 
-#include <glow/log.h>
+#include <glow/logging.h>
 #include <glow/Screen.h>
 #include <glow/Context.h>
 #include <glow/WindowEventHandler.h>

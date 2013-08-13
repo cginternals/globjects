@@ -179,23 +179,26 @@ configure_file(${source_path}/meta.h.in meta.h)
 
 set(api_includes
     ${header_path}/glow.h
-    ${header_path}/info.h
-    
+  
     ${header_path}/AbstractUniform.h
     ${header_path}/Array.hpp
     ${header_path}/ArrayData.h
     ${header_path}/Buffer.h
     ${header_path}/Changeable.h
     ${header_path}/ChangeListener.h
+    ${header_path}/ConsoleLogger.h
     ${header_path}/Context.h
     ${header_path}/ContextFormat.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferObject.h
+    ${header_path}/logging.h
+    ${header_path}/LoggingInterface.h
+    ${header_path}/LogMessage.h
     ${header_path}/KeyEvent.h
-    ${header_path}/Log.h
     ${header_path}/Object.h
     ${header_path}/Program.h
     ${header_path}/Program.hpp
+    ${header_path}/query.h
     ${header_path}/ref_ptr.hpp
     ${header_path}/Referenced.h
     ${header_path}/RenderBufferObject.h
@@ -205,8 +208,10 @@ set(api_includes
     ${header_path}/ShaderFile.h
     ${header_path}/ShaderSource.h
     ${header_path}/Texture.h
+    ${header_path}/TransformFeedback.h
     ${header_path}/Uniform.h
     ${header_path}/Uniform.hpp
+    ${header_path}/Version.h
     ${header_path}/VertexArrayObject.h
     ${header_path}/VertexAttributeBinding.h
     ${header_path}/Window.h
@@ -214,13 +219,12 @@ set(api_includes
 )
 
 set(sources
-    ${source_path}/info.cpp
-    
     ${source_path}/AbstractUniform.cpp
     ${source_path}/AbstractNativeWindow.cpp
     ${source_path}/AbstractNativeWindow.h
     ${source_path}/Buffer.cpp
     ${source_path}/Changeable.cpp
+    ${source_path}/ConsoleLogger.cpp
     ${source_path}/Context.cpp
     ${source_path}/ContextFormat.cpp
     ${source_path}/Error.cpp
@@ -230,11 +234,13 @@ set(sources
     ${source_path}/KeyEvent.cpp
     ${source_path}/LinWindow.cpp
     ${source_path}/LinWindow.h
-    ${source_path}/Log.cpp
+    ${source_path}/logging.cpp
+    ${source_path}/LogMessage.cpp
     ${source_path}/MacWindow.cpp
     ${source_path}/MacWindow.h
     ${source_path}/Object.cpp
     ${source_path}/Program.cpp
+    ${source_path}/query.cpp
     ${source_path}/Referenced.cpp
     ${source_path}/RenderBufferObject.cpp
     ${source_path}/Screen.cpp
@@ -242,7 +248,9 @@ set(sources
     ${source_path}/ShaderCode.cpp
     ${source_path}/ShaderFile.cpp
     ${source_path}/Texture.cpp
+    ${source_path}/TransformFeedback.cpp
     ${source_path}/Uniform.cpp
+    ${source_path}/Version.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
     ${source_path}/Window.cpp

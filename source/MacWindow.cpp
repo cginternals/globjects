@@ -4,7 +4,7 @@
 #include <cassert>
 #include <string>
 
-#include <glow/log.h>
+#include <glow/logging.h>
 
 #include "MacWindow.h"
 

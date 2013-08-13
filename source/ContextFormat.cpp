@@ -2,7 +2,7 @@
 #include <cassert>
 #include <sstream>
 
-#include <glow/Log.h>
+#include <glow/logging.h>
 #include <glow/ContextFormat.h>
 
 

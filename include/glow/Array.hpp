@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <initializer_list>
 
 #include <glm/glm.hpp>
 
@@ -18,6 +19,7 @@ public:
 	Array(const std::vector<T>& vector) : std::vector<T>(vector) {}
 	Array(T* data, unsigned size) : std::vector<T>(data, data+size) {}
 	Array(void* data, unsigned size) : std::vector<T>((T*)data, (T*)data+size/sizeof(T)) {}
+	Array(std::initializer_list<T> list) : std::vector<T>(list) {}
 
 	virtual const void* rawData() const {return (void*)std::vector<T>::data();}
 	virtual GLint byteSize() const { return std::vector<T>::size()*sizeof(T);}
