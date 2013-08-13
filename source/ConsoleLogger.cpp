@@ -8,7 +8,10 @@ namespace glow {
 
 void ConsoleLogger::handle(const LogMessage& message)
 {
-	std::cout << levelString(message.level()) << message.message() << std::endl;
+    if (LogMessage::Info > message.level())
+	    std::cerr << levelString(message.level()) << message.message() << std::endl;
+    else
+        std::cout << levelString(message.level()) << message.message() << std::endl;
 }
 
 std::string ConsoleLogger::levelString(LogMessage::Level level)

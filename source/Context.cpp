@@ -105,7 +105,6 @@ bool Context::create(
     PIXELFORMATDESCRIPTOR pfd(toPixelFormatDescriptor(m_format));
 
     m_hDC = GetDC(reinterpret_cast<HWND>(m_hWnd));
-
     if (NULL == m_hDC)
     {
         fatal() << "Obtaining a device context failed (GetDC). Error: " << GetLastError();
