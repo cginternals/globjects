@@ -19,9 +19,9 @@ ContextFormat::ContextFormat()
 
 ,	m_profile(CoreProfile)
 
-,	m_redBufferSize(8)
-,	m_greenBufferSize(8)
-,	m_blueBufferSize(8)
+,	m_redBufferSize(0)
+,	m_greenBufferSize(0)
+,	m_blueBufferSize(0)
 ,	m_alphaBufferSize(8)
 
 ,	m_depthBufferSize(24)

@@ -60,6 +60,7 @@ public:
         shared contexts with same format, but individual swap format. 
     */
     bool setSwapInterval(const SwapInterval interval);
+    bool setSwapInterval();
     SwapInterval swapInterval() const;
 
 protected:

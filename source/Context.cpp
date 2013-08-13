@@ -27,7 +27,7 @@ namespace glow
     to provide identical interfaces over all supported platforms.
 */
 
-static inline PIXELFORMATDESCRIPTOR pixelFormatDescriptor(const ContextFormat & format)
+static inline PIXELFORMATDESCRIPTOR toPixelFormatDescriptor(const ContextFormat & format)
 {
     // NTOE: TrippleBufferig not supported yet.
     // NOTE: Accumulation buffer is not supported.
@@ -42,32 +42,33 @@ static inline PIXELFORMATDESCRIPTOR pixelFormatDescriptor(const ContextFormat & 
       | (format.swapBehavior() == ContextFormat::DoubleBuffering ? PFD_DOUBLEBUFFER : NULL)
     ,   PFD_TYPE_RGBA                   // BYTE  iPixelType
     ,   32                              // BYTE  cColorBits;
-    ,   format.redBufferSize()          // BYTE  cRedBits
-    ,   0                               // BYTE  cRedShift
-    ,   format.greenBufferSize()        // BYTE  cGreenBits
-    ,   0                               // BYTE  cGreenShift
-    ,   format.blueBufferSize()         // BYTE  cBlueBits
-    ,   0                               // BYTE  cBlueShift
+    ,   0, 0, 0, 0, 0, 0                //       Not used
     ,   format.alphaBufferSize()        // BYTE  cAlphaBits
-    ,   0                               // BYTE  cAlphaShift
-    ,   0                               // BYTE  cAccumBits
-    ,   0                               // BYTE  cAccumRedBits
-    ,   0                               // BYTE  cAccumGreenBits
-    ,   0                               // BYTE  cAccumBlueBits
-    ,   0                               // BYTE  cAccumAlphaBits
+    ,   0, 0, 0, 0, 0, 0                //       Not used
     ,   format.depthBufferSize()        // BYTE  cDepthBits
     ,   format.stencilBufferSize()      // BYTE  cStencilBits
     ,   0                               // BYTE  cAuxBuffers
     ,   PFD_MAIN_PLANE                  // BYTE  iLayerType
-    ,   0                               // BYTE  bReserved
-    ,   0                               // DWORD dwLayerMask
-    ,   0                               // DWORD dwVisibleMask
-    ,   0                               // DWORD dwDamageMask
+    ,   0, 0, 0, 0                      //       Not used
     };
 
     return pfd;
 }
 
+static void inline fromPixelFormatDescriptor(
+    ContextFormat & format
+,   const PIXELFORMATDESCRIPTOR & pfd)
+{
+    format.setSwapBehavior((pfd.dwFlags & PFD_DOUBLEBUFFER) ? ContextFormat::DoubleBuffering : ContextFormat::SingleBuffering);
+
+    format.setRedBufferSize(pfd.cRedBits);
+    format.setGreenBufferSize(pfd.cGreenBits);
+    format.setBlueBufferSize(pfd.cBlueBits);
+    format.setAlphaBufferSize(pfd.cAlphaBits);
+
+    format.setDepthBufferSize(pfd.cDepthBits);
+    format.setStencilBufferSize(pfd.cStencilBits);
+}
 
 Context::Context()
 :   m_swapInterval(VerticalSyncronization)
@@ -99,7 +100,9 @@ bool Context::create(
     m_hWnd = hWnd;
     m_id = NULL;
 
-    PIXELFORMATDESCRIPTOR pfd(pixelFormatDescriptor(m_format));
+    // convert fomrat to native pixelformat
+
+    PIXELFORMATDESCRIPTOR pfd(toPixelFormatDescriptor(m_format));
 
     m_hDC = GetDC(reinterpret_cast<HWND>(m_hWnd));
 
@@ -166,8 +169,11 @@ bool Context::create(
     // the highest available opengl version.
     m_format.setVersionFallback(info::majorVersion(), info::minorVersion());
 
+    CHECK_ERROR;
+
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(tempRC);
+
 
     const int attributes[] =
     {
@@ -190,6 +196,13 @@ bool Context::create(
     if (3 > m_format.majorVersion() || (3 == m_format.majorVersion() && 2 > m_format.minorVersion()))
         fatal() << "OpenGL Versions prior to 3.2 (" << m_format.majorVersion() << "." << m_format.minorVersion() << " created)"
             << " are not supported within glow. This might result in erroneous behaviour.";
+
+    setSwapInterval();
+
+    // convert native pixelformat back to format for format verification
+
+    fromPixelFormatDescriptor(m_format, pfd);
+    ContextFormat::verify(format, m_format);
 
     m_id = reinterpret_cast<int>(m_hRC);
     return true;
@@ -264,46 +277,45 @@ bool Context::setSwapInterval(const SwapInterval interval)
 	if (interval == m_swapInterval)
 		return true;
 
-	bool result(false);
+    const SwapInterval backup(m_swapInterval);
+    m_swapInterval = interval;
 
+    bool result = setSwapInterval();
+
+    if (!result)
+        m_swapInterval = backup;
+
+    return result;		
+}
+
+bool Context::setSwapInterval()
+{
 #ifdef WIN32
 
-	typedef bool (WINAPI * SWAPINTERVALEXTPROC) (int) ;
-	static SWAPINTERVALEXTPROC wglSwapIntervalEXT = nullptr;
+	if (wglSwapIntervalEXT(m_swapInterval))
+        return true;
 
-	if (!wglSwapIntervalEXT)
-		wglSwapIntervalEXT = reinterpret_cast<SWAPINTERVALEXTPROC>(wglGetProcAddress("wglSwapIntervalEXT"));
-	if (wglSwapIntervalEXT)
-		result = wglSwapIntervalEXT(interval);
+    CHECK_ERROR;
+    warning() << "Setting swap interval to " << swapIntervalString(m_swapInterval) << " (" << m_swapInterval << ") failed. Error: " << GetLastError();
+
+    return false;
 
 #elif __APPLE__
 
-	qWarning("TODO: Setting swap interval is currently not implemented for __APPLE__");
-
 #else
 
-	typedef int (APIENTRY * SWAPINTERVALEXTPROC) (int) ;
-	static SWAPINTERVALEXTPROC glXSwapIntervalSGI = nullptr;
+	//typedef int (APIENTRY * SWAPINTERVALEXTPROC) (int) ;
+	//static SWAPINTERVALEXTPROC glXSwapIntervalSGI = nullptr;
 
-	if (!glXSwapIntervalSGI)
-	{
-		const GLubyte * sgi = reinterpret_cast<const GLubyte*>("glXSwapIntervalSGI");
-		glXSwapIntervalSGI = reinterpret_cast<SWAPINTERVALEXTPROC>(glXGetProcAddress(sgi));
-	}
-	if (glXSwapIntervalSGI)
-		result = glXSwapIntervalSGI(interval);
+	//if (!glXSwapIntervalSGI)
+	//{
+	//	const GLubyte * sgi = reinterpret_cast<const GLubyte*>("glXSwapIntervalSGI");
+	//	glXSwapIntervalSGI = reinterpret_cast<SWAPINTERVALEXTPROC>(glXGetProcAddress(sgi));
+	//}
+	//if (glXSwapIntervalSGI)
+	//	result = glXSwapIntervalSGI(m_swapInterval);
 
 #endif
-
-	if (!result)
-	{
-		warning() << "Setting swap interval to " << swapIntervalString(interval) << " failed.";
-        CHECK_ERROR;
-	}
-	else
-		m_swapInterval = interval;
-
-	return result;
 }
 
 bool Context::makeCurrent()
@@ -314,6 +326,8 @@ bool Context::makeCurrent()
     const BOOL result = wglMakeCurrent(m_hDC, m_hRC);
     if (!result)
         fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
+
+    CHECK_ERROR;
 
     return TRUE == result;
 }

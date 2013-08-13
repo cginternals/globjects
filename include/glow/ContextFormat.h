@@ -86,13 +86,15 @@ public:
 	SwapBehavior swapBehavior() const;
 	void setSwapBehavior(const SwapBehavior behavior);
 
-protected:
+public:
 
     /** Compares the created format against the requested one.
     */
     static bool verify(
         const ContextFormat & requested
     ,   const ContextFormat & created);
+
+protected:
 
     /** Compares (logged if erroneous) version and profile between both formats
     */

@@ -41,9 +41,9 @@ void Error::check(const char* file, int line)
 	{
 		std::stringstream ss;
 		ss.flags(std::ios::hex | std::ios::showbase);
-		ss << "OpenGL error " << error.code() << " : " << error.name() << std::endl;
+        ss << "OpenGL " << error.name() << " (" << error.code() << ")";
 		ss.unsetf(std::ios::hex | std::ios::showbase);
-		ss << "in " << file << ":" << line << std::endl;
+		ss << " in " << file << "(" << line << ")";
 
 		glow::error() << ss.str();
 	}
