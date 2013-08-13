@@ -1,6 +1,8 @@
-#include <glow/ConsoleLogger.h>
 
 #include <iostream>
+
+#include <glow/ConsoleLogger.h>
+
 
 namespace glow {
 
@@ -13,14 +15,14 @@ std::string ConsoleLogger::levelString(LogMessage::Level level)
 {
 	switch (level)
 	{
-		case LogMessage::Fatal:
-			return "#fatal: ";
-		case LogMessage::Critical:
-			return "#critical: ";
-		case LogMessage::Warning:
-			return "#warning: ";
-		default:
-			return "";
+	case LogMessage::Fatal:
+		return "#fatal: ";
+	case LogMessage::Critical:
+		return "#critical: ";
+	case LogMessage::Warning:
+		return "#warning: ";
+	default:
+		return "";
 	}
 }
 

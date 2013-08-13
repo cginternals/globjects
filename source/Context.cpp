@@ -337,8 +337,6 @@ bool Context::makeCurrent()
     if (!result)
         fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
 
-    CHECK_ERROR;
-
     return TRUE == result;
 }
 

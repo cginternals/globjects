@@ -122,7 +122,7 @@ void ContextFormat::setVersion(
     m_minorVersion = minor;
 
     if(nearestValidVersion(m_majorVersion, m_minorVersion))
-		fatal() << "Unknown OpenGL Version " << major << "." << minor << " was adjusted to " << m_majorVersion << "." << m_minorVersion << ".";
+		warning() << "Unknown OpenGL Version " << major << "." << minor << " was adjusted to " << m_majorVersion << "." << m_minorVersion << ".";
 }
 
 void ContextFormat::setVersionFallback(
@@ -134,7 +134,7 @@ void ContextFormat::setVersionFallback(
     if (major > m_majorVersion || (major == m_majorVersion && minor >= m_minorVersion))
         return;
 
-    fatal() << "Unsupported OpenGL Version " << m_majorVersion << "." << m_minorVersion << " was adjusted to " << major << "." << minor << ".";
+    warning() << "Unsupported OpenGL Version " << m_majorVersion << "." << m_minorVersion << " was adjusted to " << major << "." << minor << ".";
 
     m_majorVersion = major;
     m_minorVersion = minor;

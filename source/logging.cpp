@@ -1,6 +1,8 @@
+
 #include <glow/logging.h>
 
 #include <glow/ConsoleLogger.h>
+
 
 namespace glow {
 

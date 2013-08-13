@@ -29,7 +29,7 @@ public:
     ,   const unsigned int width
     ,   const unsigned int height)
     {
-        glViewport(2, 2, width - 4, height - 4);
+        glViewport(0, 0, width, height);
     }
 
     virtual void paintEvent(Window & window)
