@@ -9,7 +9,7 @@
 #include <glm/gtx/transform.hpp>
 
 #include <glow/Uniform.h>
-#include <glow/Array.hpp>
+#include <glow/Array.h>
 #include <glow/ShaderFile.h>
 #include <glow/Error.h>
 #include <glow/logging.h>

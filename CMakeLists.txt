@@ -179,10 +179,12 @@ configure_file(${source_path}/meta.h.in meta.h)
 
 set(api_includes
     ${header_path}/glow.h
-  
+
+    ${header_path}/AbstractLogHandler.h
     ${header_path}/AbstractUniform.h
+    ${header_path}/AbstractArray.h
+    ${header_path}/Array.h
     ${header_path}/Array.hpp
-    ${header_path}/ArrayData.h
     ${header_path}/Buffer.h
     ${header_path}/Changeable.h
     ${header_path}/ChangeListener.h
@@ -192,7 +194,6 @@ set(api_includes
     ${header_path}/Error.h
     ${header_path}/FrameBufferObject.h
     ${header_path}/logging.h
-    ${header_path}/LoggingInterface.h
     ${header_path}/LogMessage.h
     ${header_path}/KeyEvent.h
     ${header_path}/Object.h

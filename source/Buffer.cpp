@@ -72,9 +72,9 @@ void Buffer::unmap()
 	glUnmapBuffer(_target);
 }
 
-void Buffer::setData(const ArrayData& data, GLenum usage)
+void Buffer::setData(const AbstractArray& data, GLenum usage)
 {
-	setData(data.byteSize(), data.rawData(), usage);
+	setData(data.rawSize(), data.rawData(), usage);
 }
 
 void Buffer::setData(GLsizei size, const GLvoid* data, GLenum usage)

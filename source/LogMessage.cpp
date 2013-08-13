@@ -23,7 +23,7 @@ const std::string& LogMessage::message() const
 
 // Builder
 
-LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, LoggingInterface* handler)
+LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, AbstractLogHandler* handler)
 : m_level(level)
 , m_handler(handler)
 {

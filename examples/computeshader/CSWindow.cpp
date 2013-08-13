@@ -1,7 +1,7 @@
 
 #include <algorithm>
 
-#include <glow/Array.hpp>
+#include <glow/Array.h>
 #include <glow/ShaderFile.h>
 #include <glow/Error.h>
 

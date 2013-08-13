@@ -6,7 +6,7 @@
 
 namespace glow {
 
-/** \brief The LoggingInterface class is an abstract interface to handle LogMessages.
+/** \brief The AbstractLogHandler class is an abstract interface to handle LogMessages.
 
 	glow uses a global logging handler to dispatch all generated LogMessages.
 	This is the abstract interface for handling them.
@@ -15,10 +15,10 @@ namespace glow {
 	\see setLoggingHandler
 	\see logging.h
 */
-class GLOW_API LoggingInterface
+class GLOW_API AbstractLogHandler
 {
 public:
-	virtual ~LoggingInterface() 
+	virtual ~AbstractLogHandler() 
     {
     }
 

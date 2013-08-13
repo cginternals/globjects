@@ -6,7 +6,7 @@
 #include <glow/Texture.h>
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
-#include <glow/Array.hpp>
+#include <glow/Array.h>
 #include <glow/ref_ptr.hpp>
 
 class CSWindow : public GlutWindow

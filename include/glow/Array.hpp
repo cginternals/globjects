@@ -1,40 +1,63 @@
-#pragma once
-
-#include <vector>
-#include <initializer_list>
-
-#include <glm/glm.hpp>
-
-#include <glow/ArrayData.h>
 
 namespace glow 
 {
 
-template <typename T>
-class Array : public ArrayData, public std::vector<T>
+template<typename T>
+Array<T>::Array() 
 {
-public:
-	Array() {}
-	Array(const Array<T>& array) : std::vector<T>(array) {}
-	Array(const std::vector<T>& vector) : std::vector<T>(vector) {}
-	Array(T* data, unsigned size) : std::vector<T>(data, data+size) {}
-	Array(void* data, unsigned size) : std::vector<T>((T*)data, (T*)data+size/sizeof(T)) {}
-	Array(std::initializer_list<T> list) : std::vector<T>(list) {}
+}
 
-	virtual const void* rawData() const {return (void*)std::vector<T>::data();}
-	virtual GLint byteSize() const { return std::vector<T>::size()*sizeof(T);}
+template<typename T>
+Array<T>::Array(const Array<T> & array) 
+:   std::vector<T>(array) 
+{
+}
 
-	Array& operator<<(const T& element) {std::vector<T>::push_back(element); return *this;}
-};
+template<typename T>
+Array<T>::Array(const std::vector<T> & vector)
+:   std::vector<T>(vector)
+{
+}
 
-typedef Array<float> FloatArray;
-typedef Array<int> IntArray;
-typedef Array<unsigned int> UIntArray;
-typedef Array<char> ByteArray;
-typedef Array<unsigned char> UByteArray;
+template<typename T>
+Array<T>::Array(
+    T * data
+,   const unsigned size) 
+:   std::vector<T>(data, data + size) 
+{
+}
 
-typedef Array<glm::vec2> Vec2Array;
-typedef Array<glm::vec3> Vec3Array;
-typedef Array<glm::vec4> Vec4Array;
+template<typename T>
+Array<T>::Array(
+    void * data
+,   const unsigned size)
+:   std::vector<T>(reinterpret_cast<T*>(data), reinterpret_cast<T*>(data) + size / sizeof(T)) 
+{
+}
+
+template<typename T>
+Array<T>::Array(std::initializer_list<T> list)
+:   std::vector<T>(list) 
+{
+}
+
+template<typename T>
+const void * Array<T>::rawData() const 
+{
+    return reinterpret_cast<const void*>(std::vector<T>::data());
+}
+
+template<typename T>
+GLint Array<T>::rawSize() const 
+{
+    return static_cast<GLint>(std::vector<T>::size() * sizeof(T));
+}
+
+template<typename T>
+Array<T> & Array<T>::operator<<(const T & element) 
+{
+    std::vector<T>::push_back(element);
+    return * this;
+}
 
 } // namespace glow

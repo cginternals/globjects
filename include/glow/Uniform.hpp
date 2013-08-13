@@ -2,7 +2,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include <glow/Array.hpp>
+#include <glow/Array.h>
 #include <glow/Texture.h>
 
 namespace glow
