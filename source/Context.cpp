@@ -150,10 +150,11 @@ bool Context::create(
 
     // http://www.opengl.org/wiki/Tutorial:_OpenGL_3.1_The_First_Triangle_(C%2B%2B/Win)
 
-    GLenum error = glewInit();
-    if (GLEW_OK != error)
+    if (GLEW_OK != glewInit())
     {
         fatal() << "GLEW initialization failed (glewInit).";
+        CHECK_ERROR;
+
         release();
         return false;
     }
@@ -164,16 +165,12 @@ bool Context::create(
         release();
         return false;
     }
-
     // NOTE: this assumes that the driver creates a "defaulted" context with
     // the highest available opengl version.
     m_format.setVersionFallback(query::majorVersion(), query::minorVersion());
 
-    CHECK_ERROR;
-
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(tempRC);
-
 
     const int attributes[] =
     {
@@ -192,10 +189,20 @@ bool Context::create(
         return false;
     }
 
-    // Version Disclaimer
-    if (3 > m_format.majorVersion() || (3 == m_format.majorVersion() && 2 > m_format.minorVersion()))
-        fatal() << "OpenGL Versions prior to 3.2 (" << m_format.majorVersion() << "." << m_format.minorVersion() << " created)"
-            << " are not supported within glow. This might result in erroneous behaviour.";
+    m_id = reinterpret_cast<int>(m_hRC);
+
+    makeCurrent();
+
+    if (GLEW_OK != glewInit())
+    {
+        fatal() << "GLEW initialization failed (glewInit).";
+        CHECK_ERROR;
+
+        release();
+        return false;
+    }
+
+    doneCurrent();
 
     setSwapInterval();
 
@@ -204,7 +211,6 @@ bool Context::create(
     fromPixelFormatDescriptor(m_format, pfd);
     ContextFormat::verify(format, m_format);
 
-    m_id = reinterpret_cast<int>(m_hRC);
     return true;
 }
 
@@ -290,6 +296,8 @@ bool Context::setSwapInterval(const SwapInterval interval)
 
 bool Context::setSwapInterval()
 {
+    makeCurrent();
+
 #ifdef WIN32
 
 	if (wglSwapIntervalEXT(m_swapInterval))
@@ -316,6 +324,8 @@ bool Context::setSwapInterval()
 	//	result = glXSwapIntervalSGI(m_swapInterval);
 
 #endif
+
+    doneCurrent();
 }
 
 bool Context::makeCurrent()

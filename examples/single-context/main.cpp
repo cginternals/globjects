@@ -1,9 +1,6 @@
 
-#include <iostream>
-
 #include <GL/glew.h>
 
-#include <glow/Screen.h>
 #include <glow/Window.h>
 #include <glow/ContextFormat.h>
 #include <glow/Context.h>
@@ -51,6 +48,8 @@ public:
 */
 int main(int argc, char** argv)
 {
+    glewExperimental = GL_TRUE;
+
     ContextFormat format;
     EventHandler handler;
 

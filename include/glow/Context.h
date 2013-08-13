@@ -1,5 +1,8 @@
 #pragma once
 
+// TODO: remove
+#include <Windows.h>
+
 #include <set>
 #include <map>
 #include <string>

@@ -284,9 +284,13 @@ bool ContextFormat::verify(
 {
 	bool result = true;
 
-	//    const Format & current = format();
-
 	result &= verifyVersionAndProfile(requested, created);
+
+    // Version Disclaimer
+    if (3 > created.majorVersion() || (3 == created.majorVersion() && 2 > created.minorVersion()))
+        fatal() << "OpenGL Versions prior to 3.2 (" << created.majorVersion() << "." << created.minorVersion() << " created)"
+            << " are not supported within glow. This might result in erroneous behaviour.";
+
 	result &= verifyPixelFormat(requested, created);
 
 	return result;
@@ -294,23 +298,23 @@ bool ContextFormat::verify(
 
 bool ContextFormat::verifyVersionAndProfile(
 	const ContextFormat & requested
-,   const ContextFormat & current)
+,   const ContextFormat & created)
 {
-	const bool sameProfiles(requested.profile() == current.profile());
+	const bool sameProfiles(requested.profile() == created.profile());
 
 	if (!sameProfiles)
 	{
 		warning() << "A context with a different profile as requested was created: "
             << profileString(requested.profile()) << " requested, "
-            << profileString(current.profile()) << " created.";
+            << profileString(created.profile()) << " created.";
 	}
 
-	if (requested.majorVersion() != current.majorVersion()
-     || requested.minorVersion() != current.minorVersion())
+	if (requested.majorVersion() != created.majorVersion()
+     || requested.minorVersion() != created.minorVersion())
 	{
 		warning() << "A context with a different OpenGL Version as requested was created: "
 		    << requested.majorVersion() << "." << requested.minorVersion() << " requested, "
-            << current.majorVersion() << "." << current.minorVersion() << "  created.";
+            << created.majorVersion() << "." << created.minorVersion() << "  created.";
 
 		if (requested.profile() == CoreProfile)
 			return false;
@@ -335,55 +339,55 @@ inline void ContextFormat::verifyBufferSize(
 
 bool ContextFormat::verifyPixelFormat(
 	const ContextFormat & requested
-,   const ContextFormat & current)
+,   const ContextFormat & created)
 {
 	std::vector<std::string> issues;
 
-	const bool sameSwapBehaviors(requested.swapBehavior() == current.swapBehavior());
+	const bool sameSwapBehaviors(requested.swapBehavior() == created.swapBehavior());
 
 	if (!sameSwapBehaviors)
 	{
 		warning() << "A context with a different swap behavior as requested was initialized: "
             << swapBehaviorString(requested.swapBehavior()) << " requested, "
-            << swapBehaviorString(current.swapBehavior()) << " created.";
+            << swapBehaviorString(created.swapBehavior()) << " created.";
 	}
 
 	if (requested.depthBufferSize())
 	{
-		if (!current.depthBufferSize())
+		if (!created.depthBufferSize())
 			issues.push_back("Depth Buffer requested, but none created.");
 		else
-            verifyBufferSize(requested.depthBufferSize(), current.depthBufferSize()
+            verifyBufferSize(requested.depthBufferSize(), created.depthBufferSize()
 			    , "Depth Buffer", issues);
 	}
 
-	verifyBufferSize(requested.redBufferSize(), current.redBufferSize()
+	verifyBufferSize(requested.redBufferSize(), created.redBufferSize()
 		, "Red Buffer", issues);
-	verifyBufferSize(requested.greenBufferSize(), current.greenBufferSize()
+	verifyBufferSize(requested.greenBufferSize(), created.greenBufferSize()
 		, "Green Buffer", issues);
-	verifyBufferSize(requested.blueBufferSize(), current.blueBufferSize()
+	verifyBufferSize(requested.blueBufferSize(), created.blueBufferSize()
 		, "Blue Buffer", issues);
-	verifyBufferSize(requested.alphaBufferSize(), current.alphaBufferSize()
+	verifyBufferSize(requested.alphaBufferSize(), created.alphaBufferSize()
 		, "Alpha Buffer", issues);
 
 	if (requested.stencilBufferSize())
 	{
-		if (!current.stencilBufferSize())
+		if (!created.stencilBufferSize())
 			issues.push_back("Stencil Buffer requested, but none created.");
 		else
-			verifyBufferSize(requested.stencilBufferSize(), current.stencilBufferSize()
+			verifyBufferSize(requested.stencilBufferSize(), created.stencilBufferSize()
 			    , "Stencil Buffer", issues);
 	}
 
-	if (requested.stereo() && !current.stereo())
+	if (requested.stereo() && !created.stereo())
 		issues.push_back("Stereo Buffering requested, but not initialized.");
 
 	if (requested.samples())
 	{
-		if (!current.samples())
+		if (!created.samples())
 			issues.push_back("Sample Buffers requested, but none initialized.");
 		else
-			verifyBufferSize(requested.samples(), current.samples()
+			verifyBufferSize(requested.samples(), created.samples()
 			    , "Samples ", issues);
 	}
 
