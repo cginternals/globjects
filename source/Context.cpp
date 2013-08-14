@@ -7,11 +7,9 @@
 #include <windows.h>
 #include <GL/wglew.h>
 #include <GL/GL.h>
-#include <GL/GLU.h>
 #else
 #include <GL/glxew.h>
 #include <GL/glx.h>
-#include <GL/GLUx.h>
 #endif
 
 #include <glow/logging.h>
@@ -22,6 +20,23 @@
 
 namespace glow
 {
+
+struct Context::Handles
+{
+    HWND  hWnd;
+    HGLRC hRC;
+    HDC   hDC;
+};
+
+inline Context::Handles & Context::handles()
+{
+    return *m_handles;
+}
+
+inline const Context::Handles & Context::handles() const
+{
+    return *m_handles;
+}
 
 /** NOTE: These static inline functions are not part of the context interface,
     to provide identical interfaces over all supported platforms.
@@ -72,17 +87,27 @@ static void inline fromPixelFormatDescriptor(
 
 Context::Context()
 :   m_swapInterval(VerticalSyncronization)
-,   m_id(0)
-,   m_hWnd(0)
-,   m_hRC(0)
-,   m_hDC(0)
+,   m_handles(nullptr)
 {
+    m_handles = new Handles();
+
+#ifdef WIN32
+    handles().hWnd = NULL;
+    handles().hDC  = NULL;
+    handles().hRC  = NULL;
+#elif __APPLE__
+
+#else
+
+#endif
 }
 
 Context::~Context()
 {
     if (isValid())
         release();
+
+    delete m_handles;
 }
 
 bool Context::create(
@@ -97,22 +122,21 @@ bool Context::create(
 
     m_format = format;
 
-    m_hWnd = hWnd;
-    m_id = NULL;
+    handles().hWnd = reinterpret_cast<HWND>(hWnd);
 
     // convert fomrat to native pixelformat
 
     PIXELFORMATDESCRIPTOR pfd(toPixelFormatDescriptor(m_format));
 
-    m_hDC = GetDC(reinterpret_cast<HWND>(m_hWnd));
-    if (NULL == m_hDC)
+    handles().hDC = GetDC(handles().hWnd);
+    if (NULL == handles().hDC)
     {
         fatal() << "Obtaining a device context failed (GetDC). Error: " << GetLastError();
         release();
         return false;
     }
 
-    int iPixelFormat = ChoosePixelFormat(m_hDC, &pfd);
+    int iPixelFormat = ChoosePixelFormat(handles().hDC, &pfd);
     if (0 == iPixelFormat)
     {
         fatal() << "Choosing a suitable pixelformat failed (ChoosePixelFormat). Error: " << GetLastError();
@@ -120,7 +144,7 @@ bool Context::create(
         return false;
     }
 
-    if (FALSE == SetPixelFormat(m_hDC, iPixelFormat, &pfd))
+    if (FALSE == SetPixelFormat(handles().hDC, iPixelFormat, &pfd))
     {
         fatal() << "Setting pixel format failed (SetPixelFormat). Error: " << GetLastError();
         release();
@@ -129,7 +153,7 @@ bool Context::create(
 
     // create temporary ogl context
 
-    HGLRC tempRC = wglCreateContext(m_hDC);
+    HGLRC tempRC = wglCreateContext(handles().hDC);
 
     if (NULL == tempRC)
     {
@@ -140,7 +164,7 @@ bool Context::create(
 
     // check for WGL_ARB_create_context extension
 
-    if (!wglMakeCurrent(m_hDC, tempRC))
+    if (!wglMakeCurrent(handles().hDC, tempRC))
     {
         fatal() << "Making temporary OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
         release();
@@ -180,15 +204,13 @@ bool Context::create(
     ,   WGL_CONTEXT_FLAGS_ARB, 0, 0
     };
 
-    m_hRC = wglCreateContextAttribsARB(m_hDC, 0, attributes);
-    if (NULL == m_hRC)
+    handles().hRC = wglCreateContextAttribsARB(handles().hDC, 0, attributes);
+    if (NULL == handles().hRC)
     {
         fatal() << "Creating OpenGL context with attributes failed (wglCreateContextAttribsARB). Error: " << GetLastError();
         release();
         return false;
     }
-
-    m_id = reinterpret_cast<int>(m_hRC);
 
     makeCurrent();
 
@@ -218,33 +240,31 @@ void Context::release()
     if (!isValid())
         return;
 
-    if(m_hRC == wglGetCurrentContext() && !wglMakeCurrent(NULL, NULL))
+    if(handles().hRC == wglGetCurrentContext() && !wglMakeCurrent(NULL, NULL))
         warning() << "Release of DC and RC failed (wglMakeCurrent). Error: " << GetLastError();
 
-    if (m_hRC && !wglDeleteContext(m_hRC))
+    if (handles().hRC && !wglDeleteContext(handles().hRC))
         warning() << "Deleting OpenGL context failed (wglDeleteContext). Error: " << GetLastError();
 
-    m_hRC = NULL;
-    m_id = 0;
+    handles().hRC = NULL;
 
-    HWND hWnd = reinterpret_cast<HWND>(m_hWnd);
-    if (m_hDC && !ReleaseDC(hWnd, m_hDC))
+    if (handles().hDC && !ReleaseDC(handles().hWnd, handles().hDC))
         warning() << "Releasing device context failed (ReleaseDC). Error: " << GetLastError();
 
-    m_hDC = NULL;
+    handles().hDC = NULL;
 }
 
 void Context::swap()
 {
     assert(isValid());
 
-    if(FALSE == SwapBuffers(m_hDC))
+    if(FALSE == SwapBuffers(handles().hDC))
         warning() << "Swapping buffers failed (SwapBuffers). Error: " << GetLastError();
 }
 
 int Context::id() const
 {
-    return m_id;
+    return reinterpret_cast<int>(handles().hRC);
 }
 
 bool Context::isValid() const
@@ -332,7 +352,7 @@ bool Context::makeCurrent()
     if (!isValid())
         return false;
 
-    const BOOL result = wglMakeCurrent(m_hDC, m_hRC);
+    const BOOL result = wglMakeCurrent(handles().hDC, handles().hRC);
     if (!result)
         fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
 
@@ -344,7 +364,7 @@ bool Context::doneCurrent()
     if (!isValid())
         return false;
 
-    const BOOL result = wglMakeCurrent(m_hDC, NULL);
+    const BOOL result = wglMakeCurrent(handles().hDC, NULL);
     if (!result)
         warning() << "Release of RC failed (wglMakeCurrent). Error: " << GetLastError();
 

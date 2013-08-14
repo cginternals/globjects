@@ -1,8 +1,5 @@
 #pragma once
 
-// TODO: remove
-#include <Windows.h>
-
 #include <set>
 #include <map>
 #include <string>
@@ -16,6 +13,8 @@ namespace glow
 
 class GLOW_API Context
 {
+    struct Handles;
+
 public:
 
 	enum SwapInterval
@@ -70,11 +69,9 @@ protected:
 	SwapInterval m_swapInterval;
     ContextFormat m_format;
 
-    HGLRC m_hRC;
-    HDC   m_hDC;
-
-    int m_hWnd;
-    int m_id;
+    Handles & handles();
+    const Handles & handles() const;
+    Handles * m_handles;
 };
 
 } // namespace glow
