@@ -88,8 +88,7 @@ void Context::release()
 
 void Context::swap()
 {
-    if(FALSE == m_context->swap())
-        warning() << "Swapping buffers failed (SwapBuffers). Error: " << GetLastError();
+    m_context->swap();
 }
 
 int Context::id() const
@@ -146,16 +145,10 @@ bool Context::setSwapInterval(const SwapInterval interval)
 bool Context::setSwapInterval()
 {
     makeCurrent();
-
-	if (m_context->setSwapInterval(m_swapInterval))
-        return true;
-
-    CHECK_ERROR;
-    warning() << "Setting swap interval to " << swapIntervalString(m_swapInterval) << " (" << m_swapInterval << ") failed. Error: " << GetLastError();
-
-    return false;
-
+	const bool result = m_context->setSwapInterval(m_swapInterval);
     doneCurrent();
+
+    return result;
 }
 
 bool Context::makeCurrent()
@@ -163,11 +156,7 @@ bool Context::makeCurrent()
     if (!isValid())
         return false;
 
-    const BOOL result = m_context->makeCurrent();
-    if (!result)
-        fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
-
-    return TRUE == result;
+    return m_context->makeCurrent();
 }
 
 bool Context::doneCurrent()
@@ -175,11 +164,7 @@ bool Context::doneCurrent()
     if (!isValid())
         return false;
 
-    const BOOL result = m_context->doneCurrent();
-    if (!result)
-        warning() << "Release of RC failed (wglMakeCurrent). Error: " << GetLastError();
-
-    return TRUE == result;
+    return m_context->doneCurrent();
 }
 
 } // namespace glow

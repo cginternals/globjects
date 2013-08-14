@@ -195,11 +195,12 @@ void WinContext::release()
     m_hDC = NULL;
 }
 
-bool WinContext::swap() const
+void WinContext::swap() const
 {
     assert(isValid());
 
-    return SwapBuffers(m_hDC);
+    if(FALSE == SwapBuffers(m_hDC))
+        warning() << "Swapping buffers failed (SwapBuffers). Error: " << GetLastError();
 }
 
 int WinContext::id() const
@@ -214,17 +215,32 @@ bool WinContext::isValid() const
 
 bool WinContext::setSwapInterval(Context::SwapInterval swapInterval) const
 {
-	return wglSwapIntervalEXT(swapInterval);
+    if (TRUE == wglSwapIntervalEXT(swapInterval))
+        return true;
+
+    CHECK_ERROR;
+    warning() << "Setting swap interval to " << Context::swapIntervalString(swapInterval) 
+        << " (" << swapInterval << ") failed. Error: " << GetLastError();
+
+	return false;
 }
 
 bool WinContext::makeCurrent() const
 {
-    return wglMakeCurrent(m_hDC, m_hRC);
+    const BOOL result = wglMakeCurrent(m_hDC, m_hRC);
+    if (!result)
+        fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
+
+    return TRUE == result;
 }
 
 bool WinContext::doneCurrent() const
 {
-    return wglMakeCurrent(m_hDC, NULL);
+    const BOOL result = wglMakeCurrent(m_hDC, NULL);
+    if (!result)
+        warning() << "Release of RC failed (wglMakeCurrent). Error: " << GetLastError();
+
+    return TRUE == result;
 }
 
 } // namespace glow

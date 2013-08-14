@@ -22,7 +22,7 @@ public:
     ,   ContextFormat & format) = 0;
 
     virtual void release() = 0;
-    virtual bool swap() const = 0;
+    virtual void swap() const = 0;
 
     virtual int id() const = 0;
     virtual bool isValid() const = 0;

@@ -21,7 +21,7 @@ public:
     ,   ContextFormat & format);
 
     virtual void release();
-    virtual bool swap() const;
+    virtual void swap() const;
 
     virtual int id() const;
     virtual bool isValid() const;
