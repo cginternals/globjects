@@ -147,9 +147,7 @@ void EventHandler::createAndSetupShaders()
 
 void EventHandler::createAndSetupGeometry()
 {
-	glow::Array<glm::vec3> vertices;
-
-	vertices
+	auto vertices = glow::Array<glm::vec3>()
 		<< glm::vec3(0,0,0)
 		<< glm::vec3(1,0,0)
 		<< glm::vec3(1,1,0)
