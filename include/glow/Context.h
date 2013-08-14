@@ -11,9 +11,11 @@
 namespace glow 
 {
 
+class AbstractNativeContext;
+
 class GLOW_API Context
 {
-    struct Handles;
+friend class AbstractNativeContext;
 
 public:
 
@@ -69,9 +71,8 @@ protected:
 	SwapInterval m_swapInterval;
     ContextFormat m_format;
 
-    Handles & handles();
-    const Handles & handles() const;
-    Handles * m_handles;
+private:
+    AbstractNativeContext * m_context;
 };
 
 } // namespace glow

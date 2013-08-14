@@ -21,7 +21,7 @@ std::set<WinWindow*> WinWindow::s_windows;
 
 namespace
 {
-#define WM_USER_IDLE            WM_USER
+#define WM_USER_IDLE WM_USER
 }
 
 WinWindow::WinWindow(Window & window)

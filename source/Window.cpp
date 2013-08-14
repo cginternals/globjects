@@ -24,6 +24,7 @@ Window::Window()
 ,   m_context(nullptr)
 ,   m_quitOnDestroy(true)
 ,   m_mode(WindowMode)
+,   m_window(nullptr)
 {
 #ifdef WIN32
     m_window = new WinWindow(*this);

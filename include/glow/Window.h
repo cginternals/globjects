@@ -112,7 +112,7 @@ protected:
     Mode m_mode;
 
 private:
-    AbstractNativeWindow  * m_window;
+    AbstractNativeWindow * m_window;
 };
 
 } // namespace glow

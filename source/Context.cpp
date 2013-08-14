@@ -4,12 +4,11 @@
 #include <GL/glew.h>
 
 #ifdef WIN32
-#include <windows.h>
-#include <GL/wglew.h>
-#include <GL/GL.h>
+#include "WinContext.h"
+#elif __APPLE__
+#include "MacContext.h"
 #else
-#include <GL/glxew.h>
-#include <GL/glx.h>
+#include "LinContext.h"
 #endif
 
 #include <glow/logging.h>
@@ -21,84 +20,16 @@
 namespace glow
 {
 
-struct Context::Handles
-{
-    HWND  hWnd;
-    HGLRC hRC;
-    HDC   hDC;
-};
-
-inline Context::Handles & Context::handles()
-{
-    return *m_handles;
-}
-
-inline const Context::Handles & Context::handles() const
-{
-    return *m_handles;
-}
-
-/** NOTE: These static inline functions are not part of the context interface,
-    to provide identical interfaces over all supported platforms.
-*/
-
-static inline PIXELFORMATDESCRIPTOR toPixelFormatDescriptor(const ContextFormat & format)
-{
-    // NTOE: TrippleBufferig not supported yet.
-    // NOTE: Accumulation buffer is not supported.
-
-    // http://msdn.microsoft.com/en-us/library/windows/desktop/dd368826(v=vs.85).aspx
-    PIXELFORMATDESCRIPTOR pfd = 
-    {
-        sizeof(PIXELFORMATDESCRIPTOR)   // WORD  nSize
-    ,   1                               // WORD  nVersion
-    ,   PFD_DRAW_TO_WINDOW              // DWORD dwFlags
-      | PFD_SUPPORT_OPENGL
-      | (format.swapBehavior() == ContextFormat::DoubleBuffering ? PFD_DOUBLEBUFFER : NULL)
-    ,   PFD_TYPE_RGBA                   // BYTE  iPixelType
-    ,   32                              // BYTE  cColorBits;
-    ,   0, 0, 0, 0, 0, 0                //       Not used
-    ,   format.alphaBufferSize()        // BYTE  cAlphaBits
-    ,   0, 0, 0, 0, 0, 0                //       Not used
-    ,   format.depthBufferSize()        // BYTE  cDepthBits
-    ,   format.stencilBufferSize()      // BYTE  cStencilBits
-    ,   0                               // BYTE  cAuxBuffers
-    ,   PFD_MAIN_PLANE                  // BYTE  iLayerType
-    ,   0, 0, 0, 0                      //       Not used
-    };
-
-    return pfd;
-}
-
-static void inline fromPixelFormatDescriptor(
-    ContextFormat & format
-,   const PIXELFORMATDESCRIPTOR & pfd)
-{
-    format.setSwapBehavior((pfd.dwFlags & PFD_DOUBLEBUFFER) ? ContextFormat::DoubleBuffering : ContextFormat::SingleBuffering);
-
-    format.setRedBufferSize(pfd.cRedBits);
-    format.setGreenBufferSize(pfd.cGreenBits);
-    format.setBlueBufferSize(pfd.cBlueBits);
-    format.setAlphaBufferSize(pfd.cAlphaBits);
-
-    format.setDepthBufferSize(pfd.cDepthBits);
-    format.setStencilBufferSize(pfd.cStencilBits);
-}
-
 Context::Context()
 :   m_swapInterval(VerticalSyncronization)
-,   m_handles(nullptr)
+,   m_context(nullptr)
 {
-    m_handles = new Handles();
-
 #ifdef WIN32
-    handles().hWnd = NULL;
-    handles().hDC  = NULL;
-    handles().hRC  = NULL;
+    m_context = new WinContext();
 #elif __APPLE__
-
+    m_context = new MacContext();
 #else
-
+    m_context = new LinContext();
 #endif
 }
 
@@ -107,7 +38,8 @@ Context::~Context()
     if (isValid())
         release();
 
-    delete m_handles;
+    delete m_context;
+    m_context = nullptr;
 }
 
 bool Context::create(
@@ -122,95 +54,7 @@ bool Context::create(
 
     m_format = format;
 
-    handles().hWnd = reinterpret_cast<HWND>(hWnd);
-
-    // convert fomrat to native pixelformat
-
-    PIXELFORMATDESCRIPTOR pfd(toPixelFormatDescriptor(m_format));
-
-    handles().hDC = GetDC(handles().hWnd);
-    if (NULL == handles().hDC)
-    {
-        fatal() << "Obtaining a device context failed (GetDC). Error: " << GetLastError();
-        release();
-        return false;
-    }
-
-    int iPixelFormat = ChoosePixelFormat(handles().hDC, &pfd);
-    if (0 == iPixelFormat)
-    {
-        fatal() << "Choosing a suitable pixelformat failed (ChoosePixelFormat). Error: " << GetLastError();
-        release();
-        return false;
-    }
-
-    if (FALSE == SetPixelFormat(handles().hDC, iPixelFormat, &pfd))
-    {
-        fatal() << "Setting pixel format failed (SetPixelFormat). Error: " << GetLastError();
-        release();
-        return false;
-    }
-
-    // create temporary ogl context
-
-    HGLRC tempRC = wglCreateContext(handles().hDC);
-
-    if (NULL == tempRC)
-    {
-        fatal() << "Creating temporary OpenGL context failed (wglCreateContext). Error: " << GetLastError();
-        release();
-        return false;
-    }
-
-    // check for WGL_ARB_create_context extension
-
-    if (!wglMakeCurrent(handles().hDC, tempRC))
-    {
-        fatal() << "Making temporary OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
-        release();
-        return false;
-    }
-
-    // http://www.opengl.org/wiki/Tutorial:_OpenGL_3.1_The_First_Triangle_(C%2B%2B/Win)
-
-    if (GLEW_OK != glewInit())
-    {
-        fatal() << "GLEW initialization failed (glewInit).";
-        CHECK_ERROR;
-
-        release();
-        return false;
-    }
-
-    if (!WGLEW_ARB_create_context)
-    {
-        fatal() << "Mandatory extension WGL_ARB_create_context not supported.";
-        release();
-        return false;
-    }
-    // NOTE: this assumes that the driver creates a "defaulted" context with
-    // the highest available opengl version.
-    m_format.setVersionFallback(query::majorVersion(), query::minorVersion());
-
-    wglMakeCurrent(NULL, NULL);
-    wglDeleteContext(tempRC);
-
-    const int attributes[] =
-    {
-        WGL_CONTEXT_MAJOR_VERSION_ARB, m_format.majorVersion()
-    ,   WGL_CONTEXT_MINOR_VERSION_ARB, m_format.minorVersion()
-    ,   WGL_CONTEXT_PROFILE_MASK_ARB,  m_format.profile() == ContextFormat::CoreProfile ? 
-            WGL_CONTEXT_CORE_PROFILE_BIT_ARB : WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB
-    ,   WGL_CONTEXT_FLAGS_ARB, 0, 0
-    };
-
-    handles().hRC = wglCreateContextAttribsARB(handles().hDC, 0, attributes);
-    if (NULL == handles().hRC)
-    {
-        fatal() << "Creating OpenGL context with attributes failed (wglCreateContextAttribsARB). Error: " << GetLastError();
-        release();
-        return false;
-    }
+    m_context->create(hWnd, m_format);
 
     makeCurrent();
 
@@ -227,9 +71,6 @@ bool Context::create(
 
     setSwapInterval();
 
-    // convert native pixelformat back to format for format verification
-
-    fromPixelFormatDescriptor(m_format, pfd);
     ContextFormat::verify(format, m_format);
 
     return true;
@@ -240,36 +81,25 @@ void Context::release()
     if (!isValid())
         return;
 
-    if(handles().hRC == wglGetCurrentContext() && !wglMakeCurrent(NULL, NULL))
-        warning() << "Release of DC and RC failed (wglMakeCurrent). Error: " << GetLastError();
+    m_context->release();
 
-    if (handles().hRC && !wglDeleteContext(handles().hRC))
-        warning() << "Deleting OpenGL context failed (wglDeleteContext). Error: " << GetLastError();
-
-    handles().hRC = NULL;
-
-    if (handles().hDC && !ReleaseDC(handles().hWnd, handles().hDC))
-        warning() << "Releasing device context failed (ReleaseDC). Error: " << GetLastError();
-
-    handles().hDC = NULL;
+    assert(NULL == m_context->id());
 }
 
 void Context::swap()
 {
-    assert(isValid());
-
-    if(FALSE == SwapBuffers(handles().hDC))
+    if(FALSE == m_context->swap())
         warning() << "Swapping buffers failed (SwapBuffers). Error: " << GetLastError();
 }
 
 int Context::id() const
 {
-    return reinterpret_cast<int>(handles().hRC);
+    return m_context->id();
 }
 
 bool Context::isValid() const
 {
-	return 0 < id();
+	return m_context->isValid();
 }
 
 const ContextFormat & Context::format() const
@@ -317,32 +147,13 @@ bool Context::setSwapInterval()
 {
     makeCurrent();
 
-#ifdef WIN32
-
-	if (wglSwapIntervalEXT(m_swapInterval))
+	if (m_context->setSwapInterval(m_swapInterval))
         return true;
 
     CHECK_ERROR;
     warning() << "Setting swap interval to " << swapIntervalString(m_swapInterval) << " (" << m_swapInterval << ") failed. Error: " << GetLastError();
 
     return false;
-
-#elif __APPLE__
-
-#else
-
-	//typedef int (APIENTRY * SWAPINTERVALEXTPROC) (int) ;
-	//static SWAPINTERVALEXTPROC glXSwapIntervalSGI = nullptr;
-
-	//if (!glXSwapIntervalSGI)
-	//{
-	//	const GLubyte * sgi = reinterpret_cast<const GLubyte*>("glXSwapIntervalSGI");
-	//	glXSwapIntervalSGI = reinterpret_cast<SWAPINTERVALEXTPROC>(glXGetProcAddress(sgi));
-	//}
-	//if (glXSwapIntervalSGI)
-	//	result = glXSwapIntervalSGI(m_swapInterval);
-
-#endif
 
     doneCurrent();
 }
@@ -352,7 +163,7 @@ bool Context::makeCurrent()
     if (!isValid())
         return false;
 
-    const BOOL result = wglMakeCurrent(handles().hDC, handles().hRC);
+    const BOOL result = m_context->makeCurrent();
     if (!result)
         fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
 
@@ -364,7 +175,7 @@ bool Context::doneCurrent()
     if (!isValid())
         return false;
 
-    const BOOL result = wglMakeCurrent(handles().hDC, NULL);
+    const BOOL result = m_context->doneCurrent();
     if (!result)
         warning() << "Release of RC failed (wglMakeCurrent). Error: " << GetLastError();
 
