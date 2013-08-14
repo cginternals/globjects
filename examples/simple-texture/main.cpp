@@ -36,7 +36,7 @@ public:
 
     void createAndSetupTexture();
     void createAndSetupShaders();
-	void createAndSetupVertices();
+	void createAndSetupGeometry();
 
     virtual void initializeEvent(Window & window)
     {
@@ -44,7 +44,7 @@ public:
 
 	    createAndSetupTexture();
 	    createAndSetupShaders();
-	    createAndSetupVertices();
+	    createAndSetupGeometry();
     }
     
     virtual void resizeEvent(
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
     Window window;
     window.attach(&handler);
 
-    window.create(format, "Single Context Example");
+    window.create(format, "Simple Texture Example");
     window.show();
 
     return Window::run();
@@ -145,7 +145,7 @@ void EventHandler::createAndSetupShaders()
 	m_shaderProgram->getUniform<GLint>("texture")->set(0);
 }
 
-void EventHandler::createAndSetupVertices()
+void EventHandler::createAndSetupGeometry()
 {
 	glow::Array<glm::vec3> vertices;
 

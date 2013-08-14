@@ -269,6 +269,10 @@ bool Window::onKeyPress(const unsigned short key)
     KeyEvent kpe(KeyEvent::KeyPress, key);
 
     m_keysPressed.insert(kpe.key());
+
+    if (kpe.isDiscarded())
+        m_eventHandler->keyPressEvent(*this, kpe);
+
     return kpe.isAccepted();
 }
 
@@ -298,6 +302,9 @@ bool Window::onKeyRelease(const unsigned short key)
     const auto f = m_keysPressed.find(kre.key());
     if (f != m_keysPressed.cend())
         m_keysPressed.erase(f);
+
+    if (kre.isDiscarded())
+        m_eventHandler->keyReleaseEvent(*this, kre);
 
     return kre.isAccepted();
 }

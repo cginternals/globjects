@@ -1,48 +1,30 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8)
 
-PROJECT(ComputeShaderDemo)
+set(target computeshader)
+project(${target})
 
-SET(target computeshaderdemo)
+find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
 
-FIND_PACKAGE(OpenGL REQUIRED)
-FIND_PACKAGE(GLEW REQUIRED)
-FIND_PACKAGE(FREEGLUT REQUIRED)
-
-# Include directories
-INCLUDE_DIRECTORIES(
-	.
-	..
-	${OPENGL_INCLUDE_DIR}
-	${GLM_INCLUDE_PATH}
-	${GLEW_INCLUDE_PATH}
-	${FREEGLUT_INCLUDE_PATH}
+include_directories(
 	${GLOW_INCLUDE_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# Libraries
-SET(libs
+add_executable(${target} 
+	main.cpp
+)
+
+target_link_libraries(${target} 
 	${GLEW_LIBRARIES}
-	${FREEGLUT_LIBRARY}
 	glow
 )
 
-# Sources
-SET(sources
-	main.cpp
-	CSWindow.cpp
-	../GlutWindow.cpp
-)
+set_target_properties(${target}
+    PROPERTIES
+    FOLDER ${GLOW_EXAMPLES_FOLDER}
+    DEBUG_POSTFIX "d${DEBUG_POSTFIX}")
 
-SET(headers
-	CSWindow.h
-	../GlutWindow.h
-)
-
-ADD_EXECUTABLE(${target} ${sources} ${headers})
-
-TARGET_LINK_LIBRARIES(${target} ${libs})
-
-# Deployment
 install(TARGETS ${target}
     RUNTIME DESTINATION ${INSTALL_EXAMPLES}
 #    LIBRARY DESTINATION ${INSTALL_SHARED}

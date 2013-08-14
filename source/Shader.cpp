@@ -107,9 +107,7 @@ void Shader::compile()
 	_compiled = checkCompileStatus();
 
 	if (_compiled)
-	{
 		changed();
-	}
 }
 
 bool Shader::isCompiled() const
@@ -151,22 +149,22 @@ std::string Shader::typeString()
 {
 	switch (_type)
 	{
-		case GL_GEOMETRY_SHADER:
-			return "GL_GEOMETRY_SHADER";
-		case GL_FRAGMENT_SHADER:
-			return "GL_FRAGMENT_SHADER";
-		case GL_VERTEX_SHADER:
-			return "GL_VERTEX_SHADER";
-		case GL_TESS_EVALUATION_SHADER:
-			return "GL_TESS_EVALUATION_SHADER";
-		case GL_TESS_CONTROL_SHADER:
-			return "GL_TESS_CONTROL_SHADER";
-		#ifdef GL_COMPUTE_SHADER
-		case GL_COMPUTE_SHADER:
-			return "GL_COMPUTE_SHADER";
-		#endif
-		default:
-			return "unknown";
+	case GL_GEOMETRY_SHADER:
+		return "GL_GEOMETRY_SHADER";
+	case GL_FRAGMENT_SHADER:
+		return "GL_FRAGMENT_SHADER";
+	case GL_VERTEX_SHADER:
+		return "GL_VERTEX_SHADER";
+	case GL_TESS_EVALUATION_SHADER:
+		return "GL_TESS_EVALUATION_SHADER";
+	case GL_TESS_CONTROL_SHADER:
+		return "GL_TESS_CONTROL_SHADER";
+	#ifdef GL_COMPUTE_SHADER
+	case GL_COMPUTE_SHADER:
+		return "GL_COMPUTE_SHADER";
+	#endif
+	default:
+		return "unknown";
 	}
 }
 
