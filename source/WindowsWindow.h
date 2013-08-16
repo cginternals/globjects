@@ -19,11 +19,11 @@ class WindowEventHandler;
 class ContextFormat;
 class Context;
 
-class WinWindow : public AbstractNativeWindow
+class WindowsWindow : public AbstractNativeWindow
 {
 public:
-    WinWindow(Window & window);
-    virtual ~WinWindow();
+    WindowsWindow(Window & window);
+    virtual ~WindowsWindow();
 
     virtual bool create(
         const ContextFormat & format
@@ -79,7 +79,7 @@ protected:
     static void printChangeDisplaySettingsErrorResult(const LONG result);
 
 protected:
-    static std::set<WinWindow*> s_windows;
+    static std::set<WindowsWindow*> s_windows;
 
 protected:
     void onRepaint();

@@ -12,13 +12,13 @@
 #include <glow/query.h>
 #include <glow/Error.h>
 
-#include "LinContext.h"
+#include "GLxContext.h"
 
 
 namespace glow
 {
 
-LinContext::LinContext()
+GLxContext::GLxContext()
 :   AbstractNativeContext()
 //,   m_hWnd(NULL)
 //,   m_hDC (NULL)
@@ -26,7 +26,7 @@ LinContext::LinContext()
 {
 }
 
-LinContext::~LinContext()
+GLxContext::~GLxContext()
 {
 //    assert(NULL == m_hWnd);
 //    assert(NULL == m_hDC);
@@ -77,7 +77,7 @@ LinContext::~LinContext()
 //    format.setStencilBufferSize(pfd.cStencilBits);
 //}
 
-bool LinContext::create(
+bool GLxContext::create(
     const int hWnd
 ,   ContextFormat & format)
 {
@@ -176,7 +176,7 @@ bool LinContext::create(
     return true;
 }
 
-void LinContext::release()
+void GLxContext::release()
 {
 //    assert(isValid());
 
@@ -194,7 +194,7 @@ void LinContext::release()
 //    m_hDC = NULL;
 }
 
-void LinContext::swap() const
+void GLxContext::swap() const
 {
 //    assert(isValid());
 
@@ -202,18 +202,18 @@ void LinContext::swap() const
 //        warning() << "Swapping buffers failed (SwapBuffers). Error: " << GetLastError();
 }
 
-int LinContext::id() const
+int GLxContext::id() const
 {
 //    return reinterpret_cast<int>(m_hRC);
     return 0;
 }
 
-bool LinContext::isValid() const
+bool GLxContext::isValid() const
 {
     return 0 < id();
 }
 
-bool LinContext::setSwapInterval(Context::SwapInterval swapInterval) const
+bool GLxContext::setSwapInterval(Context::SwapInterval swapInterval) const
 {
 //    if (TRUE == wglSwapIntervalEXT(swapInterval))
 //        return true;
@@ -225,7 +225,7 @@ bool LinContext::setSwapInterval(Context::SwapInterval swapInterval) const
     return false;
 }
 
-bool LinContext::makeCurrent() const
+bool GLxContext::makeCurrent() const
 {
 //    const BOOL result = wglMakeCurrent(m_hDC, m_hRC);
 //    if (!result)
@@ -235,7 +235,7 @@ bool LinContext::makeCurrent() const
     return true;
 }
 
-bool LinContext::doneCurrent() const
+bool GLxContext::doneCurrent() const
 {
 //    const BOOL result = wglMakeCurrent(m_hDC, NULL);
 //    if (!result)

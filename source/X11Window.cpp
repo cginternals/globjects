@@ -11,15 +11,15 @@
 #include <glow/Context.h>
 #include <glow/WindowEventHandler.h>
 
-#include "LinWindow.h"
+#include "X11Window.h"
 
 
 namespace glow
 {
 
-std::set<LinWindow*> LinWindow::s_windows;
+std::set<X11Window*> X11Window::s_windows;
 
-LinWindow::LinWindow(Window & window)
+X11Window::X11Window(Window & window)
 :   AbstractNativeWindow(window)
 ,   m_hWnd(0)
 ,   m_display(nullptr)
@@ -27,7 +27,7 @@ LinWindow::LinWindow(Window & window)
     s_windows.insert(this);
 }
 
-LinWindow::~LinWindow()
+X11Window::~X11Window()
 {
     s_windows.erase(s_windows.find(this));
     destroy();
@@ -35,7 +35,7 @@ LinWindow::~LinWindow()
 
 // http://msdn.microsoft.com/en-us/library/windows/desktop/dd318252(v=vs.85).aspx
 
-bool LinWindow::create(
+bool X11Window::create(
     const ContextFormat & format
 ,   const std::string & title
 ,   const unsigned int width
@@ -92,43 +92,43 @@ bool LinWindow::create(
     return true;
 }
 
-int LinWindow::width() const
+int X11Window::width() const
 {
     return m_rect.width;
 }
 
-int LinWindow::height() const
+int X11Window::height() const
 {
     return m_rect.height;
 }
 
-int LinWindow::handle() const
+int X11Window::handle() const
 {
     return static_cast<int>(m_hWnd);
 }
 
-void LinWindow::close()
+void X11Window::close()
 {
 //    SendMessage(m_hWnd, WM_CLOSE, NULL, NULL);
 }
 
-void LinWindow::destroy()
+void X11Window::destroy()
 {
 //    DestroyWindow(m_hWnd);
 }
 
-void LinWindow::show()
+void X11Window::show()
 {
 //    ShowWindow(m_hWnd, SW_SHOWNORMAL);
 //    UpdateWindow(m_hWnd);
 }
 
-void LinWindow::hide()
+void X11Window::hide()
 {
 //    ShowWindow(m_hWnd, 0);
 }
 
-void LinWindow::fullScreen()
+void X11Window::fullScreen()
 {
 //    GetWindowRect(m_hWnd, &m_backup);
 
@@ -174,7 +174,7 @@ void LinWindow::fullScreen()
 //    SetFocus(m_hWnd);
 }
 
-void LinWindow::windowed()
+void X11Window::windowed()
 {
 //    // http://stackoverflow.com/questions/7193197/is-there-a-graceful-way-to-handle-toggling-between-fullscreen-and-windowed-mode
 
@@ -192,7 +192,7 @@ void LinWindow::windowed()
 //    SetWindowLongPtr(m_hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
 }
 
-//void LinWindow::restoreDisplaySettings()
+//void X11Window::restoreDisplaySettings()
 //{
 //    const LONG result = ChangeDisplaySettings(nullptr, NULL);   // Return to the default mode after a dynamic mode change.
 //    if (DISP_CHANGE_SUCCESSFUL == result)
@@ -202,7 +202,7 @@ void LinWindow::windowed()
 //    printChangeDisplaySettingsErrorResult(result);
 //}
 
-//void LinWindow::printChangeDisplaySettingsErrorResult(const LONG result)
+//void X11Window::printChangeDisplaySettingsErrorResult(const LONG result)
 //{
 //    switch (result)
 //    {
@@ -236,7 +236,7 @@ void LinWindow::windowed()
 //    }
 //}
 
-int LinWindow::run()
+int X11Window::run()
 {
 //    MSG  msg;
 //    do
@@ -251,7 +251,7 @@ int LinWindow::run()
 
 //        msg.message = WM_USER_IDLE;
 
-//        for (LinWindow * window : s_windows)
+//        for (X11Window * window : s_windows)
 //        {
 //            msg.hwnd = window->m_hWnd;
 //            DispatchMessage(&msg);
@@ -263,18 +263,18 @@ int LinWindow::run()
     return 0;
 }
 
-void LinWindow::quit(int code)
+void X11Window::quit(int code)
 {
 //    PostQuitMessage(code);
 }
 
-void LinWindow::repaint()
+void X11Window::repaint()
 {
 //    InvalidateRect(m_hWnd, NULL, FALSE);
 }
 
 
-void LinWindow::onDestroy()
+void X11Window::onDestroy()
 {
 //    m_hWnd = 0;
 
@@ -282,7 +282,7 @@ void LinWindow::onDestroy()
 //        restoreDisplaySettings();
 }
 
-void LinWindow::onRepaint()
+void X11Window::onRepaint()
 {
     if (!context())
         return;
@@ -298,7 +298,7 @@ void LinWindow::onRepaint()
 }
 
 
-void LinWindow::onResize(
+void X11Window::onResize(
     const int width
 ,   const int height)
 {
@@ -310,7 +310,7 @@ void LinWindow::onResize(
 //    AbstractNativeWindow::onResize();
 }
 
-//LRESULT CALLBACK LinWindow::dispatch(
+//LRESULT CALLBACK X11Window::dispatch(
 //    HWND hWnd
 //,   UINT message
 //,   WPARAM wParam
@@ -379,7 +379,7 @@ void LinWindow::onResize(
 //    return 0;
 //}
 
-//LRESULT CALLBACK LinWindow::InitialProc(
+//LRESULT CALLBACK X11Window::InitialProc(
 //    HWND hWnd
 //,   UINT message
 //,   WPARAM wParam
@@ -391,22 +391,22 @@ void LinWindow::onResize(
 //    LPCREATESTRUCT cstruct = reinterpret_cast<LPCREATESTRUCT>(lParam);
 //    void * cparam = cstruct->lpCreateParams;
 
-//    LinWindow * window = reinterpret_cast<LinWindow*>(cparam);
+//    X11Window * window = reinterpret_cast<X11Window*>(cparam);
 
 //    SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(window));
-//    SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&LinWindow::Proc));
+//    SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&X11Window::Proc));
 
 //    return window->dispatch(hWnd, message, wParam, lParam);
 //}
 
-//LRESULT CALLBACK LinWindow::Proc(
+//LRESULT CALLBACK X11Window::Proc(
 //    HWND hWnd
 //,   UINT message
 //,   WPARAM wParam
 //,   LPARAM lParam)
 //{
 //    LONG_PTR lptr = GetWindowLongPtr(hWnd, GWLP_USERDATA);
-//    LinWindow * window = reinterpret_cast<LinWindow*>(lptr);
+//    X11Window * window = reinterpret_cast<X11Window*>(lptr);
 
 //    assert(window);
 

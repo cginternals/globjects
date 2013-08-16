@@ -4,11 +4,11 @@
 #include <GL/glew.h>
 
 #ifdef WIN32
-#include "WinContext.h"
+#include "WGLContext.h"
 #elif __APPLE__
-#include "MacContext.h"
+
 #else
-#include "LinContext.h"
+#include "GLxContext.h"
 #endif
 
 #include <glow/logging.h>
@@ -25,11 +25,11 @@ Context::Context()
 ,   m_context(nullptr)
 {
 #ifdef WIN32
-    m_context = new WinContext();
+    m_context = new WGLContext();
 #elif __APPLE__
-    m_context = new MacContext();
+
 #else
-    m_context = new LinContext();
+    m_context = new GLxContext();
 #endif
 }
 

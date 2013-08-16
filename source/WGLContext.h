@@ -1,18 +1,20 @@
 #pragma once
 
-#ifdef __APPLE__
+#ifdef WIN32
+
+#include <windows.h>
 
 #include "AbstractNativeContext.h"
 
 
-namespace glow
+namespace glow 
 {
 
-class MacContext : public AbstractNativeContext
+class WGLContext : public AbstractNativeContext
 {
 public:
-    MacContext();
-    virtual ~MacContext();
+    WGLContext();
+    virtual ~WGLContext();
 
     virtual bool create(
         const int hWnd
@@ -25,22 +27,22 @@ public:
     virtual bool isValid() const;
 
     virtual bool setSwapInterval(Context::SwapInterval swapInterval) const;
-
+    
     virtual bool makeCurrent() const;
     virtual bool doneCurrent() const;
 
 protected:
-//    static PIXELFORMATDESCRIPTOR toPixelFormatDescriptor(
-//        const ContextFormat & format);
+    static PIXELFORMATDESCRIPTOR toPixelFormatDescriptor(
+        const ContextFormat & format);
 
-//    static void fromPixelFormatDescriptor(
-//        ContextFormat & format
-//    ,   const PIXELFORMATDESCRIPTOR & pfd);
+    static void fromPixelFormatDescriptor(
+        ContextFormat & format
+    ,   const PIXELFORMATDESCRIPTOR & pfd);
 
 protected:
-//    HWND  m_hWnd;
-//    HGLRC m_hRC;
-//    HDC   m_hDC;
+    HWND  m_hWnd;
+    HGLRC m_hRC;
+    HDC   m_hDC;
 };
 
 } // namespace glow

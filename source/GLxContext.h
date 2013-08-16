@@ -8,11 +8,11 @@
 namespace glow
 {
 
-class LinContext : public AbstractNativeContext
+class GLxContext : public AbstractNativeContext
 {
 public:
-    LinContext();
-    virtual ~LinContext();
+    GLxContext();
+    virtual ~GLxContext();
 
     virtual bool create(
         const int hWnd

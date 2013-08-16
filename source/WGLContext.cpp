@@ -13,13 +13,13 @@
 #include <glow/query.h>
 #include <glow/Error.h>
 
-#include "WinContext.h"
+#include "WGLContext.h"
 
 
 namespace glow
 {
 
-WinContext::WinContext()
+WGLContext::WGLContext()
 :   AbstractNativeContext()
 ,   m_hWnd(NULL)
 ,   m_hDC (NULL)
@@ -27,14 +27,14 @@ WinContext::WinContext()
 {
 }
 
-WinContext::~WinContext()
+WGLContext::~WGLContext()
 {
     assert(NULL == m_hWnd);
     assert(NULL == m_hDC);
     assert(NULL == m_hRC);
 }
 
-PIXELFORMATDESCRIPTOR WinContext::toPixelFormatDescriptor(const ContextFormat & format)
+PIXELFORMATDESCRIPTOR WGLContext::toPixelFormatDescriptor(const ContextFormat & format)
 {
     // NTOE: TrippleBufferig not supported yet.
     // NOTE: Accumulation buffer is not supported.
@@ -62,7 +62,7 @@ PIXELFORMATDESCRIPTOR WinContext::toPixelFormatDescriptor(const ContextFormat & 
     return pfd;
 }
 
-void WinContext::fromPixelFormatDescriptor(
+void WGLContext::fromPixelFormatDescriptor(
     ContextFormat & format
 ,   const PIXELFORMATDESCRIPTOR & pfd)
 {
@@ -78,7 +78,7 @@ void WinContext::fromPixelFormatDescriptor(
     format.setStencilBufferSize(pfd.cStencilBits);
 }
 
-bool WinContext::create(
+bool WGLContext::create(
     const int hWnd
 ,   ContextFormat & format)
 {
@@ -177,7 +177,7 @@ bool WinContext::create(
     return true;
 }
 
-void WinContext::release()
+void WGLContext::release()
 {
     assert(isValid());
 
@@ -195,7 +195,7 @@ void WinContext::release()
     m_hDC = NULL;
 }
 
-void WinContext::swap() const
+void WGLContext::swap() const
 {
     assert(isValid());
 
@@ -203,17 +203,17 @@ void WinContext::swap() const
         warning() << "Swapping buffers failed (SwapBuffers). Error: " << GetLastError();
 }
 
-int WinContext::id() const
+int WGLContext::id() const
 {
     return reinterpret_cast<int>(m_hRC);
 }
 
-bool WinContext::isValid() const
+bool WGLContext::isValid() const
 {
 	return 0 < id();
 }
 
-bool WinContext::setSwapInterval(Context::SwapInterval swapInterval) const
+bool WGLContext::setSwapInterval(Context::SwapInterval swapInterval) const
 {
     if (TRUE == wglSwapIntervalEXT(swapInterval))
         return true;
@@ -225,7 +225,7 @@ bool WinContext::setSwapInterval(Context::SwapInterval swapInterval) const
 	return false;
 }
 
-bool WinContext::makeCurrent() const
+bool WGLContext::makeCurrent() const
 {
     const BOOL result = wglMakeCurrent(m_hDC, m_hRC);
     if (!result)
@@ -234,7 +234,7 @@ bool WinContext::makeCurrent() const
     return TRUE == result;
 }
 
-bool WinContext::doneCurrent() const
+bool WGLContext::doneCurrent() const
 {
     const BOOL result = wglMakeCurrent(m_hDC, NULL);
     if (!result)

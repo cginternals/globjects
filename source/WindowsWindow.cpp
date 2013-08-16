@@ -11,31 +11,31 @@
 #include <glow/Context.h>
 #include <glow/WindowEventHandler.h>
 
-#include "WinWindow.h"
+#include "WindowsWindow.h"
 
 
 namespace glow
 {
 
-std::set<WinWindow*> WinWindow::s_windows;
+std::set<WindowsWindow*> WindowsWindow::s_windows;
 
 static const int WM_USER_IDLE = WM_USER;
 
 
-WinWindow::WinWindow(Window & window)
+WindowsWindow::WindowsWindow(Window & window)
 :   AbstractNativeWindow(window)
 ,   m_hWnd(0)
 {
     s_windows.insert(this);
 }
 
-WinWindow::~WinWindow()
+WindowsWindow::~WindowsWindow()
 {
     s_windows.erase(s_windows.find(this));
     destroy();
 }
 
-bool WinWindow::create(
+bool WindowsWindow::create(
     Context & context
 ,   const ContextFormat & format
 ,   const std::string & title
@@ -99,7 +99,7 @@ bool WinWindow::create(
     return true;
 }
 
-int WinWindow::width() const
+int WindowsWindow::width() const
 {
     if (m_rect.right < 0)
         return 0;
@@ -107,7 +107,7 @@ int WinWindow::width() const
     return m_rect.right - m_rect.left;
 }
 
-int WinWindow::height() const
+int WindowsWindow::height() const
 {
     if (m_rect.bottom < 0)
         return 0;
@@ -115,33 +115,33 @@ int WinWindow::height() const
     return m_rect.bottom - m_rect.top;
 }
 
-int WinWindow::handle() const
+int WindowsWindow::handle() const
 {
     return reinterpret_cast<int>(m_hWnd);
 }
     
-void WinWindow::close()
+void WindowsWindow::close()
 {
     SendMessage(m_hWnd, WM_CLOSE, NULL, NULL);
 }
 
-void WinWindow::destroy()
+void WindowsWindow::destroy()
 {
     DestroyWindow(m_hWnd);
 }
 
-void WinWindow::show()
+void WindowsWindow::show()
 {
     ShowWindow(m_hWnd, SW_SHOWNORMAL);
     UpdateWindow(m_hWnd);
 }
 
-void WinWindow::hide()
+void WindowsWindow::hide()
 {
     ShowWindow(m_hWnd, 0);
 }
 
-void WinWindow::fullScreen()
+void WindowsWindow::fullScreen()
 {
     GetWindowRect(m_hWnd, &m_backup);
 
@@ -187,7 +187,7 @@ void WinWindow::fullScreen()
     SetFocus(m_hWnd);
 }
 
-void WinWindow::windowed()
+void WindowsWindow::windowed()
 {
     // http://stackoverflow.com/questions/7193197/is-there-a-graceful-way-to-handle-toggling-between-fullscreen-and-windowed-mode
 
@@ -205,7 +205,7 @@ void WinWindow::windowed()
     SetWindowLongPtr(m_hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
 }
 
-void WinWindow::restoreDisplaySettings()
+void WindowsWindow::restoreDisplaySettings()
 {
     const LONG result = ChangeDisplaySettings(nullptr, NULL);   // Return to the default mode after a dynamic mode change.
     if (DISP_CHANGE_SUCCESSFUL == result)
@@ -215,7 +215,7 @@ void WinWindow::restoreDisplaySettings()
     printChangeDisplaySettingsErrorResult(result);
 }
 
-void WinWindow::printChangeDisplaySettingsErrorResult(const LONG result)
+void WindowsWindow::printChangeDisplaySettingsErrorResult(const LONG result)
 {
     switch (result)
     {
@@ -249,7 +249,7 @@ void WinWindow::printChangeDisplaySettingsErrorResult(const LONG result)
     }
 }
 
-int WinWindow::run()
+int WindowsWindow::run()
 {
     MSG  msg;
     do
@@ -264,7 +264,7 @@ int WinWindow::run()
 
         msg.message = WM_USER_IDLE;
 
-        for (WinWindow * window : s_windows)
+        for (WindowsWindow * window : s_windows)
         {
             msg.hwnd = window->m_hWnd;
             DispatchMessage(&msg);
@@ -275,18 +275,18 @@ int WinWindow::run()
     return static_cast<int>(msg.wParam);
 }
 
-void WinWindow::quit(const int code)
+void WindowsWindow::quit(const int code)
 {
     PostQuitMessage(code);
 }
 
-void WinWindow::repaint()
+void WindowsWindow::repaint()
 {
     InvalidateRect(m_hWnd, NULL, FALSE);
 }
 
 
-void WinWindow::onDestroy()
+void WindowsWindow::onDestroy()
 {
     m_hWnd = 0;
 
@@ -294,7 +294,7 @@ void WinWindow::onDestroy()
         restoreDisplaySettings();
 }
 
-void WinWindow::onRepaint()
+void WindowsWindow::onRepaint()
 {
     if (!context())
         return;
@@ -310,7 +310,7 @@ void WinWindow::onRepaint()
 }
 
 
-void WinWindow::onResize(
+void WindowsWindow::onResize(
     const int width
 ,   const int height)
 {
@@ -322,7 +322,7 @@ void WinWindow::onResize(
     AbstractNativeWindow::onResize();
 }
 
-LRESULT CALLBACK WinWindow::dispatch(
+LRESULT CALLBACK WindowsWindow::dispatch(
     HWND hWnd
 ,   UINT message
 ,   WPARAM wParam
@@ -391,7 +391,7 @@ LRESULT CALLBACK WinWindow::dispatch(
     return 0;
 }
 
-LRESULT CALLBACK WinWindow::InitialProc(
+LRESULT CALLBACK WindowsWindow::InitialProc(
     HWND hWnd
 ,   UINT message
 ,   WPARAM wParam
@@ -403,22 +403,22 @@ LRESULT CALLBACK WinWindow::InitialProc(
     LPCREATESTRUCT cstruct = reinterpret_cast<LPCREATESTRUCT>(lParam);
     void * cparam = cstruct->lpCreateParams;
         
-    WinWindow * window = reinterpret_cast<WinWindow*>(cparam);
+    WindowsWindow * window = reinterpret_cast<WindowsWindow*>(cparam);
 
     SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(window));
-    SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&WinWindow::Proc));
+    SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&WindowsWindow::Proc));
 
     return window->dispatch(hWnd, message, wParam, lParam);
 }
 
-LRESULT CALLBACK WinWindow::Proc(
+LRESULT CALLBACK WindowsWindow::Proc(
     HWND hWnd
 ,   UINT message
 ,   WPARAM wParam
 ,   LPARAM lParam)
 {
     LONG_PTR lptr = GetWindowLongPtr(hWnd, GWLP_USERDATA);
-    WinWindow * window = reinterpret_cast<WinWindow*>(lptr); 
+    WindowsWindow * window = reinterpret_cast<WindowsWindow*>(lptr);
 
     assert(window);
 

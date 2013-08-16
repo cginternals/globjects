@@ -19,7 +19,7 @@ class WindowEventHandler;
 class ContextFormat;
 class Context;
 
-class LinWindow : public AbstractNativeWindow
+class X11Window : public AbstractNativeWindow
 {
     struct Rect
     {
@@ -30,8 +30,8 @@ class LinWindow : public AbstractNativeWindow
     };
 
 public:
-    LinWindow(Window & window);
-    virtual ~LinWindow();
+    X11Window(Window & window);
+    virtual ~X11Window();
 
     virtual bool create(
         const ContextFormat & format
@@ -87,7 +87,7 @@ protected:
 //    static void printChangeDisplaySettingsErrorResult(const LONG result);
 
 protected:
-    static std::set<LinWindow*> s_windows;
+    static std::set<X11Window*> s_windows;
 
 protected:
     void onRepaint();
