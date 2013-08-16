@@ -26,7 +26,8 @@ public:
     virtual ~WinWindow();
 
     virtual bool create(
-        const ContextFormat & format
+        Context & context
+    ,   const ContextFormat & format
     ,   const std::string & title
     ,   const unsigned int width
     ,   const unsigned int height);

@@ -77,23 +77,19 @@ bool Window::create(
 ,   const unsigned int width
 ,   const unsigned int height)
 {
-    if (!m_window->create(format, title, width, height))
+    m_context = new Context();
+
+    if (!m_window->create(*m_context, format, title, width, height))
     {
-        fatal() << "Creating native window failed.";
+        fatal() << "Creating native window with OpenGL context failed.";
         return false;
     }
-
     assert(m_window->width()  == width);
     assert(m_window->height() == height);
 
-    // setup context
-
-    m_context = new Context();
-    const bool result = m_context->create(handle(), format);
-
     promoteContext();
 
-    return result;
+    return true;
 }
 
 bool Window::quitsOnDestroy() const

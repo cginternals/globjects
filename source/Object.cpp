@@ -37,7 +37,7 @@ bool Object::ownsGLObject() const
 
 bool Object::isTransformFeedback() const
 {
-	return glIsTransformFeedback(m_id);
+	return 1 == glIsTransformFeedback(m_id);
 }
 
 } // namespace glow

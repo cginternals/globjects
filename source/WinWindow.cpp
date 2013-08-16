@@ -19,7 +19,7 @@ namespace glow
 
 std::set<WinWindow*> WinWindow::s_windows;
 
-static const int WM_USER_IDLE WM_USER;
+static const int WM_USER_IDLE = WM_USER;
 
 
 WinWindow::WinWindow(Window & window)
@@ -36,7 +36,8 @@ WinWindow::~WinWindow()
 }
 
 bool WinWindow::create(
-    const ContextFormat & format
+    Context & context
+,   const ContextFormat & format
 ,   const std::string & title
 ,   const unsigned int width
 ,   const unsigned int height)
@@ -93,11 +94,9 @@ bool WinWindow::create(
         return false;
     }
 
-    UpdateWindow(m_hWnd);
-
     GetWindowRect(m_hWnd, &m_rect);
 
-    return true;
+    return context.create(handle(), format);
 }
 
 int WinWindow::width() const
