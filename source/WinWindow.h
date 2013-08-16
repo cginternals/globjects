@@ -3,6 +3,7 @@
 #ifdef WIN32
 
 #include <set>
+#include <string>
 #include <windows.h>
 
 #include <glow/glow.h>
@@ -10,11 +11,6 @@
 
 #include "AbstractNativeWindow.h"
 
-
-namespace std
-{
-    string;
-}
 
 namespace glow 
 {

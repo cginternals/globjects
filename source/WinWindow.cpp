@@ -19,10 +19,8 @@ namespace glow
 
 std::set<WinWindow*> WinWindow::s_windows;
 
-namespace
-{
-#define WM_USER_IDLE WM_USER
-}
+static const int WM_USER_IDLE WM_USER;
+
 
 WinWindow::WinWindow(Window & window)
 :   AbstractNativeWindow(window)
@@ -239,7 +237,7 @@ void WinWindow::printChangeDisplaySettingsErrorResult(const LONG result)
         fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_FAILED): The display driver failed the specified graphics mode.";
         break;
     case DISP_CHANGE_NOTUPDATED:
-        fatal() << "ChangeDisplaySettings failed(DISP_CHANGE_NOTUPDATED): Unable to write settings to the registry.";
+        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_NOTUPDATED): Unable to write settings to the registry.";
         break;
     case DISP_CHANGE_RESTART:
         fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_RESTART): The computer must be restarted for the graphics mode to work.";

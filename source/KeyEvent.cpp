@@ -2,7 +2,14 @@
 #include <cassert>
 
 #include <map>
+
+#ifdef WIN32
 #include <windows.h>
+#elif __APPLE__
+
+#else
+
+#endif
 
 #include <glow/logging.h>
 #include <glow/KeyEvent.h>
@@ -10,9 +17,6 @@
 
 namespace glow
 {
-
-
-
 
 KeyEvent::KeyEvent(
     const Type type
