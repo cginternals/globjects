@@ -30,7 +30,10 @@ protected:
 	GLenum m_errorCode;
 };
 
-
-#define CHECK_ERROR glow::Error::check(__FILE__, __LINE__)
+#ifdef NDEBUG
+#define CheckGLError() ((void)0)
+#else
+#define CheckGLError() glow::Error::check(__FILE__, __LINE__)
+#endif
 
 } // namespace glow

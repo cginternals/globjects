@@ -168,7 +168,7 @@ set(libs
 )
 
 # Definitions
-add_definitions("-DGLOW_EXPORTS")
+add_definitions("-DGLOW_EXPORTS -D_HAS_EXCEPTIONS=0")
 
 # Sources
 set(header_path "${CMAKE_CURRENT_SOURCE_DIR}/include/glow")
@@ -292,7 +292,7 @@ set_target_properties(${target}
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
-    INCLUDE_PATH	"${CMAKE_CURRENT_SOURCE_DIR}/include")
+    INCLUDE_PATH	            "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Deployment
 install(TARGETS ${target}

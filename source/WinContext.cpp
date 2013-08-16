@@ -138,7 +138,7 @@ bool WinContext::create(
     if (GLEW_OK != glewInit())
     {
         fatal() << "GLEW initialization failed (glewInit).";
-        CHECK_ERROR;
+        CheckGLError();
 
         release();
         return false;
@@ -218,7 +218,7 @@ bool WinContext::setSwapInterval(Context::SwapInterval swapInterval) const
     if (TRUE == wglSwapIntervalEXT(swapInterval))
         return true;
 
-    CHECK_ERROR;
+    CheckGLError();
     warning() << "Setting swap interval to " << Context::swapIntervalString(swapInterval) 
         << " (" << swapInterval << ") failed. Error: " << GetLastError();
 

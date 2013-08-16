@@ -61,7 +61,7 @@ bool Context::create(
     if (GLEW_OK != glewInit())
     {
         fatal() << "GLEW initialization failed (glewInit).";
-        CHECK_ERROR;
+        CheckGLError();
 
         release();
         return false;
