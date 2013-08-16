@@ -11,8 +11,8 @@ public:
 
     enum Type
     {
-        KeyPress
-    ,   KeyRelease
+        KeyPressEvent
+    ,   KeyReleaseEvent
     };
 
     // Key enum partially taken from Qt::Key

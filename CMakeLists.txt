@@ -232,19 +232,15 @@ set(sources
     ${source_path}/ContextFormat.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferObject.cpp
-	${source_path}/FileReader.cpp
-	${source_path}/FileReader.h
+    ${source_path}/FileReader.cpp
+    ${source_path}/FileReader.h
     ${source_path}/KeyEvent.cpp
-    ${source_path}/LinContext.cpp
-    ${source_path}/LinContext.h
-    ${source_path}/LinWindow.cpp
-    ${source_path}/LinWindow.h
+    ${source_path}/GLxContext.cpp
+    ${source_path}/GLxContext.h
+    ${source_path}/X11Window.cpp
+    ${source_path}/X11Window.h
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
-    ${source_path}/MacContext.cpp
-    ${source_path}/MacContext.h
-    ${source_path}/MacWindow.cpp
-    ${source_path}/MacWindow.h
     ${source_path}/Object.cpp
     ${source_path}/Program.cpp
     ${source_path}/query.cpp
@@ -261,10 +257,10 @@ set(sources
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
     ${source_path}/Window.cpp
-    ${source_path}/WinContext.cpp
-    ${source_path}/WinContext.h
-    ${source_path}/WinWindow.cpp
-    ${source_path}/WinWindow.h
+    ${source_path}/WGLContext.cpp
+    ${source_path}/WGLContext.h
+    ${source_path}/WindowsWindow.cpp
+    ${source_path}/WindowsWindow.h
     ${source_path}/WindowEventHandler.cpp
 )
 

@@ -3,11 +3,11 @@
 #include <string>
 
 #ifdef WIN32
-#include "WinWindow.h"
+#include "WindowsWindow.h"
 #elif __APPLE__
-#include "MacWindow.h"
+
 #else
-#include "LinWindow.h"
+#include "X11Window.h"
 #endif
 
 #include <glow/logging.h>
@@ -27,11 +27,11 @@ Window::Window()
 ,   m_window(nullptr)
 {
 #ifdef WIN32
-    m_window = new WinWindow(*this);
+    m_window = new WindowsWindow(*this);
 #elif __APPLE__
-    m_window = new MacWindow(*this);
+
 #else
-    m_window = new LinWindow(*this);
+    m_window = new X11Window(*this);
 #endif
 }
 
@@ -79,7 +79,7 @@ bool Window::create(
 {
     m_context = new Context();
 
-    if (!m_window->create(*m_context, format, title, width, height))
+    if (!m_window->create(format, title, width, height))
     {
         fatal() << "Creating native window with OpenGL context failed.";
         return false;
@@ -87,9 +87,10 @@ bool Window::create(
     assert(m_window->width()  == width);
     assert(m_window->height() == height);
 
+    const bool result = m_context->create(handle(), format);
     promoteContext();
 
-    return true;
+    return result;
 }
 
 bool Window::quitsOnDestroy() const
@@ -184,22 +185,22 @@ void Window::attach(WindowEventHandler * eventHandler)
 int Window::run()
 {
 #ifdef WIN32
-    return WinWindow::run();
+    return WindowsWindow::run();
 #elif __APPLE__
-    return MacWindow::run();
+
 #else
-    return LinWindow::run();
+    return X11Window::run();
 #endif
 }
 
 void Window::quit(const int code)
 {
 #ifdef WIN32
-    return WinWindow::quit(code);
+    return WindowsWindow::quit(code);
 #elif __APPLE__
-    return MacWindow::quit(code);
+
 #else
-    return LinWindow::quit(code);
+    return X11Window::quit(code);
 #endif
 }
 
@@ -263,7 +264,7 @@ void Window::onClose()
 
 bool Window::onKeyPress(const unsigned short key)
 {
-    KeyEvent kpe(KeyEvent::KeyPress, key);
+    KeyEvent kpe(KeyEvent::KeyPressEvent, key);
 
     m_keysPressed.insert(kpe.key());
 
@@ -275,7 +276,7 @@ bool Window::onKeyPress(const unsigned short key)
 
 bool Window::onKeyRelease(const unsigned short key)
 {
-    KeyEvent kre(KeyEvent::KeyRelease, key);
+    KeyEvent kre(KeyEvent::KeyReleaseEvent, key);
 
     switch (kre.key())
     {

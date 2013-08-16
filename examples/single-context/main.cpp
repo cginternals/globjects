@@ -1,10 +1,14 @@
 
 #include <GL/glew.h>
 
+#include <unistd.h>
+
 #include <glow/Window.h>
 #include <glow/ContextFormat.h>
 #include <glow/Context.h>
 #include <glow/WindowEventHandler.h>
+
+#include <glow/logging.h>
 
 using namespace glow;
 
@@ -50,14 +54,20 @@ int main(int argc, char** argv)
 {
     glewExperimental = GL_TRUE;
 
+    warning() << "test";
+
     ContextFormat format;
     EventHandler handler;
 
     Window window;
     window.attach(&handler);
+    warning() << "B";
 
     window.create(format, "Single Context Example");
+    warning() << "C";
     window.show();
+
+    sleep(2000);
 
     return Window::run();
 }
