@@ -4,6 +4,8 @@
 #include <cassert>
 #include <string>
 
+#include <GL/glx.h>
+
 #include <glow/logging.h>
 #include <glow/Screen.h>
 #include <glow/Context.h>
@@ -31,24 +33,45 @@ LinWindow::~LinWindow()
     destroy();
 }
 
+// http://msdn.microsoft.com/en-us/library/windows/desktop/dd318252(v=vs.85).aspx
+
 bool LinWindow::create(
     const ContextFormat & format
 ,   const std::string & title
 ,   const unsigned int width
 ,   const unsigned int height)
 {
+    int dummy; // this is stupid! if a parameters is not required passing nullptr does not work.
+
     m_display = XOpenDisplay(NULL);
-    if (NULL == m_display)
+    if (NULL == m_display || !glXQueryExtension(m_display, &dummy, &dummy))
     {
         fatal() << "Cannot conntext to X server (XOpenDisplay).";
         return false;
     }
 
-    ::Window root = DefaultRootWindow(m_display);
+    const int screen = DefaultScreen(m_display);
+    const ::Window root = DefaultRootWindow(m_display);
+
+    int attributes[] = { GLX_RGBA, GLX_USE_GL, GLX_DEPTH_SIZE, format.depthBufferSize()
+        , (format.swapBehavior() == ContextFormat::DoubleBuffering ? GLX_DOUBLEBUFFER : 0) };
+
+    XVisualInfo * vi = glXChooseVisual(m_display, screen, attributes);
+    if (nullptr == vi)
+    {
+        fatal() << "Choosing a visual failed (glXChooseVisual).";
+        return false;
+    }
+
+    const Colormap cmap = XCreateColormap(m_display, root, vi->visual, AllocNone);
+
+    XSetWindowAttributes swa;
+    swa.colormap     = cmap;
+    swa.border_pixel = 0;
+    swa.event_mask   = ExposureMask | KeyPressMask | StructureNotifyMask;
 
     m_hWnd = XCreateWindow(m_display, root, 0, 0, width, height, 0
-        , CopyFromParent, CopyFromParent, CopyFromParent, 0, 0);
-
+        , vi->depth, InputOutput, vi->visual, CWBorderPixel | CWColormap | CWEventMask, &swa);
     if (0 == m_hWnd)
     {
         fatal() << "Creating a window failed (XCreateWindow).";
@@ -59,17 +82,13 @@ bool LinWindow::create(
     XStoreName(m_display, m_hWnd, title.c_str());
 
     {
-        // NOTE: this is a stupid api! if a parameters is not required passing nullptr does not work.
+        // stupid! see above...
+        ::Window dummy2;
+        unsigned int dummy3;
 
-        ::Window dummy0;
-
-        unsigned int dummy1;
-        unsigned int dummy2;
-
-        XGetGeometry(m_display, m_hWnd, &dummy0, &m_rect.left, &m_rect.top
-            , &m_rect.width, &m_rect.height, &dummy1, &dummy2);
+        XGetGeometry(m_display, m_hWnd, &dummy2, &m_rect.left, &m_rect.top
+            , &m_rect.width, &m_rect.height, &dummy3, &dummy3);
     }
-
     return true;
 }
 

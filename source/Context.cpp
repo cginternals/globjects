@@ -83,7 +83,7 @@ void Context::release()
 
     m_context->release();
 
-    assert(NULL == m_context->id());
+    assert(0 == m_context->id());
 }
 
 void Context::swap()

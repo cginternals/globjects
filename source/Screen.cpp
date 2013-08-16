@@ -19,9 +19,9 @@ const unsigned int Screen::getNumScreens()
 
     numScreens = GetSystemMetrics(SM_CMONITORS);
 
+#elif __APPLE__
+
 #else
-
-
 
 #endif
 
@@ -52,9 +52,9 @@ void Screen::getPhysicalSize(
     if(0 == ReleaseDC(hWnd, dc))
         warning() << "Releasing temporary (query) device context failed.";
 
+#elif __APPLE__
+
 #else
-
-
 
 #endif 
 }
@@ -71,9 +71,11 @@ void Screen::getDesktopResolution(
     width  = GetSystemMetrics(SM_CXSCREEN);
     height = GetSystemMetrics(SM_CYSCREEN);
 
+#elif __APPLE__
+
 #else
 
-
+    // http://content.gpwiki.org/index.php/OpenGL:Tutorials:Setting_up_OpenGL_on_X11
 
 #endif 
 }
@@ -142,9 +144,9 @@ void Screen::getValidResolutions(Resolutions & resolutions)
         resolutions.insert(std::pair<unsigned int, unsigned int>(dm.dmPelsWidth, dm.dmPelsHeight));
     }
 
+#elif __APPLE__
+
 #else
-
-
 
 #endif 
 }
