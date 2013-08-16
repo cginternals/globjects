@@ -4,7 +4,7 @@
 
 #include <set>
 #include <string>
-//#include <windows.h>
+#include <X11/Xlib.h>
 
 #include <glow/glow.h>
 #include <glow/KeyEvent.h>
@@ -21,6 +21,14 @@ class Context;
 
 class LinWindow : public AbstractNativeWindow
 {
+    struct Rect
+    {
+        int left;
+        int top;
+        unsigned int width;
+        unsigned int height;
+    };
+
 public:
     LinWindow(Window & window);
     virtual ~LinWindow();
@@ -90,10 +98,11 @@ protected:
     void onDestroy();
 
 protected:
-//    HWND  m_hWnd;
+    Display * m_display;
+    ::Window m_hWnd;
 
-//    RECT m_rect;
-//    RECT m_backup;
+    Rect m_rect;
+    Rect m_backup;
 };
 
 } // namespace glow

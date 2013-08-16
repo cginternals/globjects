@@ -96,7 +96,7 @@ bool WinWindow::create(
 
     GetWindowRect(m_hWnd, &m_rect);
 
-    return context.create(handle(), format);
+    return true;
 }
 
 int WinWindow::width() const

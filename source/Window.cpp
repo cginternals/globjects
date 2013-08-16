@@ -79,7 +79,7 @@ bool Window::create(
 {
     m_context = new Context();
 
-    if (!m_window->create(*m_context, format, title, width, height))
+    if (!m_window->create(format, title, width, height))
     {
         fatal() << "Creating native window with OpenGL context failed.";
         return false;
@@ -87,9 +87,10 @@ bool Window::create(
     assert(m_window->width()  == width);
     assert(m_window->height() == height);
 
+    const bool result = m_context->create(handle(), format);
     promoteContext();
 
-    return true;
+    return result;
 }
 
 bool Window::quitsOnDestroy() const
@@ -263,7 +264,7 @@ void Window::onClose()
 
 bool Window::onKeyPress(const unsigned short key)
 {
-    KeyEvent kpe(KeyEvent::KeyPress, key);
+    KeyEvent kpe(KeyEvent::KeyPressEvent, key);
 
     m_keysPressed.insert(kpe.key());
 
@@ -275,7 +276,7 @@ bool Window::onKeyPress(const unsigned short key)
 
 bool Window::onKeyRelease(const unsigned short key)
 {
-    KeyEvent kre(KeyEvent::KeyRelease, key);
+    KeyEvent kre(KeyEvent::KeyReleaseEvent, key);
 
     switch (kre.key())
     {

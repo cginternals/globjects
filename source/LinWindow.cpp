@@ -4,8 +4,6 @@
 #include <cassert>
 #include <string>
 
-//#include <Windows.h>
-
 #include <glow/logging.h>
 #include <glow/Screen.h>
 #include <glow/Context.h>
@@ -21,7 +19,8 @@ std::set<LinWindow*> LinWindow::s_windows;
 
 LinWindow::LinWindow(Window & window)
 :   AbstractNativeWindow(window)
-//,   m_hWnd(0)
+,   m_hWnd(0)
+,   m_display(nullptr)
 {
     s_windows.insert(this);
 }
@@ -38,87 +37,55 @@ bool LinWindow::create(
 ,   const unsigned int width
 ,   const unsigned int height)
 {
-    const std::wstring wtitle = std::wstring(title.begin(), title.end());
-//    static const LPCWSTR className = L"glow::Window";
+    m_display = XOpenDisplay(NULL);
+    if (NULL == m_display)
+    {
+        fatal() << "Cannot conntext to X server (XOpenDisplay).";
+        return false;
+    }
 
-//    const HINSTANCE hInstance(GetModuleHandle(NULL));
+    ::Window root = DefaultRootWindow(m_display);
 
-//    WNDCLASSEX wcex;
-//    ZeroMemory(&wcex, sizeof(WNDCLASSEX));
+    m_hWnd = XCreateWindow(m_display, root, 0, 0, width, height, 0
+        , CopyFromParent, CopyFromParent, CopyFromParent, 0, 0);
 
-//    if (FALSE == GetClassInfoEx(hInstance, className, &wcex))
-//    {
-//        // register window class
+    if (0 == m_hWnd)
+    {
+        fatal() << "Creating a window failed (XCreateWindow).";
+        return false;
+    }
 
-//        wcex.cbSize         = sizeof(WNDCLASSEX);
-//        wcex.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-//        wcex.lpfnWndProc    = InitialProc;
-//        wcex.cbClsExtra     = 0;
-//        wcex.cbWndExtra     = 0;
-//        wcex.hInstance      = hInstance;
-//        wcex.hIcon          = NULL;
-//        wcex.hCursor        = LoadCursor(NULL, IDC_ARROW);
-//        wcex.hbrBackground  = NULL;
-//        wcex.lpszMenuName   = NULL;
-//        wcex.lpszClassName  = className;
-//        wcex.hIconSm        = NULL;
+    XMapWindow(m_display, m_hWnd);
+    XStoreName(m_display, m_hWnd, title.c_str());
 
-//        if (!RegisterClassEx(&wcex))
-//        {
-//            fatal() << "Registering the window class failed (RegisterClassEx). Error: " << GetLastError();
-//            return false;
-//        }
-//    }
+    {
+        // NOTE: this is a stupid api! if a parameters is not required passing nullptr does not work.
 
-//    m_hWnd = CreateWindowEx(
-//        WS_EX_APPWINDOW | WS_EX_WINDOWEDGE
-//    ,   className
-//    ,   wtitle.c_str()
-//    ,   WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN
-//    ,   CW_USEDEFAULT
-//    ,   CW_USEDEFAULT
-//    ,   width
-//    ,   height
-//    ,   NULL
-//    ,   NULL
-//    ,   hInstance
-//    ,   this);
+        ::Window dummy0;
 
-//    if (NULL == m_hWnd)
-//    {
-//        fatal() << "Creating a window failed (CreateWindowEx). Error: " << GetLastError();
-//        return false;
-//    }
+        unsigned int dummy1;
+        unsigned int dummy2;
 
-//    UpdateWindow(m_hWnd);
-
-//    GetWindowRect(m_hWnd, &m_rect);
+        XGetGeometry(m_display, m_hWnd, &dummy0, &m_rect.left, &m_rect.top
+            , &m_rect.width, &m_rect.height, &dummy1, &dummy2);
+    }
 
     return true;
 }
 
 int LinWindow::width() const
 {
-//    if (m_rect.right < 0)
-//        return 0;
-
-//    return m_rect.right - m_rect.left;
-    return 0;
+    return m_rect.width;
 }
 
 int LinWindow::height() const
 {
-//    if (m_rect.bottom < 0)
-//        return 0;
-
-//    return m_rect.bottom - m_rect.top;
-    return 0;
+    return m_rect.height;
 }
 
 int LinWindow::handle() const
 {
-//    return reinterpret_cast<int>(m_hWnd);
-    return 0;
+    return static_cast<int>(m_hWnd);
 }
 
 void LinWindow::close()
