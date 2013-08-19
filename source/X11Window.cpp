@@ -22,6 +22,8 @@ std::unordered_map<::Window, X11Window *> X11Window::s_windowsByHandle;
 
 Display * X11Window::s_display = nullptr;
 
+static const Atom IdleEvent = 1;
+
 
 X11Window::X11Window(Window & window)
 :   AbstractNativeWindow(window)
@@ -287,10 +289,12 @@ int X11Window::run()
         event.type = ClientMessage;
         for (X11Window * window : s_windows)
         {
+            event.xclient.display = s_display;
             event.xclient.window = window->m_hWnd;
+            event.xclient.message_type = IdleEvent;
+            event.xclient.format = 8; // NOTE: format is mandatory and should be set.
 
-            XSendEvent(s_display, window->m_hWnd, 0, 0, &event);
-            dispatchEvent(event);
+            XSendEvent(s_display, window->m_hWnd, False, NoEventMask, &event);
         }
 
     } while (true); //WM_QUIT != event.type);
@@ -358,7 +362,6 @@ int X11Window::dispatch(
     if (!m_hWnd)
         return 0;
 
-    warning() << "dispatch " << m_hWnd;
 
     switch (event.type)
     {
@@ -378,9 +381,10 @@ int X11Window::dispatch(
 //        onRepaint();
 //        break;
 
-//    case WM_USER_IDLE:
-//        onIdle();
-//        break;
+    case ClientMessage:
+        if(IdleEvent == event.xclient.message_type)
+            onIdle();
+        break;
 
 //    case WM_KEYDOWN:
 //    case WM_SYSKEYDOWN:
@@ -412,15 +416,13 @@ int X11Window::dispatch(
 //        }
 
     default:
-        return false;
+        return 0;
     }
     return 0;
 }
 
 int X11Window::dispatchEvent(const XEvent & event)
 {
-    warning() << "dispatch " << event.xany.window;
-
     const auto f = s_windowsByHandle.find(event.xany.window);
     if(f == s_windowsByHandle.cend())
         return 0;
