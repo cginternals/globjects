@@ -29,6 +29,7 @@ X11Window::X11Window(Window & window)
 :   AbstractNativeWindow(window)
 ,   m_hWnd(0)
 ,   m_display(nullptr)
+,   m_deleteEvent(-1)
 {
     s_windows.insert(this);
 }
@@ -37,6 +38,14 @@ X11Window::~X11Window()
 {
     s_windows.erase(s_windows.find(this));
     destroy();
+
+    if(s_windows.empty())
+    {
+        assert(s_display);
+
+        XCloseDisplay(s_display);
+        s_display = nullptr;
+    }
 }
 
 // http://msdn.microsoft.com/en-us/library/windows/desktop/dd318252(v=vs.85).aspx
@@ -112,6 +121,11 @@ bool X11Window::create(
     XEvent event;
     XIfEvent(m_display, &event, waitForMapNotify, reinterpret_cast<char*>(m_hWnd));
 
+    // setup additional events
+
+    m_deleteEvent = XInternAtom(s_display, "WM_DELETE_WINDOW", False);
+    XSetWMProtocols(m_display, m_hWnd, &m_deleteEvent, 1);
+
     XStoreName(m_display, m_hWnd, title.c_str());
 
     {
@@ -147,7 +161,17 @@ void X11Window::close()
 
 void X11Window::destroy()
 {
-    s_windowsByHandle.erase(m_hWnd);
+    // http://john.nachtimwald.com/2009/11/08/sending-wm_delete_window-client-messages/
+    XEvent event;
+    memset(&event, 0, sizeof(event));
+
+//    event.xclient.type = ClientMessage;
+//    eventv.xclient.window = window;
+//    ev.xclient.message_type = XInternAtom(display, "WM_PROTOCOLS", true);
+//    ev.xclient.format = 32;
+//    ev.xclient.data.l[0] = XInternAtom(display, "WM_DELETE_WINDOW", false);
+//    ev.xclient.data.l[1] = CurrentTime;
+//    XSendEvent(display, window, False, NoEventMask, &ev);
 }
 
 void X11Window::show()
@@ -274,8 +298,6 @@ int X11Window::run()
     if(nullptr == display())
         return false;
 
-    warning() << "run";
-
     XEvent event;
     do
     {
@@ -305,10 +327,7 @@ int X11Window::run()
 
 void X11Window::quit(int code)
 {
-//    PostQuitMessage(code);
-
-    XCloseDisplay(s_display);
-    s_display = nullptr;
+    exit(code);
 }
 
 void X11Window::repaint()
@@ -319,7 +338,10 @@ void X11Window::repaint()
 
 void X11Window::onDestroy()
 {
-//    m_hWnd = 0;
+    s_windowsByHandle.erase(m_hWnd);
+
+    XDestroyWindow(m_display, m_hWnd);
+    m_hWnd = 0;
 
 //    if (isFullScreen())
 //        restoreDisplaySettings();
@@ -365,14 +387,6 @@ int X11Window::dispatch(
 
     switch (event.type)
     {
-//    case WM_CLOSE:
-//        onClose();
-//        break;
-
-//    case WM_DESTROY:
-//        onDestroy();
-//        break;
-
 //    case WM_SIZE:
 //        onResize(LOWORD(lParam), HIWORD(lParam));
 //        break;
@@ -382,8 +396,10 @@ int X11Window::dispatch(
 //        break;
 
     case ClientMessage:
-        if(IdleEvent == event.xclient.message_type)
+        if (IdleEvent == event.xclient.message_type)
             onIdle();
+        if (event.xclient.data.l[0] == m_deleteEvent)
+            onClose();
         break;
 
 //    case WM_KEYDOWN:
