@@ -17,7 +17,11 @@
 namespace glow
 {
 
-std::set<X11Window*> X11Window::s_windows;
+std::set<X11Window *> X11Window::s_windows;
+std::unordered_map<::Window, X11Window *> X11Window::s_windowsByHandle;
+
+Display * X11Window::s_display = nullptr;
+
 
 X11Window::X11Window(Window & window)
 :   AbstractNativeWindow(window)
@@ -35,20 +39,42 @@ X11Window::~X11Window()
 
 // http://msdn.microsoft.com/en-us/library/windows/desktop/dd318252(v=vs.85).aspx
 
+Display * X11Window::display()
+{
+    if(s_display)
+        return s_display;
+
+    s_display = XOpenDisplay(NULL);
+    if (nullptr == s_display)
+    {
+        int dummy; // this is stupid! if a parameters is not required passing nullptr does not work.
+
+        if(!glXQueryExtension(s_display, &dummy, &dummy))
+        {
+            fatal() << "Cannot conntext to X server (XOpenDisplay).";
+            return nullptr;
+        }
+    }
+    return s_display;
+}
+
+Bool X11Window::waitForMapNotify(
+    Display *
+,   XEvent * event
+,   char * argument)
+{
+    return ((MapNotify == event->type) && (reinterpret_cast<::Window>(argument) == event->xmap.window));
+}
+
 bool X11Window::create(
     const ContextFormat & format
 ,   const std::string & title
 ,   const unsigned int width
 ,   const unsigned int height)
 {
-    int dummy; // this is stupid! if a parameters is not required passing nullptr does not work.
-
-    m_display = XOpenDisplay(NULL);
-    if (NULL == m_display || !glXQueryExtension(m_display, &dummy, &dummy))
-    {
-        fatal() << "Cannot conntext to X server (XOpenDisplay).";
+    m_display = display();
+    if (nullptr == m_display)
         return false;
-    }
 
     const int screen = DefaultScreen(m_display);
     const ::Window root = DefaultRootWindow(m_display);
@@ -77,8 +103,13 @@ bool X11Window::create(
         fatal() << "Creating a window failed (XCreateWindow).";
         return false;
     }
+    s_windowsByHandle[m_hWnd] = this;
 
     XMapWindow(m_display, m_hWnd);
+
+    XEvent event;
+    XIfEvent(m_display, &event, waitForMapNotify, reinterpret_cast<char*>(m_hWnd));
+
     XStoreName(m_display, m_hWnd, title.c_str());
 
     {
@@ -88,7 +119,7 @@ bool X11Window::create(
 
         XGetGeometry(m_display, m_hWnd, &dummy2, &m_rect.left, &m_rect.top
             , &m_rect.width, &m_rect.height, &dummy3, &dummy3);
-    }
+    }    
     return true;
 }
 
@@ -114,7 +145,7 @@ void X11Window::close()
 
 void X11Window::destroy()
 {
-//    DestroyWindow(m_hWnd);
+    s_windowsByHandle.erase(m_hWnd);
 }
 
 void X11Window::show()
@@ -238,26 +269,31 @@ void X11Window::windowed()
 
 int X11Window::run()
 {
-//    MSG  msg;
-//    do
-//    {
-//        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-//        {
-//            TranslateMessage(&msg);
-//            DispatchMessage(&msg);
+    if(nullptr == display())
+        return false;
 
-//            continue;
-//        }
+    warning() << "run";
 
-//        msg.message = WM_USER_IDLE;
+    XEvent event;
+    do
+    {
+        if (XPending(s_display))
+        {
+            XNextEvent(s_display, &event);
+            dispatchEvent(event);
+            continue;
+        }
 
-//        for (X11Window * window : s_windows)
-//        {
-//            msg.hwnd = window->m_hWnd;
-//            DispatchMessage(&msg);
-//        }
+        event.type = ClientMessage;
+        for (X11Window * window : s_windows)
+        {
+            event.xclient.window = window->m_hWnd;
 
-//    } while (WM_QUIT != msg.message);
+            XSendEvent(s_display, window->m_hWnd, 0, 0, &event);
+            dispatchEvent(event);
+        }
+
+    } while (true); //WM_QUIT != event.type);
 
 //    return static_cast<int>(msg.wParam);
     return 0;
@@ -266,6 +302,9 @@ int X11Window::run()
 void X11Window::quit(int code)
 {
 //    PostQuitMessage(code);
+
+    XCloseDisplay(s_display);
+    s_display = nullptr;
 }
 
 void X11Window::repaint()
@@ -310,20 +349,19 @@ void X11Window::onResize(
 //    AbstractNativeWindow::onResize();
 }
 
-//LRESULT CALLBACK X11Window::dispatch(
-//    HWND hWnd
-//,   UINT message
-//,   WPARAM wParam
-//,   LPARAM lParam)
-//{
-//    assert(!m_hWnd || hWnd == m_hWnd);
+int X11Window::dispatch(
+    const ::Window hWnd
+,   const XEvent & event)
+{
+    assert(!m_hWnd || hWnd == m_hWnd);
 
-//    if (!m_hWnd)
-//        return DefWindowProc(hWnd, message, wParam, lParam);
+    if (!m_hWnd)
+        return 0;
 
-//    // Windows Messages: http://msdn.microsoft.com/en-us/library/windows/desktop/ms644927(v=vs.85).aspx#windows_messages
-//    switch (message)
-//    {
+    warning() << "dispatch " << m_hWnd;
+
+    switch (event.type)
+    {
 //    case WM_CLOSE:
 //        onClose();
 //        break;
@@ -373,45 +411,23 @@ void X11Window::onResize(
 //            return 0;
 //        }
 
-//    default:
-//        return DefWindowProc(hWnd, message, wParam, lParam);
-//    }
-//    return 0;
-//}
+    default:
+        return false;
+    }
+    return 0;
+}
 
-//LRESULT CALLBACK X11Window::InitialProc(
-//    HWND hWnd
-//,   UINT message
-//,   WPARAM wParam
-//,   LPARAM lParam)
-//{
-//    if (message != WM_NCCREATE)
-//        return DefWindowProc(hWnd, message, wParam, lParam);
+int X11Window::dispatchEvent(const XEvent & event)
+{
+    warning() << "dispatch " << event.xany.window;
 
-//    LPCREATESTRUCT cstruct = reinterpret_cast<LPCREATESTRUCT>(lParam);
-//    void * cparam = cstruct->lpCreateParams;
+    const auto f = s_windowsByHandle.find(event.xany.window);
+    if(f == s_windowsByHandle.cend())
+        return 0;
 
-//    X11Window * window = reinterpret_cast<X11Window*>(cparam);
-
-//    SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(window));
-//    SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&X11Window::Proc));
-
-//    return window->dispatch(hWnd, message, wParam, lParam);
-//}
-
-//LRESULT CALLBACK X11Window::Proc(
-//    HWND hWnd
-//,   UINT message
-//,   WPARAM wParam
-//,   LPARAM lParam)
-//{
-//    LONG_PTR lptr = GetWindowLongPtr(hWnd, GWLP_USERDATA);
-//    X11Window * window = reinterpret_cast<X11Window*>(lptr);
-
-//    assert(window);
-
-//    return window->dispatch(hWnd, message, wParam, lParam);
-//}
+    X11Window * window(f->second);
+    return window->dispatch(window->m_hWnd, event);
+}
 
 } // namespace glow
 

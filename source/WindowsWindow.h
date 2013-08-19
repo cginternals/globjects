@@ -64,16 +64,16 @@ protected:
     ,   LPARAM lParam);
 
     static LRESULT CALLBACK Proc(
-        HWND hWnd       ///< Unique handle of the window. Check this against own handle.
+        HWND hWnd   ///< Unique handle of the window.
     ,   UINT message
     ,   WPARAM wParam
     ,   LPARAM lParam);
 
     LRESULT CALLBACK dispatch(
-        HWND hWnd
-    ,   UINT message
-    ,   WPARAM wParam
-    ,   LPARAM lParam);
+        const HWND hWnd   ///< Checked against own handle.
+    ,   const UINT message
+    ,   const WPARAM wParam
+    ,   const LPARAM lParam);
 
     static void restoreDisplaySettings();
     static void printChangeDisplaySettingsErrorResult(const LONG result);

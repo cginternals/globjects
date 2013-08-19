@@ -10,10 +10,12 @@
 namespace glow 
 {
 
+class Context;
+
 class WGLContext : public AbstractNativeContext
 {
 public:
-    WGLContext();
+    WGLContext(Context & context);
     virtual ~WGLContext();
 
     virtual bool create(

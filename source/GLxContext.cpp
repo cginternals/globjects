@@ -18,8 +18,8 @@
 namespace glow
 {
 
-GLxContext::GLxContext()
-:   AbstractNativeContext()
+GLxContext::GLxContext(Context & context)
+:   AbstractNativeContext(context)
 //,   m_hWnd(NULL)
 //,   m_hDC (NULL)
 //,   m_hRC (NULL)
@@ -173,6 +173,10 @@ bool GLxContext::create(
 //        return false;
 //    }
 
+
+    //if (glXIsDirect(GLWin.dpy, GLWin.ctx))
+
+
     return true;
 }
 
@@ -198,8 +202,10 @@ void GLxContext::swap() const
 {
 //    assert(isValid());
 
-//    if(FALSE == SwapBuffers(m_hDC))
-//        warning() << "Swapping buffers failed (SwapBuffers). Error: " << GetLastError();
+//    if(ContextFormat::SingleBuffering == format().swapBehavior())
+//        return;
+
+//    glXSwapBuffers(m_display, m_hWnd);
 }
 
 int GLxContext::id() const

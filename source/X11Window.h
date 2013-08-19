@@ -3,7 +3,9 @@
 #ifdef __linux__
 
 #include <set>
+#include <unordered_map>
 #include <string>
+#include <X11/X.h>
 #include <X11/Xlib.h>
 
 #include <glow/glow.h>
@@ -61,33 +63,32 @@ public:
 
 protected:
 
-//    // design similar to:
-//    // http://www.codeproject.com/Articles/2556/A-Simple-Win32-Window-Wrapper-Class
-//    // http://members.gamedev.net/sicrane/articles/WindowClass.html
+    // design similar to:
+    // http://www.codeproject.com/Articles/2556/A-Simple-Win32-Window-Wrapper-Class
+    // http://members.gamedev.net/sicrane/articles/WindowClass.html
 
-//    static LRESULT CALLBACK InitialProc(
-//        HWND hWnd
-//    ,   UINT message
-//    ,   WPARAM wParam
-//    ,   LPARAM lParam);
+    static Bool waitForMapNotify(
+        Display * display
+    ,   XEvent * event
+    ,   char * argument);
 
-//    static LRESULT CALLBACK Proc(
-//        HWND hWnd       ///< Unique handle of the window. Check this against own handle.
-//    ,   UINT message
-//    ,   WPARAM wParam
-//    ,   LPARAM lParam);
+    static int dispatchEvent(const XEvent & event);
 
-//    LRESULT CALLBACK dispatch(
-//        HWND hWnd
-//    ,   UINT message
-//    ,   WPARAM wParam
-//    ,   LPARAM lParam);
+    static Display * display();
 
 //    static void restoreDisplaySettings();
 //    static void printChangeDisplaySettingsErrorResult(const LONG result);
 
 protected:
+    int dispatch(
+        const ::Window hWnd   ///< Checked against own handle.
+    ,   const XEvent & event);
+
+protected:
     static std::set<X11Window*> s_windows;
+    static std::unordered_map<::Window, X11Window *> s_windowsByHandle;
+
+    static Display * s_display;
 
 protected:
     void onRepaint();

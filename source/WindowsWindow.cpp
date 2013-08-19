@@ -323,10 +323,10 @@ void WindowsWindow::onResize(
 }
 
 LRESULT CALLBACK WindowsWindow::dispatch(
-    HWND hWnd
-,   UINT message
-,   WPARAM wParam
-,   LPARAM lParam)
+    const HWND hWnd
+,   const UINT message
+,   const WPARAM wParam
+,   const LPARAM lParam)
 {
     assert(!m_hWnd || hWnd == m_hWnd);
 
@@ -404,6 +404,7 @@ LRESULT CALLBACK WindowsWindow::InitialProc(
     void * cparam = cstruct->lpCreateParams;
         
     WindowsWindow * window = reinterpret_cast<WindowsWindow*>(cparam);
+    assert(window);
 
     SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(window));
     SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&WindowsWindow::Proc));

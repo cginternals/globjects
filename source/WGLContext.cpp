@@ -19,8 +19,8 @@
 namespace glow
 {
 
-WGLContext::WGLContext()
-:   AbstractNativeContext()
+WGLContext::WGLContext(Context & context)
+:   AbstractNativeContext(context)
 ,   m_hWnd(NULL)
 ,   m_hDC (NULL)
 ,   m_hRC (NULL)
@@ -198,6 +198,9 @@ void WGLContext::release()
 void WGLContext::swap() const
 {
     assert(isValid());
+
+    if(ContextFormat::SingleBuffering == format().swapBehavior())
+        return;
 
     if(FALSE == SwapBuffers(m_hDC))
         warning() << "Swapping buffers failed (SwapBuffers). Error: " << GetLastError();

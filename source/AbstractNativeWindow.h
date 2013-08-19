@@ -54,7 +54,7 @@ protected:
     virtual bool onKeyPress(const unsigned short key);
     virtual bool onKeyRelease(const unsigned short key);
 
-private:
+protected:
     Window & m_window;
 };
 

@@ -11,7 +11,7 @@ namespace glow
 class GLxContext : public AbstractNativeContext
 {
 public:
-    GLxContext();
+    GLxContext(Context & context);
     virtual ~GLxContext();
 
     virtual bool create(

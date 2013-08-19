@@ -25,11 +25,11 @@ Context::Context()
 ,   m_context(nullptr)
 {
 #ifdef WIN32
-    m_context = new WGLContext();
+    m_context = new WGLContext(*this);
 #elif __APPLE__
 
 #else
-    m_context = new GLxContext();
+    m_context = new GLxContext(*this);
 #endif
 }
 

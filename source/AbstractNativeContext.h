@@ -4,17 +4,18 @@
 #include <map>
 #include <string>
 
-#include <glow/ContextFormat.h>
 #include <glow/Context.h>
 
 
 namespace glow 
 {
 
+class ContextFormat;
+
 class AbstractNativeContext
 {
 public:
-    AbstractNativeContext();
+    AbstractNativeContext(Context & context);
     virtual ~AbstractNativeContext();
 
     virtual bool create(
@@ -31,6 +32,11 @@ public:
     virtual bool doneCurrent() const = 0;
 
     virtual bool setSwapInterval(Context::SwapInterval swapInterval) const = 0;
+
+    const ContextFormat & format() const;
+
+protected:
+    Context & m_context;
 };
 
 } // namespace glow
