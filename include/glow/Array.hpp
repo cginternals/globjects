@@ -1,15 +1,16 @@
+#pragma once
 
-namespace glow 
+namespace glow
 {
 
 template<typename T>
-Array<T>::Array() 
+Array<T>::Array()
 {
 }
 
 template<typename T>
-Array<T>::Array(const Array<T> & array) 
-:   std::vector<T>(array) 
+Array<T>::Array(const Array<T> & array)
+:   std::vector<T>(array)
 {
 }
 
@@ -20,10 +21,16 @@ Array<T>::Array(const std::vector<T> & vector)
 }
 
 template<typename T>
+Array<T>::Array(const std::initializer_list<T> & list)
+:   std::vector<T>(list)
+{
+}
+
+template<typename T>
 Array<T>::Array(
     T * data
-,   const unsigned size) 
-:   std::vector<T>(data, data + size) 
+,   const unsigned size)
+:   std::vector<T>(data, data + size)
 {
 }
 
@@ -31,30 +38,24 @@ template<typename T>
 Array<T>::Array(
     void * data
 ,   const unsigned size)
-:   std::vector<T>(reinterpret_cast<T*>(data), reinterpret_cast<T*>(data) + size / sizeof(T)) 
+:   std::vector<T>(reinterpret_cast<T*>(data), reinterpret_cast<T*>(data) + size / sizeof(T))
 {
 }
 
 template<typename T>
-Array<T>::Array(std::initializer_list<T> list)
-:   std::vector<T>(list) 
-{
-}
-
-template<typename T>
-const void * Array<T>::rawData() const 
+const void * Array<T>::rawData() const
 {
     return reinterpret_cast<const void*>(std::vector<T>::data());
 }
 
 template<typename T>
-GLint Array<T>::rawSize() const 
+GLint Array<T>::rawSize() const
 {
     return static_cast<GLint>(std::vector<T>::size() * sizeof(T));
 }
 
 template<typename T>
-Array<T> & Array<T>::operator<<(const T & element) 
+Array<T> & Array<T>::operator<<(const T & element)
 {
     std::vector<T>::push_back(element);
     return * this;

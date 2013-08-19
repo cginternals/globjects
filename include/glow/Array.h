@@ -7,7 +7,7 @@
 
 #include <glow/AbstractArray.h>
 
-namespace glow 
+namespace glow
 {
 
 template<typename T>
@@ -18,7 +18,7 @@ public:
 	Array(const Array<T> & array);
 
 	Array(const std::vector<T> & vector);
-    Array(std::initializer_list<T> list);
+    Array(const std::initializer_list<T> & list);
 
     Array(
         T * data

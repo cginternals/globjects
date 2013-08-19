@@ -86,7 +86,7 @@ protected:
 
 protected:
     static std::set<X11Window*> s_windows;
-    static std::unordered_map<::Window, X11Window *> s_windowsByHandle;
+    static std::unordered_map< ::Window, X11Window *> s_windowsByHandle;
 
     static Display * s_display;
 

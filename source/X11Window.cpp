@@ -18,7 +18,7 @@ namespace glow
 {
 
 std::set<X11Window *> X11Window::s_windows;
-std::unordered_map<::Window, X11Window *> X11Window::s_windowsByHandle;
+std::unordered_map< ::Window, X11Window *> X11Window::s_windowsByHandle;
 
 Display * X11Window::s_display = nullptr;
 
@@ -63,7 +63,7 @@ Bool X11Window::waitForMapNotify(
 ,   XEvent * event
 ,   char * argument)
 {
-    return ((MapNotify == event->type) && (reinterpret_cast<::Window>(argument) == event->xmap.window));
+    return ((MapNotify == event->type) && (reinterpret_cast< ::Window>(argument) == event->xmap.window));
 }
 
 bool X11Window::create(
@@ -119,7 +119,7 @@ bool X11Window::create(
 
         XGetGeometry(m_display, m_hWnd, &dummy2, &m_rect.left, &m_rect.top
             , &m_rect.width, &m_rect.height, &dummy3, &dummy3);
-    }    
+    }
     return true;
 }
 
