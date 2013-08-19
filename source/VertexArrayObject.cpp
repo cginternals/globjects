@@ -1,6 +1,8 @@
 
 #include <glow/VertexArrayObject.h>
 
+#include <glow/Error.h>
+
 namespace glow
 {
 
@@ -19,26 +21,31 @@ VertexArrayObject::VertexArrayObject(GLuint id, bool ownsGLObject)
 VertexArrayObject::~VertexArrayObject()
 {
 	if (ownsGLObject())
-    {
-        glDeleteVertexArrays(1, &m_id);
-    }
+	{
+		glDeleteVertexArrays(1, &m_id);
+		CheckGLError();
+	}
 }
 
 GLuint VertexArrayObject::genVertexArray()
 {
 	GLuint id = 0;
+	
 	glGenVertexArrays(1, &id);
+	CheckGLError();
 	return id;
 }
 
 void VertexArrayObject::bind()
 {
 	glBindVertexArray(m_id);
+	CheckGLError();
 }
 
 void VertexArrayObject::unbind()
 {
 	glBindVertexArray(0);
+	CheckGLError();
 }
 
 VertexAttributeBinding* VertexArrayObject::binding(GLuint bindingIndex)
@@ -54,13 +61,17 @@ VertexAttributeBinding* VertexArrayObject::binding(GLuint bindingIndex)
 void VertexArrayObject::enable(GLint attributeIndex)
 {
 	bind();
+	
 	glEnableVertexAttribArray(attributeIndex);
+	CheckGLError();
 }
 
 void VertexArrayObject::disable(GLint attributeIndex)
 {
 	bind();
+	
 	glDisableVertexAttribArray(attributeIndex);
+	CheckGLError();
 }
 
 } // namespace glow
