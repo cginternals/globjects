@@ -1,6 +1,9 @@
 
 #include <cassert>
 #include <sstream>
+#ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
+#include <stdexcept>
+#endif
 
 #include <glow/logging.h>
 #include <glow/Error.h>
@@ -45,7 +48,11 @@ void Error::check(const char* file, int line)
 		ss.unsetf(std::ios::hex | std::ios::showbase);
 		ss << " in " << file << "(" << line << ")";
 
+#ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
+		throw std::runtime_error(ss.str());
+#else
 		critical() << ss.str();
+#endif
 	}
 }
 

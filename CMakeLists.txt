@@ -18,7 +18,9 @@ option(OPTION_LIMIT_CONFIGS  "Generate limited configs (Release; Debug)" ON)
 option(OPTION_LOCAL_INSTALL  "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
 option(OPTION_BUILD_EXAMPLES "Build examples" ON)
+option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
 
+set(USE_EXCEPTIONS OPTION_ERRORS_AS_EXCEPTION)
 
 # CMAKE CONFIGURATION
 
@@ -168,7 +170,10 @@ set(libs
 )
 
 # Definitions
-add_definitions("-DGLOW_EXPORTS -D_HAS_EXCEPTIONS=0")
+add_definitions("-DGLOW_EXPORTS")
+if (OPTION_ERRORS_AS_EXCEPTION)
+	add_definitions("-DGLOW_GL_ERROR_RAISE_EXCEPTION")
+endif()
 
 # Sources
 set(header_path "${CMAKE_CURRENT_SOURCE_DIR}/include/glow")
