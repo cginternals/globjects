@@ -1,10 +1,11 @@
 #pragma once
 
-#include <map>
+#include <set>
 #include <vector>
 #include <string>
 
 #include <glow/glow.h>
+#include <glow/Version.h>
 
 
 namespace glow
@@ -60,16 +61,19 @@ public:
 	/** For major and minor parameters only valid version pairs are allowed,
         on invalid pairs, nearest major and minor are set.
     */
-	void setVersion(
-	    const unsigned int major
-	,   const unsigned int minor);
+    void setVersion(const Version & version);
+    void setVersion(
+        const unsigned int major
+    ,   const unsigned int minor);
 
+    void setVersionFallback(glow::Version version);
     void setVersionFallback(
         unsigned int major
     ,	unsigned int minor);
 
-	unsigned int majorVersion() const; 
-	unsigned int minorVersion() const;
+    int majorVersion() const;
+    int minorVersion() const;
+    const Version & version() const;
 
 	Profile profile() const;
 	void setProfile(const Profile profile);
@@ -118,22 +122,19 @@ protected:
 
 
 protected:
-	typedef std::multimap<unsigned int, unsigned int> MinorsByMajors;
+    typedef std::set<Version> Versions;
 	
     /** Note: OpenGL versions previous to 3.2. is not supported and might not 
         work. It is not taken into account in the development of glow.
     */
-    static MinorsByMajors validVersions();
-
-    static bool nearestValidVersion(
-        unsigned int & major
-    ,   unsigned int & minor);
-
-    static const MinorsByMajors s_validVersions;
+    static Versions validVersions();
+    static bool nearestValidVersion(Version & version);
 
 protected:
-	unsigned int m_majorVersion;
-	unsigned int m_minorVersion;
+    static const Versions s_validVersions;
+
+protected:
+    Version m_version;
 
 	Profile m_profile;
 

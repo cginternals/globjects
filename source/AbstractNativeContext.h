@@ -11,6 +11,7 @@ namespace glow
 {
 
 class ContextFormat;
+class Version;
 
 class AbstractNativeContext
 {
@@ -34,6 +35,9 @@ public:
     virtual bool setSwapInterval(Context::SwapInterval swapInterval) const = 0;
 
     const ContextFormat & format() const;
+
+protected:
+    static bool fatalVersionDisclaimer(const Version & version);
 
 protected:
     Context & m_context;

@@ -2,6 +2,9 @@
 
 #ifdef __linux__
 
+#include <GL/glx.h>
+#include <X11/Xlib.h>
+
 #include "AbstractNativeContext.h"
 
 
@@ -29,7 +32,7 @@ public:
     virtual bool makeCurrent() const;
     virtual bool doneCurrent() const;
 
-protected:
+public:
 //    static PIXELFORMATDESCRIPTOR toPixelFormatDescriptor(
 //        const ContextFormat & format);
 
@@ -37,8 +40,19 @@ protected:
 //        ContextFormat & format
 //    ,   const PIXELFORMATDESCRIPTOR & pfd);
 
+    static Display * getOrOpenDisplay();
+    static void closeDisplay();
+
 protected:
-//    HWND  m_hWnd;
+    static Display * s_display;
+
+protected:
+    Display * m_display;
+    ::Window m_hWnd;
+
+    ::GLXContext m_context;
+    int m_id;
+
 //    HGLRC m_hRC;
 //    HDC   m_hDC;
 };

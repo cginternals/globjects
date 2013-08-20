@@ -18,19 +18,51 @@
 namespace glow
 {
 
+Display * GLxContext::s_display = nullptr;
+
 GLxContext::GLxContext(Context & context)
 :   AbstractNativeContext(context)
-//,   m_hWnd(NULL)
-//,   m_hDC (NULL)
-//,   m_hRC (NULL)
+,   m_display(nullptr)
+,   m_hWnd(0L)
+,   m_context(nullptr)
+,   m_id(-1)
 {
 }
 
 GLxContext::~GLxContext()
 {
-//    assert(NULL == m_hWnd);
-//    assert(NULL == m_hDC);
-//    assert(NULL == m_hRC);
+    assert(0L == m_hWnd);
+    assert(nullptr == m_context);
+}
+
+// TODO: move to X11 Window again..
+Display * GLxContext::getOrOpenDisplay()
+{
+    if(s_display)
+        return s_display;
+
+    s_display = XOpenDisplay(NULL);
+    if (nullptr == s_display)
+    {
+        int dummy; // this is stupid! if a parameters is not required passing nullptr does not work.
+
+        if(!glXQueryExtension(s_display, &dummy, &dummy))
+        {
+            fatal() << "Cannot conntext to X server (XOpenDisplay).";
+            return nullptr;
+        }
+    }
+
+    return s_display;
+}
+
+void GLxContext::closeDisplay()
+{
+    if(!s_display)
+        return;
+
+    XCloseDisplay(s_display);
+    s_display = nullptr;
 }
 
 //PIXELFORMATDESCRIPTOR WinContext::toPixelFormatDescriptor(const ContextFormat & format)
@@ -77,141 +109,142 @@ GLxContext::~GLxContext()
 //    format.setStencilBufferSize(pfd.cStencilBits);
 //}
 
+// example: http://wili.cc/blog/ogl3-glx.html
+
 bool GLxContext::create(
     const int hWnd
 ,   ContextFormat & format)
 {
     assert(!isValid());
 
-//    m_hWnd = reinterpret_cast<HWND>(hWnd);
+    m_hWnd = static_cast<::Window>(hWnd);
 
-//    // convert fomrat to native pixelformat
+    m_display = getOrOpenDisplay();
+    if (nullptr == m_display)
+        return false;
 
-//    PIXELFORMATDESCRIPTOR pfd(toPixelFormatDescriptor(format));
+    const int screen = DefaultScreen(m_display);
+    const ::Window root = DefaultRootWindow(m_display);
 
-//    m_hDC = GetDC(m_hWnd);
-//    if (NULL == m_hDC)
-//    {
-//        fatal() << "Obtaining a device context failed (GetDC). Error: " << GetLastError();
-//        release();
-//        return false;
-//    }
+    int viAttribs[] = { GLX_RGBA, GLX_USE_GL, GLX_DEPTH_SIZE, format.depthBufferSize()
+        , (format.swapBehavior() == ContextFormat::DoubleBuffering ? GLX_DOUBLEBUFFER : 0) };
 
-//    int iPixelFormat = ChoosePixelFormat(m_hDC, &pfd);
-//    if (0 == iPixelFormat)
-//    {
-//        fatal() << "Choosing a suitable pixelformat failed (ChoosePixelFormat). Error: " << GetLastError();
-//        release();
-//        return false;
-//    }
+    XVisualInfo * vi = glXChooseVisual(m_display, screen, viAttribs);
+    if (nullptr == vi)
+    {
+        fatal() << "Choosing a visual failed (glXChooseVisual).";
+        return false;
+    }
 
-//    if (FALSE == SetPixelFormat(m_hDC, iPixelFormat, &pfd))
-//    {
-//        fatal() << "Setting pixel format failed (SetPixelFormat). Error: " << GetLastError();
-//        release();
-//        return false;
-//    }
+    // create temporary ogl context
 
-//    // create temporary ogl context
+    ::GLXContext tempContext = glXCreateContext(m_display, vi, None, GL_TRUE);
+    if (NULL == tempContext)
+    {
+        fatal() << "Creating temporary OpenGL context failed (glXCreateContext).";
+        release();
+        return false;
+    }
 
-//    HGLRC tempRC = wglCreateContext(m_hDC);
+    // check for GLX_ARB_create_context extension
 
-//    if (NULL == tempRC)
-//    {
-//        fatal() << "Creating temporary OpenGL context failed (wglCreateContext). Error: " << GetLastError();
-//        release();
-//        return false;
-//    }
+    if (!glXMakeCurrent(m_display, m_hWnd, tempContext))
+    {
+        fatal() << "Making temporary OpenGL context current failed (glXMakeCurrent).";
+        release();
+        return false;
+    }
 
-//    // check for WGL_ARB_create_context extension
+    // http://www.opengl.org/wiki/Tutorial:_OpenGL_3.1_The_First_Triangle_(C%2B%2B/Win)
 
-//    if (!wglMakeCurrent(m_hDC, tempRC))
-//    {
-//        fatal() << "Making temporary OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
-//        release();
-//        return false;
-//    }
+    if (GLEW_OK != glewInit())
+    {
+        fatal() << "GLEW initialization failed (glewInit).";
+        CheckGLError();
 
-//    // http://www.opengl.org/wiki/Tutorial:_OpenGL_3.1_The_First_Triangle_(C%2B%2B/Win)
+        release();
+        return false;
+    }
 
-//    if (GLEW_OK != glewInit())
-//    {
-//        fatal() << "GLEW initialization failed (glewInit).";
-//        CHECK_ERROR;
+    if (!GLXEW_ARB_create_context)
+    {
+        fatal() << "Mandatory extension GLX_ARB_create_context not supported.";
+        release();
+        return false;
+    }
 
-//        release();
-//        return false;
-//    }
+    // NOTE: this assumes that the driver creates a "defaulted" context with
+    // the highest available opengl version.
+    format.setVersionFallback(query::majorVersion(), query::minorVersion());
 
-//    if (!WGLEW_ARB_create_context)
-//    {
-//        fatal() << "Mandatory extension WGL_ARB_create_context not supported.";
-//        release();
-//        return false;
-//    }
-//    // NOTE: this assumes that the driver creates a "defaulted" context with
-//    // the highest available opengl version.
-//    format.setVersionFallback(query::majorVersion(), query::minorVersion());
-
-//    wglMakeCurrent(NULL, NULL);
-//    wglDeleteContext(tempRC);
-
-//    const int attributes[] =
-//    {
-//        WGL_CONTEXT_MAJOR_VERSION_ARB, format.majorVersion()
-//    ,   WGL_CONTEXT_MINOR_VERSION_ARB, format.minorVersion()
-//    ,   WGL_CONTEXT_PROFILE_MASK_ARB,  format.profile() == ContextFormat::CoreProfile ?
-//            WGL_CONTEXT_CORE_PROFILE_BIT_ARB : WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB
-//    ,   WGL_CONTEXT_FLAGS_ARB, 0, 0
-//    };
-
-//    m_hRC = wglCreateContextAttribsARB(m_hDC, 0, attributes);
-//    if (NULL == m_hRC)
-//    {
-//        fatal() << "Creating OpenGL context with attributes failed (wglCreateContextAttribsARB). Error: " << GetLastError();
-//        release();
-//        return false;
-//    }
+    glXMakeCurrent(m_display, 0L, nullptr);
+    glXDestroyContext(m_display, tempContext);
 
 
-    //if (glXIsDirect(GLWin.dpy, GLWin.ctx))
+    if(fatalVersionDisclaimer(format.version()))
+        return false;
 
+
+    // create context
+
+    const int attributes[] =
+    {
+        GLX_CONTEXT_MAJOR_VERSION_ARB, static_cast<int>(format.majorVersion())
+    ,   GLX_CONTEXT_MINOR_VERSION_ARB, static_cast<int>(format.minorVersion())
+    ,   GLX_CONTEXT_PROFILE_MASK_ARB,  format.profile() == ContextFormat::CoreProfile ?
+            GLX_CONTEXT_CORE_PROFILE_BIT_ARB : GLX_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB
+    ,   GLX_CONTEXT_FLAGS_ARB, 0, 0
+    };
+
+    int elemc;
+    GLXFBConfig * fbConfig = glXChooseFBConfig(m_display, screen, NULL, &elemc);
+    if (!fbConfig)
+    {
+        fatal() << "Choosing a Frame Buffer configuration failed (glXChooseFBConfig)";
+        return false;
+    }
+
+    m_context = glXCreateContextAttribsARB(m_display, fbConfig[0], NULL, true, attributes);
+    if (NULL == m_context)
+    {
+        fatal() << "Creating OpenGL context with attributes failed (glXCreateContextAttribsARB).";
+        release();
+        return false;
+    }
+
+    if (!glXIsDirect(m_display, m_context))
+        warning() << "Direct rendering is not enabled (glXIsDirect).";
+
+    m_id = glXGetContextIDEXT(m_context);
 
     return true;
 }
 
 void GLxContext::release()
 {
-//    assert(isValid());
+    assert(isValid());
 
-//    if(m_hRC == wglGetCurrentContext() && !wglMakeCurrent(NULL, NULL))
-//        warning() << "Release of DC and RC failed (wglMakeCurrent). Error: " << GetLastError();
+    if(m_context == glXGetCurrentContext() && !glXMakeCurrent(m_display, 0L, nullptr))
+        warning() << "Release of context failed (glXMakeCurrent).";
 
-//    if (m_hRC && !wglDeleteContext(m_hRC))
-//        warning() << "Deleting OpenGL context failed (wglDeleteContext). Error: " << GetLastError();
-
-//    m_hRC = NULL;
-
-//    if (m_hDC && !ReleaseDC(m_hWnd, m_hDC))
-//        warning() << "Releasing device context failed (ReleaseDC). Error: " << GetLastError();
-
-//    m_hDC = NULL;
+    glXDestroyContext(m_display, m_context);
+    m_context = nullptr;
+    m_id = -1;
 }
 
 void GLxContext::swap() const
 {
-//    assert(isValid());
+    assert(isValid());
 
-//    if(ContextFormat::SingleBuffering == format().swapBehavior())
-//        return;
+    if(ContextFormat::SingleBuffering == format().swapBehavior())
+        return;
 
-//    glXSwapBuffers(m_display, m_hWnd);
+    glXSwapBuffers(m_display, m_hWnd);
 }
 
 int GLxContext::id() const
 {
-//    return reinterpret_cast<int>(m_hRC);
-    return 0;
+    return m_id;
 }
 
 bool GLxContext::isValid() const
@@ -221,35 +254,30 @@ bool GLxContext::isValid() const
 
 bool GLxContext::setSwapInterval(Context::SwapInterval swapInterval) const
 {
-//    if (TRUE == wglSwapIntervalEXT(swapInterval))
-//        return true;
-
-//    CHECK_ERROR;
-//    warning() << "Setting swap interval to " << Context::swapIntervalString(swapInterval)
-//        << " (" << swapInterval << ") failed. Error: " << GetLastError();
+    glXSwapIntervalEXT(m_display, m_hWnd, swapInterval);
+    if(CheckGLError())
+        warning() << "Setting swap interval to " << Context::swapIntervalString(swapInterval)
+            << " (" << swapInterval << ") failed.";
 
     return false;
 }
 
 bool GLxContext::makeCurrent() const
 {
-//    const BOOL result = wglMakeCurrent(m_hDC, m_hRC);
-//    if (!result)
-//        fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
+    const Bool result = glXMakeCurrent(m_display, m_hWnd, m_context);
+    if (!result)
+        fatal() << "Making the OpenGL context current failed (glXMakeCurrent).";
 
-//    return TRUE == result;
-    return true;
+    return True == result;
 }
 
 bool GLxContext::doneCurrent() const
 {
-//    const BOOL result = wglMakeCurrent(m_hDC, NULL);
-//    if (!result)
-//        warning() << "Release of RC failed (wglMakeCurrent). Error: " << GetLastError();
+    const Bool result = glXMakeCurrent(m_display, 0L, nullptr);
+    if (!result)
+        warning() << "Release of RC failed (glXMakeCurrent).";
 
-//    return TRUE == result;
-
-    return true;
+    return True == result;
 }
 
 } // namespace glow

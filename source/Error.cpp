@@ -36,7 +36,7 @@ Error Error::current()
 	return Error(glGetError());
 }
 
-void Error::check(const char* file, int line)
+bool Error::check(const char* file, int line)
 {
 	Error error = Error::current();
 
@@ -53,7 +53,9 @@ void Error::check(const char* file, int line)
 #else
 		critical() << ss.str();
 #endif
+        return true;
 	}
+    return false;
 }
 
 void Error::clear()

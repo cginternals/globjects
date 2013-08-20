@@ -77,7 +77,7 @@ bool Window::create(
 ,   const unsigned int width
 ,   const unsigned int height)
 {
-    m_context = new Context();
+    assert(nullptr == m_context);
 
     if (!m_window->create(format, title, width, height))
     {
@@ -87,6 +87,7 @@ bool Window::create(
     assert(m_window->width()  == width);
     assert(m_window->height() == height);
 
+    m_context = new Context();
     const bool result = m_context->create(handle(), format);
     promoteContext();
 

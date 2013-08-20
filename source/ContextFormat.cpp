@@ -9,15 +9,12 @@
 namespace glow
 {
 
-const ContextFormat::MinorsByMajors ContextFormat::s_validVersions
+const ContextFormat::Versions ContextFormat::s_validVersions
 	= ContextFormat::validVersions();
 
 
 ContextFormat::ContextFormat()
-:	m_majorVersion(0)
-,	m_minorVersion(0)
-
-,	m_profile(CoreProfile)
+:	m_profile(CoreProfile)
 
 ,	m_redBufferSize(0)
 ,	m_greenBufferSize(0)
@@ -32,122 +29,109 @@ ContextFormat::ContextFormat()
 
 ,	m_samples(0)
 {
-    setVersion(4, 1);   // Use setter to avoid invalid initialization.
+    setVersion(4, 1); // Use setter to avoid invalid initialization.
 }
 
 ContextFormat::~ContextFormat()
 {
 }
 
-ContextFormat::MinorsByMajors ContextFormat::validVersions()
+ContextFormat::Versions ContextFormat::validVersions()
 {
-	MinorsByMajors minorsByMajors;
+    Versions versions;
 
-    typedef std::pair<unsigned int, unsigned int> Version;
+    versions.insert(Version(1, 0));
+    versions.insert(Version(1, 1));
+    versions.insert(Version(1, 2));
+    versions.insert(Version(1, 3));
+    versions.insert(Version(1, 4));
+    versions.insert(Version(1, 5));
 
-	minorsByMajors.insert(Version(1, 0));
-	minorsByMajors.insert(Version(1, 1));
-	minorsByMajors.insert(Version(1, 2));
-	minorsByMajors.insert(Version(1, 3));
-	minorsByMajors.insert(Version(1, 4));
-	minorsByMajors.insert(Version(1, 5));
+    versions.insert(Version(2, 0));
+    versions.insert(Version(2, 1));
 
-	minorsByMajors.insert(Version(2, 0));
-	minorsByMajors.insert(Version(2, 1));
+    versions.insert(Version(3, 0));
+    versions.insert(Version(3, 1));
 
-	minorsByMajors.insert(Version(3, 0));
-	minorsByMajors.insert(Version(3, 1));
+    versions.insert(Version(3, 2));
+    versions.insert(Version(3, 3));
 
-	minorsByMajors.insert(Version(3, 2));
-	minorsByMajors.insert(Version(3, 3));
+    versions.insert(Version(4, 0));
+    versions.insert(Version(4, 1));
+    versions.insert(Version(4, 2));
+    versions.insert(Version(4, 3));
+    versions.insert(Version(4, 4));
 
-	minorsByMajors.insert(Version(4, 0));
-	minorsByMajors.insert(Version(4, 1));
-	minorsByMajors.insert(Version(4, 2));
-	minorsByMajors.insert(Version(4, 3));
-    minorsByMajors.insert(Version(4, 4));
-
-	return minorsByMajors;
+    return versions;
 }
 
-bool ContextFormat::nearestValidVersion(
-    unsigned int & major
-,   unsigned int & minor)
+bool ContextFormat::nearestValidVersion(Version & version)
 {
-    typedef std::pair<MinorsByMajors::const_iterator, MinorsByMajors::const_iterator> MinorsRange;
-
-    auto f = s_validVersions.lower_bound(major);
-
     assert(!s_validVersions.empty());
 
+    auto f = s_validVersions.lower_bound(version);
     if (s_validVersions.cend() == f)
     {
         --f;
 
-        major = f->first;
-        minor = f->second;
-
+        version = *f;
         return true;
     }
 
-	// retrieve nearest valid major
-	unsigned int ma = f->first;
-	const MinorsRange minors(s_validVersions.equal_range(ma));
+    if(version == *f)
+        return false;
 
-	assert(minors.first != s_validVersions.cend());
-
-    // get nearest valid minor if m_majorVersion is major, else get highest valid minor
-	unsigned int mi = 0;
-    for (MinorsByMajors::const_iterator i = minors.first; i != minors.second; ++i)
-    {
-        const unsigned int m(i->second);
-
-        if (mi <= m && (major == ma && m <= minor))
-            mi = m;
-    }
-
-    const bool changed = !(ma == major && mi == minor);
-    
-    major = ma;
-    minor = mi;
-
-    return changed;
+    version = *f;
+    return true;
 }
 
 void ContextFormat::setVersion(
-	const unsigned int major
+    const unsigned int major
 ,	const unsigned int minor)
 {
-    m_majorVersion = major;
-    m_minorVersion = minor;
+    setVersion(Version(major, minor));
+}
 
-    if(nearestValidVersion(m_majorVersion, m_minorVersion))
-		warning() << "Unknown OpenGL Version " << major << "." << minor << " was adjusted to " << m_majorVersion << "." << m_minorVersion << ".";
+void ContextFormat::setVersion(const Version & version)
+{
+    m_version = version;
+
+    if(nearestValidVersion(m_version))
+        warning() << "Unknown OpenGL Version " << version << " was adjusted to " << m_version << ".";
 }
 
 void ContextFormat::setVersionFallback(
     unsigned int major
 ,	unsigned int minor)
 {
-    nearestValidVersion(major, minor);
+    setVersionFallback(Version(major, minor));
+}
 
-    if (major > m_majorVersion || (major == m_majorVersion && minor >= m_minorVersion))
+void ContextFormat::setVersionFallback(Version version)
+{
+    nearestValidVersion(version);
+
+    if (version == m_version)
         return;
 
-    warning() << "Unsupported OpenGL Version " << m_majorVersion << "." << m_minorVersion << " was adjusted to " << major << "." << minor << ".";
+    warning() << "OpenGL Version fallback from " << m_version << " was adjusted to " << version << ".";
 
-    m_majorVersion = major;
-    m_minorVersion = minor;
+    m_version = version;
 }
 
-unsigned int ContextFormat::majorVersion() const
+int ContextFormat::majorVersion() const
 {
-	return m_majorVersion;
+    return m_version.majorVersion;
 }
 
-unsigned int ContextFormat::minorVersion() const
+int ContextFormat::minorVersion() const
 {
-	return m_minorVersion;
+    return m_version.minorVersion;
+}
+
+const Version & ContextFormat::version() const
+{
+    return m_version;
 }
 
 ContextFormat::Profile ContextFormat::profile() const
@@ -285,12 +269,6 @@ bool ContextFormat::verify(
 	bool result = true;
 
 	result &= verifyVersionAndProfile(requested, created);
-
-    // Version Disclaimer
-    if (3 > created.majorVersion() || (3 == created.majorVersion() && 2 > created.minorVersion()))
-        fatal() << "OpenGL Versions prior to 3.2 (" << created.majorVersion() << "." << created.minorVersion() << " created)"
-            << " are not supported within glow. This might result in erroneous behaviour.";
-
 	result &= verifyPixelFormat(requested, created);
 
 	return result;

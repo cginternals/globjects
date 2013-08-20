@@ -17,7 +17,7 @@ public:
 	Error(GLenum errorCode);
 
 	static Error current();
-	static void check(const char* file, int line);
+    static bool check(const char* file, int line);
 	static void clear();
 
 	GLenum code() const;

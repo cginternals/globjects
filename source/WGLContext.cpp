@@ -138,7 +138,7 @@ bool WGLContext::create(
     if (GLEW_OK != glewInit())
     {
         fatal() << "GLEW initialization failed (glewInit).";
-        CHECK_ERROR;
+        CheckGLError();
 
         release();
         return false;
@@ -156,6 +156,13 @@ bool WGLContext::create(
 
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(tempRC);
+
+
+    if(fatalVersionDisclaimer(format.version()))
+        return false;
+
+
+    // create context
 
     const int attributes[] =
     {
@@ -221,7 +228,7 @@ bool WGLContext::setSwapInterval(Context::SwapInterval swapInterval) const
     if (TRUE == wglSwapIntervalEXT(swapInterval))
         return true;
 
-    CHECK_ERROR;
+    CheckGLError();
     warning() << "Setting swap interval to " << Context::swapIntervalString(swapInterval) 
         << " (" << swapInterval << ") failed. Error: " << GetLastError();
 

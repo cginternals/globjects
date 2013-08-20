@@ -4,13 +4,14 @@
 #include <cassert>
 #include <string>
 
+#include <GL/glew.h>
 #include <GL/glx.h>
 
 #include <glow/logging.h>
 #include <glow/Screen.h>
-#include <glow/Context.h>
 #include <glow/WindowEventHandler.h>
 
+#include "GLxContext.h"
 #include "X11Window.h"
 
 
@@ -19,8 +20,6 @@ namespace glow
 
 std::set<X11Window *> X11Window::s_windows;
 std::unordered_map< ::Window, X11Window *> X11Window::s_windowsByHandle;
-
-Display * X11Window::s_display = nullptr;
 
 Atom X11Window::s_wmDeleteEvent(-1);
 Atom X11Window::s_wmProtocols(-1);
@@ -43,37 +42,14 @@ X11Window::~X11Window()
 
     if(s_windows.empty())
     {
-        assert(s_display);
+        assert(m_display);
 
-        XCloseDisplay(s_display);
-        s_display = nullptr;
+        GLxContext::closeDisplay();
+        m_display = nullptr;
     }
 }
 
 // http://msdn.microsoft.com/en-us/library/windows/desktop/dd318252(v=vs.85).aspx
-
-Display * X11Window::display()
-{
-    if(s_display)
-        return s_display;
-
-    s_display = XOpenDisplay(NULL);
-    if (nullptr == s_display)
-    {
-        int dummy; // this is stupid! if a parameters is not required passing nullptr does not work.
-
-        if(!glXQueryExtension(s_display, &dummy, &dummy))
-        {
-            fatal() << "Cannot conntext to X server (XOpenDisplay).";
-            return nullptr;
-        }
-    }
-
-    s_wmProtocols = XInternAtom(s_display, "WM_PROTOCOLS", False);
-    s_wmDeleteEvent = XInternAtom(s_display, "WM_DELETE_WINDOW", False);
-
-    return s_display;
-}
 
 Bool X11Window::waitForMapNotify(
     Display *
@@ -100,9 +76,15 @@ bool X11Window::create(
 ,   const unsigned int width
 ,   const unsigned int height)
 {
-    m_display = display();
+    m_display = GLxContext::getOrOpenDisplay();
     if (nullptr == m_display)
         return false;
+
+    if(-1 == s_wmProtocols)
+    {
+        s_wmProtocols = XInternAtom(m_display, "WM_PROTOCOLS", False);
+        s_wmDeleteEvent = XInternAtom(m_display, "WM_DELETE_WINDOW", False);
+    }
 
     const int screen = DefaultScreen(m_display);
     const ::Window root = DefaultRootWindow(m_display);
@@ -133,12 +115,14 @@ bool X11Window::create(
     }
     s_windowsByHandle[m_hWnd] = this;
 
-    // setup additional events
-    XSetWMProtocols(s_display, m_hWnd, &s_wmDeleteEvent, 1);
-
+    XFree(vi);
     XStoreName(m_display, m_hWnd, title.c_str());
 
     backupGeometry();
+
+    // setup additional events
+
+    XSetWMProtocols(m_display, m_hWnd, &s_wmDeleteEvent, 1);
 
     return true;
 }
@@ -178,7 +162,7 @@ void X11Window::destroy()
     event.xclient.data.l[0] = s_wmDeleteEvent;
     event.xclient.data.l[1] = CurrentTime;
 
-    XSendEvent(s_display, m_hWnd, False, NoEventMask, &event);
+    XSendEvent(m_display, m_hWnd, False, NoEventMask, &event);
 }
 
 void X11Window::show()
@@ -273,15 +257,17 @@ void X11Window::windowed()
 
 int X11Window::run()
 {
-    if(nullptr == display())
+    Display * display = GLxContext::getOrOpenDisplay();
+
+    if(nullptr == display)
         return false;
 
     XEvent event;
     do
     {
-        if (XPending(s_display))
+        if (XPending(display))
         {
-            XNextEvent(s_display, &event);
+            XNextEvent(display, &event);
             dispatchEvent(event);
             continue;
         }
@@ -289,12 +275,12 @@ int X11Window::run()
         event.type = ClientMessage;
         for (X11Window * window : s_windows)
         {
-            event.xclient.display = s_display;
+            event.xclient.display = display;
             event.xclient.window = window->m_hWnd;
             event.xclient.message_type = IdleEvent;
             event.xclient.format = 8; // NOTE: format is mandatory and should be set.
 
-            XSendEvent(s_display, window->m_hWnd, False, NoEventMask, &event);
+            XSendEvent(display, window->m_hWnd, False, NoEventMask, &event);
         }
 
     } while (true); //WM_QUIT != event.type);
@@ -316,7 +302,7 @@ void X11Window::repaint()
     event.type = Expose;
 
     event.xexpose.window = m_hWnd;
-    event.xexpose.display = s_display;
+    event.xexpose.display = m_display;
 
     event.xexpose.x = m_rect.left;
     event.xexpose.y = m_rect.top;
@@ -325,7 +311,7 @@ void X11Window::repaint()
 
     event.xexpose.count = 1;
 
-    XSendEvent(s_display, m_hWnd, False, NoEventMask, &event);
+    XSendEvent(m_display, m_hWnd, False, NoEventMask, &event);
 }
 
 
