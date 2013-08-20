@@ -3,6 +3,8 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/Version.h>
 
+#include <glow/Error.h>
+
 namespace glow
 {
 
@@ -171,12 +173,15 @@ void VertexAttributeBinding_GL_3_2::finish()
 	{
 		case Format::I:
 			glVertexAttribIPointer(attributeIndex(), _format.size, _format.type, _stride, reinterpret_cast<void*>(_baseoffset+_format.relativeoffset));
+			CheckGLError();
 			break;
 		case Format::L:
 			glVertexAttribLPointer(attributeIndex(), _format.size, _format.type, _stride, reinterpret_cast<void*>(_baseoffset+_format.relativeoffset));
+			CheckGLError();
 			break;
 		default:
 			glVertexAttribPointer(attributeIndex(), _format.size, _format.type, _format.normalized, _stride, reinterpret_cast<void*>(_baseoffset+_format.relativeoffset));
+			CheckGLError();
 	}
 }
 
@@ -212,6 +217,7 @@ void VertexAttributeBinding_GL_4_3::bindAttribute(GLint attributeIndex)
 	vao()->bind();
 
 	glVertexAttribBinding(attributeIndex, bindingIndex());
+	CheckGLError();
 }
 
 void VertexAttributeBinding_GL_4_3::bindBuffer(Buffer* vbo, GLint baseoffset, GLint stride)
@@ -219,6 +225,7 @@ void VertexAttributeBinding_GL_4_3::bindBuffer(Buffer* vbo, GLint baseoffset, GL
 	vao()->bind();
 
 	glBindVertexBuffer(bindingIndex(), vbo->id(), baseoffset, stride);
+	CheckGLError();
 }
 
 void VertexAttributeBinding_GL_4_3::setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset)
@@ -226,6 +233,7 @@ void VertexAttributeBinding_GL_4_3::setFormat(GLint size, GLenum type, GLboolean
 	vao()->bind();
 
 	glVertexAttribFormat(attributeIndex(), size, type, normalized, relativeoffset);
+	CheckGLError();
 }
 
 void VertexAttributeBinding_GL_4_3::setIFormat(GLint size, GLenum type, GLuint relativeoffset)
@@ -233,6 +241,7 @@ void VertexAttributeBinding_GL_4_3::setIFormat(GLint size, GLenum type, GLuint r
 	vao()->bind();
 
 	glVertexAttribIFormat(attributeIndex(), size, type, relativeoffset);
+	CheckGLError();
 }
 
 void VertexAttributeBinding_GL_4_3::setLFormat(GLint size, GLenum type, GLuint relativeoffset)
@@ -240,6 +249,7 @@ void VertexAttributeBinding_GL_4_3::setLFormat(GLint size, GLenum type, GLuint r
 	vao()->bind();
 
 	glVertexAttribLFormat(attributeIndex(), size, type, relativeoffset);
+	CheckGLError();
 }
 
 #endif

@@ -28,15 +28,28 @@ set(DEFAULT_COMPILE_DEFS_RELEASE
 )
 
 
-set(LINUX_COMPILE_FLAGS
-	"-pthread -fno-exceptions -pipe -fPIC -Wreturn-type -Werror=return-type"
-	# pthread       -> use pthread library
-	# no-rtti       -> disable c++ rtti
-	# no-exceptions -> disable exception handling
-	# pipe          -> use pipes
-	# fPIC          -> use position independent code
-	# -Wreturn-type -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
-)
+if (${USE_EXCEPTIONS})
+	set(LINUX_COMPILE_FLAGS
+		"-pthread -fexceptions -pipe -fPIC -Wreturn-type -Werror=return-type"
+		# pthread       -> use pthread library
+		# no-rtti       -> disable c++ rtti
+		# no-exceptions -> disable exception handling
+		# pipe          -> use pipes
+		# fPIC          -> use position independent code
+		# -Wreturn-type -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
+	)
+else()
+	set(LINUX_COMPILE_FLAGS
+		"-pthread -fno-exceptions -pipe -fPIC -Wreturn-type -Werror=return-type"
+		# pthread       -> use pthread library
+		# no-rtti       -> disable c++ rtti
+		# no-exceptions -> disable exception handling
+		# pipe          -> use pipes
+		# fPIC          -> use position independent code
+		# -Wreturn-type -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
+	)
+endif()
+
 set(DEFAULT_COMPILE_FLAGS ${LINUX_COMPILE_FLAGS})
 
 

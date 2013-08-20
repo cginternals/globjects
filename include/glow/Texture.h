@@ -29,8 +29,6 @@ public:
 
 	void generateMipmap();
 
-#ifdef GL_NV_bindless_texture
-
 	struct Handle
 	{
 		Handle();
@@ -51,9 +49,6 @@ public:
 	GLboolean isResident() const;
 	Handle makeResident();
 	void makeNonResident();
-
-#endif
-
 protected:
 	GLenum  _target;
 
