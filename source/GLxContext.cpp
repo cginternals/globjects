@@ -117,7 +117,7 @@ bool GLxContext::create(
 {
     assert(!isValid());
 
-    m_hWnd = static_cast<::Window>(hWnd);
+    m_hWnd = static_cast< ::Window>(hWnd);
 
     m_display = getOrOpenDisplay();
     if (nullptr == m_display)
