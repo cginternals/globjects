@@ -84,11 +84,16 @@ protected:
         const ::Window hWnd   ///< Checked against own handle.
     ,   const XEvent & event);
 
+    void backupGeometry();
+
 protected:
     static std::set<X11Window*> s_windows;
     static std::unordered_map< ::Window, X11Window *> s_windowsByHandle;
 
     static Display * s_display;
+
+    static Atom s_wmDeleteEvent;
+    static Atom s_wmProtocols;
 
 protected:
     void onRepaint();
@@ -101,8 +106,6 @@ protected:
 protected:
     Display * m_display;
     ::Window m_hWnd;
-
-    Atom m_deleteEvent;
 
     Rect m_rect;
     Rect m_backup;

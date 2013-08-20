@@ -18,9 +18,12 @@ namespace glow
 {
 
 std::set<X11Window *> X11Window::s_windows;
-std::unordered_map<::Window, X11Window *> X11Window::s_windowsByHandle;
+std::unordered_map< ::Window, X11Window *> X11Window::s_windowsByHandle;
 
 Display * X11Window::s_display = nullptr;
+
+Atom X11Window::s_wmDeleteEvent(-1);
+Atom X11Window::s_wmProtocols(-1);
 
 static const Atom IdleEvent = 1;
 
@@ -29,7 +32,6 @@ X11Window::X11Window(Window & window)
 :   AbstractNativeWindow(window)
 ,   m_hWnd(0)
 ,   m_display(nullptr)
-,   m_deleteEvent(-1)
 {
     s_windows.insert(this);
 }
@@ -66,6 +68,10 @@ Display * X11Window::display()
             return nullptr;
         }
     }
+
+    s_wmProtocols = XInternAtom(s_display, "WM_PROTOCOLS", False);
+    s_wmDeleteEvent = XInternAtom(s_display, "WM_DELETE_WINDOW", False);
+
     return s_display;
 }
 
@@ -74,7 +80,18 @@ Bool X11Window::waitForMapNotify(
 ,   XEvent * event
 ,   char * argument)
 {
-    return ((MapNotify == event->type) && (reinterpret_cast<::Window>(argument) == event->xmap.window));
+    return ((MapNotify == event->type) && (reinterpret_cast< ::Window>(argument) == event->xmap.window));
+}
+
+void X11Window::backupGeometry()
+{
+    // awesome dummy derby
+
+    ::Window dummy2;
+    unsigned int dummy3;
+
+    XGetGeometry(m_display, m_hWnd, &dummy2, &m_rect.left, &m_rect.top
+        , &m_rect.width, &m_rect.height, &dummy3, &dummy3);
 }
 
 bool X11Window::create(
@@ -116,26 +133,13 @@ bool X11Window::create(
     }
     s_windowsByHandle[m_hWnd] = this;
 
-    XMapWindow(m_display, m_hWnd);
-
-    XEvent event;
-    XIfEvent(m_display, &event, waitForMapNotify, reinterpret_cast<char*>(m_hWnd));
-
     // setup additional events
-
-    m_deleteEvent = XInternAtom(s_display, "WM_DELETE_WINDOW", False);
-    XSetWMProtocols(m_display, m_hWnd, &m_deleteEvent, 1);
+    XSetWMProtocols(s_display, m_hWnd, &s_wmDeleteEvent, 1);
 
     XStoreName(m_display, m_hWnd, title.c_str());
 
-    {
-        // stupid! see above...
-        ::Window dummy2;
-        unsigned int dummy3;
+    backupGeometry();
 
-        XGetGeometry(m_display, m_hWnd, &dummy2, &m_rect.left, &m_rect.top
-            , &m_rect.width, &m_rect.height, &dummy3, &dummy3);
-    }    
     return true;
 }
 
@@ -162,27 +166,35 @@ void X11Window::close()
 void X11Window::destroy()
 {
     // http://john.nachtimwald.com/2009/11/08/sending-wm_delete_window-client-messages/
+
     XEvent event;
     memset(&event, 0, sizeof(event));
 
-//    event.xclient.type = ClientMessage;
-//    eventv.xclient.window = window;
-//    ev.xclient.message_type = XInternAtom(display, "WM_PROTOCOLS", true);
-//    ev.xclient.format = 32;
-//    ev.xclient.data.l[0] = XInternAtom(display, "WM_DELETE_WINDOW", false);
-//    ev.xclient.data.l[1] = CurrentTime;
-//    XSendEvent(display, window, False, NoEventMask, &ev);
+    event.type = ClientMessage;
+
+    event.xclient.window = m_hWnd;
+    event.xclient.message_type = s_wmProtocols;
+    event.xclient.format = 32;
+    event.xclient.data.l[0] = s_wmDeleteEvent;
+    event.xclient.data.l[1] = CurrentTime;
+
+    XSendEvent(s_display, m_hWnd, False, NoEventMask, &event);
 }
 
 void X11Window::show()
 {
-//    ShowWindow(m_hWnd, SW_SHOWNORMAL);
-//    UpdateWindow(m_hWnd);
+    XMapWindow(m_display, m_hWnd);
+
+    XEvent event;
+    XIfEvent(m_display, &event, waitForMapNotify, reinterpret_cast<char*>(m_hWnd));
 }
 
 void X11Window::hide()
 {
-//    ShowWindow(m_hWnd, 0);
+    XUnmapWindow(m_display, m_hWnd);
+
+    XEvent event;
+    XIfEvent(m_display, &event, waitForMapNotify, reinterpret_cast<char*>(m_hWnd));
 }
 
 void X11Window::fullScreen()
@@ -259,40 +271,6 @@ void X11Window::windowed()
 //    printChangeDisplaySettingsErrorResult(result);
 //}
 
-//void X11Window::printChangeDisplaySettingsErrorResult(const LONG result)
-//{
-//    switch (result)
-//    {
-//    // http://msdn.microsoft.com/en-us/library/windows/desktop/dd183411(v=vs.85).aspx
-//    case DISP_CHANGE_BADDUALVIEW:
-//        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADDUALVIEW): The settings change was unsuccessful because the system is DualView capable.";
-//        break;
-//    case DISP_CHANGE_BADFLAGS:
-//        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADFLAGS): An invalid set of flags was passed in.";
-//        break;
-//    case DISP_CHANGE_BADMODE:
-//        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADMODE): The graphics mode is not supported.";
-//        break;
-//    case DISP_CHANGE_BADPARAM:
-//        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_BADPARAM): An invalid parameter was passed in. This can include an invalid flag or combination of flags.";
-//        break;
-//    case DISP_CHANGE_FAILED:
-//        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_FAILED): The display driver failed the specified graphics mode.";
-//        break;
-//    case DISP_CHANGE_NOTUPDATED:
-//        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_NOTUPDATED): Unable to write settings to the registry.";
-//        break;
-//    case DISP_CHANGE_RESTART:
-//        fatal() << "ChangeDisplaySettings failed (DISP_CHANGE_RESTART): The computer must be restarted for the graphics mode to work.";
-//        break;
-
-//    case DISP_CHANGE_SUCCESSFUL:
-//        // "DISP_CHANGE_SUCCESSFUL: The settings change was successful."
-//    default:
-//        break;
-//    }
-//}
-
 int X11Window::run()
 {
     if(nullptr == display())
@@ -332,12 +310,28 @@ void X11Window::quit(int code)
 
 void X11Window::repaint()
 {
-//    InvalidateRect(m_hWnd, NULL, FALSE);
+    XEvent event;
+    memset(&event, 0, sizeof(event));
+
+    event.type = Expose;
+
+    event.xexpose.window = m_hWnd;
+    event.xexpose.display = s_display;
+
+    event.xexpose.x = m_rect.left;
+    event.xexpose.y = m_rect.top;
+    event.xexpose.width  = m_rect.width;
+    event.xexpose.height = m_rect.height;
+
+    event.xexpose.count = 1;
+
+    XSendEvent(s_display, m_hWnd, False, NoEventMask, &event);
 }
 
 
 void X11Window::onDestroy()
 {
+    warning() << "destroy";
     s_windowsByHandle.erase(m_hWnd);
 
     XDestroyWindow(m_display, m_hWnd);
@@ -352,14 +346,7 @@ void X11Window::onRepaint()
     if (!context())
         return;
 
-    // http://stackoverflow.com/questions/2842319/swapbuffers-causes-redraw
-
-//    PAINTSTRUCT ps;
-//    HDC hDC = BeginPaint(m_hWnd, &ps);
-
-//    AbstractNativeWindow::onRepaint();
-
-//    EndPaint(m_hWnd,&ps);
+    AbstractNativeWindow::onRepaint();
 }
 
 
@@ -367,12 +354,12 @@ void X11Window::onResize(
     const int width
 ,   const int height)
 {
-//    if (width == this->width() && height == this->height())
-//        return;
+    if (width == this->width() && height == this->height())
+        return;
 
-//    GetWindowRect(m_hWnd, &m_rect);
+    backupGeometry();
 
-//    AbstractNativeWindow::onResize();
+    AbstractNativeWindow::onResize();
 }
 
 int X11Window::dispatch(
@@ -387,18 +374,23 @@ int X11Window::dispatch(
 
     switch (event.type)
     {
-//    case WM_SIZE:
-//        onResize(LOWORD(lParam), HIWORD(lParam));
-//        break;
+    case ConfigureNotify:
+        onResize(event.xconfigure.width, event.xconfigure.height);
+        break;
 
-//    case WM_PAINT:
-//        onRepaint();
-//        break;
+    case DestroyNotify:
+        warning() << "destroy notify";
+        onDestroy();
+        break;
+
+    case Expose:
+        onRepaint();
+        break;
 
     case ClientMessage:
-        if (IdleEvent == event.xclient.message_type)
+        if (event.xclient.message_type == IdleEvent)
             onIdle();
-        if (event.xclient.data.l[0] == m_deleteEvent)
+        else if (s_wmDeleteEvent == event.xclient.data.l[0])
             onClose();
         break;
 
