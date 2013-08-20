@@ -54,7 +54,10 @@ bool Context::create(
 
     m_format = format;
 
-    m_context->create(hWnd, m_format);
+    if (!m_context->create(hWnd, m_format))
+    {
+	return false;
+    }
 
     makeCurrent();
 
@@ -88,7 +91,8 @@ void Context::release()
 
 void Context::swap()
 {
-    m_context->swap();
+	if (isValid())
+		m_context->swap();
 }
 
 int Context::id() const

@@ -31,8 +31,7 @@ GLxContext::GLxContext(Context & context)
 
 GLxContext::~GLxContext()
 {
-    assert(0L == m_hWnd);
-    assert(nullptr == m_context);
+	release();
 }
 
 // TODO: move to X11 Window again..
@@ -142,7 +141,6 @@ bool GLxContext::create(
     if (NULL == tempContext)
     {
         fatal() << "Creating temporary OpenGL context failed (glXCreateContext).";
-        release();
         return false;
     }
 
@@ -151,7 +149,7 @@ bool GLxContext::create(
     if (!glXMakeCurrent(m_display, m_hWnd, tempContext))
     {
         fatal() << "Making temporary OpenGL context current failed (glXMakeCurrent).";
-        release();
+	// TODO: glxDestroyContext
         return false;
     }
 
@@ -162,14 +160,14 @@ bool GLxContext::create(
         fatal() << "GLEW initialization failed (glewInit).";
         CheckGLError();
 
-        release();
+        // TODO: glxDestroyContext
         return false;
     }
 
     if (!GLXEW_ARB_create_context)
     {
         fatal() << "Mandatory extension GLX_ARB_create_context not supported.";
-        release();
+        // TODO: glxDestroyContext
         return false;
     }
 
@@ -208,7 +206,7 @@ bool GLxContext::create(
     if (NULL == m_context)
     {
         fatal() << "Creating OpenGL context with attributes failed (glXCreateContextAttribsARB).";
-        release();
+        
         return false;
     }
 
@@ -222,7 +220,11 @@ bool GLxContext::create(
 
 void GLxContext::release()
 {
-    assert(isValid());
+    //~ assert(isValid());
+    if (m_context == nullptr)
+    {
+	return;
+    }
 
     if(m_context == glXGetCurrentContext() && !glXMakeCurrent(m_display, 0L, nullptr))
         warning() << "Release of context failed (glXMakeCurrent).";

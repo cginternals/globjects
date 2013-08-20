@@ -89,8 +89,14 @@ bool Window::create(
 
     m_context = new Context();
     const bool result = m_context->create(handle(), format);
-    promoteContext();
-
+    if (!result)
+    {
+	delete m_context;
+	m_context = nullptr;
+    }
+    else
+	promoteContext();
+    
     return result;
 }
 
