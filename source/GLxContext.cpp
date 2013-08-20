@@ -125,8 +125,8 @@ bool GLxContext::create(
     const int screen = DefaultScreen(m_display);
     const ::Window root = DefaultRootWindow(m_display);
 
-    int viAttribs[] = { GLX_RGBA, GLX_USE_GL, GLX_DEPTH_SIZE, format.depthBufferSize()
-        , (format.swapBehavior() == ContextFormat::DoubleBuffering ? GLX_DOUBLEBUFFER : 0) };
+    int viAttribs[] = { GLX_RGBA, GLX_USE_GL, GLX_DEPTH_SIZE, format.depthBufferSize(), GLX_RED_SIZE, 8, GLX_GREEN_SIZE, 8, GLX_BLUE_SIZE, 8  
+        , (format.swapBehavior() == ContextFormat::DoubleBuffering ? GLX_DOUBLEBUFFER : None), None };
 
     XVisualInfo * vi = glXChooseVisual(m_display, screen, viAttribs);
     if (nullptr == vi)
@@ -191,7 +191,7 @@ bool GLxContext::create(
     ,   GLX_CONTEXT_MINOR_VERSION_ARB, static_cast<int>(format.minorVersion())
     ,   GLX_CONTEXT_PROFILE_MASK_ARB,  format.profile() == ContextFormat::CoreProfile ?
             GLX_CONTEXT_CORE_PROFILE_BIT_ARB : GLX_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB
-    ,   GLX_CONTEXT_FLAGS_ARB, 0, 0
+    ,   GLX_CONTEXT_FLAGS_ARB, 0, None
     };
 
     int elemc;
@@ -201,7 +201,7 @@ bool GLxContext::create(
         fatal() << "Choosing a Frame Buffer configuration failed (glXChooseFBConfig)";
         return false;
     }
-
+    
     m_context = glXCreateContextAttribsARB(m_display, fbConfig[0], NULL, true, attributes);
     if (NULL == m_context)
     {
@@ -212,9 +212,13 @@ bool GLxContext::create(
 
     if (!glXIsDirect(m_display, m_context))
         warning() << "Direct rendering is not enabled (glXIsDirect).";
-
+	
+    CheckGLError();
+	
     m_id = glXGetContextIDEXT(m_context);
-
+    
+    CheckGLError();
+    
     return true;
 }
 
@@ -267,6 +271,9 @@ bool GLxContext::setSwapInterval(Context::SwapInterval swapInterval) const
 bool GLxContext::makeCurrent() const
 {
     const Bool result = glXMakeCurrent(m_display, m_hWnd, m_context);
+    
+    CheckGLError();
+    
     if (!result)
         fatal() << "Making the OpenGL context current failed (glXMakeCurrent).";
 
@@ -276,6 +283,9 @@ bool GLxContext::makeCurrent() const
 bool GLxContext::doneCurrent() const
 {
     const Bool result = glXMakeCurrent(m_display, 0L, nullptr);
+    
+    CheckGLError();
+    
     if (!result)
         warning() << "Release of RC failed (glXMakeCurrent).";
 
