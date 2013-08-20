@@ -31,10 +31,14 @@ GLxContext::GLxContext(Context & context)
 
 GLxContext::~GLxContext()
 {
-	release();
+    release();
+
+    assert(nullptr == m_display);
+    assert(0L == m_hWnd);
+    assert(nullptr == m_context);
+    assert(-1 == m_id);
 }
 
-// TODO: move to X11 Window again..
 Display * GLxContext::getOrOpenDisplay()
 {
     if(s_display)
@@ -51,7 +55,6 @@ Display * GLxContext::getOrOpenDisplay()
             return nullptr;
         }
     }
-
     return s_display;
 }
 
@@ -63,50 +66,6 @@ void GLxContext::closeDisplay()
     XCloseDisplay(s_display);
     s_display = nullptr;
 }
-
-//PIXELFORMATDESCRIPTOR WinContext::toPixelFormatDescriptor(const ContextFormat & format)
-//{
-//    // NTOE: TrippleBufferig not supported yet.
-//    // NOTE: Accumulation buffer is not supported.
-
-//    // http://msdn.microsoft.com/en-us/library/windows/desktop/dd368826(v=vs.85).aspx
-//    PIXELFORMATDESCRIPTOR pfd =
-//    {
-//        sizeof(PIXELFORMATDESCRIPTOR)   // WORD  nSize
-//    ,   1                               // WORD  nVersion
-//    ,   PFD_DRAW_TO_WINDOW              // DWORD dwFlags
-//      | PFD_SUPPORT_OPENGL
-//      | (format.swapBehavior() == ContextFormat::DoubleBuffering ? PFD_DOUBLEBUFFER : NULL)
-//    ,   PFD_TYPE_RGBA                   // BYTE  iPixelType
-//    ,   32                              // BYTE  cColorBits;
-//    ,   0, 0, 0, 0, 0, 0                //       Not used
-//    ,   format.alphaBufferSize()        // BYTE  cAlphaBits
-//    ,   0, 0, 0, 0, 0, 0                //       Not used
-//    ,   format.depthBufferSize()        // BYTE  cDepthBits
-//    ,   format.stencilBufferSize()      // BYTE  cStencilBits
-//    ,   0                               // BYTE  cAuxBuffers
-//    ,   PFD_MAIN_PLANE                  // BYTE  iLayerType
-//    ,   0, 0, 0, 0                      //       Not used
-//    };
-
-//    return pfd;
-//}
-
-//void WinContext::fromPixelFormatDescriptor(
-//    ContextFormat & format
-//,   const PIXELFORMATDESCRIPTOR & pfd)
-//{
-//    format.setSwapBehavior((pfd.dwFlags & PFD_DOUBLEBUFFER) ?
-//        ContextFormat::DoubleBuffering : ContextFormat::SingleBuffering);
-
-//    format.setRedBufferSize(pfd.cRedBits);
-//    format.setGreenBufferSize(pfd.cGreenBits);
-//    format.setBlueBufferSize(pfd.cBlueBits);
-//    format.setAlphaBufferSize(pfd.cAlphaBits);
-
-//    format.setDepthBufferSize(pfd.cDepthBits);
-//    format.setStencilBufferSize(pfd.cStencilBits);
-//}
 
 // example: http://wili.cc/blog/ogl3-glx.html
 
@@ -149,7 +108,8 @@ bool GLxContext::create(
     if (!glXMakeCurrent(m_display, m_hWnd, tempContext))
     {
         fatal() << "Making temporary OpenGL context current failed (glXMakeCurrent).";
-	// TODO: glxDestroyContext
+
+        glXDestroyContext(m_display, tempContext);
         return false;
     }
 
@@ -160,14 +120,15 @@ bool GLxContext::create(
         fatal() << "GLEW initialization failed (glewInit).";
         CheckGLError();
 
-        // TODO: glxDestroyContext
+        glXDestroyContext(m_display, tempContext);
         return false;
     }
 
     if (!GLXEW_ARB_create_context)
     {
         fatal() << "Mandatory extension GLX_ARB_create_context not supported.";
-        // TODO: glxDestroyContext
+
+        glXDestroyContext(m_display, tempContext);
         return false;
     }
 
@@ -225,16 +186,18 @@ bool GLxContext::create(
 void GLxContext::release()
 {
     //~ assert(isValid());
-    if (m_context == nullptr)
+    if(m_context)
     {
-	return;
+        if(m_context == glXGetCurrentContext() && !glXMakeCurrent(m_display, 0L, nullptr))
+            warning() << "Release of context failed (glXMakeCurrent).";
+
+        glXDestroyContext(m_display, m_context);
     }
 
-    if(m_context == glXGetCurrentContext() && !glXMakeCurrent(m_display, 0L, nullptr))
-        warning() << "Release of context failed (glXMakeCurrent).";
-
-    glXDestroyContext(m_display, m_context);
+    m_display = nullptr;
+    m_hWnd = 0L;
     m_context = nullptr;
+
     m_id = -1;
 }
 

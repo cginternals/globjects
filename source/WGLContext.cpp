@@ -29,6 +29,8 @@ WGLContext::WGLContext(Context & context)
 
 WGLContext::~WGLContext()
 {
+    release();
+
     assert(NULL == m_hWnd);
     assert(NULL == m_hDC);
     assert(NULL == m_hRC);
@@ -186,20 +188,21 @@ bool WGLContext::create(
 
 void WGLContext::release()
 {
-    assert(isValid());
+    if (m_hRC)
+    {
+        if (m_hRC == wglGetCurrentContext() && !wglMakeCurrent(NULL, NULL))
+            warning() << "Release of DC and RC failed (wglMakeCurrent). Error: " << GetLastError();
 
-    if(m_hRC == wglGetCurrentContext() && !wglMakeCurrent(NULL, NULL))
-        warning() << "Release of DC and RC failed (wglMakeCurrent). Error: " << GetLastError();
-
-    if (m_hRC && !wglDeleteContext(m_hRC))
-        warning() << "Deleting OpenGL context failed (wglDeleteContext). Error: " << GetLastError();
-
-    m_hRC = NULL;
+        if (m_hRC && !wglDeleteContext(m_hRC))
+            warning() << "Deleting OpenGL context failed (wglDeleteContext). Error: " << GetLastError();
+    }
+    m_hRC  = NULL;
 
     if (m_hDC && !ReleaseDC(m_hWnd, m_hDC))
         warning() << "Releasing device context failed (ReleaseDC). Error: " << GetLastError();
 
-    m_hDC = NULL;
+    m_hDC  = NULL;
+    m_hWnd = NULL;
 }
 
 void WGLContext::swap() const
@@ -228,7 +231,6 @@ bool WGLContext::setSwapInterval(Context::SwapInterval swapInterval) const
     if (TRUE == wglSwapIntervalEXT(swapInterval))
         return true;
 
-    CheckGLError();
     warning() << "Setting swap interval to " << Context::swapIntervalString(swapInterval) 
         << " (" << swapInterval << ") failed. Error: " << GetLastError();
 
@@ -238,6 +240,7 @@ bool WGLContext::setSwapInterval(Context::SwapInterval swapInterval) const
 bool WGLContext::makeCurrent() const
 {
     const BOOL result = wglMakeCurrent(m_hDC, m_hRC);
+
     if (!result)
         fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
 
@@ -247,6 +250,7 @@ bool WGLContext::makeCurrent() const
 bool WGLContext::doneCurrent() const
 {
     const BOOL result = wglMakeCurrent(m_hDC, NULL);
+
     if (!result)
         warning() << "Release of RC failed (wglMakeCurrent). Error: " << GetLastError();
 

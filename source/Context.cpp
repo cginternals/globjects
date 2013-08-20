@@ -148,7 +148,6 @@ bool Context::setSwapInterval(const SwapInterval interval)
 
 bool Context::setSwapInterval()
 {
-	warning() << "Swap interval " << m_swapInterval;
     makeCurrent();
 	const bool result = m_context->setSwapInterval(m_swapInterval);
     doneCurrent();
