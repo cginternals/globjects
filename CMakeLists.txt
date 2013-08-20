@@ -20,8 +20,6 @@ option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
 option(OPTION_BUILD_EXAMPLES "Build examples" ON)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
 
-set(USE_EXCEPTIONS OPTION_ERRORS_AS_EXCEPTION)
-
 # CMAKE CONFIGURATION
 
 set(GLOW_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -171,8 +169,11 @@ set(libs
 
 # Definitions
 add_definitions("-DGLOW_EXPORTS")
+
 if (OPTION_ERRORS_AS_EXCEPTION)
 	add_definitions("-DGLOW_GL_ERROR_RAISE_EXCEPTION")
+else()
+    add_definitions("-D_HAS_EXCEPTIONS=0")
 endif()
 
 # Sources

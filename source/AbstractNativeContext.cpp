@@ -25,13 +25,13 @@ const ContextFormat & AbstractNativeContext::format() const
 bool AbstractNativeContext::fatalVersionDisclaimer(const Version & version)
 {
     // fatal version disclaimer ;)
-    if(version >= Version(3.2))
-        return true;
+    if(version >= Version(3, 2))
+        return false;
 
     fatal() << "OpenGL Versions prior to 3.2 (" << version << " requested)"
         << " are not supported within glow. This might result in erroneous behaviour.";
 
-    return false;
+    return true;
 }
 
 } // namespace glow

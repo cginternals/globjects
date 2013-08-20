@@ -1,8 +1,6 @@
 
 #include <GL/glew.h>
 
-#include <unistd.h>
-
 #include <glow/Window.h>
 #include <glow/ContextFormat.h>
 #include <glow/Context.h>

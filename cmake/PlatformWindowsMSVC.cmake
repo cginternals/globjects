@@ -59,11 +59,15 @@ set(WIN32_COMPILE_FLAGS
 	# arch:SSE2    -> enable enhanced instruction set: streaming simd extensions 2
 )
 
-# disable exception handling -> /EHs-c- does not remove CXX flags
-string(REPLACE "/EHsc" "" CMAKE_CXX_FLAGS_MODIFIED ${CMAKE_CXX_FLAGS}) 
-string(REPLACE "/GX" ""  CMAKE_CXX_FLAGS_MODIFIED ${CMAKE_CXX_FLAGS_MODIFIED}) 
-unset(CMAKE_CXX_FLAGS CACHE)
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS_MODIFIED} CACHE TYPE STRING)
+if(OPTION_ERRORS_AS_EXCEPTION)
+
+else()
+	# disable exception handling -> /EHs-c- does not remove CXX flags
+	string(REPLACE "/EHsc" "" CMAKE_CXX_FLAGS_MODIFIED ${CMAKE_CXX_FLAGS}) 
+	string(REPLACE "/GX" ""  CMAKE_CXX_FLAGS_MODIFIED ${CMAKE_CXX_FLAGS_MODIFIED}) 
+	unset(CMAKE_CXX_FLAGS CACHE)
+	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS_MODIFIED} CACHE TYPE STRING)
+endif()
 
 
 set(DEFAULT_COMPILE_FLAGS ${WIN32_COMPILE_FLAGS})

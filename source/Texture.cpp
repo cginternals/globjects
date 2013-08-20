@@ -111,8 +111,9 @@ Texture::Handle Texture::textureHandle() const
 
 GLboolean Texture::isResident() const
 {
-	bool result = glIsTextureHandleResidentNV(textureHandle());
+	bool result = glIsTextureHandleResidentNV(textureHandle()) ? true : false;
 	CheckGLError();
+
 	return result;
 }
 

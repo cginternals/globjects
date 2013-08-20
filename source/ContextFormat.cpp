@@ -111,7 +111,7 @@ void ContextFormat::setVersionFallback(Version version)
 {
     nearestValidVersion(version);
 
-    if (version == m_version)
+    if (version >= m_version)
         return;
 
     warning() << "OpenGL Version fallback from " << m_version << " was adjusted to " << version << ".";
