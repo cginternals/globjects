@@ -25,7 +25,7 @@ public:
 
     virtual void initializeEvent(Window & window)
     {
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        glClearColor(0.2f, 0.3f, 0.4f, 1.f);    
     }
     
     virtual void resizeEvent(
@@ -61,7 +61,7 @@ int main(int argc, char** argv)
 
     window.attach(&handler);
 
-    window.create(format, "Image-based Lighting");
+    window.create(format, "Deferred Lighting");
     window.context()->setSwapInterval(Context::NoVerticalSyncronization);
 
     window.show();
