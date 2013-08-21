@@ -131,27 +131,34 @@ bool WGLContext::create(
     if (!wglMakeCurrent(m_hDC, tempRC))
     {
         fatal() << "Making temporary OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();
+
+        wglDeleteContext(tempRC);
         release();
         return false;
     }
+    CheckGLError();
 
     // http://www.opengl.org/wiki/Tutorial:_OpenGL_3.1_The_First_Triangle_(C%2B%2B/Win)
 
     if (GLEW_OK != glewInit())
     {
         fatal() << "GLEW initialization failed (glewInit).";
-        CheckGLError();
 
+        wglDeleteContext(tempRC);
         release();
         return false;
     }
+    CheckGLError();
 
     if (!WGLEW_ARB_create_context)
     {
         fatal() << "Mandatory extension WGL_ARB_create_context not supported.";
+
+        wglDeleteContext(tempRC);
         release();
         return false;
     }
+
     // NOTE: this assumes that the driver creates a "defaulted" context with
     // the highest available opengl version.
     format.setVersionFallback(query::majorVersion(), query::minorVersion());
@@ -171,7 +178,7 @@ bool WGLContext::create(
         WGL_CONTEXT_MAJOR_VERSION_ARB, format.majorVersion()
     ,   WGL_CONTEXT_MINOR_VERSION_ARB, format.minorVersion()
     ,   WGL_CONTEXT_PROFILE_MASK_ARB,  format.profile() == ContextFormat::CoreProfile ? 
-            WGL_CONTEXT_CORE_PROFILE_BIT_ARB : WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB
+            WGL_CONTEXT_CORE_PROFILE_BIT_ARB : WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB, 0
     ,   WGL_CONTEXT_FLAGS_ARB, 0, 0
     };
 
@@ -240,6 +247,7 @@ bool WGLContext::setSwapInterval(Context::SwapInterval swapInterval) const
 bool WGLContext::makeCurrent() const
 {
     const BOOL result = wglMakeCurrent(m_hDC, m_hRC);
+    CheckGLError();
 
     if (!result)
         fatal() << "Making the OpenGL context current failed (wglMakeCurrent). Error: " << GetLastError();

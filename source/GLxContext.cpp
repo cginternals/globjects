@@ -91,6 +91,7 @@ bool GLxContext::create(
     if (nullptr == vi)
     {
         fatal() << "Choosing a visual failed (glXChooseVisual).";
+        release();
         return false;
     }
 
@@ -100,6 +101,7 @@ bool GLxContext::create(
     if (NULL == tempContext)
     {
         fatal() << "Creating temporary OpenGL context failed (glXCreateContext).";
+        release();
         return false;
     }
 
@@ -110,6 +112,7 @@ bool GLxContext::create(
         fatal() << "Making temporary OpenGL context current failed (glXMakeCurrent).";
 
         glXDestroyContext(m_display, tempContext);
+        release();
         return false;
     }
 
@@ -121,6 +124,7 @@ bool GLxContext::create(
         CheckGLError();
 
         glXDestroyContext(m_display, tempContext);
+        release();
         return false;
     }
 
@@ -129,6 +133,7 @@ bool GLxContext::create(
         fatal() << "Mandatory extension GLX_ARB_create_context not supported.";
 
         glXDestroyContext(m_display, tempContext);
+        release();
         return false;
     }
 
@@ -160,6 +165,7 @@ bool GLxContext::create(
     if (!fbConfig)
     {
         fatal() << "Choosing a Frame Buffer configuration failed (glXChooseFBConfig)";
+        release();
         return false;
     }
     
@@ -167,18 +173,14 @@ bool GLxContext::create(
     if (NULL == m_context)
     {
         fatal() << "Creating OpenGL context with attributes failed (glXCreateContextAttribsARB).";
-        
+        release();
         return false;
     }
 
     if (!glXIsDirect(m_display, m_context))
         warning() << "Direct rendering is not enabled (glXIsDirect).";
-	
-    CheckGLError();
-	
+
     m_id = glXGetContextIDEXT(m_context);
-    
-    CheckGLError();
     
     return true;
 }
@@ -234,7 +236,6 @@ bool GLxContext::setSwapInterval(Context::SwapInterval swapInterval) const
 bool GLxContext::makeCurrent() const
 {
     const Bool result = glXMakeCurrent(m_display, m_hWnd, m_context);
-    
     CheckGLError();
     
     if (!result)
@@ -245,9 +246,7 @@ bool GLxContext::makeCurrent() const
 
 bool GLxContext::doneCurrent() const
 {
-    const Bool result = glXMakeCurrent(m_display, 0L, nullptr);
-    
-    CheckGLError();
+    const Bool result = glXMakeCurrent(m_display, 0L, nullptr);    
     
     if (!result)
         warning() << "Release of RC failed (glXMakeCurrent).";

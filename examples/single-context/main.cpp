@@ -4,6 +4,7 @@
 #include <glow/Window.h>
 #include <glow/ContextFormat.h>
 #include <glow/Context.h>
+#include <glow/Error.h>
 #include <glow/WindowEventHandler.h>
 
 #include <glow/logging.h>
@@ -37,6 +38,8 @@ public:
     virtual void paintEvent(Window & window)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        CheckGLError();
     }
 
     virtual void idleEvent(Window & window)

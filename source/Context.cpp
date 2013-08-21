@@ -64,11 +64,14 @@ bool Context::create(
     if (GLEW_OK != glewInit())
     {
         fatal() << "GLEW initialization failed (glewInit).";
-        CheckGLError();
 
         release();
         return false;
     }
+    // NOTE: should be safe to ignore:
+    // http://www.opengl.org/wiki/OpenGL_Loading_Library
+    // http://stackoverflow.com/questions/10857335/opengl-glgeterror-returns-invalid-enum-after-call-to-glewinit
+    Error::clear();
 
     doneCurrent();
 
