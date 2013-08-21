@@ -1,29 +1,34 @@
+
+#include <cassert>
+#include <sstream>
+#ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
+#include <stdexcept>
+#endif
+
+#include <glow/logging.h>
 #include <glow/Error.h>
 
-//#include <stdexcept>
-#include <glow/logging.h>
-#include <sstream>
+namespace glow
+{
 
-using namespace glow;
-
-Error::Error()
-: _errorCode(GL_NO_ERROR)
+Error::Error(GLenum errorCode)
+:   m_errorCode(errorCode)
 {
 }
 
-Error::Error(GLenum errorCode)
-: _errorCode(errorCode)
+Error::Error()
+:   Error(GL_NO_ERROR)
 {
 }
 
 GLenum Error::code() const
 {
-	return _errorCode;
+	return m_errorCode;
 }
 
 std::string Error::name() const
 {
-	return errorString(_errorCode);
+	return errorString(m_errorCode);
 }
 
 Error Error::current()
@@ -31,7 +36,7 @@ Error Error::current()
 	return Error(glGetError());
 }
 
-void Error::check(const char* file, int line)
+bool Error::check(const char* file, int line)
 {
 	Error error = Error::current();
 
@@ -39,12 +44,18 @@ void Error::check(const char* file, int line)
 	{
 		std::stringstream ss;
 		ss.flags(std::ios::hex | std::ios::showbase);
-		ss << "OpenGL error " << error.code() << " : " << error.name() << std::endl;
+        ss << "OpenGL " << error.name() << " (" << error.code() << ")";
 		ss.unsetf(std::ios::hex | std::ios::showbase);
-		ss << "in " << file << ":" << line << std::endl;
+		ss << " in " << file << "(" << line << ")";
 
+#ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
+		throw std::runtime_error(ss.str());
+#else
 		critical() << ss.str();
+#endif
+        return true;
 	}
+    return false;
 }
 
 void Error::clear()
@@ -54,7 +65,7 @@ void Error::clear()
 
 bool Error::isError() const
 {
-	return _errorCode != GL_NO_ERROR;
+	return m_errorCode != GL_NO_ERROR;
 }
 
 std::string Error::errorString(GLenum errorCode)
@@ -74,6 +85,9 @@ std::string Error::errorString(GLenum errorCode)
 		case GL_OUT_OF_MEMORY:
 			return "GL_OUT_OF_MEMORY";
 		default:
-			return "unknown";
+            assert(false);
+			return "Unknown GLenum.";
 	}
 }
+
+} // namespace glow

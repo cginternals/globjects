@@ -13,6 +13,7 @@ ELSE()
 		${GLOW_HOME}/include
 		$ENV{GLOW_DIR}/include
 		$ENV{GLOW_HOME}/include
+		${GLOW_HOME}/include
 		$ENV{PROGRAMFILES}/GLOW/include
 		/usr/include
 		/usr/local/include
@@ -26,6 +27,7 @@ ELSE()
 		${GLOW_HOME}/lib
 		$ENV{GLOW_DIR}/lib
 		$ENV{GLOW_HOME}/lib
+		${GLOW_HOME}/lib
 		/usr/lib64
 		/usr/local/lib64
 		/sw/lib64
@@ -38,6 +40,7 @@ ELSE()
 		${GLOW_HOME}/include
 		$ENV{GLOW_DIR}/include
 		$ENV{GLOW_HOME}/include
+		${GLOW_HOME}/include
 		$ENV{PROGRAMFILES}/glow/include
 		/usr/include
 		/usr/local/include
@@ -50,7 +53,8 @@ ELSE()
 		PATHS
 		${GLOW_HOME}/lib
 		$ENV{GLOW_DIR}/lib
-		$ENV{GLOW_HOME}/lib		
+		$ENV{GLOW_HOME}/lib
+		${GLOW_HOME}/lib
 		/usr/lib
 		/usr/local/lib
 		/sw/lib

@@ -1,31 +1,45 @@
 #pragma once
 
-#include <GL/glew.h>
+#include <ostream>
+#include <string>
 
 #include <glow/glow.h>
 
-#include <string>
 
-namespace glow {
+namespace glow
+{
+
+class LogMessageBuilder;
 
 class GLOW_API Version
 {
 public:
-	Version(GLint majorVersion, GLint minorversion);
+    Version(
+        int majorVersion = 0
+    ,   int minorversion = 0);
 
 	static Version current();
 
-	GLint majorVersion;
-	GLint minorVersion;
-
-	bool operator<(const Version& version) const;
-	bool operator>(const Version& version) const;
-	bool operator==(const Version& version) const;
-	bool operator!=(const Version& version) const;
-	bool operator>=(const Version& version) const;
-	bool operator<=(const Version& version) const;
+    bool operator< (const Version & version) const;
+    bool operator> (const Version & version) const;
+    bool operator==(const Version & version) const;
+    bool operator!=(const Version & version) const;
+    bool operator>=(const Version & version) const;
+    bool operator<=(const Version & version) const;
 
 	std::string toString() const;
+
+public:
+    int majorVersion;
+    int minorVersion;
 };
+
+std::ostream & operator<<(
+    std::ostream & out
+,   const Version & version);
+
+LogMessageBuilder & operator<<(
+    LogMessageBuilder & out
+,   const Version & version);
 
 } // namespace glow

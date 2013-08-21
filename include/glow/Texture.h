@@ -1,7 +1,6 @@
 #pragma once
 
-#include "glow.h"
-
+#include <glow/glow.h>
 #include <glow/Object.h>
 
 // http://www.opengl.org/wiki/Texture
@@ -30,8 +29,6 @@ public:
 
 	void generateMipmap();
 
-#ifdef GL_NV_bindless_texture
-
 	struct Handle
 	{
 		Handle();
@@ -48,13 +45,10 @@ public:
 	};
 
 	Handle textureHandle() const;
-	
-	bool isResident() const;
+
+	GLboolean isResident() const;
 	Handle makeResident();
 	void makeNonResident();
-
-#endif
-
 protected:
 	GLenum  _target;
 

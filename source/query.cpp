@@ -28,57 +28,82 @@
 
 #include <glow/query.h>
 
+#include <glow/Error.h>
 
-using namespace glow;
+
+namespace glow
+{
+
 
 // query
 
 std::string query::getString(GLenum pname)
 {
-	return reinterpret_cast<const char*>(glGetString(pname));
+	const GLubyte* result = glGetString(pname);
+	CheckGLError();
+	return reinterpret_cast<const char*>(result);
 }
 
 GLint query::getInteger(GLenum pname)
 {
 	GLint value;
+	
 	glGetIntegerv(pname, &value);
+	CheckGLError();
+	
 	return value;
 }
 
 GLfloat query::getFloat(GLenum pname)
 {
 	GLfloat value;
+	
 	glGetFloatv(pname, &value);
+	CheckGLError();
+	
 	return value;
 }
 
 GLdouble query::getDouble(GLenum pname)
 {
 	GLdouble value;
+	
 	glGetDoublev(pname, &value);
+	CheckGLError();
+	
 	return value;
 }
 
 GLboolean query::getBoolean(GLenum pname)
 {
 	GLboolean value;
+	
 	glGetBooleanv(pname, &value);
+	CheckGLError();
+	
 	return value;
 }
 
 GLint query::getInteger(GLenum pname, unsigned index)
 {
 	GLint value;
+	
 	glGetIntegeri_v(pname, index, &value);
+	CheckGLError();
+	
 	return value;
 }
 
 std::vector<GLint> query::getIntegers(GLenum pname, unsigned size)
 {
 	GLint* values = new GLint[size];
+	
 	glGetIntegerv(pname, values);
+	CheckGLError();
+	
 	std::vector<GLint> result(values, values+size);
 	delete[] values;
+	
 	return result;
 }
 
@@ -122,6 +147,7 @@ bool query::isCoreProfile()
 	return (getInteger(GL_CONTEXT_PROFILE_MASK) & GL_CONTEXT_CORE_PROFILE_BIT) != 0;
 }
 
+
 // extensions
 
 bool extensions::isSupported(const char* extension)
@@ -147,8 +173,8 @@ bool extensions::isSupported(const std::string& extension)
 	return isSupported(extension.c_str());
 }
 
-// memory
 
+// memory
 
 GLint memory::total()
 {
@@ -185,6 +211,7 @@ GLint memory::memoryInfo(GLenum pname)
 	return query::getInteger(pname);
 }
 
+
 // glew
 
 std::string glew::getString(GLenum pname)
@@ -202,3 +229,5 @@ std::string glew::version()
 ////    const QString result = reinterpret_cast<const char*>(glewGetErrorString(pname));
 ////    return result;
 ////}
+
+} // namespace glow

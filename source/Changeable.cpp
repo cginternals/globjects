@@ -1,6 +1,8 @@
+
 #include <glow/Changeable.h>
 
-using namespace glow;
+namespace glow
+{
 
 void Changeable::changed()
 {
@@ -19,3 +21,5 @@ void Changeable::deregisterListener(ChangeListener* listener)
 {
 	_listeners.erase(listener);
 }
+
+} // namespace glow

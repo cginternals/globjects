@@ -1,12 +1,12 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include <GL/glew.h>
 
 #include <glow/glow.h>
 #include <glow/Version.h>
-
-#include <string>
-#include <vector>
 
 
 namespace glow {

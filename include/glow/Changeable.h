@@ -5,7 +5,6 @@
 #include <glow/glow.h>
 #include <glow/ChangeListener.h>
 
-
 namespace glow 
 {
 

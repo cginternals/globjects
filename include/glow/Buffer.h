@@ -3,7 +3,7 @@
 #include <glow/glow.h>
 
 #include <glow/Object.h>
-#include <glow/ArrayData.h>
+#include <glow/AbstractArray.h>
 
 namespace glow
 {
@@ -20,7 +20,7 @@ public:
 	void bind(GLenum target);
 	void unbind();
 
-	void setData(const ArrayData& data, GLenum usage = GL_STATIC_DRAW);
+	void setData(const AbstractArray& data, GLenum usage = GL_STATIC_DRAW);
 	void setData(GLsizei size, const GLvoid* data = nullptr, GLenum usage = GL_STATIC_DRAW);
 
 	// mapping

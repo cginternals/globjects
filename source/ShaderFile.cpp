@@ -1,9 +1,11 @@
+
 #include <glow/ShaderFile.h>
 #include <glow/Shader.h>
-#include <glow/internal/FileReader.h>
 #include <glow/logging.h>
+#include "FileReader.h"
 
-using namespace glow;
+namespace glow
+{
 
 ShaderFile::FileRegistry ShaderFile::_fileRegistry;
 
@@ -42,7 +44,7 @@ void ShaderFile::reloadAll()
 
 bool ShaderFile::loadFileContent()
 {
-	if (!internal::FileReader::readFile(_filePath, _fileContent))
+	if (!FileReader::readFile(_filePath, _fileContent))
 	{
 		critical() << "Reading from file \"" << _filePath << "\" failed.";
 		return false;
@@ -60,3 +62,5 @@ void ShaderFile::deregisterFile(ShaderFile* file)
 {
 	_fileRegistry.erase(file);
 }
+
+} // namespace glow

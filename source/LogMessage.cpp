@@ -1,3 +1,4 @@
+
 #include <glow/LogMessage.h>
 
 #include <glow/logging.h>
@@ -23,7 +24,7 @@ const std::string& LogMessage::message() const
 
 // Builder
 
-LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, LoggingInterface* handler)
+LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, AbstractLogHandler* handler)
 : m_level(level)
 , m_handler(handler)
 {
@@ -39,9 +40,7 @@ LogMessageBuilder::LogMessageBuilder(const LogMessageBuilder& builder)
 LogMessageBuilder::~LogMessageBuilder()
 {
 	if (m_handler)
-	{
 		m_handler->handle(LogMessage(m_level, m_stream.str()));
-	}
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const char* c)

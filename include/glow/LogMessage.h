@@ -1,19 +1,19 @@
 #pragma once
 
-#include <glow/glow.h>
-
 #include <sstream>
 
 #include <glm/gtc/type_ptr.hpp>
+
+#include <glow/glow.h>
 
 namespace glow {
 
 /** \brief The LogMessage class encapsulates a simple log message and its severity level.
 
-	LogMessages are handled and dispatched by the global logging handler which has to be a subclass of LoggingInterface.
+	LogMessages are handled and dispatched by the global logging handler which has to be a subclass of AbstractLogHandler.
 
 	\see logging.h
-	\see LoggingInterface
+	\see AbstractLogHandler
 */
 class GLOW_API LogMessage
 {
@@ -31,12 +31,13 @@ public:
 
 	Level level() const;
 	const std::string& message() const;
+
 protected:
 	Level m_level;
 	std::string m_message;
 };
 
-class LoggingInterface;
+class AbstractLogHandler;
 
 /** \brief The LogMessageBuilder class builds a LogMessage from different kinds of primitive types.
 
@@ -59,9 +60,9 @@ class LoggingInterface;
 class GLOW_API LogMessageBuilder
 {
 public:
-	LogMessageBuilder(LogMessage::Level level, LoggingInterface* handler);
+	LogMessageBuilder(LogMessage::Level level, AbstractLogHandler* handler);
 	LogMessageBuilder(const LogMessageBuilder& builder);
-	~LogMessageBuilder();
+	virtual ~LogMessageBuilder();
 
 	// primitive types
 	LogMessageBuilder& operator<<(const char* c);
@@ -82,7 +83,7 @@ public:
 
 	// pointers
 	template <typename T>
-	LogMessageBuilder& operator<<(T* t_pointer) {return *this << static_cast<void*>(t_pointer); }
+	LogMessageBuilder& operator<<(T* t_pointer);
 
 	// glm types
 	LogMessageBuilder& operator<<(const glm::vec2& v);
@@ -94,8 +95,14 @@ public:
 	LogMessageBuilder& operator<<(const glm::mat4& m);
 protected:
 	LogMessage::Level m_level;
-	LoggingInterface* m_handler;
+	AbstractLogHandler* m_handler;
 	std::stringstream m_stream;
 };
+
+template <typename T>
+LogMessageBuilder& LogMessageBuilder::operator<< (T * t_pointer) 
+{
+    return *this << static_cast<void*>(t_pointer); 
+}
 
 } // namespace glow

@@ -1,16 +1,15 @@
-
 #pragma once
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include <glow/Array.hpp>
+#include <glow/Array.h>
 #include <glow/Texture.h>
 
 namespace glow
 {
 
-
-class TemplateError {
+class TemplateError 
+{
 	private:
 		TemplateError();
 };
@@ -35,7 +34,7 @@ Uniform<T>::~Uniform()
 }
 
 template<typename T>
-const T& Uniform<T>::value() const
+const T & Uniform<T>::value() const
 {
 	return m_value;
 }
