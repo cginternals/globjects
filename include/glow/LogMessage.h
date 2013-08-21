@@ -57,7 +57,7 @@ class AbstractLogHandler;
 	\see debug
 	\see warning
 */
-class GLOW_API LogMessageBuilder
+class GLOW_API LogMessageBuilder : public std::stringstream
 {
 public:
 	LogMessageBuilder(LogMessage::Level level, AbstractLogHandler* handler);
@@ -96,7 +96,6 @@ public:
 protected:
 	LogMessage::Level m_level;
 	AbstractLogHandler* m_handler;
-	std::stringstream m_stream;
 };
 
 template <typename T>

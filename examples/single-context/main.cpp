@@ -54,13 +54,14 @@ int main(int argc, char** argv)
 {
     glewExperimental = GL_TRUE;
 
-    {
-    AutoTimer t("Initialization");
-    
     ContextFormat format;
     EventHandler handler;
 
     Window window;
+
+    {
+    AutoTimer t("Initialization");
+
     window.attach(&handler);
 
     window.create(format, "Single Context Example");

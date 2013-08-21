@@ -1,7 +1,9 @@
 
 #include <cassert>
 #include <cmath>
+#include <cstring>
 #include <algorithm>
+#include <iomanip>
 
 #include <glow/logging.h>
 #include <glow/Timer.h>
@@ -28,17 +30,21 @@ AutoTimer::~AutoTimer()
     double delta(static_cast<double>(m_timer->elapsed()));
 
     // use number of digits to retrieve exp in 10^(3 exp)
-    static const char * m_units("num ");
+    static const char * units("num ");
 
-    const unsigned char u(std::min<unsigned char>(3, ceil(log10(delta) / 3.0)));
+    const unsigned char u(std::min<char>(3, static_cast<char>(ceil(log10(delta) / 3.0))));
+
+    std::string unit = "s";
+
+    if (u < 3)
+        unit.insert(0, 1, units[u]);
 
     // shorten the time to nearest time unit
     delta /= pow(1000.0, u);
 
-    char dest[256];
-    sprintf(dest, "%s took %.4f%cs (Timer%02i)", m_info
-        , delta, m_units[u], m_index);
-    debug() << const_cast<const char *>(dest);
+    debug() << m_info << " took " 
+        << std::setprecision(4) << delta << unit
+        << " (timer_" << std::setfill('0') << std::setw(2) << m_index << ").";
 
     delete m_timer;
 

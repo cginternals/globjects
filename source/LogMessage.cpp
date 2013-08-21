@@ -25,8 +25,9 @@ const std::string& LogMessage::message() const
 // Builder
 
 LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, AbstractLogHandler* handler)
-: m_level(level)
-, m_handler(handler)
+:   std::stringstream()
+,   m_level(level)
+,   m_handler(handler)
 {
 }
 
@@ -34,123 +35,123 @@ LogMessageBuilder::LogMessageBuilder(const LogMessageBuilder& builder)
 : m_level(builder.m_level)
 , m_handler(builder.m_handler)
 {
-	m_stream.str(builder.m_stream.str());
+	str(builder.str());
 }
 
 LogMessageBuilder::~LogMessageBuilder()
 {
 	if (m_handler)
-		m_handler->handle(LogMessage(m_level, m_stream.str()));
+		m_handler->handle(LogMessage(m_level, str()));
 }
 
-LogMessageBuilder& LogMessageBuilder::operator<<(const char* c)
+LogMessageBuilder& LogMessageBuilder::operator<<(const char * c)
 {
-	m_stream << c;
+	write(c, std::strlen(c));
 	return *this;
 }
 
-LogMessageBuilder& LogMessageBuilder::operator<<(const std::string& str)
+LogMessageBuilder& LogMessageBuilder::operator<<(const std::string & str)
 {
-	m_stream << str;
+	write(str.c_str(), str.length());
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(bool b)
 {
-	m_stream << (b ? "true" : "false");
+	std::stringstream::operator<<(b ? "true" : "false");
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(char c)
 {
-	m_stream << c;
+	std::stringstream::operator<<(c);
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(int i)
 {
-	m_stream << i;
+	std::stringstream::operator<<(i);
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(float f)
 {
-	m_stream << f;
+	std::stringstream::operator<<(f);
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(double d)
 {
-	m_stream << d;
+	std::stringstream::operator<<(d);
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(unsigned u)
 {
-	m_stream << u;
+	std::stringstream::operator<<(u);
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(long l)
 {
-	m_stream << l;
+	std::stringstream::operator<<(l);
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(unsigned long ul)
 {
-	m_stream << ul;
+	std::stringstream::operator<<(ul);
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(unsigned char uc)
 {
-	m_stream << uc;
+	std::stringstream::operator<<(uc);
 	return *this;
 }
 
-LogMessageBuilder& LogMessageBuilder::operator<<(void* pointer)
+LogMessageBuilder& LogMessageBuilder::operator<<(void * pointer)
 {
-	m_stream << pointer;
+	std::stringstream::operator<<(pointer);
 	return *this;
 }
 
-LogMessageBuilder& LogMessageBuilder::operator<<(std::ostream& (*manipulator)(std::ostream&))
+LogMessageBuilder& LogMessageBuilder::operator<<(std::ostream & (*manipulator)(std::ostream &))
 {
-	m_stream << manipulator;
+	std::stringstream::operator<<(manipulator);
 	return *this;
 }
 
-LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec2& v)
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec2 & v)
 {
-	m_stream << "vec2(" << v.x << "," << v.y << ")";
+	std::stringstream::operator<<("vec2(") << v.x << "," << v.y << ")";
 	return *this;
 }
 
-LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec3& v)
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec3 & v)
 {
-	m_stream << "vec3(" << v.x << "," << v.y << "," << v.z << ")";
+	std::stringstream::operator<<("vec3(") << v.x << "," << v.y << "," << v.z << ")";
 	return *this;
 }
 
-LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec4& v)
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec4 & v)
 {
-	m_stream << "vec4(" << v.x << "," << v.y << "," << v.z << "," << v.w << ")";
+	std::stringstream::operator<<("vec4(") << v.x << "," << v.y << "," << v.z << "," << v.w << ")";
 	return *this;
 }
 
-LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat2& m)
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat2 & m)
 {
-	m_stream << "mat2("
+	std::stringstream::operator<<("mat2(")
 		<< "(" << m[0][0] << ", " << m[0][1] << "), "
 		<< "(" << m[1][0] << ", " << m[1][1] << ")"
 		<< ")";
 	return *this;
 }
 
-LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat3& m)
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat3 & m)
 {
-	m_stream << "mat3("
+	std::stringstream::operator<<("mat3(")
 		<< "(" << m[0][0] << ", " << m[0][1] << ", " << m[0][2] << "), "
 		<< "(" << m[1][0] << ", " << m[1][1] << ", " << m[1][2] <<"), "
 		<< "(" << m[2][0] << ", " << m[2][1] << ", " << m[2][2] <<")"
@@ -158,9 +159,9 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat3& m)
 	return *this;
 }
 
-LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat4& m)
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat4 & m)
 {
-	m_stream << "mat4("
+	std::stringstream::operator<<("mat4(")
 		<< "(" << m[0][0] << ", " << m[0][1] << ", " << m[0][2] << ", " << m[0][3] << "), "
 		<< "(" << m[1][0] << ", " << m[1][1] << ", " << m[1][2] << ", " << m[1][3] <<"), "
 		<< "(" << m[2][0] << ", " << m[2][1] << ", " << m[2][2] << ", " << m[2][3] <<"), "
