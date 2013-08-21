@@ -38,8 +38,6 @@ public:
     virtual void paintEvent(Window & window)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        CheckGLError();
     }
 
     virtual void idleEvent(Window & window)
@@ -62,6 +60,7 @@ int main(int argc, char** argv)
     window.attach(&handler);
 
     window.create(format, "Single Context Example");
+    window.context()->setSwapInterval(Context::VerticalSyncronization);
     window.show();
 
     return Window::run();
