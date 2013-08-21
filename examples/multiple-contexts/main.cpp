@@ -6,6 +6,7 @@
 #include <glow/Screen.h>
 #include <glow/Window.h>
 #include <glow/ContextFormat.h>
+#include <glow/Context.h>
 #include <glow/WindowEventHandler.h>
 
 using namespace glow;
@@ -63,6 +64,7 @@ int main(int argc, char** argv)
         windows[i].attach(&handler);
         windows[i].create(format, "Multiple Contexts Example", 320, 240);
         windows[i].show();
+        windows[i].context()->setSwapInterval(Context::NoVerticalSyncronization);
 
         // make some random windows post quit on destroy ;)
         if (0 == rand() % 2)
