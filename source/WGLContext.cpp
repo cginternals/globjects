@@ -225,7 +225,7 @@ void WGLContext::swap() const
 
 int WGLContext::id() const
 {
-    return reinterpret_cast<int>(m_hRC);
+    return m_hRC ? reinterpret_cast<int>(m_hRC) : -1;
 }
 
 bool WGLContext::isValid() const

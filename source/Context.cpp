@@ -89,7 +89,7 @@ void Context::release()
 
     m_context->release();
 
-    assert(0 == m_context->id());
+    assert(-1 == m_context->id());
 }
 
 void Context::swap()
