@@ -191,6 +191,7 @@ set(api_includes
     ${header_path}/AbstractArray.h
     ${header_path}/Array.h
     ${header_path}/Array.hpp
+    ${header_path}/AutoTimer.h
     ${header_path}/Buffer.h
     ${header_path}/Changeable.h
     ${header_path}/ChangeListener.h
@@ -215,6 +216,7 @@ set(api_includes
     ${header_path}/ShaderFile.h
     ${header_path}/ShaderSource.h
     ${header_path}/Texture.h
+    ${header_path}/Timer.h
     ${header_path}/TransformFeedback.h
     ${header_path}/Uniform.h
     ${header_path}/Uniform.hpp
@@ -231,8 +233,11 @@ set(sources
     ${source_path}/AbstractNativeContext.h
     ${source_path}/AbstractNativeWindow.cpp
     ${source_path}/AbstractNativeWindow.h
+    ${source_path}/AutoTimer.cpp
     ${source_path}/Buffer.cpp
     ${source_path}/Changeable.cpp
+    ${source_path}/ChronoTimer.cpp
+    ${source_path}/ChronoTimer.h
     ${source_path}/ConsoleLogger.cpp
     ${source_path}/Context.cpp
     ${source_path}/ContextFormat.cpp
@@ -243,8 +248,6 @@ set(sources
     ${source_path}/KeyEvent.cpp
     ${source_path}/GLxContext.cpp
     ${source_path}/GLxContext.h
-    ${source_path}/X11Window.cpp
-    ${source_path}/X11Window.h
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/Object.cpp
@@ -257,6 +260,7 @@ set(sources
     ${source_path}/ShaderCode.cpp
     ${source_path}/ShaderFile.cpp
     ${source_path}/Texture.cpp
+    ${source_path}/Timer.cpp
     ${source_path}/TransformFeedback.cpp
     ${source_path}/Uniform.cpp
     ${source_path}/Version.cpp
@@ -268,6 +272,8 @@ set(sources
     ${source_path}/WindowsWindow.cpp
     ${source_path}/WindowsWindow.h
     ${source_path}/WindowEventHandler.cpp
+	${source_path}/X11Window.cpp
+    ${source_path}/X11Window.h
 )
 
 # Group source files

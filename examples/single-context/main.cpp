@@ -1,6 +1,7 @@
 
 #include <GL/glew.h>
 
+#include <glow/AutoTimer.h>
 #include <glow/Window.h>
 #include <glow/ContextFormat.h>
 #include <glow/Context.h>
@@ -53,6 +54,9 @@ int main(int argc, char** argv)
 {
     glewExperimental = GL_TRUE;
 
+    {
+    AutoTimer t("Initialization");
+    
     ContextFormat format;
     EventHandler handler;
 
@@ -61,7 +65,9 @@ int main(int argc, char** argv)
 
     window.create(format, "Single Context Example");
     window.context()->setSwapInterval(Context::VerticalSyncronization);
+
     window.show();
+    }
 
     return Window::run();
 }

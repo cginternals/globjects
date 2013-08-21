@@ -18,7 +18,6 @@
 namespace glow
 {
 
-
 Window::Window()
 :   m_eventHandler(nullptr)
 ,   m_context(nullptr)
@@ -228,6 +227,8 @@ void Window::onRepaint()
 
     m_context->swap();
     m_context->doneCurrent();
+
+
 }
 
 void Window::onResize()
