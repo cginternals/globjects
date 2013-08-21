@@ -1,11 +1,14 @@
+
+#include <vector>
+
 #include <glow/Shader.h>
 #include <glow/Program.h>
 #include <glow/logging.h>
 #include <glow/ShaderCode.h>
+#include <glow/Error.h>
 
-#include <vector>
-
-using namespace glow;
+namespace glow
+{
 
 Shader::Shader(GLenum type)
 : Object(createShader(type))
@@ -27,12 +30,19 @@ Shader::~Shader()
 	{
 		_source->deregisterListener(this);
 	}
-	if (m_id) glDeleteShader(m_id);
+	
+	if (m_id)
+	{
+		glDeleteShader(m_id);
+		CheckGLError();
+	}
 }
 
 GLuint Shader::createShader(GLenum type)
 {
-	return glCreateShader(type);
+	GLuint result = glCreateShader(type);
+	CheckGLError();
+	return result;
 }
 
 Shader* Shader::fromFile(GLenum type, const std::string& filename)
@@ -56,9 +66,13 @@ GLenum Shader::type() const
 
 void Shader::setSource(ShaderSource* source)
 {
-	if (_source) _source->deregisterListener(this);
+	if (_source)
+		_source->deregisterListener(this);
+	
 	_source = source;
-	if (_source) _source->registerListener(this);
+	
+	if (_source)
+		_source->registerListener(this);
 
 	updateSource();
 }
@@ -96,18 +110,20 @@ void Shader::basicSetSource(const std::string& source)
 {
 	_internalSource = source;
 	const char* sourcePointer = source.c_str();
+	
 	glShaderSource(m_id, 1, &sourcePointer, 0);
+	CheckGLError();
 }
 
 void Shader::compile()
 {
 	glCompileShader(m_id);
+	CheckGLError();
+	
 	_compiled = checkCompileStatus();
 
 	if (_compiled)
-	{
 		changed();
-	}
 }
 
 bool Shader::isCompiled() const
@@ -118,11 +134,14 @@ bool Shader::isCompiled() const
 std::string Shader::infoLog() const
 {
 	GLsizei length;
+	
 	glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &length);
+	CheckGLError();
 
 	std::vector<char> log(length);
 
 	glGetShaderInfoLog(m_id, length, &length, log.data());
+	CheckGLError();
 
 	return std::string(log.data(), length);
 }
@@ -130,7 +149,9 @@ std::string Shader::infoLog() const
 bool Shader::checkCompileStatus()
 {
 	GLint status = 0;
+	
 	glGetShaderiv(m_id, GL_COMPILE_STATUS, &status);
+	CheckGLError();
 
 	bool compiled = (status == GL_TRUE);
 
@@ -149,23 +170,21 @@ std::string Shader::typeString()
 {
 	switch (_type)
 	{
-		case GL_GEOMETRY_SHADER:
-			return "GL_GEOMETRY_SHADER";
-		case GL_FRAGMENT_SHADER:
-			return "GL_FRAGMENT_SHADER";
-		case GL_VERTEX_SHADER:
-			return "GL_VERTEX_SHADER";
-		case GL_TESS_EVALUATION_SHADER:
-			return "GL_TESS_EVALUATION_SHADER";
-		case GL_TESS_CONTROL_SHADER:
-			return "GL_TESS_CONTROL_SHADER";
-		#ifdef GL_COMPUTE_SHADER
-		case GL_COMPUTE_SHADER:
-			return "GL_COMPUTE_SHADER";
-		#endif
-		default:
-			return "unknown";
+	case GL_GEOMETRY_SHADER:
+		return "GL_GEOMETRY_SHADER";
+	case GL_FRAGMENT_SHADER:
+		return "GL_FRAGMENT_SHADER";
+	case GL_VERTEX_SHADER:
+		return "GL_VERTEX_SHADER";
+	case GL_TESS_EVALUATION_SHADER:
+		return "GL_TESS_EVALUATION_SHADER";
+	case GL_TESS_CONTROL_SHADER:
+		return "GL_TESS_CONTROL_SHADER";
+	case GL_COMPUTE_SHADER:
+		return "GL_COMPUTE_SHADER";
+	default:
+		return "unknown";
 	}
 }
 
-
+} // namespace glow

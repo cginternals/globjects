@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glow/LoggingInterface.h>
+#include <glow/AbstractLogHandler.h>
 
 namespace glow {
 
@@ -11,7 +11,7 @@ namespace glow {
 	\see setLoggingHandler
 	\see logging.h
 */
-class ConsoleLogger : public LoggingInterface
+class ConsoleLogger : public AbstractLogHandler
 {
 public:
 	void handle(const LogMessage& message) override;

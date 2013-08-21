@@ -1,6 +1,8 @@
+
 #include <glow/Referenced.h>
 
-using namespace glow;
+namespace glow
+{
 
 Referenced::Referenced()
 : _refCounter(0)
@@ -25,12 +27,12 @@ Referenced& Referenced::operator=(const Referenced&)
 
 void Referenced::ref()
 {
-	_refCounter++;
+	++_refCounter;
 }
 
 void Referenced::unref()
 {
-	_refCounter--;
+	--_refCounter;
 
 	if (_refCounter <= 0)
 	{
@@ -42,3 +44,5 @@ int Referenced::refCounter() const
 {
 	return _refCounter;
 }
+
+} // namespace glow

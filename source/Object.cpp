@@ -1,6 +1,9 @@
-#include <glow/Object.h>
 
-using namespace glow;
+#include <glow/Object.h>
+#include <glow/Error.h>
+
+namespace glow
+{
 
 Object::Object()
 : m_id(0)
@@ -35,5 +38,9 @@ bool Object::ownsGLObject() const
 
 bool Object::isTransformFeedback() const
 {
-	return glIsTransformFeedback(m_id);
+	bool result = 1 == glIsTransformFeedback(m_id);
+	CheckGLError();
+	return result;
 }
+
+} // namespace glow

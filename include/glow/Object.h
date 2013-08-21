@@ -2,9 +2,8 @@
 
 #include <GL/glew.h>
 
-#include "glow.h"
-
-#include "glow/Referenced.h"
+#include <glow/glow.h>
+#include <glow/Referenced.h>
 
 namespace glow
 {

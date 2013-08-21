@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <glow/glow.h>
@@ -26,6 +25,7 @@ namespace glow
 
 	\see AbstractUniform
 	\see Program
+	\see http://www.opengl.org/wiki/Uniform
 */
 template<typename T>
 class GLOW_API Uniform : public AbstractUniform
@@ -37,7 +37,7 @@ public:
 
 	void set(const T & value);
 
-	const T& value() const;
+	const T & value() const;
 
 protected:
 	virtual void setLocation(const GLint location);

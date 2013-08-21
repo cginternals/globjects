@@ -4,7 +4,7 @@
 
 #include <glow/Object.h>
 #include <glow/Program.h>
-#include <glow/Array.hpp>
+#include <glow/Array.h>
 
 namespace glow
 {

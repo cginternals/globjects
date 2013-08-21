@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 
 
-########################################
-# Project description
-########################################
+# PROJECT DESCRIPTION
+
 set(META_PROJECT_NAME        "glow")
 set(META_VERSION_MAJOR       "0")
 set(META_VERSION_MINOR       "1")
@@ -13,18 +12,15 @@ set(META_AUTHOR_ORGANIZATION "glow group")
 set(META_AUTHOR_DOMAIN       "https://github.com/cgcostume/glow/")
 
 
-########################################
-# Options
-########################################
+# OPTIONS
+
 option(OPTION_LIMIT_CONFIGS  "Generate limited configs (Release; Debug)" ON)
 option(OPTION_LOCAL_INSTALL  "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
 option(OPTION_BUILD_EXAMPLES "Build examples" ON)
+option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
 
-
-########################################
-# CMake configuration
-########################################
+# CMAKE CONFIGURATION
 
 set(GLOW_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -51,9 +47,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 include(cmake/Custom.cmake)
 
 
-########################################
-# Platform and architecture
-########################################
+# PLATFORM AND ARCHITECTURE
 
 # Architecture (32/64 bit)
 set(X64 OFF)
@@ -85,9 +79,8 @@ else()
 endif()
 
 
-########################################
 # Install locations
-########################################
+
 set(project ${META_PROJECT_NAME})
 if(WIN32)
     set(INSTALL_BIN           ".")                      # C:\Programme\<project>
@@ -130,9 +123,8 @@ elseif(LINUX)
 endif()
 
 
-########################################
-# Get repository version
-########################################
+
+# GET REPOSITORY VERSION
 
 # Add a revision file containing the git-head tag for cpack and install
 include(GetGitRevisionDescription)
@@ -148,9 +140,8 @@ file(WRITE ${CMAKE_BINARY_DIR}/revision ${GIT_REV})
 # [TODO] Deal with GIT-NOTFOUND
 
 
-########################################
-# glowMETA_VERSION library
-########################################
+# GLOWMETA_VERSION LIBRARY
+
 
 # Target
 set(target glow)
@@ -179,6 +170,12 @@ set(libs
 # Definitions
 add_definitions("-DGLOW_EXPORTS")
 
+if (OPTION_ERRORS_AS_EXCEPTION)
+	add_definitions("-DGLOW_GL_ERROR_RAISE_EXCEPTION")
+else()
+    add_definitions("-D_HAS_EXCEPTIONS=0")
+endif()
+
 # Sources
 set(header_path "${CMAKE_CURRENT_SOURCE_DIR}/include/glow")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
@@ -186,31 +183,33 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 # Generate meta-header
 configure_file(${source_path}/meta.h.in meta.h)
 
-set(headers
+set(api_includes
     ${header_path}/glow.h
 
-    ${header_path}/internal/FileReader.h
-    
-    ${header_path}/query.h
-    
+    ${header_path}/AbstractLogHandler.h
     ${header_path}/AbstractUniform.h
+    ${header_path}/AbstractArray.h
+    ${header_path}/Array.h
     ${header_path}/Array.hpp
-    ${header_path}/ArrayData.h
     ${header_path}/Buffer.h
     ${header_path}/Changeable.h
     ${header_path}/ChangeListener.h
     ${header_path}/ConsoleLogger.h
+    ${header_path}/Context.h
+    ${header_path}/ContextFormat.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferObject.h
     ${header_path}/logging.h
-    ${header_path}/LoggingInterface.h
     ${header_path}/LogMessage.h
+    ${header_path}/KeyEvent.h
     ${header_path}/Object.h
     ${header_path}/Program.h
     ${header_path}/Program.hpp
+    ${header_path}/query.h
     ${header_path}/ref_ptr.hpp
     ${header_path}/Referenced.h
     ${header_path}/RenderBufferObject.h
+    ${header_path}/Screen.h
     ${header_path}/Shader.h
     ${header_path}/ShaderCode.h
     ${header_path}/ShaderFile.h
@@ -222,24 +221,38 @@ set(headers
     ${header_path}/Version.h
     ${header_path}/VertexArrayObject.h
     ${header_path}/VertexAttributeBinding.h
+    ${header_path}/Window.h
+    ${header_path}/WindowEventHandler.h
 )
 
 set(sources
-    ${source_path}/internal/FileReader.cpp
-    ${source_path}/query.cpp
-    
     ${source_path}/AbstractUniform.cpp
+    ${source_path}/AbstractNativeContext.cpp
+    ${source_path}/AbstractNativeContext.h
+    ${source_path}/AbstractNativeWindow.cpp
+    ${source_path}/AbstractNativeWindow.h
     ${source_path}/Buffer.cpp
     ${source_path}/Changeable.cpp
     ${source_path}/ConsoleLogger.cpp
+    ${source_path}/Context.cpp
+    ${source_path}/ContextFormat.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferObject.cpp
+    ${source_path}/FileReader.cpp
+    ${source_path}/FileReader.h
+    ${source_path}/KeyEvent.cpp
+    ${source_path}/GLxContext.cpp
+    ${source_path}/GLxContext.h
+    ${source_path}/X11Window.cpp
+    ${source_path}/X11Window.h
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/Object.cpp
     ${source_path}/Program.cpp
+    ${source_path}/query.cpp
     ${source_path}/Referenced.cpp
     ${source_path}/RenderBufferObject.cpp
+    ${source_path}/Screen.cpp
     ${source_path}/Shader.cpp
     ${source_path}/ShaderCode.cpp
     ${source_path}/ShaderFile.cpp
@@ -249,21 +262,27 @@ set(sources
     ${source_path}/Version.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
+    ${source_path}/Window.cpp
+    ${source_path}/WGLContext.cpp
+    ${source_path}/WGLContext.h
+    ${source_path}/WindowsWindow.cpp
+    ${source_path}/WindowsWindow.h
+    ${source_path}/WindowEventHandler.cpp
 )
 
 # Group source files
 set(glow_header_group "Header Files (API)")
 set(glow_source_group "Source Files")
 source_group_by_path(${header_path} "\\\\.h$|\\\\.hpp$" 
-    ${glow_header_group} ${headers})
+    ${glow_header_group} ${api_includes})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${glow_source_group} ${sources})
 
 # Build library
 if(OPTION_BUILD_STATIC)
-    add_library(${target} ${headers} ${sources})
+    add_library(${target} ${api_includes} ${sources})
 else()
-    add_library(${target} SHARED ${headers} ${sources})
+    add_library(${target} SHARED ${api_includes} ${sources})
 endif()
 target_link_libraries(${target} ${libs})
 set_target_properties(${target}
@@ -275,7 +294,7 @@ set_target_properties(${target}
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
-    INCLUDE_PATH	"${CMAKE_CURRENT_SOURCE_DIR}/include")
+    INCLUDE_PATH	            "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Deployment
 install(TARGETS ${target}
@@ -285,24 +304,25 @@ install(TARGETS ${target}
 )
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION ${INSTALL_INCLUDE})
 
-########################################
-# glow examples
-########################################
+
+# EXAMPLES
+
+set(GLOW_EXAMPLES_FOLDER "Examples")
+
+unset(sources)
+unset(api_includes)
+
 if(OPTION_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
 
-########################################
-# Deployment
-########################################
+# DEPLOYMENT
+
 # Data files
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data
     DESTINATION ${INSTALL_DATA}
 )
 
-
-########################################
 # Packaging
-########################################
 add_subdirectory(packages)
