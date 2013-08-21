@@ -1,7 +1,7 @@
 
 #include <cassert>
 
-#include <map>
+#include <unordered_map>
 
 #ifdef WIN32
 #include <windows.h>
@@ -63,7 +63,7 @@ void KeyEvent::discard()
 
 const KeyEvent::Key KeyEvent::translate(const unsigned short key)
 {
-    static const std::map<unsigned short, KeyEvent::Key> keys =
+    static const std::unordered_map<unsigned short, KeyEvent::Key> keys =
     {
 #ifdef WIN32
 

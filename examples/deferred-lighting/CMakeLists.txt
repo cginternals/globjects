@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-set(target image-based-lighting)
+set(target deferred-lighting)
 project(${target})
 
 find_package(OpenGL REQUIRED)

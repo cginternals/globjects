@@ -207,6 +207,8 @@ set(api_includes
     ${header_path}/Program.h
     ${header_path}/Program.hpp
     ${header_path}/query.h
+    ${header_path}/RawFile.h
+    ${header_path}/RawFile.hpp
     ${header_path}/ref_ptr.hpp
     ${header_path}/Referenced.h
     ${header_path}/RenderBufferObject.h
@@ -253,6 +255,7 @@ set(sources
     ${source_path}/Object.cpp
     ${source_path}/Program.cpp
     ${source_path}/query.cpp
+    ${source_path}/RawFile.cpp
     ${source_path}/Referenced.cpp
     ${source_path}/RenderBufferObject.cpp
     ${source_path}/Screen.cpp
