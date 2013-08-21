@@ -24,3 +24,5 @@ build
 /lib
 /build
 /build
+
+CMakeLists.txt.user

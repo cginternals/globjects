@@ -9,7 +9,7 @@ set(META_VERSION_MINOR       "1")
 set(META_VERSION_PATCH       "0")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "glow group")
-set(META_AUTHOR_DOMAIN       "https://github.com/cgcostume/glow/")
+set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glow/")
 
 
 # OPTIONS

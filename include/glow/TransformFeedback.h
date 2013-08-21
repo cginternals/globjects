@@ -18,23 +18,23 @@ namespace glow
  * An example usage:
  * \code{.cpp}
  * Program* program = createProgramIncludingShaders();
- * TransformFeedback* transformFeeback = new TransformFeedback();
+ * TransformFeedback* transformFeedback = new TransformFeedback();
  * Buffer* buffer = new glow::Buffer(GL_ARRAY_BUFFER);
  * 
- * transformFeeback->setVaryings(program, Array<const char*>{ "vertex_out" }, GL_INTERLEAVED_ATTRIBS);
+ * transformFeedback->setVaryings(program, Array<const char*>{ "vertex_out" }, GL_INTERLEAVED_ATTRIBS);
  * 
  * buffer->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
  * buffer->setData(vertexSize, nullptr, GL_DYNAMIC_DRAW);
  * 
  * program->use(); // use Program before issueing the begin method of TransformFeedback
  * 
- * transformFeeback->bind();
- * transformFeeback->begin(GL_POINTS); // record point vertices
+ * transformFeedback->bind();
+ * transformFeedback->begin(GL_POINTS); // record point vertices
  * 
  * // draw calls
  * 
- * transformFeeback->end(); // stop recording vertices before releasing the Program
- * transformFeeback->unbind();
+ * transformFeedback->end(); // stop recording vertices before releasing the Program
+ * transformFeedback->unbind();
  * 
  * program->release();
  * 
