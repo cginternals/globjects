@@ -72,6 +72,7 @@ public:
 	LogMessageBuilder& operator<<(int i);
 	LogMessageBuilder& operator<<(float f);
 	LogMessageBuilder& operator<<(double d);
+    LogMessageBuilder& operator<<(long double d);
 	LogMessageBuilder& operator<<(unsigned u);
 	LogMessageBuilder& operator<<(long l);
 	LogMessageBuilder& operator<<(unsigned long ul);

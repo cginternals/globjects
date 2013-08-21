@@ -14,6 +14,7 @@ class AbstractNativeWindow;
 class WindowEventHandler;
 class ContextFormat;
 class Context;
+class Timer;
 
 /**
 
@@ -110,6 +111,13 @@ protected:
     };
 
     Mode m_mode;
+
+    std::string m_title;
+
+    Timer * m_timer;
+    
+    long double m_swapts;
+    unsigned int m_swaps;
 
 private:
     AbstractNativeWindow * m_window;

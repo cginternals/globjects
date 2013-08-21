@@ -86,6 +86,12 @@ LogMessageBuilder& LogMessageBuilder::operator<<(double d)
 	return *this;
 }
 
+LogMessageBuilder& LogMessageBuilder::operator<<(long double d)
+{
+	std::stringstream::operator<<(d);
+	return *this;
+}
+
 LogMessageBuilder& LogMessageBuilder::operator<<(unsigned u)
 {
 	std::stringstream::operator<<(u);

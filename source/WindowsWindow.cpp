@@ -248,6 +248,12 @@ void WindowsWindow::printChangeDisplaySettingsErrorResult(const LONG result)
     }
 }
 
+void WindowsWindow::setTitle(const std::string & title)
+{
+    const std::wstring wtitle = std::wstring(title.begin(), title.end());
+    SetWindowText(m_hWnd, wtitle.c_str());
+}
+
 int WindowsWindow::run()
 {
     MSG  msg;

@@ -255,6 +255,11 @@ void X11Window::windowed()
 //    printChangeDisplaySettingsErrorResult(result);
 //}
 
+void X11Window::setTitle(const std::string & title)
+{
+    XStoreName(m_display, m_hWnd, title.c_str());
+}
+
 int X11Window::run()
 {
     Display * display = GLxContext::getOrOpenDisplay();

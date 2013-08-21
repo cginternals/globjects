@@ -39,6 +39,8 @@ public:
     virtual void fullScreen() = 0;
     virtual void windowed() = 0;
 
+    virtual void setTitle(const std::string & title) = 0;
+
 protected:    
     WindowEventHandler * eventHandler();
     Context * context();

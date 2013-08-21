@@ -1,6 +1,7 @@
 
 #include <cassert>
 #include <string>
+#include <iomanip>
 
 #ifdef WIN32
 #include "WindowsWindow.h"
@@ -12,6 +13,7 @@
 
 #include <glow/logging.h>
 #include <glow/Context.h>
+#include <glow/Timer.h>
 #include <glow/WindowEventHandler.h>
 #include <glow/Window.h>
 
@@ -24,6 +26,9 @@ Window::Window()
 ,   m_quitOnDestroy(true)
 ,   m_mode(WindowMode)
 ,   m_window(nullptr)
+,   m_timer(nullptr)
+,   m_swaps(0)
+,   m_title("")
 {
 #ifdef WIN32
     m_window = new WindowsWindow(*this);
@@ -37,7 +42,7 @@ Window::Window()
 Window::~Window()
 {
     delete m_window;
-    m_window = nullptr;
+    delete m_timer;
 }
 
 WindowEventHandler * Window::eventHandler() const
@@ -78,6 +83,8 @@ bool Window::create(
 {
     assert(nullptr == m_context);
 
+    m_title = title;
+
     if (!m_window->create(format, title, width, height))
     {
         fatal() << "Creating native window with OpenGL context failed.";
@@ -90,11 +97,11 @@ bool Window::create(
     const bool result = m_context->create(handle(), format);
     if (!result)
     {
-	delete m_context;
-	m_context = nullptr;
+    	delete m_context;
+	    m_context = nullptr;
     }
     else
-	promoteContext();
+	    promoteContext();
     
     return result;
 }
@@ -220,15 +227,36 @@ void Window::repaint()
 
 void Window::onRepaint()
 {
+    if (!m_timer)
+    {
+        m_timer = new Timer(true, false);
+        m_swapts = 0.0;
+    }
+
     m_context->makeCurrent();
 
     if (m_eventHandler)
         m_eventHandler->paintEvent(*this);
 
     m_context->swap();
+    m_timer->update();
+
+    ++m_swaps;
+
+    if (m_timer->elapsed() - m_swapts >= 1e+9)
+    {
+        const float fps = 1e+9f * static_cast<float>(static_cast<long double>
+            (m_swaps) / (m_timer->elapsed() - m_swapts));
+
+        std::stringstream fpss;
+        fpss << m_title << " (" << std::fixed << std::setprecision(2) << fps << " fps)";
+
+        m_window->setTitle(fpss.str());
+
+        m_swapts = m_timer->elapsed();
+        m_swaps = 0;
+    }
     m_context->doneCurrent();
-
-
 }
 
 void Window::onResize()

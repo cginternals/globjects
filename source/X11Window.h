@@ -57,6 +57,8 @@ public:
     virtual void fullScreen();
     virtual void windowed();
 
+    virtual void setTitle(const std::string & title);
+
 public:
     static int run();
     static void quit(int code = 0);

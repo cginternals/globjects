@@ -17,11 +17,11 @@ class GLOW_API Timer
 public:
     Timer(
         const bool start = true,
-        const bool auto_update = true);
+        const bool autoUpdate = true);
 
     virtual ~Timer();
 
-    void setAutoUpdating(const bool auto_update);
+    void setAutoUpdating(const bool autoUpdate);
     const bool autoUpdating() const;
 
     void update() const;
