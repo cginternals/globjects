@@ -31,7 +31,7 @@ protected:
 };
 
 #ifdef NDEBUG
-#define CheckGLError() ((void)0)
+#define CheckGLError() false
 #else
 #define CheckGLError() glow::Error::check(__FILE__, __LINE__)
 #endif
