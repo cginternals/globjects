@@ -25,10 +25,11 @@ Window::Window()
 ,   m_context(nullptr)
 ,   m_quitOnDestroy(true)
 ,   m_mode(WindowMode)
-,   m_window(nullptr)
-,   m_timer(nullptr)
-,   m_swaps(0)
 ,   m_title("")
+,   m_timer(nullptr)
+,   m_swapts(0.0)
+,   m_swaps(0)
+,   m_window(nullptr)
 {
 #ifdef WIN32
     m_window = new WindowsWindow(*this);
@@ -78,8 +79,8 @@ void Window::setQuitOnDestroy(const bool enable)
 bool Window::create(
     const ContextFormat & format
 ,   const std::string & title
-,   const unsigned int width
-,   const unsigned int height)
+,   const int width
+,   const int height)
 {
     assert(nullptr == m_context);
 

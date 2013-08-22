@@ -10,9 +10,9 @@ namespace glow
 
 VertexAttributeBinding::VertexAttributeBinding(VertexArrayObject* vao, GLuint bindingIndex)
 : _vao(vao)
-, _bindingIndex(bindingIndex)
-, _vbo(nullptr)
+,_bindingIndex(bindingIndex)
 , _attributeIndex(0)
+, _vbo(nullptr)
 , _implementation(nullptr)
 {
 #ifndef GL_VERSION_4_3

@@ -146,10 +146,10 @@ protected:
 	unsigned int  m_depthBufferSize;
 	unsigned int  m_stencilBufferSize;
 
-	unsigned int m_samples;
 	bool m_stereo;
 
 	SwapBehavior m_swapBehavior;
+	unsigned int m_samples;
 };
 
 } // namespace glow

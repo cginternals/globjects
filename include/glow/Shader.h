@@ -45,8 +45,8 @@ protected:
 	std::string typeString();
 protected:
 	GLenum _type;
-	bool _compiled;
-	ref_ptr<ShaderSource> _source;
+    ref_ptr<ShaderSource> _source;
+    bool _compiled;
 	std::string _internalSource;
 
 	static GLuint createShader(GLenum type);

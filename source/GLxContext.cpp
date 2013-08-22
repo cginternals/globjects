@@ -82,10 +82,12 @@ bool GLxContext::create(
         return false;
 
     const int screen = DefaultScreen(m_display);
-    const ::Window root = DefaultRootWindow(m_display);
 
-    int viAttribs[] = { GLX_RGBA, GLX_USE_GL, GLX_DEPTH_SIZE, format.depthBufferSize(), GLX_RED_SIZE, 8, GLX_GREEN_SIZE, 8, GLX_BLUE_SIZE, 8  
-        , (format.swapBehavior() == ContextFormat::DoubleBuffering ? GLX_DOUBLEBUFFER : None), None };
+    // TODO: unused variable
+    //const ::Window root = DefaultRootWindow(m_display);
+
+	int viAttribs[] = { GLX_RGBA, GLX_USE_GL, GLX_DEPTH_SIZE, format.depthBufferSize(), GLX_RED_SIZE, 8, GLX_GREEN_SIZE, 8, GLX_BLUE_SIZE, 8  
+        , (format.swapBehavior() == ContextFormat::DoubleBuffering ? (int)GLX_DOUBLEBUFFER : (int)None), None };
 
     XVisualInfo * vi = glXChooseVisual(m_display, screen, viAttribs);
     if (nullptr == vi)
