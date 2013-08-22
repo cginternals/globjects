@@ -155,7 +155,6 @@ protected:
 protected:
     Type m_type;
     Key m_key;
-
     bool m_accept;
 };
 

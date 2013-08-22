@@ -48,8 +48,8 @@ public:
     bool create(
         const ContextFormat & format
     ,   const std::string & title = "glow"
-    ,   const unsigned int width  =  1280
-    ,   const unsigned int height =   720);
+    ,   const int width  =  1280
+    ,   const int height =   720);
 
     void close();
 

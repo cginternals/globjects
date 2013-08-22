@@ -29,8 +29,8 @@ static const Atom IdleEvent = 1;
 
 X11Window::X11Window(Window & window)
 :   AbstractNativeWindow(window)
-,   m_hWnd(0)
 ,   m_display(nullptr)
+,   m_hWnd(0)
 {
     s_windows.insert(this);
 }
@@ -80,7 +80,7 @@ bool X11Window::create(
     if (nullptr == m_display)
         return false;
 
-    if(-1 == s_wmProtocols)
+    if(static_cast<Atom>(-1) == s_wmProtocols)
     {
         s_wmProtocols = XInternAtom(m_display, "WM_PROTOCOLS", False);
         s_wmDeleteEvent = XInternAtom(m_display, "WM_DELETE_WINDOW", False);
@@ -381,7 +381,7 @@ int X11Window::dispatch(
     case ClientMessage:
         if (event.xclient.message_type == IdleEvent)
             onIdle();
-        else if (s_wmDeleteEvent == event.xclient.data.l[0])
+        else if (s_wmDeleteEvent == static_cast<Atom>(event.xclient.data.l[0]))
             onClose();
         break;
 

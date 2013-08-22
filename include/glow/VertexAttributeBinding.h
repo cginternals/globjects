@@ -26,9 +26,9 @@ public:
 	GLuint bindingIndex() const;
 	Buffer* buffer() const;
 protected:
-	GLint _attributeIndex;
-	GLuint _bindingIndex;
-	VertexArrayObject* _vao;
+    VertexArrayObject* _vao;
+    GLuint _bindingIndex;
+    GLint _attributeIndex;
 	Buffer* _vbo;
 
 	VertexAttributeBindingImplementation* _implementation;
@@ -70,11 +70,7 @@ public:
 	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
 	virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset);
 protected:
-	bool _hasFormat;
-	bool _hasBuffer;
-	bool _hasAttribute;
-
-	struct Format
+    struct Format
 	{
 		enum Method {
 			O = 0,
@@ -96,6 +92,10 @@ protected:
 	Format _format;
 	GLint _baseoffset;
 	GLint _stride;
+
+    bool _hasFormat;
+    bool _hasBuffer;
+    bool _hasAttribute;
 
 	void finishIfComplete();
 	void finish();

@@ -21,10 +21,10 @@ namespace glow
 KeyEvent::KeyEvent(
     const Type type
 ,   const unsigned short key)
-:   m_accept(false)
-,   m_type(type)
+:   m_type(type)
+, m_key(translate(key))
+,   m_accept(false)
 {
-    m_key = translate(key);
 }
 
 KeyEvent::~KeyEvent()
