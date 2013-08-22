@@ -30,14 +30,19 @@ set(DEFAULT_COMPILE_DEFS_RELEASE
     NDEBUG						# Release build
 )
 
-set(MINGW_COMPILE_FLAGS
-	"-pthread -fno-exceptions -pipe -fPIC"
-	# pthread       -> use pthread library
-	# no-rtti       -> disable c++ rtti
-	# no-exceptions -> disable exception handling
-	# pipe          -> use pipes
-	# fPIC          -> use position independent code
-)
+if (OPTION_ERRORS_AS_EXCEPTION)
+	set(EXCEPTION_FLAG "-fexceptions")
+else()
+	set(EXCEPTION_FLAG "-fno-exceptions")
+endif()
+
+set(MINGW_COMPILE_FLAGS "-pthread -pipe -fPIC -Wreturn-type -Wall -w -pedantic -Wextra -Wtrampolines -Wfloat-equal -Wshadow -Wcast-qual -Wcast-align -Wconversion -Werror ${EXCEPTION_FLAG}")
+# pthread       -> use pthread library
+# no-rtti       -> disable c++ rtti
+# no-exceptions -> disable exception handling
+# pipe          -> use pipes
+# fPIC          -> use position independent code
+# -Wreturn-type -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
 
 set(DEFAULT_COMPILE_FLAGS ${MINGW_COMPILE_FLAGS})
 
