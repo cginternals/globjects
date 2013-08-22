@@ -200,7 +200,10 @@ set(api_includes
     ${header_path}/ContextFormat.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferObject.h
+    ${header_path}/formatString.h
+    ${header_path}/formatString.hpp
     ${header_path}/logging.h
+    ${header_path}/logging.hpp
     ${header_path}/LogMessage.h
     ${header_path}/KeyEvent.h
     ${header_path}/Object.h
@@ -245,9 +248,10 @@ set(sources
     ${source_path}/ContextFormat.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferObject.cpp
-    ${source_path}/KeyEvent.cpp
+    ${source_path}/formatString.cpp
     ${source_path}/GLxContext.cpp
     ${source_path}/GLxContext.h
+    ${source_path}/KeyEvent.cpp
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/Object.cpp
@@ -273,7 +277,7 @@ set(sources
     ${source_path}/WindowsWindow.cpp
     ${source_path}/WindowsWindow.h
     ${source_path}/WindowEventHandler.cpp
-	${source_path}/X11Window.cpp
+    ${source_path}/X11Window.cpp
     ${source_path}/X11Window.h
 )
 
