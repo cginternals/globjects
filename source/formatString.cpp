@@ -27,6 +27,8 @@ int readInt(const char* str, int& number)
 
 void parseFormat(std::ostream& stream, const char*& format)
 {
+    std::locale loc;
+
 	static std::set<char> alignmentFlags = { 'l', 'r', 'i' };
 	while (alignmentFlags.find(*format) != alignmentFlags.end())
 	{
@@ -47,7 +49,7 @@ void parseFormat(std::ostream& stream, const char*& format)
 	}
 
 	static std::set<char> flags = { 'a', '+', ' ', '#', 'u', 'p', '0' };
-	while (flags.find(std::tolower(*format)) != flags.end())
+	while (flags.find(std::tolower(*format, loc)) != flags.end())
 	{
 		char flag = *format++;
 
@@ -78,16 +80,16 @@ void parseFormat(std::ostream& stream, const char*& format)
 	}
 
 	static std::set<char> floatFieldFlags = { 'f', 'e' };
-	if (floatFieldFlags.find(std::tolower(*format)) != floatFieldFlags.end())
+	if (floatFieldFlags.find(std::tolower(*format, loc)) != floatFieldFlags.end())
 	{
 		char flag = *format++;
 
-		if (std::isupper(flag))
+		if (std::isupper(flag, loc))
 		{
 			stream << std::uppercase;
 		}
 
-		switch (std::tolower(flag))
+		switch (std::tolower(flag, loc))
 		{
 			case 'f':
 				stream << std::fixed;
@@ -127,12 +129,12 @@ void parseFormat(std::ostream& stream, const char*& format)
 	{
 		char baseFlag = *format++;
 
-		if (std::isupper(baseFlag))
+		if (std::isupper(baseFlag, loc))
 		{
 			stream << std::uppercase;
 		}
 
-		switch (std::tolower(baseFlag))
+		switch (std::tolower(baseFlag, loc))
 		{
 			case 'd':
 				stream << std::dec;

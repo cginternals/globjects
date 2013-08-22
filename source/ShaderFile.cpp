@@ -13,7 +13,8 @@ ShaderFile::ShaderFile(const std::string & filePath)
 :   m_filePath(filePath)
 {
     RawFile<char> raw(m_filePath);
-    m_source = std::string(raw.data());
+    if (raw.valid())
+        m_source = std::string(raw.data(), raw.size());
 
 	registerFile(this);
 }
@@ -31,10 +32,9 @@ const std::string & ShaderFile::source()
 void ShaderFile::reload()
 {
     RawFile<char> raw(m_filePath);
-
     if (raw.valid())
     {
-        m_source = std::string(raw.data());
+        m_source = std::string(raw.data(), raw.size());
 	    changed();
     }
 }
