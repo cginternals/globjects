@@ -5,14 +5,14 @@
 namespace glow
 {
 
-ShaderCode::ShaderCode(const std::string& code)
-: _code(code)
+ShaderCode::ShaderCode(const std::string & source)
+:    m_source(source)
 {
 }
 
-const std::string& ShaderCode::source()
+const std::string & ShaderCode::source()
 {
-	return _code;
+	return m_source;
 }
 
 } // namespace glow

@@ -12,7 +12,7 @@ namespace glow {
 class GLOW_API ShaderSource : public Referenced, public Changeable
 {
 public:
-	virtual const std::string& source() = 0;
+	virtual const std::string & source() = 0;
 };
 
 } // namespace glow

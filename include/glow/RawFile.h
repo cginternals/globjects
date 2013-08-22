@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <glow/glow.h>
 
@@ -20,16 +21,11 @@ public:
     bool valid() const;
     const std::string & filePath() const;
 
-    bool reload(const bool failsafe = true);
-
-protected:
 	bool read();
 
 protected:
 	const std::string m_filePath;
-
-    T * m_data;
-    size_t m_size;
+    std::vector<T> m_data;
 
     bool m_valid;
 };

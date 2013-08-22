@@ -6,20 +6,20 @@ namespace glow
 
 void Changeable::changed()
 {
-	for (ChangeListener* listener: _listeners)
+	for (ChangeListener * listener: m_listeners)
 	{
 		listener->notifyChanged();
 	}
 }
 
-void Changeable::registerListener(ChangeListener* listener)
+void Changeable::registerListener(ChangeListener * listener)
 {
-	_listeners.insert(listener);
+	m_listeners.insert(listener);
 }
 
-void Changeable::deregisterListener(ChangeListener* listener)
+void Changeable::deregisterListener(ChangeListener * listener)
 {
-	_listeners.erase(listener);
+	m_listeners.erase(listener);
 }
 
 } // namespace glow

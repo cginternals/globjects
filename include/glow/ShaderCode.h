@@ -10,11 +10,11 @@ namespace glow {
 class GLOW_API ShaderCode : public ShaderSource
 {
 public:
-	ShaderCode(const std::string& code);
+	ShaderCode(const std::string & source);
+	virtual const std::string & source();
 
-	virtual const std::string& source();
 protected:
-	std::string _code;
+	std::string m_source;
 };
 
 } // namespace glow

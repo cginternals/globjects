@@ -1,12 +1,21 @@
 
 #include <GL/glew.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
+
 #include <glow/AutoTimer.h>
 #include <glow/Window.h>
+#include <glow/Array.h>
+#include <glow/VertexArrayObject.h>
 #include <glow/ContextFormat.h>
 #include <glow/Context.h>
 #include <glow/Error.h>
 #include <glow/Texture.h>
+#include <glow/Shader.h>
+#include <glow/Program.h>
 #include <glow/RawFile.h>
 #include <glow/WindowEventHandler.h>
 
@@ -25,7 +34,9 @@ public:
     {
     }
 
-    void createAndSetupTexture();
+    void createAndSetupTexture( 
+        glow::ref_ptr<Texture> texture
+    ,   const std::string & fileName);
     void createAndSetupShaders();
     void createAndSetupGeometry();
 
@@ -33,22 +44,41 @@ public:
     {
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);    
 
-        createAndSetupTexture();
+        m_diffuse = new glow::Texture(GL_TEXTURE_2D);
+        m_emissive = new glow::Texture(GL_TEXTURE_2D);
+        m_normals = new glow::Texture(GL_TEXTURE_2D);
+        createAndSetupTexture(m_diffuse, "data/deferred-lighting/diffuse.1280.720.rgb.ub");
+        createAndSetupTexture(m_emissive, "data/deferred-lighting/emissive.1280.720.rgb.ub");
+        createAndSetupTexture(m_normals, "data/deferred-lighting/normals.1280.720.rgb.ub");
+        //createAndSetupTexture(m_diffuse, "data/deferred-lighting/diffuse.1280.720.rgb.ub");
         createAndSetupShaders();
         createAndSetupGeometry();
     }
-    
+
     virtual void resizeEvent(
         Window & window
     ,   const unsigned int width
     ,   const unsigned int height)
     {
         glViewport(0, 0, width, height);
+
+	    m_program->setUniform("modelView", glm::mat4());
+	    m_program->setUniform("projection", glm::ortho(0.f, 1.f, 0.f, 1.f, 0.f, 1.f));
     }
 
     virtual void paintEvent(Window & window)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	    m_emissive->bind();
+	    m_program->use();
+
+	    m_vao->bind();
+	    m_vertexBuffer->drawArrays(GL_TRIANGLE_FAN, 0, 4);
+	    m_vao->unbind();
+
+        m_program->release();
+	    m_emissive->unbind();
     }
 
     virtual void idleEvent(Window & window)
@@ -57,11 +87,15 @@ public:
     }
 
 protected:
+    glow::ref_ptr<glow::Program> m_program;
+
     glow::ref_ptr<glow::Texture> m_diffuse;
     glow::ref_ptr<glow::Texture> m_emissive;
     glow::ref_ptr<glow::Texture> m_specular;
     glow::ref_ptr<glow::Texture> m_normals;
 
+	glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Buffer> m_vertexBuffer;
 };
 
 /** This example shows how to create a single window, probably in fullscreen
@@ -86,54 +120,51 @@ int main(int argc, char** argv)
     return Window::run();
 }
 
-void EventHandler::createAndSetupTexture()
+void EventHandler::createAndSetupTexture(
+    glow::ref_ptr<Texture> texture
+,   const std::string & fileName)
 {
-    glow::RawFile<unsigned char> file("data/deferred-lighting/deferred.vert");
+    glow::RawFile<unsigned char> file(fileName);
 
-    //m_texture = new glow::Texture(GL_TEXTURE_2D);
+    texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    //m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	texture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-    //m_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
-    //m_texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
+    texture->image2D(0, GL_RGB8, 1280, 720, 0, GL_RGB, GL_UNSIGNED_BYTE, file.data());
 }
 
 void EventHandler::createAndSetupShaders()
 {
-    /*glow::Shader* vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/computeshader/cstest.vert");
-    glow::Shader* fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/computeshader/cstest.frag");
+	glow::Shader * vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/deferred-lighting/deferred.vert");
+	glow::Shader * fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/deferred-lighting/deferred.frag");
 
-    m_shaderProgram = new glow::Program();
-    m_shaderProgram->attach(vertexShader, fragmentShader);
-    m_shaderProgram->bindFragDataLocation(0, "fragColor");
+	m_program = new glow::Program();
+	m_program->attach(vertexShader, fragmentShader);
+	m_program->bindFragDataLocation(0, "fragColor");
 
-    glow::Shader* computeShader = glow::Shader::fromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp");
-
-    m_computeProgram = new glow::Program();
-    m_computeProgram->attach(computeShader);
-
-    m_shaderProgram->setUniform("texture", 0);
-    m_computeProgram->setUniform("destTex", 0);*/
+	m_program->getUniform<GLint>("texture")->set(0);
 }
 
 void EventHandler::createAndSetupGeometry()
 {
-    //auto vertexArray = glow::Vec3Array()
-    //    << glm::vec3(0, 0, 0)
-    //    << glm::vec3(1, 0, 0)
-    //    << glm::vec3(1, 1, 0)
-    //    << glm::vec3(0, 1, 0);
+    auto vertexArray = glow::Vec3Array()
+        << glm::vec3(0, 0, 0)
+        << glm::vec3(1, 0, 0)
+        << glm::vec3(1, 1, 0)
+        << glm::vec3(0, 1, 0);
 
-    //m_vao = new glow::VertexArrayObject();
+    m_vao = new glow::VertexArrayObject();
 
-    //m_vertexBuffer = new glow::Buffer(GL_ARRAY_BUFFER);
-    //m_vertexBuffer->setData(vertexArray);
+    m_vertexBuffer = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_vertexBuffer->setData(vertexArray);
 
-    //auto binding = m_vao->binding(0);
-    //binding->setBuffer(m_vertexBuffer, 0, sizeof(glm::vec3));
-    //binding->setFormat(3, GL_FLOAT);
+    auto binding = m_vao->binding(0);
+    binding->setBuffer(m_vertexBuffer, 0, sizeof(glm::vec3));
+    binding->setFormat(3, GL_FLOAT);
 
-    //m_vao->enable(m_shaderProgram->getAttributeLocation("a_vertex"));
+    m_vao->enable(m_program->getAttributeLocation("a_vertex"));
 }
 

@@ -17,7 +17,7 @@ public:
 	void deregisterListener(ChangeListener * listener);
 
 protected:
-	std::set<ChangeListener*> _listeners;
+	std::set<ChangeListener *> m_listeners;
 };
 
 } // namespace glow

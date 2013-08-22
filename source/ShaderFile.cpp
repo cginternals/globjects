@@ -1,19 +1,21 @@
 
 #include <glow/ShaderFile.h>
 #include <glow/Shader.h>
-#include <glow/logging.h>
-#include "FileReader.h"
+#include <glow/RawFile.h>
+
 
 namespace glow
 {
 
-ShaderFile::FileRegistry ShaderFile::_fileRegistry;
+ShaderFile::FileRegistry ShaderFile::s_fileRegistry;
 
-ShaderFile::ShaderFile(const std::string& filePath)
-: _filePath(filePath)
+ShaderFile::ShaderFile(const std::string & filePath)
+:   m_filePath(filePath)
 {
+    RawFile<char> raw(m_filePath);
+    m_source = std::string(raw.data());
+
 	registerFile(this);
-	loadFileContent();
 }
 
 ShaderFile::~ShaderFile()
@@ -21,46 +23,36 @@ ShaderFile::~ShaderFile()
 	deregisterFile(this);
 }
 
-const std::string& ShaderFile::source()
+const std::string & ShaderFile::source()
 {
-	return _fileContent;
+	return m_source;
 }
 
 void ShaderFile::reload()
 {
-	if (loadFileContent())
-	{
-		changed();
-	}
+    RawFile<char> raw(m_filePath);
+
+    if (raw.valid())
+    {
+        m_source = std::string(raw.data());
+	    changed();
+    }
 }
 
 void ShaderFile::reloadAll()
 {
-	for (ShaderFile* file: _fileRegistry)
-	{
+	for (ShaderFile * file: s_fileRegistry)
 		file->reload();
-	}
 }
 
-bool ShaderFile::loadFileContent()
+void ShaderFile::registerFile(ShaderFile * file)
 {
-	if (!FileReader::readFile(_filePath, _fileContent))
-	{
-		critical() << "Reading from file \"" << _filePath << "\" failed.";
-		return false;
-	}
-
-	return true;
+	s_fileRegistry.insert(file);
 }
 
-void ShaderFile::registerFile(ShaderFile* file)
+void ShaderFile::deregisterFile(ShaderFile * file)
 {
-	_fileRegistry.insert(file);
-}
-
-void ShaderFile::deregisterFile(ShaderFile* file)
-{
-	_fileRegistry.erase(file);
+	s_fileRegistry.erase(file);
 }
 
 } // namespace glow

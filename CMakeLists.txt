@@ -245,8 +245,6 @@ set(sources
     ${source_path}/ContextFormat.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferObject.cpp
-    ${source_path}/FileReader.cpp
-    ${source_path}/FileReader.h
     ${source_path}/KeyEvent.cpp
     ${source_path}/GLxContext.cpp
     ${source_path}/GLxContext.h
