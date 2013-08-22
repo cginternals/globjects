@@ -6,6 +6,8 @@
 #include <locale>
 #include <iomanip>
 
+#include <iostream>
+
 namespace glow
 {
 
@@ -45,7 +47,7 @@ void parseFormat(std::ostream& stream, const char*& format)
 	}
 
 	static std::set<char> flags = { 'a', '+', ' ', '#', 'u', 'p', '0' };
-	while (flags.find(*format) != flags.end())
+	while (flags.find(std::tolower(*format)) != flags.end())
 	{
 		char flag = *format++;
 
@@ -76,7 +78,7 @@ void parseFormat(std::ostream& stream, const char*& format)
 	}
 
 	static std::set<char> floatFieldFlags = { 'f', 'e' };
-	if (floatFieldFlags.find(*format) != floatFieldFlags.end())
+	if (floatFieldFlags.find(std::tolower(*format)) != floatFieldFlags.end())
 	{
 		char flag = *format++;
 

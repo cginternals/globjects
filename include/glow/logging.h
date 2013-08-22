@@ -58,6 +58,13 @@ GLOW_API LogMessage::Level verbosityLevel();
 		x - hexadecimal
 
 	In addition, if the base or floatfield flag is uppercase, it will automatically enable the uppercase flag without 'u'.
+	Note: To end a format specifier, you have to add a semicolon.
+	%% will escape a % character.
+
+	Sample usage:
+	\code{.cpp}
+		debug("This is a test: %; pi = %+0E10.5;", 42, 3.141592653589793);
+	\endcode
 
 	\see debug
 	\see warning
