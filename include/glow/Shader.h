@@ -42,7 +42,8 @@ protected:
 	void updateSource();
 	void basicSetSource(const std::string& source);
 	bool checkCompileStatus();
-	std::string typeString();
+	std::string typeString() const;
+	std::string shaderString() const;
 protected:
 	GLenum _type;
     ref_ptr<ShaderSource> _source;

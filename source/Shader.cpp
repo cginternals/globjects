@@ -1,5 +1,6 @@
 
 #include <vector>
+#include <sstream>
 
 #include <glow/Shader.h>
 #include <glow/Program.h>
@@ -30,7 +31,7 @@ Shader::~Shader()
 	{
 		_source->deregisterListener(this);
 	}
-	
+
 	if (m_id)
 	{
 		glDeleteShader(m_id);
@@ -68,9 +69,9 @@ void Shader::setSource(ShaderSource* source)
 {
 	if (_source)
 		_source->deregisterListener(this);
-	
+
 	_source = source;
-	
+
 	if (_source)
 		_source->registerListener(this);
 
@@ -110,7 +111,7 @@ void Shader::basicSetSource(const std::string& source)
 {
 	_internalSource = source;
 	const char* sourcePointer = source.c_str();
-	
+
 	glShaderSource(m_id, 1, &sourcePointer, 0);
 	CheckGLError();
 }
@@ -119,7 +120,7 @@ void Shader::compile()
 {
 	glCompileShader(m_id);
 	CheckGLError();
-	
+
 	_compiled = checkCompileStatus();
 
 	if (_compiled)
@@ -134,7 +135,7 @@ bool Shader::isCompiled() const
 std::string Shader::infoLog() const
 {
 	GLsizei length;
-	
+
 	glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &length);
 	CheckGLError();
 
@@ -149,7 +150,7 @@ std::string Shader::infoLog() const
 bool Shader::checkCompileStatus()
 {
 	GLint status = 0;
-	
+
 	glGetShaderiv(m_id, GL_COMPILE_STATUS, &status);
 	CheckGLError();
 
@@ -159,14 +160,30 @@ bool Shader::checkCompileStatus()
 	{
 		critical()
 			<< "Compiler error:" << std::endl
-			<< "Type " << typeString() << std::endl
+			<< shaderString() << std::endl
 			<< infoLog();
 	}
 
 	return compiled;
 }
 
-std::string Shader::typeString()
+std::string Shader::shaderString() const
+{
+	std::stringstream ss;
+
+	ss << "Shader(" << typeString();
+
+	if (_source && _source->isFile())
+	{
+		ss << ", " << dynamic_cast<const ShaderFile*>(*_source)->filePath();
+	}
+
+	ss << ")";
+
+	return ss.str();
+}
+
+std::string Shader::typeString() const
 {
 	switch (_type)
 	{
