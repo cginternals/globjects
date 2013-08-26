@@ -58,7 +58,7 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const std::string & str)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(bool b)
 {
-	std::stringstream::operator<<(b ? "true" : "false");
+	*this << (b ? "true" : "false");
 	return *this;
 }
 
