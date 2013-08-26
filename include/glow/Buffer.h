@@ -38,6 +38,15 @@ public:
 	// indexed buffer binding
 	void bindBase(GLenum target, GLuint index);
 	void bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size);
+
+	// copying
+	void copySubData(GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
+	void copySubData(GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
+	void copySubData(GLenum writeTarget, GLsizeiptr size);
+	void copySubData(glow::Buffer* buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
+	void copySubData(glow::Buffer* buffer, GLsizeiptr size);
+	void copyData(glow::Buffer* buffer, GLsizeiptr size, GLenum usage = GL_STATIC_DRAW);
+
 protected:
 	GLenum _target;
 
