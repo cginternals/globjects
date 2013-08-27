@@ -14,7 +14,7 @@ public:
 	Buffer();
 	Buffer(GLenum target);
 	Buffer(GLuint id, GLenum target);
-	~Buffer();
+	virtual ~Buffer();
 
 	virtual const char* typeName() const;
 

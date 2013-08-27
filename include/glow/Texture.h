@@ -23,7 +23,7 @@ public:
 public:
 	Texture(GLenum  target = GL_TEXTURE_2D);
 	Texture(GLuint id, GLenum  target, bool ownsGLObject = true);
-	~Texture();
+	virtual ~Texture();
 
 	virtual const char* typeName() const;
 

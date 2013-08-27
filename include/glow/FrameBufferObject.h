@@ -55,7 +55,7 @@ class GLOW_API FrameBufferObject : public Object
 public:
 	FrameBufferObject();
 	FrameBufferObject(GLuint id, bool ownsGLObject = true);
-	~FrameBufferObject();
+	virtual ~FrameBufferObject();
 
 	static FrameBufferObject* defaultFBO();
 
