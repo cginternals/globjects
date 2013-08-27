@@ -32,7 +32,7 @@ Shader::~Shader()
 		_source->deregisterListener(this);
 	}
 
-	if (m_id)
+	if (ownsGLObject())
 	{
 		glDeleteShader(m_id);
 		CheckGLError();
@@ -44,6 +44,11 @@ GLuint Shader::createShader(GLenum type)
 	GLuint result = glCreateShader(type);
 	CheckGLError();
 	return result;
+}
+
+const char* Shader::typeName() const
+{
+	return "Shader";
 }
 
 Shader* Shader::fromFile(GLenum type, const std::string& filename)

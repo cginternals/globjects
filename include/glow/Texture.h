@@ -10,9 +10,22 @@ namespace glow {
 class GLOW_API Texture : public Object
 {
 public:
+	class Handle
+	{
+	public:
+		Handle();
+		Handle(const GLuint64& value);
+
+		operator GLuint64() const;
+
+		GLuint64 value;
+	};
+public:
 	Texture(GLenum  target = GL_TEXTURE_2D);
 	Texture(GLuint id, GLenum  target, bool ownsGLObject = true);
 	~Texture();
+
+	virtual const char* typeName() const;
 
 	void setParameter(GLenum name, GLint value);
 	void setParameter(GLenum name, GLfloat value);
@@ -28,21 +41,6 @@ public:
 	void bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format);
 
 	void generateMipmap();
-
-	struct Handle
-	{
-		Handle();
-		Handle(const GLuint64 & value)
-		:	value(value)
-		{
-		}
-
-		operator GLuint64() const
-		{
-			return value;
-		}
-		GLuint64 value;
-	};
 
 	Handle textureHandle() const;
 

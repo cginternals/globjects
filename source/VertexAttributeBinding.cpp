@@ -15,13 +15,10 @@ VertexAttributeBinding::VertexAttributeBinding(VertexArrayObject* vao, GLuint bi
 , _vbo(nullptr)
 , _implementation(nullptr)
 {
-#ifndef GL_VERSION_4_3
-	_implementation = new VertexAttributeBinding_GL_3_2(this);
-#else
 	_implementation = Version::current() >= Version(4, 3)
 		? (VertexAttributeBindingImplementation*)new VertexAttributeBinding_GL_4_3(this)
 		: (VertexAttributeBindingImplementation*)new VertexAttributeBinding_GL_3_2(this);
-#endif
+
 	setAttribute(bindingIndex); // as default
 }
 

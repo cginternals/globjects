@@ -29,7 +29,7 @@ Program::~Program()
 		uniformPair.second->deregisterProgram(this);
 	}
 
-	if (m_id)
+	if (ownsGLObject())
 	{
 		glDeleteProgram(m_id);
 		CheckGLError();
@@ -43,10 +43,15 @@ GLuint Program::createProgram()
 	return result;
 }
 
+const char* Program::typeName() const
+{
+	return "Program";
+}
+
 void Program::use()
 {
 	checkDirty();
-	
+
 	glUseProgram(m_id);
 	CheckGLError();
 }
@@ -60,7 +65,7 @@ void Program::release()
 bool Program::isUsed() const
 {
 	GLint currentProgram = 0;
-	
+
 	glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
 	CheckGLError();
 
@@ -116,10 +121,10 @@ void Program::link()
 {
 	glLinkProgram(m_id);
 	CheckGLError();
-	
+
 	checkLinkStatus();
 	m_dirty = false;
-	
+
 	updateUniforms();
 	CheckGLError();
 }
@@ -139,7 +144,7 @@ void Program::bindAttributeLocation(GLuint index, const std::string& name)
 GLint Program::getUniformLocation(const std::string& name)
 {
 	checkDirty();
-	
+
 	GLint result = glGetUniformLocation(m_id, name.c_str());
 	CheckGLError();
 	return result;
@@ -148,7 +153,7 @@ GLint Program::getUniformLocation(const std::string& name)
 GLint Program::getAttributeLocation(const std::string& name)
 {
 	checkDirty();
-	
+
 	GLint result = glGetAttribLocation(m_id, name.c_str());
 	CheckGLError();
 	return result;
@@ -192,7 +197,7 @@ void Program::updateUniforms()
 const std::string Program::infoLog() const
 {
 	GLsizei length;
-	
+
 	glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &length);
 	CheckGLError();
 
@@ -207,7 +212,7 @@ const std::string Program::infoLog() const
 void Program::checkLinkStatus()
 {
 	GLint status = 0;
-	
+
 	glGetProgramiv(m_id, GL_LINK_STATUS, &status);
 	CheckGLError();
 
@@ -224,7 +229,7 @@ void Program::checkLinkStatus()
 void Program::dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ)
 {
 	use();
-	
+
 	glDispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
 	CheckGLError();
 }
@@ -232,7 +237,7 @@ void Program::dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGr
 void Program::setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding)
 {
 	checkDirty();
-	
+
 	glShaderStorageBlockBinding(m_id, storageBlockIndex, storageBlockBinding);
 	CheckGLError();
 }

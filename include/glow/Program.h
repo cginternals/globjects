@@ -23,6 +23,8 @@ public:
 	Program();
 	virtual ~Program();
 
+	virtual const char* typeName() const;
+
 	void use();
 	void release();
 

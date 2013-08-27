@@ -30,10 +30,15 @@ VertexArrayObject::~VertexArrayObject()
 GLuint VertexArrayObject::genVertexArray()
 {
 	GLuint id = 0;
-	
+
 	glGenVertexArrays(1, &id);
 	CheckGLError();
 	return id;
+}
+
+const char* VertexArrayObject::typeName() const
+{
+	return "VertexArrayObject";
 }
 
 void VertexArrayObject::bind()
@@ -61,7 +66,7 @@ VertexAttributeBinding* VertexArrayObject::binding(GLuint bindingIndex)
 void VertexArrayObject::enable(GLint attributeIndex)
 {
 	bind();
-	
+
 	glEnableVertexAttribArray(attributeIndex);
 	CheckGLError();
 }
@@ -69,7 +74,7 @@ void VertexArrayObject::enable(GLint attributeIndex)
 void VertexArrayObject::disable(GLint attributeIndex)
 {
 	bind();
-	
+
 	glDisableVertexAttribArray(attributeIndex);
 	CheckGLError();
 }

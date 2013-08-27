@@ -24,6 +24,8 @@ public:
 	Shader(GLenum type, ShaderSource* source);
 	virtual ~Shader();
 
+	virtual const char* typeName() const;
+
 	static Shader* fromFile(GLenum type, const std::string& filename);
 	static Shader* fromSource(GLenum type, const std::string& source);
 

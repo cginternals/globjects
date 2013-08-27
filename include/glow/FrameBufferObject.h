@@ -59,6 +59,8 @@ public:
 
 	static FrameBufferObject* defaultFBO();
 
+	virtual const char* typeName() const;
+
 	void bind();
 	void bind(GLenum target);
 	void unbind();

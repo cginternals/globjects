@@ -92,11 +92,16 @@ FrameBufferObject::~FrameBufferObject()
 GLuint FrameBufferObject::genFrameBuffer()
 {
 	GLuint id = 0;
-	
+
 	glGenFramebuffers(1, &id);
 	CheckGLError();
-	
+
 	return id;
+}
+
+const char* FrameBufferObject::typeName() const
+{
+	return "FrameBufferObject";
 }
 
 void FrameBufferObject::bind()
@@ -121,7 +126,7 @@ void FrameBufferObject::unbind()
 void FrameBufferObject::setParameter(GLenum pname, GLint param)
 {
 	bind();
-	
+
 	glFramebufferParameteri(_target, pname, param);
 	CheckGLError();
 }
@@ -129,7 +134,7 @@ void FrameBufferObject::setParameter(GLenum pname, GLint param)
 void FrameBufferObject::attachTexture(GLenum attachment, Texture* texture, GLint level)
 {
 	bind();
-	
+
 	glFramebufferTexture(_target, attachment, texture->id(), level);
 	CheckGLError();
 	attach(new TextureAttachment(texture, attachment));
@@ -138,30 +143,30 @@ void FrameBufferObject::attachTexture(GLenum attachment, Texture* texture, GLint
 void FrameBufferObject::attachTexture1D(GLenum attachment, Texture* texture, GLint level)
 {
 	bind();
-	
+
 	glFramebufferTexture1D(_target, attachment, texture->target(), texture->id(), level);
 	CheckGLError();
-	
+
 	attach(new TextureAttachment(texture, attachment));
 }
 
 void FrameBufferObject::attachTexture2D(GLenum attachment, Texture* texture, GLint level)
 {
 	bind();
-	
+
 	glFramebufferTexture2D(_target, attachment, texture->target(), texture->id(), level);
 	CheckGLError();
-	
+
 	attach(new TextureAttachment(texture, attachment));
 }
 
 void FrameBufferObject::attachTextureLayer(GLenum attachment, Texture* texture, GLint level, GLint layer)
 {
 	bind();
-	
+
 	glFramebufferTextureLayer(_target, attachment, texture->id(), level, layer);
 	CheckGLError();
-	
+
 	attach(new TextureAttachment(texture, attachment));
 }
 
@@ -169,10 +174,10 @@ void FrameBufferObject::attachRenderBuffer(GLenum attachment, RenderBufferObject
 {
 	bind();
 	renderBuffer->bind();
-	
+
 	glFramebufferRenderbuffer(_target, attachment, GL_RENDERBUFFER, renderBuffer->id());
 	CheckGLError();
-	
+
 	attach(new RenderBufferAttachment(renderBuffer, attachment));
 }
 
@@ -184,7 +189,7 @@ void FrameBufferObject::attach(ColorAttachment* attachment)
 void FrameBufferObject::setReadBuffer(GLenum mode)
 {
 	bind(GL_READ_FRAMEBUFFER);
-	
+
 	glReadBuffer(mode);
 	CheckGLError();
 }
@@ -192,7 +197,7 @@ void FrameBufferObject::setReadBuffer(GLenum mode)
 void FrameBufferObject::setDrawBuffer(GLenum mode)
 {
 	bind(GL_DRAW_FRAMEBUFFER);
-	
+
 	glDrawBuffer(mode);
 	CheckGLError();
 }
@@ -200,7 +205,7 @@ void FrameBufferObject::setDrawBuffer(GLenum mode)
 void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum* modes)
 {
 	bind(GL_DRAW_FRAMEBUFFER);
-	
+
 	glDrawBuffers(n, modes);
 	CheckGLError();
 }
@@ -208,7 +213,7 @@ void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum* modes)
 void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* data)
 {
 	bind(GL_FRAMEBUFFER);
-	
+
 	glReadPixels(x, y, width, height, format, type, data);
 	CheckGLError();
 }
@@ -229,7 +234,7 @@ void FrameBufferObject::blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
 GLenum FrameBufferObject::checkStatus()
 {
 	bind();
-	
+
 	GLenum result = glCheckFramebufferStatus(_target);
 	CheckGLError();
 	return result;

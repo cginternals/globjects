@@ -11,20 +11,28 @@ RenderBufferObject::RenderBufferObject()
 {
 }
 
-void RenderBufferObject::deleteGLObject()
+RenderBufferObject::~RenderBufferObject()
 {
-	glDeleteRenderbuffers(1, &m_id);
-	CheckGLError();
+	if (ownsGLObject())
+	{
+		glDeleteRenderbuffers(1, &m_id);
+		CheckGLError();
+	}
 }
 
 GLuint RenderBufferObject::genRenderBuffer()
 {
 	GLuint id = 0;
-	
+
 	glGenRenderbuffers(1, &id);
 	CheckGLError();
-	
+
 	return id;
+}
+
+const char* RenderBufferObject::typeName() const
+{
+	return "RenderBufferObject";
 }
 
 void RenderBufferObject::bind()
@@ -42,7 +50,7 @@ void RenderBufferObject::unbind()
 void RenderBufferObject::storage(GLenum internalformat, GLsizei width, GLsizei height)
 {
 	bind();
-	
+
 	glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
 	CheckGLError();
 }
@@ -50,7 +58,7 @@ void RenderBufferObject::storage(GLenum internalformat, GLsizei width, GLsizei h
 void RenderBufferObject::storageMultisample(GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
 {
 	bind();
-	
+
 	glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, internalformat, width, height);
 	CheckGLError();
 }
