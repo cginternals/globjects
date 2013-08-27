@@ -207,6 +207,8 @@ set(api_includes
     ${header_path}/LogMessage.h
     ${header_path}/KeyEvent.h
     ${header_path}/Object.h
+    ${header_path}/ObjectProperties.h
+    ${header_path}/ObjectRegistry.h
     ${header_path}/Program.h
     ${header_path}/Program.hpp
     ${header_path}/query.h
@@ -255,6 +257,8 @@ set(sources
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/Object.cpp
+    ${source_path}/ObjectProperties.cpp
+    ${source_path}/ObjectRegistry.cpp
     ${source_path}/Program.cpp
     ${source_path}/query.cpp
     ${source_path}/RawFile.cpp
