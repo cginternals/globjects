@@ -125,8 +125,9 @@ void Program::link()
 	checkLinkStatus();
 	m_dirty = false;
 
+	IF_DEBUG(m_properties.setMemory(get(GL_PROGRAM_BINARY_LENGTH));)
+
 	updateUniforms();
-	CheckGLError();
 }
 
 void Program::bindFragDataLocation(GLuint index, const std::string& name)
@@ -194,12 +195,18 @@ void Program::updateUniforms()
 }
 }
 
+GLint Program::get(GLenum pname) const
+{
+	GLint value;
+	glGetProgramiv(m_id, pname, &value);
+	CheckGLError();
+
+	return value;
+}
+
 const std::string Program::infoLog() const
 {
-	GLsizei length;
-
-	glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &length);
-	CheckGLError();
+	GLint length = get(GL_INFO_LOG_LENGTH);
 
 	std::vector<char> log(length);
 
@@ -211,12 +218,7 @@ const std::string Program::infoLog() const
 
 void Program::checkLinkStatus()
 {
-	GLint status = 0;
-
-	glGetProgramiv(m_id, GL_LINK_STATUS, &status);
-	CheckGLError();
-
-	m_linked = (status == GL_TRUE);
+	m_linked = get(GL_LINK_STATUS) == GL_TRUE;
 
 	if (!m_linked)
 	{

@@ -17,6 +17,7 @@ Shader::Shader(GLenum type)
 , _source(nullptr)
 , _compiled(false)
 {
+	IF_DEBUG(m_properties.setString("type", typeString());)
 }
 
 Shader::Shader(GLenum type, ShaderSource* source)
@@ -110,6 +111,17 @@ void Shader::updateSource()
 
 		compile();
 	}
+
+	IF_DEBUG(
+			if (_source)
+			{
+				m_properties.setString("source", _source->isFile() ? dynamic_cast<const ShaderFile*>(*_source)->filePath() : "string");
+			}
+			else
+			{
+				m_properties.clearString("source");
+			}
+	)
 }
 
 void Shader::basicSetSource(const std::string& source)

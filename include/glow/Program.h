@@ -40,7 +40,7 @@ public:
 	void invalidate();
 
 	const std::string infoLog() const;
-
+	GLint get(GLenum pname) const;
 
 	GLint getAttributeLocation(const std::string& name);
 	GLint getUniformLocation(const std::string& name);

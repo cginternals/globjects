@@ -22,6 +22,8 @@ public:
 	std::string info() const;
 protected:
 	std::set<Object*> m_objects;
+
+	std::string humanReadableSize(unsigned bytes) const;
 };
 
 } // namespace glow
