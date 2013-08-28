@@ -117,16 +117,13 @@ void Shader::updateSource()
         m_currentSource = m_source->source();
 	}
 
-	IF_DEBUG(
-			if (m_source)
-			{
-				m_properties.setString("source", m_source->isFile() ? dynamic_cast<ShaderFile&>(*m_source).filePath() : "string");
-			}
-			else
-			{
-				m_properties.clearString("source");
-			}
-	)
+	IF_DEBUG
+    (
+    if (m_source)
+    	m_properties.setString("source", m_source->isFile() ? dynamic_cast<ShaderFile&>(*m_source).filePath() : "string");
+    else
+		m_properties.clearString("source");
+    )
 }
 
 void Shader::setSource(

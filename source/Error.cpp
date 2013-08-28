@@ -8,10 +8,20 @@
 #include <glow/logging.h>
 #include <glow/Error.h>
 
+#ifdef WIN32
+#include <GL/wglew.h>
+#elif __APPLE__
+#else
+#include <GL/glxew.h>
+#endif
+
+
 namespace glow
 {
 
 bool Error::s_checking(true);
+std::unordered_map<int, int> Error::s_userParamsByContextID;
+
 
 Error::Error(GLenum errorCode)
 :   m_errorCode(errorCode)
@@ -112,13 +122,7 @@ std::string Error::errorString(GLenum errorCode)
 
 // ARB_debug_output
 
-bool  Error::setupDebugOutput(
-    const bool asynchronous)
-{
-    return false;
-}
-
-void Error::callback(
+void APIENTRY callback(
     GLenum source
 ,   GLenum type
 ,   GLuint id
@@ -127,7 +131,81 @@ void Error::callback(
 ,   const char * message
 ,   void * param)
 {
-    fatal() << message;
+    std::stringstream output;
+
+    output << "(id " << id << ", context " << *(reinterpret_cast<int*>(param)) << ", ";
+
+    switch (severity)
+    {
+    case GL_DEBUG_SEVERITY_HIGH_ARB:
+        output << "high"; break;
+    case GL_DEBUG_SEVERITY_MEDIUM_ARB:
+        output << "medium"; break;
+    case GL_DEBUG_SEVERITY_LOW_ARB:
+        output << "low"; break;
+    }
+
+    output << " severity) ";
+
+    switch (source)
+    {
+    case GL_DEBUG_SOURCE_API_ARB:
+        output << "API"; break;
+    case GL_DEBUG_SOURCE_WINDOW_SYSTEM_ARB:
+        output << "Window System"; break;
+    case GL_DEBUG_SOURCE_SHADER_COMPILER_ARB:
+        output << "Shader Compiler"; break;
+    case GL_DEBUG_SOURCE_THIRD_PARTY_ARB:
+        output << "Third Party"; break;
+    case GL_DEBUG_SOURCE_APPLICATION_ARB:
+        output << "Application"; break;
+    case GL_DEBUG_SOURCE_OTHER_ARB:
+        output << "Other"; break;
+    }
+
+    switch (type)
+    {
+    case GL_DEBUG_TYPE_OTHER_ARB:
+    case GL_DEBUG_TYPE_ERROR_ARB:
+        fatal() << output.str() << ":"                       << std::endl << message; break;
+    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB:
+        debug() << output.str() << " - deprecated behavior:" << std::endl << message; break;
+    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB:
+        warning() << output.str() << " - undefined behavior:" << std::endl << message; break;
+    case GL_DEBUG_TYPE_PORTABILITY_ARB:
+        debug() << output.str() << " - portability issue:"    << std::endl << message; break;
+    case GL_DEBUG_TYPE_PERFORMANCE_ARB:
+        debug() << output.str() << " - performance issue:"    << std::endl << message; break;
+    }
+}
+
+bool Error::setupDebugOutput(
+    const bool asynchronous)
+{
+    if (!GLEW_ARB_debug_output)
+        return false;
+
+#ifdef WIN32
+    const HGLRC handle = wglGetCurrentContext();
+    const int contextID = reinterpret_cast<int>(handle);
+#elif __APPLE__
+
+#else
+    const GLXContext handle = glXGetCurrentContext();
+    const int contextID = reinterpret_cast<int>(handle);
+#endif
+
+    glDebugMessageCallback(callback, &s_userParamsByContextID[contextID]);
+    CheckGLError();
+    s_userParamsByContextID[contextID] = contextID;
+
+    glEnable(GL_DEBUG_OUTPUT);
+    if (asynchronous)
+        glDisable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    else
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+
+    return true;
 }
 
 

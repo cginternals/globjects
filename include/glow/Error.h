@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 #include <GL/glew.h>
 
@@ -52,7 +53,8 @@ public:
         adjustments to error type and severity per context.
 
         To avoid performance loss (even in DEBUG mode) this needs to be set
-        manually for every context required.
+        manually for every context required. Further, in DEBUG, the default 
+        global gl error checking needs to be disabled manually.
 
         Note: this requires the GL_ARB_debug_output extension. Or at least a
         4.3 core profile. The output can be locally disabled via glEnable and
@@ -61,35 +63,19 @@ public:
     static bool setupDebugOutput(
         const bool asynchronous = true);
 
-    //static void setDebugOutput
-    //,   DEBUG_SOURCE_API_ARB                              0x8246
-    //    DEBUG_SOURCE_WINDOW_SYSTEM_ARB                    0x8247
-    //    DEBUG_SOURCE_SHADER_COMPILER_ARB                  0x8248
-    //    DEBUG_SOURCE_THIRD_PARTY_ARB                      0x8249
-    //    DEBUG_SOURCE_APPLICATION_ARB                      0x824A
-    //    DEBUG_SOURCE_OTHER_ARB);
-
-protected:
-    static void callback(
-        GLenum source
-    ,   GLenum type
-    ,   GLuint id
-    ,   GLenum severity
-    ,   GLsizei length
-    ,   const char * message
-    ,   void * param);
-
 protected:
 	GLenum m_errorCode;
 
 protected:
     static bool s_checking;
+
+    static std::unordered_map<int, int> s_userParamsByContextID;
 };
 
 #ifdef NDEBUG
 #define CheckGLError() false
 #else
-#define CheckGLError() glow::Error::get(__FILE__, __LINE__);
+#define CheckGLError() glow::Error::get(__FILE__, __LINE__)
 #endif
 
 } // namespace glow

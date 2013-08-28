@@ -4,13 +4,13 @@
 #include <glow/ConsoleLogger.h>
 
 
-namespace glow {
+namespace glow 
+{
 
-namespace {
-
+namespace 
+{
 LogMessage::Level g_verbosityLevel = LogMessage::Info;
-AbstractLogHandler* g_logHandler = new ConsoleLogger();
-
+AbstractLogHandler * g_logHandler = new ConsoleLogger();
 }
 
 LogMessageBuilder info(LogMessage::Level level)
