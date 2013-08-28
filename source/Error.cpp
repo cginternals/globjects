@@ -38,7 +38,7 @@ Error Error::current()
 	return Error(glGetError());
 }
 
-inline bool Error::isChecking()
+bool Error::isChecking()
 {
     return s_checking;
 }

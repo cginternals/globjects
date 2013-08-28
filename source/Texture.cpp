@@ -1,8 +1,10 @@
 
-#include <glow/Texture.h>
-#include <glow/Error.h>
+#include <algorithm>
 
+#include <glow/Error.h>
 #include <glow/logging.h>
+
+#include <glow/Texture.h>
 
 namespace glow
 {
@@ -82,7 +84,7 @@ void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei 
 	glTexImage2D(_target, level, internalFormat, width, height, border, format, type, data);
 	CheckGLError();
 
-	_maxLevel = std::max(_maxLevel, level);
+	_maxLevel = std::max<GLint>(_maxLevel, level);
 	IF_DEBUG(m_properties.setMemory(computeTextureSize());)
 }
 

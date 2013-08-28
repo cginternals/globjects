@@ -18,7 +18,7 @@ public:
 
 	static Error current();
 
-    static inline bool isChecking();
+    static bool isChecking();
     static void setChecking(const bool enable);
 
     static bool check(const char* file, int line);
