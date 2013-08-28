@@ -1,8 +1,8 @@
 
 # GLM_FOUND
-# GLM_INCLUDE_PATH
+# GLM_INCLUDE_DIR
 
-FIND_PATH(GLM_INCLUDE_PATH glm/glm.hpp
+FIND_PATH(GLM_INCLUDE_DIR glm/glm.hpp
     $ENV{GLM_HOME}
     $ENV{GLMDIR}
     /usr/include
@@ -11,7 +11,7 @@ FIND_PATH(GLM_INCLUDE_PATH glm/glm.hpp
     /opt/local/include
     DOC "The directory where glm/glm.hpp resides.")
     
-IF(GLM_INCLUDE_PATH)
+IF(GLM_INCLUDE_DIR)
   SET(GLM_FOUND 1 CACHE STRING "Set to 1 if GLM is found, 0 otherwise")
 ELSE()
   SET(GLM_FOUND 0 CACHE STRING "Set to 1 if GLM is found, 0 otherwise")

@@ -1,14 +1,12 @@
 
 # GLEW_FOUND
-# GLEW_INCLUDE_PATH
+# GLEW_INCLUDE_DIR
 # GLEW_LIBRARY
 
 IF(X64)
 
-    FIND_PATH(GLEW_INCLUDE_PATH GL/glew.h
-        ${PROJECT_SOURCE_DIR}/3rdparty/glew-1.9.0-win64/include
-        $ENV{TMR_HOME}/../3rdparty/glew-1.9.0-win64/include
-        $ENV{GLEW_DIR}/include
+    FIND_PATH(GLEW_INCLUDE_DIR GL/glew.h
+        $ENV{GLEWDIR}/include
         $ENV{GLEW_HOME}/include
         $ENV{PROGRAMFILES}/GLEW/include
         /usr/include
@@ -20,9 +18,7 @@ IF(X64)
     FIND_LIBRARY(GLEW_LIBRARY
         NAMES GLEW glew glew32 glew32s
         PATHS
-        ${PROJECT_SOURCE_DIR}/3rdparty/glew-1.9.0-win64/lib
-        $ENV{TMR_HOME}/../3rdparty/glew-1.9.0-win64/lib
-        $ENV{GLEW_DIR}/lib
+        $ENV{GLEWDIR}/lib
         $ENV{GLEW_HOME}/lib
         /usr/lib64
         /usr/local/lib64
@@ -32,10 +28,8 @@ IF(X64)
 
 ELSE()
 
-    FIND_PATH( GLEW_INCLUDE_PATH GL/glew.h
-        ${PROJECT_SOURCE_DIR}/3rdparty/glew-1.7.0/include
-        $ENV{TMR_HOME}/../3rdparty/glew-1.7.0/include
-        $ENV{GLEW_DIR}/include
+    FIND_PATH( GLEW_INCLUDE_DIR GL/glew.h
+        $ENV{GLEWDIR}/include
         $ENV{GLEW_HOME}/include
         $ENV{PROGRAMFILES}/GLEW/include
         /usr/include
@@ -47,9 +41,7 @@ ELSE()
     FIND_LIBRARY(GLEW_LIBRARY
         NAMES GLEW glew glew32 glew32s
         PATHS
-        ${PROJECT_SOURCE_DIR}/3rdparty/glew-1.7.0/lib
-        $ENV{TMR_HOME}/../3rdparty/glew-1.7.0/lib
-        $ENV{GLEW_DIR}/lib
+        $ENV{GLEWDIR}/lib
         $ENV{GLEW_HOME}/lib
         /usr/lib
         /usr/local/lib
@@ -59,7 +51,7 @@ ELSE()
 
 ENDIF()
     
-IF(GLEW_INCLUDE_PATH AND GLEW_LIBRARY)
+IF(GLEW_INCLUDE_DIR AND GLEW_LIBRARY)
     SET(GLEW_FOUND 1 CACHE STRING "Set to 1 if GLEW is found, 0 otherwise")
 ELSE()
     SET(GLEW_FOUND 0 CACHE STRING "Set to 1 if GLEW is found, 0 otherwise")
