@@ -29,6 +29,16 @@ const std::string & ShaderFile::source()
 	return m_source;
 }
 
+bool ShaderFile::isFile() const
+{
+	return true;
+}
+
+std::string ShaderFile::filePath() const
+{
+	return m_filePath;
+}
+
 void ShaderFile::reload()
 {
     RawFile<char> raw(m_filePath);

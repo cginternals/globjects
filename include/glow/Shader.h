@@ -24,6 +24,8 @@ public:
 	Shader(GLenum type, ShaderSource* source);
 	virtual ~Shader();
 
+	virtual const char* typeName() const;
+
 	static Shader* fromFile(GLenum type, const std::string& filename);
 	static Shader* fromSource(GLenum type, const std::string& source);
 
@@ -42,7 +44,8 @@ protected:
 	void updateSource();
 	void basicSetSource(const std::string& source);
 	bool checkCompileStatus();
-	std::string typeString();
+	std::string typeString() const;
+	std::string shaderString() const;
 protected:
 	GLenum _type;
     ref_ptr<ShaderSource> _source;

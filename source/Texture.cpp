@@ -35,7 +35,7 @@ GLenum Texture::target() const
 void Texture::setParameter(GLenum name, GLint value)
 {
 	bind();
-	
+
 	glTexParameteri(_target, name, value);
 	CheckGLError();
 }
@@ -43,7 +43,7 @@ void Texture::setParameter(GLenum name, GLint value)
 void Texture::setParameter(GLenum name, GLfloat value)
 {
 	bind();
-	
+
 	glTexParameterf(_target, name, value);
 	CheckGLError();
 }
@@ -63,7 +63,7 @@ void Texture::unbind()
 void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data)
 {
 	bind();
-	
+
 	glTexImage2D(_target, level, internalFormat, width, height, border, format, type, data);
 	CheckGLError();
 }
@@ -71,7 +71,7 @@ void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei 
 void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height)
 {
 	bind();
-	
+
 	glTexStorage2D(_target, levels, internalFormat, width, height);
 	CheckGLError();
 }
@@ -79,7 +79,7 @@ void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GL
 void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)
 {
 	bind();
-	
+
 	glBindImageTexture(unit, m_id, level, layered, layer, access, format);
 	CheckGLError();
 }
@@ -87,7 +87,7 @@ void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLin
 void Texture::generateMipmap()
 {
 	bind();
-	
+
 	glGenerateMipmap(_target);
 	CheckGLError();
 }
@@ -95,11 +95,16 @@ void Texture::generateMipmap()
 GLuint Texture::genTexture()
 {
 	GLuint id = 0;
-	
+
 	glGenTextures(1, &id);
 	CheckGLError();
-	
+
 	return id;
+}
+
+const char* Texture::typeName() const
+{
+	return "Texture";
 }
 
 Texture::Handle Texture::textureHandle() const
@@ -123,7 +128,7 @@ Texture::Handle Texture::makeResident()
 
 	glMakeTextureHandleResidentNV(handle);
 	CheckGLError();
-	
+
 	return handle;
 }
 
@@ -131,6 +136,21 @@ void Texture::makeNonResident()
 {
 	glMakeTextureHandleNonResidentNV(textureHandle());
 	CheckGLError();
+}
+
+Texture::Handle::Handle()
+: value(0)
+{
+}
+
+Texture::Handle::Handle(const GLuint64& value)
+: value(value)
+{
+}
+
+Texture::Handle::operator GLuint64() const
+{
+	return value;
 }
 
 } // namespace glow

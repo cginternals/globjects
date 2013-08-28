@@ -15,16 +15,17 @@ public:
 	Object(GLuint id, bool ownsGLObject = true);
 	virtual ~Object();
 
-	GLuint id() const;
+	virtual const char* typeName() const = 0;
 
+	GLuint id() const;
 	operator GLuint() const;
-	
+
+	bool ownsGLObject() const;
+public:
 	bool isTransformFeedback() const;
 protected:
 	GLuint m_id;
 	bool m_ownsGLObject;
-
-	bool ownsGLObject() const;
 private:
 	Object(const Object&);
 	Object& operator=(const Object&);

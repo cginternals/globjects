@@ -8,12 +8,11 @@ namespace glow
 TransformFeedback::TransformFeedback()
 : Object(genTransformFeedback())
 {
-	
 }
 
 TransformFeedback::~TransformFeedback()
 {
-	if (m_id)
+	if (ownsGLObject())
 	{
 		glDeleteTransformFeedbacks(1, &m_id);
 		CheckGLError();
@@ -23,11 +22,16 @@ TransformFeedback::~TransformFeedback()
 GLuint TransformFeedback::genTransformFeedback()
 {
 	GLuint id;
-	
+
 	glGenTransformFeedbacks(1, &id);
 	CheckGLError();
-	
+
 	return id;
+}
+
+const char* TransformFeedback::typeName() const
+{
+	return "TransformFeedback";
 }
 
 void TransformFeedback::bind()
@@ -45,7 +49,7 @@ void TransformFeedback::unbind()
 void TransformFeedback::begin(GLenum primitiveMode)
 {
 	//~ bind(); // no autobind?
-	
+
 	glBeginTransformFeedback(primitiveMode);
 	CheckGLError();
 }
@@ -53,7 +57,7 @@ void TransformFeedback::begin(GLenum primitiveMode)
 void TransformFeedback::pause()
 {
 	//~ bind(); // no autobind?
-	
+
 	glPauseTransformFeedback();
 	CheckGLError();
 }
@@ -61,7 +65,7 @@ void TransformFeedback::pause()
 void TransformFeedback::resume()
 {
 	//~ bind(); // no autobind?
-	
+
 	glResumeTransformFeedback();
 	CheckGLError();
 }
@@ -69,7 +73,7 @@ void TransformFeedback::resume()
 void TransformFeedback::end()
 {
 	//~ bind(); // no autobind?
-	
+
 	glEndTransformFeedback();
 	CheckGLError();
 }
@@ -77,7 +81,7 @@ void TransformFeedback::end()
 void TransformFeedback::draw(GLenum primitiveMode)
 {
 	bind();
-	
+
 	glDrawTransformFeedback(primitiveMode, m_id);
 	CheckGLError();
 }
@@ -85,10 +89,10 @@ void TransformFeedback::draw(GLenum primitiveMode)
 void TransformFeedback::setVaryings(Program* program, GLsizei count, const char** varyingNames, GLenum bufferMode)
 {
 	bind();
-	
+
 	glTransformFeedbackVaryings(program->id(), count, varyingNames, bufferMode);
 	CheckGLError();
-	
+
 	program->invalidate();
 }
 

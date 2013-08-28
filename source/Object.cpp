@@ -38,7 +38,7 @@ bool Object::ownsGLObject() const
 
 bool Object::isTransformFeedback() const
 {
-	bool result = 1 == glIsTransformFeedback(m_id);
+	bool result = GL_TRUE == glIsTransformFeedback(m_id);
 	CheckGLError();
 	return result;
 }

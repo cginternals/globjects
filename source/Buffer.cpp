@@ -19,8 +19,8 @@ Buffer::Buffer(GLenum target)
 {
 }
 
-Buffer::Buffer(GLuint id, GLenum target, bool ownsGLObject)
-: Object(id, ownsGLObject)
+Buffer::Buffer(GLuint id, GLenum target)
+: Object(id, false)
 , _target(target)
 {
 }
@@ -37,11 +37,16 @@ GLuint Buffer::genBuffer()
 
 Buffer::~Buffer()
 {
-	if (m_id)
+	if (ownsGLObject())
 	{
 		glDeleteBuffers(1, &m_id);
 		CheckGLError();
 	}
+}
+
+const char* Buffer::typeName() const
+{
+	return "Buffer";
 }
 
 void Buffer::bind()

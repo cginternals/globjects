@@ -20,7 +20,9 @@ class GLOW_API VertexArrayObject : public Object
 public:
 	VertexArrayObject();
 	VertexArrayObject(GLuint id, bool ownsGLObject = true);
-	~VertexArrayObject();
+	virtual ~VertexArrayObject();
+
+	virtual const char* typeName() const;
 
 	void bind();
 	void unbind();

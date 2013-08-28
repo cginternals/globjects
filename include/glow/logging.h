@@ -63,7 +63,8 @@ GLOW_API LogMessage::Level verbosityLevel();
 
 	Sample usage:
 	\code{.cpp}
-		debug("This is a test: %; pi = %+0E10.5;", 42, 3.141592653589793);
+		debug("This is a test: %; pi = %+0E10.5;", 42, 3.141592653589793); // output: "This is a test: 42 pi = +3.14159E+00"
+		debug("%; - %X; - %rf?_10.2;", "a string", 255, 2.71828182846); // output: "a string - 255 - ______2.72"
 	\endcode
 
 	\see debug

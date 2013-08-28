@@ -264,6 +264,7 @@ set(sources
     ${source_path}/Shader.cpp
     ${source_path}/ShaderCode.cpp
     ${source_path}/ShaderFile.cpp
+    ${source_path}/ShaderSource.cpp
     ${source_path}/Texture.cpp
     ${source_path}/Timer.cpp
     ${source_path}/TransformFeedback.cpp

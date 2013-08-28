@@ -11,6 +11,9 @@ class GLOW_API RenderBufferObject : public Object
 {
 public:
 	RenderBufferObject();
+	virtual ~RenderBufferObject();
+
+	const char* typeName() const;
 
 	void bind();
 	void unbind();
@@ -19,7 +22,6 @@ public:
 	void storageMultisample(GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
 protected:
 	static GLuint genRenderBuffer();
-	virtual void deleteGLObject();
 };
 
 } // namespace glow

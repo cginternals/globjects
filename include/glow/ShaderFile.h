@@ -18,6 +18,9 @@ public:
 	virtual ~ShaderFile();
 
 	virtual const std::string & source();
+	virtual bool isFile() const;
+
+	std::string filePath() const;
 
 	void reload();
 	static void reloadAll();
