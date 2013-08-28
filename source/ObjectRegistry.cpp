@@ -2,7 +2,6 @@
 #include <glow/logging.h>
 
 #include <sstream>
-#include <vector>
 #include <algorithm>
 #include <iomanip>
 
@@ -54,30 +53,43 @@ std::string ObjectRegistry::humanReadableSize(unsigned bytes) const
 	return ss.str();
 }
 
-std::string ObjectRegistry::info() const
+std::string ObjectRegistry::name(Object* object) const
 {
-	IF_NDEBUG(return "This feature is only available in debug mode.");
-
 	std::stringstream ss;
 
-	std::unordered_map<std::string, std::vector<Object*>> sortedObjects;
+	ss << object->typeName() << " (" << object->id();
+	if (!object->name().empty()) ss << ", " << object->name();
+	ss << ")";
+
+	return ss.str();
+}
+
+std::vector<ObjectRegistry::ObjectInfoGroup> ObjectRegistry::infoGroups() const
+{
+	IF_NDEBUG(return std::vector<ObjectInfoGroup>();)
+
+	std::unordered_map<std::string, std::vector<Object*>> groupedObjects;
 
 	for (Object* object: m_objects)
 	{
-		sortedObjects[object->typeName()].push_back(object);
+		groupedObjects[object->typeName()].push_back(object);
 	}
 
-	//std::sort(pair.second.begin(), pair.second.end(), [](Object* o1, Object* o2) { return o1->id() < o2->id(); });
+	std::vector<ObjectInfoGroup> groups;
 
-	for (const std::pair<std::string, std::vector<Object*>>& pair: sortedObjects)
+	for (std::pair<std::string, std::vector<Object*>> pair: groupedObjects)
 	{
-		ss << pair.first << "s:" << std::endl;
+		std::vector<Object*> objects = pair.second;
+		std::sort(objects.begin(), objects.end(), [](Object* o1, Object* o2) { return o1->id() < o2->id(); });
 
-		for (Object* object: pair.second)
+		ObjectInfoGroup group;
+		group.name = pair.first + "s";
+
+		for (Object* object: objects)
 		{
-			ss << " - " << object->typeName() << " (" << object->id();
-			if (!object->name().empty()) ss << ", " << object->name();
-			ss << ")" << std::endl;
+			ObjectInfo info;
+			info.name = name(object);
+
 			for (const std::pair<std::string, unsigned>& pair: object->properties().properties())
 			{
 				std::string value = std::to_string(pair.second);
@@ -85,11 +97,38 @@ std::string ObjectRegistry::info() const
 				{
 					value = humanReadableSize(pair.second);
 				}
-				ss << "\t" << pair.first << ": " << value << std::endl;
+				info.properties.push_back(KeyValuePair{pair.first, value});
 			}
+
 			for (const std::pair<std::string, std::string>& pair: object->properties().stringProperties())
 			{
-				ss << "\t" << pair.first << ": " << pair.second << std::endl;
+				info.properties.push_back(KeyValuePair{pair.first, pair.second});
+			}
+
+			group.objects.push_back(info);
+		}
+
+		groups.push_back(group);
+	}
+
+	return groups;
+}
+
+std::string ObjectRegistry::info() const
+{
+	IF_NDEBUG(return "This feature is only available in debug mode.";)
+
+	std::stringstream ss;
+
+	for (const ObjectInfoGroup& group: infoGroups())
+	{
+		ss << group.name << ":" << std::endl;
+		for (const ObjectInfo& info: group.objects)
+		{
+			ss << "\t" << info.name << std::endl;
+			for (const KeyValuePair& pair: info.properties)
+			{
+				ss << "\t\t" <<  pair.key << ": " << pair.value << std::endl;
 			}
 		}
 	}
