@@ -75,9 +75,9 @@ template<> void Uniform<glm::uvec2>::set(const GLint location, const glm::uvec2 
 template<> void Uniform<glm::uvec3>::set(const GLint location, const glm::uvec3 & value);
 template<> void Uniform<glm::uvec4>::set(const GLint location, const glm::uvec4 & value);
 
-template<> void Uniform<glm::mat2> ::set(const GLint location, const glm::mat2 & value);
-template<> void Uniform<glm::mat3> ::set(const GLint location, const glm::mat3 & value);
-template<> void Uniform<glm::mat4> ::set(const GLint location, const glm::mat4 & value);
+template<> void Uniform<glm::mat2>::set(const GLint location, const glm::mat2 & value);
+template<> void Uniform<glm::mat3>::set(const GLint location, const glm::mat3 & value);
+template<> void Uniform<glm::mat4>::set(const GLint location, const glm::mat4 & value);
 
 template<> void Uniform<glm::mat2x3>::set(const GLint location, const glm::mat2x3 & value);
 template<> void Uniform<glm::mat3x2>::set(const GLint location, const glm::mat3x2 & value);
@@ -113,9 +113,7 @@ template<> void Uniform<Array<glm::mat4x2>>::set(const GLint location, const Arr
 template<> void Uniform<Array<glm::mat3x4>>::set(const GLint location, const Array<glm::mat3x4> & value);
 template<> void Uniform<Array<glm::mat4x3>>::set(const GLint location, const Array<glm::mat4x3> & value);
 
-#ifdef GL_NV_bindless_texture
 template<> void Uniform<Texture::Handle>::set(const GLint location, const Texture::Handle & value);
 template<> void Uniform<glow::Array<Texture::Handle>>::set(const GLint location, const Array<Texture::Handle> & value);
-#endif
 
 } // namespace glow

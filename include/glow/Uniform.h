@@ -31,13 +31,13 @@ template<typename T>
 class GLOW_API Uniform : public AbstractUniform
 {
 public:
-	Uniform(const std::string & name);
-	Uniform(const std::string & name, const T & value);
-	virtual ~Uniform();
+    Uniform(const std::string & name);
+    Uniform(const std::string & name, const T & value);
+    virtual ~Uniform();
 
-	void set(const T & value);
+    void set(const T & value);
 
-	const T & value() const;
+    const T & value() const;
 
 protected:
 	virtual void setLocation(const GLint location);
@@ -46,7 +46,7 @@ protected:
 	,	const T & value);
 
 protected:
-	T m_value; ///< The uniforms value, explictly required when relinking programs.
+    T m_value; ///< The uniforms value, explictly required when relinking programs.
 };
 
 } // namespace glow

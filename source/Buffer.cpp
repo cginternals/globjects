@@ -155,7 +155,7 @@ void Buffer::copySubData(glow::Buffer* buffer, GLsizeiptr size)
 void Buffer::copyData(glow::Buffer* buffer, GLsizeiptr size, GLenum usage)
 {
 	buffer->bind(GL_COPY_WRITE_BUFFER);
-	buffer->setData(size, nullptr, usage);
+	buffer->setData(static_cast<GLsizei>(size), nullptr, usage);
 	copySubData(buffer, 0, 0, size);
 }
 
