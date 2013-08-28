@@ -17,7 +17,8 @@ set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glow/")
 option(OPTION_LIMIT_CONFIGS  "Generate limited configs (Release; Debug)" ON)
 option(OPTION_LOCAL_INSTALL  "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
-option(OPTION_BUILD_EXAMPLES "Build examples" ON)
+option(OPTION_MINIMAL        "Exclude examples, window, context, and event handling related classes." OFF)
+option(OPTION_BUILD_EXAMPLES "Build examples" OFF)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
 
 # CMAKE CONFIGURATION
@@ -196,8 +197,6 @@ set(api_includes
     ${header_path}/Changeable.h
     ${header_path}/ChangeListener.h
     ${header_path}/ConsoleLogger.h
-    ${header_path}/Context.h
-    ${header_path}/ContextFormat.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferObject.h
     ${header_path}/formatString.h
@@ -205,7 +204,6 @@ set(api_includes
     ${header_path}/logging.h
     ${header_path}/logging.hpp
     ${header_path}/LogMessage.h
-    ${header_path}/KeyEvent.h
     ${header_path}/Object.h
     ${header_path}/Program.h
     ${header_path}/Program.hpp
@@ -228,30 +226,19 @@ set(api_includes
     ${header_path}/Version.h
     ${header_path}/VertexArrayObject.h
     ${header_path}/VertexAttributeBinding.h
-    ${header_path}/Window.h
-    ${header_path}/WindowEventHandler.h
 )
 
 set(sources
     ${source_path}/AbstractUniform.cpp
-    ${source_path}/AbstractNativeContext.cpp
-    ${source_path}/AbstractNativeContext.h
-    ${source_path}/AbstractNativeWindow.cpp
-    ${source_path}/AbstractNativeWindow.h
     ${source_path}/AutoTimer.cpp
     ${source_path}/Buffer.cpp
     ${source_path}/Changeable.cpp
     ${source_path}/ChronoTimer.cpp
     ${source_path}/ChronoTimer.h
     ${source_path}/ConsoleLogger.cpp
-    ${source_path}/Context.cpp
-    ${source_path}/ContextFormat.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
-    ${source_path}/GLxContext.cpp
-    ${source_path}/GLxContext.h
-    ${source_path}/KeyEvent.cpp
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/Object.cpp
@@ -272,6 +259,28 @@ set(sources
     ${source_path}/Version.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
+)
+
+if(NOT OPTION_MINIMAL)
+
+set(api_includes ${api_includes}
+    ${header_path}/Context.h
+    ${header_path}/ContextFormat.h
+    ${header_path}/KeyEvent.h
+    ${header_path}/Window.h
+    ${header_path}/WindowEventHandler.h
+    )
+
+set(sources ${sources}
+    ${source_path}/AbstractNativeContext.cpp
+    ${source_path}/AbstractNativeContext.h
+    ${source_path}/AbstractNativeWindow.cpp
+    ${source_path}/AbstractNativeWindow.h
+    ${source_path}/Context.cpp
+    ${source_path}/ContextFormat.cpp
+    ${source_path}/GLxContext.cpp
+    ${source_path}/GLxContext.h
+    ${source_path}/KeyEvent.cpp
     ${source_path}/Window.cpp
     ${source_path}/WGLContext.cpp
     ${source_path}/WGLContext.h
@@ -281,6 +290,7 @@ set(sources
     ${source_path}/X11Window.cpp
     ${source_path}/X11Window.h
 )
+endif()
 
 # Group source files
 set(glow_header_group "Header Files (API)")
@@ -324,7 +334,7 @@ set(GLOW_EXAMPLES_FOLDER "Examples")
 unset(sources)
 unset(api_includes)
 
-if(OPTION_BUILD_EXAMPLES)
+if(OPTION_BUILD_EXAMPLES AND NOT OPTION_MINIMAL)
     add_subdirectory(examples)
 endif()
 
