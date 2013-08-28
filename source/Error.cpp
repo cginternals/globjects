@@ -11,6 +11,8 @@
 namespace glow
 {
 
+bool Error::s_checking(true);
+
 Error::Error(GLenum errorCode)
 :   m_errorCode(errorCode)
 {
@@ -36,8 +38,20 @@ Error Error::current()
 	return Error(glGetError());
 }
 
+inline bool Error::isChecking()
+{
+    return s_checking;
+}
+
+void Error::setChecking(const bool enable)
+{
+    s_checking = enable;
+}
+
 bool Error::check(const char* file, int line)
 {
+    assert(s_checking);
+
 	Error error = Error::current();
 
 	if (error.isError())

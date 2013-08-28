@@ -17,6 +17,10 @@ public:
 	Error(GLenum errorCode);
 
 	static Error current();
+
+    static inline bool isChecking();
+    static void setChecking(const bool enable);
+
     static bool check(const char* file, int line);
 	static void clear();
 
@@ -28,12 +32,15 @@ public:
 	static std::string errorString(GLenum errorCode);
 protected:
 	GLenum m_errorCode;
+
+protected:
+    static bool s_checking;
 };
 
 #ifdef NDEBUG
 #define CheckGLError() false
 #else
-#define CheckGLError() glow::Error::check(__FILE__, __LINE__)
+#define CheckGLError() if(glow::Error::isChecking()) glow::Error::check(__FILE__, __LINE__)
 #endif
 
 } // namespace glow
