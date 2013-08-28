@@ -1,11 +1,11 @@
 
 # GLEW_FOUND
-# GLEW_INCLUDE_PATH
+# GLEW_INCLUDE_DIR
 # GLEW_LIBRARY
 
 IF(X64)
 
-    FIND_PATH(GLEW_INCLUDE_PATH GL/glew.h
+    FIND_PATH(GLEW_INCLUDE_DIR GL/glew.h
         $ENV{GLEWDIR}/include
         $ENV{GLEW_HOME}/include
         $ENV{PROGRAMFILES}/GLEW/include
@@ -28,7 +28,7 @@ IF(X64)
 
 ELSE()
 
-    FIND_PATH( GLEW_INCLUDE_PATH GL/glew.h
+    FIND_PATH( GLEW_INCLUDE_DIR GL/glew.h
         $ENV{GLEWDIR}/include
         $ENV{GLEW_HOME}/include
         $ENV{PROGRAMFILES}/GLEW/include
@@ -51,7 +51,7 @@ ELSE()
 
 ENDIF()
     
-IF(GLEW_INCLUDE_PATH AND GLEW_LIBRARY)
+IF(GLEW_INCLUDE_DIR AND GLEW_LIBRARY)
     SET(GLEW_FOUND 1 CACHE STRING "Set to 1 if GLEW is found, 0 otherwise")
 ELSE()
     SET(GLEW_FOUND 0 CACHE STRING "Set to 1 if GLEW is found, 0 otherwise")

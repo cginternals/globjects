@@ -156,8 +156,8 @@ find_package(GLEW REQUIRED)
 include_directories(
     ${CMAKE_BINARY_DIR} # for Meta.h
     ${OPENGL_INCLUDE_DIR}
-    ${GLM_INCLUDE_PATH}
-    ${GLEW_INCLUDE_PATH}
+    ${GLM_INCLUDE_DIR}
+    ${GLEW_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
