@@ -9,18 +9,19 @@ class GLOW_API Referenced
 {
 public:
 	Referenced();
-
 	virtual ~Referenced();
 
 	void ref();
 	void unref();
 
 	int refCounter() const;
-private:
-	int _refCounter;
+
 protected:
-	Referenced(const Referenced&);
-	Referenced& operator=(const Referenced&);
+	Referenced(const Referenced &);
+	Referenced & operator=(const Referenced &);
+
+private:
+    int m_refCounter;
 };
 
 } // namespace glow

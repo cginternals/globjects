@@ -55,14 +55,13 @@ int main(int argc, char** argv)
     glewExperimental = GL_TRUE;
 
     ContextFormat format;
-    EventHandler handler;
 
     Window window;
 
     {
     AutoTimer t("Initialization");
 
-    window.attach(&handler);
+    window.assign(new EventHandler());
 
     window.create(format, "Single Context Example");
     window.context()->setSwapInterval(Context::VerticalSyncronization);

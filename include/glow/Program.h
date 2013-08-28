@@ -31,10 +31,11 @@ public:
 	bool isUsed() const;
 	bool isLinked() const;
 
+	void attach(Shader * shader);
 
-	void attach(Shader* shader);
-	void attach(Shader* shader1, Shader* shader2, Shader* shader3 = nullptr, Shader* shader4 = nullptr, Shader* shader5 = nullptr);
-	void detach(Shader* shader);
+    Program & operator<<(Shader * shader);
+
+	void detach(Shader * shader);
 
 	void link();
 	void invalidate();
@@ -72,8 +73,7 @@ public:
 	void dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ);
 
 protected:
-
-	void checkLinkStatus();
+	bool checkLinkStatus();
 	void checkDirty();
 
 	void updateUniforms();

@@ -1,13 +1,15 @@
 #pragma once
 
+#include <string>
+
 #include <glow/glow.h>
 
 #include <glow/Referenced.h>
 #include <glow/Changeable.h>
 
-#include <string>
 
-namespace glow {
+namespace glow 
+{
 
 class GLOW_API ShaderSource : public Referenced, public Changeable
 {

@@ -144,10 +144,9 @@ int main(int argc, char** argv)
     glewExperimental = GL_TRUE;
 
     ContextFormat format;
-    EventHandler handler;
 
     Window window;
-    window.attach(&handler);
+    window.assign(new EventHandler());
 
     format.setVersion(4, 0);
 
@@ -165,7 +164,7 @@ void EventHandler::createAndSetupShaders()
     glow::Shader* transformFeedbackShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert");
 
 	m_shaderProgram = new glow::Program();
-	m_shaderProgram->attach(vertexShader, fragmentShader);
+	*m_shaderProgram << vertexShader << fragmentShader;
 	m_shaderProgram->bindFragDataLocation(0, "fragColor");
 
     m_transformFeedbackProgram = new glow::Program();

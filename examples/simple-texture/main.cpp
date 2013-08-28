@@ -96,10 +96,9 @@ int main(int argc, char** argv)
     glewExperimental = GL_TRUE;
 
     ContextFormat format;
-    EventHandler handler;
 
     Window window;
-    window.attach(&handler);
+    window.assign(new EventHandler());
 
     window.create(format, "Simple Texture Example");
     window.show();
@@ -136,10 +135,10 @@ void EventHandler::createAndSetupTexture()
 void EventHandler::createAndSetupShaders()
 {
 	glow::Shader * vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/simple-texture/test.vert");
-	glow::Shader * fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/simple-texture/test.frag");
+    glow::Shader * fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/simple-texture/test.frag");
 
 	m_shaderProgram = new glow::Program();
-	m_shaderProgram->attach(vertexShader, fragmentShader);
+	*m_shaderProgram << vertexShader << fragmentShader;
 	m_shaderProgram->bindFragDataLocation(0, "fragColor");
 
 	m_shaderProgram->getUniform<GLint>("texture")->set(0);

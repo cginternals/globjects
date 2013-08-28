@@ -39,7 +39,9 @@ void AbstractUniform::changed()
 void AbstractUniform::update(Program * program)
 {
 	program->use();
-	setLocation(program->getUniformLocation(m_name));
+
+    if (program->isLinked())
+	    setLocation(program->getUniformLocation(m_name));
 }
 
 } // namespace glowsp

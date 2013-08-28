@@ -19,40 +19,56 @@ class Program;
 class GLOW_API Shader : public Object, protected ChangeListener, public Changeable
 {
 	friend class Program;
+
 public:
-	Shader(GLenum type);
-	Shader(GLenum type, ShaderSource* source);
+    static Shader * fromFile(
+        const GLenum type
+    ,   const std::string & filename);
+    static Shader * fromString(
+        const GLenum type
+    ,   const std::string & sourceString);
+
+public:
+	Shader(const GLenum type);
+	Shader(const GLenum type, ShaderSource * source);
+
 	virtual ~Shader();
 
-	virtual const char* typeName() const;
-
-	static Shader* fromFile(GLenum type, const std::string& filename);
-	static Shader* fromSource(GLenum type, const std::string& source);
+	virtual const char * typeName() const;
 
 	GLenum type() const;
 
-	void setSource(ShaderSource* source);
-	void setSource(const std::string& source);
+	void setSource(ShaderSource * source);
+	void setSource(const std::string & source);
 
-	void compile();
+	bool compile();
 	bool isCompiled() const;
 
 	std::string infoLog() const;
 
 protected:
-	void notifyChanged();
-	void updateSource();
-	void basicSetSource(const std::string& source);
-	bool checkCompileStatus();
-	std::string typeString() const;
-	std::string shaderString() const;
-protected:
-	GLenum _type;
-    ref_ptr<ShaderSource> _source;
-    bool _compiled;
-	std::string _internalSource;
+    bool checkCompileStatus();
 
-	static GLuint createShader(GLenum type);
+    void notifyChanged();
+	void updateSource();
+
+    std::string typeString() const;
+	std::string shaderString() const;
+
+protected:
+    static GLuint create(GLenum type);
+    static void setSource(
+        const Shader & shader
+    ,   const std::string & source);
+
+protected:
+	GLenum m_type;
+    ref_ptr<ShaderSource> m_source;
+
+    std::string m_currentSource;
+
+    bool m_compiled;
+
 };
 
 } // namespace glow

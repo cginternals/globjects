@@ -5,12 +5,12 @@ namespace glow
 {
 
 Referenced::Referenced()
-: _refCounter(0)
+: m_refCounter(0)
 {
 }
 
 Referenced::Referenced(const Referenced&)
-: _refCounter(0)
+: m_refCounter(0)
 {
 }
 
@@ -21,20 +21,20 @@ Referenced::~Referenced()
 
 Referenced& Referenced::operator=(const Referenced&)
 {
-	_refCounter = 0;
+	m_refCounter = 0;
 	return *this;
 }
 
 void Referenced::ref()
 {
-	++_refCounter;
+	++m_refCounter;
 }
 
 void Referenced::unref()
 {
-	--_refCounter;
+	--m_refCounter;
 
-	if (_refCounter <= 0)
+	if (m_refCounter <= 0)
 	{
 		delete this;
 	}
@@ -42,7 +42,7 @@ void Referenced::unref()
 
 int Referenced::refCounter() const
 {
-	return _refCounter;
+	return m_refCounter;
 }
 
 } // namespace glow

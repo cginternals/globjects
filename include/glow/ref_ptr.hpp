@@ -1,25 +1,26 @@
 #pragma once
 
-namespace glow {
+namespace glow 
+{
 
 template<typename T>
 class ref_ptr
 {
 public:
 	ref_ptr()
-	: _referenced(nullptr)
+	: m_referenced(nullptr)
 	{
 	}
 
-	ref_ptr(T* referenced)
-	: _referenced(referenced)
+	ref_ptr(T * referenced)
+	: m_referenced(referenced)
 	{
 		increaseRef();
 	}
 
-	ref_ptr(const ref_ptr& reference)
+	ref_ptr(const ref_ptr & reference)
 	{
-		_referenced = reference._referenced;
+		m_referenced = reference.m_referenced;
 		increaseRef();
 	}
 
@@ -28,92 +29,92 @@ public:
 		decreaseRef();
 	}
 
-	ref_ptr& operator=(const ref_ptr& reference)
+	ref_ptr & operator=(const ref_ptr & reference)
 	{
 		decreaseRef();
-		_referenced = reference._referenced;
+		m_referenced = reference.m_referenced;
 		increaseRef();
 
 		return *this;
 	}
 
-	T* operator*()
+	T & operator*()
 	{
-		return _referenced;
+		return *m_referenced;
 	}
 
-	const T* operator*() const
+	const T * operator*() const
 	{
-		return _referenced;
+		return m_referenced;
 	}
 
-	T* operator->()
+	T * operator->()
 	{
-		return _referenced;
+		return m_referenced;
 	}
 
-	const T* operator->() const
+	const T * operator->() const
 	{
-		return _referenced;
+		return m_referenced;
 	}
 
-	T* get()
+	T * get()
 	{
-		return _referenced;
+		return m_referenced;
 	}
 
-	const T* get() const
+	const T * get() const
 	{
-		return _referenced;
+		return m_referenced;
 	}
 
-	operator T*()
+	operator T *()
 	{
-		return _referenced;
+		return m_referenced;
 	}
 
-	operator const T*() const
+	operator const T *() const
 	{
-		return _referenced;
+		return m_referenced;
 	}
 
 	operator bool() const
 	{
-		return _referenced;
+        return m_referenced ? true : false;
 	}
 
-	bool operator<(const ref_ptr& reference) const
+	bool operator<(const ref_ptr & reference) const
 	{
-		return _referenced<reference._referenced;
+		return m_referenced<reference.m_referenced;
 	}
 
-	bool operator>(const ref_ptr& reference) const
+	bool operator>(const ref_ptr & reference) const
 	{
-		return _referenced>reference._referenced;
+		return m_referenced>reference.m_referenced;
 	}
 
-	bool operator==(const ref_ptr& reference) const
+	bool operator==(const ref_ptr & reference) const
 	{
-		return _referenced==reference._referenced;
+		return m_referenced==reference.m_referenced;
 	}
 
-	bool operator!=(const ref_ptr& reference) const
+	bool operator!=(const ref_ptr & reference) const
 	{
-		return _referenced!=reference._referenced;
+		return m_referenced!=reference.m_referenced;
 	}
 protected:
-	T* _referenced;
+	T * m_referenced;
 
 	void increaseRef()
 	{
-		if (_referenced) _referenced->ref();
+		if (m_referenced) m_referenced->ref();
 	}
 
 	void decreaseRef()
 	{
-		if (_referenced)
+		if (m_referenced)
 		{
-			_referenced->unref();
+			m_referenced->unref();
 		}
 	}
 };
