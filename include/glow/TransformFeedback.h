@@ -66,6 +66,8 @@ public:
 
 	void setVaryings(Program* program, GLsizei count, const char** varyingNames, GLenum bufferMode);
 	void setVaryings(Program* program, const Array<const char*>& varyingNames, GLenum bufferMode);
+
+	bool isTransformFeedback() const;
 protected:
 	static GLuint genTransformFeedback();
 };

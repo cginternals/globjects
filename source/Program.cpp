@@ -21,10 +21,13 @@ Program::Program()
 Program::~Program()
 {
 	for (ref_ptr<Shader> shader: std::set<ref_ptr<Shader>>(m_shaders))
+	{
 		detach(shader);
-
-    for (std::pair<std::string, ref_ptr<AbstractUniform>> uniformPair: m_uniforms)
+	}
+	for (std::pair<std::string, ref_ptr<AbstractUniform>> uniformPair: m_uniforms)
+	{
 		uniformPair.second->deregisterProgram(this);
+	}
 
 	if (ownsGLObject())
 	{
@@ -93,7 +96,9 @@ void Program::notifyChanged()
 void Program::checkDirty()
 {
 	if (m_dirty)
+	{
 		link();
+	}
 }
 
 void Program::attach(Shader * shader)
@@ -132,18 +137,15 @@ void Program::link()
     m_linked = checkLinkStatus();
 	m_dirty = false;
 
+	IF_DEBUG(m_properties.setMemory(get(GL_PROGRAM_BINARY_LENGTH));)
+
 	updateUniforms();
 	CheckGLError();
 }
 
 bool Program::checkLinkStatus()
 {
-    GLint status = 0;
-
-    glGetProgramiv(m_id, GL_LINK_STATUS, &status);
-    CheckGLError();
-
-    if (GL_FALSE == status)
+    if (GL_FALSE == get(GL_LINK_STATUS))
     {
         critical()
             << "Linker error:" << std::endl
@@ -201,29 +203,41 @@ void Program::addUniform(AbstractUniform * uniform)
 	ref_ptr<AbstractUniform>& uniformReference = m_uniforms[uniform->name()];
 
 	if (uniformReference)
+	{
 		uniformReference->deregisterProgram(this);
+	}
 
 	uniformReference = uniform;
 
 	uniform->registerProgram(this);
 
-    if (m_linked)
+	if (m_linked)
+	{
 		uniform->update(this);
+	}
 }
 
 void Program::updateUniforms()
 {
-    // Note: uniform update will check if program is linked
-	for (std::pair<std::string, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
+	// Note: uniform update will check if program is linked
+	for (std::pair < std::string, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
+	{
 		uniformPair.second->update(this);
+	}
+}
+
+GLint Program::get(GLenum pname) const
+{
+	GLint value;
+	glGetProgramiv(m_id, pname, &value);
+	CheckGLError();
+
+	return value;
 }
 
 const std::string Program::infoLog() const
 {
-	GLsizei length;
-
-	glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &length);
-	CheckGLError();
+	GLint length = get(GL_INFO_LOG_LENGTH);
 
 	std::vector<char> log(length);
 

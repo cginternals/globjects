@@ -1,12 +1,12 @@
-        
-# include <vector>
+
+#include <vector>
 #include <sstream>
 
+#include <glow/Shader.h>
 #include <glow/Program.h>
 #include <glow/logging.h>
 #include <glow/ShaderCode.h>
 #include <glow/Error.h>
-#include <glow/Shader.h>
 
 namespace glow
 {
@@ -18,10 +18,10 @@ Shader::Shader(
 ,   m_type(type)
 ,   m_source(nullptr)
 ,   m_compiled(false)
-,   m_currentSource("")
 {
-    if (source)
-        setSource(source);
+	if (source)
+		setSource(source);
+	IF_DEBUG(m_properties.setString("type", typeString());)
 }
 
 Shader::Shader(const GLenum type)
@@ -39,16 +39,18 @@ Shader * Shader::fromFile(
 
 Shader * Shader::fromString(
     const GLenum type
-    , const std::string & str)
+    , const std::string & sourceString)
 {
-    ShaderCode * source = new ShaderCode(str);
+    ShaderCode * source = new ShaderCode(sourceString);
     return new Shader(type, source);
 }
 
 Shader::~Shader()
 {
 	if (m_source)
+	{
 		m_source->deregisterListener(this);
+	}
 
 	if (ownsGLObject())
 	{
@@ -111,16 +113,29 @@ void Shader::updateSource()
         compile();
     }
     else
+	{
         m_currentSource = m_source->source();
+	}
+
+	IF_DEBUG(
+			if (m_source)
+			{
+				m_properties.setString("source", m_source->isFile() ? dynamic_cast<ShaderFile&>(*m_source).filePath() : "string");
+			}
+			else
+			{
+				m_properties.clearString("source");
+			}
+	)
 }
 
 void Shader::setSource(
     const Shader & shader
 ,   const std::string & source)
 {
-	const char * srcp = source.c_str();
+	const char * sourcePointer = source.c_str();
 
-	glShaderSource(shader.m_id, 1, &srcp, 0);
+	glShaderSource(shader.m_id, 1, &sourcePointer, 0);
 	CheckGLError();
 }
 
@@ -173,6 +188,7 @@ bool Shader::checkCompileStatus()
 
         return false;
 	}
+
 	return true;
 }
 

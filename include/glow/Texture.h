@@ -27,11 +27,13 @@ public:
 
 	virtual const char* typeName() const;
 
+	void bind();
+	void unbind();
+
 	void setParameter(GLenum name, GLint value);
 	void setParameter(GLenum name, GLfloat value);
 
-	void bind();
-	void unbind();
+	GLint getLevelParameter(GLint level, GLenum pname);
 
 	GLenum target() const;
 
@@ -49,6 +51,9 @@ public:
 	void makeNonResident();
 protected:
 	GLenum  _target;
+	GLint _maxLevel;
+
+	GLint computeTextureSize();
 
 	static GLuint genTexture();
 };

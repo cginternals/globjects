@@ -26,7 +26,7 @@ public:
     ,   const std::string & filename);
     static Shader * fromString(
         const GLenum type
-    ,   const std::string & str);
+    ,   const std::string & sourceString);
 
 public:
 	Shader(const GLenum type);

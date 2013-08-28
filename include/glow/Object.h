@@ -5,6 +5,8 @@
 #include <glow/glow.h>
 #include <glow/Referenced.h>
 
+#include <glow/ObjectProperties.h>
+
 namespace glow
 {
 
@@ -21,14 +23,22 @@ public:
 	operator GLuint() const;
 
 	bool ownsGLObject() const;
-public:
-	bool isTransformFeedback() const;
+
+	const std::string& name() const;
+	void setName(const std::string& name);
+
+	const ObjectProperties& properties();
 protected:
 	GLuint m_id;
 	bool m_ownsGLObject;
+	std::string m_name;
+	IF_DEBUG(ObjectProperties m_properties;)
 private:
-	Object(const Object &);
-	Object & operator=(const Object &);
+	Object(const Object&);
+	Object& operator=(const Object&);
+
+	void registerObject();
+	void deregisterObject();
 };
 
 } // namespace glow

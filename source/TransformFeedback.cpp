@@ -101,4 +101,11 @@ void TransformFeedback::setVaryings(Program* program, const Array<const char*>& 
 	setVaryings(program, varyingNames.size(), (const char**)varyingNames.data(), bufferMode);
 }
 
+bool TransformFeedback::isTransformFeedback() const
+{
+	bool result = GL_TRUE == glIsTransformFeedback(m_id);
+	CheckGLError();
+	return result;
+}
+
 } // namespace glow

@@ -102,6 +102,8 @@ void Buffer::setData(GLsizei size, const GLvoid* data, GLenum usage)
 	bind();
 	glBufferData(_target, size, data, usage);
 	CheckGLError();
+
+	IF_DEBUG(m_properties.setMemory(size));
 }
 
 void Buffer::drawArrays(GLenum mode, GLint first, GLsizei count)
