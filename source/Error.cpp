@@ -40,7 +40,11 @@ Error Error::current()
 
 bool Error::isChecking()
 {
+#ifdef NDEBUG
+    return false;
+#else
     return s_checking;
+#endif
 }
 
 void Error::setChecking(const bool enable)
@@ -48,9 +52,10 @@ void Error::setChecking(const bool enable)
     s_checking = enable;
 }
 
-bool Error::check(const char* file, int line)
+bool Error::get(const char* file, int line)
 {
-    assert(s_checking);
+    if (!s_checking)
+        return false;
 
 	Error error = Error::current();
 
@@ -103,5 +108,27 @@ std::string Error::errorString(GLenum errorCode)
 			return "Unknown GLenum.";
 	}
 }
+
+
+// ARB_debug_output
+
+bool  Error::setupDebugOutput(
+    const bool asynchronous)
+{
+    return false;
+}
+
+void Error::callback(
+    GLenum source
+,   GLenum type
+,   GLuint id
+,   GLenum severity
+,   GLsizei length
+,   const char * message
+,   void * param)
+{
+    fatal() << message;
+}
+
 
 } // namespace glow
