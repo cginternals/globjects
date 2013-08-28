@@ -277,6 +277,12 @@ int WindowsWindow::run()
 
     } while (WM_QUIT != msg.message);
 
+    for (WindowsWindow * window : s_windows)
+    {
+        msg.hwnd = window->m_hWnd;
+        DispatchMessage(&msg);
+    }
+
     return static_cast<int>(msg.wParam);
 }
 
@@ -341,6 +347,7 @@ LRESULT CALLBACK WindowsWindow::dispatch(
     // Windows Messages: http://msdn.microsoft.com/en-us/library/windows/desktop/ms644927(v=vs.85).aspx#windows_messages
     switch (message)
     {
+    case WM_QUIT:
     case WM_CLOSE:
         onClose();
         break;

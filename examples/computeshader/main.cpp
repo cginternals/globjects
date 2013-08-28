@@ -17,6 +17,7 @@
 #include <glow/Window.h>
 #include <glow/ContextFormat.h>
 #include <glow/Context.h>
+#include <glow/Error.h>
 #include <glow/WindowEventHandler.h>
 #include <glow/logging.h>
 
@@ -41,6 +42,9 @@ public:
 
     virtual void initializeEvent(Window & window)
     {
+        Error::setupDebugOutput();
+        Error::setChecking(false);
+
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 	    createAndSetupTexture();
@@ -82,6 +86,11 @@ public:
 
         m_program->release();
 	    m_texture->unbind();
+
+
+        glBindVertexArray(5); // wrong ID for VAO
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(0);
     }
 
     virtual void idleEvent(Window & window)
@@ -122,7 +131,7 @@ int main(int argc, char** argv)
     Window window;
     window.assign(new EventHandler());
 
-    window.create(format, "Simple Texture Example");
+    window.create(format, "Compute Shader Example");
     window.show();
     window.context()->setSwapInterval(Context::NoVerticalSyncronization);
 

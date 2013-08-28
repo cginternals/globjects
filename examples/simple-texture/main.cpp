@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Array.h>
 #include <glow/ShaderFile.h>
@@ -40,6 +41,9 @@ public:
 
     virtual void initializeEvent(Window & window)
     {
+        Error::setupDebugOutput();
+        Error::setChecking(false);
+
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 	    createAndSetupTexture();

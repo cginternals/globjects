@@ -280,8 +280,15 @@ void Window::onResize()
 
 void Window::onIdle()
 {
-    if (m_eventHandler)
-        m_eventHandler->idleEvent(*this);
+    if (!m_context || !m_eventHandler)
+        return;
+
+    if (!m_eventHandler)
+        return;
+    
+    m_context->makeCurrent();
+    m_eventHandler->idleEvent(*this);
+    m_context->doneCurrent();
 }
 
 void Window::onClose()
@@ -317,8 +324,11 @@ bool Window::onKeyPress(const unsigned short key)
     m_keysPressed.insert(kpe.key());
 
     if (kpe.isDiscarded())
+    {
+        m_context->makeCurrent();
         m_eventHandler->keyPressEvent(*this, kpe);
-
+        m_context->doneCurrent();
+    }
     return kpe.isAccepted();
 }
 
@@ -350,8 +360,10 @@ bool Window::onKeyRelease(const unsigned short key)
         m_keysPressed.erase(f);
 
     if (kre.isDiscarded())
+    {   m_context->makeCurrent();
         m_eventHandler->keyReleaseEvent(*this, kre);
-
+        m_context->doneCurrent();
+    }
     return kre.isAccepted();
 }
 

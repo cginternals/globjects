@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 
+#include <glow/Error.h>
 #include <glow/Screen.h>
 #include <glow/Window.h>
 #include <glow/ContextFormat.h>
@@ -24,6 +25,9 @@ public:
 
     virtual void initializeEvent(Window & window)
     {
+        Error::setupDebugOutput();
+        Error::setChecking(false);
+
         glClearColor(1.f, 1.f, 1.f, 1.f);
     }
 
