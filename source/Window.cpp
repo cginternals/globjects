@@ -42,6 +42,8 @@ Window::Window()
 
 Window::~Window()
 {
+    assert(nullptr == m_eventHandler);
+
     delete m_window;
     delete m_timer;
 }
@@ -183,8 +185,14 @@ void Window::toggleMode()
     }
 }
 
-void Window::attach(WindowEventHandler * eventHandler)
+void Window::assign(WindowEventHandler * eventHandler)
 {
+    if (eventHandler == m_eventHandler)
+        return;
+
+    if (m_eventHandler)
+        delete m_eventHandler;
+
     m_eventHandler = eventHandler;
 
     if (!m_eventHandler)
@@ -283,10 +291,13 @@ void Window::onClose()
         if (m_eventHandler)
         {
             m_context->makeCurrent();
+            
             m_eventHandler->deinitializeEvent(*this);
+            delete m_eventHandler;
+            m_eventHandler = nullptr;
+
             m_context->doneCurrent();
         }
-
         m_context->release();
 
         delete m_context;

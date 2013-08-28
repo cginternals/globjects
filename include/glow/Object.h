@@ -27,8 +27,8 @@ protected:
 	GLuint m_id;
 	bool m_ownsGLObject;
 private:
-	Object(const Object&);
-	Object& operator=(const Object&);
+	Object(const Object &);
+	Object & operator=(const Object &);
 };
 
 } // namespace glow

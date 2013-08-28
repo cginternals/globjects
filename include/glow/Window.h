@@ -43,7 +43,11 @@ public:
     void setQuitOnDestroy(const bool enable);
     bool quitsOnDestroy() const;
 
-    void attach(WindowEventHandler * eventHandler);
+    /** Takes ownership of the given eventhandler and deletes that either on
+        quiting, just before the opengl context gets destroyed, or when 
+        reassigning a new, different handler. 
+    */
+    void assign(WindowEventHandler * eventHandler);
 
     bool create(
         const ContextFormat & format

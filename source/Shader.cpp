@@ -1,36 +1,54 @@
-
-#include <vector>
+        
+# include <vector>
 #include <sstream>
 
-#include <glow/Shader.h>
 #include <glow/Program.h>
 #include <glow/logging.h>
 #include <glow/ShaderCode.h>
 #include <glow/Error.h>
+#include <glow/Shader.h>
 
 namespace glow
 {
 
-Shader::Shader(GLenum type)
-: Object(createShader(type))
-, _type(type)
-, _source(nullptr)
-, _compiled(false)
+Shader::Shader(
+    const GLenum type
+,   ShaderSource * source)
+:   Object(create(type))
+,   m_type(type)
+,   m_source(nullptr)
+,   m_compiled(false)
+,   m_currentSource("")
+{
+    if (source)
+        setSource(source);
+}
+
+Shader::Shader(const GLenum type)
+:   Shader(type, nullptr)
 {
 }
 
-Shader::Shader(GLenum type, ShaderSource* source)
-: Shader(type)
+Shader * Shader::fromFile(
+    const GLenum type
+,   const std::string & filePath)
 {
-	setSource(source);
+    ShaderFile * source = new ShaderFile(filePath);
+    return new Shader(type, source);
+}
+
+Shader * Shader::fromString(
+    const GLenum type
+    , const std::string & str)
+{
+    ShaderCode * source = new ShaderCode(str);
+    return new Shader(type, source);
 }
 
 Shader::~Shader()
 {
-	if (_source)
-	{
-		_source->deregisterListener(this);
-	}
+	if (m_source)
+		m_source->deregisterListener(this);
 
 	if (ownsGLObject())
 	{
@@ -39,51 +57,40 @@ Shader::~Shader()
 	}
 }
 
-GLuint Shader::createShader(GLenum type)
+GLuint Shader::create(GLenum type)
 {
 	GLuint result = glCreateShader(type);
 	CheckGLError();
 	return result;
 }
 
-const char* Shader::typeName() const
+const char * Shader::typeName() const
 {
 	return "Shader";
 }
 
-Shader* Shader::fromFile(GLenum type, const std::string& filename)
-{
-	Shader* shader = new Shader(type);
-	shader->setSource(new ShaderFile(filename));
-	return shader;
-}
-
-Shader* Shader::fromSource(GLenum type, const std::string& source)
-{
-	Shader* shader = new Shader(type);
-	shader->setSource(source);
-	return shader;
-}
-
 GLenum Shader::type() const
 {
-	return _type;
+	return m_type;
 }
 
-void Shader::setSource(ShaderSource* source)
+void Shader::setSource(ShaderSource * source)
 {
-	if (_source)
-		_source->deregisterListener(this);
+    if (source == m_source)
+        return;
 
-	_source = source;
+	if (m_source)
+		m_source->deregisterListener(this);
 
-	if (_source)
-		_source->registerListener(this);
+	m_source = source;
+
+	if (m_source)
+		m_source->registerListener(this);
 
 	updateSource();
 }
 
-void Shader::setSource(const std::string& source)
+void Shader::setSource(const std::string & source)
 {
 	setSource(new ShaderCode(source));
 }
@@ -95,46 +102,44 @@ void Shader::notifyChanged()
 
 void Shader::updateSource()
 {
-	std::string backup = _internalSource;
+	if (m_source)
+        setSource(*this, m_source->source());
 
-	if (_source)
+	if(!compile())
 	{
-		basicSetSource(_source->source());
-	}
-
-	compile();
-
-	if (!isCompiled())
-	{
-		basicSetSource(backup);
-
-		compile();
-	}
+        setSource(*this, m_currentSource);
+        compile();
+    }
+    else
+        m_currentSource = m_source->source();
 }
 
-void Shader::basicSetSource(const std::string& source)
+void Shader::setSource(
+    const Shader & shader
+,   const std::string & source)
 {
-	_internalSource = source;
-	const char* sourcePointer = source.c_str();
+	const char * srcp = source.c_str();
 
-	glShaderSource(m_id, 1, &sourcePointer, 0);
+	glShaderSource(shader.m_id, 1, &srcp, 0);
 	CheckGLError();
 }
 
-void Shader::compile()
+bool Shader::compile()
 {
 	glCompileShader(m_id);
 	CheckGLError();
 
-	_compiled = checkCompileStatus();
+	m_compiled = checkCompileStatus();
 
-	if (_compiled)
+	if (m_compiled)
 		changed();
+
+    return isCompiled();
 }
 
 bool Shader::isCompiled() const
 {
-	return _compiled;
+	return m_compiled;
 }
 
 std::string Shader::infoLog() const
@@ -159,17 +164,16 @@ bool Shader::checkCompileStatus()
 	glGetShaderiv(m_id, GL_COMPILE_STATUS, &status);
 	CheckGLError();
 
-	bool compiled = (status == GL_TRUE);
-
-	if (!compiled)
+	if (GL_FALSE == status)
 	{
 		critical()
 			<< "Compiler error:" << std::endl
 			<< shaderString() << std::endl
 			<< infoLog();
-	}
 
-	return compiled;
+        return false;
+	}
+	return true;
 }
 
 std::string Shader::shaderString() const
@@ -178,10 +182,8 @@ std::string Shader::shaderString() const
 
 	ss << "Shader(" << typeString();
 
-	if (_source && _source->isFile())
-	{
-		ss << ", " << dynamic_cast<const ShaderFile*>(*_source)->filePath();
-	}
+	if (m_source && m_source->isFile())
+		ss << ", " << dynamic_cast<const ShaderFile*>(*m_source)->filePath();
 
 	ss << ")";
 
@@ -190,7 +192,7 @@ std::string Shader::shaderString() const
 
 std::string Shader::typeString() const
 {
-	switch (_type)
+	switch (m_type)
 	{
 	case GL_GEOMETRY_SHADER:
 		return "GL_GEOMETRY_SHADER";
@@ -205,7 +207,7 @@ std::string Shader::typeString() const
 	case GL_COMPUTE_SHADER:
 		return "GL_COMPUTE_SHADER";
 	default:
-		return "unknown";
+		return "Unknown Shader Type";
 	}
 }
 

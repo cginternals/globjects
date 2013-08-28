@@ -8,9 +8,11 @@
 namespace glow
 {
 
-VertexAttributeBinding::VertexAttributeBinding(VertexArrayObject* vao, GLuint bindingIndex)
+VertexAttributeBinding::VertexAttributeBinding(
+    VertexArrayObject * vao
+,   const GLuint bindingIndex)
 : _vao(vao)
-,_bindingIndex(bindingIndex)
+, _bindingIndex(bindingIndex)
 , _attributeIndex(0)
 , _vbo(nullptr)
 , _implementation(nullptr)
@@ -33,7 +35,7 @@ void VertexAttributeBinding::setAttribute(GLint attributeIndex)
 	_implementation->bindAttribute(attributeIndex);
 }
 
-GLint VertexAttributeBinding::attributeIndex() const
+GLuint VertexAttributeBinding::attributeIndex() const
 {
 	return _attributeIndex;
 }
@@ -82,7 +84,7 @@ VertexAttributeBindingImplementation::~VertexAttributeBindingImplementation()
 {
 }
 
-GLint VertexAttributeBindingImplementation::attributeIndex() const
+GLuint VertexAttributeBindingImplementation::attributeIndex() const
 {
 	return _binding->_attributeIndex;
 }
@@ -166,19 +168,21 @@ void VertexAttributeBinding_GL_3_2::finish()
 	vao()->bind();
 	vbo()->bind(GL_ARRAY_BUFFER);
 
+    const GLuint attribute = attributeIndex();
+
 	switch (_format.method)
 	{
-		case Format::I:
-			glVertexAttribIPointer(attributeIndex(), _format.size, _format.type, _stride, reinterpret_cast<void*>(_baseoffset+_format.relativeoffset));
-			CheckGLError();
-			break;
-		case Format::L:
-			glVertexAttribLPointer(attributeIndex(), _format.size, _format.type, _stride, reinterpret_cast<void*>(_baseoffset+_format.relativeoffset));
-			CheckGLError();
-			break;
-		default:
-			glVertexAttribPointer(attributeIndex(), _format.size, _format.type, _format.normalized, _stride, reinterpret_cast<void*>(_baseoffset+_format.relativeoffset));
-			CheckGLError();
+	case Format::I:
+		glVertexAttribIPointer(attribute, _format.size, _format.type, _stride, reinterpret_cast<void*>(_baseoffset+_format.relativeoffset));
+		CheckGLError();
+		break;
+	case Format::L:
+        glVertexAttribLPointer(attribute, _format.size, _format.type, _stride, reinterpret_cast<void*>(_baseoffset + _format.relativeoffset));
+		CheckGLError();
+		break;
+	default:
+        glVertexAttribPointer(attribute, _format.size, _format.type, _format.normalized, _stride, reinterpret_cast<void*>(_baseoffset + _format.relativeoffset));
+		CheckGLError();
 	}
 }
 

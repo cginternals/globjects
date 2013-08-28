@@ -12,7 +12,9 @@ class GLOW_API VertexAttributeBinding : public Referenced
 {
 	friend class VertexAttributeBindingImplementation;
 public:
-	VertexAttributeBinding(VertexArrayObject* vao, GLuint bindingIndex);
+	VertexAttributeBinding(
+        VertexArrayObject * vao
+    ,   const GLuint bindingIndex);
 	~VertexAttributeBinding();
 
 	void setAttribute(GLint attributeIndex);
@@ -22,13 +24,13 @@ public:
 	void setIFormat(GLint size, GLenum type, GLuint relativeoffset = 0);
 	void setLFormat(GLint size, GLuint relativeoffset = 0);
 
-	GLint attributeIndex() const;
+	GLuint attributeIndex() const;
 	GLuint bindingIndex() const;
 	Buffer* buffer() const;
 protected:
     VertexArrayObject* _vao;
     GLuint _bindingIndex;
-    GLint _attributeIndex;
+    GLuint _attributeIndex;
 	Buffer* _vbo;
 
 	VertexAttributeBindingImplementation* _implementation;
@@ -42,7 +44,7 @@ public:
 	VertexAttributeBindingImplementation(VertexAttributeBinding* binding);
 	virtual ~VertexAttributeBindingImplementation();
 
-	GLint attributeIndex() const;
+	GLuint attributeIndex() const;
 	GLuint bindingIndex() const;
 
 	VertexArrayObject* vao() const;

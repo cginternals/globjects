@@ -65,6 +65,9 @@ VertexAttributeBinding* VertexArrayObject::binding(GLuint bindingIndex)
 
 void VertexArrayObject::enable(GLint attributeIndex)
 {
+    if (-1 == attributeIndex)
+        return;
+
 	bind();
 
 	glEnableVertexAttribArray(attributeIndex);
@@ -73,7 +76,10 @@ void VertexArrayObject::enable(GLint attributeIndex)
 
 void VertexArrayObject::disable(GLint attributeIndex)
 {
-	bind();
+    if (-1 == attributeIndex)
+        return;
+
+    bind();
 
 	glDisableVertexAttribArray(attributeIndex);
 	CheckGLError();

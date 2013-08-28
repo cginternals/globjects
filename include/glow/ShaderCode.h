@@ -5,7 +5,8 @@
 #include <glow/glow.h>
 #include <glow/ShaderSource.h>
 
-namespace glow {
+namespace glow 
+{
 
 class GLOW_API ShaderCode : public ShaderSource
 {

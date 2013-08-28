@@ -1,8 +1,9 @@
 
 #include <iostream>
 
-#include <glow/Buffer.h>
 #include <glow/Error.h>
+#include <glow/logging.h>
+#include <glow/Buffer.h>
 
 namespace glow
 {

@@ -106,11 +106,10 @@ int main(int argc, char** argv)
     glewExperimental = GL_TRUE;
 
     ContextFormat format;
-    EventHandler handler;
 
     Window window;
 
-    window.attach(&handler);
+    window.assign(new EventHandler());
 
     window.create(format, "Deferred Lighting");
     window.context()->setSwapInterval(Context::NoVerticalSyncronization);
@@ -138,11 +137,11 @@ void EventHandler::createAndSetupTexture(
 
 void EventHandler::createAndSetupShaders()
 {
-	glow::Shader * vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/deferred-lighting/deferred.vert");
-	glow::Shader * fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/deferred-lighting/deferred.frag");
+    glow::Shader * vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/deferred-lighting/deferred.vert");
+    glow::Shader * fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/deferred-lighting/deferred.frag");
 
 	m_program = new glow::Program();
-	m_program->attach(vertexShader, fragmentShader);
+	*m_program << vertexShader << fragmentShader;
 	m_program->bindFragDataLocation(0, "fragColor");
 
 	m_program->getUniform<GLint>("texture")->set(0);
