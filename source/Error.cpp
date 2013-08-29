@@ -15,6 +15,9 @@
 #include <GL/glxew.h>
 #endif
 
+#ifndef _MSC_VER
+#	define APIENTRY
+#endif
 
 namespace glow
 {
@@ -192,7 +195,7 @@ bool Error::setupDebugOutput(
 
 #else
     const GLXContext handle = glXGetCurrentContext();
-    const int contextID = reinterpret_cast<int>(handle);
+    const long long contextID = reinterpret_cast<long long>(handle);
 #endif
 
     glDebugMessageCallback(callback, &s_userParamsByContextID[contextID]);
