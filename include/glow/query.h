@@ -44,6 +44,7 @@ public:
 class GLOW_API memory
 {
 public:
+	/** all sizes in kb */
 	static GLint total();
 	static GLint dedicated();
 	static GLint available();

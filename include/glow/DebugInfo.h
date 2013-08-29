@@ -18,7 +18,7 @@ public:
 		std::string name;
 		std::string value;
 	};
-	struct ObjectInfo
+	struct InfoUnit
 	{
 		std::string name;
 		std::vector<Property> properties;
@@ -26,24 +26,23 @@ public:
 		void addProperty(const std::string& name, const std::string& value);
 		void addProperty(const std::string& name, GLint value);
 	};
-	struct ObjectInfoGroup
+	struct InfoGroup
 	{
 		std::string name;
-		std::vector<ObjectInfo> objects;
+		std::vector<InfoUnit> units;
 
-		void addObjectInfo(const ObjectInfo& info);
+		void addInfoUnit(const InfoUnit& info);
 	};
+public:
+	static std::vector<InfoGroup> generalInfo();
+	static std::vector<InfoGroup> objectInfo();
 
-	DebugInfo();
-	virtual ~DebugInfo();
+	static void printObjectInfo();
+	static void printGeneralInfo();
+	static void printAll();
 
-	static std::vector<ObjectInfoGroup> groups();
-	static void dump();
-
-	void collectInfo();
-	std::vector<ObjectInfoGroup> getInfoGroups() const;
-	void clear();
-
+	static void print(const std::vector<InfoGroup>& info);
+public:
 	virtual void visitBuffer(Buffer* buffer);
 	virtual void visitFrameBufferObject(FrameBufferObject* fbo);
 	virtual void visitProgram(Program* program);
@@ -53,13 +52,18 @@ public:
 	virtual void visitTransformFeedback(TransformFeedback* transformfeedback);
 	virtual void visitVertexArrayObject(VertexArrayObject* vao);
 protected:
-	std::map<std::string, ObjectInfoGroup> m_infoGroups;
+	DebugInfo();
+	virtual ~DebugInfo();
+protected:
+	std::map<std::string, InfoGroup> m_infoGroups;
 
-	ObjectInfoGroup& group(const std::string& name);
-	void addInfo(const std::string& groupName, const ObjectInfo& info);
+	std::vector<InfoGroup> collectObjectInfo();
 
-	std::string name(const std::string& typeName, Object* object) const;
-	std::string humanReadableSize(unsigned bytes) const;
+	InfoGroup& group(const std::string& name);
+	void addInfo(const std::string& groupName, const InfoUnit& unit);
+
+	static std::string name(const std::string& typeName, Object* object);
+	static std::string humanReadableSize(long long bytes);
 };
 
 } // namespace glow

@@ -18,24 +18,33 @@ DebugInfo::~DebugInfo()
 {
 }
 
-std::vector<DebugInfo::ObjectInfoGroup> DebugInfo::groups()
+void DebugInfo::printObjectInfo()
 {
-	DebugInfo debugInfo;
-	debugInfo.collectInfo();
-	return debugInfo.getInfoGroups();
+	print(objectInfo());
 }
 
-void DebugInfo::dump()
+void DebugInfo::printGeneralInfo()
 {
-	for (const ObjectInfoGroup& group: groups())
+	print(generalInfo());
+}
+
+void DebugInfo::printAll()
+{
+	printGeneralInfo();
+	printObjectInfo();
+}
+
+void DebugInfo::print(const std::vector<InfoGroup>& info)
+{
+	for (const InfoGroup& group: info)
 	{
 		glow::debug() << group.name;
 
-		for (const ObjectInfo& info: group.objects)
+		for (const InfoUnit& unit: group.units)
 		{
-			glow::debug() << "\t" << info.name;
+			glow::debug() << "\t" << unit.name;
 
-			for (const Property& property: info.properties)
+			for (const Property& property: unit.properties)
 			{
 				glow::debug() << "\t\t" << property.name << ": " << property.value;
 			}
@@ -43,21 +52,69 @@ void DebugInfo::dump()
 	}
 }
 
-void DebugInfo::collectInfo()
+std::vector<DebugInfo::InfoGroup> DebugInfo::generalInfo()
 {
-	clear();
+	InfoGroup generalGroup;
+
+	InfoUnit generalInfo;
+	InfoUnit memoryInfo;
+	InfoUnit textureInfo;
+
+	generalGroup.name = "General";
+
+	generalInfo.name = "OpenGL";
+	memoryInfo.name = "Memory";
+	textureInfo.name = "General Texture Info";
+
+	generalInfo.addProperty("version", query::version().toString());
+	generalInfo.addProperty("vendor", query::vendor());
+	generalInfo.addProperty("renderer", query::renderer());
+	generalInfo.addProperty("core profile", query::isCoreProfile()?"true":"false");
+	generalInfo.addProperty("GLSL version", query::getString(GL_SHADING_LANGUAGE_VERSION));
+
+	memoryInfo.addProperty("total", humanReadableSize(1024ll*memory::total()));
+	memoryInfo.addProperty("dedicated", humanReadableSize(1024ll*memory::dedicated()));
+	memoryInfo.addProperty("available", humanReadableSize(1024ll*memory::available()));
+	memoryInfo.addProperty("evicted", humanReadableSize(1024ll*memory::evicted()));
+	memoryInfo.addProperty("evictionCount", memory::evictionCount());
+
+	int maxTextureSize = query::getInteger(GL_MAX_TEXTURE_SIZE);
+	textureInfo.addProperty("Max Texture Size", std::to_string(maxTextureSize)+" x "+std::to_string(maxTextureSize));
+	textureInfo.addProperty("Max Vertex Texture Image Units", query::getInteger(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS));
+	textureInfo.addProperty("Max Texture Image Units", query::getInteger(GL_MAX_IMAGE_UNITS));
+	textureInfo.addProperty("Max Geometry Texture Units", query::getInteger(GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS));
+	std::vector<int> maxViewportSize = query::getIntegers(GL_MAX_VIEWPORT_DIMS, 2);
+	textureInfo.addProperty("Max viewport size", std::to_string(maxViewportSize[0])+" x "+std::to_string(maxViewportSize[1]));
+	textureInfo.addProperty("Max clip distances", query::getInteger(GL_MAX_CLIP_DISTANCES));
+	textureInfo.addProperty("Max Samples", query::getInteger(GL_MAX_SAMPLES));
+
+	generalGroup.addInfoUnit(generalInfo);
+	generalGroup.addInfoUnit(memoryInfo);
+	generalGroup.addInfoUnit(textureInfo);
+
+	return std::vector<InfoGroup>({ generalGroup });
+}
+
+std::vector<DebugInfo::InfoGroup> DebugInfo::objectInfo()
+{
+	DebugInfo debugInfo;
+	return debugInfo.collectObjectInfo();
+}
+
+//==========================0
+
+std::vector<DebugInfo::InfoGroup> DebugInfo::collectObjectInfo()
+{
+	m_infoGroups.clear();
 
 	for (Object* object: ObjectRegistry::objects())
 	{
 		visit(object);
 	}
-}
 
-std::vector<DebugInfo::ObjectInfoGroup> DebugInfo::getInfoGroups() const
-{
-	std::vector<ObjectInfoGroup> groups;
+	std::vector<InfoGroup> groups;
 
-	for (const std::pair<std::string, ObjectInfoGroup>& pair: m_infoGroups)
+	for (const std::pair<std::string, InfoGroup>& pair: m_infoGroups)
 	{
 		groups.push_back(pair.second);
 	}
@@ -65,14 +122,9 @@ std::vector<DebugInfo::ObjectInfoGroup> DebugInfo::getInfoGroups() const
 	return groups;
 }
 
-void DebugInfo::clear()
-{
-	m_infoGroups.clear();
-}
-
 void DebugInfo::visitBuffer(Buffer* buffer)
 {
-	ObjectInfo info;
+	InfoUnit info;
 	info.name = name("Buffer", buffer);
 
 	info.addProperty("size", humanReadableSize(buffer->getParameter(GL_BUFFER_SIZE)));
@@ -82,7 +134,7 @@ void DebugInfo::visitBuffer(Buffer* buffer)
 
 void DebugInfo::visitFrameBufferObject(FrameBufferObject* fbo)
 {
-	ObjectInfo info;
+	InfoUnit info;
 	info.name = name("FrameBufferObject", fbo);
 
 	addInfo("FrameBufferObjects", info);
@@ -90,7 +142,7 @@ void DebugInfo::visitFrameBufferObject(FrameBufferObject* fbo)
 
 void DebugInfo::visitProgram(Program* program)
 {
-	ObjectInfo info;
+	InfoUnit info;
 	info.name = name("Program", program);
 
 	info.addProperty("size", humanReadableSize(program->get(GL_PROGRAM_BINARY_LENGTH)));
@@ -100,7 +152,7 @@ void DebugInfo::visitProgram(Program* program)
 
 void DebugInfo::visitRenderBufferObject(RenderBufferObject* rbo)
 {
-	ObjectInfo info;
+	InfoUnit info;
 	info.name = name("RenderBufferObject", rbo);
 
 	int w = rbo->getParameter(GL_RENDERBUFFER_WIDTH);
@@ -114,7 +166,7 @@ void DebugInfo::visitRenderBufferObject(RenderBufferObject* rbo)
 	int d = rbo->getParameter(GL_RENDERBUFFER_DEPTH_SIZE);
 	int s = rbo->getParameter(GL_RENDERBUFFER_STENCIL_SIZE);
 
-	unsigned int size = (unsigned int)std::ceil((w*h*(r+g+b+a+d+s))/8.0);
+	int size = (int)std::ceil((w*h*(r+g+b+a+d+s))/8.0);
 
 	info.addProperty("size", humanReadableSize(size));
 	info.addProperty("width", w);
@@ -125,7 +177,7 @@ void DebugInfo::visitRenderBufferObject(RenderBufferObject* rbo)
 
 void DebugInfo::visitShader(Shader* shader)
 {
-	ObjectInfo info;
+	InfoUnit info;
 	info.name = name("Shader", shader);
 
 	info.addProperty("type", shader->typeString());
@@ -139,13 +191,13 @@ void DebugInfo::visitShader(Shader* shader)
 
 void DebugInfo::visitTexture(Texture* texture)
 {
-	ObjectInfo info;
+	InfoUnit info;
 	info.name = name("Texture", texture);
 
 	int maxTextureSize = query::getInteger(GL_MAX_TEXTURE_SIZE);
-	int maxLevels = (int)std::ceil(std::log(maxTextureSize)/std::log(2));
+	int maxLevels = (int)std::ceil(std::log(maxTextureSize)/std::log(2))+1;
 
-	unsigned int size = 0;
+	int size = 0;
 	for (int i = 0; i<=maxLevels; ++i)
 	{
 		int imageSize = 0;
@@ -177,7 +229,7 @@ void DebugInfo::visitTexture(Texture* texture)
 
 void DebugInfo::visitTransformFeedback(TransformFeedback* transformfeedback)
 {
-	ObjectInfo info;
+	InfoUnit info;
 	info.name = name("TransformFeedback", transformfeedback);
 
 	addInfo("TransformFeedbacks", info);
@@ -185,7 +237,7 @@ void DebugInfo::visitTransformFeedback(TransformFeedback* transformfeedback)
 
 void DebugInfo::visitVertexArrayObject(VertexArrayObject* vao)
 {
-	ObjectInfo info;
+	InfoUnit info;
 	info.name = name("VertexArrayObject", vao);
 
 	addInfo("VertexArrayObjects", info);
@@ -193,11 +245,11 @@ void DebugInfo::visitVertexArrayObject(VertexArrayObject* vao)
 
 
 
-DebugInfo::ObjectInfoGroup& DebugInfo::group(const std::string& name)
+DebugInfo::InfoGroup& DebugInfo::group(const std::string& name)
 {
 	if (m_infoGroups.find(name) == m_infoGroups.end())
 	{
-		ObjectInfoGroup group;
+		InfoGroup group;
 		group.name = name;
 		m_infoGroups[name] = group;
 	}
@@ -205,16 +257,21 @@ DebugInfo::ObjectInfoGroup& DebugInfo::group(const std::string& name)
 	return m_infoGroups[name];
 }
 
-void DebugInfo::addInfo(const std::string& groupName, const ObjectInfo& info)
+void DebugInfo::addInfo(const std::string& groupName, const InfoUnit& info)
 {
-	group(groupName).addObjectInfo(info);
+	group(groupName).addInfoUnit(info);
 }
 
-std::string DebugInfo::humanReadableSize(unsigned bytes) const
+std::string DebugInfo::humanReadableSize(long long bytes)
 {
+	if (bytes<0)
+	{
+		return "n/a";
+	}
+
 	static std::vector<char> prefix = { 'k', 'M', 'G', 'T' };
 	int power = -1;
-	float value = static_cast<float>(bytes);
+	double value = static_cast<double>(bytes);
 
 	std::stringstream ss;
 
@@ -235,7 +292,7 @@ std::string DebugInfo::humanReadableSize(unsigned bytes) const
 	return ss.str();
 }
 
-std::string DebugInfo::name(const std::string& typeName, Object* object) const
+std::string DebugInfo::name(const std::string& typeName, Object* object)
 {
 	std::stringstream ss;
 
@@ -246,19 +303,19 @@ std::string DebugInfo::name(const std::string& typeName, Object* object) const
 	return ss.str();
 }
 
-void DebugInfo::ObjectInfo::addProperty(const std::string& name, const std::string& value)
+void DebugInfo::InfoUnit::addProperty(const std::string& name, const std::string& value)
 {
 	properties.push_back({name, value});
 }
 
-void DebugInfo::ObjectInfo::addProperty(const std::string& name, GLint value)
+void DebugInfo::InfoUnit::addProperty(const std::string& name, GLint value)
 {
 	addProperty(name, std::to_string(value));
 }
 
-void DebugInfo::ObjectInfoGroup::addObjectInfo(const ObjectInfo& info)
+void DebugInfo::InfoGroup::addInfoUnit(const InfoUnit& unit)
 {
-	objects.push_back(info);
+	units.push_back(unit);
 }
 
 

@@ -47,63 +47,63 @@ std::string query::getString(GLenum pname)
 GLint query::getInteger(GLenum pname)
 {
 	GLint value;
-	
+
 	glGetIntegerv(pname, &value);
 	CheckGLError();
-	
+
 	return value;
 }
 
 GLfloat query::getFloat(GLenum pname)
 {
 	GLfloat value;
-	
+
 	glGetFloatv(pname, &value);
 	CheckGLError();
-	
+
 	return value;
 }
 
 GLdouble query::getDouble(GLenum pname)
 {
 	GLdouble value;
-	
+
 	glGetDoublev(pname, &value);
 	CheckGLError();
-	
+
 	return value;
 }
 
 GLboolean query::getBoolean(GLenum pname)
 {
 	GLboolean value;
-	
+
 	glGetBooleanv(pname, &value);
 	CheckGLError();
-	
+
 	return value;
 }
 
 GLint query::getInteger(GLenum pname, unsigned index)
 {
 	GLint value;
-	
+
 	glGetIntegeri_v(pname, index, &value);
 	CheckGLError();
-	
+
 	return value;
 }
 
 std::vector<GLint> query::getIntegers(GLenum pname, unsigned size)
 {
 	GLint* values = new GLint[size];
-	
+
 	glGetIntegerv(pname, values);
 	CheckGLError();
-	
+
 	std::vector<GLint> result(values, values+size);
 	delete[] values;
-	
+
 	return result;
 }
 
