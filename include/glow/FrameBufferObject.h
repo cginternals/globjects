@@ -1,7 +1,8 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
+#include <vector>
+#include <map>
 
 #include <glow/glow.h>
 #include <glow/Object.h>
@@ -14,20 +15,22 @@
 
 namespace glow {
 
-class GLOW_API ColorAttachment : public Referenced
+class GLOW_API FrameBufferAttachment : public Referenced
 {
 public:
-	ColorAttachment(GLenum attachment);
+	FrameBufferAttachment(GLenum attachment);
 
 	GLenum attachment() const;
 
 	virtual bool isTextureAttachment() const;
 	virtual bool isRenderBufferAttachment() const;
+
+	std::string attachmentString() const;
 protected:
-	GLenum _attachment;
+	GLenum m_attachment;
 };
 
-class GLOW_API TextureAttachment : public ColorAttachment
+class GLOW_API TextureAttachment : public FrameBufferAttachment
 {
 public:
 	TextureAttachment(Texture * texture, GLenum attachment);
@@ -35,10 +38,10 @@ public:
 	virtual bool isTextureAttachment() const;
 	Texture* texture();
 protected:
-	ref_ptr<Texture> _texture;
+	ref_ptr<Texture> m_texture;
 };
 
-class GLOW_API RenderBufferAttachment : public ColorAttachment
+class GLOW_API RenderBufferAttachment : public FrameBufferAttachment
 {
 public:
 	RenderBufferAttachment(RenderBufferObject* renderBuffer, GLenum attachment);
@@ -46,7 +49,7 @@ public:
 	virtual bool isRenderBufferAttachment() const;
 	RenderBufferObject* renderBuffer();
 protected:
-	ref_ptr<RenderBufferObject> _renderBuffer;
+	ref_ptr<RenderBufferObject> m_renderBuffer;
 };
 
 
@@ -88,12 +91,13 @@ public:
 	std::string statusString(GLenum status);
 	void printStatus(bool onlyErrors = false);
 
-	ColorAttachment* attachment(GLenum attachment);
+	FrameBufferAttachment* attachment(GLenum attachment);
+	std::vector<FrameBufferAttachment*> attachments();
 protected:
-	GLenum _target;
-	std::unordered_map<GLenum, ref_ptr<ColorAttachment>> _attachments;
+	GLenum m_target;
+	std::map<GLenum, ref_ptr<FrameBufferAttachment>> m_attachments;
 
-	void attach(ColorAttachment* attachment);
+	void attach(FrameBufferAttachment* attachment);
 
 	static GLuint genFrameBuffer();
 

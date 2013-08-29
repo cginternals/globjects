@@ -135,6 +135,14 @@ void Program::detach(Shader * shader)
 	invalidate();
 }
 
+std::set<Shader*> Program::shaders() const
+{
+	std::set<Shader*> shaders;
+	for (ref_ptr<Shader> shader: m_shaders)
+		shaders.insert(shader);
+	return shaders;
+}
+
 void Program::link()
 {
 	glLinkProgram(m_id);

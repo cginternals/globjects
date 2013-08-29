@@ -101,7 +101,7 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::objectInfo()
 	return debugInfo.collectObjectInfo();
 }
 
-//==========================0
+//==========================
 
 std::vector<DebugInfo::InfoGroup> DebugInfo::collectObjectInfo()
 {
@@ -127,7 +127,7 @@ void DebugInfo::visitBuffer(Buffer* buffer)
 	InfoUnit info;
 	info.name = name("Buffer", buffer);
 
-	info.addProperty("size", humanReadableSize(buffer->getParameter(GL_BUFFER_SIZE)));
+	info.addProperty("memory", humanReadableSize(buffer->getParameter(GL_BUFFER_SIZE)));
 
 	addInfo("Buffers", info);
 }
@@ -137,6 +137,21 @@ void DebugInfo::visitFrameBufferObject(FrameBufferObject* fbo)
 	InfoUnit info;
 	info.name = name("FrameBufferObject", fbo);
 
+	for (FrameBufferAttachment* attachment: fbo->attachments())
+	{
+		std::string objectName;
+		if (attachment->isTextureAttachment())
+		{
+			objectName = name("Texture", dynamic_cast<TextureAttachment*>(attachment)->texture());
+		}
+		else
+		{
+			objectName = name("RenderBufferObject", dynamic_cast<RenderBufferAttachment*>(attachment)->renderBuffer());
+		}
+
+		info.addProperty(attachment->attachmentString(), objectName);
+	}
+
 	addInfo("FrameBufferObjects", info);
 }
 
@@ -145,7 +160,13 @@ void DebugInfo::visitProgram(Program* program)
 	InfoUnit info;
 	info.name = name("Program", program);
 
-	info.addProperty("size", humanReadableSize(program->get(GL_PROGRAM_BINARY_LENGTH)));
+	info.addProperty("memory", humanReadableSize(program->get(GL_PROGRAM_BINARY_LENGTH)));
+
+	int i = 0;
+	for (Shader* shader: program->shaders())
+	{
+		info.addProperty("Shader "+std::to_string(i++), name("Shader", shader));
+	}
 
 	addInfo("Programs", info);
 }
@@ -168,9 +189,8 @@ void DebugInfo::visitRenderBufferObject(RenderBufferObject* rbo)
 
 	int size = (int)std::ceil((w*h*(r+g+b+a+d+s))/8.0);
 
-	info.addProperty("size", humanReadableSize(size));
-	info.addProperty("width", w);
-	info.addProperty("height", h);
+	info.addProperty("memory", humanReadableSize(size));
+	info.addProperty("size", std::to_string(w)+" x "+std::to_string(h));
 
 	addInfo("RenderBufferObjects", info);
 }
@@ -222,7 +242,8 @@ void DebugInfo::visitTexture(Texture* texture)
 		}
 	}
 
-	info.addProperty("size", humanReadableSize(size));
+	info.addProperty("memory", humanReadableSize(size));
+	info.addProperty("size", std::to_string(texture->getLevelParameter(0, GL_TEXTURE_WIDTH))+" x "+std::to_string(texture->getLevelParameter(0, GL_TEXTURE_HEIGHT)));
 
 	addInfo("Textures", info);
 }
@@ -239,6 +260,11 @@ void DebugInfo::visitVertexArrayObject(VertexArrayObject* vao)
 {
 	InfoUnit info;
 	info.name = name("VertexArrayObject", vao);
+
+	for (VertexAttributeBinding* binding: vao->bindings())
+	{
+		info.addProperty("binding "+std::to_string(binding->bindingIndex()), "location "+std::to_string(binding->attributeIndex())+" -> "+name("Buffer", binding->buffer()));
+	}
 
 	addInfo("VertexArrayObjects", info);
 }

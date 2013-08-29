@@ -2,6 +2,7 @@
 
 #include <map>
 #include <set>
+#include <vector>
 
 #include <glow/glow.h>
 
@@ -32,9 +33,11 @@ public:
 
 	void enable(GLint attributeIndex);
 	void disable(GLint attributeIndex);
+
+	std::vector<VertexAttributeBinding*> bindings();
 protected:
-	GLuint _nextBindingIndex;
-	std::map<GLuint, ref_ptr<VertexAttributeBinding>> _bindings;
+	GLuint m_nextBindingIndex;
+	std::map<GLuint, ref_ptr<VertexAttributeBinding>> m_bindings;
 
 	static GLuint genVertexArray();
 };

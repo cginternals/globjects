@@ -33,10 +33,10 @@ public:
 	bool isLinked() const;
 
 	void attach(Shader * shader);
-
     Program & operator<<(Shader * shader);
-
 	void detach(Shader * shader);
+
+	std::set<Shader*> shaders() const;
 
 	void link();
 	void invalidate();

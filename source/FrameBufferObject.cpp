@@ -9,29 +9,49 @@
 namespace glow
 {
 
-ColorAttachment::ColorAttachment(GLenum attachment)
-: _attachment(attachment)
+FrameBufferAttachment::FrameBufferAttachment(GLenum attachment)
+: m_attachment(attachment)
 {
 }
 
-GLenum ColorAttachment::attachment() const
+GLenum FrameBufferAttachment::attachment() const
 {
-	return _attachment;
+	return m_attachment;
 }
 
-bool ColorAttachment::isTextureAttachment() const
+bool FrameBufferAttachment::isTextureAttachment() const
 {
 	return false;
 }
 
-bool ColorAttachment::isRenderBufferAttachment() const
+bool FrameBufferAttachment::isRenderBufferAttachment() const
 {
 	return false;
+}
+
+std::string FrameBufferAttachment::attachmentString() const
+{
+	switch (m_attachment)
+	{
+		case GL_DEPTH_ATTACHMENT:
+			return "GL_DEPTH_ATTACHMENT";
+		case GL_STENCIL_ATTACHMENT:
+			return "GL_STENCIL_ATTACHMENT";
+		case GL_DEPTH_STENCIL_ATTACHMENT:
+			return "GL_DEPTH_STENCIL_ATTACHMENT";
+	}
+
+	if (m_attachment>=GL_COLOR_ATTACHMENT0 && GL_COLOR_ATTACHMENT0<= GL_COLOR_ATTACHMENT15)
+	{
+		return "GL_COLOR_ATTACHMENT"+std::to_string(m_attachment-GL_COLOR_ATTACHMENT0);
+	}
+
+	return "Unknown attachment "+std::to_string(m_attachment);
 }
 
 TextureAttachment::TextureAttachment(Texture* texture, GLenum attachment)
-: ColorAttachment(attachment)
-, _texture(texture)
+: FrameBufferAttachment(attachment)
+, m_texture(texture)
 {
 }
 
@@ -42,12 +62,12 @@ bool TextureAttachment::isTextureAttachment() const
 
 Texture* TextureAttachment::texture()
 {
-	return _texture;
+	return m_texture;
 }
 
 RenderBufferAttachment::RenderBufferAttachment(RenderBufferObject* renderBuffer, GLenum attachment)
-: ColorAttachment(attachment)
-, _renderBuffer(renderBuffer)
+: FrameBufferAttachment(attachment)
+, m_renderBuffer(renderBuffer)
 {
 }
 
@@ -58,7 +78,7 @@ bool RenderBufferAttachment::isRenderBufferAttachment() const
 
 RenderBufferObject* RenderBufferAttachment::renderBuffer()
 {
-	return _renderBuffer;
+	return m_renderBuffer;
 }
 
 
@@ -66,13 +86,13 @@ FrameBufferObject FrameBufferObject::_defaultFBO(0, false);
 
 FrameBufferObject::FrameBufferObject()
 : Object(genFrameBuffer())
-, _target(GL_FRAMEBUFFER)
+, m_target(GL_FRAMEBUFFER)
 {
 }
 
 FrameBufferObject::FrameBufferObject(GLuint id, bool ownsGLObject)
 : Object(id, ownsGLObject)
-, _target(GL_FRAMEBUFFER)
+, m_target(GL_FRAMEBUFFER)
 {
 }
 
@@ -112,20 +132,20 @@ void FrameBufferObject::accept(ObjectVisitor& visitor)
 
 void FrameBufferObject::bind()
 {
-	glBindFramebuffer(_target, m_id);
+	glBindFramebuffer(m_target, m_id);
 	CheckGLError();
 }
 
 void FrameBufferObject::bind(GLenum target)
 {
-	_target = target;
+	m_target = target;
 	glBindFramebuffer(target, m_id);
 	CheckGLError();
 }
 
 void FrameBufferObject::unbind()
 {
-	glBindFramebuffer(_target, 0);
+	glBindFramebuffer(m_target, 0);
 	CheckGLError();
 }
 
@@ -133,7 +153,7 @@ void FrameBufferObject::setParameter(GLenum pname, GLint param)
 {
 	bind();
 
-	glFramebufferParameteri(_target, pname, param);
+	glFramebufferParameteri(m_target, pname, param);
 	CheckGLError();
 }
 
@@ -141,7 +161,7 @@ void FrameBufferObject::attachTexture(GLenum attachment, Texture* texture, GLint
 {
 	bind();
 
-	glFramebufferTexture(_target, attachment, texture->id(), level);
+	glFramebufferTexture(m_target, attachment, texture->id(), level);
 	CheckGLError();
 	attach(new TextureAttachment(texture, attachment));
 }
@@ -150,7 +170,7 @@ void FrameBufferObject::attachTexture1D(GLenum attachment, Texture* texture, GLi
 {
 	bind();
 
-	glFramebufferTexture1D(_target, attachment, texture->target(), texture->id(), level);
+	glFramebufferTexture1D(m_target, attachment, texture->target(), texture->id(), level);
 	CheckGLError();
 
 	attach(new TextureAttachment(texture, attachment));
@@ -160,7 +180,7 @@ void FrameBufferObject::attachTexture2D(GLenum attachment, Texture* texture, GLi
 {
 	bind();
 
-	glFramebufferTexture2D(_target, attachment, texture->target(), texture->id(), level);
+	glFramebufferTexture2D(m_target, attachment, texture->target(), texture->id(), level);
 	CheckGLError();
 
 	attach(new TextureAttachment(texture, attachment));
@@ -170,7 +190,7 @@ void FrameBufferObject::attachTextureLayer(GLenum attachment, Texture* texture, 
 {
 	bind();
 
-	glFramebufferTextureLayer(_target, attachment, texture->id(), level, layer);
+	glFramebufferTextureLayer(m_target, attachment, texture->id(), level, layer);
 	CheckGLError();
 
 	attach(new TextureAttachment(texture, attachment));
@@ -181,15 +201,15 @@ void FrameBufferObject::attachRenderBuffer(GLenum attachment, RenderBufferObject
 	bind();
 	renderBuffer->bind();
 
-	glFramebufferRenderbuffer(_target, attachment, GL_RENDERBUFFER, renderBuffer->id());
+	glFramebufferRenderbuffer(m_target, attachment, GL_RENDERBUFFER, renderBuffer->id());
 	CheckGLError();
 
 	attach(new RenderBufferAttachment(renderBuffer, attachment));
 }
 
-void FrameBufferObject::attach(ColorAttachment* attachment)
+void FrameBufferObject::attach(FrameBufferAttachment* attachment)
 {
-	_attachments[attachment->attachment()] = attachment;
+	m_attachments[attachment->attachment()] = attachment;
 }
 
 void FrameBufferObject::setReadBuffer(GLenum mode)
@@ -241,7 +261,7 @@ GLenum FrameBufferObject::checkStatus()
 {
 	bind();
 
-	GLenum result = glCheckFramebufferStatus(_target);
+	GLenum result = glCheckFramebufferStatus(m_target);
 	CheckGLError();
 	return result;
 }
@@ -298,9 +318,21 @@ void FrameBufferObject::printStatus(bool onlyErrors)
 	}
 	}
 
-ColorAttachment* FrameBufferObject::attachment(GLenum attachment)
+FrameBufferAttachment* FrameBufferObject::attachment(GLenum attachment)
 {
-	return _attachments[attachment];
+	return m_attachments[attachment];
+}
+
+std::vector<FrameBufferAttachment*> FrameBufferObject::attachments()
+{
+	std::vector<FrameBufferAttachment*> attachments;
+
+	for (std::pair<GLenum, ref_ptr<FrameBufferAttachment>> pair: m_attachments)
+	{
+		attachments.push_back(pair.second);
+	}
+
+	return attachments;
 }
 
 } // namespace glow
