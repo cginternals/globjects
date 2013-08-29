@@ -1,7 +1,9 @@
 
 #include <glow/RenderBufferObject.h>
-
 #include <glow/Error.h>
+#include <glow/ObjectVisitor.h>
+
+#include <cmath>
 
 namespace glow
 {
@@ -35,6 +37,11 @@ const char* RenderBufferObject::typeName() const
 	return "RenderBufferObject";
 }
 
+void RenderBufferObject::accept(ObjectVisitor& visitor)
+{
+	visitor.visitRenderBufferObject(this);
+}
+
 void RenderBufferObject::bind()
 {
 	glBindRenderbuffer(GL_RENDERBUFFER, m_id);
@@ -61,6 +68,16 @@ void RenderBufferObject::storageMultisample(GLsizei samples, GLenum internalform
 
 	glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, internalformat, width, height);
 	CheckGLError();
+}
+
+GLint RenderBufferObject::getParameter(GLenum pname)
+{
+	GLint value = 0;
+
+	glGetRenderbufferParameteriv(GL_RENDERBUFFER, pname, &value);
+	CheckGLError();
+
+	return value;
 }
 
 } // namespace glow

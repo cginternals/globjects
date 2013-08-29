@@ -1,6 +1,6 @@
 #include <glow/TransformFeedback.h>
-
 #include <glow/Error.h>
+#include <glow/ObjectVisitor.h>
 
 namespace glow
 {
@@ -32,6 +32,11 @@ GLuint TransformFeedback::genTransformFeedback()
 const char* TransformFeedback::typeName() const
 {
 	return "TransformFeedback";
+}
+
+void TransformFeedback::accept(ObjectVisitor& visitor)
+{
+	visitor.visitTransformFeedback(this);
 }
 
 void TransformFeedback::bind()

@@ -53,6 +53,7 @@ public:
 	virtual ~TransformFeedback();
 
 	virtual const char* typeName() const;
+	virtual void accept(ObjectVisitor& visitor);
 
 	void bind();
 	void unbind();

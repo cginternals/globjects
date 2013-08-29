@@ -197,6 +197,7 @@ set(api_includes
     ${header_path}/Changeable.h
     ${header_path}/ChangeListener.h
     ${header_path}/ConsoleLogger.h
+    ${header_path}/DebugInfo.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferObject.h
     ${header_path}/formatString.h
@@ -205,8 +206,8 @@ set(api_includes
     ${header_path}/logging.hpp
     ${header_path}/LogMessage.h
     ${header_path}/Object.h
-    ${header_path}/ObjectProperties.h
     ${header_path}/ObjectRegistry.h
+    ${header_path}/ObjectVisitor.h
     ${header_path}/Program.h
     ${header_path}/Program.hpp
     ${header_path}/query.h
@@ -238,14 +239,15 @@ set(sources
     ${source_path}/ChronoTimer.cpp
     ${source_path}/ChronoTimer.h
     ${source_path}/ConsoleLogger.cpp
+    ${source_path}/DebugInfo.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/Object.cpp
-    ${source_path}/ObjectProperties.cpp
     ${source_path}/ObjectRegistry.cpp
+    ${source_path}/ObjectVisitor.cpp
     ${source_path}/Program.cpp
     ${source_path}/query.cpp
     ${source_path}/RawFile.cpp
@@ -267,7 +269,7 @@ set(sources
 
 if(NOT OPTION_MINIMAL)
 
-set(api_includes ${api_includes}
+list(APPEND api_includes
     ${header_path}/Context.h
     ${header_path}/ContextFormat.h
     ${header_path}/KeyEvent.h
@@ -275,7 +277,7 @@ set(api_includes ${api_includes}
     ${header_path}/WindowEventHandler.h
     )
 
-set(sources ${sources}
+list(APPEND sources
     ${source_path}/AbstractNativeContext.cpp
     ${source_path}/AbstractNativeContext.h
     ${source_path}/AbstractNativeWindow.cpp

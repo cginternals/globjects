@@ -24,6 +24,7 @@ public:
 	virtual ~Program();
 
 	virtual const char* typeName() const;
+	virtual void accept(ObjectVisitor& visitor);
 
 	void use();
 	void release();

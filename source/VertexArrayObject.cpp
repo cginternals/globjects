@@ -1,7 +1,7 @@
 
 #include <glow/VertexArrayObject.h>
-
 #include <glow/Error.h>
+#include <glow/ObjectVisitor.h>
 
 namespace glow
 {
@@ -39,6 +39,11 @@ GLuint VertexArrayObject::genVertexArray()
 const char* VertexArrayObject::typeName() const
 {
 	return "VertexArrayObject";
+}
+
+void VertexArrayObject::accept(ObjectVisitor& visitor)
+{
+	visitor.visitVertexArrayObject(this);
 }
 
 void VertexArrayObject::bind()

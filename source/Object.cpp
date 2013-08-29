@@ -42,12 +42,12 @@ bool Object::ownsGLObject() const
 
 void Object::registerObject()
 {
-	IF_DEBUG(ObjectRegistry::instance().registerObject(this);)
+	IF_DEBUG(ObjectRegistry::registerObject(this);)
 }
 
 void Object::deregisterObject()
 {
-	IF_DEBUG(ObjectRegistry::instance().deregisterObject(this);)
+	IF_DEBUG(ObjectRegistry::deregisterObject(this);)
 }
 
 const std::string& Object::name() const
@@ -58,12 +58,6 @@ const std::string& Object::name() const
 void Object::setName(const std::string& name)
 {
 	m_name = name;
-}
-
-const ObjectProperties& Object::properties()
-{
-	IF_DEBUG(return m_properties;)
-	IF_NDEBUG(static ObjectProperties p; return p;)
 }
 
 } // namespace glow

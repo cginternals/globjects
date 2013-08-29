@@ -4,6 +4,7 @@
 #include <glow/FrameBufferObject.h>
 #include <glow/logging.h>
 #include <glow/Error.h>
+#include <glow/ObjectVisitor.h>
 
 namespace glow
 {
@@ -102,6 +103,11 @@ GLuint FrameBufferObject::genFrameBuffer()
 const char* FrameBufferObject::typeName() const
 {
 	return "FrameBufferObject";
+}
+
+void FrameBufferObject::accept(ObjectVisitor& visitor)
+{
+	visitor.visitFrameBufferObject(this);
 }
 
 void FrameBufferObject::bind()

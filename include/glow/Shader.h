@@ -35,16 +35,20 @@ public:
 	virtual ~Shader();
 
 	virtual const char * typeName() const;
+	virtual void accept(ObjectVisitor& visitor);
 
 	GLenum type() const;
 
 	void setSource(ShaderSource * source);
 	void setSource(const std::string & source);
+	 const ShaderSource* source() const;
 
 	bool compile();
 	bool isCompiled() const;
 
 	std::string infoLog() const;
+
+    std::string typeString() const;
 
 protected:
     bool checkCompileStatus();
@@ -52,14 +56,13 @@ protected:
     void notifyChanged();
 	void updateSource();
 
-    std::string typeString() const;
-	std::string shaderString() const;
-
 protected:
     static GLuint create(GLenum type);
     static void setSource(
         const Shader & shader
     ,   const std::string & source);
+
+    std::string shaderString() const;
 
 protected:
 	GLenum m_type;

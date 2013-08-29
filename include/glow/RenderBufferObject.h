@@ -14,12 +14,15 @@ public:
 	virtual ~RenderBufferObject();
 
 	const char* typeName() const;
+	virtual void accept(ObjectVisitor& visitor);
 
 	void bind();
 	void unbind();
 
 	void storage(GLenum internalformat, GLsizei width, GLsizei height);
 	void storageMultisample(GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
+
+	GLint getParameter(GLenum pname);
 protected:
 	static GLuint genRenderBuffer();
 };

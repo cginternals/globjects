@@ -4,6 +4,7 @@
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/Buffer.h>
+#include <glow/ObjectVisitor.h>
 
 namespace glow
 {
@@ -48,6 +49,11 @@ Buffer::~Buffer()
 const char* Buffer::typeName() const
 {
 	return "Buffer";
+}
+
+void Buffer::accept(ObjectVisitor& visitor)
+{
+	visitor.visitBuffer(this);
 }
 
 void Buffer::bind()
@@ -102,8 +108,18 @@ void Buffer::setData(GLsizei size, const GLvoid* data, GLenum usage)
 	bind();
 	glBufferData(_target, size, data, usage);
 	CheckGLError();
+}
 
-	IF_DEBUG(m_properties.setMemory(size));
+GLint Buffer::getParameter(GLenum pname)
+{
+	bind();
+
+	GLint value = 0;
+
+	glGetBufferParameteriv(_target, pname, &value);
+	CheckGLError();
+
+	return value;
 }
 
 void Buffer::drawArrays(GLenum mode, GLint first, GLsizei count)

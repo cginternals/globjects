@@ -17,6 +17,7 @@ public:
 	virtual ~Buffer();
 
 	virtual const char* typeName() const;
+	virtual void accept(ObjectVisitor& visitor);
 
 	void bind();
 	void bind(GLenum target);
@@ -24,6 +25,8 @@ public:
 
 	void setData(const AbstractArray& data, GLenum usage = GL_STATIC_DRAW);
 	void setData(GLsizei size, const GLvoid* data = nullptr, GLenum usage = GL_STATIC_DRAW);
+
+	GLint getParameter(GLenum pname);
 
 	// mapping
 	void* map(GLenum access = GL_READ_ONLY);

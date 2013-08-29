@@ -7,6 +7,7 @@
 #include <glow/logging.h>
 #include <glow/ShaderCode.h>
 #include <glow/Error.h>
+#include <glow/ObjectVisitor.h>
 
 namespace glow
 {
@@ -21,7 +22,6 @@ Shader::Shader(
 {
 	if (source)
 		setSource(source);
-	IF_DEBUG(m_properties.setString("type", typeString());)
 }
 
 Shader::Shader(const GLenum type)
@@ -71,6 +71,11 @@ const char * Shader::typeName() const
 	return "Shader";
 }
 
+void Shader::accept(ObjectVisitor& visitor)
+{
+	visitor.visitShader(this);
+}
+
 GLenum Shader::type() const
 {
 	return m_type;
@@ -97,6 +102,11 @@ void Shader::setSource(const std::string & source)
 	setSource(new ShaderCode(source));
 }
 
+const ShaderSource* Shader::source() const
+{
+	return m_source;
+}
+
 void Shader::notifyChanged()
 {
 	updateSource();
@@ -116,14 +126,6 @@ void Shader::updateSource()
 	{
         m_currentSource = m_source->source();
 	}
-
-	IF_DEBUG
-    (
-    if (m_source)
-    	m_properties.setString("source", m_source->isFile() ? dynamic_cast<ShaderFile&>(*m_source).filePath() : "string");
-    else
-		m_properties.clearString("source");
-    )
 }
 
 void Shader::setSource(

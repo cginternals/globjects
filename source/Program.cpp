@@ -7,6 +7,7 @@
 #include <glow/logging.h>
 #include <glow/Uniform.h>
 #include <glow/Error.h>
+#include <glow/ObjectVisitor.h>
 
 namespace glow
 {
@@ -46,6 +47,11 @@ GLuint Program::createProgram()
 const char* Program::typeName() const
 {
 	return "Program";
+}
+
+void Program::accept(ObjectVisitor& visitor)
+{
+	visitor.visitProgram(this);
 }
 
 void Program::use()
@@ -136,8 +142,6 @@ void Program::link()
 
     m_linked = checkLinkStatus();
 	m_dirty = false;
-
-	IF_DEBUG(m_properties.setMemory(get(GL_PROGRAM_BINARY_LENGTH));)
 
 	updateUniforms();
 	CheckGLError();
