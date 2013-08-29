@@ -129,11 +129,6 @@ GLuint Texture::genTexture()
 	return id;
 }
 
-const char* Texture::typeName() const
-{
-	return "Texture";
-}
-
 void Texture::accept(ObjectVisitor& visitor)
 {
 	visitor.visitTexture(this);

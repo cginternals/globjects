@@ -32,11 +32,6 @@ GLuint RenderBufferObject::genRenderBuffer()
 	return id;
 }
 
-const char* RenderBufferObject::typeName() const
-{
-	return "RenderBufferObject";
-}
-
 void RenderBufferObject::accept(ObjectVisitor& visitor)
 {
 	visitor.visitRenderBufferObject(this);

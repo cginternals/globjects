@@ -36,11 +36,6 @@ GLuint VertexArrayObject::genVertexArray()
 	return id;
 }
 
-const char* VertexArrayObject::typeName() const
-{
-	return "VertexArrayObject";
-}
-
 void VertexArrayObject::accept(ObjectVisitor& visitor)
 {
 	visitor.visitVertexArrayObject(this);

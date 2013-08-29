@@ -16,7 +16,6 @@ public:
 	Buffer(GLuint id, GLenum target);
 	virtual ~Buffer();
 
-	virtual const char* typeName() const;
 	virtual void accept(ObjectVisitor& visitor);
 
 	void bind();

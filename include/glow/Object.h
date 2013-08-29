@@ -19,7 +19,6 @@ public:
 	Object(GLuint id, bool ownsGLObject = true);
 	virtual ~Object();
 
-	virtual const char* typeName() const = 0;
 	virtual void accept(ObjectVisitor& visitor) = 0;
 
 	GLuint id() const;

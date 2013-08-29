@@ -46,11 +46,6 @@ Buffer::~Buffer()
 	}
 }
 
-const char* Buffer::typeName() const
-{
-	return "Buffer";
-}
-
 void Buffer::accept(ObjectVisitor& visitor)
 {
 	visitor.visitBuffer(this);

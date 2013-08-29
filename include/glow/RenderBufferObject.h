@@ -13,7 +13,6 @@ public:
 	RenderBufferObject();
 	virtual ~RenderBufferObject();
 
-	const char* typeName() const;
 	virtual void accept(ObjectVisitor& visitor);
 
 	void bind();

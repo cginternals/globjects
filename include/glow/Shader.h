@@ -34,7 +34,6 @@ public:
 
 	virtual ~Shader();
 
-	virtual const char * typeName() const;
 	virtual void accept(ObjectVisitor& visitor);
 
 	GLenum type() const;

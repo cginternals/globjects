@@ -106,6 +106,7 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::objectInfo()
 std::vector<DebugInfo::InfoGroup> DebugInfo::collectObjectInfo()
 {
 	m_infoGroups.clear();
+	m_memoryUsage.clear();
 
 	for (Object* object: ObjectRegistry::objects())
 	{
@@ -113,6 +114,22 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::collectObjectInfo()
 	}
 
 	std::vector<InfoGroup> groups;
+
+	InfoGroup overview;
+	overview.name = "Overview";
+	InfoUnit memory;
+	memory.name = "Memory Usage";
+	unsigned total = 0;
+	for (const std::pair<std::string, unsigned>& pair: m_memoryUsage)
+	{
+		memory.addProperty(pair.first, humanReadableSize(pair.second));
+		total += pair.second;
+	}
+	memory.addProperty("Total", humanReadableSize(total));
+	overview.addInfoUnit(memory);
+
+	groups.push_back(overview);
+
 
 	for (const std::pair<std::string, InfoGroup>& pair: m_infoGroups)
 	{
@@ -127,7 +144,9 @@ void DebugInfo::visitBuffer(Buffer* buffer)
 	InfoUnit info;
 	info.name = name("Buffer", buffer);
 
-	info.addProperty("memory", humanReadableSize(buffer->getParameter(GL_BUFFER_SIZE)));
+	GLint memory = buffer->getParameter(GL_BUFFER_SIZE);
+	m_memoryUsage["Buffers"] += memory;
+	info.addProperty("memory", humanReadableSize(memory));
 
 	addInfo("Buffers", info);
 }
@@ -160,7 +179,9 @@ void DebugInfo::visitProgram(Program* program)
 	InfoUnit info;
 	info.name = name("Program", program);
 
-	info.addProperty("memory", humanReadableSize(program->get(GL_PROGRAM_BINARY_LENGTH)));
+	GLint memory = program->get(GL_PROGRAM_BINARY_LENGTH);
+	m_memoryUsage["Programs"] += memory;
+	info.addProperty("memory", humanReadableSize(memory));
 
 	int i = 0;
 	for (Shader* shader: program->shaders())
@@ -187,9 +208,10 @@ void DebugInfo::visitRenderBufferObject(RenderBufferObject* rbo)
 	int d = rbo->getParameter(GL_RENDERBUFFER_DEPTH_SIZE);
 	int s = rbo->getParameter(GL_RENDERBUFFER_STENCIL_SIZE);
 
-	int size = (int)std::ceil((w*h*(r+g+b+a+d+s))/8.0);
+	int memory = (int)std::ceil((w*h*(r+g+b+a+d+s))/8.0);
 
-	info.addProperty("memory", humanReadableSize(size));
+	m_memoryUsage["RenderBufferObjects"] += memory;
+	info.addProperty("memory", humanReadableSize(memory));
 	info.addProperty("size", std::to_string(w)+" x "+std::to_string(h));
 
 	addInfo("RenderBufferObjects", info);
@@ -217,14 +239,14 @@ void DebugInfo::visitTexture(Texture* texture)
 	int maxTextureSize = query::getInteger(GL_MAX_TEXTURE_SIZE);
 	int maxLevels = (int)std::ceil(std::log(maxTextureSize)/std::log(2))+1;
 
-	int size = 0;
+	int memory = 0;
 	for (int i = 0; i<=maxLevels; ++i)
 	{
 		int imageSize = 0;
 
 		if (texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED) == GL_TRUE)
 		{
-			size += texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED_IMAGE_SIZE);
+			memory += texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED_IMAGE_SIZE);
 		}
 		else
 		{
@@ -238,11 +260,13 @@ void DebugInfo::visitTexture(Texture* texture)
 			int a = texture->getLevelParameter(i, GL_TEXTURE_ALPHA_SIZE);
 			int ds = texture->getLevelParameter(i, GL_TEXTURE_DEPTH_SIZE);
 
-			size += (int)std::ceil((w*h*d*(r+g+b+a+ds))/8.0);
+			memory += (int)std::ceil((w*h*d*(r+g+b+a+ds))/8.0);
 		}
 	}
 
-	info.addProperty("memory", humanReadableSize(size));
+
+	m_memoryUsage["Textures"] += memory;
+	info.addProperty("memory", humanReadableSize(memory));
 	info.addProperty("size", std::to_string(texture->getLevelParameter(0, GL_TEXTURE_WIDTH))+" x "+std::to_string(texture->getLevelParameter(0, GL_TEXTURE_HEIGHT)));
 
 	addInfo("Textures", info);

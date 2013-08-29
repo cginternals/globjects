@@ -25,7 +25,6 @@ public:
 	Texture(GLuint id, GLenum  target, bool ownsGLObject = true);
 	virtual ~Texture();
 
-	virtual const char* typeName() const;
 	virtual void accept(ObjectVisitor& visitor);
 
 	void bind();

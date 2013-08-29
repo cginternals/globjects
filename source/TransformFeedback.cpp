@@ -29,11 +29,6 @@ GLuint TransformFeedback::genTransformFeedback()
 	return id;
 }
 
-const char* TransformFeedback::typeName() const
-{
-	return "TransformFeedback";
-}
-
 void TransformFeedback::accept(ObjectVisitor& visitor)
 {
 	visitor.visitTransformFeedback(this);

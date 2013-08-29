@@ -66,11 +66,6 @@ GLuint Shader::create(GLenum type)
 	return result;
 }
 
-const char * Shader::typeName() const
-{
-	return "Shader";
-}
-
 void Shader::accept(ObjectVisitor& visitor)
 {
 	visitor.visitShader(this);

@@ -23,7 +23,6 @@ public:
 	Program();
 	virtual ~Program();
 
-	virtual const char* typeName() const;
 	virtual void accept(ObjectVisitor& visitor);
 
 	void use();

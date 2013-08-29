@@ -23,7 +23,6 @@ public:
 	VertexArrayObject(GLuint id, bool ownsGLObject = true);
 	virtual ~VertexArrayObject();
 
-	virtual const char* typeName() const;
 	virtual void accept(ObjectVisitor& visitor);
 
 	void bind();

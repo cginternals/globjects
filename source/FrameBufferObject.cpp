@@ -120,11 +120,6 @@ GLuint FrameBufferObject::genFrameBuffer()
 	return id;
 }
 
-const char* FrameBufferObject::typeName() const
-{
-	return "FrameBufferObject";
-}
-
 void FrameBufferObject::accept(ObjectVisitor& visitor)
 {
 	visitor.visitFrameBufferObject(this);

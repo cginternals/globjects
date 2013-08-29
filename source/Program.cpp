@@ -44,11 +44,6 @@ GLuint Program::createProgram()
 	return result;
 }
 
-const char* Program::typeName() const
-{
-	return "Program";
-}
-
 void Program::accept(ObjectVisitor& visitor)
 {
 	visitor.visitProgram(this);

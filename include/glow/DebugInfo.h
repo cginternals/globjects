@@ -56,6 +56,7 @@ protected:
 	virtual ~DebugInfo();
 protected:
 	std::map<std::string, InfoGroup> m_infoGroups;
+	std::map<std::string, unsigned> m_memoryUsage;
 
 	std::vector<InfoGroup> collectObjectInfo();
 
