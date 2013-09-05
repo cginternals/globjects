@@ -1,7 +1,7 @@
 #include <glow/DebugInfo.h>
 #include <glow/ObjectRegistry.h>
 #include <glow/logging.h>
-#include <glow/query.h>
+#include <glow/global.h>
 
 #include <sstream>
 #include <algorithm>

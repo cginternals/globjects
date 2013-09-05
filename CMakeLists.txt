@@ -202,6 +202,7 @@ set(api_includes
     ${header_path}/FrameBufferObject.h
     ${header_path}/formatString.h
     ${header_path}/formatString.hpp
+    ${header_path}/global.h
     ${header_path}/logging.h
     ${header_path}/logging.hpp
     ${header_path}/LogMessage.h
@@ -210,7 +211,7 @@ set(api_includes
     ${header_path}/ObjectVisitor.h
     ${header_path}/Program.h
     ${header_path}/Program.hpp
-    ${header_path}/query.h
+    ${header_path}/Query.h
     ${header_path}/RawFile.h
     ${header_path}/RawFile.hpp
     ${header_path}/ref_ptr.hpp
@@ -243,13 +244,14 @@ set(sources
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
+    ${source_path}/global.cpp
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/Object.cpp
     ${source_path}/ObjectRegistry.cpp
     ${source_path}/ObjectVisitor.cpp
     ${source_path}/Program.cpp
-    ${source_path}/query.cpp
+    ${source_path}/Query.cpp
     ${source_path}/RawFile.cpp
     ${source_path}/Referenced.cpp
     ${source_path}/RenderBufferObject.cpp

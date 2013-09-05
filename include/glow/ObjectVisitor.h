@@ -6,6 +6,7 @@
 #include <glow/Buffer.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/Program.h>
+#include <glow/Query.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Shader.h>
 #include <glow/Texture.h>
@@ -26,6 +27,7 @@ public:
 	virtual void visitBuffer(Buffer* buffer);
 	virtual void visitFrameBufferObject(FrameBufferObject* fbo);
 	virtual void visitProgram(Program* program);
+	virtual void visitQuery(Query* query);
 	virtual void visitRenderBufferObject(RenderBufferObject* rbo);
 	virtual void visitShader(Shader* shader);
 	virtual void visitTexture(Texture* texture);

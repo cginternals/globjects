@@ -12,7 +12,7 @@
 #endif
 
 #include <glow/logging.h>
-#include <glow/query.h>
+#include <glow/global.h>
 #include <glow/Error.h>
 #include <glow/Context.h>
 

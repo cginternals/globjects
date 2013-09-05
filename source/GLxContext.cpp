@@ -9,7 +9,7 @@
 #include <GL/glx.h>
 
 #include <glow/logging.h>
-#include <glow/query.h>
+#include <glow/global.h>
 #include <glow/Error.h>
 
 #include "GLxContext.h"
