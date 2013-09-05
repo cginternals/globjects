@@ -26,7 +26,7 @@
 #define GPU_MEMORY_INFO_EVICTION_COUNT_NVX				0x904A
 #define GPU_MEMORY_INFO_EVICTED_MEMORY_NVX				0x904B
 
-#include <glow/query.h>
+#include <glow/global.h>
 
 #include <glow/Error.h>
 

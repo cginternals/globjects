@@ -1,6 +1,5 @@
 #include <glow/ObjectVisitor.h>
 
-
 namespace glow
 {
 
@@ -26,6 +25,10 @@ void ObjectVisitor::visitFrameBufferObject(FrameBufferObject* fbo)
 }
 
 void ObjectVisitor::visitProgram(Program* program)
+{
+}
+
+void ObjectVisitor::visitQuery(Query* query)
 {
 }
 
