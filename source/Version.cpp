@@ -1,7 +1,7 @@
 
 #include <sstream>
 
-#include <glow/query.h>
+#include <glow/global.h>
 #include <glow/LogMessage.h>
 #include <glow/Version.h>
 

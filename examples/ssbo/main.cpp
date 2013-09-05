@@ -2,7 +2,7 @@
 #include <GL/freeglut.h>
 
 #include <SSBOWindow.h>
-#include <glow/query.h>
+#include <glow/global.h>
 #include <glow/Error.h>
 
 #include <iostream>
