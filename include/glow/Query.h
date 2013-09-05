@@ -14,6 +14,7 @@ namespace glow
  * As a Query object queries the GPU asynchroneously, the result won't be available right after the end() invokation.
  * The resultAvailable() method indicates whether the calling of get()/get64() will return the final result.
  * To wait until the result is available, the wait() method can be used.
+ * Alternatively there are waitAndGet() and waitAndGet64() to query the result in one invokation.
  * 
  * There is a convenience method to create a Query object which answeres with the current timestamp on the GPU named timestamp() (see example below).
  *
@@ -72,6 +73,9 @@ public:
 	
 	bool resultAvailable() const;
 	void wait() const;
+	
+	GLuint waitAndGet(GLenum pname = GL_QUERY_RESULT) const;
+	GLuint64 waitAndGet64(GLenum pname = GL_QUERY_RESULT) const;
 	
 	void counter(GLenum target = GL_TIMESTAMP);
 protected:

@@ -124,6 +124,20 @@ void Query::wait() const
 	while (!resultAvailable());
 }
 
+GLuint Query::waitAndGet(GLenum pname) const
+{
+	wait();
+	
+	return get(pname);
+}
+
+GLuint64 Query::waitAndGet64(GLenum pname) const
+{
+	wait();
+	
+	return get64(pname);
+}
+
 void Query::counter(GLenum target)
 {
 	m_target = target;
