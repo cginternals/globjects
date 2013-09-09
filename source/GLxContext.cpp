@@ -234,12 +234,23 @@ bool GLxContext::isValid() const
 
 bool GLxContext::setSwapInterval(Context::SwapInterval swapInterval) const
 {
+	if (!extensions::isSupported("GLX_EXT_swap_control") || !glXSwapIntervalEXT)
+	{
+		warning() << "No GLX_EXT_swap_control extension found, ignoring swap interval set request";
+
+		return false;
+	}
+
     glXSwapIntervalEXT(m_display, m_hWnd, swapInterval);
-    if(CheckGLError())
+	if (CheckGLError())
+	{
         warning() << "Setting swap interval to " << Context::swapIntervalString(swapInterval)
             << " (" << swapInterval << ") failed.";
 
-    return false;
+		return false;
+	}
+
+	return true;
 }
 
 bool GLxContext::makeCurrent() const
