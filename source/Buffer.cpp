@@ -178,4 +178,19 @@ void Buffer::copyData(glow::Buffer* buffer, GLsizeiptr size, GLenum usage)
 	copySubData(buffer, 0, 0, size);
 }
 
+void Buffer::clearData(GLenum internalformat, GLenum format, GLenum type, const void* data)
+{
+    bind();
+
+    glClearBufferData(_target, internalformat, format, type, data);
+    CheckGLError();
+}
+
+void Buffer::clearData(GLenum target, GLenum internalformat, GLenum format, GLenum type, const void* data)
+{
+    _target = target;
+
+    clearData(internalformat, format, type, data);
+}
+
 } // namespace glow

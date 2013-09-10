@@ -51,6 +51,10 @@ public:
 	void copySubData(glow::Buffer* buffer, GLsizeiptr size);
 	void copyData(glow::Buffer* buffer, GLsizeiptr size, GLenum usage = GL_STATIC_DRAW);
 
+    // clear
+    void clearData(GLenum internalformat, GLenum format, GLenum type, const void* data = nullptr);
+    void clearData(GLenum target, GLenum internalformat, GLenum format, GLenum type, const void* data = nullptr);
+
 protected:
 	GLenum _target;
 
