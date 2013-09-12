@@ -168,6 +168,7 @@ include_directories(
 # GLOW LIBRARIES
 
 add_subdirectory(source)
+install(FILES glow-config.cmake DESTINATION ".")
 
 
 # EXAMPLES
