@@ -1,15 +1,15 @@
 
 # GLOW_FOUND
-# GLOW_INCLUDE_PATH
+# GLOW_INCLUDE_DIR
 # GLOW_LIBRARY
 
 IF(TARGET glow)
-	GET_TARGET_PROPERTY(GLOW_INCLUDE_PATH glow INCLUDE_PATH)
+	GET_TARGET_PROPERTY(GLOW_INCLUDE_DIR glow INCLUDE_PATH)
 	SET(GLOW_LIBRARY glow)
 ELSE()
 	IF(X64)
 
-	    FIND_PATH(GLOW_INCLUDE_PATH glow/ref_ptr.hpp
+	    FIND_PATH(GLOW_INCLUDE_DIR glow/ref_ptr.hpp
 		${GLOW_HOME}/include
 		$ENV{GLOW_DIR}/include
 		$ENV{GLOW_HOME}/include
@@ -36,7 +36,7 @@ ELSE()
 
 	ELSE()
 
-	    FIND_PATH( GLOW_INCLUDE_PATH glow/ref_ptr.hpp
+	    FIND_PATH( GLOW_INCLUDE_DIR glow/ref_ptr.hpp
 		${GLOW_HOME}/include
 		$ENV{GLOW_DIR}/include
 		$ENV{GLOW_HOME}/include
@@ -46,6 +46,7 @@ ELSE()
 		/usr/local/include
 		/sw/include
 		/opt/local/include
+
 		DOC "The directory where glow/ref_ptr.hpp resides")
 
 	    FIND_LIBRARY(GLOW_LIBRARY
@@ -59,12 +60,16 @@ ELSE()
 		/usr/local/lib
 		/sw/lib
 		/opt/local/lib
+		/usr/lib64
+		/usr/local/lib64
+		/sw/lib64
+		/opt/local/lib64
 		DOC "The GLOW library")
 
 	ENDIF()
 ENDIF()
 
-IF(GLOW_INCLUDE_PATH AND GLOW_LIBRARY)
+IF(GLOW_INCLUDE_DIR AND GLOW_LIBRARY)
     SET(GLOW_FOUND 1 CACHE STRING "Set to 1 if GLOW is found, 0 otherwise")
 ELSE()
     SET(GLOW_FOUND 0 CACHE STRING "Set to 1 if GLOW is found, 0 otherwise")

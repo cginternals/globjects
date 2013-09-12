@@ -19,7 +19,7 @@ set(DEFAULT_COMPILE_DEFS_RELEASE
 
 
 set(WIN32_COMPILE_FLAGS
-	"/nologo /Zc:wchar_t /Zc:forScope /GL /GF /GR /GS- /Zi /fp:precise /MP /wd4267 /wd4251 /W3 /WX"
+	"/nologo /Zc:wchar_t /Zc:forScope /GL /GF /GR /GS- /Zi /fp:precise /MP /wd4267 /wd4251 /wd4273 /W3 /WX "
 	# nologo       -> no logo
  	# Zc:wchar_t   -> treat wchar_t as built-in type: yes
  	# Zc:forScope  -> force conformance in for loop scope: Yes
@@ -59,9 +59,7 @@ set(WIN32_COMPILE_FLAGS
 	# arch:SSE2    -> enable enhanced instruction set: streaming simd extensions 2
 )
 
-if(OPTION_ERRORS_AS_EXCEPTION)
-
-else()
+if(NOT OPTION_ERRORS_AS_EXCEPTION)
 	# disable exception handling -> /EHs-c- does not remove CXX flags
 	string(REPLACE "/EHsc" "" CMAKE_CXX_FLAGS_MODIFIED ${CMAKE_CXX_FLAGS}) 
 	string(REPLACE "/GX" ""  CMAKE_CXX_FLAGS_MODIFIED ${CMAKE_CXX_FLAGS_MODIFIED}) 

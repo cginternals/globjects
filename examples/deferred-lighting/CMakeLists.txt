@@ -1,23 +1,19 @@
-cmake_minimum_required(VERSION 2.8)
 
 set(target deferred-lighting)
-project(${target})
-
-find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
+message(STATUS "example ${target}")
 
 include_directories(
-	${GLOW_INCLUDE_DIR}
-	${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_executable(${target} 
-	main.cpp
+    main.cpp
 )
 
 target_link_libraries(${target} 
-	${GLEW_LIBRARIES}
-	glow
+    ${GLEW_LIBRARIES}
+    glow
+    glowwindow
 )
 
 set_target_properties(${target}
