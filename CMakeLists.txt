@@ -17,6 +17,7 @@ set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glow/")
 option(OPTION_LIMIT_CONFIGS  "Generate limited configs (Release; Debug)" ON)
 option(OPTION_LOCAL_INSTALL  "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
+option(OPTION_BUILD_EXAMPLES "Build examples" ON)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
 
 # CMAKE CONFIGURATION
@@ -163,22 +164,29 @@ include_directories(
     ${GLM_INCLUDE_DIR}
     ${GLEW_INCLUDE_DIR})
 
+
 # GLOW LIBRARIES
 
 add_subdirectory(source)
-if(WIN32)
-    install(FILES ${GLEW_INCLUDE_DIR}/../bin/glew32.dll DESTINATION ${INSTALL_EXAMPLES})
-endif()
+
 
 # EXAMPLES
 
-set(GLOW_EXAMPLES_FOLDER "Examples")
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${INSTALL_EXAMPLES})
+if(OPTION_BUILD_EXAMPLES)
 
-unset(sources)
-unset(api_includes)
+    set(GLOW_EXAMPLES_FOLDER "Examples")
 
-add_subdirectory(examples)
+    if(WIN32)
+        install(FILES ${GLEW_INCLUDE_DIR}/../bin/glew32.dll DESTINATION ${INSTALL_EXAMPLES})
+    endif()
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${INSTALL_EXAMPLES})
+
+    unset(sources)
+    unset(api_includes)
+
+    add_subdirectory(examples)
+
+endif()
 
 # Packaging
 add_subdirectory(packages)
