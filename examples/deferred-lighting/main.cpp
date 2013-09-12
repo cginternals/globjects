@@ -7,7 +7,6 @@
 #include <glm/gtx/transform.hpp>
 
 #include <glow/AutoTimer.h>
-#include <glow/Window.h>
 #include <glow/Array.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/ContextFormat.h>
@@ -17,7 +16,8 @@
 #include <glow/Shader.h>
 #include <glow/Program.h>
 #include <glow/RawFile.h>
-#include <glow/WindowEventHandler.h>
+#include <glowwindow/Window.h>
+#include <glowwindow/WindowEventHandler.h>
 
 #include <glow/logging.h>
 

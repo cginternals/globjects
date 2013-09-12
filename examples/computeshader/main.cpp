@@ -14,13 +14,12 @@
 #include <glow/ShaderFile.h>
 #include <glow/Program.h>
 #include <glow/VertexArrayObject.h>
-#include <glow/Window.h>
 #include <glow/ContextFormat.h>
 #include <glow/Context.h>
 #include <glow/Error.h>
-#include <glow/WindowEventHandler.h>
 #include <glow/logging.h>
-
+#include <glowwindow/Window.h>
+#include <glowwindow/WindowEventHandler.h>
 
 using namespace glow;
 

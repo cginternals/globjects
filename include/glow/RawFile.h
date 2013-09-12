@@ -9,7 +9,7 @@ namespace glow
 {
 
 template<typename T>
-class GLOW_API RawFile
+class RawFile
 {
 public:
     RawFile(const std::string & filePath);
