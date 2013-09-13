@@ -6,7 +6,7 @@
 # GLOW_UTILS_LIBRARY
 # GLOW_WINDOW_LIBRARY
 
-find_path(GLOW_INCLUDE_DIR glow/ref_ptr.hpp
+find_path(GLOW_INCLUDE_DIR glow/glow.h
 	$ENV{GLOW_DIR}/include
 	${GLOW_DIR}/include
 	$ENV{PROGRAMFILES}/GLOW/include
@@ -14,7 +14,7 @@ find_path(GLOW_INCLUDE_DIR glow/ref_ptr.hpp
 	/usr/local/include
 	/sw/include
 	/opt/local/include
-	DOC "The directory where glow/ref_ptr.hpp resides")
+	DOC "The directory where glow/glow.h resides")
 
 set(LIB_PATHS 	
 	$ENV{GLOW_DIR}/lib
