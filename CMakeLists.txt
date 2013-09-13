@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 
 set(META_PROJECT_NAME        "glow")
 set(META_VERSION_MAJOR       "0")
-set(META_VERSION_MINOR       "1")
+set(META_VERSION_MINOR       "0")
 set(META_VERSION_PATCH       "0")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "hpicgs group")
@@ -19,6 +19,7 @@ option(OPTION_LOCAL_INSTALL  "Install to a local directory instead of the system
 option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
 option(OPTION_BUILD_EXAMPLES "Build examples" ON)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
+
 
 # CMAKE CONFIGURATION
 
@@ -79,7 +80,7 @@ else()
 endif()
 
 
-# Install locations
+# INSTALL
 
 if(X64)
     # http://public.kitware.com/Bug/view.php?id=9094
@@ -129,6 +130,7 @@ endif()
 
 install(DIRECTORY ${GLOW_SOURCE_DIR}/include/ DESTINATION ${INSTALL_INCLUDE})
 
+
 # GET REPOSITORY VERSION
 
 # Add a revision file containing the git-head tag for cpack and install
@@ -140,7 +142,7 @@ string(SUBSTRING ${GIT_SHA1} 0 12 GIT_REV)
 file(WRITE ${CMAKE_BINARY_DIR}/revision ${GIT_REV})
 
 # [TODO] Really?? Do we want this deployed?
-#install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION .)
+install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION .)
 
 # [TODO] Deal with GIT-NOTFOUND
 
@@ -148,6 +150,7 @@ file(WRITE ${CMAKE_BINARY_DIR}/revision ${GIT_REV})
 # Generate meta-header
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/source/glow-version.h.in ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h DESTINATION ${INSTALL_INCLUDE}/glow)
+
 
 # GLOW DEPENDENCIES
 
@@ -174,19 +177,7 @@ install(FILES glow-config.cmake DESTINATION ".")
 # EXAMPLES
 
 if(OPTION_BUILD_EXAMPLES)
-
-    set(GLOW_EXAMPLES_FOLDER "Examples")
-
-    if(WIN32)
-        install(FILES ${GLEW_INCLUDE_DIR}/../bin/glew32.dll DESTINATION ${INSTALL_EXAMPLES})
-    endif()
-    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${INSTALL_EXAMPLES})
-
-    unset(sources)
-    unset(api_includes)
-
     add_subdirectory(examples)
-
 endif()
 
 # Packaging
