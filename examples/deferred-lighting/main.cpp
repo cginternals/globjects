@@ -144,7 +144,7 @@ void EventHandler::createAndSetupShaders()
     glow::Shader * fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/deferred-lighting/deferred.frag");
 
 	m_program = new glow::Program();
-	*m_program << vertexShader << fragmentShader;
+	m_program->attach(vertexShader, fragmentShader);
 	m_program->bindFragDataLocation(0, "fragColor");
 
 	m_program->getUniform<GLint>("texture")->set(0);

@@ -31,8 +31,10 @@ public:
 	bool isUsed() const;
 	bool isLinked() const;
 
-	void attach(Shader * shader);
-    Program & operator<<(Shader * shader);
+	//void attach(Shader * shader);
+    template <class ...Shaders> 
+    void attach(Shader * shader, Shaders... shaders);
+
 	void detach(Shader * shader);
 
 	std::set<Shader*> shaders() const;
@@ -73,6 +75,8 @@ public:
 	void dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ);
 
 protected:
+    void attach();
+
 	bool checkLinkStatus();
 	void checkDirty();
 

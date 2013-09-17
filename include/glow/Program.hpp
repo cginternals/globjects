@@ -2,6 +2,7 @@
 
 #include <glow/logging.h>
 #include <glow/Uniform.h>
+#include <glow/Error.h>
 
 namespace glow
 {
@@ -34,6 +35,20 @@ Uniform<T> * Program::getUniform(const std::string & name)
 	uniform->registerProgram(this);
 
 	return uniform;
+}
+
+template <class ...Shaders>
+void Program::attach(Shader * shader, Shaders... shaders)
+{
+    glAttachShader(m_id, shader->id());
+    CheckGLError();
+
+    shader->registerListener(this);
+    m_shaders.insert(shader);
+
+    invalidate();
+
+    attach(std::forward<Shaders>(shaders)...);
 }
 
 } // namespace glow

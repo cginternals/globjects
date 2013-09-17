@@ -102,21 +102,25 @@ void Program::checkDirty()
 	}
 }
 
-void Program::attach(Shader * shader)
+//void Program::attach(Shader * shader)
+//{
+//	glAttachShader(m_id, shader->id());
+//	CheckGLError();
+//
+//	shader->registerListener(this);
+//	m_shaders.insert(shader);
+//
+//	invalidate();
+//}
+
+//Program & Program::operator<<(Shader * shader)
+//{
+//    attach(shader);
+//    return *this;
+//}
+
+void Program::attach()
 {
-	glAttachShader(m_id, shader->id());
-	CheckGLError();
-
-	shader->registerListener(this);
-	m_shaders.insert(shader);
-
-	invalidate();
-}
-
-Program & Program::operator<<(Shader * shader)
-{
-    attach(shader);
-    return *this;
 }
 
 void Program::detach(Shader * shader)

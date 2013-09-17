@@ -141,7 +141,7 @@ void EventHandler::createAndSetupShaders()
     glow::Shader * fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/simple-texture/test.frag");
 
 	m_shaderProgram = new glow::Program();
-	*m_shaderProgram << vertexShader << fragmentShader;
+	m_shaderProgram->attach(vertexShader, fragmentShader);
 	m_shaderProgram->bindFragDataLocation(0, "fragColor");
 
 	m_shaderProgram->getUniform<GLint>("texture")->set(0);

@@ -154,13 +154,13 @@ void EventHandler::createAndSetupShaders()
     glow::Shader* fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/computeshader/cstest.frag");
 
 	m_program = new glow::Program();
-	*m_program << vertexShader << fragmentShader;
+	m_program->attach(vertexShader, fragmentShader);
 	m_program->bindFragDataLocation(0, "fragColor");
 
     glow::Shader* computeShader = glow::Shader::fromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp");
 
 	m_computeProgram = new glow::Program();
-	*m_computeProgram << computeShader;
+	m_computeProgram->attach(computeShader);
 
 	m_program->setUniform("texture", 0);
 	m_computeProgram->setUniform("destTex", 0);
