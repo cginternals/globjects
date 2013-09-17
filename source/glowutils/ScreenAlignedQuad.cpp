@@ -57,54 +57,54 @@ void main()
 }
 )";
 
-ScreenAlignedQuad::ScreenAlignedQuad()
+ScreenAlignedQuad::ScreenAlignedQuad(
+    Shader * fragmentShader
+,   Texture * texture)
+:   m_vertexShader  (nullptr)
+,   m_geometryShader(nullptr)
+,   m_fragmentShader(fragmentShader)
+,   m_program(new Program())
+,   m_texture(texture)
 {
-	m_program = new Program();
-
-    m_vertexShader = Shader::fromString(GL_VERTEX_SHADER, s_defaultVertexShaderSource);
+    m_vertexShader   = Shader::fromString(GL_VERTEX_SHADER, s_defaultVertexShaderSource);
     m_geometryShader = Shader::fromString(GL_GEOMETRY_SHADER, s_defaultGeometryShaderSource);
-    m_fragmentShader = Shader::fromString(GL_FRAGMENT_SHADER, s_defaultFagmentShaderSource);
+    if (!m_fragmentShader)
+        m_fragmentShader = Shader::fromString(GL_FRAGMENT_SHADER, s_defaultFagmentShaderSource);
 
-    *m_program << m_vertexShader << m_geometryShader << m_fragmentShader;
+    m_program->attach(m_vertexShader, m_geometryShader, m_fragmentShader);
 
-	initialize();
+    initialize();
 }
 
-ScreenAlignedQuad::ScreenAlignedQuad(Shader* fragmentShader)
+ScreenAlignedQuad::ScreenAlignedQuad(Shader * fragmentShader)
+:   ScreenAlignedQuad(fragmentShader, nullptr)
 {
-	m_program = new Program();
-
-    m_vertexShader = Shader::fromString(GL_VERTEX_SHADER, s_defaultVertexShaderSource);
-    m_geometryShader = Shader::fromString(GL_GEOMETRY_SHADER, s_defaultGeometryShaderSource);
-    m_fragmentShader = fragmentShader;
-
-    *m_program << m_vertexShader << m_geometryShader << m_fragmentShader;
-
-	initialize();
 }
 
-ScreenAlignedQuad::ScreenAlignedQuad(Texture* texture)
+ScreenAlignedQuad::ScreenAlignedQuad(Texture * texture)
+:   ScreenAlignedQuad(nullptr, texture)
 {
-    m_program = new Program();
+}
 
-    m_vertexShader = Shader::fromString(GL_VERTEX_SHADER, s_defaultVertexShaderSource);
-    m_geometryShader = Shader::fromString(GL_GEOMETRY_SHADER, s_defaultGeometryShaderSource);
-    m_fragmentShader = Shader::fromString(GL_FRAGMENT_SHADER, s_defaultFagmentShaderSource);
-
-    *m_program << m_vertexShader << m_geometryShader << m_fragmentShader;
-
-	m_texture = texture;
-
-	initialize();
+ScreenAlignedQuad::ScreenAlignedQuad(Program * program)
+:   m_vertexShader(nullptr)
+,   m_geometryShader(nullptr)
+,   m_fragmentShader(nullptr)
+,   m_texture(nullptr)
+,   m_program(program)
+{
+    initialize();
 }
 
 void ScreenAlignedQuad::initialize()
 {
     m_vao = new VertexArrayObject;
     m_buffer = new Buffer(GL_ARRAY_BUFFER);
-    glm::vec4 point;
+    
+    const glm::vec4 point;
     m_buffer->setData(sizeof(glm::vec4), &point, GL_STATIC_DRAW); //needed for some drivers
-	setSamplerUniform(0);
+
+    setSamplerUniform(0);
 }
 
 void ScreenAlignedQuad::draw()
@@ -140,22 +140,22 @@ void ScreenAlignedQuad::setSamplerUniform(int index)
 	m_program->setUniform("texture", m_samplerIndex);
 }
 
-Program* ScreenAlignedQuad::program()
+Program * ScreenAlignedQuad::program()
 {
 	return m_program;
 }
 
-Shader* ScreenAlignedQuad::vertexShader()
+Shader * ScreenAlignedQuad::vertexShader()
 {
     return m_vertexShader;
 }
 
-Shader* ScreenAlignedQuad::geometryShader()
+Shader * ScreenAlignedQuad::geometryShader()
 {
     return m_geometryShader;
 }
 
-Shader* ScreenAlignedQuad::fragmentShader()
+Shader * ScreenAlignedQuad::fragmentShader()
 {
     return m_fragmentShader;
 }
