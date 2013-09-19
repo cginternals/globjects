@@ -62,6 +62,9 @@ bool Error::isChecking()
 
 void Error::setChecking(const bool enable)
 {
+#ifdef NDEBUG
+	glow::warning() << "Try to change error checking but glow was compiled with No Debug flag";
+#endif
     s_checking = enable;
 }
 
