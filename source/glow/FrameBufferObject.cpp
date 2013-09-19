@@ -1,86 +1,13 @@
-
-#include <sstream>
-
 #include <glow/FrameBufferObject.h>
+
 #include <glow/logging.h>
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
+#include <glow/TextureAttachment.h>
+#include <glow/RenderBufferAttachment.h>
 
 namespace glow
 {
-
-FrameBufferAttachment::FrameBufferAttachment(GLenum attachment)
-: m_attachment(attachment)
-{
-}
-
-GLenum FrameBufferAttachment::attachment() const
-{
-	return m_attachment;
-}
-
-bool FrameBufferAttachment::isTextureAttachment() const
-{
-	return false;
-}
-
-bool FrameBufferAttachment::isRenderBufferAttachment() const
-{
-	return false;
-}
-
-std::string FrameBufferAttachment::attachmentString() const
-{
-	switch (m_attachment)
-	{
-		case GL_DEPTH_ATTACHMENT:
-			return "GL_DEPTH_ATTACHMENT";
-		case GL_STENCIL_ATTACHMENT:
-			return "GL_STENCIL_ATTACHMENT";
-		case GL_DEPTH_STENCIL_ATTACHMENT:
-			return "GL_DEPTH_STENCIL_ATTACHMENT";
-	}
-
-	if (m_attachment>=GL_COLOR_ATTACHMENT0 && GL_COLOR_ATTACHMENT0<= GL_COLOR_ATTACHMENT15)
-	{
-		return "GL_COLOR_ATTACHMENT"+std::to_string(m_attachment-GL_COLOR_ATTACHMENT0);
-	}
-
-	return "Unknown attachment "+std::to_string(m_attachment);
-}
-
-TextureAttachment::TextureAttachment(Texture* texture, GLenum attachment)
-: FrameBufferAttachment(attachment)
-, m_texture(texture)
-{
-}
-
-bool TextureAttachment::isTextureAttachment() const
-{
-	return true;
-}
-
-Texture* TextureAttachment::texture()
-{
-	return m_texture;
-}
-
-RenderBufferAttachment::RenderBufferAttachment(RenderBufferObject* renderBuffer, GLenum attachment)
-: FrameBufferAttachment(attachment)
-, m_renderBuffer(renderBuffer)
-{
-}
-
-bool RenderBufferAttachment::isRenderBufferAttachment() const
-{
-	return true;
-}
-
-RenderBufferObject* RenderBufferAttachment::renderBuffer()
-{
-	return m_renderBuffer;
-}
-
 
 FrameBufferObject FrameBufferObject::_defaultFBO(0, false);
 

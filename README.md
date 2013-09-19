@@ -11,13 +11,8 @@ GLOW is a cross-platform library licenced under the [MIT license](http://opensou
 The following dev-libraries and programs need to be provided for correct CMake configuration:
 * C++11 compatible compiler (e.g. gcc 4.7, VS 2013)
 * CMake (>=2.8.9): http://www.cmake.org/
-* OpenGL Extension Wrangler (GLEW, >=1.9.0): http://glew.sourceforge.net/
+* OpenGL Extension Wrangler (GLEW, >=1.10.0): http://glew.sourceforge.net/
 * OpenGL Mathematics (GLM, >=0.9.3): http://glm.g-truc.net/
-
-
-### Extensions
-
-Useful features which are an addition to a pure objects wrapper around OpenGL are developed in [glow-utils](https://github.com/cgcostume/glow-utils).
 
 
 ## Development Notes
@@ -32,4 +27,3 @@ If you are contributing to this project, please keep the following notes in mind
 * Member Variables always start with ```m_```, ```g_```, and ```s_``` (e.g.,```m_member```, ```g_global```, and ```s_static```)..
 * Interface or abstract class names always start with Abstract (e.g., ```AbstractPainter```).
 * Enforce strict include sequence: gl, glew, std, glm, header, glow (there should be only a few exceptions).
-

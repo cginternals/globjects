@@ -3,6 +3,9 @@
 #include <glow/logging.h>
 #include <glow/global.h>
 
+#include <glow/TextureAttachment.h>
+#include <glow/RenderBufferAttachment.h>
+
 #include <sstream>
 #include <algorithm>
 #include <iomanip>
