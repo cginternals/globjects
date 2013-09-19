@@ -5,53 +5,16 @@
 #include <map>
 
 #include <glow/glow.h>
-#include <glow/Object.h>
-#include <glow/Texture.h>
 #include <glow/Buffer.h>
+#include <glow/FrameBufferAttachment.h>
+#include <glow/Object.h>
 #include <glow/RenderBufferObject.h>
+#include <glow/Texture.h>
 
 
 // http://www.opengl.org/wiki/Framebuffer_Object
 
 namespace glow {
-
-class GLOW_API FrameBufferAttachment : public Referenced
-{
-public:
-	FrameBufferAttachment(GLenum attachment);
-
-	GLenum attachment() const;
-
-	virtual bool isTextureAttachment() const;
-	virtual bool isRenderBufferAttachment() const;
-
-	std::string attachmentString() const;
-protected:
-	GLenum m_attachment;
-};
-
-class GLOW_API TextureAttachment : public FrameBufferAttachment
-{
-public:
-	TextureAttachment(Texture * texture, GLenum attachment);
-
-	virtual bool isTextureAttachment() const;
-	Texture* texture();
-protected:
-	ref_ptr<Texture> m_texture;
-};
-
-class GLOW_API RenderBufferAttachment : public FrameBufferAttachment
-{
-public:
-	RenderBufferAttachment(RenderBufferObject* renderBuffer, GLenum attachment);
-
-	virtual bool isRenderBufferAttachment() const;
-	RenderBufferObject* renderBuffer();
-protected:
-	ref_ptr<RenderBufferObject> m_renderBuffer;
-};
-
 
 class GLOW_API FrameBufferObject : public Object
 {

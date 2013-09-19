@@ -39,6 +39,7 @@ set(api_includes
     ${header_path}/ContextFormat.h
     ${header_path}/DebugInfo.h
     ${header_path}/Error.h
+    ${header_path}/FrameBufferAttachment.h
     ${header_path}/FrameBufferObject.h
     ${header_path}/formatString.h
     ${header_path}/formatString.hpp
@@ -56,6 +57,7 @@ set(api_includes
     ${header_path}/RawFile.hpp
     ${header_path}/ref_ptr.hpp
     ${header_path}/Referenced.h
+    ${header_path}/RenderBufferAttachment.h
     ${header_path}/RenderBufferObject.h
     ${header_path}/Screen.h
     ${header_path}/Shader.h
@@ -63,6 +65,7 @@ set(api_includes
     ${header_path}/ShaderFile.h
     ${header_path}/ShaderSource.h
     ${header_path}/Texture.h
+    ${header_path}/TextureAttachment.h
     ${header_path}/Timer.h
     ${header_path}/TransformFeedback.h
     ${header_path}/Uniform.h
@@ -86,6 +89,7 @@ set(sources
     ${source_path}/ContextFormat.cpp
     ${source_path}/DebugInfo.cpp
     ${source_path}/Error.cpp
+    ${source_path}/FrameBufferAttachment.cpp
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
     ${source_path}/global.cpp
@@ -100,6 +104,7 @@ set(sources
     ${source_path}/Query.cpp
     ${source_path}/RawFile.cpp
     ${source_path}/Referenced.cpp
+    ${source_path}/RenderBufferAttachment.cpp
     ${source_path}/RenderBufferObject.cpp
     ${source_path}/Screen.cpp
     ${source_path}/Shader.cpp
@@ -107,6 +112,7 @@ set(sources
     ${source_path}/ShaderFile.cpp
     ${source_path}/ShaderSource.cpp
     ${source_path}/Texture.cpp
+    ${source_path}/TextureAttachment.cpp
     ${source_path}/Timer.cpp
     ${source_path}/TransformFeedback.cpp
     ${source_path}/Uniform.cpp
