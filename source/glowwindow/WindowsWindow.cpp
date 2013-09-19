@@ -8,7 +8,7 @@
 
 #include <glow/logging.h>
 #include <glow/Screen.h>
-#include <glow/Context.h>
+#include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 
 #include "WindowsWindow.h"

@@ -24,6 +24,8 @@ set(header_path "${GLOW_SOURCE_DIR}/include/glowwindow")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(api_includes
+    ${header_path}/Context.h
+    ${header_path}/ContextFormat.h
     ${header_path}/glowwindow.h
     ${header_path}/KeyEvent.h
     ${header_path}/Window.h
@@ -31,8 +33,14 @@ set(api_includes
 )
 
 set(sources
+    ${source_path}/AbstractNativeContext.cpp
+    ${source_path}/AbstractNativeContext.h
     ${source_path}/AbstractNativeWindow.cpp
     ${source_path}/AbstractNativeWindow.h
+    ${source_path}/Context.cpp
+    ${source_path}/ContextFormat.cpp
+    ${source_path}/GLxContext.cpp
+    ${source_path}/GLxContext.h
     ${source_path}/KeyEvent.cpp
     ${source_path}/Window.cpp
     ${source_path}/WindowEventHandler.cpp
@@ -40,6 +48,8 @@ set(sources
     ${source_path}/WindowsWindow.h
     ${source_path}/X11Window.cpp
     ${source_path}/X11Window.h
+    ${source_path}/WGLContext.cpp
+    ${source_path}/WGLContext.h
 )
 
 # Group source files

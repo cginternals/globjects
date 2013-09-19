@@ -35,8 +35,6 @@ set(api_includes
     ${header_path}/Changeable.h
     ${header_path}/ChangeListener.h
     ${header_path}/ConsoleLogger.h
-    ${header_path}/Context.h
-    ${header_path}/ContextFormat.h
     ${header_path}/DebugInfo.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferObject.h
@@ -73,8 +71,6 @@ set(api_includes
 )
 
 set(sources
-    ${source_path}/AbstractNativeContext.cpp
-    ${source_path}/AbstractNativeContext.h
     ${source_path}/AbstractUniform.cpp
     ${source_path}/AutoTimer.cpp
     ${source_path}/Buffer.cpp
@@ -82,15 +78,11 @@ set(sources
     ${source_path}/ChronoTimer.cpp
     ${source_path}/ChronoTimer.h
     ${source_path}/ConsoleLogger.cpp
-    ${source_path}/Context.cpp
-    ${source_path}/ContextFormat.cpp
     ${source_path}/DebugInfo.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
     ${source_path}/global.cpp
-    ${source_path}/GLxContext.cpp
-    ${source_path}/GLxContext.h
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/Object.cpp
@@ -113,8 +105,6 @@ set(sources
     ${source_path}/Version.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
-    ${source_path}/WGLContext.cpp
-    ${source_path}/WGLContext.h
 )
 
 # Group source files

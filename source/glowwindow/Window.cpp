@@ -12,8 +12,8 @@
 #endif
 
 #include <glow/logging.h>
-#include <glow/Context.h>
 #include <glow/Timer.h>
+#include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 #include <glowwindow/Window.h>
 

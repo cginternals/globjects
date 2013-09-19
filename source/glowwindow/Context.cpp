@@ -14,7 +14,7 @@
 #include <glow/logging.h>
 #include <glow/global.h>
 #include <glow/Error.h>
-#include <glow/Context.h>
+#include <glowwindow/Context.h>
 
 
 namespace glow

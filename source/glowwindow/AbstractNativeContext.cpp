@@ -1,7 +1,8 @@
 
-#include <glow/ContextFormat.h>
 #include <glow/Version.h>
 #include <glow/logging.h>
+
+#include <glowwindow/ContextFormat.h>
 
 #include "AbstractNativeContext.h"
 

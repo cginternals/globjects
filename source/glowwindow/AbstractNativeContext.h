@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 
-#include <glow/Context.h>
+#include <glowwindow/Context.h>
 
 
 namespace glow 

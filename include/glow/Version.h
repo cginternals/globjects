@@ -34,11 +34,11 @@ public:
     int minorVersion;
 };
 
-std::ostream & operator<<(
+GLOW_API std::ostream & operator<<(
     std::ostream & out
 ,   const Version & version);
 
-LogMessageBuilder & operator<<(
+GLOW_API LogMessageBuilder & operator<<(
     LogMessageBuilder & out
 ,   const Version & version);
 

@@ -3,7 +3,7 @@
 #include <sstream>
 
 #include <glow/logging.h>
-#include <glow/ContextFormat.h>
+#include <glowwindow/ContextFormat.h>
 
 
 namespace glow

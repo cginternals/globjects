@@ -5,9 +5,9 @@
 
 #include <glow/Error.h>
 #include <glow/Screen.h>
-#include <glow/ContextFormat.h>
-#include <glow/Context.h>
 #include <glowwindow/Window.h>
+#include <glowwindow/ContextFormat.h>
+#include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 
 using namespace glow;

@@ -2,9 +2,9 @@
 #include <GL/glew.h>
 
 #include <glow/AutoTimer.h>
-#include <glow/ContextFormat.h>
-#include <glow/Context.h>
+#include <glowwindow/ContextFormat.h>
 #include <glow/Error.h>
+#include <glowwindow/Context.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 

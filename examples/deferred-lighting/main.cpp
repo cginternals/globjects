@@ -9,13 +9,13 @@
 #include <glow/AutoTimer.h>
 #include <glow/Array.h>
 #include <glow/VertexArrayObject.h>
-#include <glow/ContextFormat.h>
-#include <glow/Context.h>
 #include <glow/Error.h>
 #include <glow/Texture.h>
 #include <glow/Shader.h>
 #include <glow/Program.h>
 #include <glow/RawFile.h>
+#include <glowwindow/ContextFormat.h>
+#include <glowwindow/Context.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
