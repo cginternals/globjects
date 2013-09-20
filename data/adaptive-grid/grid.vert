@@ -3,11 +3,11 @@
 uniform mat4 modelView;
 uniform mat4 projection;
 
-in vec3 a_vertex;
-out vec2 v_uv;
+in vec4 a_vertex;
+flat out float v_type;
 
 void main()
 {
-	v_uv = a_vertex.xy;
-	gl_Position = projection * modelView * vec4(a_vertex, 1.0);
+	v_type = a_vertex.w;
+	gl_Position = projection * modelView * vec4(a_vertex.xyz, 1.0);
 }

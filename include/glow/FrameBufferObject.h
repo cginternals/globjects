@@ -76,7 +76,7 @@ protected:
 
 	static GLuint genFrameBuffer();
 
-	static FrameBufferObject _defaultFBO;
+	static FrameBufferObject s_defaultFBO;
 };
 
 } // namespace glow

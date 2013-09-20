@@ -22,6 +22,7 @@
 #include <glowwindow/WindowEventHandler.h>
 
 using namespace glow;
+using namespace glm;
 
 class EventHandler : public WindowEventHandler
 {
@@ -40,14 +41,48 @@ public:
 
     virtual void initializeEvent(Window & window)
     {
-     //   Error::setupDebugOutput();
-     //   Error::setChecking(false);
+        Error::setupDebugOutput();
+        Error::setChecking(false);
 
-     //   glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        glClearColor(1.f, 1.f, 1.f, 0.f);
 
-	    //createAndSetupTexture();
-	    //createAndSetupShaders();
-	    //createAndSetupGeometry();
+        Shader * vert = Shader::fromFile(GL_VERTEX_SHADER,   "data/adaptive-grid/grid.vert");
+        Shader * frag = Shader::fromFile(GL_FRAGMENT_SHADER, "data/adaptive-grid/grid.frag");
+
+        m_program = new Program();
+        m_program->attach(vert, frag);
+        m_program->bindFragDataLocation(0, "fragColor");
+
+        Array<vec4> points;
+        float type;
+        int  i = 1;
+
+        type = .2f; // sub gridlines, every 0.125, except every 0.5
+        for (float f = -8.f + .125f; f < 8.f; f += .125f)
+            if (i++ % 4)
+                points << vec4(8.f, 0.f, f, type) << vec4(-8.f, 0.f, f, type) << vec4(f, 0.f, 8.f, type) << vec4(f, 0.f, -8.f, type);
+        type = .4f; // grid lines every 1.0 units, offseted by 0.5
+        for (float f = -8.f + .5f; f < 8.f; f += 1.f)
+            points << vec4(8.f, 0.f, f, type) << vec4(-8.f, 0.f, f, type) << vec4(f, 0.f, 8.f, type) << vec4(f, 0.f, -8.f, type);
+        type = .8f; // grid lines every 1.0 units
+        for (float f = -8.f + 1.f; f < 8.f; f += 1.f) 
+            points << vec4(8.f, 0.f, f, type) << vec4(-8.f, 0.f, f, type) << vec4(f, 0.f, 8.f, type) << vec4(f, 0.f, -8.f, type);
+
+
+        m_buffer = new Buffer(GL_ARRAY_BUFFER);
+        m_buffer->setData(points, GL_STATIC_DRAW);
+
+        m_vao = new VertexArrayObject;
+
+        auto binding = m_vao->binding(0);
+        auto a_vertex = m_program->getAttributeLocation("a_vertex");
+
+        binding->setAttribute(a_vertex);
+        binding->setBuffer(m_buffer, 0, sizeof(vec4));
+        binding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
+
+        m_vao->enable(a_vertex);
+
     }
     
     virtual void resizeEvent(
@@ -55,26 +90,38 @@ public:
     ,   const unsigned int width
     ,   const unsigned int height)
     {
-    	//int side = std::min<int>(width, height);
-	    //glViewport((width - side) / 2, (height - side) / 2, side, side);
+        glViewport(0, 0, width, height);
 
-	    //m_shaderProgram->setUniform("modelView", glm::mat4());
-	    //m_shaderProgram->setUniform("projection", glm::ortho(0.f, 1.f, 0.f, 1.f, 0.f, 1.f));
+        if (!m_program)
+            return;
+
+        const mat4 projection(perspective(40.f, static_cast<float>(width) / static_cast<float>(height), 0.1f, 8.f));
+
+        const vec3 eye( 0.f, .66f,-2.f);
+        const vec3 at ( 0.f, 0.0f, 0.f);
+        const vec3 up ( 0.f, 1.0f, 0.f);
+
+        const mat4 view(lookAt(eye, at, up));
+
+        m_program->setUniform("modelView", view);
+        m_program->setUniform("projection", projection);
     }
 
     virtual void paintEvent(Window & window)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-//	    m_texture->bind();
-	    //m_shaderProgram->use();
+        m_program->use();
 
-	    //m_vertexArrayObject->bind();
-	    //m_vertexBuffer->drawArrays(GL_TRIANGLE_FAN, 0, 4);
-	    //m_vertexArrayObject->unbind();
+        glDisable(GL_DEPTH_TEST);
 
-     //   m_shaderProgram->release();
-//	    m_texture->unbind();
+        m_vao->bind();
+        m_buffer->drawArrays(GL_LINES, 0, 508);
+        m_vao->unbind();
+
+        glEnable(GL_DEPTH_TEST);
+
+        m_program->release();
     }
 
     virtual void idleEvent(Window & window)
@@ -82,13 +129,21 @@ public:
         window.repaint();
     }
 
-protected:
-    glow::ref_ptr<glow::Texture> m_texture;
+    virtual void keyReleaseEvent(
+        Window & window
+    ,   KeyEvent & event)
+    {
+        if (KeyEvent::KeyF5 == event.key())
+            glow::ShaderFile::reloadAll();
+    }
 
-    glow::ref_ptr<glow::Program> m_shaderProgram;
-	glow::ref_ptr<glow::VertexArrayObject> m_vertexArrayObject;
-	
-    glow::ref_ptr<glow::Buffer> m_vertexBuffer;
+protected:
+    //glow::ref_ptr<glow::Texture> m_texture;
+
+    glow::ref_ptr<glow::Program> m_program;
+
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Buffer> m_buffer;
 };
 
 

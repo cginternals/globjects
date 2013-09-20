@@ -9,7 +9,7 @@
 namespace glow
 {
 
-FrameBufferObject FrameBufferObject::_defaultFBO(0, false);
+FrameBufferObject FrameBufferObject::s_defaultFBO(0, false);
 
 FrameBufferObject::FrameBufferObject()
 : Object(genFrameBuffer())
@@ -25,7 +25,7 @@ FrameBufferObject::FrameBufferObject(GLuint id, bool ownsGLObject)
 
 FrameBufferObject* FrameBufferObject::defaultFBO()
 {
-    return &_defaultFBO;
+    return &s_defaultFBO;
 }
 
 FrameBufferObject::~FrameBufferObject()
