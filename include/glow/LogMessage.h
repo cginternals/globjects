@@ -72,7 +72,7 @@ public:
 	LogMessageBuilder& operator<<(int i);
 	LogMessageBuilder& operator<<(float f);
 	LogMessageBuilder& operator<<(double d);
-    LogMessageBuilder& operator<<(long double d);
+	LogMessageBuilder& operator<<(long double d);
 	LogMessageBuilder& operator<<(unsigned u);
 	LogMessageBuilder& operator<<(long l);
 	LogMessageBuilder& operator<<(unsigned long ul);
@@ -100,9 +100,9 @@ protected:
 };
 
 template <typename T>
-LogMessageBuilder& LogMessageBuilder::operator<< (T * t_pointer) 
+LogMessageBuilder& LogMessageBuilder::operator<< (T * t_pointer)
 {
-    return *this << static_cast<void*>(t_pointer); 
+	return *this << static_cast<void*>(t_pointer);
 }
 
 } // namespace glow

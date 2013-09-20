@@ -11,6 +11,18 @@
 namespace glow 
 {
 
+/**
+ * \brief Error provides an object oriented interface to OpenGL errors.
+ *
+ * To access the current Error (which can be none), call current().
+ * To globally enable or disable error checking within glow, call setChecking().
+ * If checking is enabled and debug output is disabled and NDEBUG isn't set, any error occuring in glow will result in an exception.
+ * If NDEBUG is set to true, error checking is always disabled.
+ * To discard any current error, call clear().
+ * To enable error reporting via callback instead of exceptions, enable debug output with setupDebugOutput().
+ * This call will only have an effect if the extension ARB_debug_output is available on the current system. 
+ * 
+ */
 class GLOW_API Error
 {
 public:

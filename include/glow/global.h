@@ -11,6 +11,11 @@
 
 namespace glow {
 
+/**
+ * \brief query provides an interface to query OpenGL.
+ *
+ * To query different types you must use the specific provided functions.
+ */
 class GLOW_API query
 {
 public:
@@ -34,6 +39,9 @@ public:
 	static bool isCoreProfile();
 };
 
+/**
+ * \brief extensions provides as interface to query the existance of extensions at runtime.
+ */
 class GLOW_API extensions
 {
 public:
@@ -41,6 +49,9 @@ public:
 	static bool isSupported(const std::string& extension);
 };
 
+/**
+ * \brief memory provides an interface to query current memory stats of OpenGL.
+ */
 class GLOW_API memory
 {
 public:
@@ -55,12 +66,14 @@ protected:
 	static GLint memoryInfo(GLenum pname);
 };
 
+/**
+ * \brief glew provides an interface to query glew.
+ */
 class GLOW_API glew
 {
 public:
 	static std::string getString(GLenum pname);
 	static std::string version();
 };
-
 
 } // namespace glow

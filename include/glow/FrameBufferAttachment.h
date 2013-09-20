@@ -9,6 +9,15 @@
 
 namespace glow {
 
+/**
+ * \brief The superclass FrameBufferAttachment encapsulates attachments to a FrameBufferObject.
+ *
+ * Normally, FrameBufferAttachments are created using the API of FrameBufferObject.
+ *
+ * \see FrameBufferObject
+ * \see TextureAttachment
+ * \see RenderBufferAttachment
+ */
 class GLOW_API FrameBufferAttachment : public Referenced
 {
 public:
