@@ -2,8 +2,6 @@
 
 #include <GL/glew.h>
 
-#include <glow/Referenced.h>
-
 namespace glow 
 {
 
@@ -17,7 +15,7 @@ namespace glow
  *
  * \see Array
  */
-class AbstractArray : public Referenced
+class AbstractArray
 {
 public:
 	virtual const void * rawData() const = 0;
