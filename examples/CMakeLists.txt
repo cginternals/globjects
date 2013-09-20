@@ -10,6 +10,7 @@ install(DIRECTORY ${GLOW_SOURCE_DIR}/data DESTINATION ${INSTALL_EXAMPLES})
 unset(sources)
 unset(api_includes)
 
+add_subdirectory("adaptive-grid")
 add_subdirectory("computeshader")
 add_subdirectory("multiple-contexts")
 add_subdirectory("deferred-lighting")
