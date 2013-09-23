@@ -13,8 +13,8 @@ class ScreenAlignedQuad : public Referenced
 {
 public:
     ScreenAlignedQuad(
-        Shader * fragmentShader = nullptr
-    ,   Texture * texture = nullptr);
+        Shader * fragmentShader
+    ,   Texture * texture);
 
 	ScreenAlignedQuad(Texture * texture);
 	ScreenAlignedQuad(Shader  * fragmentShader);
