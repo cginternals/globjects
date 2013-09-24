@@ -1,6 +1,3 @@
-
-#include <iostream>
-
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/Buffer.h>
@@ -71,25 +68,27 @@ void Buffer::unbind()
 
 void* Buffer::map(GLenum access)
 {
-	bind();
+    bind();
 
-	void* result = glMapBuffer(_target, access);
+    void* result = glMapBuffer(_target, access);
 	CheckGLError();
 	return result;
 }
 
 void* Buffer::map(GLenum target, GLenum access)
 {
-	bind(target);
+    bind(target);
 
-	void* result = glMapBuffer(target, access);
+    void* result = glMapBuffer(target, access);
 	CheckGLError();
 	return result;
 }
 
 void Buffer::unmap()
 {
-	glUnmapBuffer(_target);
+    bind();
+
+    glUnmapBuffer(_target);
 	CheckGLError();
 }
 

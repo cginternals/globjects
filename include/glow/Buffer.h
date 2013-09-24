@@ -45,7 +45,7 @@ public:
 
 	GLint getParameter(GLenum pname);
 
-	// mapping
+    // mapping
 	void* map(GLenum access = GL_READ_ONLY);
 	void* map(GLenum target, GLenum access);
 	void unmap();
@@ -74,7 +74,7 @@ public:
     void clearData(GLenum target, GLenum internalformat, GLenum format, GLenum type, const void* data = nullptr);
 
 protected:
-	GLenum _target;
+    GLenum _target;
 
 	static GLuint genBuffer();
 };
