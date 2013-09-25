@@ -1,11 +1,15 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
+#include <vector>
 
 #include <GL/glew.h>
 
 #include <glow/glow.h>
+
+#ifndef _MSC_VER
+#	define APIENTRY
+#endif
 
 
 namespace glow 
@@ -29,7 +33,18 @@ public:
 	Error();
 	Error(GLenum errorCode);
 
-	static Error current();
+    static Error get();
+
+	static void clear();
+
+	GLenum code() const;
+	std::string name() const;
+
+	bool isError() const;
+    operator bool() const;
+
+    static const char* errorString(GLenum errorCode);
+
 
     // PRE-ARB_debug_output
 
@@ -39,23 +54,13 @@ public:
     static bool isChecking();
 
     /** Enables or disables glow's internal error checking. This also affects
-        any call to CheckGLError, but not Error::get itself. Note that 
-        checking cannot be enabled in NDEBUG and for performance reasons is 
-        enabled or disabled for in all contexts equally (context specific 
+        any call to CheckGLError, but not Error::check itself. Note that
+        checking cannot be enabled in NDEBUG and for performance reasons is
+        enabled or disabled for in all contexts equally (context specific
         checking would require platform specific context id retrieval).
     */
     static void setChecking(const bool enable);
-
-    static bool get(const char * file, int line);
-	static void clear();
-
-	GLenum code() const;
-	std::string name() const;
-
-	bool isError() const;
-
-	static std::string errorString(GLenum errorCode);
-
+    static void check(const char * file, int line);
 
     // ARB_debug_output
 
@@ -72,22 +77,23 @@ public:
         4.3 core profile. The output can be locally disabled via glEnable and
         glDisable(GL_DEBUG_OUTPUT) - this sets DEBUG_OUTPUT_SYNCHRONOUS_ARB.
     */
-    static bool setupDebugOutput(
-        const bool asynchronous = true);
+    static bool setupDebugOutput(const bool asynchronous = true);
 
 protected:
 	GLenum m_errorCode;
 
 protected:
     static bool s_checking;
-
-    static std::unordered_map<int, int> s_userParamsByContextID;
+    static void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, void * param);
+    static const char* severityString(GLenum severity);
+    static const char* sourceString(GLenum source);
+    static const char* typeString(GLenum type);
 };
 
 #ifdef NDEBUG
-#define CheckGLError() false
+#define CheckGLError()
 #else
-#define CheckGLError() glow::Error::get(__FILE__, __LINE__)
+#define CheckGLError() glow::Error::check(__FILE__, __LINE__)
 #endif
 
 } // namespace glow

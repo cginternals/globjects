@@ -1,11 +1,13 @@
 
 #include <cassert>
 #include <sstream>
+#include <algorithm>
 #ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
 #include <stdexcept>
 #endif
 
 #include <glow/logging.h>
+#include <glow/global.h>
 #include <glow/Error.h>
 
 #ifdef WIN32
@@ -15,24 +17,19 @@
 #include <GL/glxew.h>
 #endif
 
-#ifndef _MSC_VER
-#	define APIENTRY
-#endif
-
 namespace glow
 {
 
-bool Error::s_checking(true);
-std::unordered_map<int, int> Error::s_userParamsByContextID;
+bool Error::s_checking = true;
 
 
 Error::Error(GLenum errorCode)
-:   m_errorCode(errorCode)
+: m_errorCode(errorCode)
 {
 }
 
 Error::Error()
-:   Error(GL_NO_ERROR)
+: Error(GL_NO_ERROR)
 {
 }
 
@@ -46,56 +43,14 @@ std::string Error::name() const
 	return errorString(m_errorCode);
 }
 
-Error Error::current()
+Error Error::get()
 {
 	return Error(glGetError());
 }
 
-bool Error::isChecking()
-{
-#ifdef NDEBUG
-    return false;
-#else
-    return s_checking;
-#endif
-}
-
-void Error::setChecking(const bool enable)
-{
-#ifdef NDEBUG
-	glow::warning() << "Try to change error checking but glow was compiled with No Debug flag";
-#endif
-    s_checking = enable;
-}
-
-bool Error::get(const char* file, int line)
-{
-    if (!s_checking)
-        return false;
-
-	Error error = Error::current();
-
-	if (error.isError())
-	{
-		std::stringstream ss;
-		ss.flags(std::ios::hex | std::ios::showbase);
-        ss << "OpenGL " << error.name() << " (" << error.code() << ")";
-		ss.unsetf(std::ios::hex | std::ios::showbase);
-		ss << " in " << file << "(" << line << ")";
-
-#ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
-		throw std::runtime_error(ss.str());
-#else
-		critical() << ss.str();
-#endif
-        return true;
-	}
-    return false;
-}
-
 void Error::clear()
 {
-	while (Error::current().isError());
+    Error::get();
 }
 
 bool Error::isError() const
@@ -103,7 +58,12 @@ bool Error::isError() const
 	return m_errorCode != GL_NO_ERROR;
 }
 
-std::string Error::errorString(GLenum errorCode)
+Error::operator bool() const
+{
+    return isError();
+}
+
+const char* Error::errorString(GLenum errorCode)
 {
 	switch(errorCode)
 	{
@@ -125,85 +85,132 @@ std::string Error::errorString(GLenum errorCode)
 	}
 }
 
-
-// ARB_debug_output
-
-void APIENTRY callback(
-    GLenum source
-,   GLenum type
-,   GLuint id
-,   GLenum severity
-,   GLsizei length
-,   const char * message
-,   void * param)
+bool Error::isChecking()
 {
-    std::stringstream output;
+#ifdef NDEBUG
+    return false;
+#else
+    return s_checking;
+#endif
+}
 
-    output << "(id " << id << ", context " << *(reinterpret_cast<int*>(param)) << ", ";
+void Error::setChecking(const bool enable)
+{
+#ifdef NDEBUG
+    glow::warning() << "Try to change error checking but glow was compiled with No Debug flag";
+#endif
+    s_checking = enable;
+}
 
-    switch (severity)
+void Error::check(const char* file, int line)
+{
+    if (!s_checking)
+        return;
+
+    Error error = Error::get();
+
+    if (error.isError())
     {
-    case GL_DEBUG_SEVERITY_HIGH_ARB:
-        output << "high"; break;
-    case GL_DEBUG_SEVERITY_MEDIUM_ARB:
-        output << "medium"; break;
-    case GL_DEBUG_SEVERITY_LOW_ARB:
-        output << "low"; break;
-    }
+        std::stringstream ss;
+        ss.flags(std::ios::hex | std::ios::showbase);
+        ss << "OpenGL " << error.name() << " (" << error.code() << ")";
+        ss.unsetf(std::ios::hex | std::ios::showbase);
+        ss << " in " << file << "(" << line << ")";
 
-    output << " severity) ";
-
-    switch (source)
-    {
-    case GL_DEBUG_SOURCE_API_ARB:
-        output << "API"; break;
-    case GL_DEBUG_SOURCE_WINDOW_SYSTEM_ARB:
-        output << "Window System"; break;
-    case GL_DEBUG_SOURCE_SHADER_COMPILER_ARB:
-        output << "Shader Compiler"; break;
-    case GL_DEBUG_SOURCE_THIRD_PARTY_ARB:
-        output << "Third Party"; break;
-    case GL_DEBUG_SOURCE_APPLICATION_ARB:
-        output << "Application"; break;
-    case GL_DEBUG_SOURCE_OTHER_ARB:
-        output << "Other"; break;
-    }
-
-    switch (type)
-    {
-    case GL_DEBUG_TYPE_OTHER_ARB:
-    case GL_DEBUG_TYPE_ERROR_ARB:
-        fatal() << output.str() << ":"                       << std::endl << message; break;
-    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB:
-        debug() << output.str() << " - deprecated behavior:" << std::endl << message; break;
-    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB:
-        warning() << output.str() << " - undefined behavior:" << std::endl << message; break;
-    case GL_DEBUG_TYPE_PORTABILITY_ARB:
-        debug() << output.str() << " - portability issue:"    << std::endl << message; break;
-    case GL_DEBUG_TYPE_PERFORMANCE_ARB:
-        debug() << output.str() << " - performance issue:"    << std::endl << message; break;
+#ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
+        throw std::runtime_error(ss.str());
+#else
+        critical() << ss.str();
+#endif
     }
 }
 
-bool Error::setupDebugOutput(
-    const bool asynchronous)
+const char* Error::severityString(GLenum severity)
 {
-    if (!GLEW_ARB_debug_output)
-        return false;
+    switch (severity)
+    {
+        case GL_DEBUG_SEVERITY_HIGH_ARB:
+            return "high";
+        case GL_DEBUG_SEVERITY_MEDIUM_ARB:
+            return "medium";
+        case GL_DEBUG_SEVERITY_LOW_ARB:
+            return "low";
+        default:
+            return "unknown";
+    }
+}
 
-#ifdef WIN32
-    const HGLRC handle = wglGetCurrentContext();
-    const int contextID = reinterpret_cast<int>(handle);
-#elif __APPLE__
+const char* Error::sourceString(GLenum source)
+{
+    switch (source)
+    {
+        case GL_DEBUG_SOURCE_API_ARB:
+            return "API";
+        case GL_DEBUG_SOURCE_WINDOW_SYSTEM_ARB:
+            return "Window System";
+        case GL_DEBUG_SOURCE_SHADER_COMPILER_ARB:
+            return "Shader Compiler";
+        case GL_DEBUG_SOURCE_THIRD_PARTY_ARB:
+            return "Third Party";
+        case GL_DEBUG_SOURCE_APPLICATION_ARB:
+            return "Application";
+        case GL_DEBUG_SOURCE_OTHER_ARB:
+            return "Other";
+        default:
+            return "Unknown";
+    }
+}
 
-#else
-    const GLXContext handle = glXGetCurrentContext();
-    const long long contextID = reinterpret_cast<long long>(handle);
-#endif
+const char* Error::typeString(GLenum type)
+{
+    switch (type)
+    {
+        case GL_DEBUG_TYPE_OTHER_ARB:
+            return "other";
+        case GL_DEBUG_TYPE_ERROR_ARB:
+            return "error";
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB:
+            return "deprecated behavior";
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB:
+            return "undefined behavior";
+        case GL_DEBUG_TYPE_PORTABILITY_ARB:
+            return "portability";
+        case GL_DEBUG_TYPE_PERFORMANCE_ARB:
+            return "performance";
+        default:
+            return "unknown";
+    }
+}
 
-    glDebugMessageCallback(callback, &s_userParamsByContextID[contextID]);
+void APIENTRY Error::debugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, void * param)
+{
+    std::stringstream output;
+
+    output
+            << typeString(type)
+            << ": " << std::hex << "0x" << id << std::dec
+            << " " << severityString(severity) << " severity"
+            << " (" << sourceString(source) << ")"
+            << std::endl
+            << message;
+
+    if (type == GL_DEBUG_TYPE_ERROR_ARB)
+    {
+        fatal() << output.str();
+    }
+    else
+    {
+        debug() << output.str();
+    }
+}
+
+bool Error::setupDebugOutput(const bool asynchronous)
+{
+    //if (!glow::extensions::isSupported("GLEW_ARB_debug_output"))
+      //  return false;
+
+    glDebugMessageCallback(&Error::debugCallback, nullptr);
     CheckGLError();
-    s_userParamsByContextID[contextID] = contextID;
 
     glEnable(GL_DEBUG_OUTPUT);
     if (asynchronous)
@@ -213,6 +220,5 @@ bool Error::setupDebugOutput(
 
     return true;
 }
-
 
 } // namespace glow

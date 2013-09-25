@@ -236,13 +236,13 @@ bool GLxContext::setSwapInterval(Context::SwapInterval swapInterval) const
 {
 	if (!extensions::isSupported("GLX_EXT_swap_control") || !glXSwapIntervalEXT)
 	{
-		warning() << "No GLX_EXT_swap_control extension found, ignoring swap interval set request";
+        warning() << "GLX_EXT_swap_control extension not found, ignoring swap interval set request";
 
 		return false;
 	}
 
     glXSwapIntervalEXT(m_display, m_hWnd, swapInterval);
-	if (CheckGLError())
+    if (Error::get())
 	{
         warning() << "Setting swap interval to " << Context::swapIntervalString(swapInterval)
             << " (" << swapInterval << ") failed.";
