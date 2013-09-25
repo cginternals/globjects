@@ -118,9 +118,7 @@ void ScreenAlignedQuad::draw()
 	}
 
     m_program->use();
-    m_vao->bind();
-    m_buffer->drawArrays(GL_POINTS, 0, 1);
-    m_vao->unbind();
+    m_vao->drawArrays(GL_POINTS, 0, 1);
     m_program->release();
 
 	if (m_texture)

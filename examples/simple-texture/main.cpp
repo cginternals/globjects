@@ -69,9 +69,7 @@ public:
 	    m_texture->bind();
 	    m_shaderProgram->use();
 
-	    m_vertexArrayObject->bind();
-	    m_vertexBuffer->drawArrays(GL_TRIANGLE_FAN, 0, 4);
-	    m_vertexArrayObject->unbind();
+        m_vertexArrayObject->drawArrays(GL_TRIANGLE_FAN, 0, 4);
 
         m_shaderProgram->release();
 	    m_texture->unbind();

@@ -91,7 +91,7 @@ public:
         m_transformFeedbackProgram->use();
         m_transformFeedback->bind();
         m_transformFeedback->begin(GL_TRIANGLES);
-        drawBuffer->drawArrays(GL_TRIANGLES, 0, 6);
+        m_vao->drawArrays(GL_TRIANGLES, 0, 6);
         m_transformFeedback->end();
         m_transformFeedback->unbind();
         glDisable(GL_RASTERIZER_DISCARD);

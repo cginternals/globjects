@@ -79,17 +79,10 @@ public:
 
 	    m_program->use();
 
-	    m_vao->bind();
-	    m_vertexBuffer->drawArrays(GL_TRIANGLE_FAN, 0, 4);
-	    m_vao->unbind();
+        m_vao->drawArrays(GL_TRIANGLE_FAN, 0, 4);
 
         m_program->release();
 	    m_texture->unbind();
-
-
-        glBindVertexArray(5); // wrong ID for VAO
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glBindVertexArray(0);
     }
 
     virtual void idleEvent(Window & window)
@@ -169,9 +162,9 @@ void EventHandler::createAndSetupShaders()
 void EventHandler::createAndSetupGeometry()
 {
     auto vertexArray = glow::Vec3Array()
-        << glm::vec3( 0, 0, 0) 
-        << glm::vec3( 1, 0, 0) 
-        << glm::vec3( 1, 1, 0) 
+        << glm::vec3( 0, 0, 0)
+        << glm::vec3( 1, 0, 0)
+        << glm::vec3( 1, 1, 0)
         << glm::vec3( 0, 1, 0);
 
 	m_vao = new glow::VertexArrayObject();

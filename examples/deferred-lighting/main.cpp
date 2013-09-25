@@ -76,9 +76,7 @@ public:
 	    m_emissive->bind();
 	    m_program->use();
 
-	    m_vao->bind();
-	    m_vertexBuffer->drawArrays(GL_TRIANGLE_FAN, 0, 4);
-	    m_vao->unbind();
+        m_vao->drawArrays(GL_TRIANGLE_FAN, 0, 4);
 
         m_program->release();
 	    m_emissive->unbind();

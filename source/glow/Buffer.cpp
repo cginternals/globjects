@@ -116,20 +116,6 @@ GLint Buffer::getParameter(GLenum pname)
 	return value;
 }
 
-void Buffer::drawArrays(GLenum mode, GLint first, GLsizei count)
-{
-	bind();
-	glDrawArrays(mode, first, count);
-	CheckGLError();
-}
-
-void Buffer::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices)
-{
-	bind();
-	glDrawElements(mode, count, type, indices);
-	CheckGLError();
-}
-
 void Buffer::bindBase(GLenum target, GLuint index)
 {
 	glBindBufferBase(target, index, m_id);

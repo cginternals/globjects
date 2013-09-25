@@ -115,9 +115,7 @@ public:
 
         glDisable(GL_DEPTH_TEST);
 
-        m_vao->bind();
-        m_buffer->drawArrays(GL_LINES, 0, 508);
-        m_vao->unbind();
+        m_vao->drawArrays(GL_LINES, 0, 508);
 
         glEnable(GL_DEPTH_TEST);
 
