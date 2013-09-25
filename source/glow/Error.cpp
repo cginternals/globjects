@@ -7,7 +7,6 @@
 #endif
 
 #include <glow/logging.h>
-#include <glow/global.h>
 #include <glow/Error.h>
 
 #ifdef WIN32
@@ -206,8 +205,8 @@ void APIENTRY Error::debugCallback(GLenum source, GLenum type, GLuint id, GLenum
 
 bool Error::setupDebugOutput(const bool asynchronous)
 {
-    //if (!glow::extensions::isSupported("GLEW_ARB_debug_output"))
-      //  return false;
+    if (!GLEW_ARB_debug_output)
+        return false;
 
     glDebugMessageCallback(&Error::debugCallback, nullptr);
     CheckGLError();

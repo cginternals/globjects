@@ -40,16 +40,6 @@ public:
 };
 
 /**
- * \brief extensions provides as interface to query the existance of extensions at runtime.
- */
-class GLOW_API extensions
-{
-public:
-	static bool isSupported(const char* extension);
-	static bool isSupported(const std::string& extension);
-};
-
-/**
  * \brief memory provides an interface to query current memory stats of OpenGL.
  */
 class GLOW_API memory

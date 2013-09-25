@@ -147,33 +147,6 @@ bool query::isCoreProfile()
 	return (getInteger(GL_CONTEXT_PROFILE_MASK) & GL_CONTEXT_CORE_PROFILE_BIT) != 0;
 }
 
-
-// extensions
-
-bool extensions::isSupported(const char* extension)
-{
-	if (query::isCoreProfile())
-	{
-		return false;
-	}
-
-	bool supported = glewIsSupported(extension) == GL_TRUE;
-
-	#ifdef WIN32
-    supported |= wglewIsSupported(extension) == GL_TRUE;
-	#elif defined(LINUX)
-	supported |= glxewIsSupported(extension) == GL_TRUE;
-	#endif
-
-	return supported;
-}
-
-bool extensions::isSupported(const std::string& extension)
-{
-	return isSupported(extension.c_str());
-}
-
-
 // memory
 
 GLint memory::total()
@@ -203,7 +176,7 @@ GLint memory::evictionCount()
 
 GLint memory::memoryInfo(GLenum pname)
 {
-	if (!extensions::isSupported("GL_NVX_gpu_memory_info"))
+    if (!GLEW_NVX_gpu_memory_info)
 	{
 		return -1;
 	}

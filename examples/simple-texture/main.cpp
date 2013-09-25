@@ -72,7 +72,7 @@ public:
         m_vertexArrayObject->drawArrays(GL_TRIANGLE_FAN, 0, 4);
 
         m_shaderProgram->release();
-	    m_texture->unbind();
+        m_texture->unbind();
     }
 
     virtual void idleEvent(Window & window)

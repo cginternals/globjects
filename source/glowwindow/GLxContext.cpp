@@ -130,7 +130,7 @@ bool GLxContext::create(
         return false;
     }
 
-    if (!extensions::isSupported("GLX_ARB_create_context"))
+    if (!GLX_ARB_create_context)
     {
         fatal() << "Mandatory extension GLX_ARB_create_context not supported.";
 
@@ -182,7 +182,7 @@ bool GLxContext::create(
     if (!glXIsDirect(m_display, m_context))
         warning() << "Direct rendering is not enabled (glXIsDirect).";
 
-    if (extensions::isSupported("GLX_EXT_import_context"))
+    if (GLX_EXT_import_context)
     {
         m_id = glXGetContextIDEXT(m_context);
     }
@@ -234,7 +234,7 @@ bool GLxContext::isValid() const
 
 bool GLxContext::setSwapInterval(Context::SwapInterval swapInterval) const
 {
-	if (!extensions::isSupported("GLX_EXT_swap_control") || !glXSwapIntervalEXT)
+    if (!GLX_EXT_swap_control)
 	{
         warning() << "GLX_EXT_swap_control extension not found, ignoring swap interval set request";
 
