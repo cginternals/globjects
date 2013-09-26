@@ -2,6 +2,7 @@
 
 #include <ostream>
 #include <string>
+#include <set>
 
 #include <glow/glow.h>
 
@@ -14,9 +15,7 @@ class LogMessageBuilder;
 class GLOW_API Version
 {
 public:
-    Version(
-        int majorVersion = 0
-    ,   int minorversion = 0);
+    Version(int majorVersion = 0, int minorversion = 0);
 
 	static Version current();
 
@@ -29,17 +28,18 @@ public:
 
 	std::string toString() const;
 
+    bool isValid() const;
+
+    Version nearestValidVersion() const;
 public:
     int majorVersion;
     int minorVersion;
+
+private:
+    static std::set<Version> s_validVersions;
 };
 
-GLOW_API std::ostream & operator<<(
-    std::ostream & out
-,   const Version & version);
-
-GLOW_API LogMessageBuilder & operator<<(
-    LogMessageBuilder & out
-,   const Version & version);
+GLOW_API std::ostream & operator<<(std::ostream & out, const Version & version);
+GLOW_API LogMessageBuilder & operator<<(LogMessageBuilder & out, const Version & version);
 
 } // namespace glow

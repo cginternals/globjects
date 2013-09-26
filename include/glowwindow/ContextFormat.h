@@ -30,8 +30,8 @@ public:
 	,   TripleBuffering     ///< Sometimes used in order to decrease the risk of skipping a frame when the rendering rate is just barely keeping up with the screen refresh rate.
 	};
 
-    static const std::string profileString(const Profile profile);
-    static const std::string swapBehaviorString(const SwapBehavior swapb);
+    static const char* profileString(const Profile profile);
+    static const char* swapBehaviorString(const SwapBehavior swapBehavior);
 
 public:
 	ContextFormat();
@@ -60,16 +60,15 @@ public:
 
 	/** For major and minor parameters only valid version pairs are allowed,
         on invalid pairs, nearest major and minor are set.
+
+        Note: OpenGL versions previous to 3.2. are not supported and might not
+        work. It is not taken into account in the development of glow.
     */
     void setVersion(const Version & version);
-    void setVersion(
-        const unsigned int major
-    ,   const unsigned int minor);
+    void setVersion(unsigned int major, unsigned int minor);
 
-    void setVersionFallback(glow::Version version);
-    void setVersionFallback(
-        unsigned int major
-    ,	unsigned int minor);
+    void setVersionFallback(const glow::Version& version);
+    void setVersionFallback(unsigned int major, unsigned int minor);
 
     int majorVersion() const;
     int minorVersion() const;
@@ -94,23 +93,18 @@ public:
 
     /** Compares the created format against the requested one.
     */
-    static bool verify(
-        const ContextFormat & requested
-    ,   const ContextFormat & created);
+    static bool verify(const ContextFormat & requested, const ContextFormat & created);
 
 protected:
 
     /** Compares (logged if erroneous) version and profile between both formats
     */
-    static bool verifyVersionAndProfile(
-        const ContextFormat & requested
-    ,   const ContextFormat & current);
+    static bool verifyVersionAndProfile(const ContextFormat & requested, const ContextFormat & current);
 
     /** Compares (logged if erroneous) buffer sizes and more between both formats
     */
-    static bool verifyPixelFormat(
-        const ContextFormat & requested
-    ,   const ContextFormat & current);
+    static bool verifyPixelFormat(const ContextFormat & requested, const ContextFormat & current);
+
 
     /** Used as inline by verifyPixelFormat 
     */
@@ -119,19 +113,6 @@ protected:
     ,   const unsigned int sizeInitialized
     ,   const std::string & warning
     ,   std::vector<std::string> & issues);
-
-
-protected:
-    typedef std::set<Version> Versions;
-	
-    /** Note: OpenGL versions previous to 3.2. is not supported and might not 
-        work. It is not taken into account in the development of glow.
-    */
-    static Versions validVersions();
-    static bool nearestValidVersion(Version & version);
-
-protected:
-    static const Versions s_validVersions;
 
 protected:
     Version m_version;

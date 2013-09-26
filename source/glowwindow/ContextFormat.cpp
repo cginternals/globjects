@@ -9,25 +9,17 @@
 namespace glow
 {
 
-const ContextFormat::Versions ContextFormat::s_validVersions
-	= ContextFormat::validVersions();
-
-
 ContextFormat::ContextFormat()
-:	m_profile(CoreProfile)
-
-,	m_redBufferSize(0)
-,	m_greenBufferSize(0)
-,	m_blueBufferSize(0)
-,	m_alphaBufferSize(8)
-
-,	m_depthBufferSize(24)
-,	m_stencilBufferSize(0)
-
-,	m_stereo(false)
-,	m_swapBehavior(DoubleBuffering)
-
-,	m_samples(0)
+: m_profile(CoreProfile)
+, m_redBufferSize(0)
+, m_greenBufferSize(0)
+, m_blueBufferSize(0)
+, m_alphaBufferSize(8)
+, m_depthBufferSize(24)
+, m_stencilBufferSize(0)
+, m_stereo(false)
+, m_swapBehavior(DoubleBuffering)
+, m_samples(0)
 {
     setVersion(4, 1); // Use setter to avoid invalid initialization.
 }
@@ -36,58 +28,7 @@ ContextFormat::~ContextFormat()
 {
 }
 
-ContextFormat::Versions ContextFormat::validVersions()
-{
-    Versions versions;
-
-    versions.insert(Version(1, 0));
-    versions.insert(Version(1, 1));
-    versions.insert(Version(1, 2));
-    versions.insert(Version(1, 3));
-    versions.insert(Version(1, 4));
-    versions.insert(Version(1, 5));
-
-    versions.insert(Version(2, 0));
-    versions.insert(Version(2, 1));
-
-    versions.insert(Version(3, 0));
-    versions.insert(Version(3, 1));
-
-    versions.insert(Version(3, 2));
-    versions.insert(Version(3, 3));
-
-    versions.insert(Version(4, 0));
-    versions.insert(Version(4, 1));
-    versions.insert(Version(4, 2));
-    versions.insert(Version(4, 3));
-    versions.insert(Version(4, 4));
-
-    return versions;
-}
-
-bool ContextFormat::nearestValidVersion(Version & version)
-{
-    assert(!s_validVersions.empty());
-
-    auto f = s_validVersions.lower_bound(version);
-    if (s_validVersions.cend() == f)
-    {
-        --f;
-
-        version = *f;
-        return true;
-    }
-
-    if(version == *f)
-        return false;
-
-    version = *f;
-    return true;
-}
-
-void ContextFormat::setVersion(
-    const unsigned int major
-,	const unsigned int minor)
+void ContextFormat::setVersion(unsigned int major, unsigned int minor)
 {
     setVersion(Version(major, minor));
 }
@@ -96,27 +37,28 @@ void ContextFormat::setVersion(const Version & version)
 {
     m_version = version;
 
-    if(nearestValidVersion(m_version))
+    if (!m_version.isValid())
+    {
+        m_version = m_version.nearestValidVersion();
         warning() << "Unknown OpenGL Version " << version << " was adjusted to " << m_version << ".";
+    }
 }
 
-void ContextFormat::setVersionFallback(
-    unsigned int major
-,	unsigned int minor)
+void ContextFormat::setVersionFallback(unsigned int major, unsigned int minor)
 {
     setVersionFallback(Version(major, minor));
 }
 
-void ContextFormat::setVersionFallback(Version version)
+void ContextFormat::setVersionFallback(const Version& version)
 {
-    nearestValidVersion(version);
+    Version fallbackVersion = version.nearestValidVersion();
 
-    if (version >= m_version)
+    if (fallbackVersion >= m_version)
         return;
 
-    warning() << "OpenGL Version fallback from " << m_version << " was adjusted to " << version << ".";
+    warning() << "OpenGL Version fallback for " << m_version << " was adjusted to " << fallbackVersion << ".";
 
-    m_version = version;
+    m_version = fallbackVersion;
 }
 
 int ContextFormat::majorVersion() const
@@ -234,31 +176,31 @@ void ContextFormat::setSamples(const int samples)
 	m_samples = samples;
 }
 
-const std::string ContextFormat::profileString(const Profile profile)
+const char* ContextFormat::profileString(const Profile profile)
 {
     switch (profile)
     {
-    case CoreProfile:
-        return "CoreProfile";
-    case CompatibilityProfile:
-        return "CompatibilityProfile";
-    default:
-        return "";
+        case CoreProfile:
+            return "CoreProfile";
+        case CompatibilityProfile:
+            return "CompatibilityProfile";
+        default:
+            return "";
     }
 }
 
-const std::string ContextFormat::swapBehaviorString(const SwapBehavior swapb)
+const char* ContextFormat::swapBehaviorString(const SwapBehavior swapBehavior)
 {
-    switch (swapb)
+    switch (swapBehavior)
     {
-	case SingleBuffering:
-        return "SingleBuffering";
-    case DoubleBuffering:
-        return "DoubleBuffering";
-    case TripleBuffering:
-        return "TripleBuffering";
-    default:
-        return "";
+        case SingleBuffering:
+            return "SingleBuffering";
+        case DoubleBuffering:
+            return "DoubleBuffering";
+        case TripleBuffering:
+            return "TripleBuffering";
+        default:
+            return "";
     }
 }
 
@@ -268,7 +210,7 @@ bool ContextFormat::verify(
 {
 	bool result = true;
 
-	result &= verifyVersionAndProfile(requested, created);
+    result &= verifyVersionAndProfile(requested, created);
 	result &= verifyPixelFormat(requested, created);
 
 	return result;
@@ -287,16 +229,16 @@ bool ContextFormat::verifyVersionAndProfile(
             << profileString(created.profile()) << " created.";
 	}
 
-	if (requested.majorVersion() != created.majorVersion()
-     || requested.minorVersion() != created.minorVersion())
+    if (requested.version() != created.version())
 	{
 		warning() << "A context with a different OpenGL Version as requested was created: "
-		    << requested.majorVersion() << "." << requested.minorVersion() << " requested, "
-            << created.majorVersion() << "." << created.minorVersion() << "  created.";
+            << requested.version() << " requested, "
+            << created.version() << "  created.";
 
 		if (requested.profile() == CoreProfile)
 			return false;
 	}
+
 	return sameProfiles;
 }
 
