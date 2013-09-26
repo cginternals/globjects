@@ -28,12 +28,12 @@ public:
 	GLuint bindingIndex() const;
 	Buffer* buffer() const;
 protected:
-    VertexArrayObject* _vao;
-    GLuint _bindingIndex;
-    GLuint _attributeIndex;
-	Buffer* _vbo;
+    VertexArrayObject* m_vao;
+    GLuint m_bindingIndex;
+    GLuint m_attributeIndex;
+    Buffer* m_vbo;
 
-	VertexAttributeBindingImplementation* _implementation;
+    VertexAttributeBindingImplementation* m_implementation;
 };
 
 // GL version specific implementations
@@ -57,7 +57,7 @@ public:
 	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset) = 0;
 	virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset) = 0;
 protected:
-	VertexAttributeBinding* _binding;
+    VertexAttributeBinding* m_binding;
 };
 
 class VertexAttributeBinding_GL_3_2 : public VertexAttributeBindingImplementation
@@ -91,13 +91,13 @@ protected:
 		GLuint relativeoffset;
 	};
 
-	Format _format;
-	GLint _baseoffset;
-	GLint _stride;
+    Format m_format;
+    GLint m_baseoffset;
+    GLint m_stride;
 
-    bool _hasFormat;
-    bool _hasBuffer;
-    bool _hasAttribute;
+    bool m_hasFormat;
+    bool m_hasBuffer;
+    bool m_hasAttribute;
 
 	void finishIfComplete();
 	void finish();

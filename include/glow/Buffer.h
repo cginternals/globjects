@@ -67,7 +67,7 @@ public:
     void clearData(GLenum target, GLenum internalformat, GLenum format, GLenum type, const void* data = nullptr);
 
 protected:
-    GLenum _target;
+    GLenum m_target;
 
 	static GLuint genBuffer();
 };

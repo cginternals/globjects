@@ -51,7 +51,7 @@ public:
 	Handle makeResident();
 	void makeNonResident();
 protected:
-	GLenum  _target;
+    GLenum m_target;
 
 	static GLuint genTexture();
 };
