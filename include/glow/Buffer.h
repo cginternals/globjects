@@ -40,31 +40,73 @@ public:
 	void bind(GLenum target);
 	void unbind();
 
-	void setData(const AbstractArray& data, GLenum usage = GL_STATIC_DRAW);
-	void setData(GLsizei size, const GLvoid* data = nullptr, GLenum usage = GL_STATIC_DRAW);
+	void setData(
+        const AbstractArray & data
+    ,   GLenum usage = GL_STATIC_DRAW);
+	void setData(
+        GLsizei size
+    ,   const GLvoid * data = nullptr
+    ,   GLenum usage = GL_STATIC_DRAW);
 
 	GLint getParameter(GLenum pname);
 
     // mapping
 	void* map(GLenum access = GL_READ_ONLY);
-	void* map(GLenum target, GLenum access);
+	void* map(
+        GLenum target
+    ,   GLenum access);
 	void unmap();
 
 	// indexed buffer binding
-	void bindBase(GLenum target, GLuint index);
-	void bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size);
+	void bindBase(
+        GLenum target
+    ,   GLuint index);
+	void bindRange(
+        GLenum target
+    ,   GLuint index
+    ,   GLintptr offset
+    ,   GLsizeiptr size);
 
 	// copying
-	void copySubData(GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
-	void copySubData(GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
-	void copySubData(GLenum writeTarget, GLsizeiptr size);
-	void copySubData(glow::Buffer* buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
-	void copySubData(glow::Buffer* buffer, GLsizeiptr size);
-	void copyData(glow::Buffer* buffer, GLsizeiptr size, GLenum usage = GL_STATIC_DRAW);
+	void copySubData(
+        GLenum     readTarget
+    ,   GLenum     writeTarget
+    ,   GLintptr   readOffset
+    ,   GLintptr   writeOffset
+    ,   GLsizeiptr size);
+	void copySubData(
+        GLenum     writeTarget
+    ,   GLintptr   readOffset
+    ,   GLintptr   writeOffset
+    ,   GLsizeiptr size);
+	void copySubData(
+        GLenum     writeTarget
+    ,   GLsizeiptr size);
+	void copySubData(
+        glow::Buffer * buffer
+    ,   GLintptr   readOffset
+    ,   GLintptr   writeOffset
+    ,   GLsizeiptr size);
+	void copySubData(
+        glow::Buffer * buffer
+    ,   GLsizeiptr size);
+	void copyData(
+        glow::Buffer * buffer
+    ,   GLsizeiptr size
+    ,   GLenum usage = GL_STATIC_DRAW);
 
     // clear
-    void clearData(GLenum internalformat, GLenum format, GLenum type, const void* data = nullptr);
-    void clearData(GLenum target, GLenum internalformat, GLenum format, GLenum type, const void* data = nullptr);
+    void clearData(
+        GLenum internalformat
+    ,   GLenum format
+    ,   GLenum type
+    ,   const void * data = nullptr);
+    void clearData(
+        GLenum target
+    ,   GLenum internalformat
+    ,   GLenum format
+    ,   GLenum type
+    ,   const void* data = nullptr);
 
 protected:
     GLenum m_target;

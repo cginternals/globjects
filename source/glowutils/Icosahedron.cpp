@@ -1,5 +1,7 @@
 
 #include <cmath>
+#include <iterator>
+
 
 #include <glm/glm.hpp>
 
@@ -67,12 +69,20 @@ const Array<glm::lowp_uvec3> Icosahedron::indices()
     };
 }
 
-Icosahedron::Icosahedron()
+Icosahedron::Icosahedron(const GLsizei iterations)
 :   m_indices(GL_ELEMENT_ARRAY_BUFFER)
 ,   m_vertices(GL_ARRAY_BUFFER)
 {
-    m_indices.setData(indices(), GL_STATIC_DRAW);
-    m_vertices.setData(vertices(), GL_STATIC_DRAW);
+    auto v(vertices());
+    auto i(indices());
+
+    if (clamp(iterations, 0, 8))
+        refine(v, i, 2);
+
+    m_indices.setData(i, GL_STATIC_DRAW);
+    m_vertices.setData(v, GL_STATIC_DRAW);
+
+    m_size = i.size() * 3;
 
     m_vao.bind();
 
@@ -92,8 +102,66 @@ void Icosahedron::draw()
     glEnable(GL_DEPTH_TEST);
 
     m_vao.bind();
-    m_vao.drawElements(GL_TRIANGLES, 60, GL_UNSIGNED_SHORT, nullptr);
+    m_vao.drawElements(GL_TRIANGLES, m_size, GL_UNSIGNED_SHORT, nullptr);
     m_vao.unbind();
 }
+
+void Icosahedron::refine(
+    Array<vec3> & vertices
+,   Array<lowp_uvec3> & indices
+,   const unsigned char levels)
+{
+    std::hash_map<uint, lowp_uint> cache;
+
+    for(int i = 0; i < levels; ++i)
+    {
+        const int size(static_cast<int>(indices.size()));
+
+        for(int f = 0; f < size; ++f)
+        {
+            glm::lowp_uvec3 & face(indices[f]);
+
+            const glm::lowp_uint a(face.x);
+            const glm::lowp_uint b(face.y);
+            const glm::lowp_uint c(face.z);
+
+            const glm::lowp_uint ab(split(a, b, vertices, cache));
+            const glm::lowp_uint bc(split(b, c, vertices, cache));
+            const glm::lowp_uint ca(split(c, a, vertices, cache));
+
+            face = glm::lowp_uvec3(ab, bc, ca);
+
+            indices << glm::lowp_uvec3(a, ab, ca)
+                    << glm::lowp_uvec3(b, bc, ab)
+                    << glm::lowp_uvec3(c, ca, bc);
+        }
+    }    
+}
+
+const lowp_uint Icosahedron::split(
+    const lowp_uint a
+,   const lowp_uint b
+,   Array<vec3> & points
+,   std::hash_map<uint, lowp_uint> & cache)
+{
+    const bool aSmaller(a < b);
+
+    const uint smaller(aSmaller ? a : b);
+    const uint greater(aSmaller ? b : a);
+    const uint hash((smaller << 16) + greater);
+
+    std::hash_map<uint, lowp_uint>::const_iterator h(cache.find(hash));
+    if(cache.end() != h)
+        return h->second;
+
+    points << normalize((points[a] + points[b]) * 0.5f);
+
+    const lowp_uint i(static_cast<lowp_uint>(points.size()) - 1);
+
+    cache[hash] = i;
+
+    return i;
+}
+
 
 } // namespace glow
