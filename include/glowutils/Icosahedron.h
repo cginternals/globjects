@@ -31,6 +31,8 @@ public:
 public:
     Icosahedron(const GLsizei iterations = 0);
 
+    /** draws the icosahedron as single triangles (TODO: generate set of triangle strips?)
+    */
     void draw();
 
 private:
