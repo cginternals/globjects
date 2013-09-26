@@ -8,19 +8,19 @@ namespace glow
 
 Buffer::Buffer()
 : Object(genBuffer())
-, _target(0)
+, m_target(0)
 {
 }
 
 Buffer::Buffer(GLenum target)
 : Object(genBuffer())
-, _target(target)
+, m_target(target)
 {
 }
 
 Buffer::Buffer(GLuint id, GLenum target)
 : Object(id, false)
-, _target(target)
+, m_target(target)
 {
 }
 
@@ -50,19 +50,19 @@ void Buffer::accept(ObjectVisitor& visitor)
 
 void Buffer::bind()
 {
-	glBindBuffer(_target, m_id);
+    glBindBuffer(m_target, m_id);
 	CheckGLError();
 }
 
 void Buffer::bind(GLenum target)
 {
-	_target = target;
+    m_target = target;
 	bind();
 }
 
 void Buffer::unbind()
 {
-	glBindBuffer(_target, 0);
+    glBindBuffer(m_target, 0);
 	CheckGLError();
 }
 
@@ -70,7 +70,7 @@ void* Buffer::map(GLenum access)
 {
     bind();
 
-    void* result = glMapBuffer(_target, access);
+    void* result = glMapBuffer(m_target, access);
 	CheckGLError();
 	return result;
 }
@@ -88,7 +88,7 @@ void Buffer::unmap()
 {
     bind();
 
-    glUnmapBuffer(_target);
+    glUnmapBuffer(m_target);
 	CheckGLError();
 }
 
@@ -100,7 +100,7 @@ void Buffer::setData(const AbstractArray& data, GLenum usage)
 void Buffer::setData(GLsizei size, const GLvoid* data, GLenum usage)
 {
 	bind();
-	glBufferData(_target, size, data, usage);
+    glBufferData(m_target, size, data, usage);
 	CheckGLError();
 }
 
@@ -110,7 +110,7 @@ GLint Buffer::getParameter(GLenum pname)
 
 	GLint value = 0;
 
-	glGetBufferParameteriv(_target, pname, &value);
+    glGetBufferParameteriv(m_target, pname, &value);
 	CheckGLError();
 
 	return value;
@@ -167,13 +167,13 @@ void Buffer::clearData(GLenum internalformat, GLenum format, GLenum type, const 
 {
     bind();
 
-    glClearBufferData(_target, internalformat, format, type, data);
+    glClearBufferData(m_target, internalformat, format, type, data);
     CheckGLError();
 }
 
 void Buffer::clearData(GLenum target, GLenum internalformat, GLenum format, GLenum type, const void* data)
 {
-    _target = target;
+    m_target = target;
 
     clearData(internalformat, format, type, data);
 }

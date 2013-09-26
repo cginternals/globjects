@@ -11,13 +11,13 @@ namespace glow
 
 Texture::Texture(GLenum  target)
 : Object(genTexture())
-, _target(target)
+, m_target(target)
 {
 }
 
 Texture::Texture(GLuint id, GLenum  target, bool ownsGLObject)
 : Object(id, ownsGLObject)
-, _target(target)
+, m_target(target)
 {
 }
 
@@ -32,26 +32,26 @@ Texture::~Texture()
 
 void Texture::bind()
 {
-	glBindTexture(_target, m_id);
+    glBindTexture(m_target, m_id);
 	CheckGLError();
 }
 
 void Texture::unbind()
 {
-	glBindTexture(_target, 0);
+    glBindTexture(m_target, 0);
 	CheckGLError();
 }
 
 GLenum Texture::target() const
 {
-	return _target;
+    return m_target;
 }
 
 void Texture::setParameter(GLenum name, GLint value)
 {
 	bind();
 
-	glTexParameteri(_target, name, value);
+    glTexParameteri(m_target, name, value);
 	CheckGLError();
 }
 
@@ -59,7 +59,7 @@ void Texture::setParameter(GLenum name, GLfloat value)
 {
 	bind();
 
-	glTexParameterf(_target, name, value);
+    glTexParameterf(m_target, name, value);
 	CheckGLError();
 }
 
@@ -69,7 +69,7 @@ GLint Texture::getParameter(GLenum pname)
 
 	GLint value = 0;
 
-	glGetTexParameteriv(_target, pname, &value);
+    glGetTexParameteriv(m_target, pname, &value);
 	CheckGLError();
 
 	return value;
@@ -81,7 +81,7 @@ GLint Texture::getLevelParameter(GLint level, GLenum pname)
 
 	GLint value = 0;
 
-	glGetTexLevelParameteriv(_target, level, pname, &value);
+    glGetTexLevelParameteriv(m_target, level, pname, &value);
 	CheckGLError();
 
 	return value;
@@ -91,7 +91,7 @@ void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei 
 {
 	bind();
 
-	glTexImage2D(_target, level, internalFormat, width, height, border, format, type, data);
+    glTexImage2D(m_target, level, internalFormat, width, height, border, format, type, data);
 	CheckGLError();
 }
 
@@ -99,7 +99,7 @@ void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GL
 {
 	bind();
 
-	glTexStorage2D(_target, levels, internalFormat, width, height);
+    glTexStorage2D(m_target, levels, internalFormat, width, height);
 	CheckGLError();
 }
 
@@ -115,7 +115,7 @@ void Texture::generateMipmap()
 {
 	bind();
 
-	glGenerateMipmap(_target);
+    glGenerateMipmap(m_target);
 	CheckGLError();
 }
 
