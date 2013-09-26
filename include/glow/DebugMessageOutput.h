@@ -5,7 +5,12 @@
 #include <unordered_map>
 #include <functional>
 
+
+
 #include <GL/glew.h>
+#if WIN32
+#include <GL/wglew.h>
+#endif
 
 #include <glow/glow.h>
 
