@@ -41,8 +41,7 @@ public:
 
     virtual void initializeEvent(Window & window)
     {
-        Error::setupDebugOutput();
-        Error::setChecking(false);
+        DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -82,7 +81,7 @@ public:
         m_vao->drawArrays(GL_TRIANGLE_FAN, 0, 4);
 
         m_program->release();
-	    m_texture->unbind();
+        m_texture->unbind();
     }
 
     virtual void idleEvent(Window & window)

@@ -41,8 +41,7 @@ public:
 
     virtual void initializeEvent(Window & window)
     {
-        Error::setupDebugOutput();
-        Error::setChecking(false);
+        DebugMessageOutput::enable();
 
         glClearColor(1.f, 1.f, 1.f, 0.f);
 

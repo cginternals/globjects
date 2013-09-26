@@ -36,6 +36,7 @@ set(api_includes
     ${header_path}/ChangeListener.h
     ${header_path}/ConsoleLogger.h
     ${header_path}/DebugInfo.h
+    ${header_path}/DebugMessageOutput.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferAttachment.h
     ${header_path}/FrameBufferObject.h
@@ -82,6 +83,7 @@ set(sources
     ${source_path}/ChronoTimer.h
     ${source_path}/ConsoleLogger.cpp
     ${source_path}/DebugInfo.cpp
+    ${source_path}/DebugMessageOutput.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferAttachment.cpp
     ${source_path}/FrameBufferObject.cpp
