@@ -33,7 +33,7 @@ Error Error::get()
 
 void Error::clear()
 {
-    Error::get();
+    while (Error::get());
 }
 
 bool Error::isError() const

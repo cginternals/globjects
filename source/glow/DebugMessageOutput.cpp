@@ -69,7 +69,7 @@ std::string DebugMessage::toString() const
     stream
             << typeString(type)
             << ": " << std::hex << "0x" << id << std::dec
-            << " " << severityString(severity) << " severity"
+            << ", " << severityString(severity) << " severity"
             << " (" << sourceString(source) << ")"
             << std::endl
             << message;
@@ -198,6 +198,56 @@ void DebugMessageOutput::addCallback(Callback callback)
     s_callbacks[getId()].push_back(callback);
 }
 
+void DebugMessageOutput::insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char* message)
+{
+    if (!GLEW_ARB_debug_output)
+        return;
+
+    glDebugMessageInsert(source, type, id, severity, length, message);
+    CheckGLError();
+}
+
+void DebugMessageOutput::insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string& message)
+{
+    insertMessage(source, type, id, severity, message.length(), message.c_str());
+}
+
+void DebugMessageOutput::insertMessage(const DebugMessage& message)
+{
+    insertMessage(message.source, message.type, message.id, message.severity, message.message);
+}
+
+void DebugMessageOutput::enableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
+{
+    enableMessages(source, type, severity, 1, &id);
+}
+
+void DebugMessageOutput::enableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids)
+{
+    glDebugMessageControl(source, type, severity, count, ids, GL_TRUE);
+    CheckGLError();
+}
+
+void DebugMessageOutput::enableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint>& ids)
+{
+    enableMessages(source, type, severity, ids.size(), ids.data());
+}
+
+void DebugMessageOutput::disableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
+{
+    disableMessages(source, type, severity, 1, &id);
+}
+
+void DebugMessageOutput::disableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids)
+{
+    glDebugMessageControl(source, type, severity, count, ids, GL_FALSE);
+}
+
+void DebugMessageOutput::disableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint>& ids)
+{
+    disableMessages(source, type, severity, ids.size(), ids.data());
+}
+
 void APIENTRY DebugMessageOutput::handleMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, void * param)
 {
     handleMessage(DebugMessage(source, type, id, severity, message), *reinterpret_cast<int*>(&param));
@@ -240,13 +290,7 @@ void DebugMessageOutput::checkError(const char* file, int line)
     if (!error)
         return;
 
-    std::stringstream ss;
-    ss.flags(std::ios::hex | std::ios::showbase);
-    ss << "OpenGL " << error.name() << " (" << error.code() << ")";
-    ss.unsetf(std::ios::hex | std::ios::showbase);
-    ss << " in " << file << "(" << line << ")";
-
-    handleMessage(DebugMessage(GL_DEBUG_SOURCE_APPLICATION_ARB, GL_DEBUG_TYPE_ERROR_ARB, error.code(), GL_DEBUG_SEVERITY_HIGH_ARB, ss.str()), getId());
+    handleMessage(DebugMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, error.code(), GL_DEBUG_SEVERITY_HIGH_ARB, error.name()), getId());
 }
 
 } // namespace glow
