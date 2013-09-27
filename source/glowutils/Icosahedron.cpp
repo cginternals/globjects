@@ -13,7 +13,7 @@ using namespace glm;
 namespace glow 
 {
 
-const Array<glm::vec3> Icosahedron::vertices()
+const Array<vec3> Icosahedron::vertices()
 {
     static const float t = (1.f + sqrtf(5.f)) * 0.5f; // 2.118
     static const float i = inversesqrt(t * t + 1.f);  // 0.427
@@ -39,7 +39,7 @@ const Array<glm::vec3> Icosahedron::vertices()
     };
 }
 
-const Array<glm::lowp_uvec3> Icosahedron::indices()
+const Array<lowp_uvec3> Icosahedron::indices()
 {
     return Array<lowp_uvec3> 
     {
@@ -69,7 +69,9 @@ const Array<glm::lowp_uvec3> Icosahedron::indices()
     };
 }
 
-Icosahedron::Icosahedron(const GLsizei iterations)
+Icosahedron::Icosahedron(
+    const GLsizei iterations
+,   const GLuint vertexAttribLocation)
 :   m_indices(GL_ELEMENT_ARRAY_BUFFER)
 ,   m_vertices(GL_ARRAY_BUFFER)
 {
@@ -87,9 +89,9 @@ Icosahedron::Icosahedron(const GLsizei iterations)
     m_vao.bind();
 
     auto vertexBinding = m_vao.binding(0);
-    vertexBinding->setAttribute(0);
+    vertexBinding->setAttribute(vertexAttribLocation);
     vertexBinding->setBuffer(&m_vertices, 0, sizeof(vec3));
-    vertexBinding->setFormat(3, GL_FLOAT);
+    vertexBinding->setFormat(3, GL_FLOAT, GL_TRUE);
     m_vao.enable(0);
 
     m_indices.bind();

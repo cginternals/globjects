@@ -8,81 +8,81 @@ namespace glow
 // NOTE: When using powers, try to use Horner's Method
 
 
-#define _PI 3.1415926535897932384626433832795L
-#define _PI2  (_PI * 2.00L)
-#define _PI_2 (_PI * 0.50L)
-#define _PI4  (_PI * 4.00L)
-#define _PI_4 (_PI * 0.25L)
+#define PI 3.1415926535897932384626433832795L
+#define PI2  (PI * 2.00L)
+#define PI_2 (PI * 0.50L)
+#define PI4  (PI * 4.00L)
+#define PI_4 (PI * 0.25L)
 
-#define _abs(v) \
+#define abs(v) \
     (((v) < 0) ? -(v) : (v))
 
-#define _int(v) \
+#define intcast(v) \
     (static_cast<int>(v))
 
-#define _short(v) \
+#define shortcast(v) \
     (static_cast<short>(v))
 
-#define _mod(a, m) \
-    ((a) - (m) * (_int((a) / (m)) - ((a) < 0 ? 1 : 0)))
+#define mod(a, m) \
+    ((a) - (m) * (intcast((a) / (m)) - ((a) < 0 ? 1 : 0)))
 
-#define _frac(x) \
-    ((x) - _int(x))
+#define frac(x) \
+    ((x) - intcast(x))
 
-#define _clamp(l, u, x) \
+#define clamp(l, u, x) \
     ((x) < (l) ? (l) : (x) > (u) ? (u) : (x))
 
-#define _deg(rad) \
-    ((rad) * 180.0L / _PI)
+#define deg(rad) \
+    ((rad) * 180.0L / PI)
 
-#define _rad(deg) \
-    ((deg) * _PI / 180.0L)
+#define rad(deg) \
+    ((deg) * PI / 180.0L)
 
-#define _mi(a, b) \
+#define mi(a, b) \
     ((a) < (b) ? (a) : (b))
 
-#define _ma(a, b) \
+#define ma(a, b) \
     ((a) < (b) ? (b) : (a))
 
-// same as _hour
-// note: if d is negative use -_decimal(d, m, s) instead of _decimal(-d, m, s)
-#define _decimal(d, m, s) \
+// same as hour
+// note: if d is negative use -decimal(d, m, s) instead of decimal(-d, m, s)
+#define decimal(d, m, s) \
     ((d) + ((m) + (s) / 60.0L) / 60.0L)
 
-#define _sind(deg) \
-    (sin(_rad(deg)))
+#define sind(deg) \
+    (sin(rad(deg)))
 
-#define _cosd(deg) \
-    (cos(_rad(deg)))
+#define cosd(deg) \
+    (cos(rad(deg)))
 
-#define _tand(deg) \
-    (tan(_rad(deg)))
+#define tand(deg) \
+    (tan(rad(deg)))
 
-#define _asind(rad) \
-    (_deg(asin(rad)))
+#define asind(rad) \
+    (deg(asin(rad)))
 
-#define _acosd(rad) \
-    (_deg(acos(rad)))
+#define acosd(rad) \
+    (deg(acos(rad)))
 
-#define _atand(rad) \
-    (_deg(atan(rad)))
+#define atand(rad) \
+    (deg(atan(rad)))
 
-#define _atan2d(x, y) \
-    (_deg(atan2(x, y)))
+#define atan2d(x, y) \
+    (deg(atan2(x, y)))
 
-#define _adiameter(D, r) \
+#define adiameter(D, r) \
     (2 * atan(r / D))
 
 // normalizes an angle to between 0 and 2PI radians
-#define _rev(rad) \
-    ((rad) - floor((rad) / _PI2) * _PI2)
+#define rev(rad) \
+    ((rad) - floor((rad) / PI2) * PI2)
 
 // normalizes an angle to between 0 and 360 degrees
-#define _revd(deg) \
+#define revd(deg) \
     ((deg) - floor((deg) / 360.0L) * 360.0L)
 
 // cube root (e.g. needed for parabolic orbits)
-#define _cbrt(x) \
+#define cbrt(x) \
     (((x) > 0.0) ? exp(log(x) / 3.0L) : (((x) < 0.0) ? -cbrt(-(x)) : 0.0))
 
 
@@ -93,13 +93,13 @@ namespace glow
 #define __b32(x) (__b16(x) | (__b16(x) >> 16))
 
 // Returns the next power of an integer.
-#define _nextPowerOf2(x) \
+#define nextPowerOf2(x) \
     (__b32((x) - 1) + 1)
 
-#define _prevPowerOf2(x) \
-    (_nextPowerOf2(x) >> 1)
+#define prevPowerOf2(x) \
+    (nextPowerOf2(x) >> 1)
 
-#define _randf(min, max) \
+#define randf(min, max) \
     (static_cast<float>(rand()) / RAND_MAX * ((max) - (min)) + (min))
 
 #define _rand(min, max) \
@@ -108,26 +108,26 @@ namespace glow
 
 // Interpolate
 
-#define _linear(t)       (t)
+#define linear(t)       (t)
 
-#define _smoothstep(t)   ((t) * (t) * (3 - 2 * (t)))
-#define _smoothstep2(t)  (_smoothstep(_smoothstep(t)))
-#define _smoothstep3(t)  (_smoothstep(_smoothstep2(t)))
+#define smoothstep(t)   ((t) * (t) * (3 - 2 * (t)))
+#define smoothstep2(t)  (smoothstep(smoothstep(t)))
+#define smoothstep3(t)  (smoothstep(smoothstep2(t)))
 
-#define _smootherstep(t) ((t) * (t) * (t) * ((t) * (6 * (t) - 15) + 10))
+#define smootherstep(t) ((t) * (t) * (t) * ((t) * (6 * (t) - 15) + 10))
 
-#define _squared(t)      ((t) * (t))
-#define _invsquared(t)   (1 - (1 - (t)) * (1 - (t)))
+#define squared(t)      ((t) * (t))
+#define invsquared(t)   (1 - (1 - (t)) * (1 - (t)))
 
-#define _cubed(t)        ((t) * (t) * (t))
-#define _invcubed(t)     (1 - (1 - (t)) * (1 - (t)) * (1 - (t)))
+#define cubed(t)        ((t) * (t) * (t))
+#define invcubed(t)     (1 - (1 - (t)) * (1 - (t)) * (1 - (t)))
 
-#define _sin(t)          (sin(t * 1.57079632679489661923))
-#define _invsin(t)       (1 - sin((1 - (t)) * 1.57079632679489661923))
+#define sin(t)          (sin(t * 1.57079632679489661923))
+#define invsin(t)       (1 - sin((1 - (t)) * 1.57079632679489661923))
 
 
-#define _smoothstep_ext(t, l, r) \
-    ((t) < (l) ? 0 : (r) < (t) ? 1 : _smoothstep(((t) - (l)) / ((r) - (l))))
+#define smoothstep_ext(t, l, r) \
+    ((t) < (l) ? 0 : (r) < (t) ? 1 : smoothstep(((t) - (l)) / ((r) - (l))))
 
 // Several interpolation methods in action: http://sol.gfxile.net/interpolation/
 
@@ -150,33 +150,33 @@ enum InterpolationMethod
 template<typename T>
 inline const T interpolate(
     const T t
-,   const e_InterpolationMethod function = InterpolateLinear)
+,   const InterpolationMethod function = InterpolateLinear)
 {
     switch(function)
     {
     case InterpolateSmoothStep:
-        return _smoothstep(t);
+        return smoothstep(t);
     case InterpolateSmoothStep2:
-        return _smoothstep2(t);
+        return smoothstep2(t);
     case InterpolateSmoothStep3:
-        return _smoothstep3(t);
+        return smoothstep3(t);
     case InterpolateSmootherStep:
-        return _smootherstep(t);
+        return smootherstep(t);
     case InterpolateSquared:
-        return _squared(t);
+        return squared(t);
     case InterpolateInvSquared:
-        return _invsquared(t);
+        return invsquared(t);
     case InterpolateCubed:
-        return _cubed(t);
+        return cubed(t);
     case InterpolateInvCubed:
-        return _invcubed(t);
+        return invcubed(t);
     case InterpolateSin:
-        return static_cast<T>(_sin(t));
+        return static_cast<T>(sin(t));
     case InterpolateInvSin:
-        return static_cast<T>(_invsin(t));
+        return static_cast<T>(invsin(t));
     default:
     case InterpolateLinear:
-        return _linear(t);
+        return linear(t);
     }
 }
 

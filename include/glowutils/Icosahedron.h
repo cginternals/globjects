@@ -29,7 +29,9 @@ public:
     ,   const unsigned char levels);
 
 public:
-    Icosahedron(const GLsizei iterations = 0);
+    Icosahedron(
+        const GLsizei iterations = 0
+    ,   const GLuint vertexAttribLocation = 0);
 
     /** draws the icosahedron as single triangles (TODO: generate set of triangle strips?)
     */
