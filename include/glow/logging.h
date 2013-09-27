@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glow/AbstractLogHandler.h>
-
+#include <glow/LogMessageBuilder.h>
 
 namespace glow
 {

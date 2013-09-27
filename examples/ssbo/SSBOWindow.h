@@ -7,7 +7,7 @@
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/Array.h>
-#include <glow/ref_ptr.hpp>
+#include <glow/ref_ptr.h>
 
 class SSBOWindow : public GlutWindow
 {

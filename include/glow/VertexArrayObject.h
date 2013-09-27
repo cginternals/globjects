@@ -10,7 +10,7 @@
 #include <glow/Buffer.h>
 #include <glow/Buffer.h>
 #include <glow/VertexAttributeBinding.h>
-#include <glow/ref_ptr.hpp>
+#include <glow/ref_ptr.h>
 
 // http://www.opengl.org/wiki/Vertex_Array_Object
 

@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include <glow/global.h>
-#include <glow/LogMessage.h>
+#include <glow/LogMessageBuilder.h>
 #include <glow/Version.h>
 
 

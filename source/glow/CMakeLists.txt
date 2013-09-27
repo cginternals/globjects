@@ -46,6 +46,8 @@ set(api_includes
     ${header_path}/logging.h
     ${header_path}/logging.hpp
     ${header_path}/LogMessage.h
+    ${header_path}/LogMessageBuilder.h
+    ${header_path}/LogMessageBuilder.hpp
     ${header_path}/Object.h
     ${header_path}/ObjectRegistry.h
     ${header_path}/ObjectVisitor.h
@@ -54,6 +56,7 @@ set(api_includes
     ${header_path}/Query.h
     ${header_path}/RawFile.h
     ${header_path}/RawFile.hpp
+    ${header_path}/ref_ptr.h
     ${header_path}/ref_ptr.hpp
     ${header_path}/Referenced.h
     ${header_path}/RenderBufferAttachment.h
@@ -83,6 +86,8 @@ set(sources
     ${source_path}/ChronoTimer.h
     ${source_path}/ConsoleLogger.cpp
     ${source_path}/DebugInfo.cpp
+    ${source_path}/DebugMessage.cpp
+    ${source_path}/DebugMessage.h
     ${source_path}/DebugMessageOutput.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferAttachment.cpp
@@ -91,6 +96,7 @@ set(sources
     ${source_path}/global.cpp
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
+    ${source_path}/LogMessageBuilder.cpp
     ${source_path}/Object.cpp
     ${source_path}/ObjectRegistry.cpp
     ${source_path}/ObjectVisitor.cpp
