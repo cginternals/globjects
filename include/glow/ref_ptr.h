@@ -3,6 +3,13 @@
 namespace glow 
 {
 
+/**
+ * \brief The ref_ptr class provides the interface for a reference pointer.
+ *
+ * It is meant to be used together with subclasses of Referenced.
+ *
+ * \see Referenced
+ */
 template<typename T>
 class ref_ptr
 {
