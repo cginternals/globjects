@@ -34,7 +34,7 @@ bool ShaderFile::isFile() const
 	return true;
 }
 
-std::string ShaderFile::filePath() const
+const std::string& ShaderFile::filePath() const
 {
 	return m_filePath;
 }

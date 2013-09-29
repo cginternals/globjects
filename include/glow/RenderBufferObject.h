@@ -3,10 +3,13 @@
 #include <glow/glow.h>
 #include <glow/Object.h>
 
-// http://www.opengl.org/wiki/Renderbuffer_Objects
-
 namespace glow {
 
+/**
+ * \brief The RenderBufferObject class encapsulates OpenGL render buffer objects.
+ *
+ * \see http://www.opengl.org/wiki/Renderbuffer_Objects
+ */
 class GLOW_API RenderBufferObject : public Object
 {
 public:
