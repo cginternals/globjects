@@ -13,6 +13,7 @@ add_executable(${target}
 target_link_libraries(${target} 
     ${GLEW_LIBRARIES}
     glow
+    glowutils
     glowwindow
 )
 
