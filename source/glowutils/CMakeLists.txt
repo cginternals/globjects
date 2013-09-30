@@ -27,6 +27,7 @@ set(api_includes
     ${header_path}/glowutils.h
 
     ${header_path}/AdaptiveGrid.h
+    ${header_path}/AxonometricLookAt.h
     ${header_path}/UnitCube.h
     ${header_path}/Icosahedron.h
     ${header_path}/MathMacros.h
@@ -38,6 +39,7 @@ set(api_includes
 
 set(sources
     ${source_path}/AdaptiveGrid.cpp
+    ${source_path}/AxonometricLookAt.cpp
     ${source_path}/UnitCube.cpp
     ${source_path}/Icosahedron.cpp
     ${source_path}/Plane3.cpp
