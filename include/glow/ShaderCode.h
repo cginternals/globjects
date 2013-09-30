@@ -8,6 +8,13 @@
 namespace glow 
 {
 
+/**
+ * \brief The ShaderCode class is a ShaderSource for direct strings.
+ *
+ * The shader string can be queried with source().
+ *
+ * \see ShaderSource
+ */
 class GLOW_API ShaderCode : public ShaderSource
 {
 public:

@@ -3,7 +3,6 @@
 #include <glow/glow.h>
 #include <glow/LogMessage.h>
 
-
 namespace glow {
 
 /** \brief The AbstractLogHandler class is an abstract interface to handle LogMessages.

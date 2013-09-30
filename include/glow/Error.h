@@ -16,7 +16,6 @@ namespace glow
  *
  * To access the current Error (which can be none), call get().
  * To discard any current error, call clear().
- * 
  */
 class GLOW_API Error
 {

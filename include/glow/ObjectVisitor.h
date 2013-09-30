@@ -16,6 +16,11 @@
 namespace glow
 {
 
+/**
+ * \brief The ObjectVisitor implements a Visitor Pattern to iterate over all tracked glow objects.
+ *
+ * Subclasses should implement the appropriate visit*() methods for those types they want to handle.
+ */
 class GLOW_API ObjectVisitor
 {
 public:

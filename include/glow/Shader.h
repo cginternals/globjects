@@ -16,6 +16,19 @@ namespace glow {
 
 class Program;
 
+/**
+ * \brief The Shader class encapsulates OpenGL shaders.
+ *
+ * A shader can be constructed using fromFile() or fromString() for either shaders from a file or shaders from a string.
+ * The shader source later can be changed using setSource().
+ * A shader can be attached to a program using Program::attach().
+ * A Shader subclasses either ChangeListener and Changeable to react to changing shader sources and to propagate this change to ChangeListeners.
+ *
+ * \see Program
+ * \see ShaderSource
+ * \see ChangeListener
+ * \see Changeable
+ */
 class GLOW_API Shader : public Object, protected ChangeListener, public Changeable
 {
 	friend class Program;
