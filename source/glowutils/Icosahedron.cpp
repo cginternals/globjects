@@ -5,6 +5,9 @@
 
 #include <glm/glm.hpp>
 
+#include <glow/VertexArrayObject.h>
+#include <glow/Buffer.h>
+
 #include <glowutils/Icosahedron.h>
 
 
@@ -72,8 +75,9 @@ const Array<lowp_uvec3> Icosahedron::indices()
 Icosahedron::Icosahedron(
     const GLsizei iterations
 ,   const GLuint vertexAttribLocation)
-:   m_indices(GL_ELEMENT_ARRAY_BUFFER)
-,   m_vertices(GL_ARRAY_BUFFER)
+:   m_vao(new VertexArrayObject)
+,   m_vertices(new Buffer(GL_ARRAY_BUFFER))
+,   m_indices(new Buffer(GL_ELEMENT_ARRAY_BUFFER))
 {
     auto v(vertices());
     auto i(indices());
@@ -81,31 +85,39 @@ Icosahedron::Icosahedron(
     if (clamp(iterations, 0, 8))
         refine(v, i, 2);
 
-    m_indices.setData(i, GL_STATIC_DRAW);
-    m_vertices.setData(v, GL_STATIC_DRAW);
+    m_indices->setData(i, GL_STATIC_DRAW);
+    m_vertices->setData(v, GL_STATIC_DRAW);
 
     m_size = i.size() * 3;
 
-    m_vao.bind();
+    m_vao->bind();
 
-    auto vertexBinding = m_vao.binding(0);
+    auto vertexBinding = m_vao->binding(0);
     vertexBinding->setAttribute(vertexAttribLocation);
-    vertexBinding->setBuffer(&m_vertices, 0, sizeof(vec3));
+    vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
     vertexBinding->setFormat(3, GL_FLOAT, GL_TRUE);
-    m_vao.enable(0);
+    m_vao->enable(0);
 
-    m_indices.bind();
+    m_indices->bind();
 
-    m_vao.unbind();
+    m_vao->unbind();
+}
+
+Icosahedron::~Icosahedron()
+{
+    delete m_vao;
+
+    delete m_indices;
+    delete m_vertices;
 }
 
 void Icosahedron::draw()
 {
     glEnable(GL_DEPTH_TEST);
 
-    m_vao.bind();
-    m_vao.drawElements(GL_TRIANGLES, m_size, GL_UNSIGNED_SHORT, nullptr);
-    m_vao.unbind();
+    m_vao->bind();
+    m_vao->drawElements(GL_TRIANGLES, m_size, GL_UNSIGNED_SHORT, nullptr);
+    m_vao->unbind();
 }
 
 void Icosahedron::refine(
@@ -156,7 +168,7 @@ const lowp_uint Icosahedron::split(
     if(cache.end() != h)
         return h->second;
 
-    points << normalize((points[a] + points[b]) * 0.5f);
+    points << normalize((points[a] + points[b]) * .5f);
 
     const lowp_uint i(static_cast<lowp_uint>(points.size()) - 1);
 

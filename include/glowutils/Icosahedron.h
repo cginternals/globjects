@@ -4,15 +4,18 @@
 
 #include <glm/glm.hpp>
 
-#include <glow/Array.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/Buffer.h>
+#include <glow/ref_ptr.hpp>
 #include <glow/Referenced.h>
+#include <glow/Array.h>
 
 #include <glowutils/glowutils.h>
 
 namespace glow 
 {
+
+class VertexArrayObject;
+class Buffer;
+
 
 class GLOWUTILS_API Icosahedron : public Referenced
 {
@@ -33,6 +36,9 @@ public:
         const GLsizei iterations = 0
     ,   const GLuint vertexAttribLocation = 0);
 
+    virtual ~Icosahedron();
+
+
     /** draws the icosahedron as single triangles (TODO: generate set of triangle strips?)
     */
     void draw();
@@ -49,10 +55,10 @@ private:
     ,   std::hash_map<glm::uint, glm::lowp_uint> & cache);
 
 private:
-    VertexArrayObject m_vao;
+    VertexArrayObject * m_vao;
 
-    Buffer m_vertices;
-    Buffer m_indices;
+    Buffer * m_vertices;
+    Buffer * m_indices;
 
     GLsizei m_size;
 };
