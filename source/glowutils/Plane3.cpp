@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include <glowutils/Plane3.h>
 
@@ -73,7 +73,5 @@ const vec3 intersection(
 	// retrieve point via the ray
 	return t * r + r0;
 }
-
-
 
 } // namespace glow

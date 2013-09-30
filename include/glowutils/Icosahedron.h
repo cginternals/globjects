@@ -1,6 +1,6 @@
 #pragma once
 
-#include <hash_map>
+#include <unordered_map>
 
 #include <glm/glm.hpp>
 
@@ -52,7 +52,7 @@ private:
         const glm::lowp_uint a
     ,   const glm::lowp_uint b
     ,   Array<glm::vec3> & points
-    ,   std::hash_map<glm::uint, glm::lowp_uint> & cache);
+    ,   std::unordered_map<glm::uint, glm::lowp_uint> & cache);
 
 private:
     VertexArrayObject * m_vao;

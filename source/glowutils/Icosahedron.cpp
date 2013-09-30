@@ -125,7 +125,7 @@ void Icosahedron::refine(
 ,   Array<lowp_uvec3> & indices
 ,   const unsigned char levels)
 {
-    std::hash_map<uint, lowp_uint> cache;
+    std::unordered_map<uint, lowp_uint> cache;
 
     for(int i = 0; i < levels; ++i)
     {
@@ -156,7 +156,7 @@ const lowp_uint Icosahedron::split(
     const lowp_uint a
 ,   const lowp_uint b
 ,   Array<vec3> & points
-,   std::hash_map<uint, lowp_uint> & cache)
+,   std::unordered_map<uint, lowp_uint> & cache)
 {
     const bool aSmaller(a < b);
 
@@ -164,7 +164,7 @@ const lowp_uint Icosahedron::split(
     const uint greater(aSmaller ? b : a);
     const uint hash((smaller << 16) + greater);
 
-    std::hash_map<uint, lowp_uint>::const_iterator h(cache.find(hash));
+    auto h(cache.find(hash));
     if(cache.end() != h)
         return h->second;
 
