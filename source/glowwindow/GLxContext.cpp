@@ -171,8 +171,23 @@ bool GLxContext::create(
         return false;
     }
     
-    m_context = glXCreateContextAttribsARB(m_display, fbConfig[0], NULL, true, attributes);
-    if (NULL == m_context)
+    if (GLX_ARB_create_context)
+    {
+        if (glXCreateContextAttribsARB)
+        {
+            m_context = glXCreateContextAttribsARB(m_display, fbConfig[0], NULL, true, attributes);
+        }
+        else
+        {
+            fatal() << "GLX_ARB_create_context present, but glXCreateContextAttribsARB missing.";
+        }
+    }
+    else
+    {
+        fatal() << "GLX_ARB_create_context not present.";
+    }
+
+    if (nullptr == m_context)
     {
         fatal() << "Creating OpenGL context with attributes failed (glXCreateContextAttribsARB).";
         release();
@@ -182,7 +197,7 @@ bool GLxContext::create(
     if (!glXIsDirect(m_display, m_context))
         warning() << "Direct rendering is not enabled (glXIsDirect).";
 
-    if (GLX_EXT_import_context)
+    if (GLX_EXT_import_context && glXGetContextIDEXT)
     {
         m_id = glXGetContextIDEXT(m_context);
     }
@@ -234,7 +249,7 @@ bool GLxContext::isValid() const
 
 bool GLxContext::setSwapInterval(Context::SwapInterval swapInterval) const
 {
-    if (!GLX_EXT_swap_control)
+    if (!GLX_EXT_swap_control || !glXSwapIntervalEXT)
 	{
         warning() << "GLX_EXT_swap_control extension not found, ignoring swap interval set request";
 
