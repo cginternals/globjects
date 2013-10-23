@@ -55,6 +55,7 @@ public:
 	void setReadBuffer(GLenum mode);
 	void setDrawBuffer(GLenum mode);
 	void setDrawBuffers(GLsizei n, const GLenum* modes);
+	void setDrawBuffers(const std::vector<GLenum>& modes);
 
 	void readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* data = nullptr);
 	void readPixelsToBuffer(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, Buffer* pbo);

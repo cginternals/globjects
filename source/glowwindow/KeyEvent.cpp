@@ -183,7 +183,7 @@ const KeyEvent::Key KeyEvent::translate(const unsigned short key)
 #elif __APPLE__
 
 #else
-
+	{0, KeyBackspace}
 #endif
 
     };

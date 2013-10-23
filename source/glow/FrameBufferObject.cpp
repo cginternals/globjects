@@ -158,6 +158,11 @@ void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum* modes)
 	CheckGLError();
 }
 
+void FrameBufferObject::setDrawBuffers(const std::vector<GLenum>& modes)
+{
+	setDrawBuffers(modes.size(), modes.data());
+}
+
 void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* data)
 {
 	bind(GL_FRAMEBUFFER);
