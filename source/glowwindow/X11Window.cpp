@@ -90,7 +90,7 @@ bool X11Window::create(
     const ::Window root = DefaultRootWindow(m_display);
 
     int attributes[] = { GLX_RGBA, GLX_USE_GL, GLX_DEPTH_SIZE, format.depthBufferSize()
-        , (format.swapBehavior() == ContextFormat::DoubleBuffering ? GLX_DOUBLEBUFFER : 0) };
+        , (format.swapBehavior() == ContextFormat::DoubleBuffering ? GLX_DOUBLEBUFFER : 0), 0 };
 
     XVisualInfo * vi = glXChooseVisual(m_display, screen, attributes);
     if (nullptr == vi)
