@@ -24,7 +24,7 @@ void Program::setUniform(const std::string & name, const T & value)
 template<typename T>
 Uniform<T> * Program::getUniform(const std::string & name)
 {
-	if (m_uniforms[name])
+    if (m_uniforms.count(name))
 		return m_uniforms[name]->as<T>();
 
 	// create new uniform if none named <name> exists

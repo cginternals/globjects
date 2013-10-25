@@ -35,6 +35,8 @@ set(api_includes
     ${header_path}/ScreenAlignedQuad.h
     ${header_path}/SourceTemplate.h
     ${header_path}/Trackball.h
+    ${header_path}/UniformGroup.h
+    ${header_path}/UniformGroup.hpp
 )
 
 set(sources
@@ -46,6 +48,7 @@ set(sources
     ${source_path}/ScreenAlignedQuad.cpp
     ${source_path}/SourceTemplate.cpp
     ${source_path}/Trackball.cpp
+    ${source_path}/UniformGroup.cpp
 )
 
 # Group source files
