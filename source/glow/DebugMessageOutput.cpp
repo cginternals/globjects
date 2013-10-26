@@ -6,7 +6,7 @@
 
 #include <glow/logging.h>
 #include <glow/DebugMessageOutput.h>
-#include "DebugMessage.h"
+#include <glow/DebugMessage.h>
 #include <glow/Error.h>
 
 #ifdef WIN32

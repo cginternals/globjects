@@ -1,4 +1,4 @@
-#include "DebugMessage.h"
+#include <glow/DebugMessage.h>
 
 #include <sstream>
 
