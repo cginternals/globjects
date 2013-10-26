@@ -110,25 +110,38 @@ LogMessageBuilder& LogMessageBuilder::operator<<(std::ostream & (*manipulator)(s
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec2 & v)
 {
-	std::stringstream::operator<<("vec2(") << v.x << "," << v.y << ")";
+	*this
+		<< "vec2("
+		<< v.x << ","
+		<< v.y << ")";
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec3 & v)
 {
-	std::stringstream::operator<<("vec3(") << v.x << "," << v.y << "," << v.z << ")";
+	*this
+		<< "vec3("
+		<< v.x << ","
+		<< v.y << ","
+		<< v.z << ")";
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec4 & v)
 {
-	std::stringstream::operator<<("vec4(") << v.x << "," << v.y << "," << v.z << "," << v.w << ")";
+	*this
+		<< "vec4("
+		<< v.x << ","
+		<< v.y << ","
+		<< v.z << ","
+		<< v.w << ")";
 	return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat2 & m)
 {
-	std::stringstream::operator<<("mat2(")
+	*this
+		<< "mat2("
 		<< "(" << m[0][0] << ", " << m[0][1] << "), "
 		<< "(" << m[1][0] << ", " << m[1][1] << ")"
 		<< ")";
@@ -137,7 +150,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat2 & m)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat3 & m)
 {
-	std::stringstream::operator<<("mat3(")
+	*this
+		<< "mat3("
 		<< "(" << m[0][0] << ", " << m[0][1] << ", " << m[0][2] << "), "
 		<< "(" << m[1][0] << ", " << m[1][1] << ", " << m[1][2] <<"), "
 		<< "(" << m[2][0] << ", " << m[2][1] << ", " << m[2][2] <<")"
@@ -147,7 +161,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat3 & m)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat4 & m)
 {
-	std::stringstream::operator<<("mat4(")
+	*this
+		<< "mat4("
 		<< "(" << m[0][0] << ", " << m[0][1] << ", " << m[0][2] << ", " << m[0][3] << "), "
 		<< "(" << m[1][0] << ", " << m[1][1] << ", " << m[1][2] << ", " << m[1][3] <<"), "
 		<< "(" << m[2][0] << ", " << m[2][1] << ", " << m[2][2] << ", " << m[2][3] <<"), "
