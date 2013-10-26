@@ -15,7 +15,7 @@ To find out more about GLOW and how to use it, check out our [wiki](https://gith
 The following dev-libraries and programs need to be provided for correct CMake configuration:
 * C++11 compatible compiler (e.g. gcc 4.7, VS 2013)
 * CMake (>=2.8.9): http://www.cmake.org/
-* OpenGL Extension Wrangler (GLEW, >=1.10.0): http://glew.sourceforge.net/
+* OpenGL Extension Wrangler (GLEW, >=1.10.0): http://glew.sourceforge.net/, https://github.com/nigels-com/glew
 * OpenGL Mathematics (GLM, >=0.9.3): http://glm.g-truc.net/
 
 
