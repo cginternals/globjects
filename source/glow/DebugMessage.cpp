@@ -1,6 +1,8 @@
-#include <glow/DebugMessage.h>
 
 #include <sstream>
+
+#include <glow/DebugMessage.h>
+
 
 namespace glow
 {

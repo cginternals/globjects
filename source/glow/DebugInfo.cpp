@@ -1,3 +1,8 @@
+
+#include <sstream>
+#include <algorithm>
+#include <iomanip>
+
 #include <glow/DebugInfo.h>
 #include <glow/ObjectRegistry.h>
 #include <glow/logging.h>
@@ -5,10 +10,6 @@
 
 #include <glow/TextureAttachment.h>
 #include <glow/RenderBufferAttachment.h>
-
-#include <sstream>
-#include <algorithm>
-#include <iomanip>
 
 namespace glow
 {

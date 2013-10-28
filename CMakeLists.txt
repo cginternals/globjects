@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 
 set(META_PROJECT_NAME        "glow")
 set(META_VERSION_MAJOR       "0")
-set(META_VERSION_MINOR       "0")
+set(META_VERSION_MINOR       "1")
 set(META_VERSION_PATCH       "0")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "hpicgs group")
@@ -99,7 +99,7 @@ if(WIN32)
     set(INSTALL_INIT          "")                       # Not available under Windows
     set(INSTALL_DATA          ".")                      # C:\Programme\<project>
     set(INSTALL_EXAMPLES      ".")                      # C:\Programme\<project>
-elseif(LINUX)
+else()
     set(INSTALL_BIN           "bin")                    # /usr/[local]/bin
     set(INSTALL_SHARED        "lib")                    # /usr/[local]/lib
     set(INSTALL_LIB           "lib")                    # /usr/[local]/lib

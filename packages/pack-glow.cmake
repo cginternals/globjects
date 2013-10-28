@@ -5,10 +5,10 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     
     # Options
     
-    if(LINUX)
-        set(OPTION_PACK_GENERATOR "ZIP;TGZ;DEB" CACHE STRING "Package targets")
-    else()
+    if(WIN32)
         set(OPTION_PACK_GENERATOR "ZIP;NSIS" CACHE STRING "Package targets")
+    else()
+        set(OPTION_PACK_GENERATOR "ZIP;TGZ;DEB" CACHE STRING "Package targets")
     endif()
 
     
@@ -134,10 +134,14 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     
     # Install files
     
-    set(CPACK_INSTALL_CMAKE_PROJECTS        "${CMAKE_BINARY_DIR};glow;ALL;/")
+    if(APPLE)
+        set(CPACK_INSTALL_CMAKE_PROJECTS        "${CMAKE_BINARY_DIR};glow;/")
+    else()
+        set(CPACK_INSTALL_CMAKE_PROJECTS        "${CMAKE_BINARY_DIR};glow;ALL;/")
+    endif()
     set(CPACK_PACKAGE_INSTALL_DIRECTORY     "${package_name}")
     set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY  "${package_name}")
-    if(LINUX)
+    if(NOT WIN32)
         set(CPACK_INSTALL_PREFIX            "/usr/")
     endif()
 

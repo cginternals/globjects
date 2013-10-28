@@ -9,7 +9,8 @@
 #include <glow/Version.h>
 
 
-namespace glow {
+namespace glow 
+{
 
 /**
  * \brief query provides an interface to query OpenGL.

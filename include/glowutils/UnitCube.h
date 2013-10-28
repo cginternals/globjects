@@ -1,7 +1,5 @@
 #pragma once
 
-#include <hash_map>
-
 #include <glm/glm.hpp>
 
 #include <glow/Array.h>
