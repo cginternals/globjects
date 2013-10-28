@@ -1,6 +1,17 @@
 #include <glow/LogMessageBuilder.h>
 
 #include <glow/logging.h>
+#include <glow/Object.h>
+#include <glow/Buffer.h>
+#include <glow/FrameBufferObject.h>
+#include <glow/Program.h>
+#include <glow/Query.h>
+#include <glow/RenderBufferObject.h>
+#include <glow/Shader.h>
+#include <glow/Texture.h>
+#include <glow/TransformFeedback.h>
+#include <glow/VertexArrayObject.h>
+#include <glow/Version.h>
 
 namespace glow {
 
@@ -169,6 +180,88 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat4 & m)
 		<< "(" << m[3][0] << ", " << m[3][1] << ", " << m[3][2] << ", " << m[3][3] <<")"
 		<< ")";
 	return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(Object* object)
+{
+    logObject("Unknown glow Object", object);
+
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(Buffer* object)
+{
+    logObject("Buffer", object);
+
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(FrameBufferObject* object)
+{
+    logObject("Framebuffer Object", object);
+
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(Program* object)
+{
+    logObject("Program", object);
+
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(Query* object)
+{
+    logObject("Query", object);
+
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(RenderBufferObject* object)
+{
+    logObject("Renderbuffer Object", object);
+
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(Shader* object)
+{
+    logObject("Shader", object);
+
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(Texture* object)
+{
+    logObject("Texture", object);
+
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(TransformFeedback* object)
+{
+    logObject("Transform Feedback", object);
+
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(VertexArrayObject* object)
+{
+    logObject("Vertex Array Object", object);
+
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(const Version& version)
+{
+    *this << "Version " << version.toString();
+
+    return *this;
+}
+
+void LogMessageBuilder::logObject(const std::string& type, Object* object)
+{
+    *this << type << " (" << object->id() << ") at " << (void*)object;
 }
 
 } // namespace glow

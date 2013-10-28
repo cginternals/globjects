@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sstream>
+#include <string>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -10,6 +11,17 @@
 namespace glow {
 
 class AbstractLogHandler;
+class Object;
+class Buffer;
+class FrameBufferObject;
+class Program;
+class Query;
+class RenderBufferObject;
+class Shader;
+class Texture;
+class TransformFeedback;
+class VertexArrayObject;
+class Version;
 
 /** \brief The LogMessageBuilder class builds a LogMessage from different kinds of primitive types.
 
@@ -53,6 +65,20 @@ public:
 
 	// manipulators
 	LogMessageBuilder& operator<<(std::ostream& (*manipulator)(std::ostream&));
+	
+	// glow objects
+	LogMessageBuilder& operator<<(Object* object);
+	LogMessageBuilder& operator<<(Buffer* object);
+	LogMessageBuilder& operator<<(FrameBufferObject* object);
+	LogMessageBuilder& operator<<(Program* object);
+	LogMessageBuilder& operator<<(Query* object);
+	LogMessageBuilder& operator<<(RenderBufferObject* object);
+	LogMessageBuilder& operator<<(Shader* object);
+	LogMessageBuilder& operator<<(Texture* object);
+	LogMessageBuilder& operator<<(TransformFeedback* object);
+	LogMessageBuilder& operator<<(VertexArrayObject* object);
+    LogMessageBuilder& operator<<(const Version& version);
+	
 
 	// pointers
 	template <typename T>
@@ -69,6 +95,8 @@ public:
 protected:
 	LogMessage::Level m_level;
 	AbstractLogHandler* m_handler;
+
+    void logObject(const std::string& type, Object* object);
 };
 
 } // namespace glow

@@ -73,16 +73,6 @@ bool Version::operator<=(const Version & version) const
     return *this < version || *this == version;
 }
 
-std::ostream & operator<<(std::ostream & out, const Version & version)
-{
-    return out << version.toString();
-}
-
-LogMessageBuilder & operator<<(LogMessageBuilder & out, const Version & version)
-{
-    return out << version.toString();
-}
-
 std::string Version::toString() const
 {
 	std::stringstream stream;

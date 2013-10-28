@@ -39,7 +39,4 @@ private:
     static std::set<Version> s_validVersions;
 };
 
-GLOW_API std::ostream & operator<<(std::ostream & out, const Version & version);
-GLOW_API LogMessageBuilder & operator<<(LogMessageBuilder & out, const Version & version);
-
 } // namespace glow
