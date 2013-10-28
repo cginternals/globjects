@@ -119,7 +119,7 @@ protected:
     std::string m_title;
 
     Timer * m_timer;
-    
+
     long double m_swapts;
     unsigned int m_swaps;
 

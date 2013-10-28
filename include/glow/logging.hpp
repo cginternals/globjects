@@ -1,3 +1,5 @@
+#pragma once
+
 #include <glow/formatString.h>
 
 namespace glow 

@@ -62,15 +62,55 @@ public:
     static void setSynchronous(bool synchronous);
     static void addCallback(Callback callback);
 
-    static void insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char* message);
-    static void insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string& message);
-    static void insertMessage(const DebugMessage& message);
+    static void insertMessage(
+        GLenum source
+    ,   GLenum type
+    ,   GLuint id
+    ,   GLenum severity
+    ,   GLsizei length
+    ,   const char * message);
+    
+    static void insertMessage(
+        GLenum source
+    ,   GLenum type
+    ,   GLuint id
+    ,   GLenum severity
+    ,   const std::string & message);
 
-    static void enableMessage(GLenum source, GLenum type, GLenum severity, GLuint id);
-    static void enableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids);
-    static void enableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint>& ids);
-    static void disableMessage(GLenum source, GLenum type, GLenum severity, GLuint id);
-    static void disableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids);
+    static void insertMessage(const DebugMessage & message);
+
+
+    static void enableMessage(
+        GLenum source
+    ,   GLenum type
+    ,   GLenum severity
+    ,   GLuint id);
+    
+    static void enableMessages(
+        GLenum source
+    ,   GLenum type
+    ,   GLenum severity
+    ,   GLsizei count
+    ,   const GLuint * ids);
+
+    static void enableMessages(
+        GLenum source
+    ,   GLenum type
+    ,   GLenum severity
+    ,   const std::vector<GLuint> & ids);
+
+
+    static void disableMessage(
+        GLenum source
+    ,   GLenum type
+    ,   GLenum severity
+    ,   GLuint id);
+    
+    static void disableMessages(
+        GLenum source
+    ,   GLenum type
+    ,   GLenum severity
+    , GLsizei count, const GLuint* ids);
     static void disableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint>& ids);
 
     // PRE-ARB_debug_output
