@@ -13,10 +13,9 @@ unset(api_includes)
 add_subdirectory("adaptive-grid")
 add_subdirectory("computeshader")
 add_subdirectory("multiple-contexts")
-add_subdirectory("deferred-lighting")
+#add_subdirectory("deferred-lighting")
 add_subdirectory("simple-texture")
 add_subdirectory("simple-transformfeedback")
 add_subdirectory("single-context")
-
 #add_subdirectory("ssbo")
-    
+add_subdirectory("vertexarrayattributes")
