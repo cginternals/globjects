@@ -166,14 +166,15 @@ void AxonometricLookAt::rebuild() const
     if(!m_rebuild)
         return;
 
-    const mat4 vrot = mat4_cast(angleAxis(m_verticalAngle, vec3( 0.f, 1.f, 0.f)));
+    const mat4 vrot = mat4_cast(angleAxis(-m_verticalAngle, vec3( 0.f, 1.f, 0.f)));
     const mat4 hrot = mat4_cast(angleAxis(m_horizontalAngle, vec3( 1.f, 0.f, 0.f)));
 
-    const mat4 zoom = scale(m_zoom, m_zoom, -1.f);
-    const mat4 t    = translate(m_position);
+    const mat4 zoom = scale(m_zoom, m_zoom, 1.f);
+    const mat4 t    = translate(-m_position);
 
-    m_axonometric = zoom * t * hrot * vrot * m_rotation;
+    const mat4 T1 = translate(0.f, 0.f, -512.f);
 
+    m_axonometric = T1 * hrot * vrot * t; // * m_rotation;
     m_rebuild = false;
 }
 

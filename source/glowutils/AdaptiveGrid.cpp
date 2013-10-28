@@ -20,7 +20,7 @@ using namespace glm;
 namespace glow 
 {
 
-const char * AdaptiveGrid::s_vsSource = R"(
+    const char * AdaptiveGrid::s_vsSource = R"(
 
 #version 330
 
@@ -34,17 +34,16 @@ out vec3 v_vertex;
 
 void main()
 {
-	float m = 1.0 - mod(distance[1], 1.0);
-	float t = a_vertex.w;
+    float m = 1.0 - distance[1];
+    float t = a_vertex.w;
 
-	vec4 vertex = transform * vec4(a_vertex.xyz, 1.0);
+    vec4 vertex = transform * vec4(a_vertex.xyz, 1.0);
+    v_vertex = vertex.xyz;
 
-	v_vertex = vertex.xyz;
+    // interpolate minor grid lines alpha based on distance
+    v_type =  mix(1.0 - t, 1.0 - 2.0 * m * t, step(a_vertex.w, 0.7998));
 
-	// interpolate minor grid lines alpha based on distance
-	v_type =  mix(1.0 - t, 1.0 - 2.0 * m * t, step(a_vertex.w, 0.7998));
-
-	gl_Position = vertex;
+    gl_Position = vertex;
 }
 
 )";
@@ -55,8 +54,8 @@ const char * AdaptiveGrid::s_fsSource = R"(
 
 uniform vec2 distance;
 
-uniform float znear = 0.1;
-uniform float zfar  = 1024.0;
+uniform float znear;
+uniform float zfar;
 uniform vec3 color;
 
 flat in float v_type;
@@ -66,23 +65,23 @@ layout (location = 0) out vec4 fragColor;
 
 void main()
 {
-	float t = v_type; // 1.0 - v_type * 0.5;
+    float t = v_type;
 
-	float z = gl_FragCoord.z; 
+    float z = gl_FragCoord.z; 
 
-	// complete function
-	// z = (2.0 * zfar * znear / (zfar + znear - (zfar - znear) * (2.0 * z - 1.0)));
-	// normalized to [0,1]
-	// z = (z - znear) / (zfar - znear);
+    // complete function
+    // z = (2.0 * zfar * znear / (zfar + znear - (zfar - znear) * (2.0 * z - 1.0)));
+    // normalized to [0,1]
+    // z = (z - znear) / (zfar - znear);
 
-	// simplyfied with wolfram alpha
-	z = - znear * z / (zfar * z - zfar - znear * z);
+    // simplyfied with wolfram alpha
+    z = - znear * z / (zfar * z - zfar - znear * z);
 
-	float g = mix(t, 1.0, z * z);
+    float g = mix(t, 1.0, z * z);
 
-	float l = clamp(8.0 - length(v_vertex) / distance[0], 0.0, 1.0);
+    float l = clamp(8.0 - length(v_vertex) / distance[0], 0.0, 1.0);
 
-	fragColor = vec4(color, l * (1.0 - g * g));
+    fragColor = vec4(color, l * (1.0 - g * g));
 }
 
 )";
@@ -105,7 +104,6 @@ AdaptiveGrid::AdaptiveGrid(
         Shader::fromString(GL_VERTEX_SHADER,   s_vsSource)
     ,   Shader::fromString(GL_FRAGMENT_SHADER, s_fsSource));
 
-    m_program->bindFragDataLocation(0, "fragColor");
     setColor(vec3(.8f));
 
     setupGridLineBuffer(segments);
@@ -151,7 +149,7 @@ void AdaptiveGrid::setupGridLineBuffer(unsigned short segments)
                 << vec4( f, 0.f, g, type) << vec4( f, 0.f,-g, type);
 
     // use hesse normal form and transform each grid line onto the specified plane.
-
+    mat4 T; // ToDo;
     for (vec4 & point : points)
         point = vec4(vec3(T * vec4(point.x, point.y, point.z, 1.f)), point.w);
 
@@ -165,8 +163,8 @@ void AdaptiveGrid::setNearFar(
     float zNear
 ,   float zFar)
 {
-    m_program->setUniform("zNear", zNear);
-    m_program->setUniform("zFar", zFar);
+    m_program->setUniform("znear", zNear);
+    m_program->setUniform("zfar", zFar);
 }
 
 void AdaptiveGrid::setColor(const vec3 & color)
@@ -192,6 +190,8 @@ void AdaptiveGrid::update(
 
     const float distancelog = log(l * .5f) / log(8.f);
     const float distance = pow(8.f, ceil(distancelog));
+
+    mat4 T; // ToDo;
 
     const vec3 u(vec3(T * vec4(distance, 0.f, 0.f, 1.f)) - m_location);
     const vec3 v(vec3(T * vec4(0.f, 0.f, distance, 1.f)) - m_location);

@@ -1,6 +1,6 @@
 
 #include <cmath>
-#include <assert.h>
+#include <cassert>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -54,24 +54,20 @@ const vec3 intersection(
 ,	const vec3 & rnear
 ,	const vec3 & rfar)
 {
-    // thats root of the ray
-	const vec3 & r0 = rnear;
-
-	// a ray direction
-	const vec3 r = rfar - rnear;
+	const vec3 & r0 = rnear; // thats root of the ray
+	const vec3 r = rfar - rnear; // a ray direction
 
 	// intersect with plane in point normal form
 	const float rDotN = dot(r, normal);
 
-	intersects = r != vec3() && rDotN < 0.; // // the later would happen if the intersection is above the "horizon"
+	intersects = r != vec3() && rDotN < 0.; // the later would happen if the intersection is above the "horizon"
 
 	if(!intersects)
 		return vec3();
 
 	const float t = dot(location - r0, normal) / rDotN;
 
-	// retrieve point via the ray
-	return t * r + r0;
+	return t * r + r0; // retrieve point via the ray
 }
 
 } // namespace glow
