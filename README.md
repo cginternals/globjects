@@ -19,6 +19,20 @@ The following dev-libraries and programs need to be provided for correct CMake c
 * OpenGL Mathematics (GLM, >=0.9.3): http://glm.g-truc.net/
 
 
+### Build Instructions for  Windows 8+
+
+Using batches, one can use the following configuration batch:
+
+```
+set GLEW_HOME=<path>
+set GLM_HOME=<path>
+set PATH=%GLEW_HOME%/bin;%PATH%;
+```
+
+And with that, configure and generate the project in CMake and open the solution/project in your the selected IDE. 
+Note, that the working directory for all examples is expected to be the project's root directory.
+
+
 ## Development Notes
 
 If you are contributing to this project, please keep the following notes in mind:
