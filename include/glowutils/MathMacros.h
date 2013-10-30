@@ -33,10 +33,10 @@ namespace glow
     ((x) < (l) ? (l) : (x) > (u) ? (u) : (x))
 
 #define deg(rad) \
-    ((rad) * 180.0L / PI)
+    static_cast<float>((rad)* 180.0L / PI)
 
 #define rad(deg) \
-    ((deg) * PI / 180.0L)
+    static_cast<float>((deg)* PI / 180.0L)
 
 #define mi(a, b) \
     ((a) < (b) ? (a) : (b))

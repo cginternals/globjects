@@ -18,8 +18,8 @@ class GLOWUTILS_API UnitCube : public Referenced
 
 public:
     UnitCube(
-        const GLuint vertexAttribLocation = 0
-    ,   const GLuint normalAttribLocation = 1);
+        GLuint vertexAttribLocation = 0
+    ,   GLuint normalAttribLocation = 1);
 
     /** draws the unit cube as single triangle strip. Note: interleaved array 
         is used, so the normal comes from the provoking vertex (expected to be

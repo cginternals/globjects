@@ -21,17 +21,17 @@ struct Element
 {
     Element(const glm::vec4& position)
         : point(position)
-        , extent(0.2, 0.1)
-        , fullSize(1.0, 1.0)
-        , color(1.0, 0.0, 1.0, 1.0)
-        , average(1.0)
-        , min(0.01)
-        , max(2.0)
-        , median(0.8)
+        , extent(0.2f, 0.1f)
+        , fullSize(1.f, 1.f)
+        , color(1.f, 0.f, 1.f, 1.f)
+        , average(1.f)
+        , min(0.01f)
+        , max(2.f)
+        , median(0.8f)
         , id(position.x > 0 ? 0 : 1)
         , count(position.x > 0 ? 10 : 20)
-        , random(position.x > 0 ? 0.347264 : 0.673642)
-        , random2(position.x > 0 ? 0.67363 : 0.184623)
+        , random(position.x > 0 ? 0.347264f : 0.673642f)
+        , random2(position.x > 0 ? 0.67363f : 0.184623f)
     {
     }
 

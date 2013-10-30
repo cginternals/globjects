@@ -26,29 +26,40 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(api_includes
     ${header_path}/glowutils.h
 
+    ${header_path}/AbstractCoordinateProvider.h
+    ${header_path}/AxisAlignedBoundingBox.h
     ${header_path}/AdaptiveGrid.h
     ${header_path}/AxonometricLookAt.h
-    ${header_path}/UnitCube.h
+    ${header_path}/CachedValue.h
+    ${header_path}/CachedValue.hpp
+    ${header_path}/Camera.h   
     ${header_path}/Icosahedron.h
     ${header_path}/MathMacros.h
+    ${header_path}/NavigationMath.h
     ${header_path}/Plane3.h
     ${header_path}/ScreenAlignedQuad.h
     ${header_path}/SourceTemplate.h
-    ${header_path}/Trackball.h
+    ${header_path}/TrackballNavigation.h
     ${header_path}/UniformGroup.h
     ${header_path}/UniformGroup.hpp
+    ${header_path}/UnitCube.h
+    ${header_path}/WorldInHandNavigation.h
 )
 
 set(sources
     ${source_path}/AdaptiveGrid.cpp
+    ${source_path}/AxisAlignedBoundingBox.cpp
     ${source_path}/AxonometricLookAt.cpp
-    ${source_path}/UnitCube.cpp
+    ${source_path}/Camera.cpp
     ${source_path}/Icosahedron.cpp
+    ${source_path}/NavigationMath.cpp
     ${source_path}/Plane3.cpp
     ${source_path}/ScreenAlignedQuad.cpp
     ${source_path}/SourceTemplate.cpp
-    ${source_path}/Trackball.cpp
+    ${source_path}/TrackballNavigation.cpp
     ${source_path}/UniformGroup.cpp
+    ${source_path}/UnitCube.cpp
+    ${source_path}/WorldInHandNavigation.cpp
 )
 
 # Group source files

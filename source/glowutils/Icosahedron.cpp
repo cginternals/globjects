@@ -152,7 +152,7 @@ void Icosahedron::refine(
     }    
 }
 
-const lowp_uint Icosahedron::split(
+lowp_uint Icosahedron::split(
     const lowp_uint a
 ,   const lowp_uint b
 ,   Array<vec3> & points

@@ -29,12 +29,12 @@ public:
     static void refine(
         Array<glm::vec3> & vertices
     ,   Array<glm::lowp_uvec3> & indices
-    ,   const unsigned char levels);
+    ,   unsigned char levels);
 
 public:
     Icosahedron(
-        const GLsizei iterations = 0
-    ,   const GLuint vertexAttribLocation = 0);
+        GLsizei iterations = 0
+    ,   GLuint vertexAttribLocation = 0);
 
     virtual ~Icosahedron();
 
@@ -48,9 +48,9 @@ private:
         on sphere) to the points (if not already cached) and returns the index
         to this point.
     */
-    static const glm::lowp_uint split(
-        const glm::lowp_uint a
-    ,   const glm::lowp_uint b
+    static glm::lowp_uint split(
+        glm::lowp_uint a
+    ,   glm::lowp_uint b
     ,   Array<glm::vec3> & points
     ,   std::unordered_map<glm::uint, glm::lowp_uint> & cache);
 

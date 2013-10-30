@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 set(META_PROJECT_NAME        "glow")
 set(META_VERSION_MAJOR       "0")
 set(META_VERSION_MINOR       "1")
-set(META_VERSION_PATCH       "0")
+set(META_VERSION_PATCH       "1")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "hpicgs group")
 set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glow/")
@@ -168,7 +168,7 @@ include_directories(
     ${GLEW_INCLUDE_DIR})
 
 
-# GLOW LIBRARIES
+# LIBRARIES
 
 add_subdirectory(source)
 install(FILES glow-config.cmake DESTINATION ".")
@@ -180,5 +180,6 @@ if(OPTION_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-# Packaging
+# PACKAGING
+
 add_subdirectory(packages)

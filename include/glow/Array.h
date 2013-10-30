@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 
 #include <glow/AbstractArray.h>
+
 namespace glow
 {
 
