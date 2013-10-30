@@ -2,19 +2,17 @@ OpenGL Objects Wrapper Library
 ====
 
 The OpenGL Objects Wrapper Library (GLOW) provides an object oriented C++ interface for OpenGL's programmable pipeline (3.2+).
-
 GLOW is a cross-platform library licenced under the [MIT license](http://opensource.org/licenses/MIT).
 
-The current pre-release is [glow-v0.1](https://github.com/hpicgs/glow/releases/tag/glow-v0.1).
-
+The current pre-release is [glow-v0.1.1](https://github.com/hpicgs/glow/releases/tag/glow-v0.1.1).
 To find out more about GLOW and how to use it, check out our [wiki](https://github.com/hpicgs/glow/wiki).
 
 
 ### Dependencies
 
 The following dev-libraries and programs need to be provided for correct CMake configuration:
-* C++11 compatible compiler (e.g. gcc 4.7, VS 2013)
-* CMake (>=2.8.9): http://www.cmake.org/
+* C++11 compatible compiler (e.g. gcc 4.8, better 4.9, VS 2013)
+* CMake (>=2.8.9, better 2.8.12): http://www.cmake.org/
 * OpenGL Extension Wrangler (GLEW, >=1.10.0): http://glew.sourceforge.net/, https://github.com/nigels-com/glew
 * OpenGL Mathematics (GLM, >=0.9.3): http://glm.g-truc.net/
 
