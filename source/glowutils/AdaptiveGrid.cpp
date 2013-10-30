@@ -25,7 +25,7 @@ namespace glow
 #version 330
 
 uniform mat4 transform;
-uniform vec2 distance;
+uniform vec2 viewPlaneDistance;
 
 layout (location = 0) in vec4 a_vertex;
 
@@ -34,13 +34,13 @@ out vec3 v_vertex;
 
 void main()
 {
-    float m = 1.0 - distance[1];
+    float m = 1.0 - viewPlaneDistance[1];
     float t = a_vertex.w;
 
     vec4 vertex = transform * vec4(a_vertex.xyz, 1.0);
     v_vertex = vertex.xyz;
 
-    // interpolate minor grid lines alpha based on distance
+    // interpolate minor grid lines alpha based on viewPlaneDistance
     v_type =  mix(1.0 - t, 1.0 - 2.0 * m * t, step(a_vertex.w, 0.7998));
 
     gl_Position = vertex;
@@ -52,7 +52,7 @@ const char * AdaptiveGrid::s_fsSource = R"(
 
 #version 330
 
-uniform vec2 distance;
+uniform vec2 viewPlaneDistance;
 
 uniform float znear;
 uniform float zfar;
@@ -79,7 +79,7 @@ void main()
 
     float g = mix(t, 1.0, z * z);
 
-    float l = clamp(8.0 - length(v_vertex) / distance[0], 0.0, 1.0);
+    float l = clamp(8.0 - length(v_vertex) / viewPlaneDistance[0], 0.0, 1.0);
 
     fragColor = vec4(color, l * (1.0 - g * g));
 }
@@ -189,12 +189,12 @@ void AdaptiveGrid::update(
     const float l = length(viewpoint - i);
 
     const float distancelog = log(l * .5f) / log(8.f);
-    const float distance = pow(8.f, ceil(distancelog));
+    const float viewPlaneDistance = pow(8.f, ceil(distancelog));
 
     mat4 T; // ToDo;
 
-    const vec3 u(vec3(T * vec4(distance, 0.f, 0.f, 1.f)) - m_location);
-    const vec3 v(vec3(T * vec4(0.f, 0.f, distance, 1.f)) - m_location);
+    const vec3 u(vec3(T * vec4(viewPlaneDistance, 0.f, 0.f, 1.f)) - m_location);
+    const vec3 v(vec3(T * vec4(0.f, 0.f, viewPlaneDistance, 1.f)) - m_location);
 
     const size_t j = u[0] != 0.0 ? 0 : u[1] != 0.0 ? 1 : 2;
     const size_t k = v[0] != 0.0 && j != 0 ? 0 : v[1] != 0.0  && j != 1 ? 1 : 2;
@@ -206,9 +206,9 @@ void AdaptiveGrid::update(
 
     const vec3 irounded = round(s) * u + round(t) * v;
 
-    const mat4 offset = translate(irounded) * scale(vec3(distance));
+    const mat4 offset = translate(irounded) * scale(vec3(viewPlaneDistance));
 
-    m_program->setUniform("distance",  vec2(l, mod(distancelog, 1.f)));
+    m_program->setUniform("viewPlaneDistance",  vec2(l, mod(distancelog, 1.f)));
     m_program->setUniform("transform", modelViewProjection * offset);
 } 
 
