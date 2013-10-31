@@ -1,15 +1,21 @@
 #pragma once
 
-#include <glow/Program.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/Texture.h>
-#include <glow/Buffer.h>
-#include <glow/Array.h>
+#include <glow/Referenced.h>
+#include <glow/ref_ptr.h>
+
+#include <glowutils/glowutils.h>
+
 
 namespace glow
 {
 
-class ScreenAlignedQuad : public Referenced
+class Buffer;
+class Program;
+class Shader;
+class Texture;
+class VertexArrayObject;
+
+class GLOWUTILS_API ScreenAlignedQuad : public Referenced
 {
 public:
     ScreenAlignedQuad(
@@ -22,14 +28,14 @@ public:
 
 	void draw();
 
-	Program* program();
-	void setProgram(Program* program);
+	Program * program();
+	void setProgram(Program * program);
 
-    Shader* vertexShader();
-    Shader* geometryShader();
-    Shader* fragmentShader();
+    Shader * vertexShader();
+    Shader * geometryShader();
+    Shader * fragmentShader();
 
-	void setTexture(Texture* texture);
+	void setTexture(Texture * texture);
 
 	void setSamplerUniform(int index);
 

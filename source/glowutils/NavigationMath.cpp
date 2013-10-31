@@ -6,6 +6,7 @@
 
 #include <glowutils/MathMacros.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
+
 #include <glowutils/NavigationMath.h>
 
 using namespace glm;

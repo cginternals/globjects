@@ -2,12 +2,13 @@
 #include <vector>
 #include <sstream>
 
-#include <glow/Shader.h>
 #include <glow/Program.h>
 #include <glow/logging.h>
 #include <glow/ShaderCode.h>
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
+
+#include <glow/Shader.h>
 
 namespace glow
 {

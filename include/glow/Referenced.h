@@ -3,7 +3,8 @@
 #include <glow/glow.h>
 #include <glow/ref_ptr.h>
 
-namespace glow {
+namespace glow 
+{
 
 /**
  * \brief The Referenced class is the superclass of all classes that use reference counting in glow.

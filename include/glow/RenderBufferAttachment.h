@@ -5,7 +5,8 @@
 #include <glow/RenderBufferObject.h>
 #include <glow/FrameBufferAttachment.h>
 
-namespace glow {
+namespace glow 
+{
 
 /**
  * \brief The RenderBufferAttachment class encapsulates render buffer attachments of a frame buffer object.

@@ -1,6 +1,6 @@
 
-#include <glow/ShaderCode.h>
 #include <glow/Shader.h>
+#include <glow/ShaderCode.h>
 
 namespace glow
 {

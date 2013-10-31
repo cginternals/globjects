@@ -11,16 +11,16 @@
 namespace glow 
 {
 
-class GLOWUTILS_API SourceTemplate : public glow::ShaderSource, protected glow::ChangeListener
+class GLOWUTILS_API SourceTemplate : public ShaderSource, protected ChangeListener
 {
 public:
-	SourceTemplate(glow::ShaderSource* source);
+	SourceTemplate(ShaderSource * source);
 	~SourceTemplate();
 
-	virtual const std::string& source();
+	virtual const std::string & source();
 
-	void replace(const std::string& orig, const std::string& str);
-	void replace(const std::string& orig, int i);
+	void replace(const std::string & orig, const std::string & str);
+	void replace(const std::string & orig, int i);
 	void update();
 
 protected:
@@ -29,7 +29,7 @@ protected:
     void modifySource();
 
 protected:
-	glow::ref_ptr<glow::ShaderSource> m_internal;
+	ref_ptr<ShaderSource> m_internal;
 	std::string m_modifiedSource;
 	std::map<std::string, std::string> m_replacements;
 };

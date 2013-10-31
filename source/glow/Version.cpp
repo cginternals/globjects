@@ -3,29 +3,19 @@
 
 #include <glow/global.h>
 #include <glow/LogMessageBuilder.h>
+
 #include <glow/Version.h>
 
 
-namespace glow {
+namespace glow 
+{
 
-std::set<Version> Version::s_validVersions = {
-    Version(1, 0),
-    Version(1, 1),
-    Version(1, 2),
-    Version(1, 3),
-    Version(1, 4),
-    Version(1, 5),
-    Version(2, 0),
-    Version(2, 1),
-    Version(3, 0),
-    Version(3, 1),
-    Version(3, 2),
-    Version(3, 3),
-    Version(4, 0),
-    Version(4, 1),
-    Version(4, 2),
-    Version(4, 3),
-    Version(4, 4)
+std::set<Version> Version::s_validVersions = 
+{
+    { 1, 0 }, { 1, 1 }, { 1, 2 }, { 1, 3 }, { 1, 4 }, { 1, 5 },
+    { 2, 0 }, { 2, 1 },
+    { 3, 0 }, { 3, 1 }, { 3, 2 }, { 3, 3 }, 
+    { 4, 0 }, { 4, 1 }, { 4, 2 }, { 4, 3 }, { 4, 4 }
 };
 
 Version::Version(int majorVersion, int minorVersion)

@@ -4,27 +4,33 @@
 #include <string>
 
 #include <glow/ref_ptr.h>
-#include <glow/AbstractUniform.h>
-#include <glow/Program.h>
 #include <glow/Uniform.h>
 
-namespace glow {
+#include <glowutils/glowutils.h>
 
-class UniformGroup
+namespace glow 
+{
+
+class AbstractUniform;
+class Program;
+
+class GLOWUTILS_API UniformGroup
 {
 public:
     UniformGroup();
     virtual ~UniformGroup();
 
     template <typename T>
-    Uniform<T>* uniform(const std::string& name);
-    template <typename T>
-    const Uniform<T>* uniform(const std::string& name) const;
-    void addUniform(AbstractUniform* uniform);
+    Uniform<T> * uniform(const std::string & name);
 
-    void addToProgram(Program* program);
+    template <typename T>
+    const Uniform<T> * uniform(const std::string & name) const;
+
+    void addUniform(AbstractUniform * uniform);
+    void addToProgram(Program * program);
+
 protected:
-    std::unordered_map<std::string, glow::ref_ptr<AbstractUniform>> m_uniforms;
+    std::unordered_map<std::string, ref_ptr<AbstractUniform>> m_uniforms;
 };
 
 } // namespace glow

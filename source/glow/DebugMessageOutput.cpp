@@ -4,19 +4,15 @@
 #include <stdexcept>
 #endif
 
+
 #include <glow/logging.h>
-#include <glow/DebugMessageOutput.h>
-#include <glow/DebugMessage.h>
 #include <glow/Error.h>
 
-#ifdef WIN32
-#include <GL/wglew.h>
-#elif __APPLE__
-#else
-#include <GL/glxew.h>
-#endif
+#include <glow/DebugMessage.h>
+#include <glow/DebugMessageOutput.h>
 
-namespace {
+namespace 
+{
     long long getContextHandle()
     {
         long long handle = 0;

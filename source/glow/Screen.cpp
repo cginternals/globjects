@@ -1,11 +1,11 @@
 
 #include <set>
 #include <functional>
+#include <cstdio>
 
 #include <glow/logging.h>
-#include <glow/Screen.h>
 
-#include <stdio.h>
+#include <glow/Screen.h>
 
 
 namespace glow

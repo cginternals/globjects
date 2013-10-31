@@ -1,9 +1,10 @@
 
 #include <cmath>
-//#include <iterator>
-
 
 #include <glm/glm.hpp>
+
+#include <glow/VertexArrayObject.h>
+#include <glow/Buffer.h>
 
 #include <glowutils/UnitCube.h>
 
@@ -61,34 +62,35 @@ const Array<vec3> UnitCube::strip()
 UnitCube::UnitCube(
     const GLuint vertexAttribLocation
 ,   const GLuint normalAttribLocation)
-:   m_strip(GL_ARRAY_BUFFER)
+: m_strip(new Buffer(GL_ARRAY_BUFFER))
+, m_vao(new VertexArrayObject)
 {
-    m_strip.setData(strip(), GL_STATIC_DRAW);
+    m_strip->setData(strip(), GL_STATIC_DRAW);
 
-    m_vao.bind();
+    m_vao->bind();
 
-    auto vertexBinding = m_vao.binding(0);
+    auto vertexBinding = m_vao->binding(0);
     vertexBinding->setAttribute(vertexAttribLocation);
-    vertexBinding->setBuffer(&m_strip, 0, sizeof(vec3) * 2);
+    vertexBinding->setBuffer(m_strip.get(), 0, sizeof(vec3) * 2);
     vertexBinding->setFormat(3, GL_FLOAT, GL_FALSE, 0);
-    m_vao.enable(0);
+    m_vao->enable(0);
 
-    auto normalBinding = m_vao.binding(1);
+    auto normalBinding = m_vao->binding(1);
     normalBinding->setAttribute(normalAttribLocation);
-    normalBinding->setBuffer(&m_strip, 0, sizeof(vec3) * 2);
+    normalBinding->setBuffer(m_strip.get(), 0, sizeof(vec3) * 2);
     normalBinding->setFormat(3, GL_FLOAT, GL_TRUE, sizeof(vec3));
-    m_vao.enable(1);
+    m_vao->enable(1);
 
-    m_vao.unbind();
+    m_vao->unbind();
 }
 
 void UnitCube::draw()
 {
     glEnable(GL_DEPTH_TEST);
 
-    m_vao.bind();
-    m_vao.drawArrays(GL_TRIANGLE_STRIP, 0, 14);
-    m_vao.unbind();
+    m_vao->bind();
+    m_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 14);
+    m_vao->unbind();
 }
 
 } // namespace glow

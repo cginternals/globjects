@@ -3,14 +3,15 @@
 #include <glm/glm.hpp>
 
 #include <glow/Array.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/Buffer.h>
 #include <glow/Referenced.h>
 
 #include <glowutils/glowutils.h>
 
 namespace glow 
 {
+
+class VertexArrayObject;
+class Buffer;
 
 class GLOWUTILS_API UnitCube : public Referenced
 {
@@ -29,9 +30,8 @@ public:
     void draw();
 
 private:
-    VertexArrayObject m_vao;
-
-    Buffer m_strip;
+    ref_ptr<VertexArrayObject> m_vao;
+    ref_ptr<Buffer> m_strip;
 };
 
 } // namespace glow

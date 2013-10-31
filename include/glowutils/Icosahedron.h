@@ -4,8 +4,8 @@
 
 #include <glm/glm.hpp>
 
-#include <glow/ref_ptr.hpp>
 #include <glow/Referenced.h>
+#include <glow/ref_ptr.hpp>
 #include <glow/Array.h>
 
 #include <glowutils/glowutils.h>
@@ -55,10 +55,10 @@ private:
     ,   std::unordered_map<glm::uint, glm::lowp_uint> & cache);
 
 private:
-    VertexArrayObject * m_vao;
+    ref_ptr<VertexArrayObject> m_vao;
 
-    Buffer * m_vertices;
-    Buffer * m_indices;
+    ref_ptr<Buffer> m_vertices;
+    ref_ptr<Buffer> m_indices;
 
     GLsizei m_size;
 };

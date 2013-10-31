@@ -105,10 +105,6 @@ Icosahedron::Icosahedron(
 
 Icosahedron::~Icosahedron()
 {
-    delete m_vao;
-
-    delete m_indices;
-    delete m_vertices;
 }
 
 void Icosahedron::draw()
@@ -176,6 +172,5 @@ lowp_uint Icosahedron::split(
 
     return i;
 }
-
 
 } // namespace glow

@@ -1,6 +1,8 @@
-#include <glow/TransformFeedback.h>
+
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
+
+#include <glow/TransformFeedback.h>
 
 namespace glow
 {

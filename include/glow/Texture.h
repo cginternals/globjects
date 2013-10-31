@@ -3,7 +3,8 @@
 #include <glow/glow.h>
 #include <glow/Object.h>
 
-namespace glow {
+namespace glow 
+{
 
 /**
  * \brief The Texture class wraps an OpenGL texture object.

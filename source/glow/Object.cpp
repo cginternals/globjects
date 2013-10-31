@@ -1,7 +1,8 @@
 
-#include <glow/Object.h>
 #include <glow/Error.h>
 #include <glow/ObjectRegistry.h>
+
+#include <glow/Object.h>
 
 namespace glow
 {

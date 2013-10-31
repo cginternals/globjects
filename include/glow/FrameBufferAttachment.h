@@ -7,7 +7,8 @@
 #include <glow/glow.h>
 #include <glow/Referenced.h>
 
-namespace glow {
+namespace glow 
+{
 
 /**
  * \brief The superclass FrameBufferAttachment encapsulates attachments to a FrameBufferObject.

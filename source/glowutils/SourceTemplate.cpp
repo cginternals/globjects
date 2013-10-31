@@ -9,7 +9,10 @@
 namespace 
 {
 
-void replaceAll(std::string& subject, const std::string& search, const std::string& replace)
+void replaceAll(
+    std::string & subject
+,   const std::string & search
+,   const std::string & replace)
 {
 	size_t pos = 0;
 
@@ -25,8 +28,8 @@ void replaceAll(std::string& subject, const std::string& search, const std::stri
 namespace glow 
 {
 
-SourceTemplate::SourceTemplate(glow::ShaderSource* source)
-:m_internal(source)
+SourceTemplate::SourceTemplate(ShaderSource * source)
+: m_internal(source)
 {
 	m_internal->registerListener(this);
 	modifySource();
@@ -37,7 +40,7 @@ SourceTemplate::~SourceTemplate()
 	m_internal->deregisterListener(this);
 }
 
-const std::string& SourceTemplate::source()
+const std::string & SourceTemplate::source()
 {
 	return m_modifiedSource;
 }
@@ -47,12 +50,14 @@ void SourceTemplate::notifyChanged()
 	update();
 }
 
-void SourceTemplate::replace(const std::string& orig, const std::string& str)
+void SourceTemplate::replace(
+    const std::string & orig
+,   const std::string & str)
 {
 	m_replacements[orig] = str;
 }
 
-void SourceTemplate::replace(const std::string& orig, int i)
+void SourceTemplate::replace(const std::string & orig, int i)
 {
 	std::stringstream ss;
 	ss << i;
@@ -70,9 +75,7 @@ void SourceTemplate::modifySource()
 	m_modifiedSource = m_internal->source();
 
 	for (std::pair<std::string, std::string> pair: m_replacements)
-	{
 		replaceAll(m_modifiedSource, pair.first, pair.second);
-	}
 }
 
 } // namespace glow

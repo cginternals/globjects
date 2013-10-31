@@ -4,7 +4,8 @@
 
 #include <glow/Object.h>
 
-namespace glow {
+namespace glow 
+{
 
 /**
  * \brief The ObjectRegistry tracks all wrapped OpenGL objects in glow.

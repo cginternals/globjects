@@ -4,7 +4,8 @@
 #include <glow/ConsoleLogger.h>
 
 
-namespace glow {
+namespace glow 
+{
 
 void ConsoleLogger::handle(const LogMessage& message)
 {

@@ -3,7 +3,8 @@
 #include <glow/glow.h>
 #include <glow/Buffer.h>
 
-namespace glow {
+namespace glow 
+{
 
 class VertexArrayObject;
 class VertexAttributeBindingImplementation;

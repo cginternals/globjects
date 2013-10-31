@@ -2,7 +2,8 @@
 
 #include <glow/AbstractLogHandler.h>
 
-namespace glow {
+namespace glow 
+{
 
 /** \brief The ConsoleLogger class writes LogMessages to stdout.
 
@@ -14,7 +15,7 @@ namespace glow {
 class ConsoleLogger : public AbstractLogHandler
 {
 public:
-	void handle(const LogMessage& message) override;
+	void handle(const LogMessage & message) override;
 protected:
 	std::string levelString(LogMessage::Level level);
 };

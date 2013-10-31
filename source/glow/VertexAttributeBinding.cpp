@@ -1,9 +1,9 @@
 
-#include <glow/VertexAttributeBinding.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/Version.h>
-
 #include <glow/Error.h>
+
+#include <glow/VertexAttributeBinding.h>
 
 namespace glow
 {

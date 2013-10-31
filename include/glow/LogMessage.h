@@ -4,7 +4,8 @@
 
 #include <glow/glow.h>
 
-namespace glow {
+namespace glow 
+{
 
 /** \brief The LogMessage class encapsulates a simple log message and its severity level.
 

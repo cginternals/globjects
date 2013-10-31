@@ -1,9 +1,10 @@
 #pragma once
 
-namespace glow {
+namespace glow 
+{
 
 template <typename T>
-Uniform<T>* UniformGroup::uniform(const std::string& name)
+Uniform<T> * UniformGroup::uniform(const std::string & name)
 {
     if (m_uniforms.count(name))
         return m_uniforms[name]->as<T>();
@@ -18,7 +19,7 @@ Uniform<T>* UniformGroup::uniform(const std::string& name)
 }
 
 template <typename T>
-const Uniform<T>* UniformGroup::uniform(const std::string& name) const
+const Uniform<T> * UniformGroup::uniform(const std::string & name) const
 {
     if (m_uniforms.count(name))
         return m_uniforms.at(name)->as<T>();

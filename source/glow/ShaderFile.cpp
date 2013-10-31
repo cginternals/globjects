@@ -1,8 +1,8 @@
 
-#include <glow/ShaderFile.h>
 #include <glow/Shader.h>
 #include <glow/RawFile.h>
 
+#include <glow/ShaderFile.h>
 
 namespace glow
 {

@@ -8,7 +8,8 @@
 #include <glow/glow.h>
 #include <glow/LogMessage.h>
 
-namespace glow {
+namespace glow 
+{
 
 class AbstractLogHandler;
 class Object;

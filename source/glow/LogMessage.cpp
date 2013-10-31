@@ -1,7 +1,8 @@
 
 #include <glow/LogMessage.h>
 
-namespace glow {
+namespace glow 
+{
 
 LogMessage::LogMessage(Level level, const std::string& message)
 : m_level(level)

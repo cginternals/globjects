@@ -1,7 +1,8 @@
-#include <glow/Query.h>
 
 #include <glow/ObjectVisitor.h>
 #include <glow/Error.h>
+
+#include <glow/Query.h>
 
 namespace glow
 {

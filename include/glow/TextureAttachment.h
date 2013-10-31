@@ -5,7 +5,8 @@
 #include <glow/FrameBufferAttachment.h>
 #include <glow/Texture.h>
 
-namespace glow {
+namespace glow 
+{
 
 /**
  * \brief The TextureAttachment class encapsulates texture attachments of a frame buffer object.

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <glow/glow.h>
 #include <ostream>
+
+#include <glow/glow.h>
 
 namespace glow 
 {

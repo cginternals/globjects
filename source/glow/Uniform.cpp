@@ -1,6 +1,7 @@
-#include <glow/Uniform.h>
 
 #include <glow/Error.h>
+
+#include <glow/Uniform.h>
 
 namespace glow
 {

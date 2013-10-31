@@ -2,7 +2,8 @@
 
 #include <glow/glow.h>
 
-namespace glow {
+namespace glow 
+{
 
 /**
  * \brief A ChangeListener can listen to any Changeable.
