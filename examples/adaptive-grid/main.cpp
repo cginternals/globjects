@@ -15,6 +15,7 @@
 #include <glow/Program.h>
 #include <glow/logging.h>
 #include <glow/AutoTimer.h>
+#include <glow/VertexArrayObject.h>
 
 #include <glowutils/MathMacros.h>
 #include <glowutils/Icosahedron.h>
