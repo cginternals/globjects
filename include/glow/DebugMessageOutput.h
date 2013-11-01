@@ -21,22 +21,29 @@ namespace glow
 
 class DebugMessage;
 
-/**
- * \brief The DebugMessageOutput class handles occuring OpenGL errors.
- *
- * The handling of OpenGL errors can be turned on using enable() and turned off using disable().
- * If glow is compiled with CMake flag -DOPTION_ERRORS_AS_EXCEPTION=On, then occuring OpenGL debug messages and errors get handled by throwing an exception.
- *
- * Errors will be handled as follows.
- * If the CMake flag is Off, then a message with the error will be printed on the command line or the device connected with the ConsoleLogger.
- * To provide meaningful stack traces during exception handling, the OpenGL errors should be handled synchroneous, which can be turned on using setSynchroneous().
- * Instead of printing the error or throwing an exception, a user defined callback can be set which gets called for every occuring OpenGL error using addCallback().
- *
- * Debug messages can only be obtained using the GL_ARB_debug_output extension, which is in the OpenGL 4.3 Core Profile.
- * Occuring OpenGL debug messages can be filtered using enableMessage(), enableMessages(), disableMessage() and disableMessages().
- *
- * \see ConsoleLogger
- * \see http://www.opengl.org/registry/specs/ARB/debug_output.txt
+/** \brief Handles occuring OpenGL errors.
+    
+    The handling of OpenGL errors can be turned on using enable() and turned off
+    using disable(). If glow is compiled with CMake flag 
+    -DOPTION_ERRORS_AS_EXCEPTION = On, then occuring OpenGL debug messages and 
+    errors get handled by throwing an exception.
+    
+    Errors will be handled as follows.
+    If the CMake flag is Off, then a message with the error will be printed on 
+    the command line or the device connected with the ConsoleLogger. To provide 
+    meaningful stack traces during exception handling, the OpenGL errors should 
+    be handled synchroneous, which can be turned on using setSynchroneous().
+    Instead of printing the error or throwing an exception, a user defined 
+    callback can be set which gets called for every occuring OpenGL error using
+    addCallback().
+    
+    Debug messages can only be obtained using the GL_ARB_debug_output extension,
+    which is in the OpenGL 4.3 Core Profile. Occuring OpenGL debug messages can
+    be filtered using enableMessage(), enableMessages(), disableMessage() and 
+    disableMessages().
+    
+    \see ConsoleLogger
+    \see http://www.opengl.org/registry/specs/ARB/debug_output.txt
  */
 class GLOW_API DebugMessageOutput
 {

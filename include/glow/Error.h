@@ -11,11 +11,10 @@
 namespace glow 
 {
 
-/**
- * \brief Error provides an object oriented interface to OpenGL errors.
- *
- * To access the current Error (which can be none), call get().
- * To discard any current error, call clear().
+/** \brief Wrapper for OpenGL errors.
+ 
+    To access the current Error (which can be none), call get().
+    To discard any current error, call clear().
  */
 class GLOW_API Error
 {

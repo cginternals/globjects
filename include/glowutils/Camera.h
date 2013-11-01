@@ -9,7 +9,7 @@
 namespace glow
 {
 
-/** \brief Camera represents matrices for a typical 3d look at camera with perspective.
+/** \brief Represents matrices for a typical 3d look at camera with perspective.
 
     A camera is specified via near, far, fovy, as well as an eye, a center, and an up 
     vector. Furthermore the viewport should be specified. Camera itself does not use

@@ -8,6 +8,22 @@
 namespace glow
 {
 
+/** \brief Fast binary file to memory dump.
+
+    The RawFile allows fast reading of binary/raw data and is intended
+    to be used for assets, e.g., created with glraw. This is to reduce the
+    3rd party overhead when reading assets (3d models, 1d/2d/3d images, etc.,).
+
+    \code{.cpp}
+
+        RawFile<char> raw(m_filePath);
+        if (raw.valid())
+            doStuffWith(raw.data(), raw.size());
+
+    \endcode
+
+    \see ShaderFile
+*/
 template<typename T>
 class RawFile
 {

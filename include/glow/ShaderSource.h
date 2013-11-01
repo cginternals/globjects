@@ -11,12 +11,11 @@
 namespace glow 
 {
 
-/**
- * @brief The ShaderSource class is the superclass for all types of sources of a Shader.
- *
- * The current source can be queried using source().
- *
- * \see Shader
+/** \brief Superclass for all types of sources of a Shader.
+ 
+    The current source can be queried using source().
+    
+    \see Shader
  */
 class GLOW_API ShaderSource : public Referenced, public Changeable
 {

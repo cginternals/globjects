@@ -4,7 +4,7 @@
 namespace glow
 {
 
-/** \brief CachedValue extends a value of arbitrary type by an invalidation flag.
+/** \brief Extends a value of arbitrary type by an invalidation flag.
 
     The cached value is intended for use in lazzy initialization, getter or setters
     and removes the overhead of adding those dirty, valid, or update flags to your
@@ -14,14 +14,16 @@ namespace glow
 
     Typeical usage of the CachedValue:
     \code{.cpp}
-    // on update
-    lazzyValue.invalidate();
-    ...
-    // example getter
-    if (!lazzyValue.isValid())
-        lazzyValue.setValue(complexCalculationForLazzyValue());
 
-    return lazzyValue.value();
+        // on update
+        lazzyValue.invalidate();
+        ...
+        // example getter
+        if (!lazzyValue.isValid())
+            lazzyValue.setValue(complexCalculationForLazzyValue());
+
+        return lazzyValue.value();
+
     \endcode
 
     \see Camera

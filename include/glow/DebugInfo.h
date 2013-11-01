@@ -11,15 +11,18 @@
 namespace glow
 {
 
-/**
- * \brief The DebugInfo collects various debug information of all current registered glow Objects.
- *
- * To collect information about all glow Objects, this class is a subclass of ObjectVisitor.
- * The debug info can be queried using generalInfo() and objectInfo() or be printed to the command line using printObjectInfo(), printGeneralInfo() or printAll().
- *
- * \code
- * DebugInfo::printAll();
- * \endcode
+/** \brief Collects various debug information of all current registered glow Objects.
+    
+    To collect information about all glow Objects, this class is a subclass of
+    ObjectVisitor. The debug info can be queried using generalInfo() and 
+    objectInfo() or be printed to the command line using printObjectInfo(), 
+    printGeneralInfo() or printAll().
+    
+    \code{.cpp}
+
+        DebugInfo::printAll();
+
+    \endcode
  */
 class DebugInfo : public ObjectVisitor
 {

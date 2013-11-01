@@ -15,43 +15,51 @@ namespace glow
 class AbstractUniform;
 template<typename T> class Uniform;
 
-/**
- * \brief The Program class wraps an OpenGL program.
- *
- * Therefor it suclasses Object.
- * Programs gets attached a set of shaders with attach().
- * It subclasses ChangeListener to react to changes to attached shaders.
- * To use a program for rendering, call use().
- * During use() the program ensure that all attached shaders are compiled and linked.
- * After that, the program is registered in OpenGL to be used during the upcoming rendering pileline calls.
- *
- * Shaders can be detached using detach() and queried with shaders().
- *
- * To use a program as a compute program, dispatchCompute() can be used to start the kernel.
- *
- * Example code for setting up a program and use it for rendering
- * \code
- * Program* program = new Program();
- * program->attach(Shader::fromString(GL_VERTEX_SHADER, "..."), Shader::fromString(GL_FRAGMENT_SHADER, "..."));
- * program->use();
- *
- * // draw calls
- *
- * program->release();
- * \endcode
- *
- * Example code for using a program as compute program
- * \code
- * Program* program = new Program();
- * program->attach(Shader::fromString(GL_COMPUTE_SHADER, "..."));
- *
- * program->dispatchCompute(128, 1, 1);
- *
- * program->release();
- * \endcode
- *
- * \see http://www.opengl.org/wiki/Program_Object
- * \see Shader
+/** \brief Wraps an OpenGL program.
+    
+    Therefor it suclasses Object. Programs get attached a set of shaders with 
+    attach(). It inherits ChangeListener to react to changes to attached 
+    shaders. To use a program for rendering, call use(). During use() the 
+    program ensure that all attached shaders are compiled and linked. After 
+    that, the program is registered in OpenGL to be used during the upcoming 
+    rendering pileline calls.
+
+    Shaders can be detached using detach() and queried with shaders().
+
+    To use a program as a compute program, dispatchCompute() can be used to 
+    start the kernel.
+
+    Example code for setting up a program and use it for rendering
+    
+    \code{.cpp}
+
+        Program * program = new Program();
+        program->attach(
+            Shader::fromString(GL_VERTEX_SHADER, "...")
+          , Shader::fromString(GL_FRAGMENT_SHADER, "...")
+          , ...);
+        program->use();
+    
+        // draw calls
+    
+        program->release();
+
+    \endcode
+    
+    Example code for using a program as compute program
+    \code{.cpp}
+
+        Program * program = new Program();
+        program->attach(Shader::fromString(GL_COMPUTE_SHADER, "..."));
+    
+        program->dispatchCompute(128, 1, 1);
+    
+        program->release();
+
+        \endcode
+    
+    \see http://www.opengl.org/wiki/Program_Object
+    \see Shader
  */
 class GLOW_API Program : public Object, protected ChangeListener
 {

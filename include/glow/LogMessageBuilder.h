@@ -24,16 +24,20 @@ class TransformFeedback;
 class VertexArrayObject;
 class Version;
 
-/** \brief The LogMessageBuilder class builds a LogMessage from different kinds of primitive types.
+/** \brief Builds a LogMessage from different kinds of primitive types.
 
-	The LogMessageBuilder is  usually created by one of the global functions log, debug, warning, error or fatal.
-	It works similar to streams and accepts a number of different types which will be converted to strings automatically.
-	When it goes out of scope, it creates a LogMessage from all streamed objects and sends it to the log handler.
+	The LogMessageBuilder is  usually created by one of the global functions 
+    log, debug, warning, error or fatal. It works similar to streams and 
+    accepts a number of different types which will be converted to strings 
+    automatically. When it goes out of scope, it creates a LogMessage from 
+    all streamed objects and sends it to the log handler.
 
 	Typeical usage of the LogMessageBuilder:
 	\code{.cpp}
+
 		warning() << "This is warning number " << 3;
-	\endcode
+	
+    \endcode
 
 	\see logging.h
 	\see LogMessage

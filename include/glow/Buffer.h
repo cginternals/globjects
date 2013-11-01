@@ -8,23 +8,25 @@
 namespace glow
 {
 
-/**
- * \brief The Buffer encapsulate an OpenGL buffer object
- *
- * A buffer has a target, which can later be changed.
- * Each buffer can be bound and unbound (bind(), unbind()).
- * To set the buffer to a specific size, use setData().
- * To access the data of a buffer directly, you can use map().
- * Buffers can be used for OpenGL draw calls, which are encapsulated within drawArrays() and drawElements(), but that doesn't guarantee that OpenGL will use this buffer for drawing.
- * The current bound VertexArrayObject and Program will specify the render pipeline and data.
- *
- * \code
- * 	Buffer* buffer = new Buffer(GL_SHADER_STORAGE_BUFFER);
- *
- * 	buffer->setData(sizeof(glm::vec4) * 100, nullptr, GL_DYNAMIC_DRAW); // allocate 100 vec4
- * \endcode
- *
- * \see http://www.opengl.org/wiki/Buffer_Object
+/** \brief Wrapper for OpenGL buffer objects.
+    
+    A buffer has a target, which can later be changed. Each buffer can be bound
+    and unbound (bind(), unbind()). To set the buffer to a specific size, use
+    setData(). To access the data of a buffer directly, you can use map().
+    Buffers can be used for OpenGL draw calls, which are encapsulated within
+    drawArrays() and drawElements(), but that doesn't guarantee that OpenGL 
+    will use this buffer for drawing. The current bound VertexArrayObject and 
+    Program will specify the render pipeline and data.
+
+    \code{.cpp}
+
+    	Buffer* buffer = new Buffer(GL_SHADER_STORAGE_BUFFER);
+    
+    	buffer->setData(sizeof(glm::vec4) * 100, nullptr, GL_DYNAMIC_DRAW); // allocate 100 vec4
+
+    \endcode
+    
+    \see http://www.opengl.org/wiki/Buffer_Object
  */
 class GLOW_API Buffer : public Object
 {

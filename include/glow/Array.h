@@ -10,26 +10,27 @@
 namespace glow
 {
 
-/**
- * \brief The Array is an array datastructure designed for easy use with glow.
- *
- * It is derived from a std::vector, so the complete interface is available.
- * It implements the interface AbstractArray and can reply its internal pointer (rawData()) and the byte size (rawSize()).
- *
- * Example:
- * \code
- * 	Buffer* buffer = new Buffer(GL_ARRAY_BUFFER);
- * 	
- * 	Array<glm::vec4> vertices;
- * 	vertices << glm::vec4(0.0, 0.0, 0.0, 1.0);
- * 	vertices << glm::vec4(1.0, 0.0, 0.0, 1.0);
- * 	vertices << glm::vec4(1.0, 1.0, 0.0, 1.0);
- * 	vertices << glm::vec4(0.0, 1.0, 0.0, 1.0);
- * 	
- * 	buffer->setData(vertices);
- * \endcode
- * 
- * \see http://www.cplusplus.com/reference/vector/vector/
+/** \brief Array datastructure designed for easy use with glow.
+    
+    It is derived from a std::vector, so the complete interface is available.
+    It implements the interface AbstractArray and can reply its internal 
+    pointer (rawData()) and the byte size (rawSize()).
+
+    \code{.cpp}
+
+    	Buffer * buffer = new Buffer(GL_ARRAY_BUFFER);
+
+    	Array<glm::vec4> vertices;
+    	vertices << glm::vec4(0.0, 0.0, 0.0, 1.0);
+    	vertices << glm::vec4(1.0, 0.0, 0.0, 1.0);
+    	vertices << glm::vec4(1.0, 1.0, 0.0, 1.0);
+    	vertices << glm::vec4(0.0, 1.0, 0.0, 1.0);
+    	
+    	buffer->setData(vertices);
+
+    \endcode
+    
+    \see http://www.cplusplus.com/reference/vector/vector/
  */
 template<typename T>
 class Array : public AbstractArray, public std::vector<T>

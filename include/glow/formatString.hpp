@@ -20,9 +20,7 @@ void streamprintf(std::ostream& stream, const char* format, const T& value, Args
 			return;
 		}
 		else
-		{
 			stream << *format++;
-		}
 	}
 }
 

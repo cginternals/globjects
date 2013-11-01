@@ -7,9 +7,10 @@
 namespace glow 
 {
 
-/** \brief The LogMessage class encapsulates a simple log message and its severity level.
+/** \brief Encapsulates a simple log message and its severity level.
 
-	LogMessages are handled and dispatched by the global logging handler which has to be a subclass of AbstractLogHandler.
+	LogMessages are handled and dispatched by the global logging handler which 
+    has to be a subclass of AbstractLogHandler.
 
 	\see logging.h
 	\see AbstractLogHandler

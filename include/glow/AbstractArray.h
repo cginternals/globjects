@@ -5,15 +5,15 @@
 namespace glow 
 {
 
-/**
- * \brief AbstractArray is an interface designed for array like classes for easy use with glow.
- *
- * Most OpenGL functions need a void* and the length of the memory to operate on data.
- * Both information can be provided by this class encapsulated into one single object.
- *
- * The only subclass at the time is Array.
- *
- * \see Array
+/** \brief Designed for array like classes for easy use with glow.
+    
+    Most OpenGL functions need a void* and the length of the memory to operate 
+    on data. Both information can be provided by this class encapsulated into 
+    one single object.
+
+    The only subclass at the time is Array.
+    
+    \see Array
  */
 class AbstractArray
 {

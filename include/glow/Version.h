@@ -9,7 +9,9 @@
 
 namespace glow
 {
+/** \brief Simplifies OpenGL version validity and comparision.
 
+*/
 class LogMessageBuilder;
 
 class GLOW_API Version

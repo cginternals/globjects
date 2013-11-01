@@ -12,10 +12,9 @@
 namespace glow 
 {
 
-/**
- * \brief query provides an interface to query OpenGL.
- *
- * To query different types you must use the specific provided functions.
+/** \brief query provides an interface to query OpenGL.
+    
+    To query different types you must use the specific provided functions.
  */
 class GLOW_API query
 {

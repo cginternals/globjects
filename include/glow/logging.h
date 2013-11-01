@@ -19,7 +19,7 @@ GLOW_API void setVerbosityLevel(LogMessage::Level verbosity);
 GLOW_API LogMessage::Level verbosityLevel();
 
 
-/** \brief Foo bar
+/** \brief ToDo: Foo bar
 
 	These functions take a format string and any number of arguments, which will be sent to the logging handler.
 	The format string is similar to that of printf, but only translates to stream manipulators, as the types can be inferred because it is a template.

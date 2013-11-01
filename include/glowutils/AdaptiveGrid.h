@@ -31,11 +31,13 @@ class Buffer;
 
     Typeical usage of the AdaptiveGrid:
     \code{.cpp}
-    AdaptiveGrid * agrid = new AdaptiveGrid(16U);
-    ...
-    agrid->setNearFar(0.1f, 1024.f);
-    agrid->update(eye, projection * view);
-    agrid->draw();
+    
+        AdaptiveGrid * agrid = new AdaptiveGrid(16U);
+        ...
+        agrid->setNearFar(0.1f, 1024.f);
+        agrid->update(eye, projection * view);
+        agrid->draw();
+
     \endcode
 */
 class GLOWUTILS_API AdaptiveGrid : public Referenced 

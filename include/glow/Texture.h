@@ -6,14 +6,14 @@
 namespace glow 
 {
 
-/**
- * \brief The Texture class wraps an OpenGL texture object.
- *
- * A Texture provides both interfaces to bind them for the OpenGL pipeline: binding and bindless texture.
- * Bindless textures are only available if the graphics driver supports them (NV extension).
- *
- * \see http://www.opengl.org/wiki/Texture
- * \see http://www.opengl.org/registry/specs/NV/bindless_texture.txt
+/** \brief Wraps OpenGL texture objects.
+    
+    A Texture provides both interfaces to bind them for the OpenGL pipeline:
+    binding and bindless texture. Bindless textures are only available if the
+    graphics driver supports them (NV extension).
+    
+    \see http://www.opengl.org/wiki/Texture
+    \see http://www.opengl.org/registry/specs/NV/bindless_texture.txt
  */
 class GLOW_API Texture : public Object
 {

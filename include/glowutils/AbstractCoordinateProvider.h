@@ -5,7 +5,7 @@
 namespace glow
 {
 
-/** \brief Interface providing a mapping from screen coordinates to world coordinates.
+/** \brief Provides a mapping from screen coordinates to world coordinates.
 
     This interface is inteded to be used by, e.g., navigation classes that require
     basic scene information based on the pointing devices (mouse, touch, ...) position.

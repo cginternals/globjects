@@ -5,7 +5,7 @@
 namespace glow 
 {
 
-/** \brief The ConsoleLogger class writes LogMessages to stdout.
+/** \brief Writes LogMessages to stdout.
 
 	This is the default LogMessage handler of glow.
 

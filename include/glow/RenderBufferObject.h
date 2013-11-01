@@ -6,10 +6,9 @@
 namespace glow 
 {
 
-/**
- * \brief The RenderBufferObject class encapsulates OpenGL render buffer objects.
- *
- * \see http://www.opengl.org/wiki/Renderbuffer_Objects
+/** \brief Encapsulates OpenGL render buffer objects.
+ 
+    \see http://www.opengl.org/wiki/Renderbuffer_Objects
  */
 class GLOW_API RenderBufferObject : public Object
 {

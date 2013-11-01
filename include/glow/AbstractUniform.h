@@ -16,7 +16,7 @@ namespace glow
 template<typename T> class Uniform;
 class Program;
 
-/** \brief The AbstractUniform class unites specialized Uniforms.
+/** \brief Unites specialized Uniforms.
 
 	The Uniform class wraps access to global GLSL variables (uniforms). In
 	glow, uniforms can be reused in multiple programs. A change in value causes
@@ -25,10 +25,12 @@ class Program;
 	its type are specified through a typed Uniform instance.
 
 	\code{.cpp}
-		Uniform<float> * u(new Uniform<float>("u_ratio"));
-		u->set(1.618f);
 
+		Uniform<float> * u(new Uniform<float>("u_ratio"));
+
+		u->set(1.618f);
 		program->addUniform(u);
+
 	\endcode
 
 	\see Uniform

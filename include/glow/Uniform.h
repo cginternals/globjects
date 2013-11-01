@@ -6,7 +6,7 @@
 namespace glow
 {
 
-/** \brief The Uniform template class wraps access to typed global GLSL variables.
+/** \brief Wraps access to typed global GLSL variables.
 
 	The Uniform class wraps access to typed global GLSL variables (uniforms).
 	These are stored in the OpenGL program objects itself.
@@ -17,11 +17,13 @@ namespace glow
 
 	Simple usage of an Uniform:
 	\code{.cpp}
+
 		Uniform<float> * u(new Uniform<float>("u_ratio"));
 		u->set(1.618f);
 
 		program->addUniform(u);
-	\endcode
+
+        \endcode
 
 	\see AbstractUniform
 	\see Program

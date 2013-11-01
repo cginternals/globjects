@@ -7,12 +7,11 @@
 namespace glow 
 {
 
-/**
- * \brief The ObjectRegistry tracks all wrapped OpenGL objects in glow.
- *
- * To obtain all wrapped objects use objects().
- * The other methods are not meant to be called by the user.
- */
+/** \brief Tracks all wrapped OpenGL objects in glow.
+    
+    To obtain all wrapped objects use objects().
+    The other methods are not meant to be called by the user.
+*/
 class GLOW_API ObjectRegistry
 {
 private:

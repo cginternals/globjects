@@ -17,12 +17,14 @@ namespace glow
 
     Typeical usage of the AxisAlignedBoundingBox:
     \code{.cpp}
-    for (vec3 vertex, vertices)
-        aabb->extend(vertex);
 
-    if(aabb->inside(otherVertex))
-        ...
-    \endcode
+        for (vec3 vertex, vertices)
+            aabb->extend(vertex);
+
+        if(aabb->inside(otherVertex))
+            ...
+
+            \endcode
 */
 class GLOWUTILS_API AxisAlignedBoundingBox
 {

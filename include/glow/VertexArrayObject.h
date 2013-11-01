@@ -14,7 +14,8 @@
 
 // http://www.opengl.org/wiki/Vertex_Array_Object
 
-namespace glow {
+namespace glow 
+{
 
 class GLOW_API VertexArrayObject : public Object
 {
