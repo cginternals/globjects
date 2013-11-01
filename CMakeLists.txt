@@ -183,3 +183,8 @@ endif()
 # PACKAGING
 
 add_subdirectory(packages)
+
+
+# DOXYGEN
+
+add_subdirectory(docs)
