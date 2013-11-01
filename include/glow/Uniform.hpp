@@ -55,7 +55,13 @@ void Uniform<T>::set(const T & value)
 template<typename T>
 void Uniform<T>::set(const GLint location, const T & value)
 {
-	TemplateError e;
+    assert(false);
+
+    // causing a runtime error ?!
+    void * foo;
+    delete(foo);
+
+	//TemplateError e; // not good for os x, since all templates seem to be instantiated :(
 }
 
 template<> void Uniform<float>::set(const GLint location, const float& value);
