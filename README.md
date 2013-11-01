@@ -8,6 +8,11 @@ The current pre-release is [glow-v0.1.1](https://github.com/hpicgs/glow/releases
 To find out more about GLOW and how to use it, check out our [wiki](https://github.com/hpicgs/glow/wiki).
 
 
+### Documentation
+
+A first basic glow documentation can be found [here](http://costumebrother.de/glow)
+
+
 ### Dependencies
 
 The following dev-libraries and programs need to be provided for correct CMake configuration:
