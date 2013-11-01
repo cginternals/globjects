@@ -104,8 +104,8 @@ public:
 
 
         m_sphere->use();
-        //m_icosahedron->draw();
-        m_unitcube->draw();
+        m_icosahedron->draw();
+        //m_unitcube->draw();
         m_sphere->release();
 
         m_agrid->draw();
