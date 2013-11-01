@@ -1,12 +1,6 @@
 
 #include <GL/glew.h>
 
-#ifdef WIN32
-#include <GL/wglew.h>
-#else
-#include <GL/glxew.h>
-#endif
-
 #ifndef GL_VERSION_3_0
 #define GL_NUM_EXTENSIONS                       0x821D
 #define GL_CONTEXT_FLAGS                        0x821E
@@ -177,9 +171,7 @@ GLint memory::evictionCount()
 GLint memory::memoryInfo(GLenum pname)
 {
     if (!GLEW_NVX_gpu_memory_info)
-	{
 		return -1;
-	}
 
 	return query::getInteger(pname);
 }
@@ -196,11 +188,5 @@ std::string glew::version()
 {
 	return getString(GLEW_VERSION);
 }
-
-////const QString GL::glewError(const GLenum pname)
-////{
-////    const QString result = reinterpret_cast<const char*>(glewGetErrorString(pname));
-////    return result;
-////}
 
 } // namespace glow
