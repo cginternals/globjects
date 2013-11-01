@@ -9,6 +9,16 @@
 namespace glow
 {
 
+/** \brief Camera represents matrices for a typical 3d look at camera with perspective.
+
+    A camera is specified via near, far, fovy, as well as an eye, a center, and an up 
+    vector. Furthermore the viewport should be specified. Camera itself does not use
+    any OpenGL calls, but merely provides lazzy math to all common matrices required
+    for affine transformation of a scene, namely the view and projection matrices, their 
+    their combination and all related inverses (as well as a normal matrix).
+    The class relies on lazzy computation of all matrices, causing less recomputations
+    of, e.g., matrices and inverse matrices requested on an irregular basis.
+*/
 class GLOWUTILS_API Camera
 {
 public:
@@ -41,23 +51,25 @@ public:
 
     // lazy matrices getters
 
-    const glm::mat4 & view();
-    const glm::mat4 & projection();
-    const glm::mat4 & viewProjection();
-    const glm::mat4 & viewInverted();
-    const glm::mat4 & projectionInverted();
-    const glm::mat4 & viewProjectionInverted();
+    const glm::mat4 & view() const;
+    const glm::mat4 & projection() const;
+    const glm::mat4 & viewProjection() const;
+    const glm::mat4 & viewInverted() const;
+    const glm::mat4 & projectionInverted() const;
+    const glm::mat4 & viewProjectionInverted() const;
 
-    void update();
+    const glm::mat3 & normal() const;
 
-    virtual void changed();
+    void update() const;
+
+    virtual void changed() const;
 
 protected:
     void dirty(bool update = true);
-    void invalidateMatrices();
+    void invalidateMatrices() const;
 
 protected:
-    bool m_dirty;
+    mutable bool m_dirty;
 
     glm::vec3 m_eye;
     glm::vec3 m_center;
@@ -76,6 +88,7 @@ protected:
     CachedValue<glm::mat4> m_projectionInverted;
     CachedValue<glm::mat4> m_viewProjection;
     CachedValue<glm::mat4> m_viewProjectionInverted;
+    CachedValue<glm::mat3> m_normal;
 };
 
 } // namespace glow

@@ -7,6 +7,23 @@
 namespace glow
 {
 
+/** \brief Axis aligned rectangular bounding volume spanned by lower left front and upper right back points.
+
+    The AxisAlignedBoundingBox is a simple util providing additional functionality 
+    to this common bounding volume. The specification of the box is intended to be 
+    indirect, by extending the box vertex by vertex. The box itself keeps track of 
+    its extents and provides a center of gravity, a radius, as well as inside/outside
+    testes for vertices.
+
+    Typeical usage of the AxisAlignedBoundingBox:
+    \code{.cpp}
+    for (vec3 vertex, vertices)
+        aabb->extend(vertex);
+
+    if(aabb->inside(otherVertex))
+        ...
+    \endcode
+*/
 class GLOWUTILS_API AxisAlignedBoundingBox
 {
 public:

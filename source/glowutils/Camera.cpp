@@ -2,6 +2,7 @@
 #include <cassert>
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
 
 #include <glowutils/Camera.h>
 
@@ -31,7 +32,7 @@ Camera::~Camera()
 {
 }
 
-void Camera::invalidateMatrices()
+void Camera::invalidateMatrices() const
 {
     m_view.invalidate();
     m_viewInverted.invalidate();
@@ -39,6 +40,7 @@ void Camera::invalidateMatrices()
     m_projectionInverted.invalidate();
     m_viewProjection.invalidate();
     m_viewProjectionInverted.invalidate();
+    m_normal.invalidate();
 }
 
 void Camera::dirty(bool update)
@@ -160,7 +162,7 @@ float Camera::aspectRatio() const
     return m_aspect;
 }
 
-void Camera::update()
+void Camera::update() const
 {
     if (!m_dirty)
         return;
@@ -172,35 +174,29 @@ void Camera::update()
     changed();
 }
 
-const mat4 & Camera::view()
+const mat4 & Camera::view() const
 {
     if (m_dirty)
         update();
     
     if (!m_view.isValid())
-    {
         m_view.setValue(lookAt(m_eye, m_center, m_up));
-	    m_view.validate();
-    }
 
     return m_view.value();
 }
 
-const mat4 & Camera::projection()
+const mat4 & Camera::projection() const
 {
     if (m_dirty)
         update();
 
     if (!m_projection.isValid())
-    {
 	    m_projection.setValue(perspective(m_fovy, m_aspect, m_zNear, m_zFar));
-	    m_projection.validate();
-    }
 
     return m_projection.value();
 }
 
-const mat4 & Camera::viewProjection()
+const mat4 & Camera::viewProjection() const
 {
     if (m_dirty)
         update();
@@ -211,7 +207,7 @@ const mat4 & Camera::viewProjection()
     return m_viewProjection.value();
 }
 
-const mat4 & Camera::viewInverted()
+const mat4 & Camera::viewInverted() const
 {
     if (m_dirty)
         update();
@@ -222,7 +218,7 @@ const mat4 & Camera::viewInverted()
     return m_viewInverted.value();
 }
 
-const mat4 & Camera::projectionInverted()
+const mat4 & Camera::projectionInverted() const
 {
     if (m_dirty)
         update();
@@ -233,7 +229,7 @@ const mat4 & Camera::projectionInverted()
     return m_projectionInverted.value();
 }
 
-const mat4 & Camera::viewProjectionInverted()
+const mat4 & Camera::viewProjectionInverted() const
 {
     if (m_dirty)
         update();
@@ -244,7 +240,18 @@ const mat4 & Camera::viewProjectionInverted()
     return m_viewProjectionInverted.value();
 }
 
-void Camera::changed()
+const mat3 & Camera::normal() const
+{
+    if (m_dirty)
+        update();
+
+    if (!m_normal.isValid())
+        m_normal.setValue(inverseTranspose(mat3(view())));
+
+    return m_normal.value();
+}
+
+void Camera::changed() const
 {
 }
 

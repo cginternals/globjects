@@ -16,6 +16,28 @@ class VertexArrayObject;
 class Buffer;
 
 
+/** \brief A plane aligned regular raster with camera position based refinement.
+
+    This grid alignes itself along the given input plane. It tries to stay visible 
+    for as long as possible, by moving the fixed number of segments with the camera's
+    position and adjusting the sub grid based on the camera's distance to the given 
+    plane. Additionally, the grid is rendered with a smooth circular mask centered 
+    at the perpendicular to the plane. Also near and far planes are considered, 
+    causing a smooth alpha transition near the far plane. 
+
+    Note: Any camera change causing view frustum changes, needs to be passed to 
+    the grid inn order to work correctly. The grid is drawn using transparency 
+    with OpenGL blending and depth buffer enabled.
+
+    Typeical usage of the AdaptiveGrid:
+    \code{.cpp}
+    AdaptiveGrid * agrid = new AdaptiveGrid(16U);
+    ...
+    agrid->setNearFar(0.1f, 1024.f);
+    agrid->update(eye, projection * view);
+    agrid->draw();
+    \endcode
+*/
 class GLOWUTILS_API AdaptiveGrid : public Referenced 
 {
 public:

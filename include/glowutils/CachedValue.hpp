@@ -39,20 +39,20 @@ const T & CachedValue<T>::value() const
 }
 
 template <typename T>
-void CachedValue<T>::setValue(const T & value)
+void CachedValue<T>::setValue(const T & value, const bool validate) const
 {
-	m_valid = true;
+    m_valid = validate;
 	m_value = value;
 }
 
 template <typename T>
-void CachedValue<T>::validate()
+void CachedValue<T>::validate() const
 {
 	m_valid = true;
 }
 
 template <typename T>
-void CachedValue<T>::invalidate()
+void CachedValue<T>::invalidate() const
 {
 	m_valid = false;
 }
