@@ -108,76 +108,82 @@ namespace glow
 
 // Interpolate
 
-#define linear(t)       (t)
-
-#define smoothstep(t)   ((t) * (t) * (3 - 2 * (t)))
-#define smoothstep2(t)  (smoothstep(smoothstep(t)))
-#define smoothstep3(t)  (smoothstep(smoothstep2(t)))
-
-#define smootherstep(t) ((t) * (t) * (t) * ((t) * (6 * (t) - 15) + 10))
-
-#define squared(t)      ((t) * (t))
-#define invsquared(t)   (1 - (1 - (t)) * (1 - (t)))
-
-#define cubed(t)        ((t) * (t) * (t))
-#define invcubed(t)     (1 - (1 - (t)) * (1 - (t)) * (1 - (t)))
-
-#define sin(t)          (sin(t * 1.57079632679489661923))
-#define invsin(t)       (1 - sin((1 - (t)) * 1.57079632679489661923))
-
-
-#define smoothstep_ext(t, l, r) \
-    ((t) < (l) ? 0 : (r) < (t) ? 1 : smoothstep(((t) - (l)) / ((r) - (l))))
+#define i_linear(t)             clamp(0, 1, t)
+#define i_smoothstep(t)         clamp(0, 1, (t) * (t) * (3 - 2 * (t)))
+#define i_smoothstep2(t)        clamp(0, 1, smoothstep(smoothstep(t)))
+#define i_smoothstep3(t)        clamp(0, 1, smoothstep(smoothstep2(t)))
+#define i_smootherstep(t)       clamp(0, 1, (t) * (t) * (t) * ((t) * (6 * (t) - 15) + 10))
+#define i_squared(t)            clamp(0, 1, (t) * (t))
+#define i_squareroot(t)         clamp(0, 1, sqrt(t))
+#define i_exponential(t, v)     clamp(0, 1, (exp((t) * (v)) - 1) / (exp((v)) - 1))
+#define i_logarithmic(t, v)     clamp(0, 1, log(1 + ((v) - 1) * (t)) / log(v))
+#define i_cupola(t)             clamp(0, 1, sin((t) * PI))
+#define i_cube(t)               clamp(0, 1, (t) * (t) * (t))
+#define i_roof(t)               clamp(0, 1, 1 - 2 * fabs((t) - 0.5))
+#define i_sin(t)                clamp(0, 1, sin((t) * PI_2))
+#define i_smoothstep_ext(t, l, r) \
+    clamp(0, 1, (t) < (l) ? 0 : (r) < (t) ? 1 : smoothstep(((t)-(l)) / ((r)-(l))))
 
 // Several interpolation methods in action: http://sol.gfxile.net/interpolation/
 
-enum InterpolationMethod
+enum InterpolationType
 {
-    InterpolateLinear
-,   InterpolateSmoothStep
-,   InterpolateSmoothStep2
-,   InterpolateSmoothStep3
-,   InterpolateSmootherStep // Ken Perlin
-,   InterpolateSquared
-,   InterpolateInvSquared
-,   InterpolateCubed
-,   InterpolateInvCubed
-,   InterpolateSin          // strong in, soft out
-,   InterpolateInvSin       // soft in, strong out
+    LinearInterpolation
+,   SmoothStepInterpolation
+,   SmoothStep2Interpolation
+,   SmoothStep3Interpolation
+,   SmootherStepInterpolation // Ken Perlin
+,   SquaredInterpolation
+,   SquarerootInterpolation
+,   ExponentialInterpolation
+,   LogarithmicInterpolation
+,   CupolaInterpolation
+,   CubeInterpolation
+,   RoofInterpolation
+,   SinInterpolation          // strong in, soft out
 };
 
 
 template<typename T>
 inline const T interpolate(
     const T t
-,   const InterpolationMethod function = InterpolateLinear)
+,   const InterpolationType function = LinearInterpolation
+,   bool invert = false)
 {
+    const T v = invert ? 1 - t : t;
+    T r;
+
     switch(function)
     {
-    case InterpolateSmoothStep:
-        return smoothstep(t);
-    case InterpolateSmoothStep2:
-        return smoothstep2(t);
-    case InterpolateSmoothStep3:
-        return smoothstep3(t);
-    case InterpolateSmootherStep:
-        return smootherstep(t);
-    case InterpolateSquared:
-        return squared(t);
-    case InterpolateInvSquared:
-        return invsquared(t);
-    case InterpolateCubed:
-        return cubed(t);
-    case InterpolateInvCubed:
-        return invcubed(t);
-    case InterpolateSin:
-        return static_cast<T>(sin(t));
-    case InterpolateInvSin:
-        return static_cast<T>(invsin(t));
+    case SmoothStepInterpolation:
+        r = i_smoothstep(t); break;
+    case SmoothStep2Interpolation:
+        r = i_smoothstep2(t); break;
+    case SmoothStep3Interpolation:
+        r = i_smoothstep3(t); break;
+    case SmootherStepInterpolation:
+        r = i_smootherstep(t); break;
+    case SquaredInterpolation:
+        r = i_squared(t); break;
+    case SquarerootInterpolation:
+        r = i_squareroot(t); break;
+    case ExponentialInterpolation:
+        r = i_exponential(t, 3); break;
+    case LogarithmicInterpolation:
+        r = i_logarithmic(t, 10); break;
+    case CupolaInterpolation:
+        r = i_cupola(t); break;
+    case CubeInterpolation:
+        r = i_cube(t); break;
+    case RoofInterpolation:
+        r = i_roof(t); break;
+    case SinInterpolation:
+        r = i_sin(t); break;
+    case LinearInterpolation:
     default:
-    case InterpolateLinear:
-        return linear(t);
+        r = i_linear(t); break;
     }
+    return invert ? static_cast<T>(1.0) - r : r;
 }
 
 } // namespace glow
