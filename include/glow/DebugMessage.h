@@ -19,16 +19,18 @@ public:
 	const char * typeString() const;
 
 	std::string toString() const;
+
+public:
+	static const char * severityString(GLenum severity);
+	static const char * sourceString(GLenum source);
+	static const char * typeString(GLenum type);
+
 public:
 	GLenum source;
 	GLenum type;
 	GLuint id;
 	GLenum severity;
 	std::string message;
-public:
-	static const char * severityString(GLenum severity);
-	static const char * sourceString(GLenum source);
-	static const char * typeString(GLenum type);
 };
 
 } // namespace glow

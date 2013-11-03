@@ -3,8 +3,14 @@
 # GLOW_INCLUDE_DIR
 
 # GLOW_LIBRARY
+# GLOW_LIBRARY_DEBUG
+# GLOW_LIBRARIES
 # GLOW_UTILS_LIBRARY
+# GLOW_UTILS_LIBRARY_DEBUG
+# GLOW_UTILS_LIBRARIES
 # GLOW_WINDOW_LIBRARY
+# GLOW_WINDOW_LIBRARY_DEBUG
+# GLOW_WINDOW_LIBRARIES
 
 find_path(GLOW_INCLUDE_DIR glow/glow.h
 	$ENV{GLOW_DIR}/include
@@ -29,91 +35,31 @@ set(LIB_PATHS
 	/opt/local/lib64
 )
 
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-	find_library(GLOW_LIBRARY
-		NAMES glow
-		PATHS ${LIB_PATHS}
-		DOC "The glow library")
-	
-	find_library(GLOW_UTILS_LIBRARY
-		NAMES glowutils
-		PATHS ${LIB_PATHS}
-		DOC "The glowutils library")
-	
-	find_library(GLOW_WINDOW_LIBRARY
-		NAMES glowwindow
-		PATHS ${LIB_PATHS}
-		DOC "The glowwindow library")
-	
-	if (NOT GLOW_LIBRARY)
-		message(STATUS "glow release library requested but not found, search for debug version.")
-		find_library(GLOW_LIBRARY
-			NAMES glowd
-			PATHS ${LIB_PATHS}
-			DOC "The glow debug library")
-	endif()
-	
-	if (NOT GLOW_UTILS_LIBRARY)
-		message(STATUS "glowutils release library requested but not found, search for debug version.")
-		find_library(GLOW_UTILS_LIBRARY
-			NAMES glowutilsd
-			PATHS ${LIB_PATHS}
-			DOC "The glowutils debug library")
-	endif()
-	
-	if (NOT GLOW_WINDOW_LIBRARY)
-		message(STATUS "glowwindow release library requested but not found, search for debug version.")
-		find_library(GLOW_WINDOW_LIBRARY
-			NAMES glowwindowd
-			PATHS ${LIB_PATHS}
-			DOC "The glowwindow debug library")
-	endif()
-else()
-	find_library(GLOW_LIBRARY
-		NAMES glowd
-		PATHS ${LIB_PATHS}
-		DOC "The glow debug library")
-	
-	find_library(GLOW_UTILS_LIBRARY
-		NAMES glowutilsd
-		PATHS ${LIB_PATHS}
-		DOC "The glowutils debug library")
+macro (find LIB_NAME HINT_PATHS)
 
-	find_library(GLOW_WINDOW_LIBRARY
-		NAMES glowwindowd
-		PATHS ${LIB_PATHS}
-		DOC "The glowwindow debug library")
-	
-	if (GLOW_LIBRARY)
-		message(STATUS "Using debug version of glow")
+	if (${LIB_NAME} STREQUAL "glow")
+		set(LIB_NAME_UPPER GLOW)
+		set(LIBNAME glow)
 	else()
-		message(STATUS "glow debug library requested but not found, search for release version.")
-		find_library(GLOW_LIBRARY
-			NAMES glow
-			PATHS ${LIB_PATHS}
-			DOC "The glow library")
+		string(TOUPPER GLOW_${LIB_NAME} LIB_NAME_UPPER)
+		set(LIBNAME glow${LIB_NAME})
 	endif()
-	
-	if (GLOW_UTILS_LIBRARY)
-		message(STATUS "Using debug version of glowutils")
-	else()
-		message(STATUS "glowutils debug library requested but not found, search for release version.")
-		find_library(GLOW_UTILS_LIBRARY
-			NAMES glowutils
-			PATHS ${LIB_PATHS}
-			DOC "The glowutils library")
-	endif()
-	
-	if (GLOW_WINDOW_LIBRARY)
-		message(STATUS "Using debug version of glowwindow")
-	else()
-		message(STATUS "glowwindow debug library requested but not found, search for release version.")
-		find_library(GLOW_WINDOW_LIBRARY
-			NAMES glowwindow
-			PATHS ${LIB_PATHS}
-			DOC "The glowwindow library")
-	endif()
-endif()
+
+	find_library(${LIB_NAME_UPPER}_LIBRARY
+		NAMES ${LIBNAME}
+		PATHS ${HINT_PATHS}
+		DOC "The ${LIB_NAME} library")
+	find_library(${LIB_NAME_UPPER}_LIBRARY_DEBUG
+		NAMES ${LIBNAME}d
+		PATHS ${HINT_PATHS}
+		DOC "The ${LIB_NAME} debug library")
+
+	set(${LIB_NAME}_LIBRARIES general ${${LIB_NAME_UPPER}_LIBRARY} debug ${${LIB_NAME_UPPER}_LIBRARY_DEBUG})
+
+endmacro()
+
+find(glow ${LIB_PATHS})
+find(utils ${LIB_PATHS})
 
 if(GLOW_INCLUDE_DIR AND GLOW_LIBRARY)
     set(GLOW_FOUND 1 CACHE STRING "Set to 1 if glow is found, 0 otherwise")
