@@ -35,7 +35,7 @@ public:
 
 	virtual void reset(bool update = true);
 
-protected:
+public:
 	void panningBegin(const glm::ivec2 & mouse);
 	void panningProcess(const glm::ivec2 & mouse);
 	void panningEnd();
@@ -54,7 +54,7 @@ protected:
 //	void enforceWholeMapVisible(const float offset = 0.08);
 
 	// constraints
-
+protected:
 	void enforceTranslationConstraints(glm::vec3 & p) const;
 	void enforceRotationConstraints(
 		float & hAngle
