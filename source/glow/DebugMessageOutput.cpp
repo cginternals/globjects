@@ -11,6 +11,14 @@
 #include <glow/DebugMessage.h>
 #include <glow/DebugMessageOutput.h>
 
+#ifdef WIN32
+
+#elif __APPLE__
+
+#else
+#include <GL/glxew.h>
+#endif
+
 namespace 
 {
     long long getContextHandle()
