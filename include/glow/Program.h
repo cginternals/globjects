@@ -6,11 +6,12 @@
 #include <glm/glm.hpp>
 
 #include <glow/glow.h>
-#include <glow/Shader.h>
+#include <glow/Object.h>
 #include <glow/ChangeListener.h>
 
 namespace glow
 {
+class Shader;
 
 class AbstractUniform;
 template<typename T> class Uniform;

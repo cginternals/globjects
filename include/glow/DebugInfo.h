@@ -47,6 +47,7 @@ public:
 
 		void addInfoUnit(const InfoUnit & info);
 	};
+
 public:
 	static std::vector<InfoGroup> generalInfo();
 	static std::vector<InfoGroup> objectInfo();
@@ -71,17 +72,17 @@ protected:
 	DebugInfo();
 	virtual ~DebugInfo();
 
+    std::vector<InfoGroup> collectObjectInfo();
+
+    InfoGroup & group(const std::string & name);
+    void addInfo(const std::string & groupName, const InfoUnit & unit);
+
+    static std::string name(const std::string & typeName, Object * object);
+    static std::string humanReadableSize(long long bytes);
+
 protected:
 	std::map<std::string, InfoGroup> m_infoGroups;
 	std::map<std::string, unsigned> m_memoryUsage;
-
-	std::vector<InfoGroup> collectObjectInfo();
-
-	InfoGroup & group(const std::string & name);
-	void addInfo(const std::string & groupName, const InfoUnit & unit);
-
-	static std::string name(const std::string & typeName, Object * object);
-	static std::string humanReadableSize(long long bytes);
 };
 
 } // namespace glow

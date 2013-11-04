@@ -10,6 +10,7 @@
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
+#include <glow/VertexAttributeBinding.h>
 
 #include <glowutils/Plane3.h>
 #include <glowutils/AdaptiveGrid.h>

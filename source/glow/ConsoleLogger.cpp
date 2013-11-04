@@ -1,6 +1,7 @@
 
 #include <iostream>
 
+#include <glow/LogMessage.h>
 #include <glow/ConsoleLogger.h>
 
 

@@ -1,4 +1,5 @@
 
+#include <glow/ChangeListener.h>
 #include <glow/Changeable.h>
 
 namespace glow
@@ -7,9 +8,7 @@ namespace glow
 void Changeable::changed()
 {
 	for (ChangeListener * listener: m_listeners)
-	{
 		listener->notifyChanged();
-	}
 }
 
 void Changeable::registerListener(ChangeListener * listener)

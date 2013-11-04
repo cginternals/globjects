@@ -131,24 +131,25 @@ private:
     DebugMessageOutput();
 
 protected:
+    static unsigned getId();
+
+    static void APIENTRY handleMessage(
+        GLenum source
+        , GLenum type
+        , GLuint id
+        , GLenum severity
+        , GLsizei length
+        , const char * message
+        , void * param);
+
+    static void handleMessage(const DebugMessage & message, int id);
+
+protected:
     static bool s_errorChecking;
 
     static int s_nextId;
     static std::unordered_map<long long, int> s_ids;
     static std::unordered_map<int, std::vector<Callback>> s_callbacks;
-
-    static unsigned getId();
-
-    static void APIENTRY handleMessage(
-        GLenum source
-    ,   GLenum type
-    ,   GLuint id
-    ,   GLenum severity
-    ,   GLsizei length
-    ,   const char * message
-    ,   void * param);
-    
-    static void handleMessage(const DebugMessage & message, int id);
 };
 
 #ifdef NDEBUG

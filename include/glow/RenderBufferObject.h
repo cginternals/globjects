@@ -6,6 +6,8 @@
 namespace glow 
 {
 
+class ObjectVisitor;
+
 /** \brief Encapsulates OpenGL render buffer objects.
  
     \see http://www.opengl.org/wiki/Renderbuffer_Objects
@@ -16,15 +18,23 @@ public:
 	RenderBufferObject();
 	virtual ~RenderBufferObject();
 
-	virtual void accept(ObjectVisitor& visitor);
+	virtual void accept(ObjectVisitor & visitor);
 
 	void bind();
 	void unbind();
 
-	void storage(GLenum internalformat, GLsizei width, GLsizei height);
-	void storageMultisample(GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
+	void storage(
+        GLenum internalformat
+    ,   GLsizei width
+    ,   GLsizei height);
+	void storageMultisample(
+        GLsizei samples
+    ,   GLenum internalformat
+    ,   GLsizei width
+    ,   GLsizei height);
 
 	GLint getParameter(GLenum pname);
+
 protected:
 	static GLuint genRenderBuffer();
 };

@@ -1,10 +1,11 @@
 #pragma once
 
 #include <glow/glow.h>
-#include <glow/LogMessage.h>
 
 namespace glow 
 {
+
+class LogMessage;
 
 /** \brief Abstract interface to handle LogMessages.
     

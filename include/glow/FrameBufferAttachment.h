@@ -29,6 +29,7 @@ public:
 	virtual bool isRenderBufferAttachment() const;
 
 	std::string attachmentString() const;
+
 protected:
 	GLenum m_attachment;
 };

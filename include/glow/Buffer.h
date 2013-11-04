@@ -3,10 +3,10 @@
 #include <glow/glow.h>
 
 #include <glow/Object.h>
-#include <glow/AbstractArray.h>
 
 namespace glow
 {
+class AbstractArray;
 
 /** \brief Wrapper for OpenGL buffer objects.
     
@@ -36,7 +36,7 @@ public:
 	Buffer(GLuint id, GLenum target);
 	virtual ~Buffer();
 
-	virtual void accept(ObjectVisitor& visitor);
+	virtual void accept(ObjectVisitor & visitor);
 
 	void bind();
 	void bind(GLenum target);
@@ -53,8 +53,8 @@ public:
 	GLint getParameter(GLenum pname);
 
     // mapping
-	void* map(GLenum access = GL_READ_ONLY);
-	void* map(
+	void * map(GLenum access = GL_READ_ONLY);
+	void * map(
         GLenum target
     ,   GLenum access);
 	void unmap();
@@ -108,7 +108,7 @@ public:
     ,   GLenum internalformat
     ,   GLenum format
     ,   GLenum type
-    ,   const void* data = nullptr);
+    ,   const void * data = nullptr);
 
 protected:
     GLenum m_target;

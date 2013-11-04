@@ -3,11 +3,15 @@
 #include <glow/glow.h>
 
 #include <glow/Object.h>
-#include <glow/Program.h>
-#include <glow/Array.h>
 
 namespace glow
 {
+
+class ObjectVisitor;
+class Program;
+
+template<typename T>
+class Array;
 
 /** \brief Interface to use transform feedback.
     
@@ -54,7 +58,7 @@ public:
 	TransformFeedback();
 	virtual ~TransformFeedback();
 
-	virtual void accept(ObjectVisitor& visitor);
+	virtual void accept(ObjectVisitor & visitor);
 
 	void bind();
 	void unbind();
@@ -66,10 +70,19 @@ public:
 
 	void draw(GLenum primitiveMode);
 
-	void setVaryings(Program* program, GLsizei count, const char** varyingNames, GLenum bufferMode);
-	void setVaryings(Program* program, const Array<const char*>& varyingNames, GLenum bufferMode);
+	void setVaryings(
+        Program * program
+    ,   GLsizei count
+    ,   const char ** varyingNames
+    ,   GLenum bufferMode);
+
+	void setVaryings(
+        Program * program
+    ,   const Array<const char *> & varyingNames
+    ,   GLenum bufferMode);
 
 	bool isTransformFeedback() const;
+
 protected:
 	static GLuint genTransformFeedback();
 };

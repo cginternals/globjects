@@ -3,10 +3,12 @@
 #include <set>
 
 #include <glow/glow.h>
-#include <glow/ChangeListener.h>
 
 namespace glow 
 {
+
+class ChangeListener;
+
 
 /** \brief Superclass of all objects that want others to signal that they have changed.
     

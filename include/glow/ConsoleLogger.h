@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glow/AbstractLogHandler.h>
+#include <glow/LogMessage.h>
 
 namespace glow 
 {
@@ -16,6 +17,7 @@ class ConsoleLogger : public AbstractLogHandler
 {
 public:
 	void handle(const LogMessage & message) override;
+
 protected:
 	std::string levelString(LogMessage::Level level);
 };

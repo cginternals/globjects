@@ -22,7 +22,7 @@ public:
 	{
 	public:
 		Handle();
-		Handle(const GLuint64& value);
+		Handle(const GLuint64 & value);
 
 		operator GLuint64() const;
 
@@ -33,7 +33,7 @@ public:
 	Texture(GLuint id, GLenum  target, bool ownsGLObject = true);
 	virtual ~Texture();
 
-	virtual void accept(ObjectVisitor& visitor);
+	virtual void accept(ObjectVisitor & visitor);
 
 	void bind();
 	void unbind();
@@ -46,10 +46,28 @@ public:
 
 	GLenum target() const;
 
-	void image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data);
-	void storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height);
+	void image2D(
+        GLint level
+    ,   GLint internalFormat
+    ,   GLsizei width
+    ,   GLsizei height
+    ,   GLint border
+    ,   GLenum format
+    ,   GLenum type
+    ,   const GLvoid * data);
+	void storage2D(
+        GLsizei levels
+    ,   GLenum internalFormat
+    ,   GLsizei width
+    ,   GLsizei height);
 
-	void bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format);
+	void bindImageTexture(
+        GLuint unit
+    ,   GLint level
+    ,   GLboolean layered
+    ,   GLint layer
+    ,   GLenum access
+    ,   GLenum format);
 
 	void generateMipmap();
 
@@ -58,10 +76,12 @@ public:
 	GLboolean isResident() const;
 	Handle makeResident();
 	void makeNonResident();
+
+protected:
+    static GLuint genTexture();
+
 protected:
     GLenum m_target;
-
-	static GLuint genTexture();
 };
 
 } // namespace glow

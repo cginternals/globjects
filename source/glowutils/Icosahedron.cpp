@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 
 #include <glow/VertexArrayObject.h>
+#include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
 
 #include <glowutils/Icosahedron.h>

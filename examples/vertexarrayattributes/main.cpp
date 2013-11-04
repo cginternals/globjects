@@ -5,10 +5,12 @@
 #include <glowwindow/ContextFormat.h>
 #include <glow/Error.h>
 #include <glow/ref_ptr.h>
-#include <glow/VertexArrayObject.h>
 #include <glow/Buffer.h>
 #include <glow/Array.h>
 #include <glow/Program.h>
+#include <glow/Shader.h>
+#include <glow/VertexArrayObject.h>
+#include <glow/VertexAttributeBinding.h>
 #include <glowwindow/Context.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>

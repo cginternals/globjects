@@ -12,7 +12,12 @@ namespace glow
 class GLOW_API DebugMessage
 {
 public:
-	DebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string& message);
+	DebugMessage(
+        GLenum source
+    ,   GLenum type
+    ,   GLuint id
+    ,   GLenum severity
+    ,   const std::string & message);
 
 	const char * severityString() const;
 	const char * sourceString() const;

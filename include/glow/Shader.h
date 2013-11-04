@@ -6,15 +6,14 @@
 #include <glow/glow.h>
 
 #include <glow/Object.h>
-#include <glow/ShaderFile.h>
-#include <glow/ShaderSource.h>
+#include <glow/Changeable.h>
 #include <glow/ChangeListener.h>
 
 // http://www.opengl.org/wiki/Shader
 
 namespace glow 
 {
-
+class ShaderSource;
 class Program;
 
 /** \brief Encapsulates OpenGL shaders.

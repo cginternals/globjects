@@ -7,6 +7,19 @@
 #include <glow/logging.h>
 #include <glow/global.h>
 
+#include <glow/Object.h>
+#include <glow/Buffer.h>
+#include <glow/FrameBufferObject.h>
+#include <glow/Program.h>
+#include <glow/Query.h>
+#include <glow/RenderBufferObject.h>
+#include <glow/Shader.h>
+#include <glow/ShaderFile.h>
+#include <glow/ShaderSource.h>
+#include <glow/Texture.h>
+#include <glow/TransformFeedback.h>
+#include <glow/VertexArrayObject.h>
+#include <glow/VertexAttributeBinding.h>
 #include <glow/TextureAttachment.h>
 #include <glow/RenderBufferAttachment.h>
 
@@ -106,7 +119,8 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::objectInfo()
 	return debugInfo.collectObjectInfo();
 }
 
-//==========================
+
+
 
 std::vector<DebugInfo::InfoGroup> DebugInfo::collectObjectInfo()
 {
@@ -292,7 +306,9 @@ void DebugInfo::visitVertexArrayObject(VertexArrayObject* vao)
 
 	for (VertexAttributeBinding* binding: vao->bindings())
 	{
-		info.addProperty("binding "+std::to_string(binding->bindingIndex()), "location "+std::to_string(binding->attributeIndex())+" -> "+name("Buffer", binding->buffer()));
+		info.addProperty("binding "+std::to_string(binding->bindingIndex())
+            , "location " + std::to_string(binding->attributeIndex()) 
+            + " -> " + name("Buffer", binding->buffer()));
 	}
 
 	addInfo("VertexArrayObjects", info);

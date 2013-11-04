@@ -27,7 +27,7 @@ public:
 	virtual const std::string & source();
 	virtual bool isFile() const;
 
-	const std::string& filePath() const;
+	const std::string & filePath() const;
 
 	void reload();
 	static void reloadAll();

@@ -5,8 +5,6 @@
 
 #include <GL/glew.h>
 
-#include <glm/glm.hpp>
-
 #include <glow/glow.h>
 #include <glow/Referenced.h>
 

@@ -32,7 +32,8 @@ public:
 	bool isError() const;
     operator bool() const;
 
-    static const char* errorString(GLenum errorCode);
+    static const char * errorString(GLenum errorCode);
+
 protected:
 	GLenum m_errorCode;
 };

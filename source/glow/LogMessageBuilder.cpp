@@ -17,7 +17,7 @@
 namespace glow 
 {
 
-LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, AbstractLogHandler* handler)
+LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, AbstractLogHandler * handler)
 : std::stringstream()
 , m_level(level)
 , m_handler(handler)

@@ -3,10 +3,11 @@
 #include <glow/glow.h>
 #include <glow/ref_ptr.h>
 #include <glow/FrameBufferAttachment.h>
-#include <glow/Texture.h>
 
 namespace glow 
 {
+
+class Texture;
 
 /** \brief Encapsulates texture attachments of a frame buffer object.
     
@@ -21,7 +22,8 @@ public:
 	TextureAttachment(Texture * texture, GLenum attachment);
 
 	virtual bool isTextureAttachment() const;
-	Texture* texture();
+	Texture * texture();
+
 protected:
 	ref_ptr<Texture> m_texture;
 };
