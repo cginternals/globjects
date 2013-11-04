@@ -8,6 +8,8 @@
 #include <glowwindow/ContextFormat.h>
 
 
+struct GLFWwindow;
+
 namespace glow 
 {
 
@@ -15,8 +17,6 @@ class AbstractNativeContext;
 
 class GLOWWINDOW_API Context
 {
-friend class AbstractNativeContext;
-
 public:
 
 	enum SwapInterval
@@ -32,22 +32,18 @@ public:
     Context();
     virtual ~Context();
 
+    GLFWwindow * window();
+
     /** Tries to create a context with the given format on the given handle.
         If successfull, m_format is set to the format created.
 
         \return isValid() is returned
     */
-    bool create(
-        const int hWnd
-    ,   const ContextFormat & format);
+    bool create(const ContextFormat & format);
     void release();
 
-    /** returns the context id. 
-    */
-    int id() const;
-
-    bool makeCurrent();
-    bool doneCurrent();
+    void makeCurrent();
+    void doneCurrent();
 
     void swap();
 
@@ -63,8 +59,8 @@ public:
     /** Swap interval relates to the context, since there might be multiple 
         shared contexts with same format, but individual swap format. 
     */
-    bool setSwapInterval(const SwapInterval interval);
-    bool setSwapInterval();
+    void setSwapInterval(const SwapInterval interval);
+    void setSwapInterval();
     SwapInterval swapInterval() const;
 
 protected:
@@ -72,7 +68,7 @@ protected:
     ContextFormat m_format;
 
 private:
-    AbstractNativeContext * m_context;
+    GLFWwindow * m_window;
 };
 
 } // namespace glow

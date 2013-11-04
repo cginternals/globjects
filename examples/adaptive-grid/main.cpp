@@ -68,7 +68,6 @@ public:
 
         m_icosahedron = new Icosahedron(2);
         m_agrid = new AdaptiveGrid(16U);
-        m_unitcube = new UnitCube();
     }    
 
     virtual void resizeEvent(
@@ -122,55 +121,54 @@ public:
         Window & window
     ,   KeyEvent & event)
     {
-        const float d= 0.08f;
+        //const float d= 0.08f;
 
-        if (KeyEvent::KeyF5 == event.key())
-            glow::ShaderFile::reloadAll();
+        //if (KeyEvent::KeyF5 == event.key())
+        //    glow::ShaderFile::reloadAll();
 
-        if (KeyEvent::KeySpace == event.key())
-            m_iso = !m_iso;
+        //if (KeyEvent::KeySpace == event.key())
+        //    m_iso = !m_iso;
 
 
-        if (KeyEvent::Key1 == event.key())
-        {
-               m_center.x += d;
-                  m_eye.x += d;
-        }
-         
-        if (KeyEvent::Key2 == event.key())
-        {   
-            m_eye.x -= d;
-            m_center.x -= d;
-        }
+        //if (KeyEvent::Key1 == event.key())
+        //{
+        //       m_center.x += d;
+        //          m_eye.x += d;
+        //}
+        // 
+        //if (KeyEvent::Key2 == event.key())
+        //{   
+        //    m_eye.x -= d;
+        //    m_center.x -= d;
+        //}
 
-        if (KeyEvent::Key3 == event.key())
-        {
-            m_eye += (m_eye - m_center) * 0.1f;
-        }
-        if (KeyEvent::Key4 == event.key())
-        {
-            m_eye -= (m_eye - m_center) * 0.1f;
-        }
+        //if (KeyEvent::Key3 == event.key())
+        //{
+        //    m_eye += (m_eye - m_center) * 0.1f;
+        //}
+        //if (KeyEvent::Key4 == event.key())
+        //{
+        //    m_eye -= (m_eye - m_center) * 0.1f;
+        //}
 
-        if (KeyEvent::Key5 == event.key())
-        {
-            m_center.z += d;
-            m_eye.z += d;
-        }
-        if (KeyEvent::Key6 == event.key())
-        {
-            m_center.z -= d;
-            m_eye.z -= d;
-        }
+        //if (KeyEvent::Key5 == event.key())
+        //{
+        //    m_center.z += d;
+        //    m_eye.z += d;
+        //}
+        //if (KeyEvent::Key6 == event.key())
+        //{
+        //    m_center.z -= d;
+        //    m_eye.z -= d;
+        //}
 
-        m_axonometric.setPosition(m_eye);
+        //m_axonometric.setPosition(m_eye);
     }
 
 protected:
     ref_ptr<Program> m_sphere;
 
     ref_ptr<Icosahedron> m_icosahedron;
-    ref_ptr<UnitCube> m_unitcube;
 
     ref_ptr<AdaptiveGrid> m_agrid;
 
@@ -193,6 +191,8 @@ int main(int argc, char** argv)
     glewExperimental = GL_TRUE;
 
     ContextFormat format;
+    format.setVersion(4, 0);
+    format.setProfile(ContextFormat::CoreProfile);
 
     Window window;
     window.assign(new EventHandler());

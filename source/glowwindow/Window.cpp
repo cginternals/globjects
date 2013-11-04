@@ -3,22 +3,19 @@
 #include <string>
 #include <iomanip>
 
-#ifdef WIN32
-#include "WindowsWindow.h"
-#elif __APPLE__
-#include "X11Window.h"
-#else
-#include "X11Window.h"
-#endif
+#include <GLFW/glfw3.h>
 
 #include <glow/logging.h>
 #include <glow/Timer.h>
+
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 #include <glowwindow/Window.h>
 
 namespace glow
 {
+
+std::set<Window*> Window::s_windows;
 
 Window::Window()
 :   m_eventHandler(nullptr)
@@ -31,21 +28,15 @@ Window::Window()
 ,   m_swaps(0)
 ,   m_window(nullptr)
 {
-#ifdef WIN32
-    m_window = new WindowsWindow(*this);
-#elif __APPLE__
-    m_window = new X11Window(*this);
-#else
-    m_window = new X11Window(*this);
-#endif
+    s_windows.insert(this);
 }
 
 Window::~Window()
 {
-    assert(nullptr == m_eventHandler);
+    s_windows.erase(s_windows.find(this));
 
-    delete m_window;
-    delete m_timer;
+    assert(nullptr == m_eventHandler);
+    delete m_timer;    
 }
 
 WindowEventHandler * Window::eventHandler() const
@@ -58,19 +49,14 @@ Context * Window::context() const
     return m_context;
 }
 
-int Window::handle() const
-{
-    return m_window->handle();
-}
-
 int Window::width() const
 {
-    return m_window->width();
+    return m_size.x;
 }
 
 int Window::height() const
 {
-    return m_window->height();
+    return m_size.y;
 }
 
 void Window::setQuitOnDestroy(const bool enable)
@@ -81,32 +67,49 @@ void Window::setQuitOnDestroy(const bool enable)
 bool Window::create(
     const ContextFormat & format
 ,   const std::string & title
-,   const int width
-,   const int height)
+,   int width
+,   int height)
 {
     assert(nullptr == m_context);
 
+    m_context = new Context();
+    const bool result = m_context->create(format);
+    if (!result)
+    {
+        delete m_context;
+        m_context = nullptr;
+
+        if (m_eventHandler)
+        {
+            delete m_eventHandler;
+            m_eventHandler = nullptr;
+        }
+        return false;
+    }
+    else
+        promoteContext();
+
     m_title = title;
 
-    if (!m_window->create(format, title, width, height))
+    m_size.x = width;
+    m_size.y = height;
+
+    m_window = m_context->window();
+    if (!m_window)
     {
         fatal() << "Creating native window with OpenGL context failed.";
         return false;
     }
-    assert(m_window->width()  == width);
-    assert(m_window->height() == height);
+    glfwSetWindowSize(m_window, m_size.x, m_size.y);
+    glfwSetWindowTitle(m_window, m_title.c_str());
 
-    m_context = new Context();
-    const bool result = m_context->create(handle(), format);
-    if (!result)
-    {
-    	delete m_context;
-	    m_context = nullptr;
-    }
-    else
-	    promoteContext();
-    
-    return result;
+    glfwGetWindowSize(m_window, &width, &height);
+
+    assert(m_size.x == width);
+    assert(m_size.y == height);
+
+    promoteContext();
+    return true;
 }
 
 bool Window::quitsOnDestroy() const
@@ -116,12 +119,12 @@ bool Window::quitsOnDestroy() const
 
 void Window::close()
 {
-    m_window->close();
+    onClose();
 }
 
 void Window::promoteContext()
 {
-    if(!m_context || !m_eventHandler)
+    if(!m_eventHandler)
         return;
 
     m_context->makeCurrent();
@@ -134,32 +137,38 @@ void Window::promoteContext()
 
 void Window::show()
 {
-    m_window->show();
+    if (!m_window)
+        return;
+
+    glfwShowWindow(m_window);
 }
 
 void Window::hide()
 {
-    m_window->hide();
+    if (!m_window)
+        return;
+
+    glfwHideWindow(m_window);
 }
 
 void Window::fullScreen()
 {
-    if (WindowMode != m_mode)
-        return;
+    //if (WindowMode != m_mode)
+    //    return;
 
-    m_mode = TransitionMode;
-    m_window->fullScreen();
-    m_mode = FullScreenMode;
+    //m_mode = TransitionMode;
+    //m_window->fullScreen();
+    //m_mode = FullScreenMode;
 }
 
 void Window::windowed()
 {
-    if (FullScreenMode != m_mode)
-        return;
+    //if (FullScreenMode != m_mode)
+    //    return;
 
-    m_mode = TransitionMode;
-    m_window->windowed();
-    m_mode = WindowMode;
+    //m_mode = TransitionMode;
+    //m_window->windowed();
+    //m_mode = WindowMode;
 }
 
 bool Window::isFullScreen() const
@@ -206,33 +215,26 @@ void Window::assign(WindowEventHandler * eventHandler)
 
 int Window::run()
 {
-#ifdef WIN32
-    return WindowsWindow::run();
-#elif __APPLE__
-    return X11Window::run();
-#else
-    return X11Window::run();
-#endif
+    while (!s_windows.empty())
+    {
+        for (Window * window : s_windows)
+            window->onIdle();
+
+        glfwPollEvents();
+    };
+    glfwTerminate();
+    return 0;
 }
 
 void Window::quit(const int code)
 {
-#ifdef WIN32
-    return WindowsWindow::quit(code);
-#elif __APPLE__
-    return X11Window::quit(code);
-#else
-    return X11Window::quit(code);
-#endif
+
 }
 
 void Window::repaint()
 {
-    m_window->repaint();
+    onRepaint();
 }
-
-
-
 
 void Window::onRepaint()
 {
@@ -260,7 +262,7 @@ void Window::onRepaint()
         std::stringstream fpss;
         fpss << m_title << " (" << std::fixed << std::setprecision(2) << fps << " fps)";
 
-        m_window->setTitle(fpss.str());
+        glfwSetWindowTitle(m_window, fpss.str().c_str());
 
         m_swapts = m_timer->elapsed();
         m_swaps = 0;
@@ -309,15 +311,14 @@ void Window::onClose()
 
         delete m_context;
         m_context = nullptr;
+        m_window = nullptr;
     }
-
-    m_window->destroy();
 
     if (m_quitOnDestroy)
         quit(0);
 }
 
-bool Window::onKeyPress(const unsigned short key)
+bool Window::onKeyPress(const int key)
 {
     KeyEvent kpe(KeyEvent::KeyPressEvent, key);
 
@@ -332,19 +333,19 @@ bool Window::onKeyPress(const unsigned short key)
     return kpe.isAccepted();
 }
 
-bool Window::onKeyRelease(const unsigned short key)
+bool Window::onKeyRelease(const int key)
 {
     KeyEvent kre(KeyEvent::KeyReleaseEvent, key);
 
     switch (kre.key())
     {
-    case KeyEvent::KeyEscape:
+    case GLFW_KEY_ESCAPE:
         kre.accept();
         close();
         break;
 
-    case KeyEvent::KeyReturn:
-        if (m_keysPressed.find(KeyEvent::KeyAlt) != m_keysPressed.cend())
+    case GLFW_KEY_ENTER:
+        if (m_keysPressed.find(GLFW_KEY_LEFT_ALT) != m_keysPressed.cend())
         {
             kre.accept();
             toggleMode();
@@ -360,7 +361,8 @@ bool Window::onKeyRelease(const unsigned short key)
         m_keysPressed.erase(f);
 
     if (kre.isDiscarded())
-    {   m_context->makeCurrent();
+    {   
+        m_context->makeCurrent();
         m_eventHandler->keyReleaseEvent(*this, kre);
         m_context->doneCurrent();
     }

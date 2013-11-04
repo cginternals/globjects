@@ -4,8 +4,8 @@
 #include <vector>
 #include <string>
 
-#include <glowwindow/glowwindow.h>
 #include <glow/Version.h>
+#include <glowwindow/glowwindow.h>
 
 
 namespace glow

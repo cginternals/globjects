@@ -3,17 +3,12 @@
 
 #include <GL/glew.h>
 
-#ifdef WIN32
-#include "WGLContext.h"
-#elif __APPLE__
-#include "GLxContext.h"
-#else
-#include "GLxContext.h"
-#endif
-
 #include <glow/logging.h>
 #include <glow/global.h>
 #include <glow/Error.h>
+
+#include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
+                        // which requires APIENTRY in windows..
 #include <glowwindow/Context.h>
 
 
@@ -22,29 +17,21 @@ namespace glow
 
 Context::Context()
 :   m_swapInterval(VerticalSyncronization)
-,   m_context(nullptr)
+,   m_window(nullptr)
 {
-#ifdef WIN32
-    m_context = new WGLContext(*this);
-#elif __APPLE__
-    m_context = new GLxContext(*this);
-#else
-    m_context = new GLxContext(*this);
-#endif
 }
 
 Context::~Context()
 {
-    if (isValid())
-        release();
-
-    delete m_context;
-    m_context = nullptr;
+    release();
 }
 
-bool Context::create(
-    const int hWnd
-,   const ContextFormat & format)
+GLFWwindow * Context::window()
+{
+    return m_window;
+}
+
+bool Context::create(const ContextFormat & format)
 {
     if (isValid())
     {
@@ -54,9 +41,20 @@ bool Context::create(
 
     m_format = format;
 
-    if (!m_context->create(hWnd, m_format))
+    if (!glfwInit())
+        return false;
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, format.majorVersion());
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, format.minorVersion());
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, format.profile() == ContextFormat::CoreProfile ? GLFW_OPENGL_CORE_PROFILE : GLFW_OPENGL_COMPAT_PROFILE);
+
+    m_window = glfwCreateWindow(320, 240, "glow", nullptr, nullptr);
+
+    if (!m_window)
     {
-	return false;
+        release();
+        return false;
     }
 
     makeCurrent();
@@ -78,7 +76,6 @@ bool Context::create(
     setSwapInterval();
 
     ContextFormat::verify(format, m_format);
-
     return true;
 }
 
@@ -87,25 +84,21 @@ void Context::release()
     if (!isValid())
         return;
 
-    m_context->release();
-
-    assert(-1 == m_context->id());
+    glfwDestroyWindow(m_window);
+    m_window = nullptr;
 }
 
 void Context::swap()
 {
-	if (isValid())
-		m_context->swap();
-}
+    if (!isValid())
+        return;
 
-int Context::id() const
-{
-    return m_context->id();
+    glfwSwapBuffers(m_window);
 }
 
 bool Context::isValid() const
 {
-	return m_context->isValid();
+	return m_window != nullptr;
 }
 
 const ContextFormat & Context::format() const
@@ -133,45 +126,36 @@ Context::SwapInterval Context::swapInterval() const
 	return m_swapInterval;
 }
 
-bool Context::setSwapInterval(const SwapInterval interval)
+void Context::setSwapInterval(const SwapInterval interval)
 {
 	if (interval == m_swapInterval)
-		return true;
+		return;
 
-    const SwapInterval backup(m_swapInterval);
     m_swapInterval = interval;
-
-    bool result = setSwapInterval();
-
-    if (!result)
-        m_swapInterval = backup;
-
-    return result;		
+    setSwapInterval();
 }
 
-bool Context::setSwapInterval()
+void Context::setSwapInterval()
 {
     makeCurrent();
-	const bool result = m_context->setSwapInterval(m_swapInterval);
+    glfwSwapInterval(m_swapInterval);
     doneCurrent();
-
-    return result;
 }
 
-bool Context::makeCurrent()
+void Context::makeCurrent()
 {
     if (!isValid())
-        return false;
+        return;
 
-    return m_context->makeCurrent();
+    glfwMakeContextCurrent(m_window);
 }
 
-bool Context::doneCurrent()
+void Context::doneCurrent()
 {
     if (!isValid())
-        return false;
+        return;
 
-    return m_context->doneCurrent();
+    glfwMakeContextCurrent(0);
 }
 
 } // namespace glow

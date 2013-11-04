@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 set(META_PROJECT_NAME        "glow")
 set(META_VERSION_MAJOR       "0")
 set(META_VERSION_MINOR       "1")
-set(META_VERSION_PATCH       "1")
+set(META_VERSION_PATCH       "2")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "hpicgs group")
 set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glow/")
@@ -158,6 +158,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h DESTINATION ${INST
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(GLEW REQUIRED)
+find_package(GLFW REQUIRED)
 
 # Include directories
 include_directories(
@@ -166,7 +167,6 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLEW_INCLUDE_DIR})
-
 
 # LIBRARIES
 

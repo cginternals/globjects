@@ -3,14 +3,16 @@
 #include <set>
 #include <string>
 
+#include <glm/glm.hpp>
+
 #include <glowwindow/glowwindow.h>
 #include <glowwindow/KeyEvent.h>
 
+struct GLFWwindow;
 
 namespace glow 
 {
 
-class AbstractNativeWindow;
 class WindowEventHandler;
 class ContextFormat;
 class Context;
@@ -31,8 +33,6 @@ public:
     WindowEventHandler * eventHandler() const;
     Context * context() const;
 
-    int handle() const;
-
     int width() const;
     int height() const;
 
@@ -52,8 +52,8 @@ public:
     bool create(
         const ContextFormat & format
     ,   const std::string & title = "glow"
-    ,   const int width  =  1280
-    ,   const int height =   720);
+    ,   int width  =  1280
+    ,   int height =   720);
 
     void close();
 
@@ -91,8 +91,8 @@ protected:
     void onIdle();
     void onClose();
 
-    bool onKeyPress(const unsigned short key);
-    bool onKeyRelease(const unsigned short key);
+    bool onKeyPress(const int key);
+    bool onKeyRelease(const int key);
 
 protected:
     void processKeyEvent(
@@ -105,7 +105,7 @@ protected:
 
     bool m_quitOnDestroy;
 
-    std::set<KeyEvent::Key> m_keysPressed;
+    std::set<int> m_keysPressed;
 
     enum Mode
     {
@@ -124,7 +124,10 @@ protected:
     unsigned int m_swaps;
 
 private:
-    AbstractNativeWindow * m_window;
+    GLFWwindow * m_window;
+    static std::set<Window*> s_windows;
+
+    glm::ivec2 m_size;
 };
 
 } // namespace glow

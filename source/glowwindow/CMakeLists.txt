@@ -3,10 +3,14 @@
 set(target glowwindow)
 message(STATUS "lib ${target}")
 
+include_directories(
+    ${GLFW_INCLUDE_DIR})
+
 # Libraries
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARY}
+    ${GLFW_LIBRARY}
     ${EXTRA_LIBS}
     glow
 )
@@ -34,23 +38,11 @@ set(api_includes
 )
 
 set(sources
-    ${source_path}/AbstractNativeContext.cpp
-    ${source_path}/AbstractNativeContext.h
-    ${source_path}/AbstractNativeWindow.cpp
-    ${source_path}/AbstractNativeWindow.h
     ${source_path}/Context.cpp
     ${source_path}/ContextFormat.cpp
-    ${source_path}/GLxContext.cpp
-    ${source_path}/GLxContext.h
     ${source_path}/KeyEvent.cpp
     ${source_path}/Window.cpp
     ${source_path}/WindowEventHandler.cpp
-    ${source_path}/WindowsWindow.cpp
-    ${source_path}/WindowsWindow.h
-    ${source_path}/X11Window.cpp
-    ${source_path}/X11Window.h
-    ${source_path}/WGLContext.cpp
-    ${source_path}/WGLContext.h
 )
 
 # Group source files

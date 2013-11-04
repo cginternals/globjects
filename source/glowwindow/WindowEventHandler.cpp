@@ -1,10 +1,6 @@
 
 #include <cassert>
 
-#ifdef WIN32
-#include <Windows.h>
-#endif 
-
 #include <glow/logging.h>
 #include <glowwindow/WindowEventHandler.h>
 
