@@ -7,6 +7,7 @@ message(STATUS "lib ${target}")
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARY}
+    ${EXTRA_LIBS}
     glow
 )
 

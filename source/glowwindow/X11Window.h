@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef __linux__
+#if defined (__linux__) || defined (__APPLE__)
 
 #include <set>
 #include <unordered_map>

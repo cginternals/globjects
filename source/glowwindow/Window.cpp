@@ -6,7 +6,7 @@
 #ifdef WIN32
 #include "WindowsWindow.h"
 #elif __APPLE__
-
+#include "X11Window.h"
 #else
 #include "X11Window.h"
 #endif
@@ -34,7 +34,7 @@ Window::Window()
 #ifdef WIN32
     m_window = new WindowsWindow(*this);
 #elif __APPLE__
-
+    m_window = new X11Window(*this);
 #else
     m_window = new X11Window(*this);
 #endif
@@ -209,7 +209,7 @@ int Window::run()
 #ifdef WIN32
     return WindowsWindow::run();
 #elif __APPLE__
-
+    return X11Window::run();
 #else
     return X11Window::run();
 #endif
@@ -220,7 +220,7 @@ void Window::quit(const int code)
 #ifdef WIN32
     return WindowsWindow::quit(code);
 #elif __APPLE__
-
+    return X11Window::quit(code);
 #else
     return X11Window::quit(code);
 #endif

@@ -4,6 +4,7 @@
 #include <stdexcept>
 #endif
 
+#include <GL/glxew.h>
 
 #include <glow/logging.h>
 #include <glow/Error.h>
@@ -28,7 +29,8 @@ namespace
         const int contextID = reinterpret_cast<int>(wglGetCurrentContext());
         handle = static_cast<long long>(contextID);
 #elif __APPLE__
-
+        const GLXContext context = glXGetCurrentContext();
+        handle = reinterpret_cast<long long>(context);
 #else
         const GLXContext context = glXGetCurrentContext();
         handle = reinterpret_cast<long long>(context);
