@@ -6,7 +6,7 @@
 #ifdef WIN32
 #include "WGLContext.h"
 #elif __APPLE__
-
+#include "GLxContext.h"
 #else
 #include "GLxContext.h"
 #endif
@@ -27,7 +27,7 @@ Context::Context()
 #ifdef WIN32
     m_context = new WGLContext(*this);
 #elif __APPLE__
-
+    m_context = new GLxContext(*this);
 #else
     m_context = new GLxContext(*this);
 #endif

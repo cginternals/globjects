@@ -1,15 +1,21 @@
-
 #include <algorithm>
 #ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
 #include <stdexcept>
 #endif
-
 
 #include <glow/logging.h>
 #include <glow/Error.h>
 
 #include <glow/DebugMessage.h>
 #include <glow/DebugMessageOutput.h>
+
+#ifdef WIN32
+
+#elif __APPLE__
+#include <GL/glxew.h>
+#else
+#include <GL/glxew.h>
+#endif
 
 namespace 
 {
@@ -20,7 +26,8 @@ namespace
         const int contextID = reinterpret_cast<int>(wglGetCurrentContext());
         handle = static_cast<long long>(contextID);
 #elif __APPLE__
-
+        const GLXContext context = glXGetCurrentContext();
+        handle = reinterpret_cast<long long>(context);
 #else
         const GLXContext context = glXGetCurrentContext();
         handle = reinterpret_cast<long long>(context);
