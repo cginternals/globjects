@@ -54,7 +54,7 @@ macro (find LIB_NAME HINT_PATHS)
 		PATHS ${HINT_PATHS}
 		DOC "The ${LIB_NAME} debug library")
 
-	set(${LIB_NAME}_LIBRARIES general ${${LIB_NAME_UPPER}_LIBRARY} debug ${${LIB_NAME_UPPER}_LIBRARY_DEBUG})
+	set(${LIB_NAME_UPPER}_LIBRARIES optimized ${${LIB_NAME_UPPER}_LIBRARY} debug ${${LIB_NAME_UPPER}_LIBRARY_DEBUG})
 
 endmacro()
 

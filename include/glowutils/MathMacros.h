@@ -2,8 +2,6 @@
 
 #include <cmath>
 
-namespace glow
-{
 
 // NOTE: When using powers, try to use Horner's Method
 
@@ -14,8 +12,8 @@ namespace glow
 #define PI4  (PI * 4.00L)
 #define PI_4 (PI * 0.25L)
 
-#define abs(v) \
-    (((v) < 0) ? -(v) : (v))
+//#define abs(v) \
+//    (((v) < 0) ? -(v) : (v))
 
 #define intcast(v) \
     (static_cast<int>(v))
@@ -23,14 +21,11 @@ namespace glow
 #define shortcast(v) \
     (static_cast<short>(v))
 
-#define mod(a, m) \
-    ((a) - (m) * (intcast((a) / (m)) - ((a) < 0 ? 1 : 0)))
+//#define mod(a, m) \
+//    ((a) - (m) * (intcast((a) / (m)) - ((a) < 0 ? 1 : 0)))
 
 #define frac(x) \
-    ((x) - intcast(x))
-
-#define clamp(l, u, x) \
-    ((x) < (l) ? (l) : (x) > (u) ? (u) : (x))
+    ((x)-intcast(x))
 
 #define deg(rad) \
     static_cast<float>((rad)* 180.0L / PI)
@@ -47,7 +42,7 @@ namespace glow
 // same as hour
 // note: if d is negative use -decimal(d, m, s) instead of decimal(-d, m, s)
 #define decimal(d, m, s) \
-    ((d) + ((m) + (s) / 60.0L) / 60.0L)
+    ((d)+((m)+(s) / 60.0L) / 60.0L)
 
 #define sind(deg) \
     (sin(rad(deg)))
@@ -75,11 +70,11 @@ namespace glow
 
 // normalizes an angle to between 0 and 2PI radians
 #define rev(rad) \
-    ((rad) - floor((rad) / PI2) * PI2)
+    ((rad)-floor((rad) / PI2) * PI2)
 
 // normalizes an angle to between 0 and 360 degrees
 #define revd(deg) \
-    ((deg) - floor((deg) / 360.0L) * 360.0L)
+    ((deg)-floor((deg) / 360.0L) * 360.0L)
 
 // cube root (e.g. needed for parabolic orbits)
 #define cbrt(x) \
@@ -94,66 +89,66 @@ namespace glow
 
 // Returns the next power of an integer.
 #define nextPowerOf2(x) \
-    (__b32((x) - 1) + 1)
+    (__b32((x)-1) + 1)
 
 #define prevPowerOf2(x) \
     (nextPowerOf2(x) >> 1)
 
-#define randf(min, max) \
-    (static_cast<float>(rand()) / RAND_MAX * ((max) - (min)) + (min))
+#define randf(l, u) \
+    (static_cast<float>(rand()) / RAND_MAX * ((u)-(l)) + (l))
 
-#define _rand(min, max) \
-    (static_cast<int>(static_cast<float>(rand()) / RAND_MAX * ((max) - (min)) + (min)))
+#define _rand(l, u) \
+    (static_cast<int>(static_cast<float>(rand()) / RAND_MAX * ((u)-(l)) + (l)))
 
 
 // Interpolate
 
-#define i_linear(t)             clamp(0, 1, t)
-#define i_smoothstep(t)         clamp(0, 1, (t) * (t) * (3 - 2 * (t)))
-#define i_smoothstep2(t)        clamp(0, 1, smoothstep(smoothstep(t)))
-#define i_smoothstep3(t)        clamp(0, 1, smoothstep(smoothstep2(t)))
-#define i_smootherstep(t)       clamp(0, 1, (t) * (t) * (t) * ((t) * (6 * (t) - 15) + 10))
-#define i_squared(t)            clamp(0, 1, (t) * (t))
-#define i_squareroot(t)         clamp(0, 1, sqrt(t))
-#define i_exponential(t, v)     clamp(0, 1, (exp((t) * (v)) - 1) / (exp((v)) - 1))
-#define i_logarithmic(t, v)     clamp(0, 1, log(1 + ((v) - 1) * (t)) / log(v))
-#define i_cupola(t)             clamp(0, 1, sin((t) * PI))
-#define i_cube(t)               clamp(0, 1, (t) * (t) * (t))
-#define i_roof(t)               clamp(0, 1, 1 - 2 * fabs((t) - 0.5))
-#define i_sin(t)                clamp(0, 1, sin((t) * PI_2))
+#define i_linear(t)             (t)
+#define i_smoothstep(t)         ((t) * (t) * (3 - 2 * (t)))
+#define i_smoothstep2(t)        smoothstep(smoothstep(t))
+#define i_smoothstep3(t)        smoothstep(smoothstep2(t))
+#define i_smootherstep(t)       ((t) * (t) * (t) * ((t) * (6 * (t) - 15) + 10))
+#define i_squared(t)            ((t) * (t))
+#define i_squareroot(t)         sqrt(t)
+#define i_exponential(t, v)     ((exp((t) * (v)) - 1) / (exp((v)) - 1))
+#define i_logarithmic(t, v)     (log(1 + ((v) - 1) * (t)) / log(v))
+#define i_cupola(t)             sin((t) * PI)
+#define i_cube(t)               ((t) * (t) * (t))
+#define i_roof(t)               (1 - 2 * fabs((t) - 0.5))
+#define i_sin(t)                sin((t) * PI_2)
 #define i_smoothstep_ext(t, l, r) \
-    clamp(0, 1, (t) < (l) ? 0 : (r) < (t) ? 1 : smoothstep(((t)-(l)) / ((r)-(l))))
+    ((t) < (l) ? 0 : (r) < (t) ? 1 : smoothstep(((t)-(l)) / ((r)-(l))))
 
 // Several interpolation methods in action: http://sol.gfxile.net/interpolation/
 
 enum InterpolationType
 {
     LinearInterpolation
-,   SmoothStepInterpolation
-,   SmoothStep2Interpolation
-,   SmoothStep3Interpolation
-,   SmootherStepInterpolation // Ken Perlin
-,   SquaredInterpolation
-,   SquarerootInterpolation
-,   ExponentialInterpolation
-,   LogarithmicInterpolation
-,   CupolaInterpolation
-,   CubeInterpolation
-,   RoofInterpolation
-,   SinInterpolation          // strong in, soft out
+    , SmoothStepInterpolation
+    , SmoothStep2Interpolation
+    , SmoothStep3Interpolation
+    , SmootherStepInterpolation // Ken Perlin
+    , SquaredInterpolation
+    , SquarerootInterpolation
+    , ExponentialInterpolation
+    , LogarithmicInterpolation
+    , CupolaInterpolation
+    , CubeInterpolation
+    , RoofInterpolation
+    , SinInterpolation          // strong in, soft out
 };
 
 
 template<typename T>
 inline const T interpolate(
     const T t
-,   const InterpolationType function = LinearInterpolation
-,   bool invert = false)
+    , const InterpolationType function = LinearInterpolation
+    , bool invert = false)
 {
     const T v = invert ? 1 - t : t;
     T r;
 
-    switch(function)
+    switch (function)
     {
     case SmoothStepInterpolation:
         r = i_smoothstep(t); break;
@@ -185,5 +180,3 @@ inline const T interpolate(
     }
     return invert ? static_cast<T>(1.0) - r : r;
 }
-
-} // namespace glow
