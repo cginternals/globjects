@@ -96,7 +96,7 @@ public:
         Window & window
     ,   KeyEvent & event)
     {
-        if (KeyEvent::KeyF5 == event.key())
+        if (GLFW_KEY_F5 == event.key())
             glow::ShaderFile::reloadAll();
     }
 

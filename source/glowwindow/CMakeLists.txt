@@ -28,6 +28,8 @@ endif()
 set(header_path "${GLOW_SOURCE_DIR}/include/glowwindow")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
+find_package(GLFW REQUIRED)
+
 set(api_includes
     ${header_path}/Context.h
     ${header_path}/ContextFormat.h
