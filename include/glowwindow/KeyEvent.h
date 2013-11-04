@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GLFW/glfw3.h> ///< promote keys
+
 #include <glowwindow/glowwindow.h>
 
 namespace glow 
