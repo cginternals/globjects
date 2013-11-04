@@ -1,10 +1,7 @@
-
 #include <algorithm>
 #ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
 #include <stdexcept>
 #endif
-
-#include <GL/glxew.h>
 
 #include <glow/logging.h>
 #include <glow/Error.h>
@@ -15,7 +12,7 @@
 #ifdef WIN32
 
 #elif __APPLE__
-
+#include <GL/glxew.h>
 #else
 #include <GL/glxew.h>
 #endif
