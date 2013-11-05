@@ -11,7 +11,6 @@ set(libs
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARY}
     ${GLFW_LIBRARY}
-    ${EXTRA_LIBS}
     glow
 )
 
