@@ -54,18 +54,19 @@ macro (find LIB_NAME HINT_PATHS)
 		PATHS ${HINT_PATHS}
 		DOC "The ${LIB_NAME} debug library")
 
-	if(${LIB_NAME_UPPER}_LIBRARY_DEBUG)
-		set(${LIB_NAME_UPPER}_LIBRARIES optimized ${${LIB_NAME_UPPER}_LIBRARY} debug ${${LIB_NAME_UPPER}_LIBRARY_DEBUG})
-	else()
-		set(${LIB_NAME_UPPER}_LIBRARIES ${${LIB_NAME_UPPER}_LIBRARY})
+	if(${LIB_NAME_UPPER}_LIBRARY AND ${LIB_NAME_UPPER}_LIBRARY_DEBUG)
+		set(debug "debug")
+		set(optimized "optimized")
 	endif()
+
+	set(${LIB_NAME_UPPER}_LIBRARIES ${optimized} ${${LIB_NAME_UPPER}_LIBRARY} ${debug} ${${LIB_NAME_UPPER}_LIBRARY_DEBUG})
 
 endmacro()
 
 find(glow ${LIB_PATHS})
 find(utils ${LIB_PATHS})
 
-if(GLOW_INCLUDE_DIR AND GLOW_LIBRARY)
+if(GLOW_INCLUDE_DIR AND (GLOW_LIBRARY OR GLOW_LIBRARY_DEBUG))
     set(GLOW_FOUND 1 CACHE STRING "Set to 1 if glow is found, 0 otherwise")
 else()
     set(GLOW_FOUND 0 CACHE STRING "Set to 1 if glow is found, 0 otherwise")
