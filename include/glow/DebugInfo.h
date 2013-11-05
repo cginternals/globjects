@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 
+#include <glow/glow.h>
 #include <glow/ObjectVisitor.h>
 
 
@@ -24,7 +25,7 @@ namespace glow
 
     \endcode
  */
-class DebugInfo : public ObjectVisitor
+class GLOW_API DebugInfo : public ObjectVisitor
 {
 public:
 	struct Property
