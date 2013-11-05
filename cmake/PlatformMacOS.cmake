@@ -24,10 +24,3 @@ set(MACOS_COMPILE_FLAGS
 )
 set(DEFAULT_COMPILE_FLAGS ${MACOS_COMPILE_FLAGS})
 
-
-# Set Mac specific include and library dirs
-link_directories(/usr/X11R6/lib)
-include_directories(/usr/X11/include)
-
-# Add platform specific libraries for linking
-SET(EXTRA_LIBS GL X11 GLU glut)

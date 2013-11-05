@@ -160,7 +160,7 @@ find_package(GLM REQUIRED)
 find_package(GLEW REQUIRED)
 
 if(OPTION_BUILD_EXAMPLES)
-    find_package(GLFW REQUIRED)
+    find_package(GLFW REQUIRED glfw3)
 endif()
 
 # Include directories

@@ -12,7 +12,7 @@
 #ifdef WIN32
 
 #elif __APPLE__
-#include <GL/glxew.h>
+//#include <GL/glxew.h>
 #else
 #include <GL/glxew.h>
 #endif
@@ -26,8 +26,8 @@ namespace
         const int contextID = reinterpret_cast<int>(wglGetCurrentContext());
         handle = static_cast<long long>(contextID);
 #elif __APPLE__
-        const GLXContext context = glXGetCurrentContext();
-        handle = reinterpret_cast<long long>(context);
+        //const GLXContext context = glXGetCurrentContext();
+        //handle = reinterpret_cast<long long>(context);
 #else
         const GLXContext context = glXGetCurrentContext();
         handle = reinterpret_cast<long long>(context);
