@@ -103,11 +103,6 @@ bool Window::create(
     glfwSetWindowSize(m_window, m_size.x, m_size.y);
     glfwSetWindowTitle(m_window, m_title.c_str());
 
-    glfwGetWindowSize(m_window, &width, &height);
-
-    assert(m_size.x == width);
-    assert(m_size.y == height);
-
     promoteContext();
     return true;
 }
