@@ -43,6 +43,8 @@ set(sources
     ${source_path}/ContextFormat.cpp
     ${source_path}/KeyEvent.cpp
     ${source_path}/Window.cpp
+    ${source_path}/WindowEventDispatcher.h
+    ${source_path}/WindowEventDispatcher.cpp
     ${source_path}/WindowEventHandler.cpp
 )
 

@@ -1,5 +1,6 @@
 
 #include <glowwindow/WindowEventHandler.h>
+#include <glowwindow/KeyEvent.h>
 
 namespace glow
 {
@@ -12,11 +13,33 @@ WindowEventHandler::~WindowEventHandler()
 {
 }
 
-void WindowEventHandler::initializeEvent(Window &)
+void WindowEventHandler::handleEvent(Window & window, WindowEvent * event)
+{
+    switch (event->type())
+    {
+        case WindowEvent::Resize: {
+            ResizeEvent* e = dynamic_cast<ResizeEvent*>(event);
+            resizeEvent(window, e->width(), e->height());
+            break; }
+        case WindowEvent::Paint:
+            paintEvent(window);
+            break;
+        case WindowEvent::KeyPress: {
+            KeyEvent* e = dynamic_cast<KeyEvent*>(event);
+            keyPressEvent(window, *e);
+            break; }
+        case WindowEvent::KeyRelease: {
+            KeyEvent* e = dynamic_cast<KeyEvent*>(event);
+            keyReleaseEvent(window, *e);
+            break; }
+    }
+}
+
+void WindowEventHandler::initialize(Window &)
 {
 }
 
-void WindowEventHandler::deinitializeEvent(Window &)
+void WindowEventHandler::finalize(Window &)
 {
 }
 

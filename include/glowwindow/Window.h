@@ -2,12 +2,10 @@
 
 #include <set>
 #include <string>
-#include <unordered_map>
-
-#include <glm/glm.hpp>
 
 #include <glowwindow/glowwindow.h>
-#include <glowwindow/KeyEvent.h>
+#include <glow/ref_ptr.h>
+#include <glowwindow/KeyEvent.h>  // forward?
 
 struct GLFWwindow;
 
@@ -25,7 +23,7 @@ class Timer;
 */
 class GLOWWINDOW_API Window
 {
-friend class AbstractNativeWindow;
+friend class WindowEventDispatcher;
 
 public:
     Window();
@@ -81,27 +79,19 @@ public:
     static void quit(int code = 0);
 
 protected:
+    void idle();
+    void paint();
+    void destroy();
+
     void promoteContext();
 
-    /** onRepaint makes the context valid, calls the paint event of the attached 
-        event handler, swaps the buffer, and releases the context. 
-    */
-    void onRepaint();
-    void onResize(int width, int height);
-
-    void onIdle();
-    void onClose();
-
-    bool onKeyPress(int key);
-    bool onKeyRelease(int key);
-
+    void processEvent(WindowEvent* event);
+    void defaultAction(WindowEvent* event);
 protected:
-    WindowEventHandler * m_eventHandler;
+    ref_ptr<WindowEventHandler> m_eventHandler;
     Context * m_context;
 
     bool m_quitOnDestroy;
-
-    std::set<int> m_keysPressed;
 
     enum Mode
     {
@@ -125,14 +115,8 @@ private:
     static bool running;
     static int exitCode;
 
-    glm::ivec2 m_size;
-
-protected:
-    static void handleWindowClose(GLFWwindow* window);
-    static void handleMouse(GLFWwindow* window, int button, int action, int modifiers);
-    static void handleKey(GLFWwindow* window, int key, int scanCode, int action, int modifiers);
-    static void handleRefresh(GLFWwindow* window);
-    static void handleResize(GLFWwindow* window, int width, int height);
+    int m_width;
+    int m_height;
 };
 
 } // namespace glow

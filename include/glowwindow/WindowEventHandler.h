@@ -1,30 +1,33 @@
 #pragma once
 
 #include <glowwindow/glowwindow.h>
-
+#include <glow/Referenced.h>
 
 namespace glow 
 {
 
 class Window;
+class WindowEvent;
 class KeyEvent;
 
-class GLOWWINDOW_API WindowEventHandler
+class GLOWWINDOW_API WindowEventHandler : public Referenced
 {
 public:
     WindowEventHandler();
     virtual ~WindowEventHandler();
 
+    void handleEvent(Window & window, WindowEvent * event);
+
     /** The initialize event is called only once when starting to run a window.
         The window's context is made current before and done current afterwards.
     */
-    virtual void initializeEvent(Window & window);
+    virtual void initialize(Window & window);
     
     /** The initialize event is called only once, just before a window returns 
         from running. The window's context is made current before and done 
         current afterwards.
     */
-    virtual void deinitializeEvent(Window & window);
+    virtual void finalize(Window & window);
 
     //virtual void activateEvent();
     //virtual void minimizeEvent();

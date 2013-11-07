@@ -23,7 +23,7 @@ public:
     {
     }
 
-    virtual void initializeEvent(Window & window)
+    virtual void initialize(Window & window)
     {
         DebugMessageOutput::enable();
 

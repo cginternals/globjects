@@ -42,7 +42,7 @@ public:
     void createAndSetupShaders();
 	void createAndSetupGeometry();
 
-    virtual void initializeEvent(Window & window)
+    virtual void initialize(Window & window)
     {
         DebugMessageOutput::enable();
 
