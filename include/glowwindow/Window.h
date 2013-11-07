@@ -2,6 +2,7 @@
 
 #include <set>
 #include <string>
+#include <unordered_map>
 
 #include <glm/glm.hpp>
 
@@ -40,7 +41,7 @@ public:
         when the window gets destroyed. Hence, the static window loop (run) 
         will receive a quit event and destroy all other remaining windows.
     */
-    void setQuitOnDestroy(const bool enable);
+    void setQuitOnDestroy(bool enable);
     bool quitsOnDestroy() const;
 
     /** Takes ownership of the given eventhandler and deletes that either on
@@ -77,7 +78,7 @@ public:
         the attached WindowEventHandler instance.
     */
     static int run();
-    static void quit(const int code = 0);
+    static void quit(int code = 0);
 
 protected:
     void promoteContext();
@@ -86,18 +87,13 @@ protected:
         event handler, swaps the buffer, and releases the context. 
     */
     void onRepaint();
-    void onResize();
+    void onResize(int width, int height);
 
     void onIdle();
     void onClose();
 
-    bool onKeyPress(const int key);
-    bool onKeyRelease(const int key);
-
-protected:
-    void processKeyEvent(
-        KeyEvent & event
-    ,   WindowEventHandler * eventHandler);
+    bool onKeyPress(int key);
+    bool onKeyRelease(int key);
 
 protected:
     WindowEventHandler * m_eventHandler;
@@ -126,8 +122,17 @@ protected:
 private:
     GLFWwindow * m_window;
     static std::set<Window*> s_windows;
+    static bool running;
+    static int exitCode;
 
     glm::ivec2 m_size;
+
+protected:
+    static void handleWindowClose(GLFWwindow* window);
+    static void handleMouse(GLFWwindow* window, int button, int action, int modifiers);
+    static void handleKey(GLFWwindow* window, int key, int scanCode, int action, int modifiers);
+    static void handleRefresh(GLFWwindow* window);
+    static void handleResize(GLFWwindow* window, int width, int height);
 };
 
 } // namespace glow

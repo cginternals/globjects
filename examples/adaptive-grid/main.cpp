@@ -121,48 +121,41 @@ public:
         Window & window
     ,   KeyEvent & event)
     {
-        //const float d= 0.08f;
+        const float d = 0.08f;
 
-        //if (KeyEvent::KeyF5 == event.key())
-        //    glow::ShaderFile::reloadAll();
+        switch (event.key())
+        {
+            case GLFW_KEY_F5:
+                glow::ShaderFile::reloadAll();
+                break;
+            case GLFW_KEY_SPACE:
+                m_iso = !m_iso;
+                break;
+            case GLFW_KEY_1:
+                m_center.x += d;
+                m_eye.x += d;
+                break;
+            case GLFW_KEY_2:
+                m_eye.x -= d;
+                m_center.x -= d;
+                break;
+            case GLFW_KEY_3:
+                m_eye += (m_eye - m_center) * 0.1f;
+                break;
+            case GLFW_KEY_4:
+                m_eye -= (m_eye - m_center) * 0.1f;
+                break;
+            case GLFW_KEY_5:
+                m_center.z += d;
+                m_eye.z += d;
+                break;
+            case GLFW_KEY_6:
+                m_center.z -= d;
+                m_eye.z -= d;
+                break;
+        }
 
-        //if (KeyEvent::KeySpace == event.key())
-        //    m_iso = !m_iso;
-
-
-        //if (KeyEvent::Key1 == event.key())
-        //{
-        //       m_center.x += d;
-        //          m_eye.x += d;
-        //}
-        // 
-        //if (KeyEvent::Key2 == event.key())
-        //{   
-        //    m_eye.x -= d;
-        //    m_center.x -= d;
-        //}
-
-        //if (KeyEvent::Key3 == event.key())
-        //{
-        //    m_eye += (m_eye - m_center) * 0.1f;
-        //}
-        //if (KeyEvent::Key4 == event.key())
-        //{
-        //    m_eye -= (m_eye - m_center) * 0.1f;
-        //}
-
-        //if (KeyEvent::Key5 == event.key())
-        //{
-        //    m_center.z += d;
-        //    m_eye.z += d;
-        //}
-        //if (KeyEvent::Key6 == event.key())
-        //{
-        //    m_center.z -= d;
-        //    m_eye.z -= d;
-        //}
-
-        //m_axonometric.setPosition(m_eye);
+        m_axonometric.setPosition(m_eye);
     }
 
 protected:

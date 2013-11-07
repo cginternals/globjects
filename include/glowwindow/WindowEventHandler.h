@@ -33,8 +33,8 @@ public:
     */
     virtual void resizeEvent(
         Window & window
-    ,   const unsigned int width
-    ,   const unsigned int height);
+    ,   unsigned int width
+    ,   unsigned int height);
 
     /** Swap buffers gets called afterwards, and window's context is made 
         current before and done current afterwards.

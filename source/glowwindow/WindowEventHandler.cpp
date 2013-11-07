@@ -1,7 +1,4 @@
 
-#include <cassert>
-
-#include <glow/logging.h>
 #include <glowwindow/WindowEventHandler.h>
 
 namespace glow

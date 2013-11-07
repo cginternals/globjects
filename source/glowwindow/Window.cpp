@@ -33,7 +33,10 @@ Window::Window()
 
 Window::~Window()
 {
-    s_windows.erase(s_windows.find(this));
+    s_windows.erase(this);
+
+    if (s_windows.empty())
+        quit(0);
 
     assert(nullptr == m_eventHandler);
     delete m_timer;    
@@ -87,7 +90,9 @@ bool Window::create(
         return false;
     }
     else
+    {
         promoteContext();
+    }
 
     m_title = title;
 
@@ -102,6 +107,14 @@ bool Window::create(
     }
     glfwSetWindowSize(m_window, m_size.x, m_size.y);
     glfwSetWindowTitle(m_window, m_title.c_str());
+
+    // setup event handling
+    glfwSetWindowUserPointer(m_window, this);
+    glfwSetWindowCloseCallback(m_window, handleWindowClose);
+    glfwSetKeyCallback(m_window, handleKey);
+    glfwSetMouseButtonCallback(m_window, handleMouse);
+    glfwSetWindowRefreshCallback(m_window,handleRefresh);
+    glfwSetWindowSizeCallback(m_window,handleResize);
 
     promoteContext();
     return true;
@@ -183,9 +196,11 @@ void Window::toggleMode()
     case TransitionMode:
         return;
     case FullScreenMode:
-        return windowed();
+        windowed();
+        return;
     case WindowMode:
-        return fullScreen();
+        fullScreen();
+        return;
     }
 }
 
@@ -208,9 +223,14 @@ void Window::assign(WindowEventHandler * eventHandler)
     promoteContext();
 }
 
+bool Window::running = false;
+int Window::exitCode = 0;
+
 int Window::run()
 {
-    while (!s_windows.empty())
+    running = true;
+
+    while (running)
     {
         for (Window * window : s_windows)
             window->onIdle();
@@ -218,12 +238,13 @@ int Window::run()
         glfwPollEvents();
     };
     glfwTerminate();
-    return 0;
+    return exitCode;
 }
 
 void Window::quit(const int code)
 {
-
+    exitCode = code;
+    running = false;
 }
 
 void Window::repaint()
@@ -265,13 +286,13 @@ void Window::onRepaint()
     m_context->doneCurrent();
 }
 
-void Window::onResize()
+void Window::onResize(int width, int height)
 {
     if (!m_context || !m_eventHandler)
         return;
 
     m_context->makeCurrent();
-    m_eventHandler->resizeEvent(*this, width(), height());
+    m_eventHandler->resizeEvent(*this, width, height);
     m_context->doneCurrent();
 }
 
@@ -362,6 +383,60 @@ bool Window::onKeyRelease(const int key)
         m_context->doneCurrent();
     }
     return kre.isAccepted();
+}
+
+// static event dispatch methods
+
+void Window::handleWindowClose(GLFWwindow* window)
+{
+    Window* w = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    if (!w)
+        return;
+
+    w->onClose();
+}
+
+void Window::handleMouse(GLFWwindow* window, int button, int action, int modifiers)
+{
+    Window* w = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    if (!w)
+        return;
+}
+
+void Window::handleKey(GLFWwindow* window, int key, int scanCode, int action, int modifiers)
+{
+    Window* w = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    if (!w)
+        return;
+
+    switch (action)
+    {
+        case GLFW_PRESS:
+        case GLFW_REPEAT:
+            w->onKeyPress(key);
+            break;
+        case GLFW_RELEASE:
+            w->onKeyRelease(key);
+            break;
+    }
+}
+
+void Window::handleRefresh(GLFWwindow* window)
+{
+    Window* w = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    if (!w)
+        return;
+
+    w->onRepaint();
+}
+
+void Window::handleResize(GLFWwindow* window, int width, int height)
+{
+    Window* w = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    if (!w)
+        return;
+
+    w->onResize(width, height);
 }
 
 } // namespace glow

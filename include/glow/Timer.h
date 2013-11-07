@@ -18,18 +18,18 @@ class GLOW_API Timer
 {
 public:
     Timer(
-        const bool start = true,
-        const bool autoUpdate = true);
+        bool start = true,
+        bool autoUpdate = true);
 
     virtual ~Timer();
 
     void setAutoUpdating(const bool autoUpdate);
-    const bool autoUpdating() const;
+    bool autoUpdating() const;
 
     void update() const;
-    const long double elapsed() const;
+    long double elapsed() const;
 
-    const bool paused() const;
+    bool paused() const;
 
     void start();
     void pause();

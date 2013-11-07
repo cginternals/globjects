@@ -26,7 +26,7 @@ public:
 	,   AdaptiveVerticalSyncronization = -1 ///< requires EXT_swap_control_tear
 	};
 
-    static const std::string swapIntervalString(const SwapInterval swapInterval);
+    static const std::string swapIntervalString(SwapInterval swapInterval);
 
 public:
     Context();
@@ -59,7 +59,7 @@ public:
     /** Swap interval relates to the context, since there might be multiple 
         shared contexts with same format, but individual swap format. 
     */
-    void setSwapInterval(const SwapInterval interval);
+    void setSwapInterval(SwapInterval interval);
     void setSwapInterval();
     SwapInterval swapInterval() const;
 
