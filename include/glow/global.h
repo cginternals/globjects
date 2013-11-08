@@ -56,14 +56,4 @@ protected:
 	static GLint memoryInfo(GLenum pname);
 };
 
-/**
- * \brief glew provides an interface to query glew.
- */
-class GLOW_API glew
-{
-public:
-	static std::string getString(GLenum pname);
-	static std::string version();
-};
-
 } // namespace glow
