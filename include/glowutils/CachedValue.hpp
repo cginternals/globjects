@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include <glowutils/CachedValue.h>
+
 namespace glow
 {
 

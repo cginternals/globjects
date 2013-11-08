@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glow/AbstractUniform.h>
+
 namespace glow 
 {
 
