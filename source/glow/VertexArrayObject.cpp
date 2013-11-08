@@ -133,7 +133,7 @@ void VertexArrayObject::drawArraysIndirect(GLenum mode, const void* indirect)
 
 void VertexArrayObject::multiDrawArrays(GLenum mode, GLint* first, const GLsizei* count, GLsizei drawCount)
 {
-    assert((first != nullptr && count != nullptr) || drawCount == 0);
+    assert((first != nullptr && count != nullptr) || drawCount > 0);
 
     bind();
     glMultiDrawArrays(mode, first, count, drawCount);
@@ -142,16 +142,16 @@ void VertexArrayObject::multiDrawArrays(GLenum mode, GLint* first, const GLsizei
 
 void VertexArrayObject::multiDrawArraysIndirect(GLenum mode, const void* indirect, GLsizei drawCount, GLsizei stride)
 {
-    assert(indirect != nullptr || drawCount == 0);
+    assert(indirect != nullptr || drawCount > 0);
 
     bind();
     glMultiDrawArraysIndirect(mode, indirect, drawCount, stride);
     CheckGLError();
 }
 
-void VertexArrayObject::drawElements(GLenum mode, GLsizei count, GLenum type, const void* indices)
+void VertexArrayObject::drawElements(GLenum mode, GLsizei count, GLenum type, const void * indices)
 {
-    assert(indices != nullptr || count == 0);
+    assert(indices != nullptr || count > 0);
 
     bind();
     glDrawElements(mode, count, type, indices);
@@ -160,7 +160,7 @@ void VertexArrayObject::drawElements(GLenum mode, GLsizei count, GLenum type, co
 
 void VertexArrayObject::drawElementsBaseVertex(GLenum mode, GLsizei count, GLenum type, const void* indices, GLint baseVertex)
 {
-    assert(indices != nullptr || count == 0);
+    assert(indices != nullptr || count > 0);
 
     bind();
     glDrawElementsBaseVertex(mode, count, type, const_cast<void*>(indices), baseVertex);
@@ -169,7 +169,7 @@ void VertexArrayObject::drawElementsBaseVertex(GLenum mode, GLsizei count, GLenu
 
 void VertexArrayObject::drawElementsInstanced(GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei primitiveCount)
 {
-    assert(indices != nullptr || count == 0);
+    assert(indices != nullptr || count > 0);
 
     bind();
     glDrawElementsInstanced(mode, count, type, indices, primitiveCount);
@@ -178,7 +178,7 @@ void VertexArrayObject::drawElementsInstanced(GLenum mode, GLsizei count, GLenum
 
 void VertexArrayObject::drawElementsInstancedBaseInstance(GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei instanceCount, GLuint baseInstance)
 {
-    assert(indices != nullptr || count == 0);
+    assert(indices != nullptr || count > 0);
 
     bind();
     glDrawElementsInstancedBaseInstance(mode, count, type, indices, instanceCount, baseInstance);
@@ -187,7 +187,7 @@ void VertexArrayObject::drawElementsInstancedBaseInstance(GLenum mode, GLsizei c
 
 void VertexArrayObject::drawElementsInstancedBaseVertex(GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei instanceCount, GLint baseVertex)
 {
-    assert(indices != nullptr || count == 0);
+    assert(indices != nullptr || count > 0);
 
     bind();
     glDrawElementsInstancedBaseVertex(mode, count, type, indices, instanceCount, baseVertex);
@@ -196,7 +196,7 @@ void VertexArrayObject::drawElementsInstancedBaseVertex(GLenum mode, GLsizei cou
 
 void VertexArrayObject::drawElementsInstancedBaseVertexBaseInstance(GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei instanceCount, GLint baseVertex, GLuint baseInstance)
 {
-    assert(indices != nullptr || count == 0);
+    assert(indices != nullptr || count > 0);
 
     bind();
     glDrawElementsInstancedBaseVertexBaseInstance(mode, count, type, indices, instanceCount, baseVertex, baseInstance);
@@ -205,7 +205,7 @@ void VertexArrayObject::drawElementsInstancedBaseVertexBaseInstance(GLenum mode,
 
 void VertexArrayObject::multiDrawElements(GLenum mode, const GLsizei* count, GLenum type, const void** indices, GLsizei drawCount)
 {
-    assert((indices != nullptr && count != nullptr) || drawCount == 0);
+    assert((indices != nullptr && count != nullptr) || drawCount > 0);
 
     bind();
     glMultiDrawElements(mode, count, type, indices, drawCount);
@@ -214,7 +214,7 @@ void VertexArrayObject::multiDrawElements(GLenum mode, const GLsizei* count, GLe
 
 void VertexArrayObject::multiDrawElementsBaseVertex(GLenum mode, const GLsizei* count, GLenum type, const void** indices, GLsizei primitiveCount, GLint* baseVertex)
 {
-    assert((indices != nullptr && count != nullptr) || primitiveCount == 0);
+    assert((indices != nullptr && count != nullptr) || primitiveCount > 0);
 
     bind();
     glMultiDrawElementsBaseVertex(mode, const_cast<GLsizei*>(count), type, const_cast<void**>(indices), primitiveCount, baseVertex);
@@ -223,7 +223,7 @@ void VertexArrayObject::multiDrawElementsBaseVertex(GLenum mode, const GLsizei* 
 
 void VertexArrayObject::multiDrawElementsIndirect(GLenum mode, GLenum type, const void* indirect, GLsizei drawCount, GLsizei stride)
 {
-    assert(indirect != nullptr || drawCount == 0);
+    assert(indirect != nullptr || drawCount > 0);
 
     bind();
     glMultiDrawElementsIndirect(mode, type, indirect, drawCount, stride);

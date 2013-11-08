@@ -17,21 +17,30 @@ void WindowEventHandler::handleEvent(Window & window, WindowEvent * event)
 {
     switch (event->type())
     {
-        case WindowEvent::Resize: {
-            ResizeEvent* e = dynamic_cast<ResizeEvent*>(event);
+    case WindowEvent::Resize: 
+        {
+            ResizeEvent * e = static_cast<ResizeEvent*>(event);
             resizeEvent(window, e->width(), e->height());
-            break; }
-        case WindowEvent::Paint:
-            paintEvent(window);
-            break;
-        case WindowEvent::KeyPress: {
-            KeyEvent* e = dynamic_cast<KeyEvent*>(event);
+        }
+        break;
+        
+    case WindowEvent::Paint:
+        paintEvent(window);
+        break;
+
+    case WindowEvent::KeyPress: 
+        {
+            KeyEvent * e = static_cast<KeyEvent*>(event);
             keyPressEvent(window, *e);
-            break; }
-        case WindowEvent::KeyRelease: {
-            KeyEvent* e = dynamic_cast<KeyEvent*>(event);
+        }
+        break;
+
+    case WindowEvent::KeyRelease: 
+        {
+            KeyEvent * e = static_cast<KeyEvent*>(event);
             keyReleaseEvent(window, *e);
-            break; }
+        }
+        break;
     }
 }
 

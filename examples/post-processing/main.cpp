@@ -124,13 +124,13 @@ public:
 
 		m_normal->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 		m_geom->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-		m_depth->storage(GL_DEPTH_COMPONENT, width, height);
+		m_depth->storage(GL_DEPTH_COMPONENT16, width, height);
 
 		const float aspect(static_cast<float>(width) / static_cast<float>(height));
 		m_projection = perspective(40.f, aspect, 0.1f, 1024.f);
 		m_ortho = ortho(-aspect, aspect, -1.f, 1.f, 0.1f, 1024.f);
 
-		m_agrid->setNearFar(0.1f, 1024.f);
+		m_agrid->setNearFar(0.1f, 16.f);
 
 		m_axonometric.setPosition(m_eye);
 		const mat4 view(m_iso ? m_axonometric.matrix() : lookAt(m_eye, m_center, vec3(0.0, 1.0, 0.0)));
@@ -274,6 +274,7 @@ int main(int argc, char** argv)
 	ContextFormat format;
 	format.setVersion(4, 0);
 	format.setProfile(ContextFormat::CoreProfile);
+    format.setDepthBufferSize(16);
 
 	Window window;
 	window.assign(new EventHandler());
