@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include <glowwindow/Window.h>
+#include <glowwindow/WindowEventHandler.h>
 
 #include "WindowEventDispatcher.h"
 

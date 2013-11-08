@@ -2,8 +2,6 @@
 
 #include <set>
 
-#include <glowwindow/glowwindow.h>
-
 struct GLFWwindow;
 
 namespace glow
@@ -11,7 +9,7 @@ namespace glow
 
 class Window;
 
-class GLOWWINDOW_API WindowEventDispatcher
+class WindowEventDispatcher
 {
 public:
     static void registerWindow(Window* window);
