@@ -11,6 +11,7 @@
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/Version.h>
+#include <glow/AbstractUniform.h>
 
 #include <glow/LogMessageBuilder.h>
 
@@ -250,6 +251,13 @@ LogMessageBuilder& LogMessageBuilder::operator<<(TransformFeedback* object)
 LogMessageBuilder& LogMessageBuilder::operator<<(VertexArrayObject* object)
 {
     logObject("Vertex Array Object", object);
+
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(AbstractUniform* uniform)
+{
+    *this << "Uniform " << uniform->name();
 
     return *this;
 }

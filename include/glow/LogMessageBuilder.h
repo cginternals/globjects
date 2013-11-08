@@ -23,6 +23,9 @@ class Texture;
 class TransformFeedback;
 class VertexArrayObject;
 class Version;
+class AbstractUniform;
+template <typename T>
+class Uniform;
 
 /** \brief Builds a LogMessage from different kinds of primitive types.
 
@@ -82,6 +85,9 @@ public:
 	LogMessageBuilder& operator<<(Texture* object);
 	LogMessageBuilder& operator<<(TransformFeedback* object);
 	LogMessageBuilder& operator<<(VertexArrayObject* object);
+    LogMessageBuilder& operator<<(AbstractUniform* uniform);
+    template <typename T>
+    LogMessageBuilder& operator<<(Uniform<T>* uniform);
     LogMessageBuilder& operator<<(const Version& version);
 	
 
@@ -105,3 +111,5 @@ protected:
 };
 
 } // namespace glow
+
+#include <glow/LogMessageBuilder.hpp>
