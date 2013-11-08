@@ -42,49 +42,49 @@ ref_ptr<T> & ref_ptr<T>::operator=(const ref_ptr & reference)
 template<typename T>
 T & ref_ptr<T>::operator*()
 {
-	return *m_referenced;
+	return *static_cast<T*>(m_referenced);
 }
 
 template<typename T>
 const T * ref_ptr<T>::operator*() const
 {
-	return m_referenced;
+	return static_cast<const T*>(m_referenced);
 }
 
 template<typename T>
 T * ref_ptr<T>::operator->()
 {
-	return m_referenced;
+	return static_cast<T*>(m_referenced);
 }
 
 template<typename T>
 const T * ref_ptr<T>::operator->() const
 {
-	return m_referenced;
+	return static_cast<const T*>(m_referenced);
 }
 
 template<typename T>
 T * ref_ptr<T>::get()
 {
-	return m_referenced;
+	return static_cast<T*>(m_referenced);
 }
 
 template<typename T>
 const T * ref_ptr<T>::get() const
 {
-	return m_referenced;
+	return static_cast<const T*>(m_referenced);
 }
 
 template<typename T>
 ref_ptr<T>::operator T *()
 {
-	return m_referenced;
+	return static_cast<T*>(m_referenced);
 }
 
 template<typename T>
 ref_ptr<T>::operator const T *() const
 {
-	return m_referenced;
+	return static_cast<const T *>(m_referenced);
 }
 
 template<typename T>

@@ -3,6 +3,8 @@
 namespace glow 
 {
 
+class Referenced;
+
 /** \brief The ref_ptr class provides the interface for a reference pointer.
     
     It is meant to be used together with subclasses of Referenced*
@@ -43,15 +45,18 @@ public:
 	operator T *();
 	operator const T *() const;
 	operator bool() const;
+
 	bool operator<(const ref_ptr & reference) const;
 	bool operator>(const ref_ptr & reference) const;
 	bool operator==(const ref_ptr & reference) const;
 	bool operator!=(const ref_ptr & reference) const;
-protected:
-	T * m_referenced;
 
+protected:
 	void increaseRef();
 	void decreaseRef();
+
+protected:
+	Referenced * m_referenced;
 };
 
 } // namespace glow
