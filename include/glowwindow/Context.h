@@ -39,7 +39,11 @@ public:
 
         \return isValid() is returned
     */
-    bool create(const ContextFormat & format);
+    bool create(
+        const ContextFormat & format
+    ,   int width
+    , int height);
+
     void release();
 
     void makeCurrent();

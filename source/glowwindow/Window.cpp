@@ -80,7 +80,7 @@ bool Window::create(
     assert(nullptr == m_context);
 
     m_context = new Context();
-    if (!m_context->create(format))
+    if (!m_context->create(format, width, height))
     {
         delete m_context;
         m_context = nullptr;
@@ -100,7 +100,6 @@ bool Window::create(
     m_width = width;
     m_height = height;
 
-    glfwSetWindowSize(m_window, m_width, m_height);
     glfwSetWindowTitle(m_window, m_title.c_str());
 
     WindowEventDispatcher::registerWindow(this);
@@ -116,10 +115,7 @@ void Window::promoteContext()
     {
          m_context->makeCurrent();
          m_eventHandler->initialize(*this);
-
-         ResizeEvent resize(m_width, m_height);
-         processEvent(&resize);
-
+         resize(m_width, m_height);
          m_context->doneCurrent();
     }
 }
@@ -234,6 +230,14 @@ void Window::repaint()
 {
     WindowEvent e(WindowEvent::Paint);
     processEvent(&e);
+}
+
+void Window::resize(
+    const int width
+,   const int height)
+{
+    ResizeEvent resize(width, height);
+    processEvent(&resize);
 }
 
 void Window::close()

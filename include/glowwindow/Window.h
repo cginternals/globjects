@@ -61,6 +61,8 @@ public:
     */
     void repaint();
 
+    void resize(int width, int height);
+
     void show();
     void hide();
 

@@ -30,7 +30,10 @@ GLFWwindow * Context::window()
     return m_window;
 }
 
-bool Context::create(const ContextFormat & format)
+bool Context::create(
+    const ContextFormat & format
+,   const int width
+,   const int height)
 {
     if (isValid())
     {
@@ -56,7 +59,7 @@ bool Context::create(const ContextFormat & format)
     glfwWindowHint(GLFW_ALPHA_BITS, format.alphaBufferSize());
     glfwWindowHint(GLFW_SAMPLES, format.samples());
 
-    m_window = glfwCreateWindow(320, 240, "glow", nullptr, nullptr);
+    m_window = glfwCreateWindow(width, height, "glow", nullptr, nullptr);
 
     if (!m_window)
     {
