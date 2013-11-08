@@ -12,6 +12,7 @@
 #include <glowwindow/WindowEventHandler.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/KeyEvent.h>
+
 #include "WindowEventDispatcher.h"
 
 namespace glow
@@ -115,6 +116,7 @@ void Window::promoteContext()
     {
          m_context->makeCurrent();
          m_eventHandler->initialize(*this);
+		 m_eventHandler->resizeEvent(*this, m_width, m_height);
          m_context->doneCurrent();
     }
 }

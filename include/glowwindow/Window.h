@@ -87,6 +87,7 @@ protected:
 
     void processEvent(WindowEvent* event);
     void defaultAction(WindowEvent* event);
+
 protected:
     ref_ptr<WindowEventHandler> m_eventHandler;
     Context * m_context;
