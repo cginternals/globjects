@@ -1,4 +1,3 @@
-
 #include <cassert>
 
 #include <GL/glew.h>
