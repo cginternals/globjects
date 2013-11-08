@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include <glow/LogMessageBuilder.h>
+
 namespace glow
 {
 

@@ -4,6 +4,7 @@
 
 #include <glow/Array.h>
 #include <glow/Texture.h>
+#include <glow/Uniform.h>
 
 namespace glow
 {

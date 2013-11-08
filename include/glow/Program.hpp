@@ -6,6 +6,7 @@
 #include <glow/Uniform.h>
 #include <glow/Error.h>
 #include <glow/Shader.h>
+#include <glow/Program.h>
 
 namespace glow
 {

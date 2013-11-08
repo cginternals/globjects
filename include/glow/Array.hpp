@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include <glow/Array.h>
+
 namespace glow
 {
 

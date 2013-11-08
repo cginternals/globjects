@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glow/Referenced.h>
+#include <glow/ref_ptr.h>
 
 namespace glow 
 {

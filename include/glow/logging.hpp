@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include <glow/formatString.h>
+#include <glow/logging.h>
 
 namespace glow 
 {
