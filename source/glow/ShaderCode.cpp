@@ -10,7 +10,7 @@ ShaderCode::ShaderCode(const std::string & source)
 {
 }
 
-const std::string & ShaderCode::source()
+const std::string & ShaderCode::source() const
 {
 	return m_source;
 }

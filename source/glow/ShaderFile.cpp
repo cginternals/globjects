@@ -24,7 +24,7 @@ ShaderFile::~ShaderFile()
 	deregisterFile(this);
 }
 
-const std::string & ShaderFile::source()
+const std::string & ShaderFile::source() const
 {
 	return m_source;
 }

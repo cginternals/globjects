@@ -40,7 +40,7 @@ SourceTemplate::~SourceTemplate()
 	m_internal->deregisterListener(this);
 }
 
-const std::string & SourceTemplate::source()
+const std::string & SourceTemplate::source() const
 {
 	return m_modifiedSource;
 }

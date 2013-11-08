@@ -24,7 +24,7 @@ public:
 	ShaderFile(const std::string & filePath);
 	virtual ~ShaderFile();
 
-	virtual const std::string & source();
+    virtual const std::string & source() const;
 	virtual bool isFile() const;
 
 	const std::string & filePath() const;

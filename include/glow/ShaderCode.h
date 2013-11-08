@@ -18,7 +18,7 @@ class GLOW_API ShaderCode : public ShaderSource
 {
 public:
 	ShaderCode(const std::string & source);
-	virtual const std::string & source();
+    virtual const std::string & source() const;
 
 protected:
 	std::string m_source;

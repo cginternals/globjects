@@ -18,7 +18,7 @@ public:
 	SourceTemplate(ShaderSource * source);
 	~SourceTemplate();
 
-	virtual const std::string & source();
+    virtual const std::string & source() const;
 
 	void replace(const std::string & orig, const std::string & str);
 	void replace(const std::string & orig, int i);
