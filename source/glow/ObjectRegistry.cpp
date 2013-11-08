@@ -1,3 +1,4 @@
+#include <cassert>
 
 #include <glow/ObjectRegistry.h>
 
@@ -13,6 +14,8 @@ const std::set<Object*> & ObjectRegistry::objects()
 
 void ObjectRegistry::registerObject(Object* object)
 {
+    assert(object != nullptr);
+
 	if (object->id() == 0)
         return;
 
@@ -21,6 +24,8 @@ void ObjectRegistry::registerObject(Object* object)
 
 void ObjectRegistry::deregisterObject(Object* object)
 {
+    assert(object != nullptr);
+
     if (object->id() == 0)
         return;
 

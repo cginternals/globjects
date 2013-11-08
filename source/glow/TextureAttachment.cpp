@@ -1,3 +1,4 @@
+#include <cassert>
 
 #include <glow/Texture.h>
 #include <glow/TextureAttachment.h>
@@ -9,6 +10,7 @@ TextureAttachment::TextureAttachment(Texture * texture, GLenum attachment)
 : FrameBufferAttachment(attachment)
 , m_texture(texture)
 {
+    assert(texture != nullptr);
 }
 
 bool TextureAttachment::isTextureAttachment() const

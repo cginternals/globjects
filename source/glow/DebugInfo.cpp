@@ -2,6 +2,7 @@
 #include <sstream>
 #include <algorithm>
 #include <iomanip>
+#include <cassert>
 
 #include <glow/ObjectRegistry.h>
 #include <glow/logging.h>
@@ -160,6 +161,8 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::collectObjectInfo()
 
 void DebugInfo::visitBuffer(Buffer* buffer)
 {
+    assert(buffer != nullptr);
+
 	InfoUnit info;
 	info.name = name("Buffer", buffer);
 
@@ -172,6 +175,8 @@ void DebugInfo::visitBuffer(Buffer* buffer)
 
 void DebugInfo::visitFrameBufferObject(FrameBufferObject* fbo)
 {
+    assert(fbo != nullptr);
+
 	InfoUnit info;
 	info.name = name("FrameBufferObject", fbo);
 
@@ -195,6 +200,8 @@ void DebugInfo::visitFrameBufferObject(FrameBufferObject* fbo)
 
 void DebugInfo::visitProgram(Program* program)
 {
+    assert(program != nullptr);
+
 	InfoUnit info;
 	info.name = name("Program", program);
 
@@ -213,6 +220,8 @@ void DebugInfo::visitProgram(Program* program)
 
 void DebugInfo::visitRenderBufferObject(RenderBufferObject* rbo)
 {
+    assert(rbo != nullptr);
+
 	InfoUnit info;
 	info.name = name("RenderBufferObject", rbo);
 
@@ -238,6 +247,8 @@ void DebugInfo::visitRenderBufferObject(RenderBufferObject* rbo)
 
 void DebugInfo::visitShader(Shader* shader)
 {
+    assert(shader != nullptr);
+
 	InfoUnit info;
 	info.name = name("Shader", shader);
 
@@ -252,6 +263,8 @@ void DebugInfo::visitShader(Shader* shader)
 
 void DebugInfo::visitTexture(Texture* texture)
 {
+    assert(texture != nullptr);
+
 	InfoUnit info;
 	info.name = name("Texture", texture);
 
@@ -261,9 +274,7 @@ void DebugInfo::visitTexture(Texture* texture)
 	int memory = 0;
 	for (int i = 0; i<=maxLevels; ++i)
 	{
-		int imageSize = 0;
-
-		if (texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED) == GL_TRUE)
+        if (texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED) == GL_TRUE)
 		{
 			memory += texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED_IMAGE_SIZE);
 		}
@@ -293,6 +304,8 @@ void DebugInfo::visitTexture(Texture* texture)
 
 void DebugInfo::visitTransformFeedback(TransformFeedback* transformfeedback)
 {
+    assert(transformfeedback != nullptr);
+
 	InfoUnit info;
 	info.name = name("TransformFeedback", transformfeedback);
 
@@ -301,6 +314,8 @@ void DebugInfo::visitTransformFeedback(TransformFeedback* transformfeedback)
 
 void DebugInfo::visitVertexArrayObject(VertexArrayObject* vao)
 {
+    assert(vao != nullptr);
+
 	InfoUnit info;
 	info.name = name("VertexArrayObject", vao);
 
@@ -365,6 +380,8 @@ std::string DebugInfo::humanReadableSize(long long bytes)
 
 std::string DebugInfo::name(const std::string& typeName, Object* object)
 {
+    assert(object != nullptr);
+
 	std::stringstream ss;
 
 	ss << typeName << " (" << object->id();

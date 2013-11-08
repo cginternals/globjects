@@ -1,4 +1,4 @@
-
+#include <cassert>
 
 #include <glow/AbstractUniform.h>
 #include <glow/Program.h>
@@ -20,6 +20,8 @@ UniformGroup::~UniformGroup()
 
 void UniformGroup::addUniform(AbstractUniform * uniform)
 {
+    assert(uniform != nullptr);
+
     const std::string name = uniform->name();
 
     if (m_uniforms.count(name) && m_uniforms.at(name).get() != uniform)
@@ -30,6 +32,8 @@ void UniformGroup::addUniform(AbstractUniform * uniform)
 
 void UniformGroup::addToProgram(Program * program)
 {
+    assert(program != nullptr);
+
     for (std::pair<std::string, ref_ptr<AbstractUniform>> pair : m_uniforms)
         program->addUniform(pair.second);
 }

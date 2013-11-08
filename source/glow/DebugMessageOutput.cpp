@@ -2,6 +2,7 @@
 #ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
 #include <stdexcept>
 #endif
+#include <cassert>
 
 #include <glow/logging.h>
 #include <glow/Error.h>
@@ -103,6 +104,8 @@ void DebugMessageOutput::addCallback(Callback callback)
 
 void DebugMessageOutput::insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char* message)
 {
+    assert(message != nullptr);
+
     if (!GLEW_ARB_debug_output)
         return;
 
@@ -127,6 +130,8 @@ void DebugMessageOutput::enableMessage(GLenum source, GLenum type, GLenum severi
 
 void DebugMessageOutput::enableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids)
 {
+    assert(ids != nullptr || count == 0);
+
     glDebugMessageControl(source, type, severity, count, ids, GL_TRUE);
     CheckGLError();
 }
@@ -143,6 +148,8 @@ void DebugMessageOutput::disableMessage(GLenum source, GLenum type, GLenum sever
 
 void DebugMessageOutput::disableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids)
 {
+    assert(ids != nullptr || count == 0);
+
     glDebugMessageControl(source, type, severity, count, ids, GL_FALSE);
 }
 

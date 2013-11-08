@@ -1,3 +1,4 @@
+#include <cassert>
 
 #include <glow/ChangeListener.h>
 #include <glow/Changeable.h>
@@ -13,11 +14,15 @@ void Changeable::changed()
 
 void Changeable::registerListener(ChangeListener * listener)
 {
+    assert(listener != nullptr);
+
 	m_listeners.insert(listener);
 }
 
 void Changeable::deregisterListener(ChangeListener * listener)
 {
+    assert(listener != nullptr);
+
 	m_listeners.erase(listener);
 }
 

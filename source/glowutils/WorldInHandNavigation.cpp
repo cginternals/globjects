@@ -56,6 +56,8 @@ void WorldInHandNavigation::setBoundaryHint(const AxisAlignedBoundingBox & aabb)
 
 void WorldInHandNavigation::setCoordinateProvider(AbstractCoordinateProvider * provider)
 {
+    assert(provider != nullptr);
+
     m_coordsProvider = provider;
 }
 

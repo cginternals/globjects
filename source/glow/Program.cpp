@@ -1,4 +1,4 @@
-
+#include <cassert>
 #include <vector>
 
 #include <glm/gtc/type_ptr.hpp>
@@ -104,29 +104,14 @@ void Program::checkDirty()
 	}
 }
 
-//void Program::attach(Shader * shader)
-//{
-//	glAttachShader(m_id, shader->id());
-//	CheckGLError();
-//
-//	shader->registerListener(this);
-//	m_shaders.insert(shader);
-//
-//	invalidate();
-//}
-
-//Program & Program::operator<<(Shader * shader)
-//{
-//    attach(shader);
-//    return *this;
-//}
-
 void Program::attach()
 {
 }
 
 void Program::detach(Shader * shader)
 {
+    assert(shader != nullptr);
+
 	glDetachShader(m_id, shader->id());
 	CheckGLError();
 
@@ -213,6 +198,8 @@ GLuint Program::getResourceIndex(GLenum programInterface, const std::string& nam
 
 void Program::addUniform(AbstractUniform * uniform)
 {
+    assert(uniform != nullptr);
+
 	ref_ptr<AbstractUniform>& uniformReference = m_uniforms[uniform->name()];
 
 	if (uniformReference)

@@ -1,7 +1,7 @@
+#include <cassert>
 
 #include <glow/Program.h>
 #include <glow/AbstractUniform.h>
-
 
 namespace glow
 {
@@ -22,11 +22,15 @@ const std::string & AbstractUniform::name() const
 
 void AbstractUniform::registerProgram(Program * program)
 {
+    assert(program != nullptr);
+
 	m_programs.insert(program);
 }
 
 void AbstractUniform::deregisterProgram(Program * program)
 {
+    assert(program != nullptr);
+
 	m_programs.erase(program);
 }
 
@@ -38,6 +42,8 @@ void AbstractUniform::changed()
 
 void AbstractUniform::update(Program * program)
 {
+    assert(program != nullptr);
+
 	program->use();
 
     if (program->isLinked())

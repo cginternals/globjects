@@ -1,3 +1,4 @@
+#include <cassert>
 
 #include <glow/RenderBufferObject.h>
 #include <glow/RenderBufferAttachment.h>
@@ -11,6 +12,7 @@ RenderBufferAttachment::RenderBufferAttachment(
 : FrameBufferAttachment(attachment)
 , m_renderBuffer(renderBuffer)
 {
+    assert(renderBuffer != nullptr);
 }
 
 bool RenderBufferAttachment::isRenderBufferAttachment() const

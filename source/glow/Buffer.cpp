@@ -1,3 +1,4 @@
+#include <cassert>
 
 #include <glow/Error.h>
 #include <glow/logging.h>
@@ -150,17 +151,23 @@ void Buffer::copySubData(GLenum writeTarget, GLsizeiptr size)
 
 void Buffer::copySubData(glow::Buffer* buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)
 {
+    assert(buffer != nullptr);
+
 	buffer->bind(GL_COPY_WRITE_BUFFER);
 	copySubData(GL_COPY_WRITE_BUFFER, readOffset, writeOffset, size);
 }
 
 void Buffer::copySubData(glow::Buffer* buffer, GLsizeiptr size)
 {
+    assert(buffer != nullptr);
+
 	copySubData(buffer, 0, 0, size);
 }
 
 void Buffer::copyData(glow::Buffer* buffer, GLsizeiptr size, GLenum usage)
 {
+    assert(buffer != nullptr);
+
 	buffer->bind(GL_COPY_WRITE_BUFFER);
 	buffer->setData(static_cast<GLsizei>(size), nullptr, usage);
 	copySubData(buffer, 0, 0, size);

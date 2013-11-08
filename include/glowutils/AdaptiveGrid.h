@@ -70,10 +70,10 @@ private:
     static const char * s_fsSource;
 
 private:
-    Program * m_program;
+    ref_ptr<Program> m_program;
 
-    VertexArrayObject * m_vao;
-    Buffer * m_buffer;
+    ref_ptr<VertexArrayObject> m_vao;
+    ref_ptr<Buffer> m_buffer;
 
     glm::vec3 m_location;
     glm::vec3 m_normal;

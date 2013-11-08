@@ -139,9 +139,6 @@ protected:
     bool m_hasAttribute;
 };
 
-
-#ifdef GL_VERSION_4_3
-
 class VertexAttributeBinding_GL_4_3 : public VertexAttributeBindingImplementation
 {
 public:
@@ -154,7 +151,5 @@ public:
 	virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
 	virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset);
 };
-
-#endif
 
 } // namespace glow

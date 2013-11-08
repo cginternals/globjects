@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 
 #include <glow/Referenced.h>
-#include <glow/ref_ptr.hpp>
+#include <glow/ref_ptr.h>
 #include <glow/Array.h>
 
 #include <glowutils/glowutils.h>

@@ -1,3 +1,4 @@
+#include <cassert>
 
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
@@ -92,6 +93,8 @@ void TransformFeedback::draw(GLenum primitiveMode)
 
 void TransformFeedback::setVaryings(Program* program, GLsizei count, const char** varyingNames, GLenum bufferMode)
 {
+    assert(varyingNames != nullptr || count == 0);
+
 	bind();
 
 	glTransformFeedbackVaryings(program->id(), count, varyingNames, bufferMode);

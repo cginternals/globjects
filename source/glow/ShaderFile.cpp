@@ -1,6 +1,7 @@
 
 #include <glow/Shader.h>
 #include <glow/RawFile.h>
+#include <cassert>
 
 #include <glow/ShaderFile.h>
 
@@ -57,11 +58,15 @@ void ShaderFile::reloadAll()
 
 void ShaderFile::registerFile(ShaderFile * file)
 {
+    assert(file != nullptr);
+
 	s_fileRegistry.insert(file);
 }
 
 void ShaderFile::deregisterFile(ShaderFile * file)
 {
+    assert(file != nullptr);
+
 	s_fileRegistry.erase(file);
 }
 

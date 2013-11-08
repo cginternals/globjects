@@ -1,4 +1,3 @@
-
 #include <vector>
 #include <sstream>
 
@@ -36,16 +35,14 @@ Shader * Shader::fromFile(
     const GLenum type
 ,   const std::string & filePath)
 {
-    ShaderFile * source = new ShaderFile(filePath);
-    return new Shader(type, source);
+    return new Shader(type, new ShaderFile(filePath));
 }
 
 Shader * Shader::fromString(
     const GLenum type
     , const std::string & sourceString)
 {
-    ShaderCode * source = new ShaderCode(sourceString);
-    return new Shader(type, source);
+    return new Shader(type, new ShaderCode(sourceString));
 }
 
 Shader::~Shader()

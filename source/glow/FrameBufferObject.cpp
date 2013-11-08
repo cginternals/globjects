@@ -1,3 +1,4 @@
+#include <cassert>
 
 #include <glow/logging.h>
 #include <glow/Error.h>
@@ -86,6 +87,8 @@ void FrameBufferObject::setParameter(GLenum pname, GLint param)
 
 void FrameBufferObject::attachTexture(GLenum attachment, Texture* texture, GLint level)
 {
+    assert(texture != nullptr);
+
 	bind();
 
 	glFramebufferTexture(m_target, attachment, texture->id(), level);
@@ -95,6 +98,8 @@ void FrameBufferObject::attachTexture(GLenum attachment, Texture* texture, GLint
 
 void FrameBufferObject::attachTexture1D(GLenum attachment, Texture* texture, GLint level)
 {
+    assert(texture != nullptr);
+
 	bind();
 
 	glFramebufferTexture1D(m_target, attachment, texture->target(), texture->id(), level);
@@ -105,6 +110,8 @@ void FrameBufferObject::attachTexture1D(GLenum attachment, Texture* texture, GLi
 
 void FrameBufferObject::attachTexture2D(GLenum attachment, Texture* texture, GLint level)
 {
+    assert(texture != nullptr);
+
 	bind();
 
 	glFramebufferTexture2D(m_target, attachment, texture->target(), texture->id(), level);
@@ -115,6 +122,8 @@ void FrameBufferObject::attachTexture2D(GLenum attachment, Texture* texture, GLi
 
 void FrameBufferObject::attachTextureLayer(GLenum attachment, Texture* texture, GLint level, GLint layer)
 {
+    assert(texture != nullptr);
+
 	bind();
 
 	glFramebufferTextureLayer(m_target, attachment, texture->id(), level, layer);
@@ -125,6 +134,8 @@ void FrameBufferObject::attachTextureLayer(GLenum attachment, Texture* texture, 
 
 void FrameBufferObject::attachRenderBuffer(GLenum attachment, RenderBufferObject* renderBuffer)
 {
+    assert(renderBuffer != nullptr);
+
 	bind();
 	renderBuffer->bind();
 
@@ -136,6 +147,8 @@ void FrameBufferObject::attachRenderBuffer(GLenum attachment, RenderBufferObject
 
 void FrameBufferObject::attach(FrameBufferAttachment* attachment)
 {
+    assert(attachment != nullptr);
+
 	m_attachments[attachment->attachment()] = attachment;
 }
 
@@ -157,6 +170,8 @@ void FrameBufferObject::setDrawBuffer(GLenum mode)
 
 void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum* modes)
 {
+    assert(modes != nullptr || n == 0);
+
 	bind(GL_DRAW_FRAMEBUFFER);
 
 	glDrawBuffers(n, modes);
@@ -178,6 +193,8 @@ void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei heig
 
 void FrameBufferObject::readPixelsToBuffer(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, Buffer* pbo)
 {
+    assert(pbo != nullptr);
+
 	pbo->bind(GL_PIXEL_PACK_BUFFER);
 	readPixels(x, y, width, height, format, type, 0);
 	pbo->unbind();

@@ -121,9 +121,6 @@ AdaptiveGrid::AdaptiveGrid(
 
 AdaptiveGrid::~AdaptiveGrid()
 {
-    delete m_vao;
-    delete m_buffer;
-    delete m_program;
 }
 
 void AdaptiveGrid::setupGridLineBuffer(unsigned short segments)

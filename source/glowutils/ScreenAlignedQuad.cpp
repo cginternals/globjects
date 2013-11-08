@@ -1,3 +1,4 @@
+#include <cassert>
 
 #include <glow/Program.h>
 #include <glow/VertexArrayObject.h>
@@ -75,6 +76,8 @@ ScreenAlignedQuad::ScreenAlignedQuad(Program * program)
 ,   m_program(program)
 ,   m_samplerIndex(0)
 {
+    assert(program != nullptr);
+
     initialize();
 }
 

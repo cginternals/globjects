@@ -1,3 +1,4 @@
+#include <cassert>
 
 #include <glow/logging.h>
 #include <glow/Object.h>
@@ -40,6 +41,8 @@ LogMessageBuilder::~LogMessageBuilder()
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const char * c)
 {
+    assert(c != nullptr);
+
 	write(c, std::strlen(c));
 	return *this;
 }
@@ -187,6 +190,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat4 & m)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(Object* object)
 {
+    assert(object != nullptr);
+
     logObject("Unknown glow Object", object);
 
     return *this;
@@ -194,6 +199,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(Object* object)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(Buffer* object)
 {
+    assert(object != nullptr);
+
     logObject("Buffer", object);
 
     return *this;
@@ -201,6 +208,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(Buffer* object)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(FrameBufferObject* object)
 {
+    assert(object != nullptr);
+
     logObject("Framebuffer Object", object);
 
     return *this;
@@ -208,6 +217,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(FrameBufferObject* object)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(Program* object)
 {
+    assert(object != nullptr);
+
     logObject("Program", object);
 
     return *this;
@@ -215,6 +226,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(Program* object)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(Query* object)
 {
+    assert(object != nullptr);
+
     logObject("Query", object);
 
     return *this;
@@ -222,6 +235,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(Query* object)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(RenderBufferObject* object)
 {
+    assert(object != nullptr);
+
     logObject("Renderbuffer Object", object);
 
     return *this;
@@ -229,6 +244,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(RenderBufferObject* object)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(Shader* object)
 {
+    assert(object != nullptr);
+
     logObject("Shader", object);
 
     return *this;
@@ -236,6 +253,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(Shader* object)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(Texture* object)
 {
+    assert(object != nullptr);
+
     logObject("Texture", object);
 
     return *this;
@@ -243,6 +262,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(Texture* object)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(TransformFeedback* object)
 {
+    assert(object != nullptr);
+
     logObject("Transform Feedback", object);
 
     return *this;
@@ -250,6 +271,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(TransformFeedback* object)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(VertexArrayObject* object)
 {
+    assert(object != nullptr);
+
     logObject("Vertex Array Object", object);
 
     return *this;
@@ -257,6 +280,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(VertexArrayObject* object)
 
 LogMessageBuilder& LogMessageBuilder::operator<<(AbstractUniform* uniform)
 {
+    assert(uniform != nullptr);
+
     *this << "Uniform " << uniform->name();
 
     return *this;
@@ -271,6 +296,8 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const Version& version)
 
 void LogMessageBuilder::logObject(const std::string& type, Object* object)
 {
+    assert(object != nullptr);
+
     *this << type << " (" << object->id() << ") at " << (void*)object;
 }
 

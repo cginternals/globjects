@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include <glow/Array.h>
+#include <glow/ref_ptr.h>
 #include <glow/Referenced.h>
 
 #include <glowutils/glowutils.h>
