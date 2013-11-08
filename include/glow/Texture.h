@@ -35,8 +35,11 @@ public:
 
 	virtual void accept(ObjectVisitor & visitor);
 
-	void bind();
-	void unbind();
+	void bind() const;
+    void bind(GLenum texture) const;
+
+    void unbind() const;
+    void unbind(GLenum texture) const;
 
 	void setParameter(GLenum name, GLint value);
 	void setParameter(GLenum name, GLfloat value);

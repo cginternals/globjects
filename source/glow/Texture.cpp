@@ -31,16 +31,30 @@ Texture::~Texture()
 	}
 }
 
-void Texture::bind()
+void Texture::bind() const
 {
     glBindTexture(m_target, m_id);
 	CheckGLError();
 }
 
-void Texture::unbind()
+void Texture::bind(const GLenum texture) const
+{
+    glActiveTexture(texture);
+    glBindTexture(m_target, m_id);
+    CheckGLError();
+}
+
+void Texture::unbind() const
 {
     glBindTexture(m_target, 0);
 	CheckGLError();
+}
+
+void Texture::unbind(const GLenum texture) const
+{
+    glActiveTexture(texture);
+    glBindTexture(m_target, 0);
+    CheckGLError();
 }
 
 GLenum Texture::target() const

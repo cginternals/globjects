@@ -148,18 +148,15 @@ public:
 		glDisable(GL_DEPTH_TEST);
 		glDepthMask(GL_FALSE);
 
-		// ToDo: Simplify with glow
 		m_phong->setUniform("normal", 0);
 		m_phong->setUniform("geom", 1);
-		glActiveTexture(GL_TEXTURE0 + 0);
-		m_normal->bind();
-		glActiveTexture(GL_TEXTURE0 + 1);
-		m_geom->bind();
-
+        m_normal->bind(GL_TEXTURE0);
+        m_geom->bind(GL_TEXTURE1);
 
 		m_quad->draw();
 
-		glActiveTexture(GL_TEXTURE0);
+        m_geom->unbind(GL_TEXTURE1);
+        m_normal->unbind(GL_TEXTURE0);
 
 		glEnable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE);
