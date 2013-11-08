@@ -8,6 +8,7 @@
 #include <glow/Object.h>
 #include <glow/Changeable.h>
 #include <glow/ChangeListener.h>
+#include <glow/ref_ptr.h>
 
 // http://www.opengl.org/wiki/Shader
 
