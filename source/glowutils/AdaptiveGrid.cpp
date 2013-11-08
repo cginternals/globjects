@@ -13,6 +13,7 @@
 #include <glow/VertexAttributeBinding.h>
 
 #include <glowutils/Plane3.h>
+#include <glowutils/Camera.h>
 #include <glowutils/AdaptiveGrid.h>
 
 
@@ -95,6 +96,7 @@ AdaptiveGrid::AdaptiveGrid(
 :   m_program(new Program())
 ,   m_vao(nullptr)
 ,   m_buffer(nullptr)
+,   m_camera(nullptr)
 ,   m_location(location)
 ,   m_normal(normal)
 ,   m_size(0)
@@ -157,6 +159,12 @@ void AdaptiveGrid::setupGridLineBuffer(unsigned short segments)
     m_size = segments * 64 - 4; 
 }
 
+void AdaptiveGrid::setCamera(const Camera * camera)
+{
+    m_camera = camera;
+    update();
+}
+
 void AdaptiveGrid::setNearFar(
     float zNear
 ,   float zFar)
@@ -168,6 +176,15 @@ void AdaptiveGrid::setNearFar(
 void AdaptiveGrid::setColor(const vec3 & color)
 {
     m_program->setUniform("color", color);
+}
+
+void AdaptiveGrid::update()
+{
+    if (!m_camera)
+        return;
+
+    setNearFar(m_camera->zNear(), m_camera->zFar());
+    update(m_camera->eye(), m_camera->viewProjection());
 }
 
 void AdaptiveGrid::update(

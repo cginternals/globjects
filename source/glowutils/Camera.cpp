@@ -146,6 +146,11 @@ const ivec2 & Camera::viewport() const
     return m_viewport;
 }
 
+void Camera::setViewport(int width, int height)
+{
+    return setViewport(ivec2(width, height));
+}
+
 void Camera::setViewport(const ivec2 & viewport)
 {
     if (viewport == m_viewport)

@@ -28,7 +28,7 @@
 #include <glowutils/Icosahedron.h>
 #include <glowutils/UnitCube.h>
 #include <glowutils/AdaptiveGrid.h>
-#include <glowutils/AxonometricLookAt.h>
+#include <glowutils/Camera.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -43,10 +43,8 @@ class EventHandler : public WindowEventHandler
 {
 public:
 	EventHandler()
-		: m_iso(false)
+    :   m_camera(vec3(0.f, 1.f, 4.0f))
 	{
-		m_eye = vec3(0.f, 1.f, 4.0f);
-		m_center = vec3(0.f, 0.f, 0.f);
 	}
 
 	virtual ~EventHandler()
@@ -108,6 +106,11 @@ public:
 
 		m_time.reset();
 		m_time.start();
+
+        m_camera.setZNear(0.1f);
+        m_camera.setZFar(16.f);
+
+        m_agrid->setCamera(&m_camera);
 	}
 
 	virtual void resizeEvent(
@@ -115,40 +118,22 @@ public:
 		, unsigned int width
 		, unsigned int height)
 	{
-		glViewport(0, 0, width, height);
-
-		if (!m_sphere)
-			return;
-
-		m_size = ivec2(width, height);
+        glViewport(0, 0, width, height);
+        m_camera.setViewport(width, height);
 
 		m_normal->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 		m_geom->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 		m_depth->storage(GL_DEPTH_COMPONENT16, width, height);
-
-		const float aspect(static_cast<float>(width) / static_cast<float>(height));
-		m_projection = perspective(40.f, aspect, 0.1f, 1024.f);
-		m_ortho = ortho(-aspect, aspect, -1.f, 1.f, 0.1f, 1024.f);
-
-		m_agrid->setNearFar(0.1f, 16.f);
-
-		m_axonometric.setPosition(m_eye);
-		const mat4 view(m_iso ? m_axonometric.matrix() : lookAt(m_eye, m_center, vec3(0.0, 1.0, 0.0)));
-
-
-		m_sphere->setUniform("transform", (m_iso ? m_ortho : m_projection) * view);
-		m_agrid->update(m_eye, (m_iso ? m_ortho : m_projection) * view);
 	}
 
 	virtual void paintEvent(Window & window)
 	{
-		const mat4 view(m_iso ? m_axonometric.matrix() : lookAt(m_eye, m_center, vec3(0.0, 1.0, 0.0)));
+        m_agrid->update();
 
-		m_agrid->update(m_eye, (m_iso ? m_ortho : m_projection) * view);
-		m_sphere->setUniform("transform", (m_iso ? m_ortho : m_projection) * view);
+        m_sphere->setUniform("transform", m_camera.viewProjection());
 		m_sphere->setUniform("timef", mod(static_cast<float>(m_time.elapsed() * 1e-10), 1.f));
 
-		m_phong->setUniform("transformi", inverse((m_iso ? m_ortho : m_projection) * view));
+        m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
 
 
 		m_fbo->bind();
@@ -184,7 +169,7 @@ public:
 
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo->id());
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-		glBlitFramebuffer(0, 0, m_size.x, m_size.y, 0, 0, m_size.x, m_size.y,
+        glBlitFramebuffer(0, 0, m_camera.viewport().x, m_camera.viewport().y, 0, 0, m_camera.viewport().x, m_camera.viewport().y,
 			GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
 		m_agrid->draw();
@@ -199,41 +184,12 @@ public:
 		Window & window
 		, KeyEvent & event)
 	{
-		const float d = 0.08f;
-
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
 			glow::ShaderFile::reloadAll();
 			break;
-		case GLFW_KEY_SPACE:
-			m_iso = !m_iso;
-			break;
-		case GLFW_KEY_1:
-			m_center.x += d;
-			m_eye.x += d;
-			break;
-		case GLFW_KEY_2:
-			m_eye.x -= d;
-			m_center.x -= d;
-			break;
-		case GLFW_KEY_3:
-			m_eye += (m_eye - m_center) * 0.1f;
-			break;
-		case GLFW_KEY_4:
-			m_eye -= (m_eye - m_center) * 0.1f;
-			break;
-		case GLFW_KEY_5:
-			m_center.z += d;
-			m_eye.z += d;
-			break;
-		case GLFW_KEY_6:
-			m_center.z -= d;
-			m_eye.z -= d;
-			break;
 		}
-
-		m_axonometric.setPosition(m_eye);
 	}
 
 protected:
@@ -250,18 +206,8 @@ protected:
 	ref_ptr<Texture> m_geom;
 	ref_ptr<RenderBufferObject> m_depth;
 
-	vec3 m_eye;
-	vec3 m_center;
-
-	mat4 m_projection;
-	mat4 m_ortho;
-
-	bool m_iso;
-
-	ivec2 m_size;
+    Camera m_camera;
 	Timer m_time;
-
-	AxonometricLookAt m_axonometric;
 };
 
 

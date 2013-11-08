@@ -14,6 +14,7 @@ namespace glow
 class Program;
 class VertexArrayObject;
 class Buffer;
+class Camera;
 
 
 /** \brief A plane aligned regular raster with camera position based refinement.
@@ -50,15 +51,23 @@ public:
 
     virtual ~AdaptiveGrid();
 
-    void setNearFar(
-        float zNear
-    ,   float zFar);
-
     void setColor(const glm::vec3 & color);
+
+    /** \brief Update without arguments tries to access the set camera. 
+        It accesses znear, zfar, eye, and viewProjection matrix. Note: If no 
+        camera is set, nothing happens.
+
+        \see setCamera
+        \see setNearFar
+    */
+    void update();
+    void setCamera(const Camera * camera);
 
     void update(
         const glm::vec3 & viewpoint
     ,   const glm::mat4 & modelViewProjection);
+
+    void setNearFar(float zNear, float zFar);
 
     void draw();
 
@@ -74,6 +83,8 @@ private:
 
     ref_ptr<VertexArrayObject> m_vao;
     ref_ptr<Buffer> m_buffer;
+
+    const Camera * m_camera;
 
     glm::vec3 m_location;
     glm::vec3 m_normal;

@@ -46,6 +46,7 @@ public:
 
     const glm::ivec2 & viewport() const;
     void setViewport(const glm::ivec2 & viewport);
+    void setViewport(int width, int height);
 
     float aspectRatio() const;
 
