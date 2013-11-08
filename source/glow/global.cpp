@@ -176,17 +176,4 @@ GLint memory::memoryInfo(GLenum pname)
 	return query::getInteger(pname);
 }
 
-
-// glew
-
-std::string glew::getString(GLenum pname)
-{
-	return reinterpret_cast<const char*>(glewGetString(pname));
-}
-
-std::string glew::version()
-{
-	return getString(GLEW_VERSION);
-}
-
 } // namespace glow

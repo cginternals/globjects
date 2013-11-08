@@ -6,6 +6,7 @@
 
 #include <glow/glow.h>
 #include <glow/Object.h>
+#include <glow/ref_ptr.h>
 
 namespace glow 
 {

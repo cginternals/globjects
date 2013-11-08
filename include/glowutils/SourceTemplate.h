@@ -5,6 +5,7 @@
 
 #include <glow/ShaderSource.h>
 #include <glow/ChangeListener.h>
+#include <glow/ref_ptr.h>
 
 #include <glowutils/glowutils.h>
 
