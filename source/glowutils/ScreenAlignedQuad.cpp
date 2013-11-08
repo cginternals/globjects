@@ -2,50 +2,27 @@
 #include <glow/Program.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/Texture.h>
+#include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
 #include <glow/Shader.h>
+#include <glow/Array.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
 
 namespace glow 
 {
 
-const char* ScreenAlignedQuad::s_defaultVertexShaderSource = R"(
+const char * ScreenAlignedQuad::s_defaultVertexShaderSource = R"(
 #version 330
+
+layout (location = 0) in vec2 a_vertex;
+out vec2 v_uv;
 
 void main()
 {
-    gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+	v_uv = a_vertex * 0.5 + 0.5;
+	gl_Position = vec4(a_vertex, 0.0, 1.0);
 }
-)";
-
-const char* ScreenAlignedQuad::s_defaultGeometryShaderSource = R"(
-#version 330
-
-layout (points) in;
-layout (triangle_strip, max_vertices = 4) out;
-
-out vec2 coordinates;
-
-void main()
-{
-    gl_Position = gl_in[0].gl_Position + vec4(-1.0, -1.0, 0.0, 0.0);
-    coordinates = vec2(0.0, 0.0);
-    EmitVertex();
-
-    gl_Position = gl_in[0].gl_Position + vec4(1.0, -1.0, 0.0, 0.0);
-    coordinates = vec2(1.0, 0.0);
-    EmitVertex();
-
-    gl_Position = gl_in[0].gl_Position + vec4(-1.0, 1.0, 0.0, 0.0);
-    coordinates = vec2(0.0, 1.0);
-    EmitVertex();
-
-    gl_Position = gl_in[0].gl_Position + vec4(1.0, 1.0, 0.0, 0.0);
-    coordinates = vec2(1.0, 1.0);
-    EmitVertex();
-}
-
 )";
 
 const char* ScreenAlignedQuad::s_defaultFagmentShaderSource = R"(
@@ -53,13 +30,13 @@ const char* ScreenAlignedQuad::s_defaultFagmentShaderSource = R"(
 
 uniform sampler2D texture;
 
-layout (location=0) out vec4 colorOutput;
+layout (location = 0) out vec4 fragColor;
 
-in vec2 coordinates;
+in vec2 v_uv;
 
 void main()
 {
-    colorOutput = texture2D(texture, coordinates);
+    fragColor = texture2D(texture, v_uv);
 }
 )";
 
@@ -67,18 +44,16 @@ ScreenAlignedQuad::ScreenAlignedQuad(
     Shader * fragmentShader
 ,   Texture * texture)
 :   m_vertexShader  (nullptr)
-,   m_geometryShader(nullptr)
 ,   m_fragmentShader(fragmentShader)
 ,   m_program(new Program())
 ,   m_texture(texture)
 ,   m_samplerIndex(0)
 {
     m_vertexShader   = Shader::fromString(GL_VERTEX_SHADER, s_defaultVertexShaderSource);
-    m_geometryShader = Shader::fromString(GL_GEOMETRY_SHADER, s_defaultGeometryShaderSource);
     if (!m_fragmentShader)
         m_fragmentShader = Shader::fromString(GL_FRAGMENT_SHADER, s_defaultFagmentShaderSource);
 
-    m_program->attach(m_vertexShader, m_geometryShader, m_fragmentShader);
+    m_program->attach(m_vertexShader, m_fragmentShader);
 
     initialize();
 }
@@ -95,7 +70,6 @@ ScreenAlignedQuad::ScreenAlignedQuad(Texture * texture)
 
 ScreenAlignedQuad::ScreenAlignedQuad(Program * program)
 :   m_vertexShader(nullptr)
-,   m_geometryShader(nullptr)
 ,   m_fragmentShader(nullptr)
 ,   m_texture(nullptr)
 ,   m_program(program)
@@ -106,11 +80,26 @@ ScreenAlignedQuad::ScreenAlignedQuad(Program * program)
 
 void ScreenAlignedQuad::initialize()
 {
+	// By default, counterclockwise polygons are taken to be front-facing.
+	// http://www.opengl.org/sdk/docs/man/xhtml/glFrontFace.xml
+
+	static const Array<glm::vec2> raw(
+	{
+		glm::vec2( +1.f, -1.f )
+	,	glm::vec2( +1.f, +1.f )
+	,	glm::vec2( -1.f, -1.f )
+	,	glm::vec2( -1.f, +1.f )
+	});
+
     m_vao = new VertexArrayObject;
     m_buffer = new Buffer(GL_ARRAY_BUFFER);
-    
-    const glm::vec4 point;
-    m_buffer->setData(sizeof(glm::vec4), &point, GL_STATIC_DRAW); //needed for some drivers
+    m_buffer->setData(raw, GL_STATIC_DRAW); //needed for some drivers
+
+	auto binding = m_vao->binding(0);
+	binding->setAttribute(0);
+	binding->setBuffer(m_buffer, 0, sizeof(glm::vec2));
+	binding->setFormat(2, GL_FLOAT, GL_FALSE, 0);
+	m_vao->enable(0);
 
     setSamplerUniform(0);
 }
@@ -126,13 +115,11 @@ void ScreenAlignedQuad::draw()
 	}
 
     m_program->use();
-    m_vao->drawArrays(GL_POINTS, 0, 1);
+    m_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
     m_program->release();
 
 	if (m_texture)
-	{
 		m_texture->unbind();
-    }
 }
 
 void ScreenAlignedQuad::setTexture(Texture* texture)
@@ -154,11 +141,6 @@ Program * ScreenAlignedQuad::program()
 Shader * ScreenAlignedQuad::vertexShader()
 {
     return m_vertexShader;
-}
-
-Shader * ScreenAlignedQuad::geometryShader()
-{
-    return m_geometryShader;
 }
 
 Shader * ScreenAlignedQuad::fragmentShader()

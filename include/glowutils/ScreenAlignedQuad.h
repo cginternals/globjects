@@ -32,7 +32,6 @@ public:
 	void setProgram(Program * program);
 
     Shader * vertexShader();
-    Shader * geometryShader();
     Shader * fragmentShader();
 
 	void setTexture(Texture * texture);
@@ -47,7 +46,6 @@ protected:
 	ref_ptr<Texture> m_texture;
 
     ref_ptr<Shader> m_vertexShader;
-    ref_ptr<Shader> m_geometryShader;
     ref_ptr<Shader> m_fragmentShader;
 
     ref_ptr<VertexArrayObject> m_vao;
@@ -58,7 +56,6 @@ protected:
 
 protected:
 	static const char * s_defaultVertexShaderSource;
-    static const char * s_defaultGeometryShaderSource;
 	static const char * s_defaultFagmentShaderSource;
 };
 
