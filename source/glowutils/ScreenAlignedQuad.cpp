@@ -53,13 +53,13 @@ const char* ScreenAlignedQuad::s_defaultFagmentShaderSource = R"(
 
 uniform sampler2D texture;
 
-layout (location=0) out vec4 output;
+layout (location=0) out vec4 colorOutput;
 
 in vec2 coordinates;
 
 void main()
 {
-	output = texture2D(texture, coordinates);
+    colorOutput = texture2D(texture, coordinates);
 }
 )";
 
@@ -71,6 +71,7 @@ ScreenAlignedQuad::ScreenAlignedQuad(
 ,   m_fragmentShader(fragmentShader)
 ,   m_program(new Program())
 ,   m_texture(texture)
+,   m_samplerIndex(0)
 {
     m_vertexShader   = Shader::fromString(GL_VERTEX_SHADER, s_defaultVertexShaderSource);
     m_geometryShader = Shader::fromString(GL_GEOMETRY_SHADER, s_defaultGeometryShaderSource);
@@ -98,6 +99,7 @@ ScreenAlignedQuad::ScreenAlignedQuad(Program * program)
 ,   m_fragmentShader(nullptr)
 ,   m_texture(nullptr)
 ,   m_program(program)
+,   m_samplerIndex(0)
 {
     initialize();
 }

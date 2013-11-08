@@ -9,7 +9,8 @@ add_executable(${target}
 target_link_libraries(${target} 
 	${GLEW_LIBRARIES}
 	glow
-    glowwindow
+        glowutils
+        glowwindow
 )
 
 set_target_properties(${target}
