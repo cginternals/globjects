@@ -60,8 +60,8 @@ public:
     
     virtual void resizeEvent(
         Window & window
-    ,   const unsigned int width
-    ,   const unsigned int height)
+    ,   unsigned int width
+    ,   unsigned int height)
     {
     	int side = std::min<int>(width, height);
 	    glViewport((width - side) / 2, (height - side) / 2, side, side);

@@ -7,6 +7,7 @@
 #include <glow/Array.h>
 #include <glow/logging.h>
 #include <glow/Texture.h>
+
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -41,8 +42,8 @@ public:
     
     virtual void resizeEvent(
         Window & window
-    ,   const unsigned int width
-    ,   const unsigned int height)
+    ,   unsigned int width
+    ,   unsigned int height)
     {
     	int side = std::min<int>(width, height);
         glViewport((width - side) / 2, (height - side) / 2, side, side);
@@ -62,7 +63,7 @@ public:
 
 protected:
     glow::ref_ptr<glow::Texture> m_texture;
-    glow::ref_ptr<glow::ScreenAlignedQuad> m_quad;
+    glow::ScreenAlignedQuad * m_quad;
 };
 
 
@@ -111,6 +112,6 @@ void EventHandler::createAndSetupTexture()
 
 void EventHandler::createAndSetupGeometry()
 {
-    m_quad = new glow::ScreenAlignedQuad(m_texture);
+	m_quad = new glow::ScreenAlignedQuad(m_texture);
     m_quad->setSamplerUniform(0);
 }
