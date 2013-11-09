@@ -47,6 +47,7 @@ set(api_includes
 )
 
 set(sources
+    ${source_path}/AbstractCoordinateProvider.cpp
     ${source_path}/AdaptiveGrid.cpp
     ${source_path}/AxisAlignedBoundingBox.cpp
     ${source_path}/AxonometricLookAt.cpp

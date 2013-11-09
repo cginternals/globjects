@@ -13,9 +13,9 @@ unset(api_includes)
 include_directories(
 	${GLFW_INCLUDE_DIR})
 
-add_subdirectory("adaptive-grid")
 add_subdirectory("computeshader")
 add_subdirectory("multiple-contexts")
+add_subdirectory("navigations")
 #add_subdirectory("deferred-lighting")
 add_subdirectory("post-processing")
 add_subdirectory("simple-texture")

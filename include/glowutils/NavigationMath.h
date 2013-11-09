@@ -12,8 +12,6 @@ class AxisAlignedBoundingBox;
 class GLOWUTILS_API NavigationMath
 {
 public:
-    static bool validDepth(float depth);
-
     //static void retrieveNearAndFarPlane(
     //    const glm::vec3 & camera
     //,   const glm::vec3 & center
@@ -51,8 +49,6 @@ public:
 	,	const glm::vec2 & origin
 	,	const glm::vec2 & ray
 	,	float radius = 1.f);
-
-	static const glm::vec2 xz(const glm::vec3 & xyz);
 
 	static float angle(
 		const glm::vec3 & a

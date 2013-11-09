@@ -3,6 +3,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <glow/logging.h>
+
 #include <glowutils/MathMacros.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/Camera.h>
@@ -36,8 +38,8 @@ namespace
 namespace glow
 {
 
-WorldInHandNavigation::WorldInHandNavigation(Camera & camera)
-: m_camera(camera)
+WorldInHandNavigation::WorldInHandNavigation()
+: m_camera(nullptr)
 , m_coordsProvider(nullptr)
 , m_rotationHappened(false)
 , m_mode(NoInteraction)
@@ -49,6 +51,11 @@ WorldInHandNavigation::~WorldInHandNavigation()
 {
 }
 
+WorldInHandNavigation::InteractionMode WorldInHandNavigation::mode() const
+{
+    return m_mode;
+}
+
 void WorldInHandNavigation::setBoundaryHint(const AxisAlignedBoundingBox & aabb)
 {
     m_aabb = aabb;
@@ -56,23 +63,29 @@ void WorldInHandNavigation::setBoundaryHint(const AxisAlignedBoundingBox & aabb)
 
 void WorldInHandNavigation::setCoordinateProvider(AbstractCoordinateProvider * provider)
 {
-    assert(provider != nullptr);
-
     m_coordsProvider = provider;
+}
+
+void WorldInHandNavigation::setCamera(Camera * camera)
+{
+    m_camera = camera;
 }
 
 void WorldInHandNavigation::reset(bool update)
 {
-    m_camera.setEye(DEFAULT_EYE);
-    m_camera.setCenter(DEFAULT_CENTER);
-    m_camera.setUp(DEFAULT_UP);
+    if (!m_camera)
+        return;
+
+    m_camera->setEye(DEFAULT_EYE);
+    m_camera->setCenter(DEFAULT_CENTER);
+    m_camera->setUp(DEFAULT_UP);
 
     m_mode = NoInteraction;
 
 //    enforceWholeMapVisible();
 
     if (update)
-        m_camera.update();
+        m_camera->update();
 }
 
 
@@ -81,6 +94,9 @@ const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
 ,   const ivec2 & mouse
 ,   const vec3 & p0) const
 {
+    if (!m_coordsProvider)
+        return vec3();
+
     // build a ray in object space from screen space mouse position and get
     // intersection with near and far planes.
 
@@ -90,13 +106,15 @@ const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     return NavigationMath::rayPlaneIntersection(intersects, ln, lf, p0);
 }
 
-
 const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     bool & intersects
 ,   const ivec2 & mouse
 ,   const vec3 & p0
 ,   const mat4 & viewProjectionInverted) const
 {
+    if (!m_coordsProvider)
+        return vec3();
+
     // build a ray in object space from screen space mouse position and get
     // intersection with near and far planes.
 
@@ -110,34 +128,42 @@ const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     bool & intersects
 ,   const ivec2 & mouse) const
 {
+    if (!m_coordsProvider)
+        return vec3();
+
     const float depth = m_coordsProvider->depthAt(mouse);
+    const bool valid = AbstractCoordinateProvider::validDepth(depth);
 
     // no scene object was picked - simulate picking on xz-plane
-    if (depth >= 1.0 - std::numeric_limits<float>::epsilon())
+    if (!valid)
         return mouseRayPlaneIntersection(intersects, mouse, vec3());
 
     return m_coordsProvider->objAt(mouse, depth);
 }
 
-
-void WorldInHandNavigation::panningBegin(const ivec2 & mouse)
+void WorldInHandNavigation::panBegin(const ivec2 & mouse)
 {
-    if (NoInteraction != m_mode)
+    if (NoInteraction != m_mode || !m_camera || !m_coordsProvider)
         return;
 
     m_mode = PanInteraction;
-
-    m_viewProjectionInverted = m_camera.viewProjectionInverted();
+    m_viewProjectionInverted = m_camera->viewProjectionInverted();
     
     bool intersects;
     m_i0 = mouseRayPlaneIntersection(intersects, mouse);
-    m_i0Valid = intersects && NavigationMath::validDepth(m_coordsProvider->depthAt(mouse));
 
-    m_eye = m_camera.eye();
-    m_center = m_camera.center();
+    if (intersects)
+    {
+        const float depth = m_coordsProvider->depthAt(mouse);
+        m_i0Valid = AbstractCoordinateProvider::validDepth(depth);
+    }
+    m_i0Valid = false;
+
+    m_eye = m_camera->eye();
+    m_center = m_camera->center();
 }
 
-void WorldInHandNavigation::panningEnd()
+void WorldInHandNavigation::panEnd()
 {
     if (PanInteraction != m_mode)
         return;
@@ -145,9 +171,9 @@ void WorldInHandNavigation::panningEnd()
     m_mode = NoInteraction;
 }
 
-void WorldInHandNavigation::panningProcess(const ivec2 & mouse)
+void WorldInHandNavigation::panProcess(const ivec2 & mouse)
 {
-    if (PanInteraction != m_mode)
+    if (PanInteraction != m_mode || !m_coordsProvider || !m_camera)
         return;
 
     // The first click of the interaction yields a object space position m_i0.
@@ -162,8 +188,8 @@ void WorldInHandNavigation::panningProcess(const ivec2 & mouse)
 
     // constrain mouse interaction to viewport (if disabled, could lead to mishaps)
     const ivec2 clamped(
-        clamp(0, m_camera.viewport().x, mouse.x)
-    ,   clamp(0, m_camera.viewport().y, mouse.y));
+        clamp(0, m_camera->viewport().x, mouse.x)
+    ,   clamp(0, m_camera->viewport().y, mouse.y));
 
     bool intersects;
     m_i1 = mouseRayPlaneIntersection(intersects, clamped, m_i0, m_viewProjectionInverted);
@@ -174,19 +200,19 @@ void WorldInHandNavigation::panningProcess(const ivec2 & mouse)
 
 void WorldInHandNavigation::pan(vec3 t)
 {
-    if (PanInteraction != m_mode)
+    if (PanInteraction != m_mode || !m_camera)
         return;
 
     //enforceTranslationConstraints(t);
 
-    m_camera.setEye(t + m_eye);
-    m_camera.setCenter(t + m_center);
+    m_camera->setEye(t + m_eye);
+    m_camera->setCenter(t + m_center);
 
-    m_camera.update();
+    m_camera->update();
 }
 
 
-void WorldInHandNavigation::rotatingBegin(const ivec2 & mouse)
+void WorldInHandNavigation::rotateBegin(const ivec2 & mouse)
 {
     if (NoInteraction != m_mode)
         return;
@@ -195,15 +221,15 @@ void WorldInHandNavigation::rotatingBegin(const ivec2 & mouse)
 
     bool intersects;
     m_i0 = mouseRayPlaneIntersection(intersects, mouse);
-    m_i0Valid = intersects && NavigationMath::validDepth(m_coordsProvider->depthAt(mouse));
+    m_i0Valid = intersects && AbstractCoordinateProvider::validDepth(m_coordsProvider->depthAt(mouse));
 
     m_m0 = mouse;
 
-    m_eye = m_camera.eye();
-    m_center = m_camera.center();
+    m_eye = m_camera->eye();
+    m_center = m_camera->center();
 }
 
-void WorldInHandNavigation::rotatingEnd()
+void WorldInHandNavigation::rotateEnd()
 {
     if (RotateInteraction != m_mode)
         return;
@@ -211,16 +237,16 @@ void WorldInHandNavigation::rotatingEnd()
     m_mode = NoInteraction;
 }
 
-void WorldInHandNavigation::rotatingProcess(const ivec2 & mouse)
+void WorldInHandNavigation::rotateProcess(const ivec2 & mouse)
 {
     if (RotateInteraction != m_mode)
         return;
 
     const ivec2 delta = m_m0 - mouse;
     // setup the degree of freedom for horizontal rotation within a single action
-    const float wDeltaX = deg(delta.x / m_camera.viewport().x);
+    const float wDeltaX = deg(delta.x / m_camera->viewport().x);
     // setup the degree of freedom for vertical rotation within a single action
-    const float wDeltaY = deg(delta.y / m_camera.viewport().y);
+    const float wDeltaY = deg(delta.y / m_camera->viewport().y);
 
     rotate(wDeltaX, wDeltaY);
 }
@@ -233,7 +259,7 @@ void WorldInHandNavigation::rotate(
 
     m_rotationHappened = true;
 
-    const vec3 ray(normalize(m_camera.center() - m_eye));
+    const vec3 ray(normalize(m_camera->center() - m_eye));
     const vec3 rotAxis(cross(ray, up));
 
     hAngle *= ROTATION_HOR_DOF;
@@ -250,10 +276,10 @@ void WorldInHandNavigation::rotate(
     glm::rotate(transform, vAngle, rotAxis);
     translate(transform, -t);
 
-    m_camera.setEye(vec3(transform * vec4(m_eye, 0.f)));
-    m_camera.setCenter(vec3(transform * vec4(m_center, 0.f)));
+    m_camera->setEye(vec3(transform * vec4(m_eye, 0.f)));
+    m_camera->setCenter(vec3(transform * vec4(m_center, 0.f)));
 
-    m_camera.update();
+    m_camera->update();
 }
 
 
@@ -261,14 +287,14 @@ void WorldInHandNavigation::scaleAtMouse(
     const ivec2 & mouse
 ,   float scale)
 {
-    const vec3 ln = m_camera.eye();
-    const vec3 lf = m_camera.center();
+    const vec3 ln = m_camera->eye();
+    const vec3 lf = m_camera->center();
 
     bool intersects;
 
     vec3 i = mouseRayPlaneIntersection(intersects, mouse);
 
-    if(!intersects && !NavigationMath::validDepth(m_coordsProvider->depthAt(mouse)))
+    if (!intersects && !AbstractCoordinateProvider::validDepth(m_coordsProvider->depthAt(mouse)))
         return;
 
     // scale the distance between the pointed position in the scene and the 
@@ -280,43 +306,43 @@ void WorldInHandNavigation::scaleAtMouse(
     // enforceScaleConstraints(scale, i);
 
     const vec3 eye = ln + scale * (ln - i);
-    m_camera.setEye(eye);
+    m_camera->setEye(eye);
 
     // the center needs to be constrained to the ground plane, so calc the new
     // center based on the intersection with the scene and use this to obtain 
     // the new viewray-groundplane intersection as new center.
     const vec3 center = lf + scale * (lf - i);
 
-    m_camera.setCenter(NavigationMath::rayPlaneIntersection(intersects, eye, center));
-    m_camera.update();
+    m_camera->setCenter(NavigationMath::rayPlaneIntersection(intersects, eye, center));
+    m_camera->update();
 }
 
 void WorldInHandNavigation::resetScaleAtMouse(const ivec2 & mouse)
 {
-    const vec3 ln = m_camera.eye();
-    const vec3 lf = m_camera.center();
+    const vec3 ln = m_camera->eye();
+    const vec3 lf = m_camera->center();
 
     // set the distance between pointed position in the scene and camera to 
     // default distance
     bool intersects;
     vec3 i = mouseRayPlaneIntersection(intersects, mouse);
-    if (!intersects && !NavigationMath::validDepth(m_coordsProvider->depthAt(mouse)))
+    if (!intersects && !AbstractCoordinateProvider::validDepth(m_coordsProvider->depthAt(mouse)))
         return;
 
     float scale = (DEFAULT_DISTANCE / (ln - i).length());
 
     //enforceScaleConstraints(scale, i);
 
-    m_camera.setEye(i - scale * (i - ln));
-    m_camera.setCenter(i - scale * (i - lf));
+    m_camera->setEye(i - scale * (i - ln));
+    m_camera->setCenter(i - scale * (i - lf));
 
-    m_camera.update();
+    m_camera->update();
 }
 
 void WorldInHandNavigation::scaleAtCenter(float scale)
 {
-    const vec3 ln = m_camera.eye();
-    const vec3 lf = m_camera.center();
+    const vec3 ln = m_camera->eye();
+    const vec3 lf = m_camera->center();
 
     bool intersects;
     vec3 i = NavigationMath::rayPlaneIntersection(intersects, ln, lf);
@@ -325,10 +351,10 @@ void WorldInHandNavigation::scaleAtCenter(float scale)
 
     //enforceScaleConstraints(scale, i);
 
-    m_camera.setEye(ln + scale * (ln - i));
-    m_camera.setCenter(lf + scale * (lf - i));
+    m_camera->setEye(ln + scale * (ln - i));
+    m_camera->setCenter(lf + scale * (lf - i));
 
-    m_camera.update();
+    m_camera->update();
 }
 
 
@@ -337,7 +363,7 @@ void WorldInHandNavigation::enforceTranslationConstraints(vec3 & p) const
     mat4 m;
     translate(m, p);
 
-    const vec2 center(NavigationMath::xz(vec3(m * vec4(m_center, 0.f))));
+    const vec2 center(vec3(m * vec4(m_center, 0.f)));
     if (NavigationMath::insideSquare(center))
         return;
 
@@ -368,7 +394,7 @@ void WorldInHandNavigation::enforceScaleConstraints(
 ,   vec3 & i) const
 {
     // first constraint: i must be within the ground quad...
-    vec2 i2 = NavigationMath::xz(i);
+    vec2 i2(i);
 
     if (!NavigationMath::insideSquare(i2))
     {

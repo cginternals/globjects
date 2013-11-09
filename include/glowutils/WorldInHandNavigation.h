@@ -5,11 +5,6 @@
 #include <glowutils/glowutils.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 
-
-class QKeyEvent;
-class QMouseEvent;
-class QWheelEvent;
-
 namespace glow
 {
 
@@ -19,6 +14,7 @@ class Camera;
 
 class GLOWUTILS_API WorldInHandNavigation
 {
+public:
 	enum InteractionMode
 	{
 		NoInteraction
@@ -27,22 +23,26 @@ class GLOWUTILS_API WorldInHandNavigation
 	};
 
 public:
-	WorldInHandNavigation(Camera & camera);
+	WorldInHandNavigation();
 	virtual ~WorldInHandNavigation();
 
     void setBoundaryHint(const AxisAlignedBoundingBox & aabb); ///< is currently ignored
+
+    void setCamera(Camera * camera);
     void setCoordinateProvider(AbstractCoordinateProvider * provider);
 
 	virtual void reset(bool update = true);
 
-public:
-	void panningBegin(const glm::ivec2 & mouse);
-	void panningProcess(const glm::ivec2 & mouse);
-	void panningEnd();
+    InteractionMode mode() const;
 
-	void rotatingBegin(const glm::ivec2 & mouse);
-	void rotatingProcess(const glm::ivec2 & mouse);
-	void rotatingEnd();
+public:
+	void panBegin(const glm::ivec2 & mouse);
+	void panProcess(const glm::ivec2 & mouse);
+	void panEnd();
+
+	void rotateBegin(const glm::ivec2 & mouse);
+	void rotateProcess(const glm::ivec2 & mouse);
+	void rotateEnd();
 
     void pan(glm::vec3 t);
     void rotate(float hAngle, float vAngle);
@@ -79,7 +79,7 @@ protected:
 	,	const glm::mat4 & viewProjectionInverted) const;
 
 protected:
-    Camera & m_camera;
+    Camera * m_camera;
     AxisAlignedBoundingBox m_aabb;
 
     AbstractCoordinateProvider * m_coordsProvider;

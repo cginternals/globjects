@@ -1,6 +1,5 @@
 
 #include <cassert>
-#include <cfloat>
 
 #include <glm/gtx/norm.hpp>
 
@@ -13,11 +12,6 @@ using namespace glm;
 
 namespace glow
 {
-
-bool NavigationMath::validDepth(const float depth)
-{
-    return depth < (1.f - std::numeric_limits<float>::epsilon());
-}
 
 //void NavigationMath::retrieveNearAndFarPlane(
 //    const vec3 & camera
@@ -128,11 +122,6 @@ const vec2 NavigationMath::rayCircleIntersection(
 
 	valid = true;
 	return t * ray + origin;
-}
-
-const vec2 NavigationMath::xz(const vec3 & xyz) 
-{
-	return vec2(xyz.x, xyz.z);
 }
 
 float NavigationMath::angle(
