@@ -2,6 +2,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include <glow/logging.h>
+
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
@@ -98,11 +100,22 @@ void WindowEventDispatcher::processChar(GLFWwindow* glfwWindow, unsigned int cha
 void WindowEventDispatcher::processMouse(GLFWwindow* glfwWindow, int button, int action, int modifiers)
 {
     assert(glfwWindow != nullptr);
+
+    double x, y;
+    glfwGetCursorPos(glfwWindow, &x, &y);
+
+    MouseEvent event(static_cast<int>(x), static_cast<int>(y)
+        , button, action, modifiers);
+
+    sendEvent(glfwWindow, &event);
 }
 
 void WindowEventDispatcher::processCursorPos(GLFWwindow* glfwWindow, double xPos, double yPos)
 {
     assert(glfwWindow != nullptr);
+
+    MouseEvent event(static_cast<int>(xPos), static_cast<int>(yPos));
+    sendEvent(glfwWindow, &event);
 }
 
 void WindowEventDispatcher::processCursorEnter(GLFWwindow* glfwWindow, int entered)

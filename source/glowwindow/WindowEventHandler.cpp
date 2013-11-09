@@ -29,17 +29,23 @@ void WindowEventHandler::handleEvent(Window & window, WindowEvent * event)
         break;
 
     case WindowEvent::KeyPress: 
-        {
-            KeyEvent * e = static_cast<KeyEvent*>(event);
-            keyPressEvent(window, *e);
-        }
+        keyPressEvent(window, *static_cast<KeyEvent*>(event));
         break;
 
     case WindowEvent::KeyRelease: 
-        {
-            KeyEvent * e = static_cast<KeyEvent*>(event);
-            keyReleaseEvent(window, *e);
-        }
+        keyReleaseEvent(window, *static_cast<KeyEvent*>(event));
+        break;
+
+    case WindowEvent::MousePress:
+        mousePressEvent(window, *static_cast<MouseEvent*>(event));
+        break;
+
+    case WindowEvent::MouseRelease:
+        mouseReleaseEvent(window, *static_cast<MouseEvent*>(event));
+        break;
+
+    case WindowEvent::MouseMove:
+        mouseMoveEvent(window, *static_cast<MouseEvent*>(event));
         break;
     }
 }
@@ -77,6 +83,27 @@ void WindowEventHandler::keyReleaseEvent(
     Window &
 ,   KeyEvent &)
 {
+}
+
+void WindowEventHandler::mousePressEvent(
+    Window & window
+,   MouseEvent & event)
+{
+
+}
+
+void WindowEventHandler::mouseMoveEvent(
+    Window & window
+,   MouseEvent & event)
+{
+
+}
+
+void WindowEventHandler::mouseReleaseEvent(
+    Window & window
+    , MouseEvent & event)
+{
+
 }
 
 } // namespace glow

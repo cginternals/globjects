@@ -9,6 +9,7 @@ namespace glow
 class Window;
 class WindowEvent;
 class KeyEvent;
+class MouseEvent;
 
 class GLOWWINDOW_API WindowEventHandler : public Referenced
 {
@@ -58,6 +59,16 @@ public:
     virtual void keyReleaseEvent(
         Window & window
     ,   KeyEvent & event);
+
+    virtual void mousePressEvent(
+        Window & window
+    ,   MouseEvent & event);
+    virtual void mouseMoveEvent(
+        Window & window
+    ,   MouseEvent & event);
+    virtual void mouseReleaseEvent(
+        Window & window
+    ,   MouseEvent & event);
 };
 
 } // namespace glow

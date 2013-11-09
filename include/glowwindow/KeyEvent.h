@@ -2,7 +2,10 @@
 
 #include <GLFW/glfw3.h> ///< promote keys
 
+#include <glm/glm.hpp>
+
 #include <glowwindow/glowwindow.h>
+
 
 namespace glow 
 {
@@ -16,6 +19,7 @@ public:
     ,   KeyRelease
     ,   MousePress
     ,   MouseRelease
+    ,   MouseMove
     ,   Scroll
     ,   Resize
     ,   Move
@@ -62,16 +66,24 @@ protected:
 class GLOWWINDOW_API MouseEvent : public WindowEvent
 {
 public:
-    MouseEvent(int button, int scanCode, int action, int modifiers);
+    MouseEvent(int x, int y
+        , int button = -1, int action = -1, int modifiers = -1);
 
     int button() const;
     int action() const;
     int modifiers() const;
 
+    const glm::ivec2 & pos() const;
+
+    int x() const;
+    int y() const;
+
 protected:
     int m_button;
     int m_action;
     int m_modifiers;
+
+    glm::ivec2 m_pos;
 };
 
 class GLOWWINDOW_API ResizeEvent : public WindowEvent

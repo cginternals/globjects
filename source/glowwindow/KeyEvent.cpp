@@ -101,4 +101,44 @@ int ResizeEvent::height() const
     return m_height;
 }
 
+
+MouseEvent::MouseEvent(const int x, const int y, const int button, const int action, const int modifiers)
+: WindowEvent(action == -1 ? MouseMove : (action == GLFW_RELEASE ? MouseRelease : MousePress))
+, m_button(button)
+, m_action(action)
+, m_modifiers(modifiers)
+, m_pos(x, y)
+{
+}
+
+int MouseEvent::button() const
+{
+    return m_button;
+}
+
+int MouseEvent::action() const
+{
+    return m_action;
+}
+
+int MouseEvent::modifiers() const
+{
+    return m_modifiers;
+}
+
+int MouseEvent::x() const
+{
+    return m_pos.x;
+}
+
+int MouseEvent::y() const
+{
+    return m_pos.y;
+}
+
+const glm::ivec2 & MouseEvent::pos() const
+{
+    return m_pos;
+}
+
 } // namespace glow
