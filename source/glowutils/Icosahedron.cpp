@@ -108,12 +108,12 @@ Icosahedron::~Icosahedron()
 {
 }
 
-void Icosahedron::draw()
+void Icosahedron::draw(const GLenum mode)
 {
     glEnable(GL_DEPTH_TEST);
 
     m_vao->bind();
-    m_vao->drawElements(GL_TRIANGLES, m_size, GL_UNSIGNED_SHORT, nullptr);
+    m_vao->drawElements(mode, m_size, GL_UNSIGNED_SHORT, nullptr);
     m_vao->unbind();
 }
 

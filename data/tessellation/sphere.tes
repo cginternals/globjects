@@ -1,0 +1,22 @@
+#version 420
+
+layout (triangles, equal_spacing, cw) in;
+
+in vec3 tc_vertex[];
+
+out vec3 te_vertex;
+out float te_edged;
+
+uniform mat4 transform;
+
+void main()
+{
+	vec3 position  = gl_TessCoord.x * tc_vertex[0];
+	     position += gl_TessCoord.y * tc_vertex[1];
+	     position += gl_TessCoord.z * tc_vertex[2];
+
+	te_edged = length(gl_TessCoord);
+	te_vertex = normalize(position);
+	
+	gl_Position = transform * vec4(te_vertex, 1.0);
+}

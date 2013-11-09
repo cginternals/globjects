@@ -41,7 +41,7 @@ public:
 
     /** draws the icosahedron as single triangles (TODO: generate set of triangle strips?)
     */
-    void draw();
+    void draw(GLenum mode = GL_TRIANGLES);
 
 private:
     /** Splits a triangle edge by adding an appropriate new point (normalized

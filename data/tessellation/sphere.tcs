@@ -1,0 +1,21 @@
+#version 420
+
+layout (vertices = 3) out;
+
+uniform int level;
+
+in vec3 v_vertex[];
+out vec3 tc_vertex[];
+
+void main()
+{
+	tc_vertex[gl_InvocationID] = v_vertex[gl_InvocationID];
+	if(0 == gl_InvocationID)
+	{
+		gl_TessLevelInner[0] = level;
+		
+		gl_TessLevelOuter[0] = level;
+		gl_TessLevelOuter[1] = level;
+		gl_TessLevelOuter[2] = level;
+	}
+}
