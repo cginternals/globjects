@@ -127,31 +127,37 @@ LogMessageBuilder& LogMessageBuilder::operator<<(std::ostream & (*manipulator)(s
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec2 & v)
 {
-	*this
-		<< "vec2("
-		<< v.x << ","
-		<< v.y << ")";
-	return *this;
+    *this << "vec2(" << v.x << "," << v.y << ")";
+    return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec3 & v)
 {
-	*this
-		<< "vec3("
-		<< v.x << ","
-		<< v.y << ","
-		<< v.z << ")";
-	return *this;
+    *this << "vec3(" << v.x << "," << v.y << "," << v.z << ")";
+    return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec4 & v)
 {
-	*this
-		<< "vec4("
-		<< v.x << ","
-		<< v.y << ","
-		<< v.z << ","
-		<< v.w << ")";
+    *this << "vec4(" << v.x << "," << v.y << "," << v.z << "," << v.w << ")";
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::ivec2 & v)
+{
+	*this << "ivec2(" << v.x << "," << v.y << ")";
+	return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::ivec3 & v)
+{
+	*this << "ivec3(" << v.x << "," << v.y << "," << v.z << ")";
+	return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::ivec4 & v)
+{
+	*this << "ivec4(" << v.x << "," << v.y << "," << v.z << "," << v.w << ")";
 	return *this;
 }
 
