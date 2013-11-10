@@ -242,7 +242,7 @@ void WorldInHandNavigation::rotateProcess(const ivec2 & mouse)
     if (RotateInteraction != m_mode)
         return;
 
-    const ivec2 delta = m_m0 - mouse;
+    const vec2 delta(m_m0 - mouse);
     // setup the degree of freedom for horizontal rotation within a single action
     const float wDeltaX = deg(delta.x / m_camera->viewport().x);
     // setup the degree of freedom for vertical rotation within a single action
@@ -269,12 +269,10 @@ void WorldInHandNavigation::rotate(
 
     vec3 t = m_i0Valid ? m_i0 : m_center;
 
-    mat4 transform;
-
-    translate(transform,  t);
-    glm::rotate(transform, hAngle, up);
-    glm::rotate(transform, vAngle, rotAxis);
-    translate(transform, -t);
+    mat4 transform = translate(mat4(), t);
+    transform = glm::rotate(transform, hAngle, up);
+    transform = glm::rotate(transform, vAngle, rotAxis);
+    transform = translate(transform, -t);
 
     m_camera->setEye(vec3(transform * vec4(m_eye, 0.f)));
     m_camera->setCenter(vec3(transform * vec4(m_center, 0.f)));
