@@ -141,4 +141,26 @@ const glm::ivec2 & MouseEvent::pos() const
     return m_pos;
 }
 
+ScrollEvent::ScrollEvent(
+    const double xOffset
+,   const double yOffset
+,   const int x
+,   const int y)
+: WindowEvent(Scroll)
+, m_offset(xOffset, yOffset)
+, m_pos(x, y)
+{
+}
+
+const glm::vec2 & ScrollEvent::offset() const
+{
+    return m_offset;
+}
+
+const glm::ivec2 & ScrollEvent::pos() const
+{
+    return m_pos;
+}
+
+
 } // namespace glow

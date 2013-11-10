@@ -285,7 +285,7 @@ void WorldInHandNavigation::rotate(
 
 void WorldInHandNavigation::scaleAtMouse(
     const ivec2 & mouse
-,   float scale)
+,   float scaleDelta)
 {
     const vec3 ln = m_camera->eye();
     const vec3 lf = m_camera->center();
@@ -299,6 +299,8 @@ void WorldInHandNavigation::scaleAtMouse(
 
     // scale the distance between the pointed position in the scene and the 
     // camera position - using ray constraints, the center is scaled appropriately.
+
+    float scale = scaleDelta;
 
     if (scale > 0.f)
         scale = 1.f / (1.f - scale) - 1.f; // ensure that scaling consistent in both direction

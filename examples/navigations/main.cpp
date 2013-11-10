@@ -19,6 +19,7 @@
 #include <glow/AutoTimer.h>
 #include <glow/VertexArrayObject.h>
 
+#include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/MathMacros.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/Camera.h>
@@ -41,8 +42,12 @@ public:
     EventHandler()
     : m_camera(vec3(0.f, 1.f, 4.0f))
     {
+        m_aabb.extend(vec3(-8.f, -1.f, -8.f));
+        m_aabb.extend(vec3(8.f, 1.f, 8.f));
+
         m_nav.setCamera(&m_camera);
         m_nav.setCoordinateProvider(this);
+        m_nav.setBoundaryHint(m_aabb);
     }
 
     virtual ~EventHandler()
@@ -180,6 +185,17 @@ public:
         }
     }
 
+    void scrollEvent(
+        Window & window
+    ,   ScrollEvent & event)
+    {
+        if (WorldInHandNavigation::NoInteraction != m_nav.mode())
+            return;
+
+        m_nav.scaleAtMouse(event.pos(), -event.offset().y * 0.1f);
+        event.accept();
+    }
+
     virtual const float depthAt(const ivec2 & windowCoordinates)
     {
         return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
@@ -212,6 +228,8 @@ protected:
 
     Camera m_camera;
     WorldInHandNavigation m_nav;
+
+    AxisAlignedBoundingBox m_aabb;
 };
 
 

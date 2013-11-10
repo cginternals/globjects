@@ -86,6 +86,19 @@ protected:
     glm::ivec2 m_pos;
 };
 
+class GLOWWINDOW_API ScrollEvent : public WindowEvent
+{
+public:
+    ScrollEvent(double xOffset, double yOffset, int x, int y);
+
+    const glm::vec2 & offset() const;
+    const glm::ivec2 & pos() const;
+
+protected:
+    glm::vec2 m_offset;
+    glm::ivec2 m_pos;
+};
+
 class GLOWWINDOW_API ResizeEvent : public WindowEvent
 {
 public:

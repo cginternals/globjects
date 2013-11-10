@@ -47,6 +47,10 @@ void WindowEventHandler::handleEvent(Window & window, WindowEvent * event)
     case WindowEvent::MouseMove:
         mouseMoveEvent(window, *static_cast<MouseEvent*>(event));
         break;
+
+    case WindowEvent::Scroll:
+        scrollEvent(window, *static_cast<ScrollEvent*>(event));
+        break;
     }
 }
 
@@ -89,21 +93,24 @@ void WindowEventHandler::mousePressEvent(
     Window & window
 ,   MouseEvent & event)
 {
-
 }
 
 void WindowEventHandler::mouseMoveEvent(
     Window & window
 ,   MouseEvent & event)
 {
-
 }
 
 void WindowEventHandler::mouseReleaseEvent(
     Window & window
     , MouseEvent & event)
 {
+}
 
+void WindowEventHandler::scrollEvent(
+    Window & window
+,   ScrollEvent & event)
+{
 }
 
 } // namespace glow

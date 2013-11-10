@@ -126,6 +126,12 @@ void WindowEventDispatcher::processCursorEnter(GLFWwindow* glfwWindow, int enter
 void WindowEventDispatcher::processScroll(GLFWwindow* glfwWindow, double xOffset, double yOffset)
 {
     assert(glfwWindow != nullptr);
+
+    double x, y;
+    glfwGetCursorPos(glfwWindow, &x, &y);
+
+    ScrollEvent event(xOffset, yOffset, static_cast<int>(x), static_cast<int>(y));
+    sendEvent(glfwWindow, &event);
 }
 
 void WindowEventDispatcher::processResize(GLFWwindow* glfwWindow, int width, int height)
