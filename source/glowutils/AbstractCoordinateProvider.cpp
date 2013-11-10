@@ -23,8 +23,6 @@ float AbstractCoordinateProvider::depthAt(
     const GLint x(windowCoordinates.x);
     const GLint y(windowCoordinates.y);
 
-    assert(m_camera);
-
     const GLint w(static_cast<GLint>(camera.viewport().x));
     const GLint h(static_cast<GLint>(camera.viewport().y));
 
