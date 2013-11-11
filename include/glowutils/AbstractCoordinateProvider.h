@@ -40,7 +40,7 @@ public:
     ,   float depth
     ,   const glm::ivec2 & windowCoordinates);
 
-    static const glm::vec3 AbstractCoordinateProvider::unproject(
+    static const glm::vec3 unproject(
         const Camera & camera
     ,   const glm::mat4 & viewProjectionInverted
     ,   const float depth
