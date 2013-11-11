@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h>
 
 #include <glow/logging.h>
-#include <glowwindow/KeyEvent.h>
+#include <glowwindow/events.h>
 
 
 namespace glow
@@ -15,6 +15,7 @@ namespace glow
 WindowEvent::WindowEvent(Type type)
 : m_type(type)
 , m_accepted(false)
+, m_window(nullptr)
 {
 }
 
@@ -32,7 +33,7 @@ bool WindowEvent::isAccepted() const
     return m_accepted;
 }
 
-bool WindowEvent::isDiscarded() const
+bool WindowEvent::isIgnored() const
 {
     return !m_accepted;
 }
@@ -47,11 +48,20 @@ void WindowEvent::accept()
     m_accepted = true;
 }
 
-void WindowEvent::discard()
+void WindowEvent::ignore()
 {
     m_accepted = false;
 }
 
+Window* WindowEvent::window() const
+{
+    return m_window;
+}
+
+void WindowEvent::setWindow(Window* window)
+{
+    m_window = window;
+}
 
 
 KeyEvent::KeyEvent(int key, int scanCode, int action, int modifiers)
@@ -102,8 +112,17 @@ int ResizeEvent::height() const
 }
 
 
+MouseEvent::MouseEvent(const int x, const int y)
+: WindowEvent(MouseMove)
+, m_button(-1)
+, m_action(-1)
+, m_modifiers(-1)
+, m_pos(x, y)
+{
+}
+
 MouseEvent::MouseEvent(const int x, const int y, const int button, const int action, const int modifiers)
-: WindowEvent(action == -1 ? MouseMove : (action == GLFW_RELEASE ? MouseRelease : MousePress))
+: WindowEvent(action == GLFW_RELEASE ? MouseRelease : MousePress)
 , m_button(button)
 , m_action(action)
 , m_modifiers(modifiers)
@@ -162,5 +181,20 @@ const glm::ivec2 & ScrollEvent::pos() const
     return m_pos;
 }
 
+
+PaintEvent::PaintEvent()
+: WindowEvent(Paint)
+{
+}
+
+CloseEvent::CloseEvent()
+: WindowEvent(Close)
+{
+}
+
+IdleEvent::IdleEvent()
+: WindowEvent(Idle)
+{
+}
 
 } // namespace glow

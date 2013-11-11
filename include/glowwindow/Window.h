@@ -5,7 +5,7 @@
 
 #include <glowwindow/glowwindow.h>
 #include <glow/ref_ptr.h>
-#include <glowwindow/KeyEvent.h>  // forward?
+#include <glowwindow/events.h>  // forward?
 
 struct GLFWwindow;
 
@@ -82,13 +82,13 @@ public:
 
 protected:
     void idle();
-    void paint();
+    void swap();
     void destroy();
 
     void promoteContext();
 
-    void processEvent(WindowEvent* event);
-    void defaultAction(WindowEvent* event);
+    void processEvent(WindowEvent & event);
+    void finishEvent(WindowEvent & event);
 
 protected:
     ref_ptr<WindowEventHandler> m_eventHandler;

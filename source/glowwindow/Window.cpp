@@ -11,7 +11,7 @@
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 #include <glowwindow/Window.h>
-#include <glowwindow/KeyEvent.h>
+#include <glowwindow/events.h>
 
 #include "WindowEventDispatcher.h"
 
@@ -115,7 +115,8 @@ void Window::promoteContext()
     {
          m_context->makeCurrent();
          m_eventHandler->initialize(*this);
-         resize(m_width, m_height);
+         ResizeEvent event(m_width, m_height);
+         processEvent(event);
          m_context->doneCurrent();
     }
 }
@@ -226,27 +227,35 @@ void Window::quit(const int code)
     running = false;
 }
 
-void Window::repaint()
-{
-    WindowEvent e(WindowEvent::Paint);
-    processEvent(&e);
-}
-
 void Window::resize(
     const int width
 ,   const int height)
 {
-    ResizeEvent resize(width, height);
-    processEvent(&resize);
+    if (!m_window)
+        return;
+
+    glfwSetWindowSize(m_window, width, height);
+}
+
+void Window::repaint()
+{
+    PaintEvent event;
+    processEvent(event);
 }
 
 void Window::close()
 {
-    WindowEvent e(WindowEvent::Close);
-    processEvent(&e);
+    CloseEvent event;
+    processEvent(event);
 }
 
-void Window::paint()
+void Window::idle()
+{
+    IdleEvent event;
+    processEvent(event);
+}
+
+void Window::swap()
 {
     if (!m_timer)
     {
@@ -275,19 +284,6 @@ void Window::paint()
     }
 }
 
-void Window::idle()
-{
-    if (!m_context || !m_eventHandler)
-        return;
-
-    if (!m_eventHandler)
-        return;
-    
-    m_context->makeCurrent();
-    m_eventHandler->idleEvent(*this);
-    m_context->doneCurrent();
-}
-
 void Window::destroy()
 {
     m_context->release();
@@ -303,52 +299,52 @@ void Window::destroy()
         quit(0);
 }
 
-void Window::processEvent(WindowEvent* event)
+void Window::processEvent(WindowEvent & event)
 {
     if (!m_context)
         return;
 
-    m_context->makeCurrent();
-    m_eventHandler->handleEvent(*this, event);
+    event.setWindow(this);
 
-    if (!event->isAccepted())
-        defaultAction(event);
+    if (m_eventHandler)
+    {
+        m_context->makeCurrent();
+        m_eventHandler->handleEvent(event);
+    }
+
+    finishEvent(event);
 
     if (m_context)
         m_context->doneCurrent();
 }
 
-void Window::defaultAction(WindowEvent* event)
+void Window::finishEvent(WindowEvent & event)
 {
-    switch (event->type())
+    switch (event.type())
     {
         case WindowEvent::Close:
-            destroy();
-            event->accept();
+            if (!event.isAccepted())
+                destroy();
             break;
         case WindowEvent::Paint:
-            paint();
-            event->accept();
+            swap();
             break;
         case WindowEvent::KeyPress:
-            KeyEvent* keyEvent = dynamic_cast<KeyEvent*>(event);
-            if (keyEvent->key() == GLFW_KEY_ESCAPE)
+            if (event.isAccepted())
+                break;
+            KeyEvent& keyEvent = static_cast<KeyEvent&>(event);
+            switch (keyEvent.key())
             {
-                keyEvent->accept();
-                close();
+                case GLFW_KEY_ESCAPE:
+                    close();
+                    break;
+                case GLFW_KEY_ENTER:
+                    if (keyEvent.modifiers() & GLFW_MOD_ALT != 0)
+                    {
+                        toggleMode();
+                    }
+                    break;
             }
-            //    case GLFW_KEY_ENTER:
-            //        if (kre.modifiers() & GLFW_MOD_ALT != 0)
-            //        {
-            //            kre.accept();
-            //            toggleMode();
-            //        }
-            //        break;
-
-            //    default:
-            //        break;
-            //    }
-
             break;
     }
 }

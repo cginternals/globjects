@@ -10,6 +10,8 @@
 namespace glow 
 {
 
+class Window;
+
 class GLOWWINDOW_API WindowEvent
 {
 public:
@@ -28,22 +30,29 @@ public:
     ,   Focus
     ,   Iconify
     ,   Paint
+    ,   Idle
     };
 
-    WindowEvent(Type type);
     virtual ~WindowEvent();
 
     Type type() const;
 
     bool isAccepted() const;
-    bool isDiscarded() const;
+    bool isIgnored() const;
 
     void setAccepted(bool accepted);
     void accept();
-    void discard();
+    void ignore();
+
+    Window* window() const;
+    void setWindow(Window* window);
 protected:
     Type m_type;
     bool m_accepted;
+    Window* m_window;
+
+protected:
+    WindowEvent(Type type);
 };
 
 class GLOWWINDOW_API KeyEvent : public WindowEvent
@@ -66,8 +75,8 @@ protected:
 class GLOWWINDOW_API MouseEvent : public WindowEvent
 {
 public:
-    MouseEvent(int x, int y
-        , int button = -1, int action = -1, int modifiers = -1);
+    MouseEvent(int x, int y);
+    MouseEvent(int x, int y, int button, int action, int modifiers);
 
     int button() const;
     int action() const;
@@ -110,6 +119,24 @@ public:
 protected:
     int m_width;
     int m_height;
+};
+
+class GLOWWINDOW_API PaintEvent : public WindowEvent
+{
+public:
+    PaintEvent();
+};
+
+class GLOWWINDOW_API CloseEvent : public WindowEvent
+{
+public:
+    CloseEvent();
+};
+
+class GLOWWINDOW_API IdleEvent : public WindowEvent
+{
+public:
+    IdleEvent();
 };
 
 } // namespace glow

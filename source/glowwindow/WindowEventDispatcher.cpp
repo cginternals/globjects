@@ -63,7 +63,7 @@ Window* WindowEventDispatcher::fromGLFW(GLFWwindow* glfwWindow)
     return static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
 }
 
-void WindowEventDispatcher::sendEvent(GLFWwindow* glfwWindow, WindowEvent* event)
+void WindowEventDispatcher::sendEvent(GLFWwindow* glfwWindow, WindowEvent& event)
 {
     assert(glfwWindow != nullptr);
 
@@ -80,8 +80,8 @@ void WindowEventDispatcher::processRefresh(GLFWwindow* glfwWindow)
 {
     assert(glfwWindow != nullptr);
 
-    WindowEvent event(WindowEvent::Paint);
-    sendEvent(glfwWindow, &event);
+    PaintEvent event;
+    sendEvent(glfwWindow, event);
 }
 
 void WindowEventDispatcher::processKey(GLFWwindow* glfwWindow, int key, int scanCode, int action, int modifiers)
@@ -89,7 +89,7 @@ void WindowEventDispatcher::processKey(GLFWwindow* glfwWindow, int key, int scan
     assert(glfwWindow != nullptr);
 
     KeyEvent event(key, scanCode, action, modifiers);
-    sendEvent(glfwWindow, &event);
+    sendEvent(glfwWindow, event);
 }
 
 void WindowEventDispatcher::processChar(GLFWwindow* glfwWindow, unsigned int character)
@@ -107,7 +107,7 @@ void WindowEventDispatcher::processMouse(GLFWwindow* glfwWindow, int button, int
     MouseEvent event(static_cast<int>(x), static_cast<int>(y)
         , button, action, modifiers);
 
-    sendEvent(glfwWindow, &event);
+    sendEvent(glfwWindow, event);
 }
 
 void WindowEventDispatcher::processCursorPos(GLFWwindow* glfwWindow, double xPos, double yPos)
@@ -115,7 +115,7 @@ void WindowEventDispatcher::processCursorPos(GLFWwindow* glfwWindow, double xPos
     assert(glfwWindow != nullptr);
 
     MouseEvent event(static_cast<int>(xPos), static_cast<int>(yPos));
-    sendEvent(glfwWindow, &event);
+    sendEvent(glfwWindow, event);
 }
 
 void WindowEventDispatcher::processCursorEnter(GLFWwindow* glfwWindow, int entered)
@@ -131,7 +131,7 @@ void WindowEventDispatcher::processScroll(GLFWwindow* glfwWindow, double xOffset
     glfwGetCursorPos(glfwWindow, &x, &y);
 
     ScrollEvent event(xOffset, yOffset, static_cast<int>(x), static_cast<int>(y));
-    sendEvent(glfwWindow, &event);
+    sendEvent(glfwWindow, event);
 }
 
 void WindowEventDispatcher::processResize(GLFWwindow* glfwWindow, int width, int height)
@@ -139,7 +139,7 @@ void WindowEventDispatcher::processResize(GLFWwindow* glfwWindow, int width, int
     assert(glfwWindow != nullptr);
 
     ResizeEvent event(width, height);
-    sendEvent(glfwWindow, &event);
+    sendEvent(glfwWindow, event);
 }
 
 void WindowEventDispatcher::processFramebufferResize(GLFWwindow* glfwWindow, int width, int height)
@@ -166,8 +166,8 @@ void WindowEventDispatcher::processClose(GLFWwindow* glfwWindow)
 {
     assert(glfwWindow != nullptr);
 
-    WindowEvent event(WindowEvent::Close);
-    sendEvent(glfwWindow, &event);
+    CloseEvent event;
+    sendEvent(glfwWindow, event);
 }
 
 } // namespace glow

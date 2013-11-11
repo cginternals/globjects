@@ -11,6 +11,9 @@ class WindowEvent;
 class KeyEvent;
 class MouseEvent;
 class ScrollEvent;
+class ResizeEvent;
+class IdleEvent;
+class PaintEvent;
 
 class GLOWWINDOW_API WindowEventHandler : public Referenced
 {
@@ -18,62 +21,44 @@ public:
     WindowEventHandler();
     virtual ~WindowEventHandler();
 
-    void handleEvent(Window & window, WindowEvent * event);
+    void handleEvent(WindowEvent & event);
 
-    /** The initialize event is called only once when starting to run a window.
+    /** initialize is called only once when starting to run a window.
         The window's context is made current before and done current afterwards.
     */
     virtual void initialize(Window & window);
     
-    /** The initialize event is called only once, just before a window returns 
+    /** finalize is called only once, just before a window returns
         from running. The window's context is made current before and done 
         current afterwards.
     */
     virtual void finalize(Window & window);
 
-    //virtual void activateEvent();
-    //virtual void minimizeEvent();
+protected:
 
     /** The window's context is made current before and done current afterwards.
     */
-    virtual void resizeEvent(
-        Window & window
-    ,   unsigned int width
-    ,   unsigned int height);
+    virtual void resizeEvent(ResizeEvent & event);
 
     /** Swap buffers gets called afterwards, and window's context is made 
         current before and done current afterwards.
     */
-    virtual void paintEvent(Window & window);
+    virtual void paintEvent(PaintEvent & event);
 
     /** The idle event is called when no painting within the attached window's 
         main message loop is called. This might happen for fixed repaint time 
         intervals.
     */
-    virtual void idleEvent(Window & window);
+    virtual void idleEvent(IdleEvent & event);
 
+    virtual void keyPressEvent(KeyEvent & event);
+    virtual void keyReleaseEvent(KeyEvent & event);
 
-    virtual void keyPressEvent(
-        Window & window
-    ,   KeyEvent & event);
+    virtual void mousePressEvent(MouseEvent & event);
+    virtual void mouseMoveEvent(MouseEvent & event);
+    virtual void mouseReleaseEvent(MouseEvent & event);
 
-    virtual void keyReleaseEvent(
-        Window & window
-    ,   KeyEvent & event);
-
-    virtual void mousePressEvent(
-        Window & window
-    ,   MouseEvent & event);
-    virtual void mouseMoveEvent(
-        Window & window
-    ,   MouseEvent & event);
-    virtual void mouseReleaseEvent(
-        Window & window
-    ,   MouseEvent & event);
-
-    virtual void scrollEvent(
-        Window & window
-    ,   ScrollEvent & event);
+    virtual void scrollEvent(ScrollEvent & event);
 };
 
 } // namespace glow
