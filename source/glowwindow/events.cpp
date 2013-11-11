@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h>
 
 #include <glow/logging.h>
-#include <glowwindow/KeyEvent.h>
+#include <glowwindow/events.h>
 
 
 namespace glow
@@ -15,6 +15,7 @@ namespace glow
 WindowEvent::WindowEvent(Type type)
 : m_type(type)
 , m_accepted(false)
+, m_window(nullptr)
 {
 }
 
@@ -32,7 +33,7 @@ bool WindowEvent::isAccepted() const
     return m_accepted;
 }
 
-bool WindowEvent::isDiscarded() const
+bool WindowEvent::isIgnored() const
 {
     return !m_accepted;
 }
@@ -47,12 +48,30 @@ void WindowEvent::accept()
     m_accepted = true;
 }
 
-void WindowEvent::discard()
+void WindowEvent::ignore()
 {
     m_accepted = false;
 }
 
+Window* WindowEvent::window() const
+{
+    return m_window;
+}
 
+void WindowEvent::setWindow(Window* window)
+{
+    m_window = window;
+}
+
+KeyEvent::KeyEvent(unsigned int character)
+: WindowEvent(KeyTyped)
+, m_key(0)
+, m_scanCode(0)
+, m_action(0)
+, m_modifiers(0)
+, m_character(character)
+{
+}
 
 KeyEvent::KeyEvent(int key, int scanCode, int action, int modifiers)
 : WindowEvent(action == GLFW_RELEASE ? KeyRelease : KeyPress)
@@ -60,6 +79,7 @@ KeyEvent::KeyEvent(int key, int scanCode, int action, int modifiers)
 , m_scanCode(scanCode)
 , m_action(action)
 , m_modifiers(modifiers)
+, m_character(0)
 {
 }
 
@@ -83,27 +103,45 @@ int KeyEvent::modifiers() const
     return m_modifiers;
 }
 
-
-ResizeEvent::ResizeEvent(int width, int height)
-: WindowEvent(Resize)
-, m_width(width)
-, m_height(height)
+unsigned int KeyEvent::character() const
 {
+    return m_character;
+}
+
+
+ResizeEvent::ResizeEvent(int width, int height, bool framebuffer)
+: WindowEvent(framebuffer ? FrameBufferResize : Resize)
+, m_size(width, height)
+{
+}
+
+const glm::ivec2 & ResizeEvent::size() const
+{
+    return m_size;
 }
 
 int ResizeEvent::width() const
 {
-    return m_width;
+    return m_size.x;
 }
 
 int ResizeEvent::height() const
 {
-    return m_height;
+    return m_size.y;
 }
 
 
+MouseEvent::MouseEvent(const int x, const int y)
+: WindowEvent(MouseMove)
+, m_button(-1)
+, m_action(-1)
+, m_modifiers(0)
+, m_pos(x, y)
+{
+}
+
 MouseEvent::MouseEvent(const int x, const int y, const int button, const int action, const int modifiers)
-: WindowEvent(action == -1 ? MouseMove : (action == GLFW_RELEASE ? MouseRelease : MousePress))
+: WindowEvent(action == GLFW_RELEASE ? MouseRelease : MousePress)
 , m_button(button)
 , m_action(action)
 , m_modifiers(modifiers)
@@ -160,6 +198,65 @@ const glm::vec2 & ScrollEvent::offset() const
 const glm::ivec2 & ScrollEvent::pos() const
 {
     return m_pos;
+}
+
+
+MoveEvent::MoveEvent(int x, int y)
+: WindowEvent(Move)
+, m_pos(x, y)
+{
+}
+
+int MoveEvent::x() const
+{
+    return m_pos.x;
+}
+
+int MoveEvent::y() const
+{
+    return m_pos.y;
+}
+
+const glm::ivec2 & MoveEvent::pos() const
+{
+    return m_pos;
+}
+
+PaintEvent::PaintEvent()
+: WindowEvent(Paint)
+{
+}
+
+CloseEvent::CloseEvent()
+: WindowEvent(Close)
+{
+}
+
+IdleEvent::IdleEvent()
+: WindowEvent(Idle)
+{
+}
+
+FocusEvent::FocusEvent(bool hasFocus)
+: WindowEvent(Focus)
+, m_hasFocus(hasFocus)
+{
+}
+
+bool FocusEvent::hasFocus() const
+{
+    return m_hasFocus;
+}
+
+IconifyEvent::IconifyEvent(bool isIconified)
+: WindowEvent(Iconify)
+, m_isIconified(isIconified)
+{
+}
+
+bool IconifyEvent::isIconified() const
+{
+    return m_isIconified;
 }
 
 

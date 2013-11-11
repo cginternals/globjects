@@ -188,8 +188,8 @@ void WorldInHandNavigation::panProcess(const ivec2 & mouse)
 
     // constrain mouse interaction to viewport (if disabled, could lead to mishaps)
     const ivec2 clamped(
-        clamp(0, m_camera->viewport().x, mouse.x)
-    ,   clamp(0, m_camera->viewport().y, mouse.y));
+        glm::clamp(mouse.x, 0, m_camera->viewport().x)
+    ,   glm::clamp(mouse.y, 0, m_camera->viewport().y));
 
     bool intersects;
     m_i1 = mouseRayPlaneIntersection(intersects, clamped, m_i0, m_viewProjectionInverted);

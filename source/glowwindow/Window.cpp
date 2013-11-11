@@ -11,7 +11,7 @@
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 #include <glowwindow/Window.h>
-#include <glowwindow/KeyEvent.h>
+#include <glowwindow/events.h>
 
 #include "WindowEventDispatcher.h"
 
@@ -115,7 +115,10 @@ void Window::promoteContext()
     {
          m_context->makeCurrent();
          m_eventHandler->initialize(*this);
-         resize(m_width, m_height);
+         ResizeEvent event1(m_width, m_height);
+         ResizeEvent event2(m_width, m_height, true);
+         postEvent(event1);
+         postEvent(event2);
          m_context->doneCurrent();
     }
 }
@@ -226,27 +229,35 @@ void Window::quit(const int code)
     running = false;
 }
 
-void Window::repaint()
-{
-    WindowEvent e(WindowEvent::Paint);
-    processEvent(&e);
-}
-
 void Window::resize(
     const int width
 ,   const int height)
 {
-    ResizeEvent resize(width, height);
-    processEvent(&resize);
+    if (!m_window)
+        return;
+
+    glfwSetWindowSize(m_window, width, height);
+}
+
+void Window::repaint()
+{
+    PaintEvent event;
+    postEvent(event);
 }
 
 void Window::close()
 {
-    WindowEvent e(WindowEvent::Close);
-    processEvent(&e);
+    CloseEvent event;
+    postEvent(event);
 }
 
-void Window::paint()
+void Window::idle()
+{
+    IdleEvent event;
+    postEvent(event);
+}
+
+void Window::swap()
 {
     if (!m_timer)
     {
@@ -275,19 +286,6 @@ void Window::paint()
     }
 }
 
-void Window::idle()
-{
-    if (!m_context || !m_eventHandler)
-        return;
-
-    if (!m_eventHandler)
-        return;
-    
-    m_context->makeCurrent();
-    m_eventHandler->idleEvent(*this);
-    m_context->doneCurrent();
-}
-
 void Window::destroy()
 {
     m_context->release();
@@ -303,52 +301,64 @@ void Window::destroy()
         quit(0);
 }
 
-void Window::processEvent(WindowEvent* event)
+GLFWwindow * Window::internalWindow() const
+{
+    return m_window;
+}
+
+void Window::postEvent(WindowEvent & event)
 {
     if (!m_context)
         return;
 
-    m_context->makeCurrent();
-    m_eventHandler->handleEvent(*this, event);
+    event.setWindow(this);
 
-    if (!event->isAccepted())
-        defaultAction(event);
+    if (m_eventHandler)
+    {
+        m_context->makeCurrent();
+        m_eventHandler->handleEvent(event);
+    }
 
-    if (m_context)
+    finishEvent(event);
+
+    if (m_context) // the context can be nullptr here, if a Close event destroyed it
         m_context->doneCurrent();
 }
 
-void Window::defaultAction(WindowEvent* event)
+void Window::finishEvent(WindowEvent & event)
 {
-    switch (event->type())
+    if (event.type() == WindowEvent::Paint)
+    {
+        swap();
+    }
+    else if (!event.isAccepted())
+    {
+        defaultEventAction(event);
+    }
+}
+
+void Window::defaultEventAction(WindowEvent & event)
+{
+    switch (event.type())
     {
         case WindowEvent::Close:
             destroy();
-            event->accept();
             break;
-        case WindowEvent::Paint:
-            paint();
-            event->accept();
-            break;
+
         case WindowEvent::KeyPress:
-            KeyEvent* keyEvent = dynamic_cast<KeyEvent*>(event);
-            if (keyEvent->key() == GLFW_KEY_ESCAPE)
+            KeyEvent& keyEvent = static_cast<KeyEvent&>(event);
+            switch (keyEvent.key())
             {
-                keyEvent->accept();
-                close();
+                case GLFW_KEY_ESCAPE:
+                    close();
+                    break;
+                case GLFW_KEY_ENTER:
+                    if (keyEvent.modifiers() & GLFW_MOD_ALT != 0)
+                    {
+                        toggleMode();
+                    }
+                    break;
             }
-            //    case GLFW_KEY_ENTER:
-            //        if (kre.modifiers() & GLFW_MOD_ALT != 0)
-            //        {
-            //            kre.accept();
-            //            toggleMode();
-            //        }
-            //        break;
-
-            //    default:
-            //        break;
-            //    }
-
             break;
     }
 }

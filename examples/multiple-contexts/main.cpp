@@ -23,30 +23,27 @@ public:
     {
     }
 
-    virtual void initialize(Window & window)
+    virtual void initialize(Window & window) override
     {
         DebugMessageOutput::enable();
 
         glClearColor(1.f, 1.f, 1.f, 1.f);
     }
 
-    virtual void resizeEvent(
-        Window & window
-    ,   unsigned int width
-    ,   unsigned int height)
+    virtual void resizeEvent(ResizeEvent & event) override
     {
-        glViewport(0, 0, width, height);
+        glViewport(0, 0, event.width(), event.height());
     }
 
-    virtual void paintEvent(Window & window)
+    virtual void paintEvent(PaintEvent &) override
     {
         glClearColor(rand() / static_cast<float>(RAND_MAX), rand() / static_cast<float>(RAND_MAX), rand() / static_cast<float>(RAND_MAX), 1.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    virtual void idleEvent(Window & window)
+    virtual void idleEvent(IdleEvent & event) override
     {
-        window.repaint();
+        event.window()->repaint();
     }
 };
 
@@ -55,7 +52,7 @@ public:
     single event handler. This allows, e.g., reuse of painting functionality
     with minor, windows specific variations (e.g., different views).
 */
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
     ContextFormat format;
 

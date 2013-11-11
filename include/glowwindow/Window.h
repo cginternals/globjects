@@ -5,7 +5,7 @@
 
 #include <glowwindow/glowwindow.h>
 #include <glow/ref_ptr.h>
-#include <glowwindow/KeyEvent.h>  // forward?
+#include <glowwindow/events.h>  // forward?
 
 struct GLFWwindow;
 
@@ -23,8 +23,6 @@ class Timer;
 */
 class GLOWWINDOW_API Window
 {
-friend class WindowEventDispatcher;
-
 public:
     Window();
     virtual ~Window();
@@ -73,6 +71,9 @@ public:
 
     void toggleMode();
 
+    GLFWwindow * internalWindow() const;
+    void postEvent(WindowEvent & event);
+
 public:
     /** This enters the (main) windows message loop and dispatches events to
         the attached WindowEventHandler instance.
@@ -82,13 +83,13 @@ public:
 
 protected:
     void idle();
-    void paint();
+    void swap();
     void destroy();
 
     void promoteContext();
 
-    void processEvent(WindowEvent* event);
-    void defaultAction(WindowEvent* event);
+    void finishEvent(WindowEvent & event);
+    void defaultEventAction(WindowEvent & event);
 
 protected:
     ref_ptr<WindowEventHandler> m_eventHandler;

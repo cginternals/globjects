@@ -23,36 +23,33 @@ public:
     {
     }
 
-    virtual void initialize(Window & window)
+    virtual void initialize(Window & window) override
     {
         DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
     }
     
-    virtual void resizeEvent(
-        Window & window
-    ,   unsigned int width
-    ,   unsigned int height)
+    virtual void resizeEvent(ResizeEvent & event) override
     {
-        glViewport(0, 0, width, height);
+        glViewport(0, 0, event.width(), event.height());
     }
 
-    virtual void paintEvent(Window & window)
+    virtual void paintEvent(PaintEvent &)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    virtual void idleEvent(Window & window)
+    virtual void idleEvent(IdleEvent & event) override
     {
-        window.repaint();
+        event.window()->repaint();
     }
 };
 
 /** This example shows how to create a single window, probably in fullscreen
     mode. All window and system events are handled with the event handler.
 */
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
     glewExperimental = GL_TRUE;
 

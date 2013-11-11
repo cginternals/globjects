@@ -32,7 +32,8 @@ set(api_includes
     ${header_path}/AxonometricLookAt.h
     ${header_path}/CachedValue.h
     ${header_path}/CachedValue.hpp
-    ${header_path}/Camera.h   
+    ${header_path}/Camera.h
+    ${header_path}/CameraPathRecorder.h
     ${header_path}/Icosahedron.h
     ${header_path}/MathMacros.h
     ${header_path}/NavigationMath.h
@@ -52,6 +53,7 @@ set(sources
     ${source_path}/AxisAlignedBoundingBox.cpp
     ${source_path}/AxonometricLookAt.cpp
     ${source_path}/Camera.cpp
+    ${source_path}/CameraPathRecorder.cpp
     ${source_path}/Icosahedron.cpp
     ${source_path}/NavigationMath.cpp
     ${source_path}/Plane3.cpp
