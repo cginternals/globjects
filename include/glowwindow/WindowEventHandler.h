@@ -14,6 +14,9 @@ class ScrollEvent;
 class ResizeEvent;
 class IdleEvent;
 class PaintEvent;
+class FocusEvent;
+class IconifyEvent;
+class MoveEvent;
 
 class GLOWWINDOW_API WindowEventHandler : public Referenced
 {
@@ -39,6 +42,9 @@ protected:
     /** The window's context is made current before and done current afterwards.
     */
     virtual void resizeEvent(ResizeEvent & event);
+    virtual void framebufferResizeEvent(ResizeEvent & event);
+
+    virtual void moveEvent(MoveEvent & event);
 
     /** Swap buffers gets called afterwards, and window's context is made 
         current before and done current afterwards.
@@ -59,6 +65,9 @@ protected:
     virtual void mouseReleaseEvent(MouseEvent & event);
 
     virtual void scrollEvent(ScrollEvent & event);
+
+    virtual void focusEvent(FocusEvent & event);
+    virtual void iconifyEvent(IconifyEvent & event);
 };
 
 } // namespace glow

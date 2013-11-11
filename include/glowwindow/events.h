@@ -19,13 +19,14 @@ public:
     {
         KeyPress
     ,   KeyRelease
+    ,   KeyTyped
     ,   MousePress
     ,   MouseRelease
     ,   MouseMove
     ,   Scroll
     ,   Resize
+    ,   FrameBufferResize
     ,   Move
-    ,   Hover
     ,   Close
     ,   Focus
     ,   Iconify
@@ -59,17 +60,20 @@ class GLOWWINDOW_API KeyEvent : public WindowEvent
 {
 public:
     KeyEvent(int key, int scanCode, int action, int modifiers);
+    explicit KeyEvent(unsigned int character);
 
     int key() const;
     int scanCode() const;
     int action() const;
     int modifiers() const;
+    unsigned int character() const;
 
 protected:
     int m_key;
     int m_scanCode;
     int m_action;
     int m_modifiers;
+    unsigned int m_character;
 };
 
 class GLOWWINDOW_API MouseEvent : public WindowEvent
@@ -108,17 +112,32 @@ protected:
     glm::ivec2 m_pos;
 };
 
+class GLOWWINDOW_API MoveEvent : public WindowEvent
+{
+public:
+    MoveEvent(int x, int y);
+
+    const glm::ivec2 & pos() const;
+
+    int x() const;
+    int y() const;
+
+protected:
+    glm::ivec2 m_pos;
+};
+
 class GLOWWINDOW_API ResizeEvent : public WindowEvent
 {
 public:
-    ResizeEvent(int width, int height);
+    ResizeEvent(int width, int height, bool framebuffer = false);
+
+    const glm::ivec2 & size() const;
 
     int width() const;
     int height() const;
 
 protected:
-    int m_width;
-    int m_height;
+    glm::ivec2 m_size;
 };
 
 class GLOWWINDOW_API PaintEvent : public WindowEvent
@@ -137,6 +156,26 @@ class GLOWWINDOW_API IdleEvent : public WindowEvent
 {
 public:
     IdleEvent();
+};
+
+class GLOWWINDOW_API FocusEvent : public WindowEvent
+{
+public:
+    FocusEvent(bool hasFocus);
+
+    bool hasFocus() const;
+protected:
+    bool m_hasFocus;
+};
+
+class GLOWWINDOW_API IconifyEvent : public WindowEvent
+{
+public:
+    IconifyEvent(bool isIconified);
+
+    bool isIconified() const;
+protected:
+    bool m_isIconified;
 };
 
 } // namespace glow

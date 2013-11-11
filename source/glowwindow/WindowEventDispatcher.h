@@ -19,7 +19,9 @@ private:
 
 protected:
     static Window* fromGLFW(GLFWwindow* glfwWindow);
-    static void sendEvent(GLFWwindow* glfwWindow, WindowEvent& event);
+    static void mousePosition(GLFWwindow* glfwWindow, int& x, int &y);
+
+    static void dispatchEvent(GLFWwindow* glfwWindow, WindowEvent& event);
 
     static void processRefresh(GLFWwindow* glfwWindow);
     static void processKey(GLFWwindow* glfwWindow, int key, int scanCode, int action, int modifiers);

@@ -116,7 +116,7 @@ void Window::promoteContext()
          m_context->makeCurrent();
          m_eventHandler->initialize(*this);
          ResizeEvent event(m_width, m_height);
-         processEvent(event);
+         postEvent(event);
          m_context->doneCurrent();
     }
 }
@@ -240,19 +240,19 @@ void Window::resize(
 void Window::repaint()
 {
     PaintEvent event;
-    processEvent(event);
+    postEvent(event);
 }
 
 void Window::close()
 {
     CloseEvent event;
-    processEvent(event);
+    postEvent(event);
 }
 
 void Window::idle()
 {
     IdleEvent event;
-    processEvent(event);
+    postEvent(event);
 }
 
 void Window::swap()
@@ -299,7 +299,12 @@ void Window::destroy()
         quit(0);
 }
 
-void Window::processEvent(WindowEvent & event)
+GLFWwindow * Window::internalWindow() const
+{
+    return m_window;
+}
+
+void Window::postEvent(WindowEvent & event)
 {
     if (!m_context)
         return;
@@ -314,24 +319,31 @@ void Window::processEvent(WindowEvent & event)
 
     finishEvent(event);
 
-    if (m_context)
+    if (m_context) // the context can be nullptr here, if a Close event destroyed it
         m_context->doneCurrent();
 }
 
 void Window::finishEvent(WindowEvent & event)
 {
+    if (event.type() == WindowEvent::Paint)
+    {
+        swap();
+    }
+    else if (!event.isAccepted())
+    {
+        defaultEventAction(event);
+    }
+}
+
+void Window::defaultEventAction(WindowEvent & event)
+{
     switch (event.type())
     {
         case WindowEvent::Close:
-            if (!event.isAccepted())
-                destroy();
+            destroy();
             break;
-        case WindowEvent::Paint:
-            swap();
-            break;
+
         case WindowEvent::KeyPress:
-            if (event.isAccepted())
-                break;
             KeyEvent& keyEvent = static_cast<KeyEvent&>(event);
             switch (keyEvent.key())
             {

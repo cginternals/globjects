@@ -63,6 +63,15 @@ void WindowEvent::setWindow(Window* window)
     m_window = window;
 }
 
+KeyEvent::KeyEvent(unsigned int character)
+: WindowEvent(KeyTyped)
+, m_key(0)
+, m_scanCode(0)
+, m_action(0)
+, m_modifiers(0)
+, m_character(character)
+{
+}
 
 KeyEvent::KeyEvent(int key, int scanCode, int action, int modifiers)
 : WindowEvent(action == GLFW_RELEASE ? KeyRelease : KeyPress)
@@ -70,6 +79,7 @@ KeyEvent::KeyEvent(int key, int scanCode, int action, int modifiers)
 , m_scanCode(scanCode)
 , m_action(action)
 , m_modifiers(modifiers)
+, m_character(0)
 {
 }
 
@@ -93,22 +103,31 @@ int KeyEvent::modifiers() const
     return m_modifiers;
 }
 
-
-ResizeEvent::ResizeEvent(int width, int height)
-: WindowEvent(Resize)
-, m_width(width)
-, m_height(height)
+unsigned int KeyEvent::character() const
 {
+    return m_character;
+}
+
+
+ResizeEvent::ResizeEvent(int width, int height, bool framebuffer)
+: WindowEvent(framebuffer ? FrameBufferResize : Resize)
+, m_size(width, height)
+{
+}
+
+const glm::ivec2 & ResizeEvent::size() const
+{
+    return m_size;
 }
 
 int ResizeEvent::width() const
 {
-    return m_width;
+    return m_size.x;
 }
 
 int ResizeEvent::height() const
 {
-    return m_height;
+    return m_size.y;
 }
 
 
@@ -116,7 +135,7 @@ MouseEvent::MouseEvent(const int x, const int y)
 : WindowEvent(MouseMove)
 , m_button(-1)
 , m_action(-1)
-, m_modifiers(-1)
+, m_modifiers(0)
 , m_pos(x, y)
 {
 }
@@ -182,6 +201,27 @@ const glm::ivec2 & ScrollEvent::pos() const
 }
 
 
+MoveEvent::MoveEvent(int x, int y)
+: WindowEvent(Move)
+, m_pos(x, y)
+{
+}
+
+int MoveEvent::x() const
+{
+    return m_pos.x;
+}
+
+int MoveEvent::y() const
+{
+    return m_pos.y;
+}
+
+const glm::ivec2 & MoveEvent::pos() const
+{
+    return m_pos;
+}
+
 PaintEvent::PaintEvent()
 : WindowEvent(Paint)
 {
@@ -196,5 +236,28 @@ IdleEvent::IdleEvent()
 : WindowEvent(Idle)
 {
 }
+
+FocusEvent::FocusEvent(bool hasFocus)
+: WindowEvent(Focus)
+, m_hasFocus(hasFocus)
+{
+}
+
+bool FocusEvent::hasFocus() const
+{
+    return m_hasFocus;
+}
+
+IconifyEvent::IconifyEvent(bool isIconified)
+: WindowEvent(Iconify)
+, m_isIconified(isIconified)
+{
+}
+
+bool IconifyEvent::isIconified() const
+{
+    return m_isIconified;
+}
+
 
 } // namespace glow

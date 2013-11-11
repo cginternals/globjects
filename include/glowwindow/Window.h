@@ -23,8 +23,6 @@ class Timer;
 */
 class GLOWWINDOW_API Window
 {
-friend class WindowEventDispatcher;
-
 public:
     Window();
     virtual ~Window();
@@ -73,6 +71,9 @@ public:
 
     void toggleMode();
 
+    GLFWwindow * internalWindow() const;
+    void postEvent(WindowEvent & event);
+
 public:
     /** This enters the (main) windows message loop and dispatches events to
         the attached WindowEventHandler instance.
@@ -87,8 +88,8 @@ protected:
 
     void promoteContext();
 
-    void processEvent(WindowEvent & event);
     void finishEvent(WindowEvent & event);
+    void defaultEventAction(WindowEvent & event);
 
 protected:
     ref_ptr<WindowEventHandler> m_eventHandler;

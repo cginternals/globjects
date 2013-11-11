@@ -24,6 +24,14 @@ void WindowEventHandler::handleEvent(WindowEvent & event)
             resizeEvent(static_cast<ResizeEvent&>(event));
             break;
 
+        case WindowEvent::FrameBufferResize:
+            framebufferResizeEvent(static_cast<ResizeEvent&>(event));
+            break;
+
+        case WindowEvent::Move:
+            moveEvent(static_cast<MoveEvent&>(event));
+            break;
+
         case WindowEvent::Paint:
             paintEvent(static_cast<PaintEvent&>(event));
             break;
@@ -52,6 +60,14 @@ void WindowEventHandler::handleEvent(WindowEvent & event)
             scrollEvent(static_cast<ScrollEvent&>(event));
             break;
 
+        case WindowEvent::Focus:
+            focusEvent(static_cast<FocusEvent&>(event));
+            break;
+
+        case WindowEvent::Iconify:
+            iconifyEvent(static_cast<IconifyEvent&>(event));
+            break;
+
         case WindowEvent::Idle:
             idleEvent(static_cast<IdleEvent&>(event));
             break;
@@ -66,7 +82,15 @@ void WindowEventHandler::finalize(Window &)
 {
 }
 
-void WindowEventHandler::resizeEvent(ResizeEvent & event)
+void WindowEventHandler::resizeEvent(ResizeEvent &)
+{
+}
+
+void WindowEventHandler::framebufferResizeEvent(ResizeEvent &)
+{
+}
+
+void WindowEventHandler::moveEvent(MoveEvent &)
 {
 }
 
@@ -86,19 +110,27 @@ void WindowEventHandler::keyReleaseEvent(KeyEvent &)
 {
 }
 
-void WindowEventHandler::mousePressEvent(MouseEvent & event)
+void WindowEventHandler::mousePressEvent(MouseEvent &)
 {
 }
 
-void WindowEventHandler::mouseMoveEvent(MouseEvent & event)
+void WindowEventHandler::mouseMoveEvent(MouseEvent &)
 {
 }
 
-void WindowEventHandler::mouseReleaseEvent(MouseEvent & event)
+void WindowEventHandler::mouseReleaseEvent(MouseEvent &)
 {
 }
 
-void WindowEventHandler::scrollEvent(ScrollEvent & event)
+void WindowEventHandler::scrollEvent(ScrollEvent &)
+{
+}
+
+void WindowEventHandler::focusEvent(FocusEvent &)
+{
+}
+
+void WindowEventHandler::iconifyEvent(IconifyEvent &)
 {
 }
 
