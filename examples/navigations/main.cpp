@@ -58,7 +58,7 @@ public:
     void createAndSetupShaders();
 	void createAndSetupGeometry();
 
-    virtual void initialize(Window & window)
+    virtual void initialize(Window & window) override
     {
         DebugMessageOutput::enable();
 
