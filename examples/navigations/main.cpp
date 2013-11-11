@@ -79,7 +79,7 @@ public:
         m_agrid->setCamera(&m_camera);
     }    
 
-    virtual void resizeEvent(ResizeEvent & event) override
+    virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         glViewport(0, 0, event.width(), event.height());
         m_camera.setViewport(event.width(), event.height());

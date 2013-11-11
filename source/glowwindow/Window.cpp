@@ -115,8 +115,10 @@ void Window::promoteContext()
     {
          m_context->makeCurrent();
          m_eventHandler->initialize(*this);
-         ResizeEvent event(m_width, m_height);
-         postEvent(event);
+         ResizeEvent event1(m_width, m_height);
+         ResizeEvent event2(m_width, m_height, true);
+         postEvent(event1);
+         postEvent(event2);
          m_context->doneCurrent();
     }
 }

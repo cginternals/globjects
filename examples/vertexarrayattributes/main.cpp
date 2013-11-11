@@ -170,7 +170,7 @@ protected:
     ref_ptr<glow::Program> m_shaderProgram;
 };
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
     glewExperimental = GL_TRUE;
 
