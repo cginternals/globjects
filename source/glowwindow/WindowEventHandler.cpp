@@ -67,10 +67,6 @@ void WindowEventHandler::handleEvent(WindowEvent & event)
         case WindowEvent::Iconify:
             iconifyEvent(static_cast<IconifyEvent&>(event));
             break;
-
-        case WindowEvent::Idle:
-            idleEvent(static_cast<IdleEvent&>(event));
-            break;
     }
 }
 
@@ -79,6 +75,10 @@ void WindowEventHandler::initialize(Window &)
 }
 
 void WindowEventHandler::finalize(Window &)
+{
+}
+
+void WindowEventHandler::idle(Window &)
 {
 }
 
@@ -95,10 +95,6 @@ void WindowEventHandler::moveEvent(MoveEvent &)
 }
 
 void WindowEventHandler::paintEvent(PaintEvent &)
-{
-}
-
-void WindowEventHandler::idleEvent(IdleEvent &)
 {
 }
 

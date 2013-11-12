@@ -232,11 +232,6 @@ CloseEvent::CloseEvent()
 {
 }
 
-IdleEvent::IdleEvent()
-: WindowEvent(Idle)
-{
-}
-
 FocusEvent::FocusEvent(bool hasFocus)
 : WindowEvent(Focus)
 , m_hasFocus(hasFocus)

@@ -31,7 +31,6 @@ public:
     ,   Focus
     ,   Iconify
     ,   Paint
-    ,   Idle
     };
 
     virtual ~WindowEvent();
@@ -150,12 +149,6 @@ class GLOWWINDOW_API CloseEvent : public WindowEvent
 {
 public:
     CloseEvent();
-};
-
-class GLOWWINDOW_API IdleEvent : public WindowEvent
-{
-public:
-    IdleEvent();
 };
 
 class GLOWWINDOW_API FocusEvent : public WindowEvent

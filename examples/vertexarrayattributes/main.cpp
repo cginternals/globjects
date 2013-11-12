@@ -160,9 +160,9 @@ public:
         m_shaderProgram->release();
     }
 
-    virtual void idleEvent(IdleEvent & event) override
+    virtual void idle(Window & window) override
     {
-        event.window()->repaint();
+        window.repaint();
     }
 protected:
     ref_ptr<VertexArrayObject> m_vao;
@@ -189,5 +189,5 @@ int main(int argc, char* argv[])
         window.show();
     }
 
-    return Window::run();
+    return MainLoop::run();
 }

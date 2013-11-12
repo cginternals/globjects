@@ -114,9 +114,9 @@ public:
         std::swap(m_vertexBuffer1, m_vertexBuffer2);
     }
 
-    virtual void idleEvent(IdleEvent & event) override
+    virtual void idle(Window & window) override
     {
-        event.window()->repaint();
+        window.repaint();
     }
 
     virtual void keyReleaseEvent(KeyEvent & event) override
@@ -158,7 +158,7 @@ int main(int argc, char** argv)
     window.show();
     window.context()->setSwapInterval(Context::NoVerticalSyncronization);
 
-    return Window::run();
+    return MainLoop::run();
 }
 
 void EventHandler::createAndSetupShaders()

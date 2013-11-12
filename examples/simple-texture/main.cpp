@@ -56,9 +56,9 @@ public:
         m_quad->draw();
     }
 
-    virtual void idleEvent(IdleEvent & event) override
+    virtual void idle(Window & window) override
     {
-        event.window()->repaint();
+        window.repaint();
     }
 
 protected:
@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
     window.create(format, "Simple Texture Example");
     window.show();
 
-    return Window::run();
+    return MainLoop::run();
 }
 
 void EventHandler::createAndSetupTexture()

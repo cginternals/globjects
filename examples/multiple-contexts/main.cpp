@@ -41,9 +41,9 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    virtual void idleEvent(IdleEvent & event) override
+    virtual void idle(Window & window) override
     {
-        event.window()->repaint();
+        window.repaint();
     }
 };
 
@@ -69,5 +69,5 @@ int main(int argc, char* argv[])
         if (0 == rand() % 2)
             windows[i].setQuitOnDestroy(false);
     }
-    return Window::run();
+    return MainLoop::run();
 }

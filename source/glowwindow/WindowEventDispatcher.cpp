@@ -24,19 +24,19 @@ void WindowEventDispatcher::registerWindow(Window* window)
 
     glfwSetWindowUserPointer(glfwWindow, window);
 
-    glfwSetWindowRefreshCallback(glfwWindow, processRefresh);
-    glfwSetKeyCallback(glfwWindow, processKey);
-    glfwSetCharCallback(glfwWindow, processChar);
-    glfwSetMouseButtonCallback(glfwWindow, processMouse);
-    glfwSetCursorPosCallback(glfwWindow, processCursorPos);
-    glfwSetCursorEnterCallback(glfwWindow, processCursorEnter);
-    glfwSetScrollCallback(glfwWindow, processScroll);
-    glfwSetWindowSizeCallback(glfwWindow, processResize);
-    glfwSetFramebufferSizeCallback(glfwWindow, processFramebufferResize);
-    glfwSetWindowFocusCallback(glfwWindow, processFocus);
-    glfwSetWindowPosCallback(glfwWindow, processMove);
-    glfwSetWindowIconifyCallback(glfwWindow, processIconify);
-    glfwSetWindowCloseCallback(glfwWindow, processClose);
+    glfwSetWindowRefreshCallback(glfwWindow, handleRefresh);
+    glfwSetKeyCallback(glfwWindow, handleKey);
+    glfwSetCharCallback(glfwWindow, handleChar);
+    glfwSetMouseButtonCallback(glfwWindow, handleMouse);
+    glfwSetCursorPosCallback(glfwWindow, handleCursorPos);
+    glfwSetCursorEnterCallback(glfwWindow, handleCursorEnter);
+    glfwSetScrollCallback(glfwWindow, handleScroll);
+    glfwSetWindowSizeCallback(glfwWindow, handleResize);
+    glfwSetFramebufferSizeCallback(glfwWindow, handleFramebufferResize);
+    glfwSetWindowFocusCallback(glfwWindow, handleFocus);
+    glfwSetWindowPosCallback(glfwWindow, handleMove);
+    glfwSetWindowIconifyCallback(glfwWindow, handleIconify);
+    glfwSetWindowCloseCallback(glfwWindow, handleClose);
 }
 
 void WindowEventDispatcher::deregisterWindow(Window* window)
@@ -83,99 +83,87 @@ void WindowEventDispatcher::mousePosition(GLFWwindow* glfwWindow, int& x, int &y
     }
 }
 
-void WindowEventDispatcher::dispatchEvent(GLFWwindow* glfwWindow, WindowEvent& event)
+void WindowEventDispatcher::queueEvent(GLFWwindow* glfwWindow, WindowEvent* event)
 {
     Window* window = fromGLFW(glfwWindow);
     if (!window)
         return;
 
-    window->postEvent(event);
+    window->queueEvent(event);
 }
 
 // events
 
-void WindowEventDispatcher::processRefresh(GLFWwindow* glfwWindow)
+void WindowEventDispatcher::handleRefresh(GLFWwindow* glfwWindow)
 {
-    PaintEvent event;
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new PaintEvent);
 }
 
-void WindowEventDispatcher::processKey(GLFWwindow* glfwWindow, int key, int scanCode, int action, int modifiers)
+void WindowEventDispatcher::handleKey(GLFWwindow* glfwWindow, int key, int scanCode, int action, int modifiers)
 {
-    KeyEvent event(key, scanCode, action, modifiers);
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new KeyEvent(key, scanCode, action, modifiers));
 }
 
-void WindowEventDispatcher::processChar(GLFWwindow* glfwWindow, unsigned int character)
+void WindowEventDispatcher::handleChar(GLFWwindow* glfwWindow, unsigned int character)
 {
-    KeyEvent event(character);
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new KeyEvent(character));
 }
 
-void WindowEventDispatcher::processMouse(GLFWwindow* glfwWindow, int button, int action, int modifiers)
+void WindowEventDispatcher::handleMouse(GLFWwindow* glfwWindow, int button, int action, int modifiers)
 {
     int x, y;
     mousePosition(glfwWindow, x, y);
 
-    MouseEvent event(x, y, button, action, modifiers);
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new MouseEvent(x, y, button, action, modifiers));
 }
 
-void WindowEventDispatcher::processCursorPos(GLFWwindow* glfwWindow, double xPos, double yPos)
+void WindowEventDispatcher::handleCursorPos(GLFWwindow* glfwWindow, double xPos, double yPos)
 {
-    MouseEvent event(std::floor(xPos), std::floor(yPos));
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new MouseEvent(std::floor(xPos), std::floor(yPos)));
 }
 
-void WindowEventDispatcher::processCursorEnter(GLFWwindow* glfwWindow, int entered)
+void WindowEventDispatcher::handleCursorEnter(GLFWwindow* glfwWindow, int entered)
 {
     // TODO: implement
-    //sendEvent(glfwWindow, event);
+    //queueEvent(glfwWindow, event);
 }
 
-void WindowEventDispatcher::processScroll(GLFWwindow* glfwWindow, double xOffset, double yOffset)
+void WindowEventDispatcher::handleScroll(GLFWwindow* glfwWindow, double xOffset, double yOffset)
 {
     int x, y;
     mousePosition(glfwWindow, x, y);
 
-    ScrollEvent event(xOffset, yOffset, x, y);
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new ScrollEvent(xOffset, yOffset, x, y));
 }
 
-void WindowEventDispatcher::processResize(GLFWwindow* glfwWindow, int width, int height)
+void WindowEventDispatcher::handleResize(GLFWwindow* glfwWindow, int width, int height)
 {
-    ResizeEvent event(width, height);
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new ResizeEvent(width, height));
 }
 
-void WindowEventDispatcher::processFramebufferResize(GLFWwindow* glfwWindow, int width, int height)
+void WindowEventDispatcher::handleFramebufferResize(GLFWwindow* glfwWindow, int width, int height)
 {
-    ResizeEvent event(width, height, true);
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new ResizeEvent(width, height, true));
 }
 
-void WindowEventDispatcher::processMove(GLFWwindow* glfwWindow, int x, int y)
+void WindowEventDispatcher::handleMove(GLFWwindow* glfwWindow, int x, int y)
 {
-    MoveEvent event(x, y);
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new MoveEvent(x, y));
 }
 
-void WindowEventDispatcher::processFocus(GLFWwindow* glfwWindow, int focused)
+void WindowEventDispatcher::handleFocus(GLFWwindow* glfwWindow, int focused)
 {
-    FocusEvent event(focused == GL_TRUE);
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new FocusEvent(focused == GL_TRUE));
 }
 
-void WindowEventDispatcher::processIconify(GLFWwindow* glfwWindow, int iconified)
+void WindowEventDispatcher::handleIconify(GLFWwindow* glfwWindow, int iconified)
 {
-    IconifyEvent event(iconified == GL_TRUE);
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new IconifyEvent(iconified == GL_TRUE));
 }
 
-void WindowEventDispatcher::processClose(GLFWwindow* glfwWindow)
+void WindowEventDispatcher::handleClose(GLFWwindow* glfwWindow)
 {
-    CloseEvent event;
-    dispatchEvent(glfwWindow, event);
+    queueEvent(glfwWindow, new CloseEvent);
 }
 
 } // namespace glow

@@ -12,7 +12,6 @@ class KeyEvent;
 class MouseEvent;
 class ScrollEvent;
 class ResizeEvent;
-class IdleEvent;
 class PaintEvent;
 class FocusEvent;
 class IconifyEvent;
@@ -37,6 +36,12 @@ public:
     */
     virtual void finalize(Window & window);
 
+    /** The idle event is called when no painting within the attached window's
+        main message loop is called. This might happen for fixed repaint time
+        intervals.
+    */
+    virtual void idle(Window & window);
+
 protected:
 
     /** The window's context is made current before and done current afterwards.
@@ -50,12 +55,6 @@ protected:
         current before and done current afterwards.
     */
     virtual void paintEvent(PaintEvent & event);
-
-    /** The idle event is called when no painting within the attached window's 
-        main message loop is called. This might happen for fixed repaint time 
-        intervals.
-    */
-    virtual void idleEvent(IdleEvent & event);
 
     virtual void keyPressEvent(KeyEvent & event);
     virtual void keyReleaseEvent(KeyEvent & event);

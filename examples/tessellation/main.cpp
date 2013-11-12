@@ -110,9 +110,9 @@ public:
         m_agrid->draw();
     }
 
-    virtual void idleEvent(IdleEvent & event) override
+    virtual void idle(Window & window) override
     {
-        event.window()->repaint();
+        window.repaint();
     }
 
     virtual void keyPressEvent(KeyEvent & event) override
@@ -156,5 +156,5 @@ int main(int argc, char* argv[])
     window.context()->setSwapInterval(Context::VerticalSyncronization);
     window.show();
 
-    return Window::run();
+    return MainLoop::run();
 }

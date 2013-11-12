@@ -1,4 +1,5 @@
 
+#include <cassert>
 #include <string>
 #include <algorithm>
 
@@ -101,7 +102,7 @@ void CameraPathPlayer::find(const float t, CameraPathPoint& p1, CameraPathPoint&
 
     if (found == m_ranges.cend())
     {
-        ;// -> t>1.0
+        assert(false);
         return;
     }
 
@@ -115,7 +116,10 @@ void CameraPathPlayer::find(const float t, CameraPathPoint& p1, CameraPathPoint&
 
 void CameraPathPlayer::play(const float t)
 {
-
+    CameraPathPoint p1;
+    CameraPathPoint p2;
+    float localT;
+    find(t, p1, p2, localT);
 }
 
 } // namespace glow
