@@ -109,9 +109,9 @@ unsigned int KeyEvent::character() const
 }
 
 
-ResizeEvent::ResizeEvent(int width, int height, bool framebuffer)
+ResizeEvent::ResizeEvent(const glm::ivec2 & size, bool framebuffer)
 : WindowEvent(framebuffer ? FrameBufferResize : Resize)
-, m_size(width, height)
+, m_size(size)
 {
 }
 
@@ -131,21 +131,21 @@ int ResizeEvent::height() const
 }
 
 
-MouseEvent::MouseEvent(const int x, const int y)
+MouseEvent::MouseEvent(const glm::ivec2 & pos)
 : WindowEvent(MouseMove)
 , m_button(-1)
 , m_action(-1)
 , m_modifiers(0)
-, m_pos(x, y)
+, m_pos(pos)
 {
 }
 
-MouseEvent::MouseEvent(const int x, const int y, const int button, const int action, const int modifiers)
+MouseEvent::MouseEvent(const glm::ivec2 & pos, const int button, const int action, const int modifiers)
 : WindowEvent(action == GLFW_RELEASE ? MouseRelease : MousePress)
 , m_button(button)
 , m_action(action)
 , m_modifiers(modifiers)
-, m_pos(x, y)
+, m_pos(pos)
 {
 }
 
@@ -179,14 +179,10 @@ const glm::ivec2 & MouseEvent::pos() const
     return m_pos;
 }
 
-ScrollEvent::ScrollEvent(
-    const double xOffset
-,   const double yOffset
-,   const int x
-,   const int y)
+ScrollEvent::ScrollEvent(const glm::vec2 & offset, const glm::ivec2 & pos)
 : WindowEvent(Scroll)
-, m_offset(xOffset, yOffset)
-, m_pos(x, y)
+, m_offset(offset)
+, m_pos(pos)
 {
 }
 
@@ -201,9 +197,9 @@ const glm::ivec2 & ScrollEvent::pos() const
 }
 
 
-MoveEvent::MoveEvent(int x, int y)
+MoveEvent::MoveEvent(const glm::ivec2 & pos)
 : WindowEvent(Move)
-, m_pos(x, y)
+, m_pos(pos)
 {
 }
 
@@ -254,5 +250,15 @@ bool IconifyEvent::isIconified() const
     return m_isIconified;
 }
 
+TimerEvent::TimerEvent(int id)
+: WindowEvent(Timer)
+, m_id(id)
+{
+}
+
+int TimerEvent::id() const
+{
+    return m_id;
+}
 
 } // namespace glow

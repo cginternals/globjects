@@ -52,6 +52,9 @@ public:
 	    createAndSetupTexture();
 	    createAndSetupShaders();
 	    createAndSetupGeometry();
+
+        window.addTimer(0, 5000);
+        window.addTimer(1, 1000);
     }
     
     virtual void resizeEvent(ResizeEvent & event) override
@@ -90,6 +93,11 @@ public:
             glow::ShaderFile::reloadAll();
     }
 
+    virtual void timerEvent(TimerEvent & event) override
+    {
+        glow::debug() << &event << ": " << event.id();
+    }
+
 protected:
 	glow::ref_ptr<glow::Texture> m_texture;
 
@@ -109,7 +117,7 @@ int main(int argc, char* argv[])
     ContextFormat format;
 
     Window window;
-    window.assign(new EventHandler());
+    window.setEventHandler(new EventHandler());
 
     window.create(format, "Compute Shader Example");
     window.show();

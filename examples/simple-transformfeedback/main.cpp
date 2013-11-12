@@ -150,7 +150,7 @@ int main(int argc, char** argv)
     ContextFormat format;
 
     Window window;
-    window.assign(new EventHandler());
+    window.setEventHandler(new EventHandler());
 
     format.setVersion(4, 0);
 

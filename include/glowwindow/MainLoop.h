@@ -32,7 +32,6 @@ protected:
 
     void pollEvents();
     void processEvents();
-    void idle();
 protected:
     static MainLoop s_mainLoop;
 };

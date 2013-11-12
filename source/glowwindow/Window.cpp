@@ -71,7 +71,7 @@ int Window::height() const
     return m_height;
 }
 
-void Window::setQuitOnDestroy(const bool enable)
+void Window::quitOnDestroy(const bool enable)
 {
     m_quitOnDestroy = enable;
 }
@@ -100,12 +100,10 @@ bool Window::create(
         return false;
     }
 
-    m_title = title;
-
     m_width = width;
     m_height = height;
 
-    glfwSetWindowTitle(m_window, m_title.c_str());
+    setTitle(title);
 
     WindowEventDispatcher::registerWindow(this);
 
@@ -114,17 +112,26 @@ bool Window::create(
     return true;
 }
 
+void Window::setTitle(const std::string & title)
+{
+    m_title = title;
+
+    if (!m_window)
+        return;
+
+    glfwSetWindowTitle(m_window, m_title.c_str());
+}
+
 void Window::promoteContext()
 {
     if (m_eventHandler)
     {
          m_context->makeCurrent();
          m_eventHandler->initialize(*this);
-
-         queueEvent(new ResizeEvent(m_width, m_height));
-         queueEvent(new ResizeEvent(m_width, m_height, true));
-
          m_context->doneCurrent();
+
+         queueEvent(new ResizeEvent(glm::ivec2(m_width, m_height)));
+         queueEvent(new ResizeEvent(glm::ivec2(m_width, m_height), true));
     }
 }
 
@@ -194,7 +201,7 @@ void Window::toggleMode()
     }
 }
 
-void Window::assign(WindowEventHandler * eventHandler)
+void Window::setEventHandler(WindowEventHandler * eventHandler)
 {
     if (eventHandler == m_eventHandler)
         return;
@@ -293,6 +300,11 @@ void Window::queueEvent(WindowEvent * event)
     m_eventQueue.push(event);
 }
 
+bool Window::hasPendingEvents()
+{
+    return !m_eventQueue.empty();
+}
+
 void Window::processEvents()
 {
     if (m_eventQueue.empty() || !m_context)
@@ -375,6 +387,16 @@ void Window::clearEventQueue()
         delete m_eventQueue.front();
         m_eventQueue.pop();
     }
+}
+
+void Window::addTimer(int id, int interval, bool singleShot)
+{
+    WindowEventDispatcher::addTimer(this, id, interval, singleShot);
+}
+
+void Window::removeTimer(int id)
+{
+    WindowEventDispatcher::removeTimer(this, id);
 }
 
 } // namespace glow

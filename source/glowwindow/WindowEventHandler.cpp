@@ -67,6 +67,10 @@ void WindowEventHandler::handleEvent(WindowEvent & event)
         case WindowEvent::Iconify:
             iconifyEvent(static_cast<IconifyEvent&>(event));
             break;
+
+        case WindowEvent::Timer:
+            timerEvent(static_cast<TimerEvent&>(event));
+            break;
     }
 }
 
@@ -127,6 +131,10 @@ void WindowEventHandler::focusEvent(FocusEvent &)
 }
 
 void WindowEventHandler::iconifyEvent(IconifyEvent &)
+{
+}
+
+void WindowEventHandler::timerEvent(TimerEvent &)
 {
 }
 

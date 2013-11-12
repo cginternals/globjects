@@ -181,7 +181,7 @@ int main(int argc, char* argv[])
     {
         AutoTimer t("Initialization");
 
-        window.assign(new EventHandler());
+        window.setEventHandler(new EventHandler());
 
         window.create(format, "Vertex Array Attributes Example");
         window.context()->setSwapInterval(Context::VerticalSyncronization);

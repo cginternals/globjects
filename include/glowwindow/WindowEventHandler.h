@@ -16,6 +16,7 @@ class PaintEvent;
 class FocusEvent;
 class IconifyEvent;
 class MoveEvent;
+class TimerEvent;
 
 class GLOWWINDOW_API WindowEventHandler : public Referenced
 {
@@ -67,6 +68,8 @@ protected:
 
     virtual void focusEvent(FocusEvent & event);
     virtual void iconifyEvent(IconifyEvent & event);
+
+    virtual void timerEvent(TimerEvent & event);
 };
 
 } // namespace glow

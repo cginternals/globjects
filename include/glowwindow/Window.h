@@ -39,14 +39,14 @@ public:
         when the window gets destroyed. Hence, the static window loop (run) 
         will receive a quit event and destroy all other remaining windows.
     */
-    void setQuitOnDestroy(bool enable);
+    void quitOnDestroy(bool enable);
     bool quitsOnDestroy() const;
 
     /** Takes ownership of the given eventhandler and deletes that either on
-        quiting, just before the opengl context gets destroyed, or when 
+        quitting, just before the opengl context gets destroyed, or when
         reassigning a new, different handler. 
     */
-    void assign(WindowEventHandler * eventHandler);
+    void setEventHandler(WindowEventHandler * eventHandler);
 
     bool create(
         const ContextFormat & format
@@ -54,10 +54,11 @@ public:
     ,   int width  =  1280
     ,   int height =   720);
 
+    void setTitle(const std::string & title);
+
     void close();
 
-    /** Repaint triggers a frame while resolving/handling platform specific
-        validation states and update regions.        
+    /** Queues a paint event.
     */
     void repaint();
 
@@ -78,9 +79,13 @@ public:
     GLFWwindow * internalWindow() const;
 
     void queueEvent(WindowEvent * event);
+    bool hasPendingEvents();
     void processEvents();
 
     static const std::set<Window*>& instances();
+
+    void addTimer(int id, int interval, bool singleShot = false);
+    void removeTimer(int id);
 
 protected:
     void swap();

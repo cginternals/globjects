@@ -219,7 +219,7 @@ int main(int argc, char** argv)
     format.setDepthBufferSize(16);
 
     Window window;
-    window.assign(new EventHandler());
+    window.setEventHandler(new EventHandler());
 
     window.create(format, "Navigations Example");
     window.context()->setSwapInterval(Context::VerticalSyncronization);

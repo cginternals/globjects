@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
     {
     AutoTimer t("Initialization");
 
-    window.assign(new EventHandler());
+    window.setEventHandler(new EventHandler());
     if (!window.create(format, "Single Context Example"))
         return 0;
 

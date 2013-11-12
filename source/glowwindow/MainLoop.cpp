@@ -47,9 +47,10 @@ void MainLoop::start()
 {
     m_running = true;
 
+    WindowEventDispatcher::initializeTime();
+
     while (m_running)
     {
-        idle();
         pollEvents();
         processEvents();
     };
@@ -76,21 +77,17 @@ int MainLoop::exitCode()
 void MainLoop::pollEvents()
 {
     glfwPollEvents();
+    WindowEventDispatcher::checkForTimerEvents();
 }
 
 void MainLoop::processEvents()
 {
     for (Window* window : Window::instances())
     {
-        window->processEvents();
-    }
-}
-
-void MainLoop::idle()
-{
-    for (Window* window : Window::instances())
-    {
-        window->idle();
+        if (window->hasPendingEvents())
+            window->processEvents();
+        else
+            window->idle();
     }
 }
 
