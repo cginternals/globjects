@@ -13,6 +13,19 @@ DebugMessage::DebugMessage(GLenum source, GLenum type, GLuint id, GLenum severit
 , id(id)
 , severity(severity)
 , message(message)
+, file(NULL)
+, line(0)
+{
+}
+
+DebugMessage::DebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string& message, const char* file, int line)
+: source(source)
+, type(type)
+, id(id)
+, severity(severity)
+, message(message)
+, file(file)
+, line(line)
 {
 }
 
@@ -35,13 +48,16 @@ std::string DebugMessage::toString() const
 {
     std::stringstream stream;
 
-    stream
-            << typeString(type)
+	stream << typeString(type);
+	if (file) {
+		stream << " [" << file << ":" << line << "]";
+	}
+	stream
             << ": " << std::hex << "0x" << id << std::dec
             << ", " << severityString(severity) << " severity"
             << " (" << sourceString(source) << ")"
             << std::endl
-            << message;
+            << "\t|-" << message;
 
     return stream.str();
 }

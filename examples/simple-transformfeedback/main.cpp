@@ -45,7 +45,7 @@ public:
 	void createAndSetupGeometry();
     void createAndSetupTransformFeedback();
 
-    virtual void initialize(Window & window)
+    virtual void initialize(Window & window) override
     {
         DebugMessageOutput::enable();
 
@@ -58,11 +58,11 @@ public:
         m_timer.start();
     }
     
-    virtual void resizeEvent(
-        Window & window
-    ,   unsigned int width
-    ,   unsigned int height)
+    virtual void resizeEvent(ResizeEvent & event) override
     {
+        int width = event.width();
+        int height = event.height();
+
     	int side = std::min<int>(width, height);
 	    glViewport((width - side) / 2, (height - side) / 2, side, side);
 
@@ -70,7 +70,7 @@ public:
         m_shaderProgram->setUniform("projection", glm::ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
     }
 
-    virtual void paintEvent(Window & window)
+    virtual void paintEvent(PaintEvent &) override
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -114,14 +114,12 @@ public:
         std::swap(m_vertexBuffer1, m_vertexBuffer2);
     }
 
-    virtual void idleEvent(Window & window)
+    virtual void idle(Window & window) override
     {
         window.repaint();
     }
 
-    virtual void keyReleaseEvent(
-        Window & window
-    ,   KeyEvent & event)
+    virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
             glow::ShaderFile::reloadAll();
@@ -160,7 +158,7 @@ int main(int argc, char** argv)
     window.show();
     window.context()->setSwapInterval(Context::NoVerticalSyncronization);
 
-    return Window::run();
+    return MainLoop::run();
 }
 
 void EventHandler::createAndSetupShaders()

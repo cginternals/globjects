@@ -58,7 +58,7 @@ public:
     void createAndSetupShaders();
 	void createAndSetupGeometry();
 
-    virtual void initialize(Window & window)
+    virtual void initialize(Window & window) override
     {
         DebugMessageOutput::enable();
 
@@ -79,16 +79,13 @@ public:
         m_agrid->setCamera(&m_camera);
     }    
 
-    virtual void resizeEvent(
-        Window & window
-    ,   unsigned int width
-    ,   unsigned int height)
+    virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        glViewport(0, 0, width, height);
-        m_camera.setViewport(width, height);
+        glViewport(0, 0, event.width(), event.height());
+        m_camera.setViewport(event.width(), event.height());
     }
 
-    virtual void paintEvent(Window & window)
+    virtual void paintEvent(PaintEvent &) override
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -102,14 +99,12 @@ public:
         m_agrid->draw();
     }
 
-    virtual void idleEvent(Window & window)
+    virtual void idle(Window & window) override
     {
         window.repaint();
     }
 
-    virtual void keyPressEvent(
-        Window & window
-    ,   KeyEvent & event)
+    virtual void keyPressEvent(KeyEvent & event)
     {
         const float d = 0.08f;
 
@@ -121,73 +116,52 @@ public:
         }
     }
 
-    virtual void mousePressEvent(
-        Window & window
-    ,   MouseEvent & event)
+    virtual void mousePressEvent(MouseEvent & event) override
     {
         switch (event.button())
         {
-        case GLFW_MOUSE_BUTTON_LEFT:
-            window.context()->makeCurrent();
-            m_nav.panBegin(event.pos());
-            window.context()->doneCurrent();
-            event.accept();
-            break;
+            case GLFW_MOUSE_BUTTON_LEFT:
+                m_nav.panBegin(event.pos());
+                event.accept();
+                break;
 
-        case GLFW_MOUSE_BUTTON_RIGHT:
-            window.context()->makeCurrent();
-            m_nav.rotateBegin(event.pos());
-            window.context()->doneCurrent();
-            event.accept();
-            break;
-
-        default:
-            break;
+            case GLFW_MOUSE_BUTTON_RIGHT:
+                m_nav.rotateBegin(event.pos());
+                event.accept();
+                break;
         }
     }
-    virtual void mouseMoveEvent(
-        Window & window
-    ,   MouseEvent & event)
+    virtual void mouseMoveEvent(MouseEvent & event) override
     {
         switch (m_nav.mode())
         {
-        case WorldInHandNavigation::PanInteraction:
-            window.context()->makeCurrent();
-            m_nav.panProcess(event.pos());
-            window.context()->doneCurrent();
-            event.accept();
-            break;
-        
-        case WorldInHandNavigation::RotateInteraction:
-            window.context()->makeCurrent();
-            m_nav.rotateProcess(event.pos());
-            window.context()->doneCurrent();
-            event.accept();
+            case WorldInHandNavigation::PanInteraction:
+                m_nav.panProcess(event.pos());
+                event.accept();
+                break;
 
-        default:break;
+            case WorldInHandNavigation::RotateInteraction:
+                m_nav.rotateProcess(event.pos());
+                event.accept();
         }
     }
-    virtual void mouseReleaseEvent(
-        Window & window
-    ,   MouseEvent & event)
+    virtual void mouseReleaseEvent(MouseEvent & event) override
     {
         switch (event.button())
         {
-        case GLFW_MOUSE_BUTTON_LEFT:
-            m_nav.panEnd();
-            event.accept();
-            break;
+            case GLFW_MOUSE_BUTTON_LEFT:
+                m_nav.panEnd();
+                event.accept();
+                break;
 
-        case GLFW_MOUSE_BUTTON_RIGHT:
-            m_nav.rotateEnd();
-            event.accept();
-            break;
+            case GLFW_MOUSE_BUTTON_RIGHT:
+                m_nav.rotateEnd();
+                event.accept();
+                break;
         }
     }
 
-    void scrollEvent(
-        Window & window
-    ,   ScrollEvent & event)
+    void scrollEvent(ScrollEvent & event) override
     {
         if (WorldInHandNavigation::NoInteraction != m_nav.mode())
             return;
@@ -251,5 +225,5 @@ int main(int argc, char** argv)
     window.context()->setSwapInterval(Context::VerticalSyncronization);
     window.show();
 
-    return Window::run();
+    return MainLoop::run();
 }

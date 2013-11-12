@@ -2,10 +2,12 @@
 
 #include <set>
 #include <string>
+#include <queue>
 
 #include <glowwindow/glowwindow.h>
 #include <glow/ref_ptr.h>
-#include <glowwindow/KeyEvent.h>  // forward?
+#include <glowwindow/MainLoop.h>
+#include <glowwindow/events.h>  // forward?
 
 struct GLFWwindow;
 
@@ -23,8 +25,6 @@ class Timer;
 */
 class GLOWWINDOW_API Window
 {
-friend class WindowEventDispatcher;
-
 public:
     Window();
     virtual ~Window();
@@ -63,6 +63,8 @@ public:
 
     void resize(int width, int height);
 
+    void idle();
+
     void show();
     void hide();
 
@@ -73,26 +75,28 @@ public:
 
     void toggleMode();
 
-public:
-    /** This enters the (main) windows message loop and dispatches events to
-        the attached WindowEventHandler instance.
-    */
-    static int run();
-    static void quit(int code = 0);
+    GLFWwindow * internalWindow() const;
+
+    void queueEvent(WindowEvent * event);
+    void processEvents();
+
+    static const std::set<Window*>& instances();
 
 protected:
-    void idle();
-    void paint();
+    void swap();
     void destroy();
 
     void promoteContext();
 
-    void processEvent(WindowEvent* event);
-    void defaultAction(WindowEvent* event);
+    void clearEventQueue();
+    void processEvent(WindowEvent & event);
+    void finishEvent(WindowEvent & event);
+    void defaultEventAction(WindowEvent & event);
 
 protected:
     ref_ptr<WindowEventHandler> m_eventHandler;
     Context * m_context;
+    std::queue<WindowEvent*> m_eventQueue;
 
     bool m_quitOnDestroy;
 
@@ -114,9 +118,7 @@ protected:
 
 private:
     GLFWwindow * m_window;
-    static std::set<Window*> s_windows;
-    static bool running;
-    static int exitCode;
+    static std::set<Window*> s_instances;
 
     int m_width;
     int m_height;

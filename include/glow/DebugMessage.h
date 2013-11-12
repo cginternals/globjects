@@ -19,6 +19,15 @@ public:
     ,   GLenum severity
     ,   const std::string & message);
 
+	DebugMessage(
+		GLenum source
+		, GLenum type
+		, GLuint id
+		, GLenum severity
+		, const std::string & message
+		, const char* file
+		, int line);
+
 	const char * severityString() const;
 	const char * sourceString() const;
 	const char * typeString() const;
@@ -31,6 +40,8 @@ public:
 	static const char * typeString(GLenum type);
 
 public:
+	const char* file;
+	int line;
 	GLenum source;
 	GLenum type;
 	GLuint id;

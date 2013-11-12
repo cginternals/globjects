@@ -14,15 +14,15 @@
 
 # build dir
 build
-/build
-/build
+build.release
+build.debug
+debug_build
+release_build
 /_configure.bat
 /_open-project.bat
 /_start-cmake-gui.bat
 /bin
-/build
 /lib
-/build
-/build
 
+#qt cache
 CMakeLists.txt.user

@@ -1,6 +1,6 @@
 
 #include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/KeyEvent.h>
+#include <glowwindow/events.h>
 
 namespace glow
 {
@@ -13,44 +13,60 @@ WindowEventHandler::~WindowEventHandler()
 {
 }
 
-void WindowEventHandler::handleEvent(Window & window, WindowEvent * event)
+void WindowEventHandler::handleEvent(WindowEvent & event)
 {
-    switch (event->type())
+    if (!event.window())
+        return;
+
+    switch (event.type())
     {
-    case WindowEvent::Resize: 
-        {
-            ResizeEvent * e = static_cast<ResizeEvent*>(event);
-            resizeEvent(window, e->width(), e->height());
-        }
-        break;
-        
-    case WindowEvent::Paint:
-        paintEvent(window);
-        break;
+        case WindowEvent::Resize:
+            resizeEvent(static_cast<ResizeEvent&>(event));
+            break;
 
-    case WindowEvent::KeyPress: 
-        keyPressEvent(window, *static_cast<KeyEvent*>(event));
-        break;
+        case WindowEvent::FrameBufferResize:
+            framebufferResizeEvent(static_cast<ResizeEvent&>(event));
+            break;
 
-    case WindowEvent::KeyRelease: 
-        keyReleaseEvent(window, *static_cast<KeyEvent*>(event));
-        break;
+        case WindowEvent::Move:
+            moveEvent(static_cast<MoveEvent&>(event));
+            break;
 
-    case WindowEvent::MousePress:
-        mousePressEvent(window, *static_cast<MouseEvent*>(event));
-        break;
+        case WindowEvent::Paint:
+            paintEvent(static_cast<PaintEvent&>(event));
+            break;
 
-    case WindowEvent::MouseRelease:
-        mouseReleaseEvent(window, *static_cast<MouseEvent*>(event));
-        break;
+        case WindowEvent::KeyPress:
+            keyPressEvent(static_cast<KeyEvent&>(event));
+            break;
 
-    case WindowEvent::MouseMove:
-        mouseMoveEvent(window, *static_cast<MouseEvent*>(event));
-        break;
+        case WindowEvent::KeyRelease:
+            keyReleaseEvent(static_cast<KeyEvent&>(event));
+            break;
 
-    case WindowEvent::Scroll:
-        scrollEvent(window, *static_cast<ScrollEvent*>(event));
-        break;
+        case WindowEvent::MousePress:
+            mousePressEvent(static_cast<MouseEvent&>(event));
+            break;
+
+        case WindowEvent::MouseRelease:
+            mouseReleaseEvent(static_cast<MouseEvent&>(event));
+            break;
+
+        case WindowEvent::MouseMove:
+            mouseMoveEvent(static_cast<MouseEvent&>(event));
+            break;
+
+        case WindowEvent::Scroll:
+            scrollEvent(static_cast<ScrollEvent&>(event));
+            break;
+
+        case WindowEvent::Focus:
+            focusEvent(static_cast<FocusEvent&>(event));
+            break;
+
+        case WindowEvent::Iconify:
+            iconifyEvent(static_cast<IconifyEvent&>(event));
+            break;
     }
 }
 
@@ -62,54 +78,55 @@ void WindowEventHandler::finalize(Window &)
 {
 }
 
-void WindowEventHandler::resizeEvent(
-    Window &
-,   const unsigned int
-,   const unsigned int)
+void WindowEventHandler::idle(Window &)
 {
 }
 
-void WindowEventHandler::paintEvent(Window &)
+void WindowEventHandler::resizeEvent(ResizeEvent &)
 {
 }
 
-void WindowEventHandler::idleEvent(Window &)
+void WindowEventHandler::framebufferResizeEvent(ResizeEvent &)
 {
 }
 
-void WindowEventHandler::keyPressEvent(
-    Window &
-,   KeyEvent &)
+void WindowEventHandler::moveEvent(MoveEvent &)
 {
 }
 
-void WindowEventHandler::keyReleaseEvent(
-    Window &
-,   KeyEvent &)
+void WindowEventHandler::paintEvent(PaintEvent &)
 {
 }
 
-void WindowEventHandler::mousePressEvent(
-    Window & window
-,   MouseEvent & event)
+void WindowEventHandler::keyPressEvent(KeyEvent &)
 {
 }
 
-void WindowEventHandler::mouseMoveEvent(
-    Window & window
-,   MouseEvent & event)
+void WindowEventHandler::keyReleaseEvent(KeyEvent &)
 {
 }
 
-void WindowEventHandler::mouseReleaseEvent(
-    Window & window
-    , MouseEvent & event)
+void WindowEventHandler::mousePressEvent(MouseEvent &)
 {
 }
 
-void WindowEventHandler::scrollEvent(
-    Window & window
-,   ScrollEvent & event)
+void WindowEventHandler::mouseMoveEvent(MouseEvent &)
+{
+}
+
+void WindowEventHandler::mouseReleaseEvent(MouseEvent &)
+{
+}
+
+void WindowEventHandler::scrollEvent(ScrollEvent &)
+{
+}
+
+void WindowEventHandler::focusEvent(FocusEvent &)
+{
+}
+
+void WindowEventHandler::iconifyEvent(IconifyEvent &)
 {
 }
 

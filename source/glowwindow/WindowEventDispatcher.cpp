@@ -1,4 +1,5 @@
 #include <cassert>
+#include <cmath>
 
 #include <GLFW/glfw3.h>
 
@@ -16,30 +17,36 @@ void WindowEventDispatcher::registerWindow(Window* window)
 {
     assert(window != nullptr);
 
-    GLFWwindow* glfwWindow = window->m_window;
+    GLFWwindow* glfwWindow = window->internalWindow();
+
+    if (!glfwWindow)
+        return;
 
     glfwSetWindowUserPointer(glfwWindow, window);
 
-    glfwSetWindowRefreshCallback(glfwWindow, processRefresh);
-    glfwSetKeyCallback(glfwWindow, processKey);
-    glfwSetCharCallback(glfwWindow, processChar);
-    glfwSetMouseButtonCallback(glfwWindow, processMouse);
-    glfwSetCursorPosCallback(glfwWindow, processCursorPos);
-    glfwSetCursorEnterCallback(glfwWindow, processCursorEnter);
-    glfwSetScrollCallback(glfwWindow, processScroll);
-    glfwSetWindowSizeCallback(glfwWindow, processResize);
-    glfwSetFramebufferSizeCallback(glfwWindow, processFramebufferResize);
-    glfwSetWindowFocusCallback(glfwWindow, processFocus);
-    glfwSetWindowPosCallback(glfwWindow, processMove);
-    glfwSetWindowIconifyCallback(glfwWindow, processIconify);
-    glfwSetWindowCloseCallback(glfwWindow, processClose);
+    glfwSetWindowRefreshCallback(glfwWindow, handleRefresh);
+    glfwSetKeyCallback(glfwWindow, handleKey);
+    glfwSetCharCallback(glfwWindow, handleChar);
+    glfwSetMouseButtonCallback(glfwWindow, handleMouse);
+    glfwSetCursorPosCallback(glfwWindow, handleCursorPos);
+    glfwSetCursorEnterCallback(glfwWindow, handleCursorEnter);
+    glfwSetScrollCallback(glfwWindow, handleScroll);
+    glfwSetWindowSizeCallback(glfwWindow, handleResize);
+    glfwSetFramebufferSizeCallback(glfwWindow, handleFramebufferResize);
+    glfwSetWindowFocusCallback(glfwWindow, handleFocus);
+    glfwSetWindowPosCallback(glfwWindow, handleMove);
+    glfwSetWindowIconifyCallback(glfwWindow, handleIconify);
+    glfwSetWindowCloseCallback(glfwWindow, handleClose);
 }
 
 void WindowEventDispatcher::deregisterWindow(Window* window)
 {
     assert(window != nullptr);
 
-    GLFWwindow* glfwWindow = window->m_window;
+    GLFWwindow* glfwWindow = window->internalWindow();
+
+    if (!glfwWindow)
+        return;
 
     glfwSetWindowRefreshCallback(glfwWindow, nullptr);
     glfwSetKeyCallback(glfwWindow, nullptr);
@@ -58,116 +65,105 @@ void WindowEventDispatcher::deregisterWindow(Window* window)
 
 Window* WindowEventDispatcher::fromGLFW(GLFWwindow* glfwWindow)
 {
-    assert(glfwWindow != nullptr);
-
-    return static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
+    return glfwWindow ? static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow)) : nullptr;
 }
 
-void WindowEventDispatcher::sendEvent(GLFWwindow* glfwWindow, WindowEvent* event)
+void WindowEventDispatcher::mousePosition(GLFWwindow* glfwWindow, int& x, int &y)
 {
-    assert(glfwWindow != nullptr);
+    if (!glfwWindow)
+    {
+        x = y = 0;
+    }
+    else
+    {
+        double xd, yd;
+        glfwGetCursorPos(glfwWindow, &xd, &yd);
+        x = std::floor(xd);
+        y = std::floor(yd);
+    }
+}
 
+void WindowEventDispatcher::queueEvent(GLFWwindow* glfwWindow, WindowEvent* event)
+{
     Window* window = fromGLFW(glfwWindow);
     if (!window)
         return;
 
-    window->processEvent(event);
+    window->queueEvent(event);
 }
 
 // events
 
-void WindowEventDispatcher::processRefresh(GLFWwindow* glfwWindow)
+void WindowEventDispatcher::handleRefresh(GLFWwindow* glfwWindow)
 {
-    assert(glfwWindow != nullptr);
-
-    WindowEvent event(WindowEvent::Paint);
-    sendEvent(glfwWindow, &event);
+    queueEvent(glfwWindow, new PaintEvent);
 }
 
-void WindowEventDispatcher::processKey(GLFWwindow* glfwWindow, int key, int scanCode, int action, int modifiers)
+void WindowEventDispatcher::handleKey(GLFWwindow* glfwWindow, int key, int scanCode, int action, int modifiers)
 {
-    assert(glfwWindow != nullptr);
-
-    KeyEvent event(key, scanCode, action, modifiers);
-    sendEvent(glfwWindow, &event);
+    queueEvent(glfwWindow, new KeyEvent(key, scanCode, action, modifiers));
 }
 
-void WindowEventDispatcher::processChar(GLFWwindow* glfwWindow, unsigned int character)
+void WindowEventDispatcher::handleChar(GLFWwindow* glfwWindow, unsigned int character)
 {
-    assert(glfwWindow != nullptr);
+    queueEvent(glfwWindow, new KeyEvent(character));
 }
 
-void WindowEventDispatcher::processMouse(GLFWwindow* glfwWindow, int button, int action, int modifiers)
+void WindowEventDispatcher::handleMouse(GLFWwindow* glfwWindow, int button, int action, int modifiers)
 {
-    assert(glfwWindow != nullptr);
+    int x, y;
+    mousePosition(glfwWindow, x, y);
 
-    double x, y;
-    glfwGetCursorPos(glfwWindow, &x, &y);
-
-    MouseEvent event(static_cast<int>(x), static_cast<int>(y)
-        , button, action, modifiers);
-
-    sendEvent(glfwWindow, &event);
+    queueEvent(glfwWindow, new MouseEvent(x, y, button, action, modifiers));
 }
 
-void WindowEventDispatcher::processCursorPos(GLFWwindow* glfwWindow, double xPos, double yPos)
+void WindowEventDispatcher::handleCursorPos(GLFWwindow* glfwWindow, double xPos, double yPos)
 {
-    assert(glfwWindow != nullptr);
-
-    MouseEvent event(static_cast<int>(xPos), static_cast<int>(yPos));
-    sendEvent(glfwWindow, &event);
+    queueEvent(glfwWindow, new MouseEvent(std::floor(xPos), std::floor(yPos)));
 }
 
-void WindowEventDispatcher::processCursorEnter(GLFWwindow* glfwWindow, int entered)
+void WindowEventDispatcher::handleCursorEnter(GLFWwindow* glfwWindow, int entered)
 {
-    assert(glfwWindow != nullptr);
+    // TODO: implement
+    //queueEvent(glfwWindow, event);
 }
 
-void WindowEventDispatcher::processScroll(GLFWwindow* glfwWindow, double xOffset, double yOffset)
+void WindowEventDispatcher::handleScroll(GLFWwindow* glfwWindow, double xOffset, double yOffset)
 {
-    assert(glfwWindow != nullptr);
+    int x, y;
+    mousePosition(glfwWindow, x, y);
 
-    double x, y;
-    glfwGetCursorPos(glfwWindow, &x, &y);
-
-    ScrollEvent event(xOffset, yOffset, static_cast<int>(x), static_cast<int>(y));
-    sendEvent(glfwWindow, &event);
+    queueEvent(glfwWindow, new ScrollEvent(xOffset, yOffset, x, y));
 }
 
-void WindowEventDispatcher::processResize(GLFWwindow* glfwWindow, int width, int height)
+void WindowEventDispatcher::handleResize(GLFWwindow* glfwWindow, int width, int height)
 {
-    assert(glfwWindow != nullptr);
-
-    ResizeEvent event(width, height);
-    sendEvent(glfwWindow, &event);
+    queueEvent(glfwWindow, new ResizeEvent(width, height));
 }
 
-void WindowEventDispatcher::processFramebufferResize(GLFWwindow* glfwWindow, int width, int height)
+void WindowEventDispatcher::handleFramebufferResize(GLFWwindow* glfwWindow, int width, int height)
 {
-    assert(glfwWindow != nullptr);
+    queueEvent(glfwWindow, new ResizeEvent(width, height, true));
 }
 
-void WindowEventDispatcher::processMove(GLFWwindow* glfwWindow, int x, int y)
+void WindowEventDispatcher::handleMove(GLFWwindow* glfwWindow, int x, int y)
 {
-    assert(glfwWindow != nullptr);
+    queueEvent(glfwWindow, new MoveEvent(x, y));
 }
 
-void WindowEventDispatcher::processFocus(GLFWwindow* glfwWindow, int focused)
+void WindowEventDispatcher::handleFocus(GLFWwindow* glfwWindow, int focused)
 {
-    assert(glfwWindow != nullptr);
+    queueEvent(glfwWindow, new FocusEvent(focused == GL_TRUE));
 }
 
-void WindowEventDispatcher::processIconify(GLFWwindow* glfwWindow, int iconified)
+void WindowEventDispatcher::handleIconify(GLFWwindow* glfwWindow, int iconified)
 {
-    assert(glfwWindow != nullptr);
+    queueEvent(glfwWindow, new IconifyEvent(iconified == GL_TRUE));
 }
 
-void WindowEventDispatcher::processClose(GLFWwindow* glfwWindow)
+void WindowEventDispatcher::handleClose(GLFWwindow* glfwWindow)
 {
-    assert(glfwWindow != nullptr);
-
-    WindowEvent event(WindowEvent::Close);
-    sendEvent(glfwWindow, &event);
+    queueEvent(glfwWindow, new CloseEvent);
 }
 
 } // namespace glow

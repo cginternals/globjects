@@ -200,7 +200,7 @@ void DebugMessageOutput::checkError(const char* file, int line)
     if (!error)
         return;
 
-    handleMessage(DebugMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, error.code(), GL_DEBUG_SEVERITY_HIGH_ARB, error.name()), getId());
+	handleMessage(DebugMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, error.code(), GL_DEBUG_SEVERITY_HIGH_ARB, error.name(), file, line), getId());
 }
 
 } // namespace glow

@@ -11,14 +11,19 @@
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 #include <glowwindow/Window.h>
-#include <glowwindow/KeyEvent.h>
+#include <glowwindow/events.h>
 
 #include "WindowEventDispatcher.h"
 
 namespace glow
 {
 
-std::set<Window*> Window::s_windows;
+std::set<Window*> Window::s_instances;
+
+const std::set<Window*>& Window::instances()
+{
+    return s_instances;
+}
 
 Window::Window()
 :   m_context(nullptr)
@@ -32,16 +37,16 @@ Window::Window()
 ,   m_width(0)
 ,   m_height(0)
 {
-    s_windows.insert(this);
+    s_instances.insert(this);
 }
 
 Window::~Window()
 {
-    s_windows.erase(this);
+    s_instances.erase(this);
     WindowEventDispatcher::deregisterWindow(this);
 
-    if (s_windows.empty())
-        quit(0);
+    if (s_instances.empty())
+        MainLoop::quit(0);
 
     delete m_timer;    
 }
@@ -115,7 +120,10 @@ void Window::promoteContext()
     {
          m_context->makeCurrent();
          m_eventHandler->initialize(*this);
-         resize(m_width, m_height);
+
+         queueEvent(new ResizeEvent(m_width, m_height));
+         queueEvent(new ResizeEvent(m_width, m_height, true));
+
          m_context->doneCurrent();
     }
 }
@@ -202,51 +210,33 @@ void Window::assign(WindowEventHandler * eventHandler)
     promoteContext();
 }
 
-bool Window::running = false;
-int Window::exitCode = 0;
-
-int Window::run()
-{
-    running = true;
-
-    while (running)
-    {
-        for (Window * window : s_windows)
-            window->idle();
-
-        glfwPollEvents();
-    };
-    glfwTerminate();
-    return exitCode;
-}
-
-void Window::quit(const int code)
-{
-    exitCode = code;
-    running = false;
-}
-
-void Window::repaint()
-{
-    WindowEvent e(WindowEvent::Paint);
-    processEvent(&e);
-}
-
 void Window::resize(
     const int width
 ,   const int height)
 {
-    ResizeEvent resize(width, height);
-    processEvent(&resize);
+    if (!m_window)
+        return;
+
+    glfwSetWindowSize(m_window, width, height);
+}
+
+void Window::repaint()
+{
+    queueEvent(new PaintEvent);
 }
 
 void Window::close()
 {
-    WindowEvent e(WindowEvent::Close);
-    processEvent(&e);
+    queueEvent(new CloseEvent);
 }
 
-void Window::paint()
+void Window::idle()
+{
+    if (m_eventHandler)
+        m_eventHandler->idle(*this);
+}
+
+void Window::swap()
 {
     if (!m_timer)
     {
@@ -275,19 +265,6 @@ void Window::paint()
     }
 }
 
-void Window::idle()
-{
-    if (!m_context || !m_eventHandler)
-        return;
-
-    if (!m_eventHandler)
-        return;
-    
-    m_context->makeCurrent();
-    m_eventHandler->idleEvent(*this);
-    m_context->doneCurrent();
-}
-
 void Window::destroy()
 {
     m_context->release();
@@ -300,56 +277,103 @@ void Window::destroy()
         m_eventHandler->finalize(*this);
 
     if (m_quitOnDestroy)
-        quit(0);
+        MainLoop::quit(0);
 }
 
-void Window::processEvent(WindowEvent* event)
+GLFWwindow * Window::internalWindow() const
 {
-    if (!m_context)
+    return m_window;
+}
+
+void Window::queueEvent(WindowEvent * event)
+{
+    if (!event)
+        return;
+
+    m_eventQueue.push(event);
+}
+
+void Window::processEvents()
+{
+    if (m_eventQueue.empty() || !m_context)
         return;
 
     m_context->makeCurrent();
-    m_eventHandler->handleEvent(*this, event);
 
-    if (!event->isAccepted())
-        defaultAction(event);
+    while (!m_eventQueue.empty())
+    {
+        WindowEvent* event = m_eventQueue.front();
+        m_eventQueue.pop();
+        event->setWindow(this);
 
-    if (m_context)
-        m_context->doneCurrent();
+        processEvent(*event);
+
+        delete event;
+
+        if (!m_context)
+        {
+            clearEventQueue();
+            return;
+        }
+    }
+
+    m_context->doneCurrent();
 }
 
-void Window::defaultAction(WindowEvent* event)
+void Window::processEvent(WindowEvent & event)
 {
-    switch (event->type())
+    if (m_eventHandler)
+    {
+        m_eventHandler->handleEvent(event);
+    }
+
+    finishEvent(event);
+}
+
+void Window::finishEvent(WindowEvent & event)
+{
+    if (event.type() == WindowEvent::Paint)
+    {
+        swap();
+    }
+    else if (!event.isAccepted())
+    {
+        defaultEventAction(event);
+    }
+}
+
+void Window::defaultEventAction(WindowEvent & event)
+{
+    switch (event.type())
     {
         case WindowEvent::Close:
             destroy();
-            event->accept();
             break;
-        case WindowEvent::Paint:
-            paint();
-            event->accept();
-            break;
+
         case WindowEvent::KeyPress:
-            KeyEvent* keyEvent = dynamic_cast<KeyEvent*>(event);
-            if (keyEvent->key() == GLFW_KEY_ESCAPE)
+            KeyEvent& keyEvent = static_cast<KeyEvent&>(event);
+            switch (keyEvent.key())
             {
-                keyEvent->accept();
-                close();
+                case GLFW_KEY_ESCAPE:
+                    close();
+                    break;
+                case GLFW_KEY_ENTER:
+                    if (keyEvent.modifiers() & GLFW_MOD_ALT != 0)
+                    {
+                        toggleMode();
+                    }
+                    break;
             }
-            //    case GLFW_KEY_ENTER:
-            //        if (kre.modifiers() & GLFW_MOD_ALT != 0)
-            //        {
-            //            kre.accept();
-            //            toggleMode();
-            //        }
-            //        break;
-
-            //    default:
-            //        break;
-            //    }
-
             break;
+    }
+}
+
+void Window::clearEventQueue()
+{
+    while (!m_eventQueue.empty())
+    {
+        delete m_eventQueue.front();
+        m_eventQueue.pop();
     }
 }
 

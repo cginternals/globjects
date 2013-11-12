@@ -49,7 +49,7 @@ public:
     void createAndSetupShaders();
     void createAndSetupGeometry();
 
-    virtual void initialize(Window & window)
+    virtual void initialize(Window & window) override
     {
         glEnable(GL_TEXTURE_2D);
 
@@ -78,16 +78,16 @@ public:
         m_agrid->setCamera(&m_camera);
     }
 
-    virtual void resizeEvent(
-        Window & window
-        , unsigned int width
-        , unsigned int height)
+    virtual void resizeEvent(ResizeEvent & event) override
     {
+        int width = event.width();
+        int height = event.height();
+
         glViewport(0, 0, width, height);
         m_camera.setViewport(width, height);
     }
 
-    virtual void paintEvent(Window & window)
+    virtual void paintEvent(PaintEvent &) override
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -109,14 +109,13 @@ public:
 
         m_agrid->draw();
     }
-    virtual void idleEvent(Window & window)
+
+    virtual void idle(Window & window) override
     {
         window.repaint();
     }
 
-    virtual void keyPressEvent(
-        Window & window
-        , KeyEvent & event)
+    virtual void keyPressEvent(KeyEvent & event) override
     {
         switch (event.key())
         {
@@ -141,7 +140,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
     glewExperimental = GL_TRUE;
 
@@ -157,5 +156,5 @@ int main(int argc, char** argv)
     window.context()->setSwapInterval(Context::VerticalSyncronization);
     window.show();
 
-    return Window::run();
+    return MainLoop::run();
 }
