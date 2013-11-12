@@ -55,8 +55,6 @@ set(api_includes
     ${header_path}/Program.h
     ${header_path}/Program.hpp
     ${header_path}/Query.h
-    ${header_path}/RawFile.h
-    ${header_path}/RawFile.hpp
     ${header_path}/ref_ptr.h
     ${header_path}/ref_ptr.hpp
     ${header_path}/Referenced.h
@@ -65,7 +63,6 @@ set(api_includes
     ${header_path}/Screen.h
     ${header_path}/Shader.h
     ${header_path}/ShaderCode.h
-    ${header_path}/ShaderFile.h
     ${header_path}/ShaderSource.h
     ${header_path}/Texture.h
     ${header_path}/TextureAttachment.h
@@ -109,7 +106,6 @@ set(sources
     ${source_path}/Screen.cpp
     ${source_path}/Shader.cpp
     ${source_path}/ShaderCode.cpp
-    ${source_path}/ShaderFile.cpp
     ${source_path}/ShaderSource.cpp
     ${source_path}/Texture.cpp
     ${source_path}/TextureAttachment.cpp

@@ -3,7 +3,6 @@
 
 #include <glow/Program.h>
 #include <glow/logging.h>
-#include <glow/ShaderFile.h>
 #include <glow/ShaderSource.h>
 #include <glow/ShaderCode.h>
 #include <glow/Error.h>
@@ -29,13 +28,6 @@ Shader::Shader(
 Shader::Shader(const GLenum type)
 :   Shader(type, nullptr)
 {
-}
-
-Shader * Shader::fromFile(
-    const GLenum type
-,   const std::string & filePath)
-{
-    return new Shader(type, new ShaderFile(filePath));
 }
 
 Shader * Shader::fromString(
@@ -192,8 +184,9 @@ std::string Shader::shaderString() const
 
 	ss << "Shader(" << typeString();
 
-	if (m_source && m_source->isFile())
-		ss << ", " << dynamic_cast<const ShaderFile*>(*m_source)->filePath();
+    std::string shortInfo = m_source->shortInfo();
+    if (shortInfo.size() > 0)
+        ss << ", " << shortInfo;
 
 	ss << ")";
 

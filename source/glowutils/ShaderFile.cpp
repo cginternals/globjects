@@ -1,14 +1,19 @@
 
 #include <glow/Shader.h>
-#include <glow/RawFile.h>
 #include <cassert>
 
-#include <glow/ShaderFile.h>
+#include <glowutils/ShaderFile.h>
+
+#include <glowutils/ShaderFileRegistry.h>
+#include <glowutils/RawFile.h>
 
 namespace glow
 {
 
-ShaderFile::FileRegistry ShaderFile::s_fileRegistry;
+Shader* createShaderFromFile(const GLenum type, const std::string& filename)
+{
+    return new Shader(type, new ShaderFile(filename));
+}
 
 ShaderFile::ShaderFile(const std::string & filePath)
 :   m_filePath(filePath)
@@ -17,12 +22,12 @@ ShaderFile::ShaderFile(const std::string & filePath)
     if (raw.valid())
         m_source = std::string(raw.data(), raw.size());
 
-	registerFile(this);
+    ShaderFileRegistry::instance().registerFile(this);
 }
 
 ShaderFile::~ShaderFile()
 {
-	deregisterFile(this);
+    ShaderFileRegistry::instance().deregisterFile(this);
 }
 
 const std::string & ShaderFile::source() const
@@ -30,9 +35,9 @@ const std::string & ShaderFile::source() const
 	return m_source;
 }
 
-bool ShaderFile::isFile() const
+std::string ShaderFile::shortInfo() const
 {
-	return true;
+    return filePath();
 }
 
 const std::string& ShaderFile::filePath() const
@@ -48,26 +53,6 @@ void ShaderFile::reload()
         m_source = std::string(raw.data(), raw.size());
 	    changed();
     }
-}
-
-void ShaderFile::reloadAll()
-{
-	for (ShaderFile * file: s_fileRegistry)
-		file->reload();
-}
-
-void ShaderFile::registerFile(ShaderFile * file)
-{
-    assert(file != nullptr);
-
-	s_fileRegistry.insert(file);
-}
-
-void ShaderFile::deregisterFile(ShaderFile * file)
-{
-    assert(file != nullptr);
-
-	s_fileRegistry.erase(file);
 }
 
 } // namespace glow

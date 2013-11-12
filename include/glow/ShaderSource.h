@@ -21,8 +21,7 @@ class GLOW_API ShaderSource : public Referenced, public Changeable
 {
 public:
     virtual const std::string & source() const = 0;
-
-	virtual bool isFile() const;
+    virtual std::string shortInfo() const;
 };
 
 } // namespace glow

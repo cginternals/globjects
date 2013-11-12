@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <glow/glow.h>
+#include <glowutils/glowutils.h>
 
 namespace glow
 {
@@ -48,4 +48,4 @@ protected:
 
 } // namespace glow
 
-#include <glow/RawFile.hpp>
+#include <glowutils/RawFile.hpp>

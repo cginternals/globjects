@@ -11,7 +11,6 @@
 
 #include <glow/Error.h>
 #include <glow/Uniform.h>
-#include <glow/ShaderFile.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
@@ -23,6 +22,8 @@
 #include <glowutils/Icosahedron.h>
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/Camera.h>
+#include <glowutils/ShaderFileRegistry.h>
+#include <glowutils/ShaderFile.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -59,12 +60,12 @@ public:
 
         m_sphere = new Program();
         m_sphere->attach(
-            Shader::fromFile(GL_VERTEX_SHADER, "data/tessellation/sphere.vert")
-        ,   Shader::fromFile(GL_TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
-        ,   Shader::fromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
-        ,   Shader::fromFile(GL_GEOMETRY_SHADER, "data/tessellation/sphere.geom")
-        ,   Shader::fromFile(GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
-        ,   Shader::fromFile(GL_FRAGMENT_SHADER, "data/common/phong.frag"));
+            createShaderFromFile(GL_VERTEX_SHADER, "data/tessellation/sphere.vert")
+        ,   createShaderFromFile(GL_TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
+        ,   createShaderFromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
+        ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/tessellation/sphere.geom")
+        ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
+        ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/common/phong.frag"));
 
         m_icosahedron = new Icosahedron();
         m_agrid = new AdaptiveGrid(16U);
@@ -120,7 +121,7 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_F5:
-            glow::ShaderFile::reloadAll();
+            glow::ShaderFileRegistry::instance().reloadAll();
             break;
         }
     }

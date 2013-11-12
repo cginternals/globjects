@@ -1,11 +1,7 @@
-
 #include <sstream>
 #include <cassert>
 
-#include <glow/logging.h>
-
 #include <glowutils/SourceTemplate.h>
-
 
 namespace 
 {
@@ -30,27 +26,17 @@ namespace glow
 {
 
 SourceTemplate::SourceTemplate(ShaderSource * source)
-: m_internal(source)
+: ShaderSourceDecorator(source)
 {
-    assert(source != nullptr);
-
-	m_internal->registerListener(this);
-	modifySource();
 }
 
 SourceTemplate::~SourceTemplate()
 {
-	m_internal->deregisterListener(this);
 }
 
 const std::string & SourceTemplate::source() const
 {
 	return m_modifiedSource;
-}
-
-void SourceTemplate::notifyChanged()
-{
-	update();
 }
 
 void SourceTemplate::replace(
@@ -77,7 +63,7 @@ void SourceTemplate::modifySource()
 {
 	m_modifiedSource = m_internal->source();
 
-	for (std::pair<std::string, std::string> pair: m_replacements)
+    for (const std::pair<std::string, std::string>& pair: m_replacements)
 		replaceAll(m_modifiedSource, pair.first, pair.second);
 }
 

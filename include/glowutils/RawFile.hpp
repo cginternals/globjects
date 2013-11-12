@@ -4,8 +4,9 @@
 #include <algorithm>
 #include <fstream>
 
-#include <glow/RawFile.h>
 #include <glow/logging.h>
+
+#include <glowutils/RawFile.h>
 
 namespace glow 
 {

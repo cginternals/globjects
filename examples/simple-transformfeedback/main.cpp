@@ -12,7 +12,6 @@
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Array.h>
-#include <glow/ShaderFile.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
@@ -21,6 +20,9 @@
 #include <glow/logging.h>
 #include <glow/TransformFeedback.h>
 #include <glow/Timer.h>
+
+#include <glowutils/ShaderFileRegistry.h>
+#include <glowutils/ShaderFile.h>
 
 #include <glowwindow/Window.h>
 #include <glowwindow/ContextFormat.h>
@@ -122,7 +124,7 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glow::ShaderFile::reloadAll();
+            glow::ShaderFileRegistry::instance().reloadAll();
     }
 
 protected:
@@ -163,9 +165,9 @@ int main(int argc, char** argv)
 
 void EventHandler::createAndSetupShaders()
 {
-    glow::Shader* vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/transformfeedback/simple.vert");
-    glow::Shader* fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag");
-    glow::Shader* transformFeedbackShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert");
+    glow::Shader* vertexShader = glow::createShaderFromFile(GL_VERTEX_SHADER, "data/transformfeedback/simple.vert");
+    glow::Shader* fragmentShader = glow::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag");
+    glow::Shader* transformFeedbackShader = glow::createShaderFromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert");
 
 	m_shaderProgram = new glow::Program();
     m_shaderProgram->attach(vertexShader, fragmentShader);

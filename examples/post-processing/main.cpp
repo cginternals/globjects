@@ -11,7 +11,6 @@
 
 #include <glow/Error.h>
 #include <glow/Uniform.h>
-#include <glow/ShaderFile.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
@@ -29,6 +28,8 @@
 #include <glowutils/UnitCube.h>
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/Camera.h>
+#include <glowutils/ShaderFileRegistry.h>
+#include <glowutils/ShaderFile.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -91,13 +92,13 @@ public:
 
 		m_sphere = new Program();
 		m_sphere->attach(
-			Shader::fromFile(GL_VERTEX_SHADER, "data/post-processing/sphere.vert")
-			, Shader::fromFile(GL_FRAGMENT_SHADER, "data/post-processing/sphere.frag"));
+            createShaderFromFile(GL_VERTEX_SHADER, "data/post-processing/sphere.vert")
+            , createShaderFromFile(GL_FRAGMENT_SHADER, "data/post-processing/sphere.frag"));
 
 		m_phong = new Program();
 		m_phong->attach(
-			Shader::fromFile(GL_VERTEX_SHADER, "data/post-processing/phong.vert")
-		,	Shader::fromFile(GL_FRAGMENT_SHADER, "data/post-processing/phong.frag"));
+            createShaderFromFile(GL_VERTEX_SHADER, "data/post-processing/phong.vert")
+        ,	createShaderFromFile(GL_FRAGMENT_SHADER, "data/post-processing/phong.frag"));
 
 		m_icosahedron = new Icosahedron(2);
 		m_agrid = new AdaptiveGrid(16U);
@@ -182,7 +183,7 @@ public:
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
-			glow::ShaderFile::reloadAll();
+            glow::ShaderFileRegistry::instance().reloadAll();
 			break;
 		}
 	}

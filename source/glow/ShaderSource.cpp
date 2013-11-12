@@ -4,9 +4,9 @@
 namespace glow
 {
 
-bool ShaderSource::isFile() const
+std::string ShaderSource::shortInfo() const
 {
-	return false;
+    return "";
 }
 
 } // namespace glow
