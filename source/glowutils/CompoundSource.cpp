@@ -1,14 +1,40 @@
 
-#include <string>
-#include <algorithm>
+#include <glow/Shader.h>
 
-#include <glm/gtc/type_ptr.hpp>
-
-#include <glowutils/Camera.h>
-#include <glowutils/CameraPathRecorder.h>
+#include <glowutils/CompoundSource.h>
+#include <glowutils/ShaderIncludeRegistry.h>
 
 
 namespace glow
 {
+
+CompoundSource::CompoundSource(ShaderSource * source)
+: ShaderSourceDecorator(source)
+{
+}
+
+CompoundSource::~CompoundSource()
+{
+}
+
+void CompoundSource::update()
+{
+
+}
+
+std::set<Shader*> CompoundSource::requiredShaders() const
+{
+
+}
+
+void CompoundSource::resolveInclude(const std::string& include, Shader * shader)
+{
+
+}
+
+void CompoundSource::propagateFilename(const std::string filename)
+{
+
+}
 
 } // namespace glow
