@@ -69,6 +69,7 @@ bool Context::create(
 
     makeCurrent();
 
+    glewExperimental = GL_TRUE;
     if (GLEW_OK != glewInit())
     {
         fatal() << "GLEW initialization failed (glewInit).";

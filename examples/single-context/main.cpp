@@ -51,8 +51,6 @@ public:
 */
 int main(int argc, char* argv[])
 {
-    glewExperimental = GL_TRUE;
-
     ContextFormat format;
     format.setVersion(4, 3);
     format.setProfile(ContextFormat::CoreProfile);

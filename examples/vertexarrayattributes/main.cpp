@@ -172,8 +172,6 @@ protected:
 
 int main(int argc, char* argv[])
 {
-    glewExperimental = GL_TRUE;
-
     ContextFormat format;
 
     Window window;
