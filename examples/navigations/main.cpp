@@ -100,9 +100,9 @@ public:
         m_agrid->draw();
     }
 
-    virtual void idleEvent(IdleEvent & event) override
+    virtual void idle(Window & window) override
     {
-        event.window()->repaint();
+        window.repaint();
     }
 
     virtual void keyPressEvent(KeyEvent & event)
@@ -212,19 +212,17 @@ protected:
 */
 int main(int argc, char** argv)
 {
-    glewExperimental = GL_TRUE;
-
     ContextFormat format;
     format.setVersion(4, 0);
     format.setProfile(ContextFormat::CoreProfile);
     format.setDepthBufferSize(16);
 
     Window window;
-    window.assign(new EventHandler());
+    window.setEventHandler(new EventHandler());
 
     window.create(format, "Navigations Example");
     window.context()->setSwapInterval(Context::VerticalSyncronization);
     window.show();
 
-    return Window::run();
+    return MainLoop::run();
 }

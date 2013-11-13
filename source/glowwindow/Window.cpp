@@ -18,7 +18,12 @@
 namespace glow
 {
 
-std::set<Window*> Window::s_windows;
+std::set<Window*> Window::s_instances;
+
+const std::set<Window*>& Window::instances()
+{
+    return s_instances;
+}
 
 Window::Window()
 :   m_context(nullptr)
@@ -32,16 +37,16 @@ Window::Window()
 ,   m_width(0)
 ,   m_height(0)
 {
-    s_windows.insert(this);
+    s_instances.insert(this);
 }
 
 Window::~Window()
 {
-    s_windows.erase(this);
+    s_instances.erase(this);
     WindowEventDispatcher::deregisterWindow(this);
 
-    if (s_windows.empty())
-        quit(0);
+    if (s_instances.empty())
+        MainLoop::quit(0);
 
     delete m_timer;    
 }
@@ -66,7 +71,7 @@ int Window::height() const
     return m_height;
 }
 
-void Window::setQuitOnDestroy(const bool enable)
+void Window::quitOnDestroy(const bool enable)
 {
     m_quitOnDestroy = enable;
 }
@@ -95,12 +100,10 @@ bool Window::create(
         return false;
     }
 
-    m_title = title;
-
     m_width = width;
     m_height = height;
 
-    glfwSetWindowTitle(m_window, m_title.c_str());
+    setTitle(title);
 
     WindowEventDispatcher::registerWindow(this);
 
@@ -109,17 +112,26 @@ bool Window::create(
     return true;
 }
 
+void Window::setTitle(const std::string & title)
+{
+    m_title = title;
+
+    if (!m_window)
+        return;
+
+    glfwSetWindowTitle(m_window, m_title.c_str());
+}
+
 void Window::promoteContext()
 {
     if (m_eventHandler)
     {
          m_context->makeCurrent();
          m_eventHandler->initialize(*this);
-         ResizeEvent event1(m_width, m_height);
-         ResizeEvent event2(m_width, m_height, true);
-         postEvent(event1);
-         postEvent(event2);
          m_context->doneCurrent();
+
+         queueEvent(new ResizeEvent(glm::ivec2(m_width, m_height)));
+         queueEvent(new ResizeEvent(glm::ivec2(m_width, m_height), true));
     }
 }
 
@@ -189,7 +201,7 @@ void Window::toggleMode()
     }
 }
 
-void Window::assign(WindowEventHandler * eventHandler)
+void Window::setEventHandler(WindowEventHandler * eventHandler)
 {
     if (eventHandler == m_eventHandler)
         return;
@@ -205,30 +217,6 @@ void Window::assign(WindowEventHandler * eventHandler)
     promoteContext();
 }
 
-bool Window::running = false;
-int Window::exitCode = 0;
-
-int Window::run()
-{
-    running = true;
-
-    while (running)
-    {
-        for (Window * window : s_windows)
-            window->idle();
-
-        glfwPollEvents();
-    };
-    glfwTerminate();
-    return exitCode;
-}
-
-void Window::quit(const int code)
-{
-    exitCode = code;
-    running = false;
-}
-
 void Window::resize(
     const int width
 ,   const int height)
@@ -241,20 +229,18 @@ void Window::resize(
 
 void Window::repaint()
 {
-    PaintEvent event;
-    postEvent(event);
+    queueEvent(new PaintEvent);
 }
 
 void Window::close()
 {
-    CloseEvent event;
-    postEvent(event);
+    queueEvent(new CloseEvent);
 }
 
 void Window::idle()
 {
-    IdleEvent event;
-    postEvent(event);
+    if (m_eventHandler)
+        m_eventHandler->idle(*this);
 }
 
 void Window::swap()
@@ -298,7 +284,7 @@ void Window::destroy()
         m_eventHandler->finalize(*this);
 
     if (m_quitOnDestroy)
-        quit(0);
+        MainLoop::quit(0);
 }
 
 GLFWwindow * Window::internalWindow() const
@@ -306,23 +292,54 @@ GLFWwindow * Window::internalWindow() const
     return m_window;
 }
 
-void Window::postEvent(WindowEvent & event)
+void Window::queueEvent(WindowEvent * event)
 {
-    if (!m_context)
+    if (!event)
         return;
 
-    event.setWindow(this);
+    m_eventQueue.push(event);
+}
 
+bool Window::hasPendingEvents()
+{
+    return !m_eventQueue.empty();
+}
+
+void Window::processEvents()
+{
+    if (m_eventQueue.empty() || !m_context)
+        return;
+
+    m_context->makeCurrent();
+
+    while (!m_eventQueue.empty())
+    {
+        WindowEvent* event = m_eventQueue.front();
+        m_eventQueue.pop();
+        event->setWindow(this);
+
+        processEvent(*event);
+
+        delete event;
+
+        if (!m_context)
+        {
+            clearEventQueue();
+            return;
+        }
+    }
+
+    m_context->doneCurrent();
+}
+
+void Window::processEvent(WindowEvent & event)
+{
     if (m_eventHandler)
     {
-        m_context->makeCurrent();
         m_eventHandler->handleEvent(event);
     }
 
     finishEvent(event);
-
-    if (m_context) // the context can be nullptr here, if a Close event destroyed it
-        m_context->doneCurrent();
 }
 
 void Window::finishEvent(WindowEvent & event)
@@ -361,6 +378,25 @@ void Window::defaultEventAction(WindowEvent & event)
             }
             break;
     }
+}
+
+void Window::clearEventQueue()
+{
+    while (!m_eventQueue.empty())
+    {
+        delete m_eventQueue.front();
+        m_eventQueue.pop();
+    }
+}
+
+void Window::addTimer(int id, int interval, bool singleShot)
+{
+    WindowEventDispatcher::addTimer(this, id, interval, singleShot);
+}
+
+void Window::removeTimer(int id)
+{
+    WindowEventDispatcher::removeTimer(this, id);
 }
 
 } // namespace glow

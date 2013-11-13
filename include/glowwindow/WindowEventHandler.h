@@ -12,11 +12,11 @@ class KeyEvent;
 class MouseEvent;
 class ScrollEvent;
 class ResizeEvent;
-class IdleEvent;
 class PaintEvent;
 class FocusEvent;
 class IconifyEvent;
 class MoveEvent;
+class TimerEvent;
 
 class GLOWWINDOW_API WindowEventHandler : public Referenced
 {
@@ -37,6 +37,12 @@ public:
     */
     virtual void finalize(Window & window);
 
+    /** The idle event is called when no painting within the attached window's
+        main message loop is called. This might happen for fixed repaint time
+        intervals.
+    */
+    virtual void idle(Window & window);
+
 protected:
 
     /** The window's context is made current before and done current afterwards.
@@ -51,12 +57,6 @@ protected:
     */
     virtual void paintEvent(PaintEvent & event);
 
-    /** The idle event is called when no painting within the attached window's 
-        main message loop is called. This might happen for fixed repaint time 
-        intervals.
-    */
-    virtual void idleEvent(IdleEvent & event);
-
     virtual void keyPressEvent(KeyEvent & event);
     virtual void keyReleaseEvent(KeyEvent & event);
 
@@ -68,6 +68,8 @@ protected:
 
     virtual void focusEvent(FocusEvent & event);
     virtual void iconifyEvent(IconifyEvent & event);
+
+    virtual void timerEvent(TimerEvent & event);
 };
 
 } // namespace glow

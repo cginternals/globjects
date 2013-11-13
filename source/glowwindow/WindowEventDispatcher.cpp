@@ -1,6 +1,8 @@
 #include <cassert>
 #include <cmath>
 
+#include <thread>
+
 #include <GLFW/glfw3.h>
 
 #include <glow/logging.h>
@@ -13,6 +15,32 @@
 namespace glow
 {
 
+WindowEventDispatcher::Timer::Timer()
+: interval(0)
+, singleShot(false)
+{
+}
+
+WindowEventDispatcher::Timer::Timer(int interval, bool singleShot)
+: interval(interval)
+, singleShot(singleShot)
+{
+}
+
+bool WindowEventDispatcher::Timer::ready() const
+{
+    return elapsed >= interval;
+}
+
+void WindowEventDispatcher::Timer::reset()
+{
+    elapsed = Duration(0);
+}
+
+WindowEventDispatcher::WindowTimerMap WindowEventDispatcher::s_timers;
+std::chrono::high_resolution_clock::time_point WindowEventDispatcher::s_time;
+std::chrono::high_resolution_clock WindowEventDispatcher::s_clock;
+
 void WindowEventDispatcher::registerWindow(Window* window)
 {
     assert(window != nullptr);
@@ -24,19 +52,19 @@ void WindowEventDispatcher::registerWindow(Window* window)
 
     glfwSetWindowUserPointer(glfwWindow, window);
 
-    glfwSetWindowRefreshCallback(glfwWindow, processRefresh);
-    glfwSetKeyCallback(glfwWindow, processKey);
-    glfwSetCharCallback(glfwWindow, processChar);
-    glfwSetMouseButtonCallback(glfwWindow, processMouse);
-    glfwSetCursorPosCallback(glfwWindow, processCursorPos);
-    glfwSetCursorEnterCallback(glfwWindow, processCursorEnter);
-    glfwSetScrollCallback(glfwWindow, processScroll);
-    glfwSetWindowSizeCallback(glfwWindow, processResize);
-    glfwSetFramebufferSizeCallback(glfwWindow, processFramebufferResize);
-    glfwSetWindowFocusCallback(glfwWindow, processFocus);
-    glfwSetWindowPosCallback(glfwWindow, processMove);
-    glfwSetWindowIconifyCallback(glfwWindow, processIconify);
-    glfwSetWindowCloseCallback(glfwWindow, processClose);
+    glfwSetWindowRefreshCallback(glfwWindow, handleRefresh);
+    glfwSetKeyCallback(glfwWindow, handleKey);
+    glfwSetCharCallback(glfwWindow, handleChar);
+    glfwSetMouseButtonCallback(glfwWindow, handleMouse);
+    glfwSetCursorPosCallback(glfwWindow, handleCursorPos);
+    glfwSetCursorEnterCallback(glfwWindow, handleCursorEnter);
+    glfwSetScrollCallback(glfwWindow, handleScroll);
+    glfwSetWindowSizeCallback(glfwWindow, handleResize);
+    glfwSetFramebufferSizeCallback(glfwWindow, handleFramebufferResize);
+    glfwSetWindowFocusCallback(glfwWindow, handleFocus);
+    glfwSetWindowPosCallback(glfwWindow, handleMove);
+    glfwSetWindowIconifyCallback(glfwWindow, handleIconify);
+    glfwSetWindowCloseCallback(glfwWindow, handleClose);
 }
 
 void WindowEventDispatcher::deregisterWindow(Window* window)
@@ -61,6 +89,67 @@ void WindowEventDispatcher::deregisterWindow(Window* window)
     glfwSetWindowPosCallback(glfwWindow, nullptr);
     glfwSetWindowIconifyCallback(glfwWindow, nullptr);
     glfwSetWindowCloseCallback(glfwWindow, nullptr);
+
+    removeTimers(window);
+}
+
+void WindowEventDispatcher::addTimer(Window* window, int id, int interval, bool singleShot)
+{
+    s_timers[window][id] = Timer(interval, singleShot);
+}
+
+void WindowEventDispatcher::removeTimer(Window* window, int id)
+{
+    s_timers[window].erase(id);
+}
+
+void WindowEventDispatcher::removeTimers(Window* window)
+{
+    s_timers.erase(window);
+}
+
+void WindowEventDispatcher::initializeTime()
+{
+    s_time = s_clock.now();
+}
+
+void WindowEventDispatcher::checkForTimerEvents()
+{
+    auto now = s_clock.now();
+    Timer::Duration delta = std::chrono::duration_cast<Timer::Duration>(now - s_time);
+    s_time = now;
+
+    std::vector<std::pair<Window*, int>> discarded;
+
+    for (auto& timerMapPair : s_timers)
+    {
+        Window* window = timerMapPair.first;
+        for (auto& timerPair : timerMapPair.second)
+        {
+            int id = timerPair.first;
+            Timer& timer = timerPair.second;
+
+            timer.elapsed += delta;
+
+            if (timer.ready())
+            {
+                dispatchEvent(window, new TimerEvent(id));
+                if (timer.singleShot)
+                {
+                    discarded.push_back(std::pair<Window*, int>(window, id));
+                }
+                else
+                {
+                    timer.reset();
+                }
+            }
+        }
+    }
+
+    for (const auto& pair : discarded)
+    {
+        removeTimer(pair.first, pair.second);
+    }
 }
 
 Window* WindowEventDispatcher::fromGLFW(GLFWwindow* glfwWindow)
@@ -68,114 +157,102 @@ Window* WindowEventDispatcher::fromGLFW(GLFWwindow* glfwWindow)
     return glfwWindow ? static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow)) : nullptr;
 }
 
-void WindowEventDispatcher::mousePosition(GLFWwindow* glfwWindow, int& x, int &y)
+glm::ivec2 WindowEventDispatcher::mousePosition(GLFWwindow* glfwWindow)
 {
-    if (!glfwWindow)
-    {
-        x = y = 0;
-    }
-    else
+    if (glfwWindow)
     {
         double xd, yd;
         glfwGetCursorPos(glfwWindow, &xd, &yd);
-        x = std::floor(xd);
-        y = std::floor(yd);
+
+        return glm::ivec2(std::floor(xd), std::floor(yd));
+    }
+    else
+    {
+        return glm::ivec2();
     }
 }
 
-void WindowEventDispatcher::dispatchEvent(GLFWwindow* glfwWindow, WindowEvent& event)
+void WindowEventDispatcher::dispatchEvent(GLFWwindow* glfwWindow, WindowEvent* event)
 {
-    Window* window = fromGLFW(glfwWindow);
-    if (!window)
-        return;
+    dispatchEvent(fromGLFW(glfwWindow), event);
+}
 
-    window->postEvent(event);
+void WindowEventDispatcher::dispatchEvent(Window* window, WindowEvent* event)
+{
+    if (!window)
+    {
+        delete event;
+        return;
+    }
+
+    window->queueEvent(event);
 }
 
 // events
 
-void WindowEventDispatcher::processRefresh(GLFWwindow* glfwWindow)
+void WindowEventDispatcher::handleRefresh(GLFWwindow* glfwWindow)
 {
-    PaintEvent event;
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new PaintEvent);
 }
 
-void WindowEventDispatcher::processKey(GLFWwindow* glfwWindow, int key, int scanCode, int action, int modifiers)
+void WindowEventDispatcher::handleKey(GLFWwindow* glfwWindow, int key, int scanCode, int action, int modifiers)
 {
-    KeyEvent event(key, scanCode, action, modifiers);
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new KeyEvent(key, scanCode, action, modifiers));
 }
 
-void WindowEventDispatcher::processChar(GLFWwindow* glfwWindow, unsigned int character)
+void WindowEventDispatcher::handleChar(GLFWwindow* glfwWindow, unsigned int character)
 {
-    KeyEvent event(character);
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new KeyEvent(character));
 }
 
-void WindowEventDispatcher::processMouse(GLFWwindow* glfwWindow, int button, int action, int modifiers)
+void WindowEventDispatcher::handleMouse(GLFWwindow* glfwWindow, int button, int action, int modifiers)
 {
-    int x, y;
-    mousePosition(glfwWindow, x, y);
-
-    MouseEvent event(x, y, button, action, modifiers);
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new MouseEvent(mousePosition(glfwWindow), button, action, modifiers));
 }
 
-void WindowEventDispatcher::processCursorPos(GLFWwindow* glfwWindow, double xPos, double yPos)
+void WindowEventDispatcher::handleCursorPos(GLFWwindow* glfwWindow, double xPos, double yPos)
 {
-    MouseEvent event(std::floor(xPos), std::floor(yPos));
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new MouseEvent(glm::ivec2(std::floor(xPos), std::floor(yPos))));
 }
 
-void WindowEventDispatcher::processCursorEnter(GLFWwindow* glfwWindow, int entered)
+void WindowEventDispatcher::handleCursorEnter(GLFWwindow* glfwWindow, int entered)
 {
     // TODO: implement
-    //sendEvent(glfwWindow, event);
 }
 
-void WindowEventDispatcher::processScroll(GLFWwindow* glfwWindow, double xOffset, double yOffset)
+void WindowEventDispatcher::handleScroll(GLFWwindow* glfwWindow, double xOffset, double yOffset)
 {
-    int x, y;
-    mousePosition(glfwWindow, x, y);
-
-    ScrollEvent event(xOffset, yOffset, x, y);
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new ScrollEvent(glm::vec2(xOffset, yOffset), mousePosition(glfwWindow)));
 }
 
-void WindowEventDispatcher::processResize(GLFWwindow* glfwWindow, int width, int height)
+void WindowEventDispatcher::handleResize(GLFWwindow* glfwWindow, int width, int height)
 {
-    ResizeEvent event(width, height);
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new ResizeEvent(glm::ivec2(width, height)));
 }
 
-void WindowEventDispatcher::processFramebufferResize(GLFWwindow* glfwWindow, int width, int height)
+void WindowEventDispatcher::handleFramebufferResize(GLFWwindow* glfwWindow, int width, int height)
 {
-    ResizeEvent event(width, height, true);
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new ResizeEvent(glm::ivec2(width, height), true));
 }
 
-void WindowEventDispatcher::processMove(GLFWwindow* glfwWindow, int x, int y)
+void WindowEventDispatcher::handleMove(GLFWwindow* glfwWindow, int x, int y)
 {
-    MoveEvent event(x, y);
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new MoveEvent(glm::ivec2(x, y)));
 }
 
-void WindowEventDispatcher::processFocus(GLFWwindow* glfwWindow, int focused)
+void WindowEventDispatcher::handleFocus(GLFWwindow* glfwWindow, int focused)
 {
-    FocusEvent event(focused == GL_TRUE);
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new FocusEvent(focused == GL_TRUE));
 }
 
-void WindowEventDispatcher::processIconify(GLFWwindow* glfwWindow, int iconified)
+void WindowEventDispatcher::handleIconify(GLFWwindow* glfwWindow, int iconified)
 {
-    IconifyEvent event(iconified == GL_TRUE);
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new IconifyEvent(iconified == GL_TRUE));
 }
 
-void WindowEventDispatcher::processClose(GLFWwindow* glfwWindow)
+void WindowEventDispatcher::handleClose(GLFWwindow* glfwWindow)
 {
-    CloseEvent event;
-    dispatchEvent(glfwWindow, event);
+    dispatchEvent(glfwWindow, new CloseEvent);
 }
 
 } // namespace glow

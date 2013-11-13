@@ -34,6 +34,7 @@ set(api_includes
     ${header_path}/ContextFormat.h
     ${header_path}/glowwindow.h
     ${header_path}/events.h
+    ${header_path}/MainLoop.h
     ${header_path}/Window.h
     ${header_path}/WindowEventHandler.h
 )
@@ -42,6 +43,7 @@ set(sources
     ${source_path}/Context.cpp
     ${source_path}/ContextFormat.cpp
     ${source_path}/events.cpp
+    ${source_path}/MainLoop.cpp
     ${source_path}/Window.cpp
     ${source_path}/WindowEventDispatcher.h
     ${source_path}/WindowEventDispatcher.cpp

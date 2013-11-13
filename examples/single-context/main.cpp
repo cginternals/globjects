@@ -40,9 +40,9 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    virtual void idleEvent(IdleEvent & event) override
+    virtual void idle(Window & window) override
     {
-        event.window()->repaint();
+        window.repaint();
     }
 };
 
@@ -51,8 +51,6 @@ public:
 */
 int main(int argc, char* argv[])
 {
-    glewExperimental = GL_TRUE;
-
     ContextFormat format;
     format.setVersion(4, 3);
     format.setProfile(ContextFormat::CoreProfile);
@@ -61,12 +59,12 @@ int main(int argc, char* argv[])
     {
     AutoTimer t("Initialization");
 
-    window.assign(new EventHandler());
+    window.setEventHandler(new EventHandler());
     if (!window.create(format, "Single Context Example"))
         return 0;
 
     window.context()->setSwapInterval(Context::VerticalSyncronization);
     window.show();
     }
-    return Window::run();
+    return MainLoop::run();
 }

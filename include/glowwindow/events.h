@@ -31,7 +31,7 @@ public:
     ,   Focus
     ,   Iconify
     ,   Paint
-    ,   Idle
+    ,   Timer
     };
 
     virtual ~WindowEvent();
@@ -79,8 +79,8 @@ protected:
 class GLOWWINDOW_API MouseEvent : public WindowEvent
 {
 public:
-    MouseEvent(int x, int y);
-    MouseEvent(int x, int y, int button, int action, int modifiers);
+    MouseEvent(const glm::ivec2 & pos);
+    MouseEvent(const glm::ivec2 & pos, int button, int action, int modifiers);
 
     int button() const;
     int action() const;
@@ -102,7 +102,7 @@ protected:
 class GLOWWINDOW_API ScrollEvent : public WindowEvent
 {
 public:
-    ScrollEvent(double xOffset, double yOffset, int x, int y);
+    ScrollEvent(const glm::vec2 & offset, const glm::ivec2 & pos);
 
     const glm::vec2 & offset() const;
     const glm::ivec2 & pos() const;
@@ -115,7 +115,7 @@ protected:
 class GLOWWINDOW_API MoveEvent : public WindowEvent
 {
 public:
-    MoveEvent(int x, int y);
+    MoveEvent(const glm::ivec2 & pos);
 
     const glm::ivec2 & pos() const;
 
@@ -129,7 +129,7 @@ protected:
 class GLOWWINDOW_API ResizeEvent : public WindowEvent
 {
 public:
-    ResizeEvent(int width, int height, bool framebuffer = false);
+    ResizeEvent(const glm::ivec2 & size, bool framebuffer = false);
 
     const glm::ivec2 & size() const;
 
@@ -152,12 +152,6 @@ public:
     CloseEvent();
 };
 
-class GLOWWINDOW_API IdleEvent : public WindowEvent
-{
-public:
-    IdleEvent();
-};
-
 class GLOWWINDOW_API FocusEvent : public WindowEvent
 {
 public:
@@ -176,6 +170,16 @@ public:
     bool isIconified() const;
 protected:
     bool m_isIconified;
+};
+
+class GLOWWINDOW_API TimerEvent : public WindowEvent
+{
+public:
+    TimerEvent(int id);
+
+    int id() const;
+protected:
+    int m_id;
 };
 
 } // namespace glow

@@ -41,9 +41,9 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    virtual void idleEvent(IdleEvent & event) override
+    virtual void idle(Window & window) override
     {
-        event.window()->repaint();
+        window.repaint();
     }
 };
 
@@ -60,14 +60,14 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < 8; ++i)
     {
-        windows[i].assign(new EventHandler());
+        windows[i].setEventHandler(new EventHandler());
         windows[i].create(format, "Multiple Contexts Example", 320, 240);
         windows[i].show();
         windows[i].context()->setSwapInterval(Context::NoVerticalSyncronization);
 
         // make some random windows post quit on destroy ;)
         if (0 == rand() % 2)
-            windows[i].setQuitOnDestroy(false);
+            windows[i].quitOnDestroy(false);
     }
-    return Window::run();
+    return MainLoop::run();
 }

@@ -2,9 +2,11 @@
 
 #include <set>
 #include <string>
+#include <queue>
 
 #include <glowwindow/glowwindow.h>
 #include <glow/ref_ptr.h>
+#include <glowwindow/MainLoop.h>
 #include <glowwindow/events.h>  // forward?
 
 struct GLFWwindow;
@@ -37,14 +39,14 @@ public:
         when the window gets destroyed. Hence, the static window loop (run) 
         will receive a quit event and destroy all other remaining windows.
     */
-    void setQuitOnDestroy(bool enable);
+    void quitOnDestroy(bool enable);
     bool quitsOnDestroy() const;
 
     /** Takes ownership of the given eventhandler and deletes that either on
-        quiting, just before the opengl context gets destroyed, or when 
+        quitting, just before the opengl context gets destroyed, or when
         reassigning a new, different handler. 
     */
-    void assign(WindowEventHandler * eventHandler);
+    void setEventHandler(WindowEventHandler * eventHandler);
 
     bool create(
         const ContextFormat & format
@@ -52,14 +54,17 @@ public:
     ,   int width  =  1280
     ,   int height =   720);
 
+    void setTitle(const std::string & title);
+
     void close();
 
-    /** Repaint triggers a frame while resolving/handling platform specific
-        validation states and update regions.        
+    /** Queues a paint event.
     */
     void repaint();
 
     void resize(int width, int height);
+
+    void idle();
 
     void show();
     void hide();
@@ -72,28 +77,31 @@ public:
     void toggleMode();
 
     GLFWwindow * internalWindow() const;
-    void postEvent(WindowEvent & event);
 
-public:
-    /** This enters the (main) windows message loop and dispatches events to
-        the attached WindowEventHandler instance.
-    */
-    static int run();
-    static void quit(int code = 0);
+    void queueEvent(WindowEvent * event);
+    bool hasPendingEvents();
+    void processEvents();
+
+    static const std::set<Window*>& instances();
+
+    void addTimer(int id, int interval, bool singleShot = false);
+    void removeTimer(int id);
 
 protected:
-    void idle();
     void swap();
     void destroy();
 
     void promoteContext();
 
+    void clearEventQueue();
+    void processEvent(WindowEvent & event);
     void finishEvent(WindowEvent & event);
     void defaultEventAction(WindowEvent & event);
 
 protected:
     ref_ptr<WindowEventHandler> m_eventHandler;
     Context * m_context;
+    std::queue<WindowEvent*> m_eventQueue;
 
     bool m_quitOnDestroy;
 
@@ -115,9 +123,7 @@ protected:
 
 private:
     GLFWwindow * m_window;
-    static std::set<Window*> s_windows;
-    static bool running;
-    static int exitCode;
+    static std::set<Window*> s_instances;
 
     int m_width;
     int m_height;

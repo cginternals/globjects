@@ -80,9 +80,9 @@ public:
         m_quad->draw();
     }
 
-    virtual void idleEvent(IdleEvent & event) override
+    virtual void idle(Window & window) override
     {
-        event.window()->repaint();
+        window.repaint();
     }
 
     virtual void keyReleaseEvent(KeyEvent & event) override
@@ -105,18 +105,16 @@ protected:
 */
 int main(int argc, char* argv[])
 {
-    glewExperimental = GL_TRUE;
-
     ContextFormat format;
 
     Window window;
-    window.assign(new EventHandler());
+    window.setEventHandler(new EventHandler());
 
     window.create(format, "Compute Shader Example");
     window.show();
     window.context()->setSwapInterval(Context::NoVerticalSyncronization);
 
-    return Window::run();
+    return MainLoop::run();
 }
 
 void EventHandler::createAndSetupTexture()

@@ -56,9 +56,9 @@ public:
         m_quad->draw();
     }
 
-    virtual void idleEvent(IdleEvent & event) override
+    virtual void idle(Window & window) override
     {
-        event.window()->repaint();
+        window.repaint();
     }
 
 protected:
@@ -71,17 +71,15 @@ protected:
 */
 int main(int argc, char* argv[])
 {
-    glewExperimental = GL_TRUE;
-
     ContextFormat format;
 
     Window window;
-    window.assign(new EventHandler());
+    window.setEventHandler(new EventHandler());
 
     window.create(format, "Simple Texture Example");
     window.show();
 
-    return Window::run();
+    return MainLoop::run();
 }
 
 void EventHandler::createAndSetupTexture()

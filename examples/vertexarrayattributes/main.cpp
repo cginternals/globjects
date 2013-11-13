@@ -161,9 +161,9 @@ public:
         m_shaderProgram->release();
     }
 
-    virtual void idleEvent(IdleEvent & event) override
+    virtual void idle(Window & window) override
     {
-        event.window()->repaint();
+        window.repaint();
     }
 protected:
     ref_ptr<VertexArrayObject> m_vao;
@@ -173,8 +173,6 @@ protected:
 
 int main(int argc, char* argv[])
 {
-    glewExperimental = GL_TRUE;
-
     ContextFormat format;
 
     Window window;
@@ -182,7 +180,7 @@ int main(int argc, char* argv[])
     {
         AutoTimer t("Initialization");
 
-        window.assign(new EventHandler());
+        window.setEventHandler(new EventHandler());
 
         window.create(format, "Vertex Array Attributes Example");
         window.context()->setSwapInterval(Context::VerticalSyncronization);
@@ -190,5 +188,5 @@ int main(int argc, char* argv[])
         window.show();
     }
 
-    return Window::run();
+    return MainLoop::run();
 }
