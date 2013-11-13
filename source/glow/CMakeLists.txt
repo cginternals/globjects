@@ -49,14 +49,13 @@ set(api_includes
     ${header_path}/LogMessage.h
     ${header_path}/LogMessageBuilder.h
     ${header_path}/LogMessageBuilder.hpp
+    ${header_path}/NamedStrings.h
     ${header_path}/Object.h
     ${header_path}/ObjectRegistry.h
     ${header_path}/ObjectVisitor.h
     ${header_path}/Program.h
     ${header_path}/Program.hpp
     ${header_path}/Query.h
-    ${header_path}/RawFile.h
-    ${header_path}/RawFile.hpp
     ${header_path}/ref_ptr.h
     ${header_path}/ref_ptr.hpp
     ${header_path}/Referenced.h
@@ -64,9 +63,8 @@ set(api_includes
     ${header_path}/RenderBufferObject.h
     ${header_path}/Screen.h
     ${header_path}/Shader.h
-    ${header_path}/ShaderCode.h
-    ${header_path}/ShaderFile.h
-    ${header_path}/ShaderSource.h
+    ${header_path}/String.h
+    ${header_path}/StringSource.h
     ${header_path}/Texture.h
     ${header_path}/TextureAttachment.h
     ${header_path}/Timer.h
@@ -83,6 +81,7 @@ set(sources
     ${source_path}/AutoTimer.cpp
     ${source_path}/Buffer.cpp
     ${source_path}/Changeable.cpp
+    ${source_path}/ChangeListener.cpp
     ${source_path}/ChronoTimer.cpp
     ${source_path}/ChronoTimer.h
     ${source_path}/ConsoleLogger.cpp
@@ -97,20 +96,19 @@ set(sources
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/LogMessageBuilder.cpp
+    ${source_path}/NamedStrings.cpp
     ${source_path}/Object.cpp
     ${source_path}/ObjectRegistry.cpp
     ${source_path}/ObjectVisitor.cpp
     ${source_path}/Program.cpp
     ${source_path}/Query.cpp
-    ${source_path}/RawFile.cpp
     ${source_path}/Referenced.cpp
     ${source_path}/RenderBufferAttachment.cpp
     ${source_path}/RenderBufferObject.cpp
     ${source_path}/Screen.cpp
     ${source_path}/Shader.cpp
-    ${source_path}/ShaderCode.cpp
-    ${source_path}/ShaderFile.cpp
-    ${source_path}/ShaderSource.cpp
+    ${source_path}/String.cpp
+    ${source_path}/StringSource.cpp
     ${source_path}/Texture.cpp
     ${source_path}/TextureAttachment.cpp
     ${source_path}/Timer.cpp

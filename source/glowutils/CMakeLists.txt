@@ -34,12 +34,17 @@ set(api_includes
     ${header_path}/CachedValue.hpp
     ${header_path}/Camera.h
     ${header_path}/CameraPathRecorder.h
+    ${header_path}/File.h
+    ${header_path}/FileRegistry.h
     ${header_path}/Icosahedron.h
     ${header_path}/MathMacros.h
     ${header_path}/NavigationMath.h
     ${header_path}/Plane3.h
+    ${header_path}/RawFile.h
+    ${header_path}/RawFile.hpp
     ${header_path}/ScreenAlignedQuad.h
-    ${header_path}/SourceTemplate.h
+    ${header_path}/StringSourceDecorator.h
+    ${header_path}/StringTemplate.h
     ${header_path}/TrackballNavigation.h
     ${header_path}/UniformGroup.h
     ${header_path}/UniformGroup.hpp
@@ -54,11 +59,14 @@ set(sources
     ${source_path}/AxonometricLookAt.cpp
     ${source_path}/Camera.cpp
     ${source_path}/CameraPathRecorder.cpp
+    ${source_path}/File.cpp
+    ${source_path}/FileRegistry.cpp
     ${source_path}/Icosahedron.cpp
     ${source_path}/NavigationMath.cpp
     ${source_path}/Plane3.cpp
     ${source_path}/ScreenAlignedQuad.cpp
-    ${source_path}/SourceTemplate.cpp
+    ${source_path}/StringSourceDecorator.cpp
+    ${source_path}/StringTemplate.cpp
     ${source_path}/TrackballNavigation.cpp
     ${source_path}/UniformGroup.cpp
     ${source_path}/UnitCube.cpp

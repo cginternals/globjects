@@ -1,16 +1,16 @@
 
-set(target simple-transformfeedback)
+set(target shaderincludes)
 message(STATUS "example ${target}")
 
 add_executable(${target} 
-    main.cpp
+	main.cpp
 )
 
 target_link_libraries(${target} 
-    ${GLEW_LIBRARIES}
-    glow
-    glowutils
-    glowwindow
+	${GLEW_LIBRARIES}
+	glow
+        glowutils
+        glowwindow
 )
 
 set_target_properties(${target}
