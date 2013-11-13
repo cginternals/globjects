@@ -83,8 +83,7 @@ Icosahedron::Icosahedron(
     auto v(vertices());
     auto i(indices());
 
-    if (clamp(iterations, 0, 8))
-        refine(v, i, 2);
+    refine(v, i, clamp(iterations, 0, 8));
 
     m_indices->setData(i, GL_STATIC_DRAW);
     m_vertices->setData(v, GL_STATIC_DRAW);

@@ -1,5 +1,5 @@
 
-set(target vertexarrayattributes)
+set(target wikiexample)
 message(STATUS "example ${target}")
 
 add_executable(${target} 
@@ -9,7 +9,6 @@ add_executable(${target}
 target_link_libraries(${target} 
     ${GLEW_LIBRARIES}
     glow
-    glowutils
     glowwindow
 )
 
