@@ -210,7 +210,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
     ContextFormat format;
     format.setVersion(4, 0);

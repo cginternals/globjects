@@ -22,6 +22,7 @@
 #include <glow/Timer.h>
 #include <glow/VertexArrayObject.h>
 
+#include <glowutils/File.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/MathMacros.h>
 #include <glowutils/Icosahedron.h>
@@ -91,8 +92,8 @@ public:
 
         m_sphere = new Program();
         m_sphere->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,   "data/adaptive-grid/sphere.vert")
-        ,   Shader::fromFile(GL_FRAGMENT_SHADER, "data/adaptive-grid/sphere.frag"));
+            createShaderFromFile(GL_VERTEX_SHADER,   "data/adaptive-grid/sphere.vert")
+        ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/adaptive-grid/sphere.frag"));
 
         m_icosahedron = new Icosahedron(2);
         m_agrid = new AdaptiveGrid(16U);
@@ -146,7 +147,9 @@ public:
         auto d = std::chrono::duration<long double, std::nano>(timer.elapsed());
         timer.reset();
 
-        angle+= d/std::chrono::duration_cast<std::chrono::duration<long double, std::nano>>(std::chrono::seconds(10));
+        static auto duration = std::chrono::seconds(3);
+
+        angle+= d/std::chrono::duration_cast<std::chrono::duration<long double, std::nano>>(duration);
 
         while (angle>1)
             angle = 0;
@@ -175,7 +178,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
     ContextFormat format;
     format.setVersion(4, 0);
@@ -186,7 +189,7 @@ int main(int argc, char** argv)
     window.setEventHandler(new EventHandler());
 
     window.create(format, "Camera Path Example");
-    window.context()->setSwapInterval(Context::NoVerticalSyncronization);
+    window.context()->setSwapInterval(Context::VerticalSyncronization);
     window.show();
 
     return MainLoop::run();
