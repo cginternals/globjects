@@ -18,15 +18,16 @@ class Camera;
 struct GLOWUTILS_API CameraPathPoint
 {
 public:
-    static CameraPathPoint fromCamera(const Camera& camera);
-
     CameraPathPoint();
+    CameraPathPoint(const Camera& camera);
     CameraPathPoint(const glm::vec3& eye, const glm::vec3& center, const glm::vec3& up, float fov);
 
     glm::vec3 eye;
     glm::vec3 center;
     glm::vec3 up;
     float fov;
+
+    char c;
 };
 
 class GLOWUTILS_API CameraPath
@@ -35,6 +36,8 @@ public:
     CameraPath();
 
     void append(const CameraPathPoint& point);
+
+    CameraPath & operator<<(const CameraPathPoint& point);
 
     const std::vector<CameraPathPoint>& points() const;
 protected:
@@ -55,7 +58,9 @@ protected:
 class GLOWUTILS_API CameraPathPlayer
 {
 public:
-    CameraPathPlayer(Camera & camera, const CameraPath & path);
+    CameraPathPlayer(Camera & camera);
+
+    void setPath(const CameraPath & path);
 
     void play(float t);
 protected:
@@ -66,6 +71,7 @@ protected:
 
     void prepare();
     void find(float t, CameraPathPoint& p1, CameraPathPoint& p2, float& localT);
+    CameraPathPoint interpolate(const CameraPathPoint& p1, const CameraPathPoint& p2, float t);
 };
 
 } // namespace glow

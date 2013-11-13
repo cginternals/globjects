@@ -13,6 +13,7 @@ unset(api_includes)
 include_directories(
 	${GLFW_INCLUDE_DIR})
 
+add_subdirectory("camerapath")
 add_subdirectory("computeshader")
 add_subdirectory("multiple-contexts")
 add_subdirectory("navigations")
