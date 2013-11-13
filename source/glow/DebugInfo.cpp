@@ -15,8 +15,7 @@
 #include <glow/Query.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Shader.h>
-#include <glow/ShaderFile.h>
-#include <glow/ShaderSource.h>
+#include <glow/StringSource.h>
 #include <glow/Texture.h>
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>
@@ -253,9 +252,9 @@ void DebugInfo::visitShader(Shader* shader)
 	info.name = name("Shader", shader);
 
 	info.addProperty("type", shader->typeString());
-	if (shader->source() && shader->source()->isFile())
+    if (shader->source() && shader->source()->shortInfo().size() > 0)
 	{
-		info.addProperty("source", dynamic_cast<const ShaderFile*>(shader->source())->filePath());
+        info.addProperty("source", shader->source()->shortInfo());
 	}
 
 	addInfo("Shaders", info);

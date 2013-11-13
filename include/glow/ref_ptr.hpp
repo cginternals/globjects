@@ -139,3 +139,19 @@ void ref_ptr<T>::decreaseRef()
 }
 
 } // namespace glow
+
+/*
+Its strange that those two comparison operators aren't needed.
+
+template<typename T>
+bool operator==(const glow::ref_ptr<T>& reference, const T* pointer)
+{
+    return reference.get() == pointer;
+}
+
+template<typename T>
+bool operator==(const T* pointer, const glow::ref_ptr<T>& reference)
+{
+    return pointer == reference.get();
+}
+*/

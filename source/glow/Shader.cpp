@@ -3,9 +3,8 @@
 
 #include <glow/Program.h>
 #include <glow/logging.h>
-#include <glow/ShaderFile.h>
-#include <glow/ShaderSource.h>
-#include <glow/ShaderCode.h>
+#include <glow/StringSource.h>
+#include <glow/String.h>
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
 
@@ -16,7 +15,7 @@ namespace glow
 
 Shader::Shader(
     const GLenum type
-,   ShaderSource * source)
+,   StringSource * source)
 :   Object(create(type))
 ,   m_type(type)
 ,   m_source(nullptr)
@@ -31,18 +30,11 @@ Shader::Shader(const GLenum type)
 {
 }
 
-Shader * Shader::fromFile(
-    const GLenum type
-,   const std::string & filePath)
-{
-    return new Shader(type, new ShaderFile(filePath));
-}
-
 Shader * Shader::fromString(
     const GLenum type
     , const std::string & sourceString)
 {
-    return new Shader(type, new ShaderCode(sourceString));
+    return new Shader(type, new String(sourceString));
 }
 
 Shader::~Shader()
@@ -76,7 +68,7 @@ GLenum Shader::type() const
 	return m_type;
 }
 
-void Shader::setSource(ShaderSource * source)
+void Shader::setSource(StringSource * source)
 {
     if (source == m_source)
         return;
@@ -94,10 +86,10 @@ void Shader::setSource(ShaderSource * source)
 
 void Shader::setSource(const std::string & source)
 {
-	setSource(new ShaderCode(source));
+    setSource(new String(source));
 }
 
-const ShaderSource* Shader::source() const
+const StringSource* Shader::source() const
 {
 	return m_source;
 }
@@ -110,7 +102,7 @@ void Shader::notifyChanged()
 void Shader::updateSource()
 {
 	if (m_source)
-        setSource(*this, m_source->source());
+        setSource(*this, m_source->string());
 
 	if(!compile())
 	{
@@ -119,7 +111,7 @@ void Shader::updateSource()
     }
     else
 	{
-        m_currentSource = m_source->source();
+        m_currentSource = m_source->string();
 	}
 }
 
@@ -135,8 +127,16 @@ void Shader::setSource(
 
 bool Shader::compile()
 {
-	glCompileShader(m_id);
-	CheckGLError();
+    if (glCompileShaderIncludeARB)
+    {
+        glCompileShaderIncludeARB(m_id, 0, nullptr, nullptr);
+        CheckGLError();
+    }
+    else
+    {
+        glCompileShader(m_id);
+        CheckGLError();
+    }
 
 	m_compiled = checkCompileStatus();
 
@@ -192,8 +192,9 @@ std::string Shader::shaderString() const
 
 	ss << "Shader(" << typeString();
 
-	if (m_source && m_source->isFile())
-		ss << ", " << dynamic_cast<const ShaderFile*>(*m_source)->filePath();
+    std::string shortInfo = m_source->shortInfo();
+    if (shortInfo.size() > 0)
+        ss << ", " << shortInfo;
 
 	ss << ")";
 

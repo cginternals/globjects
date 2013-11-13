@@ -1,7 +1,7 @@
 #include <cassert>
 
-#include <glow/ChangeListener.h>
 #include <glow/Changeable.h>
+#include <glow/ChangeListener.h>
 
 namespace glow
 {
@@ -9,7 +9,10 @@ namespace glow
 void Changeable::changed()
 {
 	for (ChangeListener * listener: m_listeners)
+	{
 		listener->notifyChanged();
+		listener->notifyChanged(this);
+	}
 }
 
 void Changeable::registerListener(ChangeListener * listener)

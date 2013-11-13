@@ -14,7 +14,7 @@
 
 namespace glow 
 {
-class ShaderSource;
+class StringSource;
 class Program;
 
 /** \brief Encapsulates OpenGL shaders.
@@ -36,16 +36,13 @@ class GLOW_API Shader : public Object, protected ChangeListener, public Changeab
 	friend class Program;
 
 public:
-    static Shader * fromFile(
-        const GLenum type
-    ,   const std::string & filename);
     static Shader * fromString(
         const GLenum type
     ,   const std::string & sourceString);
 
 public:
 	Shader(const GLenum type);
-	Shader(const GLenum type, ShaderSource * source);
+    Shader(const GLenum type, StringSource * source);
 
 	virtual ~Shader();
 
@@ -53,9 +50,9 @@ public:
 
 	GLenum type() const;
 
-	void setSource(ShaderSource * source);
+    void setSource(StringSource * source);
 	void setSource(const std::string & source);
-	 const ShaderSource* source() const;
+    const StringSource* source() const;
 
 	bool compile();
 	bool isCompiled() const;
@@ -80,7 +77,7 @@ protected:
 
 protected:
 	GLenum m_type;
-    ref_ptr<ShaderSource> m_source;
+    ref_ptr<StringSource> m_source;
 
     std::string m_currentSource;
 

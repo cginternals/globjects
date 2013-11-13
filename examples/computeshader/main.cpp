@@ -11,7 +11,6 @@
 
 #include <glow/Uniform.h>
 #include <glow/Array.h>
-#include <glow/ShaderFile.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
@@ -20,6 +19,8 @@
 #include <glowwindow/ContextFormat.h>
 #include <glow/Error.h>
 #include <glow/logging.h>
+#include <glowutils/File.h>
+#include <glowutils/FileRegistry.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowwindow/Context.h>
 #include <glowwindow/Window.h>
@@ -87,7 +88,7 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glow::ShaderFile::reloadAll();
+            glow::FileRegistry::instance().reloadAll();
     }
 
 protected:
@@ -130,7 +131,7 @@ void EventHandler::createAndSetupTexture()
 void EventHandler::createAndSetupShaders()
 {
     m_computeProgram = new glow::Program();
-    m_computeProgram->attach(glow::Shader::fromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+    m_computeProgram->attach(glow::createShaderFromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
 
     m_computeProgram->setUniform("destTex", 0);
 }
