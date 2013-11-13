@@ -15,13 +15,14 @@ class WindowEventDispatcher
 public:
     struct Timer
     {
+        typedef std::chrono::duration<double, std::milli> Duration;
+
         Timer();
         Timer(int interval, bool singleShot);
 
-        int interval;
+        std::chrono::milliseconds interval;
+        Duration elapsed;
         bool singleShot;
-        std::chrono::milliseconds elapsed;
-        double delapsed;
 
         bool ready() const;
         void reset();
@@ -40,10 +41,10 @@ private:
 
     typedef std::unordered_map<int, Timer> TimerMap;
     typedef std::unordered_map<Window*, TimerMap> WindowTimerMap;
+
     static WindowTimerMap s_timers;
     static std::chrono::system_clock::time_point s_time;
     static std::chrono::system_clock s_clock;
-    static double dtime;
 protected:
     static Window* fromGLFW(GLFWwindow* glfwWindow);
     static glm::ivec2 mousePosition(GLFWwindow* glfwWindow);

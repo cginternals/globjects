@@ -24,24 +24,17 @@ WindowEventDispatcher::Timer::Timer()
 WindowEventDispatcher::Timer::Timer(int interval, bool singleShot)
 : interval(interval)
 , singleShot(singleShot)
-, delapsed(0)
 {
 }
 
 bool WindowEventDispatcher::Timer::ready() const
 {
-//    int a = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
-//    int b = elapsed.count();
-////    glow::debug() << b << " >= " << interval << " -> " << (b >= interval);
-//    return b >= interval;
-    return delapsed >= interval;
+    return elapsed >= interval;
 }
 
 void WindowEventDispatcher::Timer::reset()
 {
-    elapsed %= interval;
-    elapsed *= 0;
-    delapsed = 0;
+    elapsed = Duration(0);
 }
 
 WindowEventDispatcher::WindowTimerMap WindowEventDispatcher::s_timers;
@@ -118,42 +111,13 @@ void WindowEventDispatcher::removeTimers(Window* window)
 void WindowEventDispatcher::initializeTime()
 {
     s_time = s_clock.now();
-
-    dtime = glfwGetTime();
 }
-
-double WindowEventDispatcher::dtime = 0;
 
 void WindowEventDispatcher::checkForTimerEvents()
 {
-//    auto foo = s_clock.now();
-//    std::this_thread::sleep_for(std::chrono::seconds(1));
-//    auto bar = s_clock.now() - foo;
-
-//    double d = glfwGetTime();
-//    std::this_thread::sleep_for(std::chrono::seconds(1));
-//    d = glfwGetTime()-d;
-
-//    int agzi;
-   // std::chrono::nanoseconds uidghe = foo-foo;
-//    auto arbd = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::seconds(1));
-
-//    std::chrono::milliseconds bar2 = std::chrono::duration_cast<std::chrono::milliseconds>(bar);
-
-//    int a;
-
-//    auto now = s_clock.now();
-//    std::chrono::milliseconds delta = std::chrono::duration_cast<std::chrono::milliseconds>(now - s_time);
-////    std::chrono::milliseconds delta = (now - s_time);
-//    s_time = now;
-
-//    delta*=1000;
-
-    double now = glfwGetTime();
-    double d = now-dtime;
-    dtime = now;
-
-    //auto delta = std::chrono::milliseconds(int(d*1000));
+    auto now = s_clock.now();
+    Timer::Duration delta = std::chrono::duration_cast<Timer::Duration>(now - s_time);
+    s_time = now;
 
     std::vector<std::pair<Window*, int>> discarded;
 
@@ -165,8 +129,7 @@ void WindowEventDispatcher::checkForTimerEvents()
             int id = timerPair.first;
             Timer& timer = timerPair.second;
 
-//            timer.elapsed += delta;
-            timer.delapsed += 1000*d;
+            timer.elapsed += delta;
 
             if (timer.ready())
             {
