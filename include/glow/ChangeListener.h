@@ -5,6 +5,8 @@
 namespace glow 
 {
 
+class Changeable;
+
 /** \brief Allows listening to any Changeable.
     
     If a Changeable this ChangeListener is registered on signals a change, the 
@@ -15,7 +17,8 @@ namespace glow
 class GLOW_API ChangeListener
 {
 public:
-	virtual void notifyChanged() = 0;
+    virtual void notifyChanged();
+    virtual void notifyChanged(Changeable* sender);
 };
 
 } // namespace glow

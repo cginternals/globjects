@@ -81,6 +81,7 @@ set(sources
     ${source_path}/AutoTimer.cpp
     ${source_path}/Buffer.cpp
     ${source_path}/Changeable.cpp
+    ${source_path}/ChangeListener.cpp
     ${source_path}/ChronoTimer.cpp
     ${source_path}/ChronoTimer.h
     ${source_path}/ConsoleLogger.cpp

@@ -127,8 +127,16 @@ void Shader::setSource(
 
 bool Shader::compile()
 {
-	glCompileShader(m_id);
-	CheckGLError();
+    if (glCompileShaderIncludeARB)
+    {
+        glCompileShaderIncludeARB(m_id, 0, nullptr, nullptr);
+        CheckGLError();
+    }
+    else
+    {
+        glCompileShader(m_id);
+        CheckGLError();
+    }
 
 	m_compiled = checkCompileStatus();
 
