@@ -19,8 +19,8 @@
 #include <glowwindow/ContextFormat.h>
 #include <glow/Error.h>
 #include <glow/logging.h>
-#include <glowutils/ShaderFile.h>
-#include <glowutils/ShaderFileRegistry.h>
+#include <glowutils/File.h>
+#include <glowutils/FileRegistry.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowwindow/Context.h>
 #include <glowwindow/Window.h>
@@ -88,7 +88,7 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glow::ShaderFileRegistry::instance().reloadAll();
+            glow::FileRegistry::instance().reloadAll();
     }
 
 protected:

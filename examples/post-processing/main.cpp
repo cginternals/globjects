@@ -28,8 +28,8 @@
 #include <glowutils/UnitCube.h>
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/Camera.h>
-#include <glowutils/ShaderFileRegistry.h>
-#include <glowutils/ShaderFile.h>
+#include <glowutils/FileRegistry.h>
+#include <glowutils/File.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -183,7 +183,7 @@ public:
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
-            glow::ShaderFileRegistry::instance().reloadAll();
+            glow::FileRegistry::instance().reloadAll();
 			break;
 		}
 	}

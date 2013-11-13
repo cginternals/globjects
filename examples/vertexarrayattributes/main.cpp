@@ -11,7 +11,7 @@
 #include <glow/Shader.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
-#include <glowutils/ShaderFile.h>
+#include <glowutils/File.h>
 #include <glowwindow/Context.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>

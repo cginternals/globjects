@@ -21,8 +21,8 @@
 #include <glow/TransformFeedback.h>
 #include <glow/Timer.h>
 
-#include <glowutils/ShaderFileRegistry.h>
-#include <glowutils/ShaderFile.h>
+#include <glowutils/FileRegistry.h>
+#include <glowutils/File.h>
 
 #include <glowwindow/Window.h>
 #include <glowwindow/ContextFormat.h>
@@ -124,7 +124,7 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glow::ShaderFileRegistry::instance().reloadAll();
+            glow::FileRegistry::instance().reloadAll();
     }
 
 protected:

@@ -1,11 +1,11 @@
 #include <cassert>
 
-#include <glowutils/ShaderSourceDecorator.h>
+#include <glowutils/StringSourceDecorator.h>
 
 namespace glow 
 {
 
-ShaderSourceDecorator::ShaderSourceDecorator(ShaderSource * source)
+StringSourceDecorator::StringSourceDecorator(StringSource * source)
 : m_internal(source)
 {
     assert(source != nullptr);
@@ -15,18 +15,18 @@ ShaderSourceDecorator::ShaderSourceDecorator(ShaderSource * source)
     update();
 }
 
-ShaderSourceDecorator::~ShaderSourceDecorator()
+StringSourceDecorator::~StringSourceDecorator()
 {
 	m_internal->deregisterListener(this);
 }
 
-void ShaderSourceDecorator::notifyChanged()
+void StringSourceDecorator::notifyChanged()
 {
 	update();
     changed();
 }
 
-void ShaderSourceDecorator::update()
+void StringSourceDecorator::update()
 {
 }
 

@@ -21,11 +21,11 @@ public:
     static void deleteNamedString(const std::string& name);
     static bool isNamedString(const std::string& name);
     static std::string namedString(const std::string& name);
+    static GLenum namedStringType(const std::string& name);
 protected:
     NamedStrings();
 
     static GLint namedStringSize(const std::string& name);
-    static GLenum namedStringType(const std::string& name);
     static GLint namedStringParameter(const std::string& name, GLenum pname);
 };
 

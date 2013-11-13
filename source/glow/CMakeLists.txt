@@ -63,8 +63,8 @@ set(api_includes
     ${header_path}/RenderBufferObject.h
     ${header_path}/Screen.h
     ${header_path}/Shader.h
-    ${header_path}/ShaderCode.h
-    ${header_path}/ShaderSource.h
+    ${header_path}/String.h
+    ${header_path}/StringSource.h
     ${header_path}/Texture.h
     ${header_path}/TextureAttachment.h
     ${header_path}/Timer.h
@@ -101,14 +101,13 @@ set(sources
     ${source_path}/ObjectVisitor.cpp
     ${source_path}/Program.cpp
     ${source_path}/Query.cpp
-    ${source_path}/RawFile.cpp
     ${source_path}/Referenced.cpp
     ${source_path}/RenderBufferAttachment.cpp
     ${source_path}/RenderBufferObject.cpp
     ${source_path}/Screen.cpp
     ${source_path}/Shader.cpp
-    ${source_path}/ShaderCode.cpp
-    ${source_path}/ShaderSource.cpp
+    ${source_path}/String.cpp
+    ${source_path}/StringSource.cpp
     ${source_path}/Texture.cpp
     ${source_path}/TextureAttachment.cpp
     ${source_path}/Timer.cpp

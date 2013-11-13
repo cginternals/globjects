@@ -15,8 +15,7 @@
 #include <glow/Query.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Shader.h>
-#include <glow/ShaderFile.h>
-#include <glow/ShaderSource.h>
+#include <glow/StringSource.h>
 #include <glow/Texture.h>
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>
