@@ -4,6 +4,15 @@ message(STATUS "example ${target}")
 
 add_executable(${target} 
 	main.cpp
+
+    AbstractParticleTechnique.cpp
+    AbstractParticleTechnique.h
+    ComputeShaderParticles.cpp
+    ComputeShaderParticles.h
+    FragmentShaderParticles.cpp
+    FragmentShaderParticles.h
+    TransformFeedbackParticles.cpp
+    TransformFeedbackParticles.h
 )
 
 target_link_libraries(${target} 
