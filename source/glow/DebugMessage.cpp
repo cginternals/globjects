@@ -13,7 +13,7 @@ DebugMessage::DebugMessage(GLenum source, GLenum type, GLuint id, GLenum severit
 , id(id)
 , severity(severity)
 , message(message)
-, file(NULL)
+, file(nullptr)
 , line(0)
 {
 }

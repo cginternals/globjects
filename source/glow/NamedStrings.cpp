@@ -59,7 +59,7 @@ bool NamedStrings::isNamedString(const std::string& name, bool cached)
         return s_instance.m_registeredStringSources.count(name) > 0;
     }
 
-    bool result = glIsNamedStringARB(name.size(), name.c_str());
+    bool result = glIsNamedStringARB(name.size(), name.c_str()) == GL_TRUE;
     CheckGLError();
     return result;
 }
@@ -72,7 +72,7 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
     }
 
     GLint size = namedStringSize(name);
-    GLchar* string;
+    GLchar* string = nullptr;
 
     glGetNamedStringARB(name.size(), name.c_str(), size, &size, string);
     CheckGLError();
@@ -137,7 +137,7 @@ void NamedStrings::notifyChanged(Changeable* changed)
 {
     for (const std::pair<std::string, NamedString>& pair : m_registeredStringSources)
     {
-        if (pair.second.source == changed)
+        if (pair.second.source.get() == changed)
         {
             updateNamedString(pair.second);
         }

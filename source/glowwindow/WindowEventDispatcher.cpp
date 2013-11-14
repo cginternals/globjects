@@ -1,8 +1,6 @@
 #include <cassert>
 #include <cmath>
 
-#include <thread>
-
 #include <GLFW/glfw3.h>
 
 #include <glow/logging.h>

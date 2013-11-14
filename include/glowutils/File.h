@@ -13,7 +13,7 @@ namespace glow
 
 class Shader;
 
-Shader* createShaderFromFile(GLenum type, const std::string& filename);
+GLOWUTILS_API Shader* createShaderFromFile(GLenum type, const std::string& filename);
 
 /** \brief String source associated to a file.
     

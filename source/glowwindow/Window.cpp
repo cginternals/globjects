@@ -370,7 +370,7 @@ void Window::defaultEventAction(WindowEvent & event)
                     close();
                     break;
                 case GLFW_KEY_ENTER:
-                    if (keyEvent.modifiers() & GLFW_MOD_ALT != 0)
+                    if ((keyEvent.modifiers() & GLFW_MOD_ALT) != 0)
                     {
                         toggleMode();
                     }
