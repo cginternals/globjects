@@ -67,7 +67,7 @@ public:
 
         m_positions.resize(m_numParticles);
         for (int i = 0; i < m_numParticles; ++i)
-            m_positions[i] = vec3(randf(-1.f, +1.f), randf(-1.f, +1.f), randf(-1.f, +1.f));
+            m_positions[i] = vec4(randf(-1.f, +1.f), randf(-1.f, +1.f), randf(-1.f, +1.f), 0.f);
 
 
         m_attributes.resize(m_numParticles);
@@ -126,6 +126,9 @@ public:
         // initialize Compute Based
 
             // TODO: init particle pos storage
+        m_computeProgram = new Program();
+        m_computeProgram->attach(
+            createShaderFromFile(GL_COMPUTE_SHADER, "data/gpu-particles/particle.comp"));        
 
         // initialize Fragment Based
 
@@ -137,9 +140,9 @@ public:
         m_transformFeedbackProgram->attach(glow::createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
         m_transformFeedbackProgram->setUniform("deltaT", 0.0f);
         m_transformFeedbackVertexBuffer1 = new glow::Buffer(GL_ARRAY_BUFFER);
-        m_transformFeedbackVertexBuffer1->setData(glow::Array<glm::vec3>(m_positions));
+        m_transformFeedbackVertexBuffer1->setData(glow::Array<glm::vec4>(m_positions));
         m_transformFeedbackVertexBuffer2 = new glow::Buffer(GL_ARRAY_BUFFER);
-        m_transformFeedbackVertexBuffer2->setData(glow::Array<glm::vec3>(m_positions));
+        m_transformFeedbackVertexBuffer2->setData(glow::Array<glm::vec4>(m_positions));
 
         m_transformFeedback = new glow::TransformFeedback();
         m_transformFeedback->setVaryings(m_transformFeedbackProgram, glow::Array<const char*>{ "next_position" }, GL_INTERLEAVED_ATTRIBS);
@@ -157,12 +160,12 @@ public:
         m_vao->bind();
 
         m_vertices = new Buffer(GL_ARRAY_BUFFER);
-        m_vertices->setData(m_positions.size() * sizeof(vec3), m_positions.data());
+        m_vertices->setData(m_positions.size() * sizeof(vec4), m_positions.data());
 
         auto vertexBinding = m_vao->binding(0);
         vertexBinding->setAttribute(0);
-        vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
-        vertexBinding->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+        vertexBinding->setBuffer(m_vertices, 0, sizeof(vec4));
+        vertexBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
         m_vao->enable(0);
     }
     
@@ -219,7 +222,12 @@ public:
 
     void particleStepCompute(const float delta)
     {
+        m_computeProgram->use();
+        m_vertices->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+        m_computeProgram->dispatchCompute(512 / 16, 1, 1);
+        m_computeProgram->release();
 
+        glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
     }
 
     void particleStepFragment(const float delta)
@@ -345,7 +353,7 @@ protected:
 
     int m_numParticles;
 
-    std::vector<vec3> m_positions;
+    std::vector<vec4> m_positions;
 
     struct Attribute
     {
@@ -359,6 +367,8 @@ protected:
     ref_ptr<VertexArrayObject> m_vao;
     ref_ptr<Buffer> m_vertices;
     ref_ptr<Program> m_renderProgram;
+    ref_ptr<Program> m_computeProgram;
+
     Camera * m_camera;
 
     // Transform Feedback Members
