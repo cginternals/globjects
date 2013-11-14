@@ -11,25 +11,26 @@
 #include <glm/gtx/transform.hpp>
 
 #include <glow/Texture.h>
-//#include <glow/Uniform.h>
+#include <glow/Uniform.h>
 //#include <glow/Array.h>
-//#include <glow/Program.h>
-//#include <glow/Shader.h>
-//#include <glow/Buffer.h>
-//#include <glow/VertexArrayObject.h>
-//#include <glow/VertexAttributeBinding.h>
-#include <glowwindow/ContextFormat.h>
+#include <glow/Program.h>
+#include <glow/Shader.h>
+#include <glow/Buffer.h>
+#include <glow/VertexArrayObject.h>
+#include <glow/VertexAttributeBinding.h>
 #include <glow/Error.h>
 #include <glow/logging.h>
-
 #include <glow/Timer.h>
 
+#include <glowutils\FileRegistry.h>
+#include <glowutils/Camera.h>
 #include <glowutils/MathMacros.h>
 #include <glowutils/File.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/ScreenAlignedQuad.h>
 
 #include <glowwindow/Context.h>
+#include <glowwindow/ContextFormat.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
@@ -42,12 +43,14 @@ class EventHandler : public WindowEventHandler
 public:
     EventHandler()
     : m_technique(ComputeShaderTechnique)
-    , m_numParticles(100000)
+    , m_numParticles(10000)
+    , m_camera(nullptr)
     {
     }
 
     virtual ~EventHandler()
     {
+        delete m_camera;
     }
 
     virtual void initialize(Window & window) override
@@ -107,6 +110,16 @@ public:
         
         // Initialize Vertex, Geometry, and Fragment Shader for Particle Rendering
 
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+        m_camera = new Camera(vec3(0.f, 0.f, -4.f));
+
+        m_renderProgram = new Program();
+        m_renderProgram->attach(
+            createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
+        ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+        ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        
 
         // initialize Compute Based
 
@@ -119,18 +132,33 @@ public:
         // initialize Transform Feedback Based
 
             // TODO: init particle pos storage
+
+
+        // TEST DATA
+
+        m_vao = new VertexArrayObject();
+        m_vao->bind();
+
+        m_vertices = new Buffer(GL_ARRAY_BUFFER);
+        m_vertices->setData(m_positions.size() * sizeof(vec3), m_positions.data());
+
+        auto vertexBinding = m_vao->binding(0);
+        vertexBinding->setAttribute(0);
+        vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
+        vertexBinding->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+        m_vao->enable(0);
     }
     
     virtual void resizeEvent(ResizeEvent & event) override
     {
         glViewport(0, 0, event.width(), event.height());
+        m_camera->setViewport(event.size());
+        m_renderProgram->setUniform("aspect", m_camera->aspectRatio());
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        particleStep();
 
 	    //m_computeProgram->setUniform("roll", static_cast<float>(m_frame) * 0.01f);
 	    //m_texture->bind();
@@ -140,10 +168,27 @@ public:
 	    //m_computeProgram->release();
 
         //m_quad->draw();
+
+        //glEnable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+
+        m_renderProgram->use();
+        m_renderProgram->setUniform("viewProjection", m_camera->viewProjection()); 
+
+        m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+
+        m_renderProgram->release();
+
+        glDisable(GL_BLEND);
+        //glDisable(GL_DEPTH_TEST);
     }
 
     virtual void idle(Window & window) override
     {
+        float f = static_cast<float>(m_timer.elapsed() * 1e-10);
+        m_camera->setEye(vec3(cos(f), 0.f, sin(f)) * 4.f);
+
+        particleStep();
         window.repaint();
     }
 
@@ -222,6 +267,10 @@ public:
             debug() << "timer reset";
             m_timer.reset();
             break;
+
+        case GLFW_KEY_F5:
+            FileRegistry::instance().reloadAll();
+            break;
         }
     }
 
@@ -249,6 +298,11 @@ protected:
     std::vector<Attribute> m_attributes;
 
     ref_ptr<Texture> m_forcesTex;
+
+    ref_ptr<VertexArrayObject> m_vao;
+    ref_ptr<Buffer> m_vertices;
+    ref_ptr<Program> m_renderProgram;
+    Camera * m_camera;
 };
 
 
