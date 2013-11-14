@@ -26,8 +26,6 @@ public:
     glm::vec3 center;
     glm::vec3 up;
     float fov;
-
-    char c;
 };
 
 class GLOWUTILS_API CameraPath

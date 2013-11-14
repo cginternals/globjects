@@ -48,6 +48,7 @@ public:
     : m_camera(vec3(0.f, 1.f, 4.0f))
     , angle(0)
     , player(m_camera)
+    , iterations(2)
     {
         vec3 up(0.0, 1.0, 0.0);
         vec3 center(0.0, 0.0, 0.0);
@@ -64,6 +65,13 @@ public:
             << CameraPathPoint(vec3(0.0, 2.0, 4.0), center, up, fov)
             << CameraPathPoint(vec3(2.0, 2.0, 5.0), vec3(-5.0, -1.0, -1.0), vec3(1.0, 0.0, 0.0), fov)
             << CameraPathPoint(vec3(0.0, 1.0, 4.0), center, up, fov);*/
+
+        /*path
+            << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
+            << CameraPathPoint(vec3(-1.0*d, height, 1.0*d), center, vec3(-1.0, 0.0, 0.0), fov)
+            << CameraPathPoint(vec3(1.0*d, height, 1.0*d), center, vec3(0.0, -1.0, 0.0), fov)
+            << CameraPathPoint(vec3(1.0*d, height, -1.0*d), center, vec3(0.0, 0.0, -1.0), fov)
+            << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov);*/
 
         path
             << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
@@ -95,7 +103,7 @@ public:
             createShaderFromFile(GL_VERTEX_SHADER,   "data/adaptive-grid/sphere.vert")
         ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/adaptive-grid/sphere.frag"));
 
-        m_icosahedron = new Icosahedron(2);
+        m_icosahedron = new Icosahedron(iterations);
         m_agrid = new AdaptiveGrid(16U);
 
         m_camera.setZNear(0.1f);
@@ -128,6 +136,22 @@ public:
         m_agrid->draw();
     }
 
+    virtual void keyPressEvent(KeyEvent & event) override
+    {
+        switch (event.key())
+        {
+            case GLFW_KEY_SLASH:
+                if (iterations>1)
+                    m_icosahedron = new Icosahedron(--iterations);
+                break;
+            case GLFW_KEY_RIGHT_BRACKET:
+                if (iterations<7)
+                    m_icosahedron = new Icosahedron(++iterations);
+                break;
+        }
+        glow::debug() << event.key();
+    }
+
     virtual void idle(Window & window) override
     {
         //window.repaint();
@@ -147,7 +171,7 @@ public:
         auto d = std::chrono::duration<long double, std::nano>(timer.elapsed());
         timer.reset();
 
-        static auto duration = std::chrono::seconds(3);
+        static auto duration = std::chrono::seconds(5);
 
         angle+= d/std::chrono::duration_cast<std::chrono::duration<long double, std::nano>>(duration);
 
@@ -173,6 +197,7 @@ protected:
     float angle;
     CameraPath path;
     CameraPathPlayer player;
+    unsigned iterations;
 };
 
 

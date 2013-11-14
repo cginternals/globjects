@@ -2,6 +2,7 @@
 #include <cassert>
 #include <string>
 #include <algorithm>
+#include <limits>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -20,7 +21,6 @@ CameraPathPoint::CameraPathPoint(const Camera& camera)
 , center(camera.center())
 , up(camera.up())
 , fov(camera.fovy())
-, c('A')
 {
 }
 
@@ -90,14 +90,11 @@ void CameraPathPlayer::prepare()
         return;
 
     CameraPathPoint previous = points[0];
-    previous.c = 'A';
-    m_ranges[-0.1f] = previous;
+    m_ranges[-1] = previous; // has to be less than -0 or else lower_bound will return first element for 0, not second
 
     for (int i = 1; i<points.size(); ++i)
     {
         CameraPathPoint current = points[i];
-
-        current.c = 'A'+static_cast<char>(i);
 
         float d = glm::length(current.eye - previous.eye);
 
@@ -107,15 +104,27 @@ void CameraPathPlayer::prepare()
         previous = current;
     }
 
-    for (auto& pair : m_ranges)
-    {
-        char n[2] = {pair.second.c, '\0'};
+    // -----------------------
+    CameraPathPoint previous = points[0];
+    CameraPathPoint current = points[1];
 
-        glow::debug() << pair.first << " -> " << (const char*)n;
+    vec3 dir0 = current.eye - previous.eye;
+
+    for (int i = 1; i<points.size()-1; ++i)
+    {
+        CameraPathPoint current = points[i];
+        CameraPathPoint next = points[i+1];
+
+        vec3 t1 = current.eye - previous.eye;
+        vec3 t2 = next.eye - current.eye;
+
+        vec3 dirN = (t1+t2)/2.0;
+
+        previous = current;
     }
 
-    glow::debug() << "------";
-    //exit(1);
+    CameraPathPoint last = points[points.size()-1];
+    vec3 dirLast = last.eye - previous.eye;
 }
 
 void CameraPathPlayer::find(const float t, CameraPathPoint& p1, CameraPathPoint& p2, float& localT)
@@ -130,9 +139,6 @@ void CameraPathPlayer::find(const float t, CameraPathPoint& p1, CameraPathPoint&
     auto found1 = std::lower_bound(m_ranges.begin(), m_ranges.end(), absoluteT, [](const P& p, float f) {
         return p.first<f;
     });
-
-    char r1[2] = {found1->second.c, '\0'};
-    glow::debug() << absoluteT << " : " << (const char*)r1;
 
     assert(found1 != m_ranges.cend());
 
@@ -153,10 +159,6 @@ void CameraPathPlayer::find(const float t, CameraPathPoint& p1, CameraPathPoint&
     assert(absoluteT <= next->first);
 
     localT = (absoluteT - found->first) / (next->first - found->first);
-
-    char n1[2] = {p1.c, '\0'};
-    char n2[2] = {p2.c, '\0'};
-    glow::debug() << t << " : " << localT << " " << (const char*)n1 << " - " << (const char*)n2;
 }
 
 CameraPathPoint CameraPathPlayer::interpolate(const CameraPathPoint& p1, const CameraPathPoint& p2, float t)
