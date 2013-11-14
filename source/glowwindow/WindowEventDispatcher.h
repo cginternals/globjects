@@ -43,8 +43,8 @@ private:
     typedef std::unordered_map<Window*, TimerMap> WindowTimerMap;
 
     static WindowTimerMap s_timers;
-    static std::chrono::system_clock::time_point s_time;
-    static std::chrono::system_clock s_clock;
+    static std::chrono::high_resolution_clock::time_point s_time;
+    static std::chrono::high_resolution_clock s_clock;
 protected:
     static Window* fromGLFW(GLFWwindow* glfwWindow);
     static glm::ivec2 mousePosition(GLFWwindow* glfwWindow);
