@@ -38,7 +38,7 @@ class EventHandler : public WindowEventHandler
 public:
     EventHandler()
     : m_technique(ComputeShaderTechnique)
-    , m_numParticles(100)
+    , m_numParticles(1000)
     , m_camera(nullptr)
     {
         m_timer.start();
@@ -102,12 +102,12 @@ public:
 
         m_forces->image3D(0, GL_RGB32F, fdim.x, fdim.y, fdim.z, 0, GL_RGB, GL_FLOAT, forces.data());
 
-
-        // initialize camera
         
+        // initialize camera
+
         m_camera = new Camera(vec3(0.f, 0.f, -4.f));
 
-
+        
         // initialize techniques
 
         m_techniques[ComputeShaderTechnique] = new ComputeShaderParticles(
@@ -160,11 +160,11 @@ public:
         {
             const float delta_stepped = i * delta * stepsinv;
             m_techniques[m_technique]->step(delta_stepped);
-        }
+    }
     }
 
     void draw()
-    {
+        {
         m_techniques[m_technique]->draw();
     }
 

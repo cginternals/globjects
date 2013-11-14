@@ -228,7 +228,7 @@ void Program::updateUniforms()
 
 GLint Program::get(GLenum pname) const
 {
-	GLint value;
+    GLint value = 0;
 	glGetProgramiv(m_id, pname, &value);
 	CheckGLError();
 
@@ -239,7 +239,12 @@ const std::string Program::infoLog() const
 {
 	GLint length = get(GL_INFO_LOG_LENGTH);
 
-	std::vector<char> log(length);
+    if (length == 0)
+    {
+        return std::string();
+    }
+
+    std::vector<char> log(length);
 
 	glGetProgramInfoLog(m_id, length, &length, log.data());
 	CheckGLError();

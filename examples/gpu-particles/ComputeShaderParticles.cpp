@@ -47,7 +47,9 @@ void ComputeShaderParticles::reset()
 
 void ComputeShaderParticles::step(const float elapsed)
 {
-    //m_p->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+    //m_vertices->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+
+    //m_computeProgram->setUniform("delta", delta);
 
     //m_computeProgram->use();
     //m_computeProgram->dispatchCompute(512 / 16, 1, 1);
@@ -62,15 +64,22 @@ void ComputeShaderParticles::draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //glEnable(GL_BLEND);
-    //glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-    //m_drawProgram->use();
-    //m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
+    m_drawProgram->use();
+    m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
 
-    //m_drawProgram->release();
+    //m_vao->binding(0)->setBuffer(m_vertices, 0, sizeof(vec4));
+    //m_vao->bind();
 
-    //glDisable(GL_BLEND);
+    //m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+
+    //m_vao->unbind();
+
+    m_drawProgram->release();
+
+    glDisable(GL_BLEND);
 }
 
 void ComputeShaderParticles::resize()
