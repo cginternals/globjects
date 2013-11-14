@@ -45,7 +45,7 @@ class EventHandler : public WindowEventHandler
 public:
     EventHandler()
     : m_technique(ComputeShaderTechnique)
-    , m_numParticles(10000)
+    , m_numParticles(100)
     , m_camera(nullptr)
     {
     }
@@ -167,6 +167,8 @@ public:
         vertexBinding->setBuffer(m_vertices, 0, sizeof(vec4));
         vertexBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
         m_vao->enable(0);
+
+        m_vao->unbind();
     }
     
     virtual void resizeEvent(ResizeEvent & event) override
@@ -222,12 +224,15 @@ public:
 
     void particleStepCompute(const float delta)
     {
-        m_computeProgram->use();
         m_vertices->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+
+        m_computeProgram->use();
         m_computeProgram->dispatchCompute(512 / 16, 1, 1);
         m_computeProgram->release();
 
         glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+
+        m_vertices->unbind();
     }
 
     void particleStepFragment(const float delta)
@@ -283,11 +288,26 @@ public:
         m_renderProgram->use();
         m_renderProgram->setUniform("viewProjection", m_camera->viewProjection());
 
-        m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+        m_vao = new VertexArrayObject();
+        m_vao->bind();
+
+        auto vertexBinding = m_vao->binding(0);
+        vertexBinding->setAttribute(0);
+        vertexBinding->setBuffer(m_vertices, 0, sizeof(vec4));
+        vertexBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
+        m_vao->enable(0);
+
+        glDrawArrays(GL_POINTS, 0, m_numParticles);
+        //m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+
+        m_vao->unbind();
+
 
         m_renderProgram->release();
 
         glDisable(GL_BLEND);
+
+
     }
 
     void particleDrawFragment()
