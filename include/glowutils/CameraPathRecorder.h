@@ -62,14 +62,22 @@ public:
 
     void play(float t);
 protected:
+    struct PathSection
+    {
+        const CameraPathPoint* start;
+        const CameraPathPoint* end;
+        float startT;
+        float endT;
+    };
+
     Camera& m_camera;
     CameraPath m_path;
-    std::map<float, CameraPathPoint> m_ranges;
-    float m_total;
+    std::vector<PathSection> m_sections;
 
     void prepare();
-    void find(float t, CameraPathPoint& p1, CameraPathPoint& p2, float& localT);
+    PathSection& find(float t);
     CameraPathPoint interpolate(const CameraPathPoint& p1, const CameraPathPoint& p2, float t);
+    void moveCamera(const CameraPathPoint& point);
 };
 
 } // namespace glow

@@ -83,32 +83,45 @@ void CameraPathPlayer::setPath(const CameraPath & path)
 
 void CameraPathPlayer::prepare()
 {
-    m_total = 0.0;
     const std::vector<CameraPathPoint>& points = m_path.points();
 
     if (points.size()<=1)
         return;
 
-    CameraPathPoint previous = points[0];
-    m_ranges[-1] = previous; // has to be less than -0 or else lower_bound will return first element for 0, not second
+    float totalLength = 0.0;
+    const CameraPathPoint* previous = &points[0];
 
     for (int i = 1; i<points.size(); ++i)
     {
-        CameraPathPoint current = points[i];
+        const CameraPathPoint* current = &points[i];
+        float distance = glm::length(current->eye - previous->eye);
 
-        float d = glm::length(current.eye - previous.eye);
+        float startT = totalLength;
+        float endT = startT + distance;
 
-        m_total += d;
-        m_ranges[m_total] = current;
+        PathSection section{ previous, current, startT, endT };
+        m_sections.push_back(section);
 
+        totalLength = endT;
         previous = current;
     }
 
+    // normalize
+    for (PathSection& section : m_sections)
+    {
+        section.startT /= totalLength;
+        section.endT /= totalLength;
+    }
+
     // -----------------------
-    CameraPathPoint previous = points[0];
+    /*previous = points[0];
     CameraPathPoint current = points[1];
 
+
+    std::vector<glm::vec3> m_dirs;
     vec3 dir0 = current.eye - previous.eye;
+
+    m_dirs[0] = dir0;
 
     for (int i = 1; i<points.size()-1; ++i)
     {
@@ -118,50 +131,27 @@ void CameraPathPlayer::prepare()
         vec3 t1 = current.eye - previous.eye;
         vec3 t2 = next.eye - current.eye;
 
-        vec3 dirN = (t1+t2)/2.0;
+        vec3 dirN = (t1+t2)/2.0f;
+        m_dirs[i] = dirN;
 
         previous = current;
     }
 
     CameraPathPoint last = points[points.size()-1];
     vec3 dirLast = last.eye - previous.eye;
+    m_dirs[points.size()-1] = dirLast;*/
+
+
 }
 
-void CameraPathPlayer::find(const float t, CameraPathPoint& p1, CameraPathPoint& p2, float& localT)
+CameraPathPlayer::PathSection& CameraPathPlayer::find(const float t)
 {
-    float absoluteT = m_total * glm::clamp(t, 0.0f, 1.0f);
-
-    assert(absoluteT >= 0);
-    assert(absoluteT <= m_total);
-
-    typedef std::pair<float, CameraPathPoint> P;
-
-    auto found1 = std::lower_bound(m_ranges.begin(), m_ranges.end(), absoluteT, [](const P& p, float f) {
-        return p.first<f;
+    return *std::lower_bound(m_sections.begin(), m_sections.end(), t, [](const PathSection& section, float value) {
+        return section.endT < value;
     });
-
-    assert(found1 != m_ranges.cend());
-
-    auto found = std::map<float, CameraPathPoint>::reverse_iterator(found1);
-
-    if (found == m_ranges.rend())
-    {
-        assert(false);
-        return;
-    }    
-
-    auto next = found1;
-
-    p1 = found->second;
-    p2 = next->second;
-
-    assert(absoluteT >= found->first);
-    assert(absoluteT <= next->first);
-
-    localT = (absoluteT - found->first) / (next->first - found->first);
 }
 
-CameraPathPoint CameraPathPlayer::interpolate(const CameraPathPoint& p1, const CameraPathPoint& p2, float t)
+CameraPathPoint CameraPathPlayer::interpolate(const CameraPathPoint& p1, const CameraPathPoint& p2, const float t)
 {
     return CameraPathPoint(
                 p1.eye*(1.0f-t) + p2.eye*t,
@@ -170,19 +160,22 @@ CameraPathPoint CameraPathPlayer::interpolate(const CameraPathPoint& p1, const C
                 p1.fov*(1.0f-t) + p2.fov*t);
 }
 
+void CameraPathPlayer::moveCamera(const CameraPathPoint& point)
+{
+    m_camera.setCenter(point.center);
+    m_camera.setEye(point.eye);
+    m_camera.setUp(point.up);
+    m_camera.setFovy(point.fov);
+}
+
 void CameraPathPlayer::play(const float t)
 {
-    CameraPathPoint p1;
-    CameraPathPoint p2;
-    float localT;
-    find(t, p1, p2, localT);
+    const float clampedT = glm::clamp(t, 0.f, 1.f);
 
-    CameraPathPoint p = interpolate(p1, p2, localT);
+    PathSection& section = find(clampedT);
+    const float sectionT = (clampedT - section.startT) / (section.endT - section.startT);
 
-    m_camera.setCenter(p.center);
-    m_camera.setEye(p.eye);
-    m_camera.setUp(p.up);
-    m_camera.setFovy(p.fov);
+    moveCamera(interpolate(*section.start, *section.end, sectionT));
 }
 
 } // namespace glow
