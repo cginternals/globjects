@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 
 #include <algorithm>
+#include <vector>
 #include <random>
 
 #include <glm/glm.hpp>
@@ -9,6 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <glow/Texture.h>
 //#include <glow/Uniform.h>
 //#include <glow/Array.h>
 //#include <glow/Program.h>
@@ -22,6 +24,7 @@
 
 #include <glow/Timer.h>
 
+#include <glowutils/MathMacros.h>
 #include <glowutils/File.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/ScreenAlignedQuad.h>
@@ -30,14 +33,16 @@
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
-using namespace glow;
 
+using namespace glow;
+using namespace glm;
 
 class EventHandler : public WindowEventHandler
 {
 public:
     EventHandler()
-        : m_technique(ComputeShaderTechnique)
+    : m_technique(ComputeShaderTechnique)
+    , m_numParticles(100000)
     {
     }
 
@@ -55,19 +60,65 @@ public:
 
         // Initialize Particle Positions and Attributes
 
+        m_positions.resize(m_numParticles);
+        for (int i = 0; i < m_numParticles; ++i)
+            m_positions[i] = vec3(randf(-1.f, +1.f), randf(-1.f, +1.f), randf(-1.f, +1.f));
+
+
+        m_attributes.resize(m_numParticles);
+        Attribute attribute;
+        for (int i = 0; i < m_numParticles; ++i)
+        {
+            // ToDo:
+            attribute.moep = 0;
+
+            m_attributes[i] = attribute;
+        }
+
+
         // Initialize 3D Force Field (3D Texture)
 
+        static const ivec3 fdim(16, 16, 16); //  // 4k * 3
+
+        std::vector<vec3> forces;
+        forces.resize(fdim.x * fdim.y * fdim.z);
+
+        for (int z = 0; z < fdim.z; ++z)
+        for (int y = 0; y < fdim.y; ++y)
+        for (int x = 0; x < fdim.x; ++x)
+        {
+            const int i = z *  fdim.x * fdim.y + y * fdim.x + x;
+            const vec3 f(randf(-1.0, +1.f), randf(-1.0, +1.f), randf(-1.0, +1.f));
+
+            forces[i] = f;
+        }
+        
+        m_forcesTex = new Texture(GL_TEXTURE_3D);
+
+        m_forcesTex->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        m_forcesTex->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        
+        m_forcesTex->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        m_forcesTex->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        m_forcesTex->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+        m_forcesTex->image3D(0, GL_RGB32F, fdim.x, fdim.y, fdim.z, 0, GL_RGB, GL_FLOAT, forces.data());
+
+        
         // Initialize Vertex, Geometry, and Fragment Shader for Particle Rendering
 
 
         // initialize Compute Based
 
+            // TODO: init particle pos storage
 
         // initialize Fragment Based
 
+            // TODO: init particle pos storage
 
         // initialize Transform Feedback Based
 
+            // TODO: init particle pos storage
     }
     
     virtual void resizeEvent(ResizeEvent & event) override
@@ -185,6 +236,19 @@ protected:
 
     ParticleTechnique m_technique;
     Timer m_timer;
+
+    int m_numParticles;
+
+    std::vector<vec3> m_positions;
+
+    struct Attribute
+    {
+        int moep;
+    };
+
+    std::vector<Attribute> m_attributes;
+
+    ref_ptr<Texture> m_forcesTex;
 };
 
 
