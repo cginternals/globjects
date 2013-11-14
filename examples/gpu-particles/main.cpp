@@ -24,7 +24,7 @@
 #include <glow/logging.h>
 #include <glow/Timer.h>
 
-#include <glowutils\FileRegistry.h>
+#include <glowutils/FileRegistry.h>
 #include <glowutils/Camera.h>
 #include <glowutils/MathMacros.h>
 #include <glowutils/File.h>
@@ -45,7 +45,8 @@ class EventHandler : public WindowEventHandler
 public:
     EventHandler()
     : m_technique(ComputeShaderTechnique)
-    , m_numParticles(100)
+    , m_renderingTechnique(NoTechnique)
+    , m_numParticles(1000)
     , m_camera(nullptr)
     {
     }
@@ -138,18 +139,18 @@ public:
 
         m_transformFeedbackProgram = new glow::Program();
         m_transformFeedbackProgram->attach(glow::createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
-        m_transformFeedbackProgram->setUniform("deltaT", 0.0f);
+        m_transformFeedbackProgram->setUniform("delta", 0.0f);
         m_transformFeedbackVertexBuffer1 = new glow::Buffer(GL_ARRAY_BUFFER);
         m_transformFeedbackVertexBuffer1->setData(glow::Array<glm::vec4>(m_positions));
         m_transformFeedbackVertexBuffer2 = new glow::Buffer(GL_ARRAY_BUFFER);
         m_transformFeedbackVertexBuffer2->setData(glow::Array<glm::vec4>(m_positions));
 
         m_transformFeedback = new glow::TransformFeedback();
-        m_transformFeedback->setVaryings(m_transformFeedbackProgram, glow::Array<const char*>{ "next_position" }, GL_INTERLEAVED_ATTRIBS);
+        m_transformFeedback->setVaryings(m_transformFeedbackProgram, glow::Array<const char*>{ "out_position" }, GL_INTERLEAVED_ATTRIBS);
 
         m_transformFeedbackVAO = new glow::VertexArrayObject();
         m_transformFeedbackVAO->binding(0)->setAttribute(m_transformFeedbackProgram->getAttributeLocation("in_position"));
-        m_transformFeedbackVAO->binding(0)->setFormat(3, GL_FLOAT);
+        m_transformFeedbackVAO->binding(0)->setFormat(4, GL_FLOAT);
         m_transformFeedbackVAO->enable(m_transformFeedbackProgram->getAttributeLocation("in_position"));
             // TODO: init particle pos storage
 
@@ -160,7 +161,7 @@ public:
         m_vao->bind();
 
         m_vertices = new Buffer(GL_ARRAY_BUFFER);
-        m_vertices->setData(m_positions.size() * sizeof(vec4), m_positions.data());
+        m_vertices->setData(glow::Array<glm::vec4>(m_positions));
 
         auto vertexBinding = m_vao->binding(0);
         vertexBinding->setAttribute(0);
@@ -220,11 +221,15 @@ public:
                 break;
             }
         }
+
+        m_renderingTechnique = m_technique;
     }
 
     void particleStepCompute(const float delta)
     {
         m_vertices->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+
+        m_computeProgram->setUniform("delta", delta);
 
         m_computeProgram->use();
         m_computeProgram->dispatchCompute(512 / 16, 1, 1);
@@ -244,11 +249,9 @@ public:
     {
         m_transformFeedbackVAO->bind();
 
-        m_transformFeedbackProgram->setUniform("deltaT", delta);
+        m_transformFeedbackProgram->setUniform("delta", delta);
 
-        m_transformFeedbackVAO->disable(m_transformFeedbackProgram->getAttributeLocation("in_position"));
-        m_transformFeedbackVAO->binding(0)->setBuffer(m_transformFeedbackVertexBuffer1, 0, sizeof(glm::vec3));
-        m_transformFeedbackVAO->enable(m_transformFeedbackProgram->getAttributeLocation("in_position"));
+        m_transformFeedbackVAO->binding(0)->setBuffer(m_transformFeedbackVertexBuffer1, 0, sizeof(glm::vec4));
 
         m_transformFeedbackVertexBuffer2->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
 
@@ -268,7 +271,7 @@ public:
 
     void particleDraw()
     {
-        switch (m_technique)
+        switch (m_renderingTechnique)
         {
         case ComputeShaderTechnique:
             particleDrawCompute(); break;
@@ -288,26 +291,17 @@ public:
         m_renderProgram->use();
         m_renderProgram->setUniform("viewProjection", m_camera->viewProjection());
 
-        m_vao = new VertexArrayObject();
+        m_vao->binding(0)->setBuffer(m_vertices, 0, sizeof(vec4));
+
         m_vao->bind();
 
-        auto vertexBinding = m_vao->binding(0);
-        vertexBinding->setAttribute(0);
-        vertexBinding->setBuffer(m_vertices, 0, sizeof(vec4));
-        vertexBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
-        m_vao->enable(0);
-
-        glDrawArrays(GL_POINTS, 0, m_numParticles);
-        //m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+        m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
 
         m_vao->unbind();
-
 
         m_renderProgram->release();
 
         glDisable(GL_BLEND);
-
-
     }
 
     void particleDrawFragment()
@@ -317,7 +311,21 @@ public:
 
     void particleDrawTransformFeedback()
     {
+        glEnable(GL_BLEND);
 
+        m_vao->binding(0)->setBuffer(m_transformFeedbackVertexBuffer1, 0, sizeof(vec4));
+
+        m_renderProgram->use();
+        m_renderProgram->setUniform("viewProjection", m_camera->viewProjection());
+        m_vao->bind();
+        //m_transformFeedback->draw(GL_POINTS);
+
+        m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+
+        m_vao->unbind();
+        m_renderProgram->release();
+
+        glDisable(GL_BLEND);
     }
 
     virtual void keyPressEvent(KeyEvent & event)
@@ -363,12 +371,14 @@ protected:
     
     enum ParticleTechnique
     {
-        ComputeShaderTechnique
+        NoTechnique
+        , ComputeShaderTechnique
         , FragmentShaderTechnique
         , TransformFeedbackTechnique
     };
 
     ParticleTechnique m_technique;
+    ParticleTechnique m_renderingTechnique;
     Timer m_timer;
 
     int m_numParticles;
