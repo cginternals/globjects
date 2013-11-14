@@ -5,6 +5,8 @@
 
 #include <glm/glm.hpp>
 
+#include <glow/Error.h>
+
 #include <glowutils/Camera.h>
 
 #include <glowutils/AbstractCoordinateProvider.h>
@@ -31,6 +33,7 @@ float AbstractCoordinateProvider::depthAt(
 
     GLfloat z;
     glReadPixels(x, h - y - 1, 1, 1, format, GL_FLOAT, reinterpret_cast<void*>(&z));
+    CheckGLError();
 
     return z;
 }
@@ -90,6 +93,11 @@ const vec3 AbstractCoordinateProvider::unproject(
     // unproject this point back to object space
     const vec4 u = viewProjectionInverted * p;
     return vec3(u) / u.w;
+}
+
+const glm::vec3 AbstractCoordinateProvider::objAt(const glm::ivec2 & windowCoordinates)
+{
+    return objAt(windowCoordinates, depthAt(windowCoordinates));
 }
 
 } // namespace glow
