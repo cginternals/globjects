@@ -2,14 +2,19 @@
 #include <cassert>
 #include <string>
 #include <algorithm>
-#include <limits>
+#include <functional>
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include <glow/Buffer.h>
+#include <glow/Program.h>
+#include <glow/VertexArrayObject.h>
+#include <glow/VertexAttributeBinding.h>
+#include <glow/Array.h>
+#include <glow/logging.h>
+
 #include <glowutils/Camera.h>
 #include <glowutils/CameraPathRecorder.h>
-
-#include <glow/logging.h>
 
 using namespace glm;
 
@@ -106,6 +111,19 @@ void CameraPathPlayer::prepare()
         previous = current;
     }
 
+    /*{
+        const CameraPathPoint* current = &points[0];
+        float distance = glm::length(current->eye - previous->eye);
+
+        float startT = totalLength;
+        float endT = startT + distance;
+
+        PathSection section{ previous, current, startT, endT };
+        m_sections.push_back(section);
+
+        totalLength = endT;
+    }*/
+
     // normalize
     for (PathSection& section : m_sections)
     {
@@ -113,35 +131,130 @@ void CameraPathPlayer::prepare()
         section.endT /= totalLength;
     }
 
-    // -----------------------
-    /*previous = points[0];
-    CameraPathPoint current = points[1];
+    prepareControlPoints();
+}
 
+namespace {
+vec3 intersection(const vec3& a, const vec3& r, const vec3& p, const vec3& n)
+{
+    float rDotN = dot(r, n);
 
-    std::vector<glm::vec3> m_dirs;
-    vec3 dir0 = current.eye - previous.eye;
+    assert(rDotN!=0);
 
-    m_dirs[0] = dir0;
+    float t = dot(p - a, n) / rDotN;
+    return a + r * t;
+}
+
+float bernstein(int n, float t)
+{
+    switch (n)
+    {
+        case 0:
+            return std::pow(1.0-t, 3.0);
+        case 1:
+            return 3*std::pow(1.0-t, 2.0)*t;
+        case 2:
+            return 3*(1.0-t)*std::pow(t, 2.0);
+        case 3:
+            return std::pow(t, 3.0);
+        default:
+            assert(false);
+    }
+}
+
+vec3 bezier(const vec3& p0, const vec3& p1, const vec3& p2, const vec3& p3, float t)
+{
+    return
+        p0*bernstein(0, t)+
+        p1*bernstein(1, t)+
+        p2*bernstein(2, t)+
+        p3*bernstein(3, t);
+}
+
+const char* vertexSource = R"(
+#version 330
+
+uniform mat4 transform;
+
+layout(location = 0) in vec3 vertex;
+
+void main()
+{
+    gl_Position = transform * vec4(vertex, 1.0);
+}
+)";
+
+const char* fragmentSource = R"(
+#version 330
+
+layout(location=0) out vec4 color;
+
+void main()
+{
+    color = vec4(1.0, 0.0, 0.0, 1.0);
+}
+)";
+
+}
+
+void CameraPathPlayer::prepareControlPoints()
+{
+    const std::vector<CameraPathPoint>& points = m_path.points();
+
+    const CameraPathPoint* previous = &points[0];
+    const CameraPathPoint* current = &points[1];
+
+    const CameraPathPoint* first = &points[0];
+    const CameraPathPoint* last = &points[points.size()-1];
+
+    std::vector<glm::vec3> dirs;
+    vec3 dir0 = current->eye - previous->eye;
+    dir0 = (dir0 + (previous->eye - (&points[points.size()-2])->eye))/2.f;
+
+    dirs.push_back(dir0);
 
     for (int i = 1; i<points.size()-1; ++i)
     {
-        CameraPathPoint current = points[i];
-        CameraPathPoint next = points[i+1];
+        const CameraPathPoint* current = &points[i];
+        const CameraPathPoint* next = &points[i+1];
 
-        vec3 t1 = current.eye - previous.eye;
-        vec3 t2 = next.eye - current.eye;
+        vec3 t1 = current->eye - previous->eye;
+        vec3 t2 = next->eye - current->eye;
 
-        vec3 dirN = (t1+t2)/2.0f;
-        m_dirs[i] = dirN;
+        vec3 dirI = (t1+t2)/2.f;
+        dirs.push_back(dirI);
 
         previous = current;
     }
 
-    CameraPathPoint last = points[points.size()-1];
-    vec3 dirLast = last.eye - previous.eye;
-    m_dirs[points.size()-1] = dirLast;*/
+    vec3 dirLast = last->eye - previous->eye;
+    dirLast = (dirLast + ((&points[1])->eye - last->eye))/2.f;
+    dirs.push_back(dirLast);
 
+    int i = 0;
+    for (PathSection& section : m_sections)
+    {
+        vec3 d1 = glm::normalize(dirs[i]);
+        vec3 d2 = glm::normalize(dirs[i+1]);
 
+        vec3 p1 = section.start->eye;
+        vec3 p2 = section.end->eye;
+
+        float f = glm::length(p2-p1)/pi<float>();
+
+        section.c1 = p1 + d1 * f;
+        section.c2 = p2 - d2 * f;
+
+        /*vec3 int1 = intersection(p1, d1, p2, p2-p1);
+        vec3 int2 = intersection(p2, d2, p1, p1-p2);
+
+        section.c1 = (p1+int1)/2.f;
+        section.c2 = (p2+int2)/2.f;*/
+
+        //glow::debug() << p1 << "("<<d1<<")" << " " << section.c1 << " " << section.c2 << " " << p2 << "("<<d2<<")";
+
+        i++;
+    }
 }
 
 CameraPathPlayer::PathSection& CameraPathPlayer::find(const float t)
@@ -151,10 +264,19 @@ CameraPathPlayer::PathSection& CameraPathPlayer::find(const float t)
     });
 }
 
-CameraPathPoint CameraPathPlayer::interpolate(const CameraPathPoint& p1, const CameraPathPoint& p2, const float t)
+CameraPathPoint CameraPathPlayer::interpolate(const PathSection& section, const float t)
 {
+    const CameraPathPoint& p1 = *section.start;
+    const CameraPathPoint& p2 = *section.end;
+
+    vec3 eye = bezier(p1.eye, section.c1, section.c2, p2.eye, t);
+
+    //glow::debug() << eye << " (" << (p1.eye*(1.0f-t) + p2.eye*t) << ")";
+
+    //eye = p1.eye*(1.0f-t) + p2.eye*t;
+
     return CameraPathPoint(
-                p1.eye*(1.0f-t) + p2.eye*t,
+                eye,
                 p1.center*(1.0f-t) + p2.center*t,
                 p1.up*(1.0f-t) + p2.up*t,
                 p1.fov*(1.0f-t) + p2.fov*t);
@@ -175,7 +297,56 @@ void CameraPathPlayer::play(const float t)
     PathSection& section = find(clampedT);
     const float sectionT = (clampedT - section.startT) / (section.endT - section.startT);
 
-    moveCamera(interpolate(*section.start, *section.end, sectionT));
+    moveCamera(interpolate(section, sectionT));
+}
+
+void CameraPathPlayer::createVao()
+{
+    m_bufferSize = 100;
+
+    m_buffer = new Buffer(GL_ARRAY_BUFFER);
+
+    Array<vec3> array;
+
+    for (int i=0; i<m_bufferSize; ++i)
+    {
+        float t = float(i)/float(m_bufferSize-1);
+        PathSection& section = find(t);
+        const float sectionT = (t - section.startT) / (section.endT - section.startT);
+        const CameraPathPoint& p1 = *section.start;
+        const CameraPathPoint& p2 = *section.end;
+        vec3 pos = bezier(p1.eye, section.c1, section.c2, p2.eye, sectionT);
+        array << pos;
+    }
+
+    m_buffer->setData(array);
+
+    m_vao = new VertexArrayObject();
+
+    m_vao->binding(0)->setBuffer(m_buffer, 0, sizeof(vec3));
+    m_vao->binding(0)->setFormat(3, GL_FLOAT);
+    m_vao->binding(0)->setAttribute(0);
+
+    m_vao->enable(0);
+
+    m_program = new Program();
+    m_program->attach(
+        Shader::fromString(GL_VERTEX_SHADER, vertexSource),
+        Shader::fromString(GL_FRAGMENT_SHADER, fragmentSource)
+    );
+
+    m_program->addUniform(new Uniform<mat4>("transform"));
+}
+
+void CameraPathPlayer::draw(const mat4& viewProjection)
+{
+    m_program->setUniform("transform", viewProjection);
+
+    m_program->use();
+    m_vao->bind();
+    m_vao->drawArrays(GL_LINE_STRIP, 0, m_bufferSize);
+    m_vao->unbind();
+    m_program->release();
 }
 
 } // namespace glow

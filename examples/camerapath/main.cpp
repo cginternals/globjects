@@ -41,7 +41,7 @@ using namespace glow;
 using namespace glm;
 
 
-class EventHandler : public WindowEventHandler
+class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler()
@@ -49,7 +49,16 @@ public:
     , angle(0)
     , player(m_camera)
     , iterations(2)
+    , usePath(false)
     {
+        m_aabb.extend(vec3(-8.f, -1.f, -8.f));
+        m_aabb.extend(vec3(8.f, 1.f, 8.f));
+
+        m_nav.setCamera(&m_camera);
+        m_nav.setCoordinateProvider(this);
+        m_nav.setBoundaryHint(m_aabb);
+
+
         vec3 up(0.0, 1.0, 0.0);
         vec3 center(0.0, 0.0, 0.0);
         float fov = 60.0;
@@ -66,19 +75,21 @@ public:
             << CameraPathPoint(vec3(2.0, 2.0, 5.0), vec3(-5.0, -1.0, -1.0), vec3(1.0, 0.0, 0.0), fov)
             << CameraPathPoint(vec3(0.0, 1.0, 4.0), center, up, fov);*/
 
-        /*path
+        path
             << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
             << CameraPathPoint(vec3(-1.0*d, height, 1.0*d), center, vec3(-1.0, 0.0, 0.0), fov)
-            << CameraPathPoint(vec3(1.0*d, height, 1.0*d), center, vec3(0.0, -1.0, 0.0), fov)
-            << CameraPathPoint(vec3(1.0*d, height, -1.0*d), center, vec3(0.0, 0.0, -1.0), fov)
-            << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov);*/
+            << CameraPathPoint(vec3(1.0*d, height*2, 1.0*d), center, vec3(0.0, -1.0, 0.0), fov)
+            << CameraPathPoint(vec3(1.0*d, height/3, 3.0*d), center*4.0f, vec3(0.0, 0.0, -1.0), fov)
+            << CameraPathPoint(vec3(-1.0*d, height, -4.0*d), center, up, fov)
+        << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov);
 
-        path
+        /*path
             << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
             << CameraPathPoint(vec3(-1.0*d, height, 1.0*d), center, up, fov)
             << CameraPathPoint(vec3(1.0*d, height, 1.0*d), center, up, fov)
             << CameraPathPoint(vec3(1.0*d, height, -1.0*d), center, up, fov)
-            << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov);
+            << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
+        ;*/
 
         player.setPath(path);
     }
@@ -111,6 +122,8 @@ public:
 
         m_agrid->setCamera(&m_camera);
 
+        player.createVao();
+
         timer.start();
 
         window.addTimer(0, 0);
@@ -133,6 +146,8 @@ public:
         m_icosahedron->draw();
         m_sphere->release();
 
+        player.draw(m_camera.viewProjection());
+
         m_agrid->draw();
     }
 
@@ -148,8 +163,11 @@ public:
                 if (iterations<7)
                     m_icosahedron = new Icosahedron(++iterations);
                 break;
+            case GLFW_KEY_T:
+                usePath = !usePath;
+                break;
         }
-        glow::debug() << event.key();
+        //glow::debug() << event.key();
     }
 
     virtual void idle(Window & window) override
@@ -159,15 +177,6 @@ public:
 
     virtual void timerEvent(TimerEvent & event) override
     {
-        /*angle += radians(1.f);
-        while (angle >= 2*glm::pi<float>())
-            angle -= 2*pi<float>();
-
-        vec2 pos(sin(angle), cos(angle));
-        pos *= 4.0;
-
-        m_camera.setEye(vec3(pos.x, 1.0f + sin(10*angle)/4.0, pos.y));*/
-
         auto d = std::chrono::duration<long double, std::nano>(timer.elapsed());
         timer.reset();
 
@@ -180,9 +189,90 @@ public:
 
         float t = angle;
 
-        player.play(t);
+        if (usePath)
+            player.play(t);
 
         event.window()->repaint();
+    }
+
+
+//-----------------
+
+    virtual void mousePressEvent(MouseEvent & event) override
+    {
+        switch (event.button())
+        {
+            case GLFW_MOUSE_BUTTON_LEFT:
+                m_nav.panBegin(event.pos());
+                event.accept();
+                break;
+
+            case GLFW_MOUSE_BUTTON_RIGHT:
+                m_nav.rotateBegin(event.pos());
+                event.accept();
+                break;
+        }
+    }
+    virtual void mouseMoveEvent(MouseEvent & event) override
+    {
+        switch (m_nav.mode())
+        {
+            case WorldInHandNavigation::PanInteraction:
+                m_nav.panProcess(event.pos());
+                event.accept();
+                break;
+
+            case WorldInHandNavigation::RotateInteraction:
+                m_nav.rotateProcess(event.pos());
+                event.accept();
+        }
+    }
+    virtual void mouseReleaseEvent(MouseEvent & event) override
+    {
+        switch (event.button())
+        {
+            case GLFW_MOUSE_BUTTON_LEFT:
+                m_nav.panEnd();
+                event.accept();
+                break;
+
+            case GLFW_MOUSE_BUTTON_RIGHT:
+                m_nav.rotateEnd();
+                event.accept();
+                break;
+        }
+    }
+
+    void scrollEvent(ScrollEvent & event) override
+    {
+        if (WorldInHandNavigation::NoInteraction != m_nav.mode())
+            return;
+
+        m_nav.scaleAtMouse(event.pos(), -event.offset().y * 0.1f);
+        event.accept();
+    }
+
+    virtual const float depthAt(const ivec2 & windowCoordinates)
+    {
+        return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
+    }
+
+    virtual const vec3 objAt(const ivec2 & windowCoordinates)
+    {
+        return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
+    }
+
+    virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth)
+    {
+        return unproject(m_camera, depth, windowCoordinates);
+    }
+
+    virtual const glm::vec3 objAt(
+        const ivec2 & windowCoordinates
+    ,   const float depth
+    ,   const mat4 & viewProjectionInverted)
+    {
+        return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
     }
 
 protected:
@@ -198,6 +288,11 @@ protected:
     CameraPath path;
     CameraPathPlayer player;
     unsigned iterations;
+
+    bool usePath;
+
+    WorldInHandNavigation m_nav;
+    AxisAlignedBoundingBox m_aabb;
 };
 
 

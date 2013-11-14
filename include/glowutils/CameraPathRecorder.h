@@ -5,6 +5,7 @@
 
 #include <glm/glm.hpp>
 
+#include <glow/ref_ptr.h>
 #include <glowutils/glowutils.h>
 
 
@@ -13,6 +14,9 @@ namespace glow
 {
 
 class Camera;
+class VertexArrayObject;
+class Program;
+class Buffer;
 
 
 struct GLOWUTILS_API CameraPathPoint
@@ -61,6 +65,9 @@ public:
     void setPath(const CameraPath & path);
 
     void play(float t);
+
+    void createVao();
+    void draw(const glm::mat4& viewProjection);
 protected:
     struct PathSection
     {
@@ -68,15 +75,24 @@ protected:
         const CameraPathPoint* end;
         float startT;
         float endT;
+
+        glm::vec3 c1;
+        glm::vec3 c2;
     };
 
     Camera& m_camera;
     CameraPath m_path;
     std::vector<PathSection> m_sections;
+    ref_ptr<VertexArrayObject> m_vao;
+    ref_ptr<Program> m_program;
+    ref_ptr<Buffer> m_buffer;
+    int m_bufferSize;
 
     void prepare();
+    void prepareControlPoints();
+
     PathSection& find(float t);
-    CameraPathPoint interpolate(const CameraPathPoint& p1, const CameraPathPoint& p2, float t);
+    CameraPathPoint interpolate(const PathSection& section, float t);
     void moveCamera(const CameraPathPoint& point);
 };
 
