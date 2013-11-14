@@ -18,8 +18,8 @@ class TransformFeedbackParticles : public AbstractParticleTechnique
 {
 public:
     TransformFeedbackParticles(
-        const std::vector<glm::vec4> & postions
-    ,   const std::vector<glm::vec4> & velocities
+        const glow::Array<glm::vec4> & postions
+    ,   const glow::Array<glm::vec4> & velocities
     ,   const glow::Texture & forces
     ,   const glow::Camera & camera);
     virtual ~TransformFeedbackParticles();

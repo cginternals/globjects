@@ -12,6 +12,7 @@
 #include <glow/logging.h>
 #include <glow/Timer.h>
 #include <glow/Texture.h>
+#include <glow/Array.h>
 
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
@@ -78,7 +79,7 @@ public:
 
         static const ivec3 fdim(16, 16, 16); //  // 4k * 3
 
-        std::vector<vec3> forces;
+        Array<vec3> forces;
         forces.resize(fdim.x * fdim.y * fdim.z);
 
         for (int z = 0; z < fdim.z; ++z)
@@ -234,8 +235,8 @@ protected:
     Camera * m_camera;
     int m_numParticles;
 
-    std::vector<vec4> m_positions;
-    std::vector<vec4> m_velocities;
+    Array<vec4> m_positions;
+    Array<vec4> m_velocities;
 
 
     struct Attribute

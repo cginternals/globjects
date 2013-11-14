@@ -5,8 +5,8 @@
 #include "AbstractParticleTechnique.h"
 
 AbstractParticleTechnique::AbstractParticleTechnique(
-    const std::vector<glm::vec4> & positions
-,   const std::vector<glm::vec4> & velocities
+    const glow::Array<glm::vec4> & positions
+,   const glow::Array<glm::vec4> & velocities
 ,   const glow::Texture & forces
 ,   const glow::Camera & camera)
 : m_positions(positions)

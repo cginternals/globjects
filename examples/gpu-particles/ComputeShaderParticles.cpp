@@ -3,6 +3,7 @@
 
 #include <glow/Program.h>
 #include <glow/Shader.h>
+#include <glow/Buffer.h>
 
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
@@ -15,8 +16,8 @@ using namespace glm;
 
 
 ComputeShaderParticles::ComputeShaderParticles(
-    const std::vector<vec4> & positions
-,   const std::vector<vec4> & velocities
+    const Array<vec4> & positions
+,   const Array<vec4> & velocities
 ,   const Texture & forces
 ,   const Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
@@ -36,8 +37,11 @@ void ComputeShaderParticles::initialize()
     m_drawProgram = new Program();
     m_drawProgram->attach(
         createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
-        , createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-        , createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+    ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+    ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+
+    m_positionsSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
+    m_positionsSSBO->setData(m_positions, GL_STATIC_DRAW);
 }
 
 void ComputeShaderParticles::reset()

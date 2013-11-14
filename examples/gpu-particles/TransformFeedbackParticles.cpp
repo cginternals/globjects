@@ -19,8 +19,8 @@ using namespace glm;
 
 
 TransformFeedbackParticles::TransformFeedbackParticles(
-    const std::vector<vec4> & positions
-,   const std::vector<vec4> & velocities
+    const Array<vec4> & positions
+,   const Array<vec4> & velocities
 ,   const Texture & forces
 ,   const Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)

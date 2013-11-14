@@ -16,8 +16,8 @@ class ComputeShaderParticles : public AbstractParticleTechnique
 {
 public:
     ComputeShaderParticles(
-        const std::vector<glm::vec4> & positions
-    ,   const std::vector<glm::vec4> & velocities
+        const glow::Array<glm::vec4> & positions
+    ,   const glow::Array<glm::vec4> & velocities
     ,   const glow::Texture & forces
     ,   const glow::Camera & camera);
     virtual ~ComputeShaderParticles();

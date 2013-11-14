@@ -3,7 +3,8 @@
 
 #include <GL/glew.h>
 
-#include <vector>
+#include <glow/ref_ptr.h>
+#include <glow/Array.h>
 
 #include <glm/glm.hpp>
 
@@ -18,8 +19,8 @@ class AbstractParticleTechnique
 {
 public:
     AbstractParticleTechnique(
-        const std::vector<glm::vec4> & postions
-    ,   const std::vector<glm::vec4> & velocities
+        const glow::Array<glm::vec4> & postions
+    ,   const glow::Array<glm::vec4> & velocities
     ,   const glow::Texture & forces
     ,   const glow::Camera & camera);
 
@@ -34,8 +35,8 @@ public:
     virtual void resize() = 0; // use m_camera viewport etc.
 
 protected:
-    const std::vector<glm::vec4> & m_positions;
-    const std::vector<glm::vec4> & m_velocities;
+    const glow::Array<glm::vec4> & m_positions;
+    const glow::Array<glm::vec4> & m_velocities;
 
     const glow::Texture & m_forces;
     const glow::Camera & m_camera;
