@@ -14,6 +14,7 @@ include_directories(
 	${GLFW_INCLUDE_DIR})
 
 add_subdirectory("computeshader")
+add_subdirectory("gpu-particles")
 add_subdirectory("multiple-contexts")
 add_subdirectory("navigations")
 #add_subdirectory("deferred-lighting")
