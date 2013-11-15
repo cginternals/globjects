@@ -19,15 +19,6 @@
 using namespace glow;
 using namespace glm;
 
-namespace
-{
-    struct Particle
-    {
-        vec4 position;
-        vec4 velocity;
-    };
-}
-
 TransformFeedbackParticles::TransformFeedbackParticles(
     const Array<vec4> & positions
 ,   const Array<vec4> & velocities
@@ -43,8 +34,10 @@ TransformFeedbackParticles::~TransformFeedbackParticles()
 
 void TransformFeedbackParticles::initialize()
 {
-    m_transformFeedbackBuffer1 = new glow::Buffer(GL_ARRAY_BUFFER);
-    m_transformFeedbackBuffer2 = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_sourcePositions = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_sourceVelocities = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_targetPositions = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_targetVelocities = new glow::Buffer(GL_ARRAY_BUFFER);
 
     reset();
 
@@ -54,7 +47,7 @@ void TransformFeedbackParticles::initialize()
     m_transformFeedbackProgram->link();
 
     m_transformFeedback = new glow::TransformFeedback();
-    m_transformFeedback->setVaryings(m_transformFeedbackProgram, glow::Array<const char*>{ "out_position", "out_velocity" }, GL_INTERLEAVED_ATTRIBS);
+    m_transformFeedback->setVaryings(m_transformFeedbackProgram, glow::Array<const char*>{ "out_position", "out_velocity" }, GL_SEPARATE_ATTRIBS);
 
     m_transformFeedbackVAO = new glow::VertexArrayObject();
 
@@ -110,28 +103,19 @@ void TransformFeedbackParticles::initialize()
 
 void TransformFeedbackParticles::reset()
 {
-    m_transformFeedbackBuffer1->setData(m_numParticles * sizeof(Particle), nullptr, GL_STATIC_DRAW);
-    Particle* particles = static_cast<Particle*>(m_transformFeedbackBuffer1->map(GL_WRITE_ONLY));
-
-    for (int i=0; i < m_numParticles; ++i)
-    {
-        particles[i].position = m_positions[i];
-        particles[i].velocity = m_velocities[i];
-    }
-
-    m_transformFeedbackBuffer1->unmap();
+    m_sourcePositions->setData(m_positions, GL_DYNAMIC_DRAW);
+    m_sourceVelocities->setData(m_velocities, GL_DYNAMIC_DRAW);
 }
 
 void TransformFeedbackParticles::step(const float elapsed)
 {
-    return;
-
     m_transformFeedbackVAO->bind();
 
-    m_transformFeedbackVAO->binding(0)->setBuffer(m_transformFeedbackBuffer1, offsetof(Particle, position), sizeof(Particle));
-    m_transformFeedbackVAO->binding(1)->setBuffer(m_transformFeedbackBuffer1, offsetof(Particle, velocity), sizeof(Particle));
+    m_transformFeedbackVAO->binding(0)->setBuffer(m_sourcePositions, 0, sizeof(glm::vec4));
+    m_transformFeedbackVAO->binding(1)->setBuffer(m_sourceVelocities, 0, sizeof(glm::vec4));
 
-    m_transformFeedbackBuffer2->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
+    m_targetPositions->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
+    m_targetVelocities->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1);
 
     m_forces.bind();
     m_clear->program()->setUniform("elapsed", elapsed);
@@ -149,13 +133,14 @@ void TransformFeedbackParticles::step(const float elapsed)
 
     m_transformFeedbackVAO->unbind();
 
-    std::swap(m_transformFeedbackBuffer1, m_transformFeedbackBuffer2);
+    std::swap(m_sourcePositions, m_targetPositions);
+    std::swap(m_sourceVelocities, m_targetVelocities);
 }
 
 void TransformFeedbackParticles::draw()
 {
-    m_vao->binding(0)->setBuffer(m_transformFeedbackBuffer1, offsetof(Particle, position), sizeof(Particle));
-    m_vao->binding(1)->setBuffer(m_transformFeedbackBuffer1, offsetof(Particle, velocity), sizeof(Particle));
+    m_vao->binding(0)->setBuffer(m_targetPositions, 0, sizeof(glm::vec4));
+    m_vao->binding(1)->setBuffer(m_targetVelocities, 0, sizeof(glm::vec4));
 
     glDisable(GL_DEPTH_TEST);
 
@@ -171,7 +156,8 @@ void TransformFeedbackParticles::draw()
     m_drawProgram->use();
 
     m_vao->bind();
-    m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+    //m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+    m_transformFeedback->draw(GL_POINTS);
     m_vao->unbind();
 
     m_drawProgram->release();
@@ -179,8 +165,6 @@ void TransformFeedbackParticles::draw()
     glDisable(GL_BLEND);
 
     m_fbo->unbind();
-
-    //glViewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
 
     m_quad->draw();
 
