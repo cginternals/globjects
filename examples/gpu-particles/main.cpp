@@ -43,7 +43,7 @@ class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
 public:
     EventHandler()
     : m_technique(ComputeShaderTechnique)
-    , m_numParticles(100000)
+    , m_numParticles(1000000)
     , m_camera(nullptr)
     , m_steps(1)
     , m_nav(nullptr)

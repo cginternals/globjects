@@ -108,11 +108,20 @@ void ComputeShaderParticles::step(const float elapsed)
     m_velocitiesSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 
     m_forces.bind();
-    m_computeProgram->setUniform("forces", m_forces.id());
+    m_clear->program()->setUniform("elapsed", elapsed);
+    m_computeProgram->setUniform("forces", 0);
     m_computeProgram->setUniform("elapsed", elapsed);
 
     m_computeProgram->use();
-    m_computeProgram->dispatchCompute(m_numParticles / 16 + 1, 1, 1);
+
+    int n = m_numParticles;
+    do
+    {
+        m_computeProgram->setUniform("offset", m_numParticles - n);
+        m_computeProgram->dispatchCompute(static_cast<GLuint>(ceil(min(1048576.f, static_cast<float>(n)) / 16.f)), 1, 1);
+        n -= 1048576;
+    } while (n > 0);
+
     m_computeProgram->release();
 
     m_forces.unbind();
@@ -151,10 +160,7 @@ void ComputeShaderParticles::draw()
 
     glViewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
 
-
-    glEnable(GL_TEXTURE_2D);
     m_quad->draw();
-    glDisable(GL_TEXTURE_2D);
 
     glEnable(GL_DEPTH_TEST);
 }
@@ -163,5 +169,5 @@ void ComputeShaderParticles::resize()
 {
     m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
 
-    m_color->image2D(0, GL_RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, GL_RGB, GL_FLOAT, nullptr);
+    m_color->image2D(0, GL_RGB16F_ARB, m_camera.viewport().x, m_camera.viewport().y, 0, GL_RGB, GL_FLOAT, nullptr);
 }
