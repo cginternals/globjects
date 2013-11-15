@@ -75,7 +75,7 @@ void ComputeShaderParticles::step(const float elapsed)
     m_positionsSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
     //m_velocitiesSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 
-    m_computeProgram->setUniform("delta", elapsed);
+    //m_computeProgram->setUniform("delta", elapsed);
     m_computeProgram->use();
     m_computeProgram->dispatchCompute(16, 1, 1);
     m_computeProgram->release();

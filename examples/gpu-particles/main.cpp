@@ -39,7 +39,7 @@ class EventHandler : public WindowEventHandler
 public:
     EventHandler()
     : m_technique(ComputeShaderTechnique)
-    , m_numParticles(1000)
+    , m_numParticles(16)
     , m_camera(nullptr)
     {
         m_timer.start();
@@ -138,7 +138,6 @@ public:
         float f = static_cast<float>(m_timer.elapsed() * 1e-10);
         m_camera->setEye(vec3(cos(f), 0.f, sin(f)) * 4.f);
 
-        step();
         window.repaint();
     }
 
@@ -166,6 +165,7 @@ public:
 
     void draw()
     {
+        step(); // requires context to be current
         m_techniques[m_technique]->draw();
     }
 
