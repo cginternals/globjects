@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <glow/ref_ptr.h>
@@ -10,6 +9,9 @@ namespace glow
     class Program;
     class Buffer;
     class TransformFeedback;
+    class Texture;
+    class FrameBufferObject;
+    class ScreenAlignedQuad;
     class VertexArrayObject;
 }
 
@@ -24,20 +26,28 @@ public:
     ,   const glow::Camera & camera);
     virtual ~TransformFeedbackParticles();
 
-    virtual void initialize();
-    virtual void reset();
+    virtual void initialize() override;
+    virtual void reset() override;
 
-    virtual void step(float elapsed);
-    virtual void draw();
+    virtual void step(float elapsed) override;
+    virtual void draw() override;
 
-    virtual void resize();
+    virtual void resize() override;
 
 protected:
-    // transform feedback
-
-    glow::ref_ptr<glow::Program> m_transformFeedbackProgram;
     glow::ref_ptr<glow::TransformFeedback> m_transformFeedback;
-    glow::ref_ptr<glow::Buffer> m_transformFeedbackVertexBuffer1;
-    glow::ref_ptr<glow::Buffer> m_transformFeedbackVertexBuffer2;
+    glow::ref_ptr<glow::Program> m_transformFeedbackProgram;
+    glow::ref_ptr<glow::Buffer> m_transformFeedbackBuffer1;
+    glow::ref_ptr<glow::Buffer> m_transformFeedbackBuffer2;
     glow::ref_ptr<glow::VertexArrayObject> m_transformFeedbackVAO;
+
+    glow::ref_ptr<glow::Program> m_drawProgram;
+
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+
+    glow::ref_ptr<glow::FrameBufferObject> m_fbo;
+    glow::ref_ptr<glow::Texture> m_color;
+
+    glow::ref_ptr<glow::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glow::ScreenAlignedQuad> m_clear;
 };
