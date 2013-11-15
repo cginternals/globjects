@@ -4,6 +4,9 @@
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
+#include <glow/VertexArrayObject.h>
+#include <glow/VertexAttributeBinding.h>
+
 
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
@@ -39,9 +42,27 @@ void ComputeShaderParticles::initialize()
         createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
     ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
     ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+    
+    m_drawProgram->use();
+    m_drawProgram->bindAttributeLocation(0, "a_vertex");
+    m_drawProgram->release();
 
     m_positionsSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
     m_positionsSSBO->setData(m_positions, GL_STATIC_DRAW);
+
+    m_velocitiesSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
+    m_velocitiesSSBO->setData(m_velocities, GL_STATIC_DRAW);
+
+    m_vao = new VertexArrayObject();
+    m_vao->bind();
+
+    auto vertexBinding = m_vao->binding(0);
+    vertexBinding->setAttribute(0);
+    vertexBinding->setBuffer(m_positionsSSBO, 0, sizeof(vec4));
+    vertexBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
+    m_vao->enable(0);
+
+    m_vao->unbind();
 }
 
 void ComputeShaderParticles::reset()
@@ -51,17 +72,15 @@ void ComputeShaderParticles::reset()
 
 void ComputeShaderParticles::step(const float elapsed)
 {
-    //m_vertices->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+    m_positionsSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+    //m_velocitiesSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 
-    //m_computeProgram->setUniform("delta", delta);
+    m_computeProgram->setUniform("delta", elapsed);
+    m_computeProgram->use();
+    m_computeProgram->dispatchCompute(16, 1, 1);
+    m_computeProgram->release();
 
-    //m_computeProgram->use();
-    //m_computeProgram->dispatchCompute(512 / 16, 1, 1);
-    //m_computeProgram->release();
-
-    //glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-
-    //m_vertices->unbind();
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
 void ComputeShaderParticles::draw()
@@ -71,15 +90,12 @@ void ComputeShaderParticles::draw()
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-    m_drawProgram->use();
     m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
+    m_drawProgram->use();
 
-    //m_vao->binding(0)->setBuffer(m_vertices, 0, sizeof(vec4));
-    //m_vao->bind();
-
-    //m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
-
-    //m_vao->unbind();
+    m_vao->bind();
+    m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+    m_vao->unbind();
 
     m_drawProgram->release();
 

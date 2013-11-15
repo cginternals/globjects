@@ -13,6 +13,7 @@ AbstractParticleTechnique::AbstractParticleTechnique(
 , m_velocities(velocities)
 , m_forces(forces)
 , m_camera(camera)
+, m_numParticles(positions.size())
 {
 }
 

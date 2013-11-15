@@ -48,7 +48,7 @@ public:
 
         m_positions.resize(m_numParticles);
         for (int i = 0; i < m_numParticles; ++i)
-            m_positions[i] = vec4(randf(-1.f, +1.f), randf(-1.f, +1.f), randf(-1.f, +1.f), 0.f);
+            m_positions[i] = vec4(randf(-1.f, +1.f), randf(-1.f, +1.f), randf(-1.f, +1.f), 1.f);
 
         m_velocities.resize(m_numParticles);
         for (int i = 0; i < m_numParticles; ++i)
@@ -165,7 +165,7 @@ public:
     }
 
     void draw()
-        {
+    {
         m_techniques[m_technique]->draw();
     }
 
@@ -256,6 +256,7 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setProfile(ContextFormat::CoreProfile);
 
     Window window;
     window.setEventHandler(new EventHandler());

@@ -40,4 +40,6 @@ protected:
 
     const glow::Texture & m_forces;
     const glow::Camera & m_camera;
+
+    const unsigned int m_numParticles;
 };

@@ -1,4 +1,4 @@
-#version 330
+#version 430
 
 uniform mat4 viewProjection;
 uniform float aspect;

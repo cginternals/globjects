@@ -36,4 +36,6 @@ protected:
 
     glow::ref_ptr<glow::Program> m_computeProgram;
     glow::ref_ptr<glow::Program> m_drawProgram;
+
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
 };
