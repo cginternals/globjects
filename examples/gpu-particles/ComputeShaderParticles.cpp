@@ -135,7 +135,7 @@ void ComputeShaderParticles::draw()
 
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    
+
     m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
     m_drawProgram->use();
 
@@ -148,6 +148,8 @@ void ComputeShaderParticles::draw()
     glDisable(GL_BLEND);
 
     m_fbo->unbind();
+
+    glViewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
 
 
     glEnable(GL_TEXTURE_2D);

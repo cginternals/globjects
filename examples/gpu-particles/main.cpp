@@ -19,11 +19,14 @@
 #include <glowutils/File.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/MathMacros.h>
+#include <glowutils/AbstractCoordinateProvider.h>
+#include <glowutils/WorldInHandNavigation.h>
 
 #include <glowwindow/Context.h>
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
+
 
 #include "AbstractParticleTechnique.h"
 
@@ -35,7 +38,7 @@ using namespace glow;
 using namespace glm;
 
 
-class EventHandler : public WindowEventHandler
+class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler()
@@ -43,6 +46,7 @@ public:
     , m_numParticles(100000)
     , m_camera(nullptr)
     , m_steps(1)
+    , m_nav(nullptr)
     {
         m_timer.setAutoUpdating(false);
         m_timer.start();
@@ -70,6 +74,7 @@ public:
 
     virtual ~EventHandler()
     {
+        delete m_nav;
         delete m_camera;
     }
 
@@ -88,8 +93,13 @@ public:
         
         // initialize camera
 
-        m_camera = new Camera(vec3(0.f, 0.f, -3.f));
+        m_camera = new Camera(vec3(0.f, 1.f, -3.f));
+        m_camera->setZNear(0.1f);
+        m_camera->setZFar(16.f);
 
+        m_nav = new  WorldInHandNavigation();
+        m_nav->setCamera(m_camera);
+        m_nav->setCoordinateProvider(this);
         
         // initialize techniques
 
@@ -117,9 +127,6 @@ public:
 
     virtual void idle(Window & window) override
     {
-        float f = static_cast<float>(m_timer.elapsed() * 4e-10);
-        m_camera->setEye(vec3(cos(f), 0.f, sin(f)) * 3.f);
-
         window.repaint();
     }
 
@@ -231,6 +238,65 @@ public:
         }
     }
 
+    virtual void mousePressEvent(MouseEvent & event) override
+    {
+        switch (event.button())
+        {
+        case GLFW_MOUSE_BUTTON_LEFT:
+            m_nav->rotateBegin(event.pos());
+            event.accept();
+            break;
+        }
+    }
+    virtual void mouseMoveEvent(MouseEvent & event) override
+    {
+        switch (m_nav->mode())
+        {
+        case WorldInHandNavigation::RotateInteraction:
+            m_nav->rotateProcess(event.pos());
+            event.accept();
+        }
+    }
+    virtual void mouseReleaseEvent(MouseEvent & event) override
+    {
+        switch (event.button())
+        {
+        case GLFW_MOUSE_BUTTON_LEFT:
+            m_nav->rotateEnd();
+            event.accept();
+            break;
+        }
+    }
+
+    void scrollEvent(ScrollEvent & event) override
+    {
+        if (WorldInHandNavigation::NoInteraction != m_nav->mode())
+            return;
+
+        m_nav->scaleAtCenter(-event.offset().y * 0.1f);
+        event.accept();
+    }
+
+    virtual const float depthAt(const ivec2 & windowCoordinates)
+    {
+        return 2.0;
+    }
+
+    virtual const vec3 objAt(const ivec2 & windowCoordinates)
+    {
+        return vec3(0.f);
+    }
+    virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth)
+    {
+        return vec3(0.f);
+    }
+    virtual const glm::vec3 objAt(const ivec2 & windowCoordinates, const float depth, const mat4 & viewProjectionInverted)
+    {
+        return vec3(0.f);
+    }
+
+
+
 protected:
     
     enum ParticleTechnique
@@ -253,6 +319,7 @@ protected:
 
     int m_steps;
 
+    WorldInHandNavigation * m_nav;
 
     struct Attribute
     {
