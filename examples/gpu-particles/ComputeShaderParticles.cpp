@@ -55,11 +55,15 @@ void ComputeShaderParticles::initialize()
     m_vao = new VertexArrayObject();
     m_vao->bind();
 
-    auto vertexBinding = m_vao->binding(0);
-    vertexBinding->setAttribute(0);
-    vertexBinding->setBuffer(m_positionsSSBO, 0, sizeof(vec4));
-    vertexBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
+    auto positionsBinding = m_vao->binding(0);
+    positionsBinding->setBuffer(m_positionsSSBO, 0, sizeof(vec4));
+    positionsBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
     m_vao->enable(0);
+
+    auto velocitiesBinding = m_vao->binding(1);
+    velocitiesBinding->setBuffer(m_velocitiesSSBO, 0, sizeof(vec4));
+    velocitiesBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
+    m_vao->enable(1);
 
     m_vao->unbind();
 }
@@ -73,12 +77,20 @@ void ComputeShaderParticles::reset()
 void ComputeShaderParticles::step(const float elapsed)
 {
     m_positionsSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
-    //m_velocitiesSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
+    m_velocitiesSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 
-    //m_computeProgram->setUniform("delta", elapsed);
+    m_forces.bind();
+    m_computeProgram->setUniform("forces", m_forces.id());
+    m_computeProgram->setUniform("elapsed", elapsed);
+
     m_computeProgram->use();
     m_computeProgram->dispatchCompute(m_numParticles / 16, 1, 1);
     m_computeProgram->release();
+
+    m_forces.unbind();
+
+    m_positionsSSBO->unbind();
+    m_velocitiesSSBO->unbind();
 
     //glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }

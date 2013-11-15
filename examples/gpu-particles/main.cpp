@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <vector>
 #include <random>
+#include <ctime>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -42,6 +43,7 @@ public:
     , m_numParticles(100000)
     , m_camera(nullptr)
     {
+        m_timer.setAutoUpdating(false);
         m_timer.start();
 
         // Initialize Particle Positions and Attributes
@@ -74,24 +76,6 @@ public:
     {
         DebugMessageOutput::enable();
 
-
-        // initialize 3D Force Field (3D Texture)
-
-        static const ivec3 fdim(16, 16, 16); //  // 4k * 3
-
-        Array<vec3> forces;
-        forces.resize(fdim.x * fdim.y * fdim.z);
-
-        for (int z = 0; z < fdim.z; ++z)
-        for (int y = 0; y < fdim.y; ++y)
-        for (int x = 0; x < fdim.x; ++x)
-        {
-            const int i = z *  fdim.x * fdim.y + y * fdim.x + x;
-            const vec3 f(randf(-1.0, +1.f), randf(-1.0, +1.f), randf(-1.0, +1.f));
-
-            forces[i] = f;
-        }
-        
         m_forces = new Texture(GL_TEXTURE_3D);
 
         m_forces->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -100,9 +84,6 @@ public:
         m_forces->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         m_forces->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         m_forces->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-        m_forces->image3D(0, GL_RGB32F, fdim.x, fdim.y, fdim.z, 0, GL_RGB, GL_FLOAT, forces.data());
-
         
         // initialize camera
 
@@ -154,13 +135,13 @@ public:
         const long double elapsed = m_timer.elapsed();
         m_timer.update();
 
-        const float delta = static_cast<float>((elapsed - m_timer.elapsed()) * 1e-9L);
+        const float delta = static_cast<float>((m_timer.elapsed() - elapsed) * 1.0e-9L);
 
         for (int i = 0; i < steps; ++i)
         {
-            const float delta_stepped = i * delta * stepsinv;
+            const float delta_stepped = delta * (i + 1) * stepsinv;
             m_techniques[m_technique]->step(delta_stepped);
-    }
+        }
     }
 
     void draw()
@@ -171,7 +152,29 @@ public:
 
     void reset()
     {
+        // initialize 3D Force Field (3D Texture)
+
+        static const ivec3 fdim(5, 5, 5);
+
+        Array<vec3> forces;
+        forces.resize(fdim.x * fdim.y * fdim.z);
+
+        srand(static_cast<unsigned int>(time(0)));
+
+        for (int z = 0; z < fdim.z; ++z)
+        for (int y = 0; y < fdim.y; ++y)
+        for (int x = 0; x < fdim.x; ++x)
+        {
+            const int i = z *  fdim.x * fdim.y + y * fdim.x + x;
+            const vec3 f(randf(-1.0, +1.f), randf(-1.0, +1.f), randf(-1.0, +1.f));
+
+            forces[i] = f * (1.f - length(vec3(x, y, z)) / sqrt(3.f));
+        }
+
+        m_forces->image3D(0, GL_RGB32F, fdim.x, fdim.y, fdim.z, 0, GL_RGB, GL_FLOAT, forces.data());
+
         m_timer.reset();
+        m_timer.update();
 
         for (auto technique : m_techniques)
             technique.second->reset();
@@ -208,8 +211,7 @@ public:
             }
             break;
         case GLFW_KEY_R:
-            debug() << "timer reset";
-            m_timer.reset();
+            reset();
             break;
 
         case GLFW_KEY_F5:

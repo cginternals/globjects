@@ -7,8 +7,10 @@ layout (points) in;
 layout (triangle_strip, max_vertices = 4) out;
 
 in float v_scale[];
+in vec3 v_color[];
 
 out vec2 g_uv;
+out vec3 g_color;
 
 void main()
 {
@@ -19,6 +21,7 @@ void main()
 	vec4 v = vec4(0.0, aspect, 0.0, 0.0);
 	
 	g_uv = vec2(-1.0, -1.0);
+	g_color = v_color[0];
 	gl_Position = p - normalize(-u - v) * k;
 	EmitVertex();
 
