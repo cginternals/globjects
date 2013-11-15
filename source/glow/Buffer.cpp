@@ -88,6 +88,15 @@ void* Buffer::map(GLenum target, GLenum access)
 	return result;
 }
 
+void* Buffer::mapRange(GLintptr offset, GLsizeiptr length, GLbitfield access)
+{
+    bind();
+
+    void* result = glMapBufferRange(m_target, offset, length, access);
+    CheckGLError();
+    return result;
+}
+
 void Buffer::unmap()
 {
     bind();
