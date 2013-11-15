@@ -39,7 +39,7 @@ class EventHandler : public WindowEventHandler
 public:
     EventHandler()
     : m_technique(ComputeShaderTechnique)
-    , m_numParticles(16)
+    , m_numParticles(100000)
     , m_camera(nullptr)
     {
         m_timer.start();
@@ -54,15 +54,15 @@ public:
         for (int i = 0; i < m_numParticles; ++i)
             m_velocities[i] = vec4(0.f);
 
-        m_attributes.resize(m_numParticles);
-        Attribute attribute;
-        for (int i = 0; i < m_numParticles; ++i)
-        {
-            // ToDo:
-            attribute.moep = 0;
+        //m_attributes.resize(m_numParticles);
+        //Attribute attribute;
+        //for (int i = 0; i < m_numParticles; ++i)
+        //{
+        //    // ToDo:
+        //    attribute.moep = 0;
 
-            m_attributes[i] = attribute;
-        }
+        //    m_attributes[i] = attribute;
+        //}
     }
 
     virtual ~EventHandler()

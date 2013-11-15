@@ -6,6 +6,6 @@ out float v_scale;
 
 void main()
 {
-	v_scale = 0.2;
+	v_scale = 0.02;
 	gl_Position = a_vertex;
 }

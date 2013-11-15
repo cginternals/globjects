@@ -48,10 +48,9 @@ void ComputeShaderParticles::initialize()
     m_drawProgram->release();
 
     m_positionsSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
-    m_positionsSSBO->setData(m_positions, GL_STATIC_DRAW);
-
     m_velocitiesSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
-    m_velocitiesSSBO->setData(m_velocities, GL_STATIC_DRAW);
+
+    reset();
 
     m_vao = new VertexArrayObject();
     m_vao->bind();
@@ -67,7 +66,8 @@ void ComputeShaderParticles::initialize()
 
 void ComputeShaderParticles::reset()
 {
-
+    m_positionsSSBO->setData(m_positions, GL_STATIC_DRAW);
+    m_velocitiesSSBO->setData(m_velocities, GL_STATIC_DRAW);
 }
 
 void ComputeShaderParticles::step(const float elapsed)
@@ -77,10 +77,10 @@ void ComputeShaderParticles::step(const float elapsed)
 
     //m_computeProgram->setUniform("delta", elapsed);
     m_computeProgram->use();
-    m_computeProgram->dispatchCompute(16, 1, 1);
+    m_computeProgram->dispatchCompute(m_numParticles / 16, 1, 1);
     m_computeProgram->release();
 
-    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+    //glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
 void ComputeShaderParticles::draw()

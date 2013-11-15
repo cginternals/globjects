@@ -12,5 +12,5 @@ void main()
 {
 	uint gID = gl_GlobalInvocationID.x;
 
-	positions[gID] *= vec4(vec3(0.99), 1.0);
+	positions[gID] *= vec4(vec3(0.999), 1.0);
 }
