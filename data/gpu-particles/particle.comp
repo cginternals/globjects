@@ -32,6 +32,6 @@ void main()
 	vec3 f  = g * gravity + force;
 		 f -= v * friction;
 
-	positions[gID].xyz  += v * t + 0.5 * t * t * f;
+	positions[gID].xyz  += (v * t) + (0.5 * f * t * t);
 	velocities[gID].xyz += f * t;
 }

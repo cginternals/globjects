@@ -9,6 +9,10 @@ namespace glow
 {  
     class Program;
     class Buffer;
+    class FrameBufferObject;
+    class Texture;
+    class RenderBufferObject;
+    class ScreenAlignedQuad;
 }
 
 
@@ -38,4 +42,10 @@ protected:
     glow::ref_ptr<glow::Program> m_drawProgram;
 
     glow::ref_ptr<glow::VertexArrayObject> m_vao;
+
+    glow::ref_ptr<glow::FrameBufferObject> m_fbo;
+    glow::ref_ptr<glow::Texture> m_color;
+
+    glow::ScreenAlignedQuad * m_quad;
+    glow::ScreenAlignedQuad * m_clear;
 };

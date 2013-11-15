@@ -42,6 +42,7 @@ public:
     : m_technique(ComputeShaderTechnique)
     , m_numParticles(100000)
     , m_camera(nullptr)
+    , m_steps(1)
     {
         m_timer.setAutoUpdating(false);
         m_timer.start();
@@ -87,7 +88,7 @@ public:
         
         // initialize camera
 
-        m_camera = new Camera(vec3(0.f, 0.f, -4.f));
+        m_camera = new Camera(vec3(0.f, 0.f, -3.f));
 
         
         // initialize techniques
@@ -116,8 +117,8 @@ public:
 
     virtual void idle(Window & window) override
     {
-        float f = static_cast<float>(m_timer.elapsed() * 1e-10);
-        m_camera->setEye(vec3(cos(f), 0.f, sin(f)) * 4.f);
+        float f = static_cast<float>(m_timer.elapsed() * 4e-10);
+        m_camera->setEye(vec3(cos(f), 0.f, sin(f)) * 3.f);
 
         window.repaint();
     }
@@ -129,19 +130,14 @@ public:
 
     void step()
     {
-        static const int steps = 1;
-        static const float stepsinv = 1.f / static_cast<float>(steps);
-
         const long double elapsed = m_timer.elapsed();
         m_timer.update();
 
         const float delta = static_cast<float>((m_timer.elapsed() - elapsed) * 1.0e-9L);
+        const float delta_stepped = delta / static_cast<float>(m_steps);
 
-        for (int i = 0; i < steps; ++i)
-        {
-            const float delta_stepped = delta * (i + 1) * stepsinv;
+        for (int i = 0; i < m_steps; ++i)
             m_techniques[m_technique]->step(delta_stepped);
-        }
     }
 
     void draw()
@@ -150,11 +146,11 @@ public:
         m_techniques[m_technique]->draw();
     }
 
-    void reset()
+    void reset(const bool particles = true)
     {
         // initialize 3D Force Field (3D Texture)
 
-        static const ivec3 fdim(5, 5, 5);
+        static const ivec3 fdim(5, 5, 5); // this has center axises and allows for random rings etc..
 
         Array<vec3> forces;
         forces.resize(fdim.x * fdim.y * fdim.z);
@@ -172,6 +168,9 @@ public:
         }
 
         m_forces->image3D(0, GL_RGB32F, fdim.x, fdim.y, fdim.z, 0, GL_RGB, GL_FLOAT, forces.data());
+
+        if (!particles)
+            return;
 
         m_timer.reset();
         m_timer.update();
@@ -198,6 +197,7 @@ public:
             debug() << "switch to Transform Feedback Technique";
             m_technique = TransformFeedbackTechnique;
             break;
+
         case GLFW_KEY_P:       
             if (m_timer.paused())
             {
@@ -210,8 +210,19 @@ public:
                 m_timer.pause();
             }
             break;
+
         case GLFW_KEY_R:
-            reset();
+            reset(event.modifiers() & GLFW_MOD_SHIFT);
+            break;
+
+        case GLFW_KEY_MINUS:
+            m_steps = max(1, m_steps - 1);
+            debug() << "steps = " << m_steps;
+            break;
+
+        case GLFW_KEY_EQUAL: // bug? this is plus/add on my keyboard
+            ++m_steps;
+            debug() << "steps = " << m_steps;
             break;
 
         case GLFW_KEY_F5:
@@ -239,6 +250,8 @@ protected:
 
     Array<vec4> m_positions;
     Array<vec4> m_velocities;
+
+    int m_steps;
 
 
     struct Attribute

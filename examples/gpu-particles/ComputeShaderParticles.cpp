@@ -7,7 +7,11 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 
+#include <glow/FrameBufferObject.h>
+#include <glow/Texture.h>
+#include <glow/RenderBufferObject.h>
 
+#include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
 
@@ -24,11 +28,15 @@ ComputeShaderParticles::ComputeShaderParticles(
 ,   const Texture & forces
 ,   const Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
+, m_quad(nullptr)
+, m_clear(nullptr)
 {
 }
 
 ComputeShaderParticles::~ComputeShaderParticles()
 {
+    delete m_clear;
+    delete m_quad;
 }
 
 void ComputeShaderParticles::initialize()
@@ -66,6 +74,26 @@ void ComputeShaderParticles::initialize()
     m_vao->enable(1);
 
     m_vao->unbind();
+
+    // setup fbo
+
+    m_fbo = new FrameBufferObject();
+
+    m_color = new Texture(GL_TEXTURE_2D);
+    m_color->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    m_color->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_color->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    m_color->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    m_color->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_color);
+
+    m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0 });
+    m_fbo->unbind();
+
+    m_quad = new ScreenAlignedQuad(m_color);
+    m_clear = new ScreenAlignedQuad(
+        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 
 void ComputeShaderParticles::reset()
@@ -84,7 +112,7 @@ void ComputeShaderParticles::step(const float elapsed)
     m_computeProgram->setUniform("elapsed", elapsed);
 
     m_computeProgram->use();
-    m_computeProgram->dispatchCompute(m_numParticles / 16, 1, 1);
+    m_computeProgram->dispatchCompute(m_numParticles / 16 + 1, 1, 1);
     m_computeProgram->release();
 
     m_forces.unbind();
@@ -97,11 +125,17 @@ void ComputeShaderParticles::step(const float elapsed)
 
 void ComputeShaderParticles::draw()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDisable(GL_DEPTH_TEST);
+
+    m_fbo->bind();
 
     glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+    m_clear->draw();
 
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    
     m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
     m_drawProgram->use();
 
@@ -112,9 +146,20 @@ void ComputeShaderParticles::draw()
     m_drawProgram->release();
 
     glDisable(GL_BLEND);
+
+    m_fbo->unbind();
+
+
+    glEnable(GL_TEXTURE_2D);
+    m_quad->draw();
+    glDisable(GL_TEXTURE_2D);
+
+    glEnable(GL_DEPTH_TEST);
 }
 
 void ComputeShaderParticles::resize()
 {
     m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
+
+    m_color->image2D(0, GL_RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, GL_RGB, GL_FLOAT, nullptr);
 }
