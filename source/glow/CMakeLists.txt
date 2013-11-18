@@ -77,6 +77,8 @@ set(api_includes
 )
 
 set(sources
+    ${source_path}/glow.cpp
+    
     ${source_path}/AbstractUniform.cpp
     ${source_path}/AutoTimer.cpp
     ${source_path}/Buffer.cpp
