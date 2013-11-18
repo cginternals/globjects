@@ -21,7 +21,7 @@ void main()
 
 	// frustum culling 
 	vec2 c = clamp(abs(p.xy) / p.w, 0.0, 1.0);
-	if(any(equal(c, vec2(0.5))))
+	if(any(equal(c, vec2(1.0))))
 		return;
 
 	g_color = v_color[0];

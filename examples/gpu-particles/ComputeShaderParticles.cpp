@@ -79,9 +79,7 @@ void ComputeShaderParticles::initialize()
     m_color->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_color);
-
     m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0 });
-
     m_fbo->unbind();
 
     m_quad = new ScreenAlignedQuad(m_color);
@@ -110,8 +108,8 @@ void ComputeShaderParticles::step(const float elapsed)
     do
     {
         m_computeProgram->setUniform("offset", m_numParticles - n);
-        m_computeProgram->dispatchCompute(static_cast<GLuint>(ceil(min(1048576.f, static_cast<float>(n)) / 16.f)), 1, 1);
-        n -= 1048576;
+        m_computeProgram->dispatchCompute(static_cast<GLuint>(ceil(min(262144.f, static_cast<float>(n)) / 16.f)), 1, 1);
+        n -= 262144;
     } while (n > 0);
 
     m_computeProgram->release();
