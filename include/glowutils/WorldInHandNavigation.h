@@ -28,6 +28,7 @@ public:
 
     void setBoundaryHint(const AxisAlignedBoundingBox & aabb); ///< is currently ignored
 
+    void setHome(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & up);
     void setCamera(Camera * camera);
     void setCoordinateProvider(AbstractCoordinateProvider * provider);
 
@@ -95,6 +96,10 @@ protected:
     glm::vec3  m_i1;
     bool  m_i0Valid; // stores if initial interaction pick yielded valid depth
     glm::ivec2  m_m0;
+
+    glm::vec3 m_homeEye;
+    glm::vec3 m_homeCenter;
+    glm::vec3 m_homeUp;
 };
 
 } // namespace glow

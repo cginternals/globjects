@@ -1,0 +1,38 @@
+#version 430
+
+layout (local_size_x = 16) in;
+uniform float elapsed; // time delta
+uniform sampler3D forces;
+uniform uint offset;
+
+layout (std430, binding = 0) buffer Positions
+{
+	vec4 positions[];
+};
+
+layout (std430, binding = 1) buffer Velocities
+{
+	vec4 velocities[];
+};
+
+const float gravity = 1.0;
+const float friction = 0.2;
+
+void main()
+{
+	uint gID = gl_GlobalInvocationID.x + offset;
+
+	vec3 p = positions[gID].xyz;
+	vec3 v = velocities[gID].xyz;
+
+	vec3 force = texture(forces, p * 0.2 + 0.5).xyz;
+
+	float t = elapsed;
+	vec3 g = sign(-p) * (p * p); // gravity to center
+
+	vec3 f  = g * gravity + force;
+		 f -= v * friction;
+
+	positions[gID].xyz  += (v * t) + (0.5 * f * t * t);
+	velocities[gID].xyz += f * t;
+}

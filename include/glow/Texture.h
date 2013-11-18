@@ -58,7 +58,19 @@ public:
     ,   GLenum format
     ,   GLenum type
     ,   const GLvoid * data);
-	void storage2D(
+
+	void image3D(
+        GLint level
+    ,   GLint internalFormat
+    ,   GLsizei width
+    ,   GLsizei height
+    ,   GLsizei depth
+    ,   GLint border
+    ,   GLenum format
+    ,   GLenum type
+    ,   const GLvoid * data);
+
+    void storage2D(
         GLsizei levels
     ,   GLenum internalFormat
     ,   GLsizei width

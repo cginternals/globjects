@@ -87,7 +87,7 @@ void TransformFeedback::draw(GLenum primitiveMode)
 {
 	bind();
 
-	glDrawTransformFeedback(primitiveMode, m_id);
+    glDrawTransformFeedback(primitiveMode, m_id);
 	CheckGLError();
 }
 

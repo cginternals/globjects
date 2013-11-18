@@ -110,6 +110,15 @@ void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei 
 	CheckGLError();
 }
 
+void Texture::image3D(GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid* data)
+{
+    bind();
+
+    glTexImage3D(m_target, level, internalFormat, width, height, depth, border, format, type, data);
+    CheckGLError();
+}
+
+
 void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height)
 {
 	bind();

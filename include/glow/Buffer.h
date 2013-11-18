@@ -57,6 +57,11 @@ public:
 	void * map(
         GLenum target
     ,   GLenum access);
+    void * mapRange(
+        GLintptr offset
+    ,   GLsizeiptr length
+    ,   GLbitfield access);
+
 	void unmap();
 
 	// indexed buffer binding
