@@ -44,6 +44,7 @@ protected:
     glow::ref_ptr<glow::Texture> m_sourcePositionsTexture;
     glow::ref_ptr<glow::Texture> m_sourceVelocitiesTexture;
     glow::ref_ptr<glow::Texture> m_destPositionsTexture;
+    glow::ref_ptr<glow::Texture> m_destVelocitiesTexture;
     glow::ref_ptr<glow::FrameBufferObject> m_fboParticles;
     glow::ref_ptr<glow::ScreenAlignedQuad> m_update;
 
@@ -55,4 +56,6 @@ protected:
     glow::ref_ptr<glow::Program> m_drawProgram;
     glow::ref_ptr<glow::ScreenAlignedQuad> m_quad;
     glow::ref_ptr<glow::ScreenAlignedQuad> m_clear;
+
+    bool m_odd;
 };
