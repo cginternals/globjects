@@ -35,9 +35,8 @@ FragmentShaderParticles::~FragmentShaderParticles()
 
 void FragmentShaderParticles::initialize()
 {
-    // Create vertex buffers for position and velocity
-    m_sourcePositions  = new glow::Buffer(GL_ARRAY_BUFFER);
-    m_sourceVelocities = new glow::Buffer(GL_ARRAY_BUFFER);
+    // Create vertex buffer for positions
+//  m_sourcePositions = new glow::Buffer(GL_ARRAY_BUFFER);
 
     // Create textures
     m_sourcePositionsTexture = new glow::Texture(GL_TEXTURE_2D);
@@ -73,43 +72,31 @@ void FragmentShaderParticles::initialize()
 
     // Create vertex array object
     m_vao = new VertexArrayObject();
+/*
     m_vao->bind();
-
     auto positionsBinding = m_vao->binding(0);
     positionsBinding->setAttribute(0);
     positionsBinding->setFormat(4, GL_FLOAT);
     m_vao->enable(0);
-
-    auto velocitiesBinding = m_vao->binding(1);
-    velocitiesBinding->setAttribute(1);
-    velocitiesBinding->setFormat(4, GL_FLOAT);
-    m_vao->enable(1);
-
+    m_vao->binding(0)->setBuffer(m_sourcePositions,  0, sizeof(glm::vec4));
     m_vao->unbind();
-
-    // Bind vertex data to texture objects
-    /*
-    m_sourcePositionsTexture = new glow::Texture();
-    m_sourcePositionsTexture->bind(GL_TEXTURE_BUFFER);
-    glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, m_sourcePositions->id());
-    m_sourcePositionsTexture->unbind(GL_TEXTURE_BUFFER);
-
-    m_sourceVelocitiesTexture = new glow::Texture();
-    m_sourceVelocitiesTexture->bind(GL_TEXTURE_BUFFER);
-    glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, m_sourceVelocities->id());
-    m_sourceVelocitiesTexture->unbind(GL_TEXTURE_BUFFER);
-    */
+*/
 
     // Create frame buffer object for update
     m_fboParticles = new FrameBufferObject();
     m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT0, m_destPositionsTexture);
-    m_fboParticles->setDrawBuffers({ GL_COLOR_ATTACHMENT0 });
+    m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT1, m_destVelocitiesTexture);
+    m_fboParticles->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
     m_fboParticles->unbind();
 
     m_update = new ScreenAlignedQuad(
-        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/test.frag"),
+        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/particle.frag"),
         m_sourcePositionsTexture );
-    m_update->setSamplerUniform(0);
+    m_update->program()->setUniform("vertices",   0);
+    m_update->program()->setUniform("velocities", 1);
+    m_update->program()->setUniform("forces",     2);
+//    m_update->program()->attach(
+//        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/particleMovement.inc") );
 
     // Create frame buffer object for rendering
     m_fbo = new FrameBufferObject();
@@ -133,7 +120,7 @@ void FragmentShaderParticles::initialize()
     // Create draw program
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        createShaderFromFile(GL_VERTEX_SHADER,   "data/gpu-particles/points.vert")
+        createShaderFromFile(GL_VERTEX_SHADER,   "data/gpu-particles/points_fragment.vert")
     ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
     ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 }
@@ -141,8 +128,7 @@ void FragmentShaderParticles::initialize()
 void FragmentShaderParticles::reset()
 {
     // Upload vertex data
-    m_sourcePositions ->setData(m_positions,  GL_DYNAMIC_DRAW);
-    m_sourceVelocities->setData(m_velocities, GL_DYNAMIC_DRAW);
+//  m_sourcePositions ->setData(m_positions,  GL_DYNAMIC_DRAW);
     m_sourcePositionsTexture ->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_positions .rawData());
     m_sourceVelocitiesTexture->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_velocities.rawData());
     m_destPositionsTexture   ->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_positions .rawData());
@@ -152,8 +138,15 @@ void FragmentShaderParticles::reset()
 void FragmentShaderParticles::step(const float elapsed)
 {
     m_fboParticles->bind();
-    if (m_odd) m_destPositionsTexture  ->bind(GL_TEXTURE0);
-    else       m_sourcePositionsTexture->bind(GL_TEXTURE0);
+    if (m_odd) {
+        m_destPositionsTexture ->bind(GL_TEXTURE0);
+        m_destVelocitiesTexture->bind(GL_TEXTURE1);
+    } else {
+        m_sourcePositionsTexture ->bind(GL_TEXTURE0);
+        m_sourceVelocitiesTexture->bind(GL_TEXTURE1);
+    }
+    m_forces.bind(GL_TEXTURE2);
+    m_update->program()->setUniform("elapsed", elapsed);
     glViewport(0, 0, 1000, 1000);
     m_update->draw();
     glViewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
@@ -163,18 +156,16 @@ void FragmentShaderParticles::step(const float elapsed)
     if (m_odd) {
         m_update->setTexture(m_destPositionsTexture);
         m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT0, m_sourcePositionsTexture);
+        m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT1, m_sourceVelocitiesTexture);
     } else {
         m_update->setTexture(m_sourcePositionsTexture);
         m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT0, m_destPositionsTexture);
+        m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT1, m_destVelocitiesTexture);
     }
 }
 
 void FragmentShaderParticles::draw(const float elapsed)
 {
-    // Bind vertex arrays
-    m_vao->binding(0)->setBuffer(m_sourcePositions,  0, sizeof(glm::vec4));
-    m_vao->binding(1)->setBuffer(m_sourceVelocities, 0, sizeof(glm::vec4));
-
     // Disable depth buffer
     glDisable(GL_DEPTH_TEST);
 
@@ -193,6 +184,8 @@ void FragmentShaderParticles::draw(const float elapsed)
     m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
     m_sourcePositionsTexture->bind(GL_TEXTURE0);
     m_drawProgram->setUniform("vertices", 0);
+    m_sourceVelocitiesTexture->bind(GL_TEXTURE1);
+    m_drawProgram->setUniform("velocities", 1);
     m_drawProgram->use();
 
     m_vao->bind();

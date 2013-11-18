@@ -37,7 +37,6 @@ public:
 protected:
     // Particle data
     glow::ref_ptr<glow::Buffer> m_sourcePositions;
-    glow::ref_ptr<glow::Buffer> m_sourceVelocities;
     glow::ref_ptr<glow::VertexArrayObject> m_vao;
 
     // Access to vertex buffers via texture objects
