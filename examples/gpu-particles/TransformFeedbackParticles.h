@@ -30,7 +30,7 @@ public:
     virtual void reset() override;
 
     virtual void step(float elapsed) override;
-    virtual void draw() override;
+    virtual void draw(float elapsed) override;
 
     virtual void resize() override;
 

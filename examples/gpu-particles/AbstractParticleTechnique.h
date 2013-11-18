@@ -30,7 +30,7 @@ public:
     virtual void reset() = 0;
 
     virtual void step(float elapsed) = 0;
-    virtual void draw() = 0;
+    virtual void draw(float elapsed) = 0;
 
     virtual void resize() = 0; // use m_camera viewport etc.
 

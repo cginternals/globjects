@@ -101,7 +101,6 @@ void ComputeShaderParticles::step(const float elapsed)
     m_velocitiesSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 
     m_forces.bind();
-    m_clear->program()->setUniform("elapsed", elapsed);
     m_computeProgram->setUniform("forces", 0);
     m_computeProgram->setUniform("elapsed", elapsed);
 
@@ -125,7 +124,7 @@ void ComputeShaderParticles::step(const float elapsed)
     //glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
-void ComputeShaderParticles::draw()
+void ComputeShaderParticles::draw(const float elapsed)
 {
     glDisable(GL_DEPTH_TEST);
 
@@ -133,6 +132,7 @@ void ComputeShaderParticles::draw()
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+    m_clear->program()->setUniform("elapsed", elapsed);
     m_clear->draw();
 
 
@@ -151,8 +151,6 @@ void ComputeShaderParticles::draw()
 
     m_fbo->unbind();
 
-    glViewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
-
     m_quad->draw();
 
     glEnable(GL_DEPTH_TEST);
@@ -162,7 +160,7 @@ void ComputeShaderParticles::resize()
 {
     m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
 
-    m_color->image2D(0, GL_RGB16F_ARB, m_camera.viewport().x, m_camera.viewport().y, 0, GL_RGB, GL_FLOAT, nullptr);
+    m_color->image2D(0, GL_RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, GL_RGB, GL_FLOAT, nullptr);
 
     m_fbo->bind();
 

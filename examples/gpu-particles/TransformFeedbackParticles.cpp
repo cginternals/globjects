@@ -120,7 +120,6 @@ void TransformFeedbackParticles::step(const float elapsed)
     m_targetVelocities->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1);
 
     m_forces.bind();
-    m_clear->program()->setUniform("elapsed", elapsed);
     m_transformFeedbackProgram->setUniform("forces", 0);
     m_transformFeedbackProgram->setUniform("elapsed", elapsed);
 
@@ -136,14 +135,16 @@ void TransformFeedbackParticles::step(const float elapsed)
 
     m_transformFeedbackVAO->unbind();
 
+    m_forces.unbind();
+
     std::swap(m_sourcePositions, m_targetPositions);
     std::swap(m_sourceVelocities, m_targetVelocities);
 }
 
-void TransformFeedbackParticles::draw()
+void TransformFeedbackParticles::draw(const float elapsed)
 {
-    m_vao->binding(0)->setBuffer(m_targetPositions, 0, sizeof(glm::vec4));
-    m_vao->binding(1)->setBuffer(m_targetVelocities, 0, sizeof(glm::vec4));
+    m_vao->binding(0)->setBuffer(m_sourcePositions, 0, sizeof(glm::vec4));
+    m_vao->binding(1)->setBuffer(m_sourceVelocities, 0, sizeof(glm::vec4));
 
     glDisable(GL_DEPTH_TEST);
 
@@ -151,6 +152,7 @@ void TransformFeedbackParticles::draw()
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+    m_clear->program()->setUniform("elapsed", elapsed);
     m_clear->draw();
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -159,7 +161,7 @@ void TransformFeedbackParticles::draw()
     m_drawProgram->use();
 
     m_vao->bind();
-    //m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+    //m_vao->drawArrays(GL_POINTS, 0, m_numParticles); // don't use this, it is erroneous
     m_transformFeedback->draw(GL_POINTS);
     m_vao->unbind();
 

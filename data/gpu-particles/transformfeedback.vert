@@ -2,7 +2,6 @@
 
 uniform float elapsed; // time delta
 uniform sampler3D forces;
-uniform uint offset;
 
 const float gravity = 1.0;
 const float friction = 0.2;
@@ -23,9 +22,8 @@ void main()
 	float t = elapsed;
 	vec3 g = sign(-p) * (p * p); // gravity to center
 
-	vec3 f  = g * gravity + force;
-		 f -= v * friction;
+	vec3 f  = (g * gravity + force) - (v * friction);
 
-	out_position.xyz  += (v * t) + (0.5 * f * t * t);
-	out_velocity.xyz += f * t;
+	out_position = vec4(p + (v * t) + (0.5 * f * t * t), 1.0);
+	out_velocity = vec4(v + (f * t), 1.0);
 }

@@ -135,12 +135,8 @@ public:
         draw();
     }
 
-    void step()
+    void step(const float delta)
     {
-        const long double elapsed = m_timer.elapsed();
-        m_timer.update();
-
-        const float delta = static_cast<float>((m_timer.elapsed() - elapsed) * 1.0e-9L);
         const float delta_stepped = delta / static_cast<float>(m_steps);
 
         for (int i = 0; i < m_steps; ++i)
@@ -149,8 +145,13 @@ public:
 
     void draw()
     {
-        step(); // requires context to be current
-        m_techniques[m_technique]->draw();
+        const long double elapsed = m_timer.elapsed();
+        m_timer.update();
+
+        const float delta = static_cast<float>((m_timer.elapsed() - elapsed) * 1.0e-9L);
+
+        step(delta); // requires context to be current
+        m_techniques[m_technique]->draw(delta);
     }
 
     void reset(const bool particles = true)
