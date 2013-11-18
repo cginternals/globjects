@@ -14,6 +14,7 @@
 #include <glow/Timer.h>
 #include <glow/Texture.h>
 #include <glow/Array.h>
+#include <glow/NamedStrings.h>
 
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
@@ -90,6 +91,10 @@ public:
         m_forces->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         m_forces->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         m_forces->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+        // Initialize shader includes
+
+        glow::NamedStrings::createNamedString("/glow/data/gpu-particles/particleMovement.inc", new glow::File("data/gpu-particles/particleMovement.inc"));
         
         // initialize camera
 

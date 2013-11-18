@@ -37,11 +37,11 @@ public:
 protected:
     glow::ref_ptr<glow::TransformFeedback> m_transformFeedback;
     glow::ref_ptr<glow::Program> m_transformFeedbackProgram;
+
     glow::ref_ptr<glow::Buffer> m_sourcePositions;
     glow::ref_ptr<glow::Buffer> m_sourceVelocities;
     glow::ref_ptr<glow::Buffer> m_targetPositions;
     glow::ref_ptr<glow::Buffer> m_targetVelocities;
-    glow::ref_ptr<glow::VertexArrayObject> m_transformFeedbackVAO;
 
     glow::ref_ptr<glow::Program> m_drawProgram;
 

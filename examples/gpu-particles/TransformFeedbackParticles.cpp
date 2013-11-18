@@ -49,16 +49,6 @@ void TransformFeedbackParticles::initialize()
     m_transformFeedback = new glow::TransformFeedback();
     m_transformFeedback->setVaryings(m_transformFeedbackProgram, glow::Array<const char*>{ "out_position", "out_velocity" }, GL_SEPARATE_ATTRIBS);
 
-    m_transformFeedbackVAO = new glow::VertexArrayObject();
-
-    m_transformFeedbackVAO->binding(0)->setAttribute(0);
-    m_transformFeedbackVAO->binding(0)->setFormat(4, GL_FLOAT);
-    m_transformFeedbackVAO->enable(0);
-
-    m_transformFeedbackVAO->binding(1)->setAttribute(1);
-    m_transformFeedbackVAO->binding(1)->setFormat(4, GL_FLOAT);
-    m_transformFeedbackVAO->enable(1);
-
     m_drawProgram = new Program();
     m_drawProgram->attach(
         createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
@@ -111,10 +101,10 @@ void TransformFeedbackParticles::reset()
 
 void TransformFeedbackParticles::step(const float elapsed)
 {
-    m_transformFeedbackVAO->bind();
+    m_vao->bind();
 
-    m_transformFeedbackVAO->binding(0)->setBuffer(m_sourcePositions, 0, sizeof(glm::vec4));
-    m_transformFeedbackVAO->binding(1)->setBuffer(m_sourceVelocities, 0, sizeof(glm::vec4));
+    m_vao->binding(0)->setBuffer(m_sourcePositions, 0, sizeof(glm::vec4));
+    m_vao->binding(1)->setBuffer(m_sourceVelocities, 0, sizeof(glm::vec4));
 
     m_targetPositions->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
     m_targetVelocities->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1);
@@ -127,13 +117,13 @@ void TransformFeedbackParticles::step(const float elapsed)
     m_transformFeedbackProgram->use();
     m_transformFeedback->bind();
     m_transformFeedback->begin(GL_POINTS);
-    m_transformFeedbackVAO->drawArrays(GL_POINTS, 0, m_numParticles);
+    m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
     m_transformFeedback->end();
     m_transformFeedback->unbind();
     m_transformFeedbackProgram->release();
     glDisable(GL_RASTERIZER_DISCARD);
 
-    m_transformFeedbackVAO->unbind();
+    m_vao->unbind();
 
     m_forces.unbind();
 
