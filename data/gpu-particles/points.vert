@@ -12,5 +12,6 @@ void main()
 {
 	v_scale = 0.006;
 	v_color = vec4(normalize(a_velocity.xyz) * 0.5 + 0.5, 0.02);
+	v_color = vec4(1.0, 0.0, 1.0, 1.0);
 	gl_Position = viewProjection * a_vertex;
 }

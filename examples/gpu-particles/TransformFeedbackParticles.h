@@ -20,7 +20,7 @@ class TransformFeedbackParticles : public AbstractParticleTechnique
 {
 public:
     TransformFeedbackParticles(
-        const glow::Array<glm::vec4> & postions
+        const glow::Array<glm::vec4> & positions
     ,   const glow::Array<glm::vec4> & velocities
     ,   const glow::Texture & forces
     ,   const glow::Camera & camera);

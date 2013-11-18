@@ -43,7 +43,7 @@ class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler()
-    : m_technique(ComputeShaderTechnique)
+    : m_technique(FragmentShaderTechnique)
     , m_numParticles(1000000)
     , m_camera(nullptr)
     , m_steps(1)
@@ -108,15 +108,16 @@ public:
         
         // initialize techniques
 
-        m_techniques[ComputeShaderTechnique] = new ComputeShaderParticles(
-            m_positions, m_velocities, *m_forces, *m_camera);
+//        m_techniques[ComputeShaderTechnique] = new ComputeShaderParticles(
+//            m_positions, m_velocities, *m_forces, *m_camera);
         m_techniques[FragmentShaderTechnique] = new FragmentShaderParticles(
             m_positions, m_velocities, *m_forces, *m_camera);
         m_techniques[TransformFeedbackTechnique] = new TransformFeedbackParticles(
             m_positions, m_velocities, *m_forces, *m_camera);
 
         for (auto technique : m_techniques)
-            technique.second->initialize();
+            if (technique.second)
+                technique.second->initialize();
 
         reset();
     }
