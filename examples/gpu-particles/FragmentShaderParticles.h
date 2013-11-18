@@ -18,7 +18,7 @@ public:
     virtual void reset();
 
     virtual void step(float elapsed);
-    virtual void draw();
+    virtual void draw(float elapsed);
 
     virtual void resize();
 

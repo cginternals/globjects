@@ -28,15 +28,11 @@ ComputeShaderParticles::ComputeShaderParticles(
 ,   const Texture & forces
 ,   const Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
-, m_quad(nullptr)
-, m_clear(nullptr)
 {
 }
 
 ComputeShaderParticles::~ComputeShaderParticles()
 {
-    delete m_clear;
-    delete m_quad;
 }
 
 void ComputeShaderParticles::initialize()
@@ -50,10 +46,6 @@ void ComputeShaderParticles::initialize()
         createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
     ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
     ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
-    
-    m_drawProgram->use();
-    m_drawProgram->bindAttributeLocation(0, "a_vertex");
-    m_drawProgram->release();
 
     m_positionsSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
     m_velocitiesSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
@@ -87,7 +79,6 @@ void ComputeShaderParticles::initialize()
     m_color->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_color);
-
     m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0 });
     m_fbo->unbind();
 
@@ -108,7 +99,6 @@ void ComputeShaderParticles::step(const float elapsed)
     m_velocitiesSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 
     m_forces.bind();
-    m_clear->program()->setUniform("elapsed", elapsed);
     m_computeProgram->setUniform("forces", 0);
     m_computeProgram->setUniform("elapsed", elapsed);
 
@@ -132,15 +122,15 @@ void ComputeShaderParticles::step(const float elapsed)
     //glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
-void ComputeShaderParticles::draw()
+void ComputeShaderParticles::draw(const float elapsed)
 {
     glDisable(GL_DEPTH_TEST);
 
     m_fbo->bind();
 
     glEnable(GL_BLEND);
-    
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+    m_clear->program()->setUniform("elapsed", elapsed);
     m_clear->draw();
 
 
@@ -169,4 +159,10 @@ void ComputeShaderParticles::resize()
     m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
 
     m_color->image2D(0, GL_RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, GL_RGB, GL_FLOAT, nullptr);
+
+    m_fbo->bind();
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    m_fbo->unbind();
 }

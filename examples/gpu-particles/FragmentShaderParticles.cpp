@@ -40,7 +40,7 @@ void FragmentShaderParticles::step(const float elapsed)
 {
 }
 
-void FragmentShaderParticles::draw()
+void FragmentShaderParticles::draw(const float elapsed)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

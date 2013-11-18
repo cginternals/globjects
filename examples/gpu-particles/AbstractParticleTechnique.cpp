@@ -4,6 +4,8 @@
 
 #include "AbstractParticleTechnique.h"
 
+#include <cassert>
+
 AbstractParticleTechnique::AbstractParticleTechnique(
     const glow::Array<glm::vec4> & positions
 ,   const glow::Array<glm::vec4> & velocities
@@ -15,6 +17,7 @@ AbstractParticleTechnique::AbstractParticleTechnique(
 , m_camera(camera)
 , m_numParticles(positions.size())
 {
+    assert(positions.size() == velocities.size());
 }
 
 AbstractParticleTechnique::~AbstractParticleTechnique()

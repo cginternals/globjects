@@ -56,7 +56,7 @@ Buffer* VertexAttributeBinding::buffer() const
 
 void VertexAttributeBinding::setBuffer(Buffer* vbo, GLint baseoffset, GLint stride)
 {
-    assert(vbo != nullptr);
+    //assert(vbo != nullptr);
 
     m_vbo = vbo;
     m_implementation->bindBuffer(vbo, baseoffset, stride);
@@ -132,7 +132,7 @@ void VertexAttributeBinding_GL_3_2::bindAttribute(GLint attributeIndex)
 
 void VertexAttributeBinding_GL_3_2::bindBuffer(Buffer* vbo, GLint baseoffset, GLint stride)
 {
-    assert(vbo != nullptr);
+    //assert(vbo != nullptr);
 
     m_baseoffset = baseoffset;
     m_stride = stride;
@@ -176,7 +176,16 @@ void VertexAttributeBinding_GL_3_2::finishIfComplete()
 void VertexAttributeBinding_GL_3_2::finish()
 {
 	vao()->bind();
-	vbo()->bind(GL_ARRAY_BUFFER);
+    if (vbo())
+    {
+        vbo()->bind(GL_ARRAY_BUFFER);
+    }
+    else
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        CheckGLError();
+    }
+
 
     const GLuint attribute = attributeIndex();
 
@@ -234,11 +243,11 @@ void VertexAttributeBinding_GL_4_3::bindAttribute(GLint attributeIndex)
 
 void VertexAttributeBinding_GL_4_3::bindBuffer(Buffer* vbo, GLint baseoffset, GLint stride)
 {
-    assert(vbo != nullptr);
+    //assert(vbo != nullptr);
 
 	vao()->bind();
 
-	glBindVertexBuffer(bindingIndex(), vbo->id(), baseoffset, stride);
+    glBindVertexBuffer(bindingIndex(), vbo ? vbo->id() : 0, baseoffset, stride);
 	CheckGLError();
 }
 

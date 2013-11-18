@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <glow/ref_ptr.h>
@@ -13,6 +12,7 @@ namespace glow
     class Texture;
     class RenderBufferObject;
     class ScreenAlignedQuad;
+    class VertexArrayObject;
 }
 
 
@@ -26,13 +26,13 @@ public:
     ,   const glow::Camera & camera);
     virtual ~ComputeShaderParticles();
 
-    virtual void initialize();
-    virtual void reset();
+    virtual void initialize() override;
+    virtual void reset() override;
 
-    virtual void step(float elapsed);
-    virtual void draw();
+    virtual void step(float elapsed) override;
+    virtual void draw(float elapsed) override;
 
-    virtual void resize();
+    virtual void resize() override;
 
 protected:
     glow::ref_ptr<glow::Buffer> m_positionsSSBO;
@@ -46,6 +46,6 @@ protected:
     glow::ref_ptr<glow::FrameBufferObject> m_fbo;
     glow::ref_ptr<glow::Texture> m_color;
 
-    glow::ScreenAlignedQuad * m_quad;
-    glow::ScreenAlignedQuad * m_clear;
+    glow::ref_ptr<glow::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glow::ScreenAlignedQuad> m_clear;
 };
