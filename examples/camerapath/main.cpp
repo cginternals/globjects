@@ -75,22 +75,22 @@ public:
             << CameraPathPoint(vec3(2.0, 2.0, 5.0), vec3(-5.0, -1.0, -1.0), vec3(1.0, 0.0, 0.0), fov)
             << CameraPathPoint(vec3(0.0, 1.0, 4.0), center, up, fov);*/
 
-       /* path
+        path
             << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
             << CameraPathPoint(vec3(-1.0*d, height, 1.0*d), vec3(0.0, 5.0, 0.0), vec3(-1.0, 0.0, 0.0), fov)
             << CameraPathPoint(vec3(1.0*d, height*2, 1.0*d), center, vec3(0.0, -1.0, 0.0), fov)
             << CameraPathPoint(vec3(1.0*d, height*6, 3.0*d), center, vec3(0.0, 0.0, 1.0), fov)
             << CameraPathPoint(vec3(-1.0*d, height, -4.0*d), center, up, fov)
-            << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)*/
+            << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
         ;
 
-        path
+        /*path
             << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
             << CameraPathPoint(vec3(-1.0*d, height, 1.0*d), center, up, fov)
             << CameraPathPoint(vec3(1.0*d, height, 1.0*d), center, up, fov)
             << CameraPathPoint(vec3(1.0*d, height, -1.0*d), center, up, fov)
             << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
-        ;
+        ;*/
 
         player.setPath(path);
     }
