@@ -105,6 +105,8 @@ void TransformFeedbackParticles::reset()
 {
     m_sourcePositions->setData(m_positions, GL_DYNAMIC_DRAW);
     m_sourceVelocities->setData(m_velocities, GL_DYNAMIC_DRAW);
+    m_targetPositions->setData(m_numParticles*sizeof(glm::vec4), nullptr, GL_DYNAMIC_DRAW);
+    m_targetVelocities->setData(m_numParticles*sizeof(glm::vec4), nullptr, GL_DYNAMIC_DRAW);
 }
 
 void TransformFeedbackParticles::step(const float elapsed)
@@ -129,6 +131,7 @@ void TransformFeedbackParticles::step(const float elapsed)
     m_transformFeedbackVAO->drawArrays(GL_POINTS, 0, m_numParticles);
     m_transformFeedback->end();
     m_transformFeedback->unbind();
+    m_transformFeedbackProgram->release();
     glDisable(GL_RASTERIZER_DISCARD);
 
     m_transformFeedbackVAO->unbind();
@@ -168,9 +171,6 @@ void TransformFeedbackParticles::draw()
 
     m_quad->draw();
 
-    m_vao->disable(0);
-    m_vao->disable(1);
-
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -178,7 +178,7 @@ void TransformFeedbackParticles::resize()
 {
     m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
 
-    m_color->image2D(0, GL_RGB16F_ARB, m_camera.viewport().x, m_camera.viewport().y, 0, GL_RGB, GL_FLOAT, nullptr);
+    m_color->image2D(0, GL_RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, GL_RGB, GL_FLOAT, nullptr);
 
     m_fbo->bind();
 
