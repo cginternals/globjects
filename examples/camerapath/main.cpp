@@ -75,21 +75,22 @@ public:
             << CameraPathPoint(vec3(2.0, 2.0, 5.0), vec3(-5.0, -1.0, -1.0), vec3(1.0, 0.0, 0.0), fov)
             << CameraPathPoint(vec3(0.0, 1.0, 4.0), center, up, fov);*/
 
-        path
+       /* path
             << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
-            << CameraPathPoint(vec3(-1.0*d, height, 1.0*d), center, vec3(-1.0, 0.0, 0.0), fov)
+            << CameraPathPoint(vec3(-1.0*d, height, 1.0*d), vec3(0.0, 5.0, 0.0), vec3(-1.0, 0.0, 0.0), fov)
             << CameraPathPoint(vec3(1.0*d, height*2, 1.0*d), center, vec3(0.0, -1.0, 0.0), fov)
-            << CameraPathPoint(vec3(1.0*d, height/3, 3.0*d), center*4.0f, vec3(0.0, 0.0, -1.0), fov)
+            << CameraPathPoint(vec3(1.0*d, height*6, 3.0*d), center, vec3(0.0, 0.0, 1.0), fov)
             << CameraPathPoint(vec3(-1.0*d, height, -4.0*d), center, up, fov)
-        << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov);
+            << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)*/
+        ;
 
-        /*path
+        path
             << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
             << CameraPathPoint(vec3(-1.0*d, height, 1.0*d), center, up, fov)
             << CameraPathPoint(vec3(1.0*d, height, 1.0*d), center, up, fov)
             << CameraPathPoint(vec3(1.0*d, height, -1.0*d), center, up, fov)
             << CameraPathPoint(vec3(-1.0*d, height, -1.0*d), center, up, fov)
-        ;*/
+        ;
 
         player.setPath(path);
     }
@@ -180,17 +181,19 @@ public:
         auto d = std::chrono::duration<long double, std::nano>(timer.elapsed());
         timer.reset();
 
-        static auto duration = std::chrono::seconds(5);
-
-        angle+= d/std::chrono::duration_cast<std::chrono::duration<long double, std::nano>>(duration);
-
-        while (angle>1)
-            angle = 0;
-
-        float t = angle;
+        static auto duration = std::chrono::seconds(10);
 
         if (usePath)
+        {
+            angle+= d/std::chrono::duration_cast<std::chrono::duration<long double, std::nano>>(duration);
+
+            while (angle>1)
+                angle = 0;
+
+            float t = angle;
+
             player.play(t);
+        }
 
         event.window()->repaint();
     }

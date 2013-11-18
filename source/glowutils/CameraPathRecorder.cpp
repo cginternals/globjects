@@ -176,22 +176,28 @@ const char* vertexSource = R"(
 
 uniform mat4 transform;
 
-layout(location = 0) in vec3 vertex;
+layout(location = 0) in vec4 vertex;
+
+out float t;
 
 void main()
 {
-    gl_Position = transform * vec4(vertex, 1.0);
+    gl_Position = transform * vec4(vertex.xyz, 1.0);
+    t = vertex.w;
+
 }
 )";
 
 const char* fragmentSource = R"(
 #version 330
 
-layout(location=0) out vec4 color;
+layout(location=0) out vec4 fragColor;
+
+in float t;
 
 void main()
 {
-    color = vec4(1.0, 0.0, 0.0, 1.0);
+    fragColor = vec4(vec3(1.0, 0.2+t*0.8, t/2.0), 1.0);
 }
 )";
 
@@ -210,7 +216,6 @@ void CameraPathPlayer::prepareControlPoints()
     std::vector<glm::vec3> dirs;
     vec3 dir0 = current->eye - previous->eye;
     dir0 = (dir0 + (previous->eye - (&points[points.size()-2])->eye))/2.f;
-
     dirs.push_back(dir0);
 
     for (int i = 1; i<points.size()-1; ++i)
@@ -240,18 +245,10 @@ void CameraPathPlayer::prepareControlPoints()
         vec3 p1 = section.start->eye;
         vec3 p2 = section.end->eye;
 
-        float f = glm::length(p2-p1)/pi<float>();
+        float f = glm::length(p2-p1)/2.7;
 
         section.c1 = p1 + d1 * f;
         section.c2 = p2 - d2 * f;
-
-        /*vec3 int1 = intersection(p1, d1, p2, p2-p1);
-        vec3 int2 = intersection(p2, d2, p1, p1-p2);
-
-        section.c1 = (p1+int1)/2.f;
-        section.c2 = (p2+int2)/2.f;*/
-
-        //glow::debug() << p1 << "("<<d1<<")" << " " << section.c1 << " " << section.c2 << " " << p2 << "("<<d2<<")";
 
         i++;
     }
@@ -306,7 +303,7 @@ void CameraPathPlayer::createVao()
 
     m_buffer = new Buffer(GL_ARRAY_BUFFER);
 
-    Array<vec3> array;
+    Array<vec4> array;
 
     for (int i=0; i<m_bufferSize; ++i)
     {
@@ -316,15 +313,15 @@ void CameraPathPlayer::createVao()
         const CameraPathPoint& p1 = *section.start;
         const CameraPathPoint& p2 = *section.end;
         vec3 pos = bezier(p1.eye, section.c1, section.c2, p2.eye, sectionT);
-        array << pos;
+        array << vec4(pos, t);
     }
 
     m_buffer->setData(array);
 
     m_vao = new VertexArrayObject();
 
-    m_vao->binding(0)->setBuffer(m_buffer, 0, sizeof(vec3));
-    m_vao->binding(0)->setFormat(3, GL_FLOAT);
+    m_vao->binding(0)->setBuffer(m_buffer, 0, sizeof(vec4));
+    m_vao->binding(0)->setFormat(4, GL_FLOAT);
     m_vao->binding(0)->setAttribute(0);
 
     m_vao->enable(0);
