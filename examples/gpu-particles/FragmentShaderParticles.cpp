@@ -37,7 +37,7 @@ void FragmentShaderParticles::initialize()
     // Create vertex buffer for positions
     static const float data[] = { 0.f, 0.f, 0.f, 1.f };
     m_sourcePositions = new glow::Buffer(GL_ARRAY_BUFFER);
-    m_sourcePositions->setData(sizeof(float)*4, data, GL_DYNAMIC_DRAW);
+    m_sourcePositions->setData(sizeof(float)*4, data, GL_STATIC_DRAW);
 
     // Create textures
     m_positionsTexture = new glow::Texture(GL_TEXTURE_2D);
@@ -112,6 +112,8 @@ void FragmentShaderParticles::initialize()
 
 void FragmentShaderParticles::reset()
 {
+//  m_sourcePositions->setData(m_positions, GL_STATIC_DRAW);
+
     m_positionsTexture ->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_positions .rawData());
     m_velocitiesTexture->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_velocities.rawData());
 }
@@ -156,8 +158,8 @@ void FragmentShaderParticles::draw(const float elapsed)
     m_drawProgram->use();
 
     m_vao->bind();
-//  m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
-    m_vao->drawArraysInstanced(GL_POINTS, 0, 1, m_numParticles);
+    m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+//  m_vao->drawArraysInstanced(GL_POINTS, 0, 1, m_numParticles);
     m_vao->unbind();
 
     m_positionsTexture->unbind();
