@@ -11,8 +11,10 @@ out vec4 v_color;
 
 void main()
 {
-	int y = gl_VertexID / 1000;
-	int x = gl_VertexID % 1000;
+//	int y = gl_VertexID / 1000;
+//	int x = gl_VertexID % 1000;
+	int y = gl_InstanceID / 1000;
+	int x = gl_InstanceID % 1000;
 	vec4 vertex   = texelFetch(vertices,   ivec2(x, y), 0);
 	vec4 velocity = texelFetch(velocities, ivec2(x, y), 0);
 
