@@ -25,7 +25,6 @@ FragmentShaderParticles::FragmentShaderParticles(
 ,   const Texture & forces
 ,   const Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
-, m_odd(false)
 {
 }
 
@@ -39,33 +38,19 @@ void FragmentShaderParticles::initialize()
 //  m_sourcePositions = new glow::Buffer(GL_ARRAY_BUFFER);
 
     // Create textures
-    m_sourcePositionsTexture = new glow::Texture(GL_TEXTURE_2D);
-    m_sourcePositionsTexture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    m_sourcePositionsTexture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    m_sourcePositionsTexture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    m_sourcePositionsTexture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    m_sourcePositionsTexture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    m_positionsTexture = new glow::Texture(GL_TEXTURE_2D);
+    m_positionsTexture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    m_positionsTexture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_positionsTexture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    m_positionsTexture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    m_positionsTexture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-    m_sourceVelocitiesTexture = new glow::Texture(GL_TEXTURE_2D);
-    m_sourceVelocitiesTexture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    m_sourceVelocitiesTexture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    m_sourceVelocitiesTexture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    m_sourceVelocitiesTexture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    m_sourceVelocitiesTexture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-    m_destPositionsTexture = new glow::Texture(GL_TEXTURE_2D);
-    m_destPositionsTexture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    m_destPositionsTexture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    m_destPositionsTexture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    m_destPositionsTexture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    m_destPositionsTexture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-    m_destVelocitiesTexture = new glow::Texture(GL_TEXTURE_2D);
-    m_destVelocitiesTexture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    m_destVelocitiesTexture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    m_destVelocitiesTexture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    m_destVelocitiesTexture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    m_destVelocitiesTexture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    m_velocitiesTexture = new glow::Texture(GL_TEXTURE_2D);
+    m_velocitiesTexture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    m_velocitiesTexture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_velocitiesTexture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    m_velocitiesTexture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    m_velocitiesTexture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     // Fill buffers with data
     reset();
@@ -83,15 +68,15 @@ void FragmentShaderParticles::initialize()
 */
 
     // Create frame buffer object for update
-    m_fboParticles = new FrameBufferObject();
-    m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT0, m_destPositionsTexture);
-    m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT1, m_destVelocitiesTexture);
-    m_fboParticles->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
-    m_fboParticles->unbind();
+    m_fboUpdate = new FrameBufferObject();
+    m_fboUpdate->attachTexture2D(GL_COLOR_ATTACHMENT0, m_positionsTexture);
+    m_fboUpdate->attachTexture2D(GL_COLOR_ATTACHMENT1, m_velocitiesTexture);
+    m_fboUpdate->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
+    m_fboUpdate->unbind();
 
     m_update = new ScreenAlignedQuad(
         createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/particle.frag"),
-        m_sourcePositionsTexture );
+        m_positionsTexture );
     m_update->program()->setUniform("vertices",   0);
     m_update->program()->setUniform("velocities", 1);
     m_update->program()->setUniform("forces",     2);
@@ -129,39 +114,23 @@ void FragmentShaderParticles::reset()
 {
     // Upload vertex data
 //  m_sourcePositions ->setData(m_positions,  GL_DYNAMIC_DRAW);
-    m_sourcePositionsTexture ->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_positions .rawData());
-    m_sourceVelocitiesTexture->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_velocities.rawData());
-    m_destPositionsTexture   ->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_positions .rawData());
-    m_destVelocitiesTexture  ->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_velocities.rawData());
+    m_positionsTexture ->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_positions .rawData());
+    m_velocitiesTexture->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_velocities.rawData());
 }
 
 void FragmentShaderParticles::step(const float elapsed)
 {
-    m_fboParticles->bind();
-    if (m_odd) {
-        m_destPositionsTexture ->bind(GL_TEXTURE0);
-        m_destVelocitiesTexture->bind(GL_TEXTURE1);
-    } else {
-        m_sourcePositionsTexture ->bind(GL_TEXTURE0);
-        m_sourceVelocitiesTexture->bind(GL_TEXTURE1);
-    }
+    m_fboUpdate->bind();
+    m_positionsTexture ->bind(GL_TEXTURE0);
+    m_velocitiesTexture->bind(GL_TEXTURE1);
     m_forces.bind(GL_TEXTURE2);
     m_update->program()->setUniform("elapsed", elapsed);
+
     glViewport(0, 0, 1000, 1000);
     m_update->draw();
     glViewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
-    m_fboParticles->unbind();
 
-    m_odd = !m_odd;
-    if (m_odd) {
-        m_update->setTexture(m_destPositionsTexture);
-        m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT0, m_sourcePositionsTexture);
-        m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT1, m_sourceVelocitiesTexture);
-    } else {
-        m_update->setTexture(m_sourcePositionsTexture);
-        m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT0, m_destPositionsTexture);
-        m_fboParticles->attachTexture2D(GL_COLOR_ATTACHMENT1, m_destVelocitiesTexture);
-    }
+    m_fboUpdate->unbind();
 }
 
 void FragmentShaderParticles::draw(const float elapsed)
@@ -182,9 +151,9 @@ void FragmentShaderParticles::draw(const float elapsed)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
     m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
-    m_sourcePositionsTexture->bind(GL_TEXTURE0);
+    m_positionsTexture->bind(GL_TEXTURE0);
     m_drawProgram->setUniform("vertices", 0);
-    m_sourceVelocitiesTexture->bind(GL_TEXTURE1);
+    m_velocitiesTexture->bind(GL_TEXTURE1);
     m_drawProgram->setUniform("velocities", 1);
     m_drawProgram->use();
 
@@ -192,7 +161,7 @@ void FragmentShaderParticles::draw(const float elapsed)
     m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
     m_vao->unbind();
 
-    m_sourcePositionsTexture->unbind();
+    m_positionsTexture->unbind();
 
     m_drawProgram->release();
 
