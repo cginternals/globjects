@@ -46,7 +46,7 @@ bool ShaderCompiler::compile()
 {
     std::string source = m_shader->source()->string();
 
-    if (glCompileShaderIncludeARB)
+    if (glCompileShaderIncludeARB && false)
     {
         const char * sourcePointer = source.c_str();
 

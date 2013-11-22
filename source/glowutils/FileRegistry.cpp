@@ -4,7 +4,7 @@
 
 #include <glowutils/File.h>
 
-namespace glow
+namespace glowutils
 {
 
 FileRegistry FileRegistry::s_registry;
@@ -65,4 +65,4 @@ void FileRegistry::reloadAll()
     }
 }
 
-} // namespace glow
+} // namespace glowutils

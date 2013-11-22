@@ -8,15 +8,18 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow 
+namespace glow
+{
+    class VertexArrayObject;
+    class Buffer;
+}
+
+namespace glowutils 
 {
 
-class VertexArrayObject;
-class Buffer;
-
-class GLOWUTILS_API UnitCube : public Referenced
+class GLOWUTILS_API UnitCube : public glow::Referenced
 {
-    static const Array<glm::vec3> strip();
+    static const glow::Array<glm::vec3> strip();
 
 public:
     UnitCube(
@@ -31,8 +34,8 @@ public:
     void draw();
 
 private:
-    ref_ptr<VertexArrayObject> m_vao;
-    ref_ptr<Buffer> m_strip;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Buffer> m_strip;
 };
 
-} // namespace glow
+} // namespace glowutils

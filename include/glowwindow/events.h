@@ -7,7 +7,7 @@
 #include <glowwindow/glowwindow.h>
 
 
-namespace glow 
+namespace glowwindow
 {
 
 class Window;
@@ -182,4 +182,4 @@ protected:
     int m_id;
 };
 
-} // namespace glow
+} // namespace glowwindow

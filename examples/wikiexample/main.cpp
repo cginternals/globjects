@@ -10,11 +10,12 @@
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 
-using namespace glow;
+using namespace glowwindow;
 
 namespace {
     const char* vertexShaderCode = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 in vec2 corner;
 
@@ -28,7 +29,8 @@ void main()
 
 )";
     const char* fragmentShaderCode = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 layout (location = 0) out vec4 fragColor;
 
@@ -55,7 +57,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
     }

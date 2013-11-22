@@ -5,7 +5,7 @@
 
 struct GLFWwindow;
 
-namespace glow
+namespace glowwindow
 {
 
 class Window;
@@ -67,4 +67,4 @@ protected:
     static void handleClose(GLFWwindow* glfwWindow);
 };
 
-} // namespace glow
+} // namespace glowwindow

@@ -14,7 +14,7 @@
 
 using namespace glm;
 
-namespace glow
+namespace glowutils
 {
 
 float AbstractCoordinateProvider::depthAt(
@@ -100,4 +100,4 @@ const glm::vec3 AbstractCoordinateProvider::objAt(const glm::ivec2 & windowCoord
     return objAt(windowCoordinates, depthAt(windowCoordinates));
 }
 
-} // namespace glow
+} // namespace glowutils

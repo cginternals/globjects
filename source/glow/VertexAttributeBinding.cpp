@@ -12,7 +12,7 @@ namespace glow
 
 VertexAttributeBinding::VertexAttributeBinding(
     VertexArrayObject * vao
-,   const GLuint bindingIndex)
+,   const GLint bindingIndex)
 : m_vao(vao)
 , m_bindingIndex(bindingIndex)
 , m_attributeIndex(0)
@@ -39,12 +39,12 @@ void VertexAttributeBinding::setAttribute(GLint attributeIndex)
     m_implementation->bindAttribute(attributeIndex);
 }
 
-GLuint VertexAttributeBinding::attributeIndex() const
+GLint VertexAttributeBinding::attributeIndex() const
 {
     return m_attributeIndex;
 }
 
-GLuint VertexAttributeBinding::bindingIndex() const
+GLint VertexAttributeBinding::bindingIndex() const
 {
     return m_bindingIndex;
 }
@@ -91,12 +91,12 @@ VertexAttributeBindingImplementation::~VertexAttributeBindingImplementation()
 {
 }
 
-GLuint VertexAttributeBindingImplementation::attributeIndex() const
+GLint VertexAttributeBindingImplementation::attributeIndex() const
 {
     return m_binding->m_attributeIndex;
 }
 
-GLuint VertexAttributeBindingImplementation::bindingIndex() const
+GLint VertexAttributeBindingImplementation::bindingIndex() const
 {
     return m_binding->m_bindingIndex;
 }
@@ -187,7 +187,7 @@ void VertexAttributeBinding_GL_3_2::finish()
     }
 
 
-    const GLuint attribute = attributeIndex();
+    const GLint attribute = attributeIndex();
 
     switch (m_format.method)
 	{

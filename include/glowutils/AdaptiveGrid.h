@@ -8,12 +8,16 @@
 #include <glowutils/glowutils.h>
 
 
-namespace glow 
+namespace glow
 {
-
-class Program;
-class VertexArrayObject;
-class Buffer;
+    class Program;
+    class VertexArrayObject;
+    class Buffer;
+}
+    
+ 
+namespace glowutils 
+{
 class Camera;
 
 
@@ -41,7 +45,7 @@ class Camera;
 
     \endcode
 */
-class GLOWUTILS_API AdaptiveGrid : public Referenced 
+class GLOWUTILS_API AdaptiveGrid : public glow::Referenced 
 {
 public:
     AdaptiveGrid(
@@ -79,10 +83,10 @@ private:
     static const char * s_fsSource;
 
 private:
-    ref_ptr<Program> m_program;
+    glow::ref_ptr<glow::Program> m_program;
 
-    ref_ptr<VertexArrayObject> m_vao;
-    ref_ptr<Buffer> m_buffer;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Buffer> m_buffer;
 
     const Camera * m_camera;
 
@@ -94,4 +98,4 @@ private:
     unsigned short m_size;
 };
 
-} // namespace glow
+} // namespace glowutils

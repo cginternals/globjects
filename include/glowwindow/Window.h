@@ -4,20 +4,25 @@
 #include <string>
 #include <queue>
 
-#include <glowwindow/glowwindow.h>
 #include <glow/ref_ptr.h>
+
+#include <glowwindow/glowwindow.h>
 #include <glowwindow/MainLoop.h>
 #include <glowwindow/events.h>  // forward?
 
+
 struct GLFWwindow;
 
-namespace glow 
+namespace glow
 {
+    class Timer;
+}
 
+namespace glowwindow 
+{
 class WindowEventHandler;
 class ContextFormat;
 class Context;
-class Timer;
 
 /**
 
@@ -99,7 +104,7 @@ protected:
     void defaultEventAction(WindowEvent & event);
 
 protected:
-    ref_ptr<WindowEventHandler> m_eventHandler;
+    glow::ref_ptr<WindowEventHandler> m_eventHandler;
     Context * m_context;
     std::queue<WindowEvent*> m_eventQueue;
 
@@ -116,7 +121,7 @@ protected:
 
     std::string m_title;
 
-    Timer * m_timer;
+    glow::Timer * m_timer;
 
     long double m_swapts;
     unsigned int m_swaps;
@@ -129,4 +134,4 @@ private:
     int m_height;
 };
 
-} // namespace glow
+} // namespace glowwindow

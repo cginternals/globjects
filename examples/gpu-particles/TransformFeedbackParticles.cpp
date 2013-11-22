@@ -23,7 +23,7 @@ TransformFeedbackParticles::TransformFeedbackParticles(
     const Array<vec4> & positions
 ,   const Array<vec4> & velocities
 ,   const Texture & forces
-,   const Camera & camera)
+,   const glowutils::Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
 {
 }
@@ -42,7 +42,7 @@ void TransformFeedbackParticles::initialize()
     reset();
 
     m_transformFeedbackProgram = new glow::Program();
-    m_transformFeedbackProgram->attach(glow::createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
+    m_transformFeedbackProgram->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
 
     m_transformFeedbackProgram->link();
 
@@ -51,9 +51,9 @@ void TransformFeedbackParticles::initialize()
 
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
-    ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-    ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
+    ,   glowutils::createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+    ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 
     m_vao = new VertexArrayObject();
     m_vao->bind();
@@ -86,9 +86,9 @@ void TransformFeedbackParticles::initialize()
     m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0 });
     m_fbo->unbind();
 
-    m_quad = new ScreenAlignedQuad(m_color);
-    m_clear = new ScreenAlignedQuad(
-        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
+    m_quad = new glowutils::ScreenAlignedQuad(m_color);
+    m_clear = new glowutils::ScreenAlignedQuad(
+        glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 
 void TransformFeedbackParticles::reset()
