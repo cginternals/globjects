@@ -48,7 +48,7 @@ void NamedStrings::deleteNamedString(const std::string& name)
         s_instance.m_registeredStringSources.erase(name);
     }
 
-    if (glDeleteNamedStringARB)
+    if (glDeleteNamedStringARB && GLEW_ARB_shading_language_include)
     {
         glDeleteNamedStringARB(name.size(), name.c_str());
         CheckGLError();
@@ -57,11 +57,12 @@ void NamedStrings::deleteNamedString(const std::string& name)
 
 bool NamedStrings::isNamedString(const std::string& name, bool cached)
 {
-    if (cached || !glIsNamedStringARB)
+    if (cached || !glIsNamedStringARB || !GLEW_ARB_shading_language_include)
     {
         return s_instance.m_registeredStringSources.count(name) > 0;
     }
 
+    CheckGLError();
     bool result = glIsNamedStringARB(name.size(), name.c_str()) == GL_TRUE;
     CheckGLError();
     return result;
@@ -69,7 +70,7 @@ bool NamedStrings::isNamedString(const std::string& name, bool cached)
 
 std::string NamedStrings::namedString(const std::string& name, bool cached)
 {
-    if (cached || !glGetNamedStringARB)
+    if (cached || !glGetNamedStringARB || !GLEW_ARB_shading_language_include)
     {
         return s_instance.m_registeredStringSources[name].source->string();
     }
@@ -85,7 +86,7 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
 
 GLint NamedStrings::namedStringSize(const std::string& name, bool cached)
 {
-    if (cached || !glGetNamedStringivARB)
+    if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include)
     {
         return s_instance.m_registeredStringSources[name].source->string().size();
     }
@@ -95,7 +96,7 @@ GLint NamedStrings::namedStringSize(const std::string& name, bool cached)
 
 GLenum NamedStrings::namedStringType(const std::string& name, bool cached)
 {
-    if (cached || !glGetNamedStringivARB)
+    if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include)
     {
         return s_instance.m_registeredStringSources[name].type;
     }
@@ -105,6 +106,11 @@ GLenum NamedStrings::namedStringType(const std::string& name, bool cached)
 
 GLint NamedStrings::namedStringParameter(const std::string& name, GLenum pname)
 {
+    if (!glGetNamedStringivARB || !GLEW_ARB_shading_language_include)
+    {
+        return -1;
+    }
+
     int result;
 
     glGetNamedStringivARB(name.size(), name.c_str(), pname, &result);
@@ -125,7 +131,7 @@ void NamedStrings::updateNamedString(const std::string& name)
 
 void NamedStrings::updateNamedString(const NamedString& namedString)
 {
-    if (namedString.name == "" || !glNamedStringARB)
+    if (namedString.name == "" || !glNamedStringARB || !GLEW_ARB_shading_language_include)
     {
         return;
     }
