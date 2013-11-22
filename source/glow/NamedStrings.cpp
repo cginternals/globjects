@@ -3,6 +3,8 @@
 #include <glow/Error.h>
 #include <glow/StringSource.h>
 #include <glow/String.h>
+#include <glow/logging.h>
+#include <glow/Version.h>
 
 namespace glow
 {
@@ -20,7 +22,7 @@ void NamedStrings::createNamedString(const std::string& name, const std::string&
 
 void NamedStrings::createNamedString(const std::string& name, StringSource* source, GLenum type)
 {
-    if (isNamedString(name))
+    if (isNamedString(name, true))
     {
         if (s_instance.sourceOccurenceCount(source) <= 1 )
         {
@@ -48,7 +50,7 @@ void NamedStrings::deleteNamedString(const std::string& name)
         s_instance.m_registeredStringSources.erase(name);
     }
 
-    if (glDeleteNamedStringARB && GLEW_ARB_shading_language_include)
+    if (glDeleteNamedStringARB && GLEW_ARB_shading_language_include && Version::current() >= Version(3, 2))
     {
         glDeleteNamedStringARB(name.size(), name.c_str());
         CheckGLError();
@@ -57,7 +59,7 @@ void NamedStrings::deleteNamedString(const std::string& name)
 
 bool NamedStrings::isNamedString(const std::string& name, bool cached)
 {
-    if (cached || !glIsNamedStringARB || !GLEW_ARB_shading_language_include)
+    if (cached || !glIsNamedStringARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
     {
         return s_instance.m_registeredStringSources.count(name) > 0;
     }
@@ -70,7 +72,7 @@ bool NamedStrings::isNamedString(const std::string& name, bool cached)
 
 std::string NamedStrings::namedString(const std::string& name, bool cached)
 {
-    if (cached || !glGetNamedStringARB || !GLEW_ARB_shading_language_include)
+    if (cached || !glGetNamedStringARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
     {
         return s_instance.m_registeredStringSources[name].source->string();
     }
@@ -86,7 +88,7 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
 
 GLint NamedStrings::namedStringSize(const std::string& name, bool cached)
 {
-    if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include)
+    if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
     {
         return s_instance.m_registeredStringSources[name].source->string().size();
     }
@@ -96,7 +98,7 @@ GLint NamedStrings::namedStringSize(const std::string& name, bool cached)
 
 GLenum NamedStrings::namedStringType(const std::string& name, bool cached)
 {
-    if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include)
+    if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
     {
         return s_instance.m_registeredStringSources[name].type;
     }
@@ -106,7 +108,7 @@ GLenum NamedStrings::namedStringType(const std::string& name, bool cached)
 
 GLint NamedStrings::namedStringParameter(const std::string& name, GLenum pname)
 {
-    if (!glGetNamedStringivARB || !GLEW_ARB_shading_language_include)
+    if (!glGetNamedStringivARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
     {
         return -1;
     }
@@ -131,7 +133,7 @@ void NamedStrings::updateNamedString(const std::string& name)
 
 void NamedStrings::updateNamedString(const NamedString& namedString)
 {
-    if (namedString.name == "" || !glNamedStringARB || !GLEW_ARB_shading_language_include)
+    if (namedString.name == "" || !glNamedStringARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
     {
         return;
     }

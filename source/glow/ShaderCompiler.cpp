@@ -10,6 +10,7 @@
 #include <glow/Shader.h>
 #include <glow/StringSource.h>
 #include <glow/NamedStrings.h>
+#include <glow/Version.h>
 
 namespace {
     // From http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
@@ -46,7 +47,7 @@ bool ShaderCompiler::compile()
 {
     std::string source = m_shader->source()->string();
 
-    if (glCompileShaderIncludeARB)
+    if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
     {
         const char * sourcePointer = source.c_str();
 
@@ -99,7 +100,7 @@ bool ShaderCompiler::checkCompileStatus()
     return true;
 }
 
-std::string ShaderCompiler::resolveIncludes(const std::string& source) const
+std::string ShaderCompiler::resolveIncludes(const std::string& source, bool dropVersion)
 {
     std::istringstream sourcestream(source);
     std::stringstream destinationstream;
@@ -116,10 +117,17 @@ std::string ShaderCompiler::resolveIncludes(const std::string& source) const
         {
             if (trimmedLine[0] == '#')
             {
-                // #extension GL_ARB_shading_language_include : require
-                if (contains(trimmedLine, "extension") && contains(trimmedLine, "GL_ARB_shading_language_include") && contains(trimmedLine, "require"))
+                if (contains(trimmedLine, "extension"))
                 {
-                    // drop line
+                    // #extension GL_ARB_shading_language_include : require
+                    if (contains(trimmedLine, "GL_ARB_shading_language_include"))
+                    {
+                        // drop line
+                    }
+                    else
+                    {
+                        destinationstream << line << '\n';
+                    }
                 }
                 else if (contains(trimmedLine, "include"))
                 {
@@ -140,13 +148,62 @@ std::string ShaderCompiler::resolveIncludes(const std::string& source) const
                         }
                         else
                         {
-                            destinationstream << resolveIncludes(NamedStrings::namedString(include));
+                            destinationstream << resolveIncludes(NamedStrings::namedString(include), true);
                         }
                     }
                 }
+                else if (contains(trimmedLine, "define"))
+                {
+                    size_t definePosition = trimmedLine.find("define");
+
+                    std::string definition = trim(trimmedLine.substr(definePosition + std::string("define").size() + 1));
+
+                    if (contains(definition, " ") || contains(definition, "\t") || contains(definition, "\n"))
+                    {
+                        glow::warning() << "Malformed #define";
+                    }
+                    else
+                    {
+                        m_defines.insert(definition);
+                    }
+                }
+                else if (contains(trimmedLine, "undef"))
+                {
+                    size_t undefPosition = trimmedLine.find("undef");
+
+                    std::string definition = trim(trimmedLine.substr(undefPosition + std::string("undef").size() + 1));
+
+                    if (contains(definition, " ") || contains(definition, "\t") || contains(definition, "\n"))
+                    {
+                        glow::warning() << "Malformed #undef";
+                    }
+                    else
+                    {
+                        m_defines.erase(definition);
+                    }
+                }
+                else if (contains(trimmedLine, "version"))
+                {
+                    if (!dropVersion)
+                    {
+                        destinationstream << line << '\n';
+                    }
+                }
+                else if (contains(trimmedLine, "ifdef"))
+                {
+                    destinationstream << line << '\n';
+                }
+                else if (contains(trimmedLine, "ifndef"))
+                {
+                    destinationstream << line << '\n';
+                }
+                else if (contains(trimmedLine, "else"))
+                {
+                    destinationstream << line << '\n';
+                }
                 else
                 {
-                    // ifdef ifndef define version
+                    glow::warning() << "Unrecognized macro " << trimmedLine;
                     destinationstream << line << '\n';
                 }
             }
