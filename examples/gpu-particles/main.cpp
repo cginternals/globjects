@@ -345,7 +345,7 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
-    format.setVersion(4, 3);
+//    format.setVersion(4, 3);
     format.setProfile(ContextFormat::CoreProfile);
 
     Window window;
