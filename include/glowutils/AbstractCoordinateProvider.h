@@ -6,7 +6,7 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow
+namespace glowutils
 {
 class Camera;
 
@@ -62,4 +62,4 @@ public:
     ,   const glm::mat4 & viewProjectionInverted) = 0;
 };
 
-} // namespace glow
+} // namespace glowutils

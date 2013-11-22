@@ -22,7 +22,7 @@ void replaceAll(
 
 }
 
-namespace glow 
+namespace glowutils 
 {
 
 StringTemplate::StringTemplate(StringSource * source)
@@ -61,4 +61,4 @@ void StringTemplate::update()
         replaceAll(m_modifiedSource, pair.first, pair.second);
 }
 
-} // namespace glow
+} // namespace glowutils

@@ -7,7 +7,10 @@
 
 #include <glowutils/UniformGroup.h>
 
-namespace glow 
+
+using namespace glow;
+
+namespace glowutils 
 {
 
 UniformGroup::UniformGroup()
@@ -38,4 +41,4 @@ void UniformGroup::addToProgram(Program * program)
         program->addUniform(pair.second);
 }
 
-} // namespace glow
+} // namespace glowutils

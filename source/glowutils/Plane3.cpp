@@ -12,7 +12,7 @@
 
 using namespace glm;
 
-namespace glow 
+namespace glowutils 
 {
 
 float pointToPlaneDistance(
@@ -70,4 +70,4 @@ const vec3 intersection(
 	return t * r + r0; // retrieve point via the ray
 }
 
-} // namespace glow
+} // namespace glowutils

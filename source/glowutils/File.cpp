@@ -7,10 +7,12 @@
 #include <glowutils/FileRegistry.h>
 #include <glowutils/RawFile.h>
 
-namespace glow
+using namespace glow;
+
+namespace glowutils
 {
 
-Shader* createShaderFromFile(const GLenum type, const std::string& filename)
+Shader * createShaderFromFile(const GLenum type, const std::string& filename)
 {
     return new Shader(type, new File(filename));
 }
@@ -59,4 +61,4 @@ void File::reload()
     }
 }
 
-} // namespace glow
+} // namespace glowutils

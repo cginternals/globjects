@@ -10,25 +10,27 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow 
+namespace glow
+{
+    class VertexArrayObject;
+    class Buffer;
+}
+
+namespace glowutils 
 {
 
-class VertexArrayObject;
-class Buffer;
-
-
-class GLOWUTILS_API Icosahedron : public Referenced
+class GLOWUTILS_API Icosahedron : public glow::Referenced
 {
 public:
-    static const Array<glm::vec3> vertices();
-    static const Array<glm::lowp_uvec3> indices(); /// individual triangle indices (no strip, no fan)
+    static const glow::Array<glm::vec3> vertices();
+    static const glow::Array<glm::lowp_uvec3> indices(); /// individual triangle indices (no strip, no fan)
 
    /**  Iterative triangle refinement: split each triangle into 4 new ones and 
         create points and indices appropriately.
     */
     static void refine(
-        Array<glm::vec3> & vertices
-    ,   Array<glm::lowp_uvec3> & indices
+        glow::Array<glm::vec3> & vertices
+    ,   glow::Array<glm::lowp_uvec3> & indices
     ,   unsigned char levels);
 
 public:
@@ -51,16 +53,16 @@ private:
     static glm::lowp_uint split(
         glm::lowp_uint a
     ,   glm::lowp_uint b
-    ,   Array<glm::vec3> & points
+    ,   glow::Array<glm::vec3> & points
     ,   std::unordered_map<glm::uint, glm::lowp_uint> & cache);
 
 private:
-    ref_ptr<VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
 
-    ref_ptr<Buffer> m_vertices;
-    ref_ptr<Buffer> m_indices;
+    glow::ref_ptr<glow::Buffer> m_vertices;
+    glow::ref_ptr<glow::Buffer> m_indices;
 
     GLsizei m_size;
 };
 
-} // namespace glow
+} // namespace glowutils

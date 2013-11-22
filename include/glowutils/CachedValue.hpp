@@ -4,7 +4,7 @@
 
 #include <glowutils/CachedValue.h>
 
-namespace glow
+namespace glowutils
 {
 
 template <typename T>
@@ -59,4 +59,4 @@ void CachedValue<T>::invalidate() const
 	m_valid = false;
 }
 
-} // namespace glow
+} // namespace glowutils

@@ -5,9 +5,8 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow
+namespace glowutils
 {
-
 class File;
 
 class GLOWUTILS_API FileRegistry
@@ -31,4 +30,4 @@ protected:
     static FileRegistry s_registry;
 };
 
-} // namespace glow
+} // namespace glowutils

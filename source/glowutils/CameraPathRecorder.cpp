@@ -11,7 +11,7 @@
 
 using namespace glm;
 
-namespace glow
+namespace glowutils
 {
 
 
@@ -122,4 +122,4 @@ void CameraPathPlayer::play(const float t)
     find(t, p1, p2, localT);
 }
 
-} // namespace glow
+} // namespace glowutils

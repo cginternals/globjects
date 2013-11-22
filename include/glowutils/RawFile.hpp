@@ -8,7 +8,7 @@
 
 #include <glowutils/RawFile.h>
 
-namespace glow 
+namespace glowutils 
 {
 
 template<typename T>
@@ -65,4 +65,4 @@ bool RawFile<T>::read()
     return true;
 }
 
-} // namespace glow
+} // namespace glowutils

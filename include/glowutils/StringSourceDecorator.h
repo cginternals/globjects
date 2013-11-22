@@ -6,20 +6,21 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow 
+
+namespace glowutils 
 {
 
-class GLOWUTILS_API StringSourceDecorator : public StringSource, protected ChangeListener
+class GLOWUTILS_API StringSourceDecorator : public glow::StringSource, protected glow::ChangeListener
 {
 public:
-    StringSourceDecorator(StringSource * source);
+    StringSourceDecorator(glow::StringSource * source);
     virtual ~StringSourceDecorator();
 
     virtual void update();
 protected:
     virtual void notifyChanged();
 protected:
-    ref_ptr<StringSource> m_internal;
+    glow::ref_ptr<glow::StringSource> m_internal;
 };
 
-} // namespace glow
+} // namespace glowutils
