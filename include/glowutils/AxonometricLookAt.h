@@ -5,7 +5,7 @@
 #include <glowutils/glowutils.h>
 
 
-namespace glow
+namespace glowutils
 {
 
 class GLOWUTILS_API AxonometricLookAt
@@ -73,4 +73,4 @@ private:
     mutable glm::mat4 m_axonometric;
 };
 
-} // namespace glow
+} // namespace glowutils

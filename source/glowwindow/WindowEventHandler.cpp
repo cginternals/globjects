@@ -2,7 +2,7 @@
 #include <glowwindow/WindowEventHandler.h>
 #include <glowwindow/events.h>
 
-namespace glow
+namespace glowwindow
 {
 
 WindowEventHandler::WindowEventHandler()
@@ -138,4 +138,4 @@ void WindowEventHandler::timerEvent(TimerEvent &)
 {
 }
 
-} // namespace glow
+} // namespace glowwindow

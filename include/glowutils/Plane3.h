@@ -4,7 +4,8 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow 
+
+namespace glowutils 
 {
 
 float pointToPlaneDistance(
@@ -27,4 +28,4 @@ const glm::vec3 GLOWUTILS_API intersection(
 ,	const glm::vec3 & rnear
 ,	const glm::vec3 & rfar);
 
-} // namespace glow
+} // namespace glowutils

@@ -4,9 +4,9 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow
-{
 
+namespace glowutils
+{
 class AxisAlignedBoundingBox;
 
 class GLOWUTILS_API NavigationMath
@@ -79,4 +79,4 @@ public:
 	,	const glm::vec3 & point);
 };
 
-} // namespace glow
+} // namespace glowutils

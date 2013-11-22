@@ -17,7 +17,7 @@
 
 #include <glowwindow/MainLoop.h>
 
-namespace glow
+namespace glowwindow
 {
 
 MainLoop MainLoop::s_mainLoop;
@@ -91,4 +91,4 @@ void MainLoop::processEvents()
     }
 }
 
-} // namespace glow
+} // namespace glowwindow

@@ -10,11 +10,16 @@
 
 namespace glow
 {
-
-class Shader;
+    class Shader;
+}
+    
+namespace glowutils
+{
 class FileRegistry;
 
-GLOWUTILS_API Shader* createShaderFromFile(GLenum type, const std::string& filename);
+GLOWUTILS_API glow::Shader * createShaderFromFile(
+    GLenum type
+,   const std::string & fileName);
 
 /** \brief String source associated to a file.
     
@@ -23,7 +28,7 @@ GLOWUTILS_API Shader* createShaderFromFile(GLenum type, const std::string& filen
 
     \see StringSource
  */
-class GLOWUTILS_API File : public StringSource
+class GLOWUTILS_API File : public glow::StringSource
 {
     friend class FileRegistry;
 public:
@@ -42,4 +47,4 @@ protected:
     FileRegistry* m_registry;
 };
 
-} // namespace glow
+} // namespace glowutils

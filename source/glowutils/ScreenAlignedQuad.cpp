@@ -10,7 +10,9 @@
 
 #include <glowutils/ScreenAlignedQuad.h>
 
-namespace glow 
+using namespace glow;
+
+namespace glowutils 
 {
 
 const char * ScreenAlignedQuad::s_defaultVertexShaderSource = R"(
@@ -153,4 +155,4 @@ Shader * ScreenAlignedQuad::fragmentShader()
     return m_fragmentShader;
 }
 
-} // namespace glow
+} // namespace glowutils

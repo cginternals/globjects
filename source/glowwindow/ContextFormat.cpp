@@ -5,8 +5,10 @@
 #include <glow/logging.h>
 #include <glowwindow/ContextFormat.h>
 
+using namespace glow;
 
-namespace glow
+
+namespace glowwindow
 {
 
 ContextFormat::ContextFormat()
@@ -321,4 +323,4 @@ bool ContextFormat::verifyPixelFormat(
 	return false;
 }
 
-} // namespace glow
+} // namespace glowwindow

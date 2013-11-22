@@ -10,7 +10,7 @@
 
 using namespace glm;
 
-namespace glow
+namespace glowutils
 {
 
 AxonometricLookAt::AxonometricLookAt(
@@ -136,7 +136,7 @@ void AxonometricLookAt::setZoom(float zoom)
 {
     if (zoom <= 0.f)
     {   
-        warning() << "Axonometric Look At zoom was set to 0.f (" << zoom << ")";
+        glow::warning() << "Axonometric Look At zoom was set to 0.f (" << zoom << ")";
         zoom = 0.f;
     }
 
@@ -186,4 +186,4 @@ const mat4 & AxonometricLookAt::matrix() const
     return m_axonometric;
 }
 
-} // namespace glow
+} // namespace glowutils

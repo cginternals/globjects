@@ -11,8 +11,12 @@
 
 namespace glow
 {
-    class Camera;
     class Texture;
+}
+
+namespace glowutils
+{
+    class Camera;
 }
 
 class AbstractParticleTechnique
@@ -22,7 +26,7 @@ public:
         const glow::Array<glm::vec4> & postions
     ,   const glow::Array<glm::vec4> & velocities
     ,   const glow::Texture & forces
-    ,   const glow::Camera & camera);
+    ,   const glowutils::Camera & camera);
 
     virtual ~AbstractParticleTechnique();
 
@@ -39,7 +43,7 @@ protected:
     const glow::Array<glm::vec4> & m_velocities;
 
     const glow::Texture & m_forces;
-    const glow::Camera & m_camera;
+    const glowutils::Camera & m_camera;
 
     const unsigned int m_numParticles;
 };
