@@ -1,4 +1,5 @@
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 in vec4 in_point; // 0
 in vec2 in_extent; // 1

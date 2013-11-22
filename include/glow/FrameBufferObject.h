@@ -49,6 +49,7 @@ public:
 	void unbind();
 
 	void setParameter(GLenum pname, GLint param);
+    int getAttachmentParameter(GLenum attachment, GLenum pname);
 
 	void attachTexture(GLenum attachment, Texture * texture, GLint level = 0);
 	void attachTexture1D(GLenum attachment, Texture * texture, GLint level = 0);

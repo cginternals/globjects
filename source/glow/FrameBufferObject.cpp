@@ -85,6 +85,18 @@ void FrameBufferObject::setParameter(GLenum pname, GLint param)
 	CheckGLError();
 }
 
+int FrameBufferObject::getAttachmentParameter(GLenum attachment, GLenum pname)
+{
+    bind();
+
+    int result = 0;
+
+    glGetFramebufferAttachmentParameteriv(m_target, attachment, pname, &result);
+    CheckGLError();
+
+    return result;
+}
+
 void FrameBufferObject::attachTexture(GLenum attachment, Texture* texture, GLint level)
 {
     assert(texture != nullptr);

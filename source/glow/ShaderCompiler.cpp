@@ -31,7 +31,7 @@ bool ShaderCompiler::compile()
     glShaderSource(m_shader->id(), 1, &sourcePointer, 0);
     CheckGLError();
 
-    if (glCompileShaderIncludeARB)
+    if (glCompileShaderIncludeARB && false)
     {
         glCompileShaderIncludeARB(m_shader->id(), 0, nullptr, nullptr);
         CheckGLError();

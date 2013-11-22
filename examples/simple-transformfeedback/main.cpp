@@ -148,17 +148,25 @@ protected:
 int main(int argc, char** argv)
 {
     ContextFormat format;
+    format.setVersion(4, 0);
+    format.setProfile(ContextFormat::CoreProfile);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    format.setVersion(4, 0);
+    if (window.create(format, "Simple Transform Feedback Example"))
+    {
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    window.create(format, "Simple Transform Feedback Example");
-    window.show();
-    window.context()->setSwapInterval(Context::NoVerticalSyncronization);
+        window.show();
 
-    return MainLoop::run();
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }
 
 void EventHandler::createAndSetupShaders()

@@ -213,16 +213,22 @@ protected:
 int main(int argc, char** argv)
 {
     ContextFormat format;
-    format.setVersion(4, 0);
-    format.setProfile(ContextFormat::CoreProfile);
-    format.setDepthBufferSize(16);
+    format.setVersion(3, 0);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "Navigations Example");
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
-    window.show();
+    if (window.create(format, "Navigations Example"))
+    {
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }

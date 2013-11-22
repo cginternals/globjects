@@ -344,14 +344,23 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setVersion(4, 3);
     format.setProfile(ContextFormat::CoreProfile);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "GPU - Particles Example");
-    window.show();
-    window.context()->setSwapInterval(Context::NoVerticalSyncronization);
+    if (window.create(format, "GPU - Particles Example"))
+    {
+        window.context()->setSwapInterval(Context::NoVerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }

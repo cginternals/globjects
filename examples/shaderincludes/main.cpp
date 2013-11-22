@@ -75,13 +75,22 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setVersion(3, 0);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "Shading Language Include Example");
-    window.show();
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
+    if (window.create(format, "Shading Language Include Example"))
+    {
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }

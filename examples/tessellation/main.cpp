@@ -144,16 +144,24 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
-    format.setVersion(4, 2);
+    format.setVersion(4, 0);
     format.setProfile(ContextFormat::CoreProfile);
     format.setDepthBufferSize(16);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "Post Processing Example");
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
-    window.show();
+    if (window.create(format, "Post Processing Example"))
+    {
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }

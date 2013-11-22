@@ -107,15 +107,25 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setVersion(4, 3);
+    format.setProfile(ContextFormat::CoreProfile);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "Compute Shader Example");
-    window.show();
-    window.context()->setSwapInterval(Context::NoVerticalSyncronization);
+    if (window.create(format, "Compute Shader Example"))
+    {
+        window.context()->setSwapInterval(Context::NoVerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }
 
 void EventHandler::createAndSetupTexture()

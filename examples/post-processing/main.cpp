@@ -58,9 +58,7 @@ public:
 
     virtual void initialize(Window & window) override
 	{
-		glEnable(GL_TEXTURE_2D);
-
-		glow::DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
 		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
@@ -124,7 +122,9 @@ public:
 
 		m_normal->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 		m_geom->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-		m_depth->storage(GL_DEPTH_COMPONENT16, width, height);
+
+        int result = FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
+        m_depth->storage(result == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
 	}
 
     virtual void paintEvent(PaintEvent &) override
@@ -212,16 +212,23 @@ protected:
 int main(int argc, char* argv[])
 {
 	ContextFormat format;
-	format.setVersion(4, 0);
-	format.setProfile(ContextFormat::CoreProfile);
+    format.setVersion(3, 0);
     format.setDepthBufferSize(16);
 
 	Window window;
+
 	window.setEventHandler(new EventHandler());
 
-	window.create(format, "Post Processing Example");
+    if (window.create(format, "Post Processing Example"))
+    {
 	window.context()->setSwapInterval(Context::VerticalSyncronization);
+
 	window.show();
 
 	return MainLoop::run();
+}
+    else
+    {
+        return 1;
+    }
 }
