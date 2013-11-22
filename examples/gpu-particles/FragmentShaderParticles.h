@@ -11,8 +11,11 @@ namespace glow
     class TransformFeedback;
     class Texture;
     class FrameBufferObject;
-    class ScreenAlignedQuad;
     class VertexArrayObject;
+}
+namespace glowutils
+{
+    class ScreenAlignedQuad;
 }
 
 
@@ -43,7 +46,7 @@ protected:
     glow::ref_ptr<glow::Texture> m_positionsTexture;
     glow::ref_ptr<glow::Texture> m_velocitiesTexture;
     glow::ref_ptr<glow::FrameBufferObject> m_fboUpdate;
-    glow::ref_ptr<glow::ScreenAlignedQuad> m_update;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_update;
 
     // Output FBO
     glow::ref_ptr<glow::FrameBufferObject> m_fbo;
@@ -51,6 +54,6 @@ protected:
 
     // Rendering
     glow::ref_ptr<glow::Program> m_drawProgram;
-    glow::ref_ptr<glow::ScreenAlignedQuad> m_quad;
-    glow::ref_ptr<glow::ScreenAlignedQuad> m_clear;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_clear;
 };

@@ -71,17 +71,17 @@ void FragmentShaderParticles::initialize()
     m_fboUpdate = new FrameBufferObject();
     m_fboUpdate->attachTexture2D(GL_COLOR_ATTACHMENT0, m_positionsTexture);
     m_fboUpdate->attachTexture2D(GL_COLOR_ATTACHMENT1, m_velocitiesTexture);
-    m_fboUpdate->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
+    m_fboUpdate->setDrawBuffers({GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1});
     m_fboUpdate->unbind();
 
-    m_update = new ScreenAlignedQuad(
-        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/particle.frag"),
+    m_update = new glowutils::ScreenAlignedQuad(
+        glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/particle.frag"),
         m_positionsTexture );
     m_update->program()->setUniform("vertices",   0);
     m_update->program()->setUniform("velocities", 1);
     m_update->program()->setUniform("forces",     2);
-//    m_update->program()->attach(
-//        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/particleMovement.inc") );
+//  m_update->program()->attach(
+//      glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/particleMovement.inc") );
 
     // Create frame buffer object for rendering
     m_fbo = new FrameBufferObject();
@@ -98,16 +98,16 @@ void FragmentShaderParticles::initialize()
     m_fbo->unbind();
 
     // Create screen aligned quads for clear and rendering
-    m_clear = new ScreenAlignedQuad(
-        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag") );
-    m_quad  = new ScreenAlignedQuad(m_colorBuffer);
+    m_clear = new glowutils::ScreenAlignedQuad(
+        glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag") );
+    m_quad  = new glowutils::ScreenAlignedQuad(m_colorBuffer);
 
     // Create draw program
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        createShaderFromFile(GL_VERTEX_SHADER,   "data/gpu-particles/points_fragment.vert")
-    ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-    ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        glowutils::createShaderFromFile(GL_VERTEX_SHADER,   "data/gpu-particles/points_fragment.vert")
+    ,   glowutils::createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+    ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 }
 
 void FragmentShaderParticles::reset()

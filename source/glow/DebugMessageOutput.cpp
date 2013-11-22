@@ -68,7 +68,7 @@ void DebugMessageOutput::enable()
 
     int id = getId();
 
-//  glDebugMessageCallback(&DebugMessageOutput::handleMessage, reinterpret_cast<void*>(id));
+    glDebugMessageCallback(&DebugMessageOutput::handleMessage, reinterpret_cast<void*>(id));
     CheckGLError();
 
     glEnable(GL_DEBUG_OUTPUT);
