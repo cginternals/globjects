@@ -14,7 +14,8 @@
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
-using namespace glow;
+
+using namespace glowwindow;
 
 class EventHandler : public WindowEventHandler
 {
@@ -32,7 +33,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -63,7 +64,7 @@ public:
 
 protected:
     glow::ref_ptr<glow::Texture> m_texture;
-    glow::ScreenAlignedQuad * m_quad;
+    glowutils::ScreenAlignedQuad * m_quad;
 };
 
 
@@ -72,14 +73,24 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setVersion(3, 0);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "Simple Texture Example");
-    window.show();
+    if (window.create(format, "Simple Texture Example"))
+    {
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }
 
 void EventHandler::createAndSetupTexture()
@@ -110,6 +121,6 @@ void EventHandler::createAndSetupTexture()
 
 void EventHandler::createAndSetupGeometry()
 {
-	m_quad = new glow::ScreenAlignedQuad(m_texture);
+	m_quad = new glowutils::ScreenAlignedQuad(m_texture);
     m_quad->setSamplerUniform(0);
 }

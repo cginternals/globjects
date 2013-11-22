@@ -35,11 +35,11 @@
 #include "FragmentShaderParticles.h"
 #include "TransformFeedbackParticles.h"
 
-using namespace glow;
+using namespace glowwindow;
 using namespace glm;
 
 
-class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
+class EventHandler : public WindowEventHandler, glowutils::AbstractCoordinateProvider
 {
 public:
     EventHandler()
@@ -81,9 +81,9 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
-        m_forces = new Texture(GL_TEXTURE_3D);
+        m_forces = new glow::Texture(GL_TEXTURE_3D);
 
         m_forces->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         m_forces->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -94,15 +94,15 @@ public:
 
         // Initialize shader includes
 
-        glow::NamedStrings::createNamedString("/glow/data/gpu-particles/particleMovement.inc", new glow::File("data/gpu-particles/particleMovement.inc"));
+        glow::NamedStrings::createNamedString("/glow/data/gpu-particles/particleMovement.inc", new glowutils::File("data/gpu-particles/particleMovement.inc"));
         
         // initialize camera
 
-        m_camera = new Camera(vec3(0.f, 1.f, -3.f));
+        m_camera = new glowutils::Camera(vec3(0.f, 1.f, -3.f));
         m_camera->setZNear(0.1f);
         m_camera->setZFar(16.f);
 
-        m_nav = new  WorldInHandNavigation();
+        m_nav = new  glowutils::WorldInHandNavigation();
         m_nav->setCamera(m_camera);
         m_nav->setCoordinateProvider(this);
         
@@ -166,7 +166,7 @@ public:
 
         static const ivec3 fdim(5, 5, 5); // this has center axises and allows for random rings etc..
 
-        Array<vec3> forces;
+        glow::Array<vec3> forces;
         forces.resize(fdim.x * fdim.y * fdim.z);
 
         srand(static_cast<unsigned int>(time(0)));
@@ -200,27 +200,27 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_C:
-            debug() << "switch to Compute Shader Technique";
+            glow::debug() << "switch to Compute Shader Technique";
             m_technique = ComputeShaderTechnique;
             break;
         case GLFW_KEY_F:
-            debug() << "switch to Fragment Shader Technique";
+            glow::debug() << "switch to Fragment Shader Technique";
             m_technique = FragmentShaderTechnique;
             break;
         case GLFW_KEY_T:
-            debug() << "switch to Transform Feedback Technique";
+            glow::debug() << "switch to Transform Feedback Technique";
             m_technique = TransformFeedbackTechnique;
             break;
 
         case GLFW_KEY_P:       
             if (m_timer.paused())
             {
-                debug() << "timer continue";
+                glow::debug() << "timer continue";
                 m_timer.start();
             }
             else
             {
-                debug() << "timer pause";
+                glow::debug() << "timer pause";
                 m_timer.pause();
             }
             break;
@@ -231,16 +231,16 @@ public:
 
         case GLFW_KEY_MINUS:
             m_steps = max(1, m_steps - 1);
-            debug() << "steps = " << m_steps;
+            glow::debug() << "steps = " << m_steps;
             break;
 
         case GLFW_KEY_EQUAL: // bug? this is plus/add on my keyboard
             ++m_steps;
-            debug() << "steps = " << m_steps;
+            glow::debug() << "steps = " << m_steps;
             break;
 
         case GLFW_KEY_F5:
-            FileRegistry::instance().reloadAll();
+            glowutils::FileRegistry::instance().reloadAll();
             break;
         }
     }
@@ -259,7 +259,7 @@ public:
     {
         switch (m_nav->mode())
         {
-        case WorldInHandNavigation::RotateInteraction:
+        case glowutils::WorldInHandNavigation::RotateInteraction:
             m_nav->rotateProcess(event.pos());
             event.accept();
         }
@@ -277,7 +277,7 @@ public:
 
     void scrollEvent(ScrollEvent & event) override
     {
-        if (WorldInHandNavigation::NoInteraction != m_nav->mode())
+        if (glowutils::WorldInHandNavigation::NoInteraction != m_nav->mode())
             return;
 
         m_nav->scaleAtCenter(-event.offset().y * 0.1f);
@@ -316,17 +316,17 @@ protected:
     ParticleTechnique m_technique;
     std::map<ParticleTechnique, AbstractParticleTechnique *> m_techniques;
 
-    Timer m_timer;
+    glow::Timer m_timer;
 
-    Camera * m_camera;
+    glowutils::Camera * m_camera;
     int m_numParticles;
 
-    Array<vec4> m_positions;
-    Array<vec4> m_velocities;
+    glow::Array<vec4> m_positions;
+    glow::Array<vec4> m_velocities;
 
     int m_steps;
 
-    WorldInHandNavigation * m_nav;
+    glowutils::WorldInHandNavigation * m_nav;
 
     struct Attribute
     {
@@ -334,7 +334,7 @@ protected:
     };
     std::vector<Attribute> m_attributes;
 
-    ref_ptr<Texture> m_forces;
+    glow::ref_ptr<glow::Texture> m_forces;
 };
 
 
@@ -345,14 +345,23 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setVersion(4, 3);
     format.setProfile(ContextFormat::CoreProfile);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "GPU - Particles Example");
-    window.show();
-    window.context()->setSwapInterval(Context::NoVerticalSyncronization);
+    if (window.create(format, "GPU - Particles Example"))
+    {
+        window.context()->setSwapInterval(Context::NoVerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }

@@ -35,7 +35,7 @@ namespace
     static const float CONSTRAINT_ROT_MAX_V_LO = 0.98f * static_cast<float>(PI);
 }
 
-namespace glow
+namespace glowutils
 {
 
 WorldInHandNavigation::WorldInHandNavigation()
@@ -488,4 +488,4 @@ void WorldInHandNavigation::setHome(const vec3 &eye, const vec3 &center, const v
 //    setDirty();
 //}
 
-} // namespace glow
+} // namespace glowutils

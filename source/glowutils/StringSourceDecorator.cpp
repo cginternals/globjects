@@ -2,7 +2,7 @@
 
 #include <glowutils/StringSourceDecorator.h>
 
-namespace glow 
+namespace glowutils 
 {
 
 StringSourceDecorator::StringSourceDecorator(StringSource * source)
@@ -30,4 +30,4 @@ void StringSourceDecorator::update()
 {
 }
 
-} // namespace glow
+} // namespace glowutils

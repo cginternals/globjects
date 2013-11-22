@@ -13,8 +13,9 @@
 
 
 using namespace glm;
+using namespace glow;
 
-namespace glow 
+namespace glowutils 
 {
 
 const Array<vec3> Icosahedron::vertices()
@@ -173,4 +174,4 @@ lowp_uint Icosahedron::split(
     return i;
 }
 
-} // namespace glow
+} // namespace glowutils

@@ -26,7 +26,7 @@ ComputeShaderParticles::ComputeShaderParticles(
     const Array<vec4> & positions
 ,   const Array<vec4> & velocities
 ,   const Texture & forces
-,   const Camera & camera)
+,   const glowutils::Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
 {
 }
@@ -39,13 +39,13 @@ void ComputeShaderParticles::initialize()
 {
     m_computeProgram = new Program();
     m_computeProgram->attach(
-        createShaderFromFile(GL_COMPUTE_SHADER, "data/gpu-particles/particle.comp"));
+        glowutils::createShaderFromFile(GL_COMPUTE_SHADER, "data/gpu-particles/particle.comp"));
 
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
-    ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-    ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
+        , glowutils::createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+        , glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 
     m_positionsSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
     m_velocitiesSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
@@ -82,9 +82,9 @@ void ComputeShaderParticles::initialize()
     m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0 });
     m_fbo->unbind();
 
-    m_quad = new ScreenAlignedQuad(m_color);
-    m_clear = new ScreenAlignedQuad(
-        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
+    m_quad = new glowutils::ScreenAlignedQuad(m_color);
+    m_clear = new glowutils::ScreenAlignedQuad(
+        glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 
 void ComputeShaderParticles::reset()

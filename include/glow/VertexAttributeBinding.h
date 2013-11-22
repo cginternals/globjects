@@ -16,7 +16,7 @@ class GLOW_API VertexAttributeBinding : public Referenced
 public:
 	VertexAttributeBinding(
         VertexArrayObject * vao
-    ,   const GLuint bindingIndex);
+    ,   const GLint bindingIndex);
 	~VertexAttributeBinding();
 
 	void setAttribute(GLint attributeIndex);
@@ -38,15 +38,15 @@ public:
         GLint size
     ,   GLuint relativeoffset = 0);
 
-	GLuint attributeIndex() const;
-	GLuint bindingIndex() const;
+    GLint attributeIndex() const;
+    GLint bindingIndex() const;
 	Buffer * buffer() const;
 
 protected:
     VertexArrayObject * m_vao;
    
-    GLuint m_bindingIndex;
-    GLuint m_attributeIndex;
+    GLint m_bindingIndex;
+    GLint m_attributeIndex;
     
     Buffer * m_vbo;
 
@@ -62,8 +62,8 @@ public:
 	VertexAttributeBindingImplementation(VertexAttributeBinding * binding);
 	virtual ~VertexAttributeBindingImplementation();
 
-	GLuint attributeIndex() const;
-	GLuint bindingIndex() const;
+    GLint attributeIndex() const;
+    GLint bindingIndex() const;
 
 	VertexArrayObject * vao() const;
 	Buffer * vbo() const;

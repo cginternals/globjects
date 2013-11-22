@@ -10,7 +10,7 @@
 
 struct GLFWwindow;
 
-namespace glow 
+namespace glowwindow 
 {
 
 class AbstractNativeContext;
@@ -75,4 +75,4 @@ private:
     GLFWwindow * m_window;
 };
 
-} // namespace glow
+} // namespace glowwindow

@@ -33,11 +33,11 @@
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
-using namespace glow;
+using namespace glowwindow;
 using namespace glm;
 
 
-class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
+class EventHandler : public WindowEventHandler, glowutils::AbstractCoordinateProvider
 {
 public:
     EventHandler()
@@ -61,18 +61,18 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
 
-        m_sphere = new Program();
+        m_sphere = new glow::Program();
         m_sphere->attach(
-            createShaderFromFile(GL_VERTEX_SHADER,   "data/adaptive-grid/sphere.vert")
-        ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/adaptive-grid/sphere.frag"));
+            glowutils::createShaderFromFile(GL_VERTEX_SHADER,   "data/adaptive-grid/sphere.vert")
+        ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/adaptive-grid/sphere.frag"));
 
-        m_icosahedron = new Icosahedron(2);
-        m_agrid = new AdaptiveGrid(16U);
+        m_icosahedron = new glowutils::Icosahedron(2);
+        m_agrid = new glowutils::AdaptiveGrid(16U);
 
         m_camera.setZNear(0.1f);
         m_camera.setZFar(1024.f);
@@ -111,9 +111,9 @@ public:
 
         switch (event.key())
         {
-            case GLFW_KEY_F5:
-                glow::FileRegistry::instance().reloadAll();
-                break;
+        case GLFW_KEY_F5:
+            glowutils::FileRegistry::instance().reloadAll();
+            break;
         }
     }
 
@@ -121,50 +121,50 @@ public:
     {
         switch (event.button())
         {
-            case GLFW_MOUSE_BUTTON_LEFT:
-                m_nav.panBegin(event.pos());
-                event.accept();
-                break;
+        case GLFW_MOUSE_BUTTON_LEFT:
+            m_nav.panBegin(event.pos());
+            event.accept();
+            break;
 
-            case GLFW_MOUSE_BUTTON_RIGHT:
-                m_nav.rotateBegin(event.pos());
-                event.accept();
-                break;
+        case GLFW_MOUSE_BUTTON_RIGHT:
+            m_nav.rotateBegin(event.pos());
+            event.accept();
+            break;
         }
     }
     virtual void mouseMoveEvent(MouseEvent & event) override
     {
         switch (m_nav.mode())
         {
-            case WorldInHandNavigation::PanInteraction:
-                m_nav.panProcess(event.pos());
-                event.accept();
-                break;
+        case glowutils::WorldInHandNavigation::PanInteraction:
+            m_nav.panProcess(event.pos());
+            event.accept();
+            break;
 
-            case WorldInHandNavigation::RotateInteraction:
-                m_nav.rotateProcess(event.pos());
-                event.accept();
+        case glowutils::WorldInHandNavigation::RotateInteraction:
+            m_nav.rotateProcess(event.pos());
+            event.accept();
         }
     }
     virtual void mouseReleaseEvent(MouseEvent & event) override
     {
         switch (event.button())
         {
-            case GLFW_MOUSE_BUTTON_LEFT:
-                m_nav.panEnd();
-                event.accept();
-                break;
+        case GLFW_MOUSE_BUTTON_LEFT:
+            m_nav.panEnd();
+            event.accept();
+            break;
 
-            case GLFW_MOUSE_BUTTON_RIGHT:
-                m_nav.rotateEnd();
-                event.accept();
-                break;
+        case GLFW_MOUSE_BUTTON_RIGHT:
+            m_nav.rotateEnd();
+            event.accept();
+            break;
         }
     }
 
     void scrollEvent(ScrollEvent & event) override
     {
-        if (WorldInHandNavigation::NoInteraction != m_nav.mode())
+        if (glowutils::WorldInHandNavigation::NoInteraction != m_nav.mode())
             return;
 
         m_nav.scaleAtMouse(event.pos(), -event.offset().y * 0.1f);
@@ -196,15 +196,15 @@ public:
 
 protected:
 
-    ref_ptr<Program> m_sphere;
+    glow::ref_ptr<glow::Program> m_sphere;
+    
+    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
+    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 
-    ref_ptr<Icosahedron> m_icosahedron;
-    ref_ptr<AdaptiveGrid> m_agrid;
+    glowutils::Camera m_camera;
+    glowutils::WorldInHandNavigation m_nav;
 
-    Camera m_camera;
-    WorldInHandNavigation m_nav;
-
-    AxisAlignedBoundingBox m_aabb;
+    glowutils::AxisAlignedBoundingBox m_aabb;
 };
 
 
@@ -213,16 +213,22 @@ protected:
 int main(int argc, char** argv)
 {
     ContextFormat format;
-    format.setVersion(4, 0);
-    format.setProfile(ContextFormat::CoreProfile);
-    format.setDepthBufferSize(16);
+    format.setVersion(3, 0);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "Navigations Example");
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
-    window.show();
+    if (window.create(format, "Navigations Example"))
+    {
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }

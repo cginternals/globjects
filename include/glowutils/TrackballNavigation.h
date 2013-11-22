@@ -5,7 +5,8 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow 
+
+namespace glowutils 
 {
 
 class GLOWUTILS_API TrackballNavigation
@@ -41,4 +42,4 @@ protected:
 	glm::quat m_orientation;
 };
 
-} // namespace glow
+} // namespace glowutils

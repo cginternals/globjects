@@ -5,7 +5,7 @@
 #include <glowutils/glowutils.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 
-namespace glow
+namespace glowutils
 {
 
 class AbstractCoordinateProvider;
@@ -102,4 +102,4 @@ protected:
     glm::vec3 m_homeUp;
 };
 
-} // namespace glow
+} // namespace glowutils

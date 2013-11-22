@@ -23,7 +23,7 @@ public:
         const glow::Array<glm::vec4> & positions
     ,   const glow::Array<glm::vec4> & velocities
     ,   const glow::Texture & forces
-    ,   const glow::Camera & camera);
+    ,   const glowutils::Camera & camera);
     virtual ~FragmentShaderParticles();
 
     virtual void initialize();

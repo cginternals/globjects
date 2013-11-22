@@ -15,7 +15,10 @@
 
 #include "WindowEventDispatcher.h"
 
-namespace glow
+
+using namespace glow;
+
+namespace glowwindow
 {
 
 std::set<Window*> Window::s_instances;
@@ -399,4 +402,4 @@ void Window::removeTimer(int id)
     WindowEventDispatcher::removeTimer(this, id);
 }
 
-} // namespace glow
+} // namespace glowwindow

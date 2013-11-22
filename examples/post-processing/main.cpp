@@ -36,7 +36,7 @@
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
-using namespace glow;
+using namespace glowwindow;
 using namespace glm;
 
 
@@ -58,29 +58,27 @@ public:
 
     virtual void initialize(Window & window) override
 	{
-		glEnable(GL_TEXTURE_2D);
-
-		DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
 		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-		m_fbo = new FrameBufferObject();
+		m_fbo = new glow::FrameBufferObject();
 
-		m_normal = new Texture(GL_TEXTURE_2D);
+		m_normal = new glow::Texture(GL_TEXTURE_2D);
 		m_normal->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		m_normal->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		m_normal->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		m_normal->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		m_normal->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-		m_geom = new Texture(GL_TEXTURE_2D);
+		m_geom = new glow::Texture(GL_TEXTURE_2D);
 		m_geom->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		m_geom->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		m_geom->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		m_geom->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		m_geom->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-		m_depth = new RenderBufferObject();
+		m_depth = new glow::RenderBufferObject();
 
 		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_normal);
 		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_geom);
@@ -90,20 +88,20 @@ public:
 		m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
 
 
-		m_sphere = new Program();
+		m_sphere = new glow::Program();
 		m_sphere->attach(
-            createShaderFromFile(GL_VERTEX_SHADER, "data/post-processing/sphere.vert")
-            , createShaderFromFile(GL_FRAGMENT_SHADER, "data/post-processing/sphere.frag"));
+            glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/post-processing/sphere.vert")
+        ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/post-processing/sphere.frag"));
 
-		m_phong = new Program();
+		m_phong = new glow::Program();
 		m_phong->attach(
-            createShaderFromFile(GL_VERTEX_SHADER, "data/post-processing/phong.vert")
-        ,	createShaderFromFile(GL_FRAGMENT_SHADER, "data/post-processing/phong.frag"));
+            glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/post-processing/phong.vert")
+        ,	glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/post-processing/phong.frag"));
 
-		m_icosahedron = new Icosahedron(2);
-		m_agrid = new AdaptiveGrid(16U);
+        m_icosahedron = new glowutils::Icosahedron(2);
+        m_agrid = new glowutils::AdaptiveGrid(16U);
 
-		m_quad = new ScreenAlignedQuad(m_phong);
+        m_quad = new glowutils::ScreenAlignedQuad(m_phong);
 
 		m_time.reset();
 		m_time.start();
@@ -124,7 +122,9 @@ public:
 
 		m_normal->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 		m_geom->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-		m_depth->storage(GL_DEPTH_COMPONENT16, width, height);
+
+        int result = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
+        m_depth->storage(result == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
 	}
 
     virtual void paintEvent(PaintEvent &) override
@@ -183,27 +183,27 @@ public:
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
-            glow::FileRegistry::instance().reloadAll();
+            glowutils::FileRegistry::instance().reloadAll();
 			break;
 		}
 	}
 
 protected:
-	ref_ptr<Program> m_sphere;
-	ref_ptr<Program> m_phong;
+    glow::ref_ptr<glow::Program> m_sphere;
+    glow::ref_ptr<glow::Program> m_phong;
 
-	ref_ptr<Icosahedron> m_icosahedron;
-	ref_ptr<AdaptiveGrid> m_agrid;
+    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
+    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 
-	ref_ptr<ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 
-	ref_ptr<FrameBufferObject> m_fbo;
-	ref_ptr<Texture> m_normal;
-	ref_ptr<Texture> m_geom;
-	ref_ptr<RenderBufferObject> m_depth;
+    glow::ref_ptr<glow::FrameBufferObject> m_fbo;
+    glow::ref_ptr<glow::Texture> m_normal;
+    glow::ref_ptr<glow::Texture> m_geom;
+    glow::ref_ptr<glow::RenderBufferObject> m_depth;
 
-    Camera m_camera;
-	Timer m_time;
+    glowutils::Camera m_camera;
+	glow::Timer m_time;
 };
 
 
@@ -212,16 +212,23 @@ protected:
 int main(int argc, char* argv[])
 {
 	ContextFormat format;
-	format.setVersion(4, 0);
-	format.setProfile(ContextFormat::CoreProfile);
+    format.setVersion(3, 0);
     format.setDepthBufferSize(16);
 
 	Window window;
+
 	window.setEventHandler(new EventHandler());
 
-	window.create(format, "Post Processing Example");
+    if (window.create(format, "Post Processing Example"))
+    {
 	window.context()->setSwapInterval(Context::VerticalSyncronization);
+
 	window.show();
 
 	return MainLoop::run();
+}
+    else
+    {
+        return 1;
+    }
 }

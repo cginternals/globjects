@@ -29,7 +29,7 @@
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 
-using namespace glow;
+using namespace glowwindow;
 
 class EventHandler : public WindowEventHandler
 {
@@ -49,7 +49,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -124,7 +124,7 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glow::FileRegistry::instance().reloadAll();
+            glowutils::FileRegistry::instance().reloadAll();
     }
 
 protected:
@@ -148,31 +148,38 @@ protected:
 int main(int argc, char** argv)
 {
     ContextFormat format;
+    format.setVersion(4, 0);
+    format.setProfile(ContextFormat::CoreProfile);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    format.setVersion(4, 0);
+    if (window.create(format, "Simple Transform Feedback Example"))
+    {
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    window.create(format, "Simple Transform Feedback Example");
-    window.show();
-    window.context()->setSwapInterval(Context::NoVerticalSyncronization);
+        window.show();
 
-    return MainLoop::run();
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }
 
 void EventHandler::createAndSetupShaders()
 {
-    glow::Shader* vertexShader = glow::createShaderFromFile(GL_VERTEX_SHADER, "data/transformfeedback/simple.vert");
-    glow::Shader* fragmentShader = glow::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag");
-    glow::Shader* transformFeedbackShader = glow::createShaderFromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert");
-
 	m_shaderProgram = new glow::Program();
-    m_shaderProgram->attach(vertexShader, fragmentShader);
+    m_shaderProgram->attach(
+        glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transformfeedback/simple.vert")
+    ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
 	m_shaderProgram->bindFragDataLocation(0, "fragColor");
 
     m_transformFeedbackProgram = new glow::Program();
-    m_transformFeedbackProgram->attach(transformFeedbackShader);
+    m_transformFeedbackProgram->attach(
+        glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
     m_transformFeedbackProgram->setUniform("deltaT", 0.0f);
 }
 

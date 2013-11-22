@@ -10,11 +10,14 @@
 
 #include <glowutils/ScreenAlignedQuad.h>
 
-namespace glow 
+using namespace glow;
+
+namespace glowutils 
 {
 
 const char * ScreenAlignedQuad::s_defaultVertexShaderSource = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 layout (location = 0) in vec2 a_vertex;
 out vec2 v_uv;
@@ -27,7 +30,8 @@ void main()
 )";
 
 const char* ScreenAlignedQuad::s_defaultFagmentShaderSource = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform sampler2D source;
 
@@ -151,4 +155,4 @@ Shader * ScreenAlignedQuad::fragmentShader()
     return m_fragmentShader;
 }
 
-} // namespace glow
+} // namespace glowutils

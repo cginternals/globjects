@@ -30,7 +30,7 @@
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
-using namespace glow;
+using namespace glowwindow;
 using namespace glm;
 
 
@@ -54,21 +54,21 @@ public:
     {
         glEnable(GL_TEXTURE_2D);
 
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-        m_sphere = new Program();
+        m_sphere = new glow::Program();
         m_sphere->attach(
-            createShaderFromFile(GL_VERTEX_SHADER, "data/tessellation/sphere.vert")
-        ,   createShaderFromFile(GL_TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
-        ,   createShaderFromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
-        ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/tessellation/sphere.geom")
-        ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
-        ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/common/phong.frag"));
+            glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/tessellation/sphere.vert")
+        ,   glowutils::createShaderFromFile(GL_TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
+        ,   glowutils::createShaderFromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
+        ,   glowutils::createShaderFromFile(GL_GEOMETRY_SHADER, "data/tessellation/sphere.geom")
+        ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
+        ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/common/phong.frag"));
 
-        m_icosahedron = new Icosahedron();
-        m_agrid = new AdaptiveGrid(16U);
+        m_icosahedron = new glowutils::Icosahedron();
+        m_agrid = new glowutils::AdaptiveGrid(16U);
 
         m_time.reset();
         m_time.start();
@@ -121,19 +121,19 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_F5:
-            glow::FileRegistry::instance().reloadAll();
+            glowutils::FileRegistry::instance().reloadAll();
             break;
         }
     }
 
 protected:
-    ref_ptr<Program> m_sphere;
+    glow::ref_ptr<glow::Program> m_sphere;
 
-    ref_ptr<Icosahedron> m_icosahedron;
-    ref_ptr<AdaptiveGrid> m_agrid;
+    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
+    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 
-    Camera m_camera;
-    Timer m_time;
+    glowutils::Camera m_camera;
+    glow::Timer m_time;
 
     vec3 m_rand;
 };
@@ -144,16 +144,24 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
-    format.setVersion(4, 2);
+    format.setVersion(4, 0);
     format.setProfile(ContextFormat::CoreProfile);
     format.setDepthBufferSize(16);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "Post Processing Example");
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
-    window.show();
+    if (window.create(format, "Post Processing Example"))
+    {
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }

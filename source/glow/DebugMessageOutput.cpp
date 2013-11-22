@@ -59,9 +59,10 @@ unsigned DebugMessageOutput::getId()
 
 void DebugMessageOutput::enable()
 {
-    if (!GLEW_ARB_debug_output)
+    if (!GLEW_ARB_debug_output || !glDebugMessageCallback)
     {
         s_errorChecking = true;
+
         return;
     }
 
@@ -71,6 +72,7 @@ void DebugMessageOutput::enable()
     CheckGLError();
 
     glEnable(GL_DEBUG_OUTPUT);
+    CheckGLError();
 
     setSynchronous(true);
 }
@@ -84,6 +86,7 @@ void DebugMessageOutput::disable()
     }
 
     glDisable(GL_DEBUG_OUTPUT);
+    CheckGLError();
 }
 
 void DebugMessageOutput::setSynchronous(bool synchronous)
@@ -92,9 +95,15 @@ void DebugMessageOutput::setSynchronous(bool synchronous)
         return;
 
     if (synchronous)
+    {
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        CheckGLError();
+    }
     else
+    {
         glDisable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        CheckGLError();
+    }
 }
 
 void DebugMessageOutput::addCallback(Callback callback)
@@ -151,6 +160,7 @@ void DebugMessageOutput::disableMessages(GLenum source, GLenum type, GLenum seve
     assert(ids != nullptr || count == 0);
 
     glDebugMessageControl(source, type, severity, count, ids, GL_FALSE);
+    CheckGLError();
 }
 
 void DebugMessageOutput::disableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint>& ids)

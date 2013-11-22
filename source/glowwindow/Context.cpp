@@ -11,7 +11,9 @@
 #include <glowwindow/Context.h>
 
 
-namespace glow
+using namespace glow;
+
+namespace glowwindow
 {
 
 Context::Context()
@@ -38,6 +40,12 @@ bool Context::create(
     if (isValid())
     {
         warning() << "Context is already valid. Create was probably called before.";
+        return true;
+    }
+
+    if (format.version() < Version(3, 0))
+    {
+        fatal() << "OpenGL below version 3.0 is not supported.";
         return false;
     }
 
@@ -49,7 +57,10 @@ bool Context::create(
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, format.majorVersion());
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, format.minorVersion());
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, format.profile() == ContextFormat::CoreProfile ? GLFW_OPENGL_CORE_PROFILE : GLFW_OPENGL_COMPAT_PROFILE);
+    if (format.version() >= Version(3, 2))
+    {
+        glfwWindowHint(GLFW_OPENGL_PROFILE, format.profile() == ContextFormat::CoreProfile ? GLFW_OPENGL_CORE_PROFILE : GLFW_OPENGL_COMPAT_PROFILE);
+    }
     
     glfwWindowHint(GLFW_DEPTH_BITS, format.depthBufferSize());
     glfwWindowHint(GLFW_STENCIL_BITS, format.stencilBufferSize());
@@ -169,4 +180,4 @@ void Context::doneCurrent()
     glfwMakeContextCurrent(0);
 }
 
-} // namespace glow
+} // namespace glowwindow

@@ -11,8 +11,12 @@ namespace glow
     class TransformFeedback;
     class Texture;
     class FrameBufferObject;
-    class ScreenAlignedQuad;
     class VertexArrayObject;
+}
+
+namespace glowutils
+{
+    class ScreenAlignedQuad;
 }
 
 
@@ -23,7 +27,7 @@ public:
         const glow::Array<glm::vec4> & positions
     ,   const glow::Array<glm::vec4> & velocities
     ,   const glow::Texture & forces
-    ,   const glow::Camera & camera);
+    ,   const glowutils::Camera & camera);
     virtual ~TransformFeedbackParticles();
 
     virtual void initialize() override;
@@ -50,6 +54,6 @@ protected:
     glow::ref_ptr<glow::FrameBufferObject> m_fbo;
     glow::ref_ptr<glow::Texture> m_color;
 
-    glow::ref_ptr<glow::ScreenAlignedQuad> m_quad;
-    glow::ref_ptr<glow::ScreenAlignedQuad> m_clear;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_clear;
 };
