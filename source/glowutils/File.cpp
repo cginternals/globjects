@@ -16,7 +16,8 @@ Shader* createShaderFromFile(const GLenum type, const std::string& filename)
 }
 
 File::File(const std::string & filePath)
-:   m_filePath(filePath)
+: m_filePath(filePath)
+, m_registry(nullptr)
 {
     RawFile<char> raw(m_filePath);
     if (raw.valid())
@@ -27,7 +28,10 @@ File::File(const std::string & filePath)
 
 File::~File()
 {
-    FileRegistry::instance().deregisterFile(this);
+    if (m_registry)
+    {
+        m_registry->deregisterFile(this);
+    }
 }
 
 const std::string & File::string() const
