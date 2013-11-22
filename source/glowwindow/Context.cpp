@@ -11,7 +11,9 @@
 #include <glowwindow/Context.h>
 
 
-namespace glow
+using namespace glow;
+
+namespace glowwindow
 {
 
 Context::Context()
@@ -169,4 +171,4 @@ void Context::doneCurrent()
     glfwMakeContextCurrent(0);
 }
 
-} // namespace glow
+} // namespace glowwindow

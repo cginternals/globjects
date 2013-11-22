@@ -3,7 +3,7 @@
 #include <glowwindow/glowwindow.h>
 #include <glow/Referenced.h>
 
-namespace glow 
+namespace glowwindow
 {
 
 class Window;
@@ -18,7 +18,7 @@ class IconifyEvent;
 class MoveEvent;
 class TimerEvent;
 
-class GLOWWINDOW_API WindowEventHandler : public Referenced
+class GLOWWINDOW_API WindowEventHandler : public glow::Referenced
 {
 public:
     WindowEventHandler();
@@ -72,4 +72,4 @@ protected:
     virtual void timerEvent(TimerEvent & event);
 };
 
-} // namespace glow
+} // namespace glowwindow

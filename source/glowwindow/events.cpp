@@ -9,7 +9,7 @@
 #include <glowwindow/events.h>
 
 
-namespace glow
+namespace glowwindow
 {
 
 WindowEvent::WindowEvent(Type type)
@@ -261,4 +261,4 @@ int TimerEvent::id() const
     return m_id;
 }
 
-} // namespace glow
+} // namespace glowwindow
