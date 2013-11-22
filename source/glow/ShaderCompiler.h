@@ -4,13 +4,11 @@
 
 #include <glow/glow.h>
 
-#include <glow/ref_ptr.h>
-
 namespace glow 
 {
 class Shader;
 
-class GLOW_API ShaderCompiler
+class ShaderCompiler
 {
 public:
     virtual ~ShaderCompiler();

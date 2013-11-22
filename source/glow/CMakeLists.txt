@@ -63,7 +63,6 @@ set(api_includes
     ${header_path}/RenderBufferObject.h
     ${header_path}/Screen.h
     ${header_path}/Shader.h
-    ${header_path}/ShaderCompiler.h
     ${header_path}/String.h
     ${header_path}/StringSource.h
     ${header_path}/Texture.h
@@ -110,6 +109,7 @@ set(sources
     ${source_path}/RenderBufferObject.cpp
     ${source_path}/Screen.cpp
     ${source_path}/Shader.cpp
+    ${source_path}/ShaderCompiler.h
     ${source_path}/ShaderCompiler.cpp
     ${source_path}/String.cpp
     ${source_path}/StringSource.cpp

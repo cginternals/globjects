@@ -9,7 +9,8 @@
 #include <glow/ObjectVisitor.h>
 
 #include <glow/Shader.h>
-#include <glow/ShaderCompiler.h>
+
+#include "ShaderCompiler.h"
 
 namespace glow
 {

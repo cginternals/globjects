@@ -1,4 +1,4 @@
-#include <glow/ShaderCompiler.h>
+#include "ShaderCompiler.h"
 
 #include <GL/glew.h>
 
