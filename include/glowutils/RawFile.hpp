@@ -49,7 +49,7 @@ bool RawFile<T>::read()
 
     if (!ifs)
     {
-        warning() << "Reading from file \"" << m_filePath << "\" failed.";
+        glow::warning() << "Reading from file \"" << m_filePath << "\" failed.";
         return false;
     }
 
