@@ -18,7 +18,7 @@ FragmentShaderParticles::FragmentShaderParticles(
     const Array<vec4> & positions
 ,   const Array<vec4> & velocities
 ,   const Texture & forces
-,   const Camera & camera)
+,   const glowutils::Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
 {
 }

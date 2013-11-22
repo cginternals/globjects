@@ -18,38 +18,38 @@
 
 #include <glow/logging.h>
 
-using namespace glow;
+using namespace glowwindow;
 
 struct Element
 {
     Element(const glm::vec4& position)
-        : point(position)
-        , extent(0.2f, 0.1f)
-        , fullSize(1.f, 1.f)
-        , color(1.f, 0.f, 1.f, 1.f)
-        , average(1.f)
-        , min(0.01f)
-        , max(2.f)
-        , median(0.8f)
-        , id(position.x > 0 ? 0 : 1)
-        , count(position.x > 0 ? 10 : 20)
-        , random(position.x > 0 ? 0.347264f : 0.673642f)
-        , random2(position.x > 0 ? 0.67363f : 0.184623f)
+    : point(position)
+    , extent(0.2f, 0.1f)
+    , fullSize(1.f, 1.f)
+    , color(1.f, 0.f, 1.f, 1.f)
+    , average(1.f)
+    , min(0.01f)
+    , max(2.f)
+    , median(0.8f)
+    , id(position.x > 0 ? 0 : 1)
+    , count(position.x > 0 ? 10 : 20)
+    , random(position.x > 0 ? 0.347264f : 0.673642f)
+    , random2(position.x > 0 ? 0.67363f : 0.184623f)
     {
     }
 
-    glm::vec4 point; // 0
-    glm::vec2 extent; // 1
+    glm::vec4 point;    // 0
+    glm::vec2 extent;   // 1
     glm::vec2 fullSize; // 2
-    glm::vec4 color; // 3
-    float average; // 4
-    float min; // 5
-    float max; // 6
-    float median; // 7
-    int id; // 8
-    int count; // 9
-    float random; // 10
-    float random2; // 11
+    glm::vec4 color;    // 3
+    float average;      // 4
+    float min;          // 5
+    float max;          // 6
+    float median;       // 7
+    int id;             // 8
+    int count;          // 9
+    float random;       // 10
+    float random2;      // 11
 };
 
 class EventHandler : public WindowEventHandler
@@ -65,22 +65,22 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         glPointSize(10.0);
 
-        m_vao = new VertexArrayObject();
-        m_buffer = new Buffer(GL_ARRAY_BUFFER);
+        m_vao = new glow::VertexArrayObject();
+        m_buffer = new glow::Buffer(GL_ARRAY_BUFFER);
 
         m_shaderProgram = new glow::Program();
         m_shaderProgram->attach(
-            glow::createShaderFromFile(GL_VERTEX_SHADER, "data/vertexarrayattributes/test.vert"),
-            glow::createShaderFromFile(GL_FRAGMENT_SHADER, "data/vertexarrayattributes/test.frag")
+            glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/vertexarrayattributes/test.vert")
+        ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/vertexarrayattributes/test.frag")
         );
         m_shaderProgram->bindFragDataLocation(0, "fragColor");
 
-        m_buffer->setData(Array<Element>()
+        m_buffer->setData(glow::Array<Element>()
             << Element(glm::vec4(-0.3, -0.3, 0.0, 1.0))
             << Element(glm::vec4(0.3, 0.3, 0.0, 1.0)),
             GL_STATIC_DRAW
@@ -166,9 +166,9 @@ public:
         window.repaint();
     }
 protected:
-    ref_ptr<VertexArrayObject> m_vao;
-    ref_ptr<Buffer> m_buffer;
-    ref_ptr<glow::Program> m_shaderProgram;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Buffer> m_buffer;
+    glow::ref_ptr<glow::Program> m_shaderProgram;
 };
 
 int main(int argc, char* argv[])
@@ -178,7 +178,7 @@ int main(int argc, char* argv[])
     Window window;
 
     {
-        AutoTimer t("Initialization");
+        glow::AutoTimer t("Initialization");
 
         window.setEventHandler(new EventHandler());
 

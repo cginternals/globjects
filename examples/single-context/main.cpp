@@ -10,7 +10,7 @@
 
 #include <glow/logging.h>
 
-using namespace glow;
+using namespace glowwindow;
 
 class EventHandler : public WindowEventHandler
 {
@@ -25,7 +25,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
     }
@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 
     Window window;
     {
-    AutoTimer t("Initialization");
+    glow::AutoTimer t("Initialization");
 
     window.setEventHandler(new EventHandler());
     if (!window.create(format, "Single Context Example"))

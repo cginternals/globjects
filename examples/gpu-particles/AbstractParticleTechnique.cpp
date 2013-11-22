@@ -10,7 +10,7 @@ AbstractParticleTechnique::AbstractParticleTechnique(
     const glow::Array<glm::vec4> & positions
 ,   const glow::Array<glm::vec4> & velocities
 ,   const glow::Texture & forces
-,   const glow::Camera & camera)
+,   const glowutils::Camera & camera)
 : m_positions(positions)
 , m_velocities(velocities)
 , m_forces(forces)
