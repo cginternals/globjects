@@ -48,13 +48,16 @@ void NamedStrings::deleteNamedString(const std::string& name)
         s_instance.m_registeredStringSources.erase(name);
     }
 
-    glDeleteNamedStringARB(name.size(), name.c_str());
-    CheckGLError();
+    if (glDeleteNamedStringARB)
+    {
+        glDeleteNamedStringARB(name.size(), name.c_str());
+        CheckGLError();
+    }
 }
 
 bool NamedStrings::isNamedString(const std::string& name, bool cached)
 {
-    if (cached)
+    if (cached || !glIsNamedStringARB)
     {
         return s_instance.m_registeredStringSources.count(name) > 0;
     }
@@ -66,7 +69,7 @@ bool NamedStrings::isNamedString(const std::string& name, bool cached)
 
 std::string NamedStrings::namedString(const std::string& name, bool cached)
 {
-    if (cached)
+    if (cached || !glGetNamedStringARB)
     {
         return s_instance.m_registeredStringSources[name].source->string();
     }
@@ -82,7 +85,7 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
 
 GLint NamedStrings::namedStringSize(const std::string& name, bool cached)
 {
-    if (cached)
+    if (cached || !glGetNamedStringivARB)
     {
         return s_instance.m_registeredStringSources[name].source->string().size();
     }
@@ -92,7 +95,7 @@ GLint NamedStrings::namedStringSize(const std::string& name, bool cached)
 
 GLenum NamedStrings::namedStringType(const std::string& name, bool cached)
 {
-    if (cached)
+    if (cached || !glGetNamedStringivARB)
     {
         return s_instance.m_registeredStringSources[name].type;
     }
@@ -122,7 +125,7 @@ void NamedStrings::updateNamedString(const std::string& name)
 
 void NamedStrings::updateNamedString(const NamedString& namedString)
 {
-    if (namedString.name == "")
+    if (namedString.name == "" || !glNamedStringARB)
     {
         return;
     }
