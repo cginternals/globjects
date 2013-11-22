@@ -101,14 +101,14 @@ bool ShaderCompiler::checkCompileStatus()
 
 std::string ShaderCompiler::resolveIncludes(const std::string& source) const
 {
-    std::istringstream stream(source);
-    std::string resolvedSource;
+    std::istringstream sourcestream(source);
+    std::stringstream destinationstream;
 
     do
     {
         std::string line;
 
-        std::getline(stream, line);
+        std::getline(sourcestream, line);
 
         std::string trimmedLine = trim(line);
 
@@ -140,25 +140,25 @@ std::string ShaderCompiler::resolveIncludes(const std::string& source) const
                         }
                         else
                         {
-                            resolvedSource += resolveIncludes(NamedStrings::namedString(include));
+                            destinationstream << resolveIncludes(NamedStrings::namedString(include));
                         }
                     }
                 }
                 else
                 {
                     // ifdef ifndef define version
-                    resolvedSource += line + '\n';
+                    destinationstream << line << '\n';
                 }
             }
             else
             {
-                resolvedSource += line + '\n';
+                destinationstream << line << '\n';
             }
         }
     }
-    while (stream.good());
+    while (sourcestream.good());
 
-    return resolvedSource;
+    return destinationstream.str();
 }
 
 } // namespace glow
