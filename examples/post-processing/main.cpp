@@ -58,11 +58,11 @@ public:
 
     virtual void initialize(Window & window) override
 	{
-		glEnable(GL_TEXTURE_2D);
-
-		DebugMessageOutput::enable();
+        DebugMessageOutput::enable();
+        CheckGLError();
 
 		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
+        CheckGLError();
 
 		m_fbo = new FrameBufferObject();
 

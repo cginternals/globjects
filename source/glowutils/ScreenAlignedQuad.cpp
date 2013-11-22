@@ -14,7 +14,8 @@ namespace glow
 {
 
 const char * ScreenAlignedQuad::s_defaultVertexShaderSource = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 layout (location = 0) in vec2 a_vertex;
 out vec2 v_uv;
@@ -27,7 +28,8 @@ void main()
 )";
 
 const char* ScreenAlignedQuad::s_defaultFagmentShaderSource = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform sampler2D source;
 

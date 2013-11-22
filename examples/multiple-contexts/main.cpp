@@ -72,8 +72,7 @@ int main(int argc, char* argv[])
         windows[i].context()->setSwapInterval(Context::NoVerticalSyncronization);
 
         // make some random windows post quit on destroy ;)
-        if (0 == rand() % 2)
-            windows[i].quitOnDestroy(false);
+        windows[i].quitOnDestroy(0 != rand() % 2);
     }
 
     return MainLoop::run();

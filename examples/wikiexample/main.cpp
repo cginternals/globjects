@@ -14,7 +14,8 @@ using namespace glow;
 
 namespace {
     const char* vertexShaderCode = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 in vec2 corner;
 
@@ -28,7 +29,8 @@ void main()
 
 )";
     const char* fragmentShaderCode = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 layout (location = 0) out vec4 fragColor;
 
