@@ -174,19 +174,22 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setVersion(3, 0);
 
     Window window;
 
+    window.setEventHandler(new EventHandler());
+
+    if (window.create(format, "Vertex Array Attributes Example"))
     {
-        AutoTimer t("Initialization");
-
-        window.setEventHandler(new EventHandler());
-
-        window.create(format, "Vertex Array Attributes Example");
         window.context()->setSwapInterval(Context::VerticalSyncronization);
 
         window.show();
-    }
 
-    return MainLoop::run();
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }

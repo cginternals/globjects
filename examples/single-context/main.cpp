@@ -52,19 +52,22 @@ public:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
-    format.setVersion(4, 3);
-    format.setProfile(ContextFormat::CoreProfile);
+    format.setVersion(3, 0);
 
     Window window;
-    {
-    AutoTimer t("Initialization");
 
     window.setEventHandler(new EventHandler());
-    if (!window.create(format, "Single Context Example"))
-        return 0;
 
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
-    window.show();
+    if (window.create(format, "Single Context Example"))
+    {
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
+
+        window.show();
+
+        return MainLoop::run();
     }
-    return MainLoop::run();
+    else
+    {
+        return 1;
+    }
 }

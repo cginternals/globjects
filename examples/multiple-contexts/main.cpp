@@ -55,13 +55,19 @@ public:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setVersion(3, 0);
 
     Window windows[8];
 
     for (int i = 0; i < 8; ++i)
     {
         windows[i].setEventHandler(new EventHandler());
-        windows[i].create(format, "Multiple Contexts Example", 320, 240);
+
+        if (!windows[i].create(format, "Multiple Contexts Example", 320, 240))
+        {
+            return 1;
+        }
+
         windows[i].show();
         windows[i].context()->setSwapInterval(Context::NoVerticalSyncronization);
 
@@ -69,5 +75,6 @@ int main(int argc, char* argv[])
         if (0 == rand() % 2)
             windows[i].quitOnDestroy(false);
     }
+
     return MainLoop::run();
 }
