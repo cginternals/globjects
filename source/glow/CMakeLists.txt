@@ -121,6 +121,8 @@ set(sources
     ${source_path}/Version.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
+    ${source_path}/VertexAttributeBindingImplementation.h
+    ${source_path}/VertexAttributeBindingImplementation.cpp
 )
 
 # Group source files
