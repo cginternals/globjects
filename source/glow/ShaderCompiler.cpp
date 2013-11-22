@@ -47,6 +47,8 @@ bool ShaderCompiler::compile()
 {
     std::string source = m_shader->source()->string();
 
+    m_includes.clear();
+
     if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
     {
         const char * sourcePointer = source.c_str();
@@ -148,38 +150,12 @@ std::string ShaderCompiler::resolveIncludes(const std::string& source, bool drop
                         }
                         else
                         {
-                            destinationstream << resolveIncludes(NamedStrings::namedString(include), true);
+                            if (m_includes.count(include) == 0)
+                            {
+                                m_includes.insert(include);
+                                destinationstream << resolveIncludes(NamedStrings::namedString(include), true);
+                            }
                         }
-                    }
-                }
-                else if (contains(trimmedLine, "define"))
-                {
-                    size_t definePosition = trimmedLine.find("define");
-
-                    std::string definition = trim(trimmedLine.substr(definePosition + std::string("define").size() + 1));
-
-                    if (contains(definition, " ") || contains(definition, "\t") || contains(definition, "\n"))
-                    {
-                        glow::warning() << "Malformed #define";
-                    }
-                    else
-                    {
-                        m_defines.insert(definition);
-                    }
-                }
-                else if (contains(trimmedLine, "undef"))
-                {
-                    size_t undefPosition = trimmedLine.find("undef");
-
-                    std::string definition = trim(trimmedLine.substr(undefPosition + std::string("undef").size() + 1));
-
-                    if (contains(definition, " ") || contains(definition, "\t") || contains(definition, "\n"))
-                    {
-                        glow::warning() << "Malformed #undef";
-                    }
-                    else
-                    {
-                        m_defines.erase(definition);
                     }
                 }
                 else if (contains(trimmedLine, "version"))
@@ -189,26 +165,15 @@ std::string ShaderCompiler::resolveIncludes(const std::string& source, bool drop
                         destinationstream << line << '\n';
                     }
                 }
-                else if (contains(trimmedLine, "ifdef"))
-                {
-                    destinationstream << line << '\n';
-                }
-                else if (contains(trimmedLine, "ifndef"))
-                {
-                    destinationstream << line << '\n';
-                }
-                else if (contains(trimmedLine, "else"))
-                {
-                    destinationstream << line << '\n';
-                }
                 else
                 {
-                    glow::warning() << "Unrecognized macro " << trimmedLine;
+                    // other macro
                     destinationstream << line << '\n';
                 }
             }
             else
             {
+                // normal line
                 destinationstream << line << '\n';
             }
         }

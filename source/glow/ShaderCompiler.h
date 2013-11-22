@@ -17,7 +17,7 @@ public:
     static bool compile(Shader* shader);
 protected:
     Shader* m_shader;
-    std::set<std::string> m_defines;
+    std::set<std::string> m_includes;
 
     ShaderCompiler(Shader* shader);
     bool checkCompileStatus();
