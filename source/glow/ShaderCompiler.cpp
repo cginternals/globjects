@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <algorithm>
+#include <cctype>
 
 #include <GL/glew.h>
 
