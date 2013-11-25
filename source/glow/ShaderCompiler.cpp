@@ -46,32 +46,41 @@ bool ShaderCompiler::compile(Shader* shader)
 
 bool ShaderCompiler::compile()
 {
-    std::string source = m_shader->source()->string();
+    if (m_shader->source())
+    {
+        std::string source = m_shader->source()->string();
 
-    m_includes.clear();
+        m_includes.clear();
+
+        if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
+        {
+            const char * sourcePointer = source.c_str();
+
+            glShaderSource(m_shader->id(), 1, &sourcePointer, 0);
+            CheckGLError();
+        }
+        else
+        {
+            std::string completeSource = resolveIncludes(source);
+
+            const char * sourcePointer = completeSource.c_str();
+
+            glShaderSource(m_shader->id(), 1, &sourcePointer, 0);
+            CheckGLError();
+        }
+    }
 
     if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
     {
-        const char * sourcePointer = source.c_str();
-
-        glShaderSource(m_shader->id(), 1, &sourcePointer, 0);
-        CheckGLError();
-
         glCompileShaderIncludeARB(m_shader->id(), 0, nullptr, nullptr);
         CheckGLError();
     }
     else
     {
-        std::string completeSource = resolveIncludes(source);
-
-        const char * sourcePointer = completeSource.c_str();
-
-        glShaderSource(m_shader->id(), 1, &sourcePointer, 0);
-        CheckGLError();
-
         glCompileShader(m_shader->id());
         CheckGLError();
     }
+
 
     bool compiled = checkCompileStatus();
 
@@ -103,7 +112,7 @@ bool ShaderCompiler::checkCompileStatus()
     return true;
 }
 
-std::string ShaderCompiler::resolveIncludes(const std::string& source, bool dropVersion)
+std::string ShaderCompiler::resolveIncludes(const std::string& source)
 {
     std::istringstream sourcestream(source);
     std::stringstream destinationstream;
@@ -154,16 +163,9 @@ std::string ShaderCompiler::resolveIncludes(const std::string& source, bool drop
                             if (m_includes.count(include) == 0)
                             {
                                 m_includes.insert(include);
-                                destinationstream << resolveIncludes(NamedStrings::namedString(include), true);
+                                destinationstream << resolveIncludes(NamedStrings::namedString(include));
                             }
                         }
-                    }
-                }
-                else if (contains(trimmedLine, "version"))
-                {
-                    if (!dropVersion)
-                    {
-                        destinationstream << line << '\n';
                     }
                 }
                 else

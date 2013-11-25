@@ -22,7 +22,7 @@ protected:
     ShaderCompiler(Shader* shader);
     bool checkCompileStatus();
     bool compile();
-    std::string resolveIncludes(const std::string& source, bool dropVersion = false);
+    std::string resolveIncludes(const std::string& source);
 };
 
 } // namespace glow
