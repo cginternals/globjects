@@ -117,8 +117,6 @@ void Shader::updateSource()
     {
         glShaderSource(m_id, 0, nullptr, nullptr);
     }
-
-    compile();
 }
 
 bool Shader::compile()
@@ -134,7 +132,7 @@ bool Shader::compile()
         CheckGLError();
     }
 
-    m_compiled = checkCompileStatus();
+    setCompiled(checkCompileStatus());
 
     changed();
 
@@ -144,6 +142,11 @@ bool Shader::compile()
 bool Shader::isCompiled() const
 {
 	return m_compiled;
+}
+
+void Shader::setCompiled(bool on)
+{
+    m_compiled = on;
 }
 
 bool Shader::checkCompileStatus() const

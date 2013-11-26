@@ -58,6 +58,7 @@ public:
 
     bool compile();
 	bool isCompiled() const;
+    void setCompiled(bool on);
 
     bool checkCompileStatus() const;
 	std::string infoLog() const;
