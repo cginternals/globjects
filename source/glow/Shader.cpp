@@ -7,10 +7,11 @@
 #include <glow/String.h>
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
+#include <glow/Version.h>
 
 #include <glow/Shader.h>
 
-#include "ShaderCompiler.h"
+#include "IncludeProcessor.h"
 
 namespace glow
 {
@@ -103,21 +104,66 @@ void Shader::notifyChanged()
 
 void Shader::updateSource()
 {
-    std::string backupSource = m_currentSource;
-
-    m_currentSource = m_source->string();
-
-    if (!ShaderCompiler::compile(this))
+    if (m_source)
     {
-        m_currentSource = backupSource;
+        std::string source = IncludeProcessor::resolveIncludes(m_source->string());
 
-        ShaderCompiler::compile(this);
+        const char * sourcePointer = source.c_str();
+        const int sourceSize = source.size();
+
+        glShaderSource(m_id, 1, &sourcePointer, &sourceSize);
     }
+    else
+    {
+        glShaderSource(m_id, 0, nullptr, nullptr);
+    }
+
+    compile();
+}
+
+bool Shader::compile()
+{
+    if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
+    {
+        glCompileShaderIncludeARB(m_id, 0, nullptr, nullptr);
+        CheckGLError();
+    }
+    else
+    {
+        glCompileShader(m_id);
+        CheckGLError();
+    }
+
+    m_compiled = checkCompileStatus();
+
+    changed();
+
+    return m_compiled;
 }
 
 bool Shader::isCompiled() const
 {
 	return m_compiled;
+}
+
+bool Shader::checkCompileStatus() const
+{
+    GLint status = 0;
+
+    glGetShaderiv(m_id, GL_COMPILE_STATUS, &status);
+    CheckGLError();
+
+    if (GL_FALSE == status)
+    {
+        critical()
+            << "Compiler error:" << std::endl
+            << shaderString() << std::endl
+            << infoLog();
+
+        return false;
+    }
+
+    return true;
 }
 
 std::string Shader::infoLog() const

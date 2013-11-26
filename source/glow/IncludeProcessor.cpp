@@ -1,4 +1,4 @@
-#include "ShaderCompiler.h"
+#include "IncludeProcessor.h"
 
 #include <sstream>
 #include <algorithm>
@@ -8,8 +8,6 @@
 
 #include <glow/Error.h>
 #include <glow/logging.h>
-#include <glow/Shader.h>
-#include <glow/StringSource.h>
 #include <glow/NamedStrings.h>
 #include <glow/Version.h>
 
@@ -30,89 +28,27 @@ namespace {
 
 namespace glow {
 
-ShaderCompiler::ShaderCompiler(Shader* shader)
-: m_shader(shader)
+IncludeProcessor::IncludeProcessor()
 {
 }
 
-ShaderCompiler::~ShaderCompiler()
+IncludeProcessor::~IncludeProcessor()
 {
 }
 
-bool ShaderCompiler::compile(Shader* shader)
+std::string IncludeProcessor::resolveIncludes(const std::string& source)
 {
-    return ShaderCompiler(shader).compile();
-}
-
-bool ShaderCompiler::compile()
-{
-    if (m_shader->source())
+    if (GLEW_ARB_shading_language_include && Version::current() >= Version(3, 2))
     {
-        std::string source = m_shader->source()->string();
-
-        m_includes.clear();
-
-        if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
-        {
-            const char * sourcePointer = source.c_str();
-
-            glShaderSource(m_shader->id(), 1, &sourcePointer, 0);
-            CheckGLError();
-        }
-        else
-        {
-            std::string completeSource = resolveIncludes(source);
-
-            const char * sourcePointer = completeSource.c_str();
-
-            glShaderSource(m_shader->id(), 1, &sourcePointer, 0);
-            CheckGLError();
-        }
-    }
-
-    if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
-    {
-        glCompileShaderIncludeARB(m_shader->id(), 0, nullptr, nullptr);
-        CheckGLError();
+        return source;
     }
     else
     {
-        glCompileShader(m_shader->id());
-        CheckGLError();
+        return IncludeProcessor().process(source);
     }
-
-
-    bool compiled = checkCompileStatus();
-
-    m_shader->m_compiled = compiled;
-
-    if (compiled)
-        m_shader->changed();
-
-    return compiled;
 }
 
-bool ShaderCompiler::checkCompileStatus()
-{
-    GLint status = 0;
-
-    glGetShaderiv(m_shader->id(), GL_COMPILE_STATUS, &status);
-    CheckGLError();
-
-    if (GL_FALSE == status)
-    {
-        critical()
-            << "Compiler error:" << std::endl
-            << m_shader->shaderString() << std::endl
-            << m_shader->infoLog();
-
-        return false;
-    }
-
-    return true;
-}
-
-std::string ShaderCompiler::resolveIncludes(const std::string& source)
+std::string IncludeProcessor::process(const std::string& source)
 {
     std::istringstream sourcestream(source);
     std::stringstream destinationstream;

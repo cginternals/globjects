@@ -54,18 +54,19 @@ public:
     void setSource(StringSource * source);
 	void setSource(const std::string & source);
     const StringSource* source() const;
+    void updateSource();
 
+    bool compile();
 	bool isCompiled() const;
 
+    bool checkCompileStatus() const;
 	std::string infoLog() const;
 
     std::string typeString() const;
 
 protected:
-    bool compile();
-
     void notifyChanged();
-	void updateSource();
+
 
 protected:
     static GLuint create(GLenum type);
