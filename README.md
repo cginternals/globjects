@@ -4,7 +4,7 @@ OpenGL Objects Wrapper Library
 The OpenGL Objects Wrapper Library (GLOW) provides an object oriented C++ interface for OpenGL's programmable pipeline (3.0+).
 GLOW is a cross-platform library licenced under the [MIT license](http://opensource.org/licenses/MIT).
 
-The current pre-release is [glow-v0.1.1](https://github.com/hpicgs/glow/releases/tag/glow-v0.1.1).
+The current pre-release is [glow-v0.2.0](https://github.com/hpicgs/glow/releases/tag/glow-v0.2.0).
 To find out more about GLOW and how to use it, check out our [wiki](https://github.com/hpicgs/glow/wiki).
 
 
