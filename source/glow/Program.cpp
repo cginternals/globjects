@@ -137,6 +137,8 @@ void Program::link()
     {
         if (!shader->isCompiled())
         {
+            // Some drivers (e.g. nvidia-331 on Ubuntu 13.04 automatically compile shaders during program linkage)
+            // but we don't want to depend on such behavior
             shader->compile();
 
             if (!shader->isCompiled())

@@ -123,6 +123,9 @@ bool Shader::compile()
 {
     if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
     {
+        // This call seems to be identical to glCompileShader(m_id) on this nvidia-331 driver on Ubuntu 13.04.
+        // Since we don't want to depend on such driver dependent behavior, we call glCompileShaderIncludeARB
+        // despite we don't use include paths by now
         glCompileShaderIncludeARB(m_id, 0, nullptr, nullptr);
         CheckGLError();
     }
