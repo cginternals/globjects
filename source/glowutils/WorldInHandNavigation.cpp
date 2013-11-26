@@ -12,6 +12,8 @@
 
 #include <glowutils/WorldInHandNavigation.h>
 
+#include <limits>
+
 using namespace glm;
 
 namespace
@@ -208,7 +210,10 @@ void WorldInHandNavigation::pan(vec3 t)
         return;
 
     //enforceTranslationConstraints(t);
-
+	if (glm::isinf(t.x) || glm::isinf(t.y) || glm::isinf(t.z)) {
+		return;
+	}
+	
     m_camera->setEye(t + m_eye);
     m_camera->setCenter(t + m_center);
 
