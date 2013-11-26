@@ -21,7 +21,8 @@ VertexAttributeBinding::VertexAttributeBinding(
 {
     assert(vao != nullptr);
 
-    m_implementation = Version::current() >= Version(4, 3) || GLEW_ARB_vertex_attrib_binding
+    // Can't check for GLEW_ARB_vertex_attrib_binding because it falsely resolves to 1 on Gentoo with Intel 965 driver
+    m_implementation = Version::current() >= Version(4, 3)// || GLEW_ARB_vertex_attrib_binding
         ? (VertexAttributeBindingImplementation*) new VertexAttributeBinding_GL_4_3(this)
         : (VertexAttributeBindingImplementation*) new VertexAttributeBinding_GL_3_0(this);
 
