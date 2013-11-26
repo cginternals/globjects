@@ -12,11 +12,15 @@ namespace glow
 
 std::set<Version> Version::s_validVersions = 
 {
-    { 1, 0 }, { 1, 1 }, { 1, 2 }, { 1, 3 }, { 1, 4 }, { 1, 5 },
-    { 2, 0 }, { 2, 1 },
     { 3, 0 }, { 3, 1 }, { 3, 2 }, { 3, 3 }, 
     { 4, 0 }, { 4, 1 }, { 4, 2 }, { 4, 3 }, { 4, 4 }
 };
+
+Version::Version()
+: majorVersion(0)
+, minorVersion(0)
+{
+}
 
 Version::Version(int majorVersion, int minorVersion)
 : majorVersion(majorVersion)
@@ -69,6 +73,11 @@ std::string Version::toString() const
 	stream << majorVersion << "." << minorVersion;
 
     return stream.str();
+}
+
+bool Version::isNull() const
+{
+    return majorVersion == 0 && minorVersion == 0;
 }
 
 bool Version::isValid() const
