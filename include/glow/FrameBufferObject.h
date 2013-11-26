@@ -12,6 +12,8 @@ namespace glow
 {
 
 class FrameBufferAttachment;
+class RenderBufferObject;
+class Texture;
 
 /** \brief Enables creation of arbitrary render targets that are not directly drawn on the screen.
     
