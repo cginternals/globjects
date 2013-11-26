@@ -95,6 +95,8 @@ set(sources
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
     ${source_path}/global.cpp
+    ${source_path}/IncludeProcessor.h
+    ${source_path}/IncludeProcessor.cpp
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/LogMessageBuilder.cpp
@@ -109,8 +111,6 @@ set(sources
     ${source_path}/RenderBufferObject.cpp
     ${source_path}/Screen.cpp
     ${source_path}/Shader.cpp
-    ${source_path}/ShaderCompiler.h
-    ${source_path}/ShaderCompiler.cpp
     ${source_path}/String.cpp
     ${source_path}/StringSource.cpp
     ${source_path}/Texture.cpp
