@@ -1,27 +1,29 @@
-#include <GL\glew.h>
+#include <GL/glew.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <glow\Program.h>
-#include <glow\FrameBufferObject.h>
-#include <glow\Texture.h>
-#include <glow\RenderBufferObject.h>
-#include <glow\DebugMessageOutput.h>
+#include <glow/Program.h>
+#include <glow/FrameBufferObject.h>
+#include <glow/Texture.h>
+#include <glow/RenderBufferObject.h>
+#include <glow/DebugMessageOutput.h>
+#include <glow/Buffer.h>
+#include <glowwindow/ContextFormat.h>
+#include <glowwindow/Window.h>
+#include <glowwindow/MainLoop.h>
+#include <glowwindow/Context.h>
+#include <glowwindow/WindowEventHandler.h>
 
-#include <glowwindow\ContextFormat.h>
-#include <glowwindow\Window.h>
-#include <glowwindow\MainLoop.h>
-#include <glowwindow\Context.h>
-#include <glowwindow\WindowEventHandler.h>
+#include <glowutils/UnitCube.h>
+#include <glowutils/File.h>
+#include <glowutils/Camera.h>
+#include <glowutils/AbstractCoordinateProvider.h>
+#include <glowutils/WorldInHandNavigation.h>
+#include <glowutils/FileRegistry.h>
+#include <glowutils/ScreenAlignedQuad.h>
 
-#include <glowutils\UnitCube.h>
-#include <glowutils\File.h>
-#include <glowutils\Camera.h>
-#include <glowutils\AbstractCoordinateProvider.h>
-#include <glowutils\WorldInHandNavigation.h>
-#include <glowutils\FileRegistry.h>
-#include <glowutils\ScreenAlignedQuad.h>
+#include "TransparencyAlgorithm.h"
 
 
 typedef struct CubeUniformAttributes
@@ -32,16 +34,26 @@ typedef struct CubeUniformAttributes
 } CubeUniformAttributes;
 
 typedef struct TransparencyAlgorithmData {
-	glow::Program* program;
-	glow::FrameBufferObject* fbo;
-	glow::Texture* colorTex;
-	glow::RenderBufferObject* depth;
+    glow::ref_ptr<glow::Program> program;
+    glow::ref_ptr<glow::FrameBufferObject> fbo;
+    glow::ref_ptr<glow::Texture> colorTex;
+    glow::ref_ptr<glow::RenderBufferObject> depth;
+    glow::ref_ptr<glow::Buffer> linkedListBuffer;
+    glow::ref_ptr<glow::Buffer> headBuffer;
+    glow::ref_ptr<glow::Buffer> counter;
 } TransparencyAlgorithmData;
+
+struct ABufferEntry
+{
+    glm::vec4 color;
+    float z;
+    uint next;
+};
 
 class EventHandler : public glowwindow::WindowEventHandler, glowutils::AbstractCoordinateProvider {
 
 private:
-	TransparencyAlgorithmData m_algos[2];
+//	TransparencyAlgorithmData m_algos[2];
 
 	glow::Program* m_screenAlignedQuadProgram;
 
@@ -50,16 +62,7 @@ private:
 	glowutils::WorldInHandNavigation m_nav;
 	glowutils::AxisAlignedBoundingBox m_aabb;
 	glowutils::ScreenAlignedQuad* m_quad;
-
-	glow::Texture* createColorTex() {
-		glow::Texture* color = new glow::Texture(GL_TEXTURE_2D);
-		color->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		color->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		color->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		color->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		color->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-		return color;
-	}
+    std::vector<glow::TransparencyAlgorithm*> m_algos;
 
 public:
 
@@ -69,38 +72,44 @@ public:
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 		// Algo1: GL_BLEND
-		m_algos[0].program = new glow::Program();
-		m_algos[0].program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/normal.frag"));
-		m_algos[0].program->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/normal.vert"));
+        m_algos.push_back(new glow::GlBlendAlgorithm);
+        for (auto& algo : m_algos) {
+            algo->initialize();
+        }
+//		m_algos[0].program = new glow::Program();
+//		m_algos[0].program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/normal.frag"));
+//		m_algos[0].program->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/normal.vert"));
 
-		m_algos[0].colorTex = createColorTex();
-		m_algos[0].fbo = new glow::FrameBufferObject();
-		m_algos[0].fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_algos[0].colorTex);
-		m_algos[0].depth = new glow::RenderBufferObject();
-		m_algos[0].fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_algos[0].depth);
-		m_algos[0].fbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
+//		m_algos[0].colorTex = createColorTex();
+//		m_algos[0].fbo = new glow::FrameBufferObject();
+//		m_algos[0].fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_algos[0].colorTex);
+//		m_algos[0].depth = new glow::RenderBufferObject();
+//		m_algos[0].fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_algos[0].depth);
+//		m_algos[0].fbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
 
 		// Algo2: A-Buffer
-		m_algos[1].program = new glow::Program();
-		m_algos[1].program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/transparency.frag"));
-		m_algos[1].program->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/transparency.vert"));
+//		m_algos[1].program = new glow::Program();
+//		m_algos[1].program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/transparency.frag"));
+//		m_algos[1].program->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/transparency.vert"));
 
-		m_algos[1].colorTex = createColorTex();
-		m_algos[1].fbo = new glow::FrameBufferObject();
-		m_algos[1].fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_algos[1].colorTex);
-		m_algos[1].depth = new glow::RenderBufferObject();
-		m_algos[1].fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_algos[1].depth);
-		m_algos[1].fbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
-
-		// Setup the scene
-		m_algos[0].program->getAttributeLocation("a_normal");
-		m_algos[0].program->getAttributeLocation("a_vertex");
+//		m_algos[1].colorTex = createColorTex();
+//		m_algos[1].fbo = new glow::FrameBufferObject();
+//		m_algos[1].fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_algos[1].colorTex);
+//		m_algos[1].depth = new glow::RenderBufferObject();
+//		m_algos[1].fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_algos[1].depth);
+//        m_algos[1].fbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
+//        m_algos[1].linkedListBuffer = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
+//        m_algos[1].linkedListBuffer->setName("A Buffer Linked Lists");
+//        m_algos[1].headBuffer = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
+//        m_algos[1].headBuffer->setName("A Buffer Heads");
+//        m_algos[1].counter = new glow::Buffer(GL_ATOMIC_COUNTER_BUFFER);
+//        m_algos[1].counter->setName("A Buffer Counter");
 
 		// attributes a_vertex and a_normal must have the same location in both shaders so m_cube can be used for both
-		assert(m_algos[0].program->getAttributeLocation("a_vertex") == m_algos[1].program->getAttributeLocation("a_vertex"));
-		assert(m_algos[0].program->getAttributeLocation("a_normal") == m_algos[1].program->getAttributeLocation("a_normal"));
+//		assert(m_algos[0].program->getAttributeLocation("a_vertex") == m_algos[1].program->getAttributeLocation("a_vertex"));
+//		assert(m_algos[0].program->getAttributeLocation("a_normal") == m_algos[1].program->getAttributeLocation("a_normal"));
 
-		m_cube = new glowutils::UnitCube(m_algos[0].program->getAttributeLocation("a_vertex"), m_algos[0].program->getAttributeLocation("a_normal"));
+        m_cube = new glowutils::UnitCube;
 
 		m_camera = new glowutils::Camera(glm::vec3(0.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -117,7 +126,6 @@ public:
 		m_nav.setCoordinateProvider(this);
 		m_nav.setBoundaryHint(m_aabb);
 
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		CheckGLError();
 	}
 
@@ -132,37 +140,57 @@ public:
 			CubeUniformAttributes{ glm::vec3(0.0f, -0.5f, -6.0f), glm::vec4(0.0, 0.0, 1.0, 0.3) }
 		};
 
-		// STAGE1 - Draw the cubes for each transparency algorithm into the algorithms fbo
-		glViewport(0, 0, width, height * 2);
-		m_camera->setViewport(width, height * 2);
-		TransparencyAlgorithmData current;
-		for (int i = 0; i < 2; i++) {
-			current = m_algos[i];
-			current.fbo->bind();
+        for (auto& algo : m_algos) {
+            algo->draw([&](glow::Program* program) {
+                for (int c = 0; c < 3; c++) {
+                    program->setUniform("modelmatrix", glm::translate<float>(cubes[c].position));
+                    program->setUniform("color", cubes[c].color);
+                    m_cube->draw();
+                }
+            }, m_camera, width, height);
+        }
+        // STAGE1 - Draw the cubes for each transparency algorithm into the algorithms fbo
+//		glViewport(0, 0, width, height * 2);
+//		m_camera->setViewport(width, height * 2);
+//		TransparencyAlgorithmData current;
+//		for (int i = 0; i < 2; i++) {
+//			current = m_algos[i];
+//			current.fbo->bind();
+//            if (current.linkedListBuffer.get() != nullptr) {
+//                std::vector<int> initialHead(width * height, -1);
+//                current.headBuffer->setData(width * height * sizeof(int), &initialHead[0], GL_DYNAMIC_DRAW);
+//                int counterValue = 0;
+//                current.counter->setData(1 * sizeof(int), &counterValue, GL_DYNAMIC_DRAW);
 
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			CheckGLError();
+//                current.linkedListBuffer->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+//                current.headBuffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
+//                current.counter->bindBase(GL_ATOMIC_COUNTER_BUFFER, 0);
+//            }
+
+//			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//			CheckGLError();
 			
-			current.program->setUniform("viewprojectionmatrix", m_camera->viewProjection());
-			current.program->setUniform("normalmatrix", m_camera->normal());
-			current.program->use();
+//			current.program->setUniform("viewprojectionmatrix", m_camera->viewProjection());
+//			current.program->setUniform("normalmatrix", m_camera->normal());
+//            current.program->setUniform("screenSize", glm::vec2(width, height));
+//			current.program->use();
 
-			if (i == 0) glEnable(GL_BLEND);
-			CheckGLError();
+//			if (i == 0) glEnable(GL_BLEND);
+//			CheckGLError();
 
-			for (int c = 0; c < 3; c++) {
-				current.program->setUniform("modelmatrix", glm::translate<float>(cubes[c].position));
-				current.program->setUniform("color", cubes[c].color);
-				m_cube->draw();
-			}
+//			for (int c = 0; c < 3; c++) {
+//				current.program->setUniform("modelmatrix", glm::translate<float>(cubes[c].position));
+//				current.program->setUniform("color", cubes[c].color);
+//				m_cube->draw();
+//			}
 
-			glDisable(GL_BLEND);
-			CheckGLError();
+//			glDisable(GL_BLEND);
+//			CheckGLError();
 
-			current.fbo->unbind();
-		}
+//			current.fbo->unbind();
+//		}
 
-		// STAGE2 - Draw the texture of each algorithm onto the screen aligned quad
+        // STAGE2 - Draw the texture of each algorithm& onto the screen aligned quad
 		glViewport(0, 0, width, height);
 		
 		glDisable(GL_DEPTH_TEST);
@@ -173,15 +201,17 @@ public:
 
 		m_screenAlignedQuadProgram->setUniform("one", 0);
 		m_screenAlignedQuadProgram->setUniform("two", 1);
-		m_algos[0].colorTex->bind(GL_TEXTURE0);
-		m_algos[1].colorTex->bind(GL_TEXTURE1);
+        m_algos[0]->getOutput()->bind(GL_TEXTURE0);
+//		m_algos[0].colorTex->bind(GL_TEXTURE0);
+//		m_algos[1].colorTex->bind(GL_TEXTURE1);
 
 		m_screenAlignedQuadProgram->use();
 
 		m_quad->draw();
 
-		m_algos[0].colorTex->unbind(GL_TEXTURE1);
-		m_algos[1].colorTex->unbind(GL_TEXTURE0);
+        m_algos[0]->getOutput()->unbind(GL_TEXTURE0);
+//		m_algos[0].colorTex->unbind(GL_TEXTURE1);
+//		m_algos[1].colorTex->unbind(GL_TEXTURE0);
 
 		glEnable(GL_DEPTH_TEST);
 		CheckGLError();
@@ -195,20 +225,26 @@ public:
 	void resizeEvent(glowwindow::ResizeEvent & event) override {
 		int width = event.width();
 		int height = event.height();
+        for (auto& algo : m_algos) {
+            algo->resize(width, height);
+        }
 
-		int numAlgos = 2;
-		int result = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
+//		int numAlgos = 2;
+//		int result = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
 
-		for (TransparencyAlgorithmData d : m_algos) {
-			d.colorTex->image2D(0, GL_RGBA32F, width, height * numAlgos, 0, GL_RGBA, GL_FLOAT, nullptr);
-			d.depth->storage(result == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height * numAlgos);
-		}
+//		for (TransparencyAlgorithmData d : m_algos) {
+//			d.colorTex->image2D(0, GL_RGBA32F, width, height * numAlgos, 0, GL_RGBA, GL_FLOAT, nullptr);
+//			d.depth->storage(result == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height * numAlgos);
+//            if (d.linkedListBuffer.get() != nullptr) {
+//                d.linkedListBuffer->setData(width * height * 3 * sizeof(ABufferEntry), nullptr, GL_DYNAMIC_DRAW);
+//            }
+//		}
 		
 	}
 
 	virtual void idle(glowwindow::Window & window) override
 	{
-		//window.repaint();
+        window.repaint();
 	}
 
 	virtual const float depthAt(const glm::ivec2 & windowCoordinates) override

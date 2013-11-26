@@ -5,9 +5,8 @@ uniform mat4 modelmatrix;
 uniform mat4 viewprojectionmatrix;
 uniform mat3 normalmatrix;
 
-layout (location = 0) in vec3 a_normal;
-layout (location = 1) in vec3 a_vertex;
-
+layout (location = 0) in vec3 a_vertex;
+layout (location = 1) in vec3 a_normal;
 
 out vec3 normal;
 

@@ -4,6 +4,8 @@ message(STATUS "example ${target}")
 
 add_executable(${target} 
     main.cpp
+    TransparencyAlgorithm.h
+    TransparencyAlgorithm.cpp
 )
 
 target_link_libraries(${target} 
