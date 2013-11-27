@@ -68,12 +68,22 @@ public:
 
     void clear(GLbitfield mask);
 
+    void clearBufferiv(GLenum buffer, GLint drawBuffer, const GLint * value);
+    void clearBufferuiv(GLenum buffer, GLint drawBuffer, const GLuint * value);
+    void clearBufferfv(GLenum buffer, GLint drawBuffer, const GLfloat * value);
+    void clearBufferfi(GLenum buffer, GLint drawBuffer, GLfloat depth, GLint stencil);
+
+    void clearBuffer(GLenum buffer, GLint drawBuffer, const glm::ivec4 & value);
+    void clearBuffer(GLenum buffer, GLint drawBuffer, const glm::uvec4 & value);
+    void clearBuffer(GLenum buffer, GLint drawBuffer, const glm::vec4 & value);
+
     static void colorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
     static void colorMask(const glm::bvec4 & mask);
     static void colorMaski(GLuint buffer, GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
     static void colorMaski(GLuint buffer, const glm::bvec4 & mask);
     static void clearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
     static void clearColor(const glm::vec4 & color);
+    static void clearDepth(GLclampd depth);
 
 	void readPixels(
         GLint x
