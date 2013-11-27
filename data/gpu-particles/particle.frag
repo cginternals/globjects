@@ -20,6 +20,6 @@ void main()
 	vec4 velOut;
 	moveParticlesInForceField(vert, vel, elapsed, forces, vertOut, velOut);
 
-	fragColor    = vertOut; //vert + vec4(0.01, 0.0, 0.0, 0.0);
-	fragVelocity = velOut;  //vec4(1.0, 0.0, 1.0, 1.0);
+	fragColor    = vertOut;
+	fragVelocity = velOut;
 }

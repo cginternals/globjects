@@ -1,11 +1,6 @@
 
-#include <GL/glew.h>
-
 #include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
-#include <glow/VertexAttributeBinding.h>
 #include <glow/FrameBufferObject.h>
 
 #include <glowutils/Camera.h>
@@ -16,6 +11,7 @@
 
 
 using namespace glow;
+using namespace glowutils;
 using namespace glm;
 
 
@@ -23,8 +19,10 @@ FragmentShaderParticles::FragmentShaderParticles(
     const Array<vec4> & positions
 ,   const Array<vec4> & velocities
 ,   const Texture & forces
-,   const glowutils::Camera & camera)
+,   const Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
+, m_width(10)
+, m_height(10)
 {
 }
 
@@ -63,8 +61,8 @@ void FragmentShaderParticles::initialize()
     m_fboUpdate->unbind();
 
     // Create screen aligned quad for particle update
-    m_quadUpdate = new glowutils::ScreenAlignedQuad(
-        glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/particle.frag"),
+    m_quadUpdate = new ScreenAlignedQuad(
+        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/particle.frag"),
         m_texPositions );
     m_quadUpdate->program()->setUniform("vertices",   0);
     m_quadUpdate->program()->setUniform("velocities", 1);
@@ -85,23 +83,30 @@ void FragmentShaderParticles::initialize()
     m_fbo->unbind();
 
     // Create screen aligned quads for clear and rendering
-    m_clear = new glowutils::ScreenAlignedQuad(
-        glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag") );
-    m_quad  = new glowutils::ScreenAlignedQuad(m_colorBuffer);
+    m_clear = new ScreenAlignedQuad(
+        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag") );
+    m_quad  = new ScreenAlignedQuad(m_colorBuffer);
 
     // Create draw program
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        glowutils::createShaderFromFile(GL_VERTEX_SHADER,   "data/gpu-particles/points_fragment.vert")
-    ,   glowutils::createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-    ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        createShaderFromFile(GL_VERTEX_SHADER,   "data/gpu-particles/points_fragment.vert")
+    ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+    ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 }
 
 void FragmentShaderParticles::reset()
 {
+    // Choose appropriate width and height for the current number of particles
+    int size = m_positions.size();
+    m_width  = (int)sqrt((float)size);
+    m_height = m_width;
+    int remain = size - (m_height * m_width);
+    m_height += remain / m_width + (remain % m_width == 0 ? 0 : 1);
+
     // Read positions and velocities into textures
-    m_texPositions ->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_positions .rawData());
-    m_texVelocities->image2D(0, GL_RGBA32F, 1000, 1000, 0, GL_RGBA, GL_FLOAT, m_velocities.rawData());
+    m_texPositions ->image2D(0, GL_RGBA32F, m_width, m_height, 0, GL_RGBA, GL_FLOAT, m_positions .rawData());
+    m_texVelocities->image2D(0, GL_RGBA32F, m_width, m_height, 0, GL_RGBA, GL_FLOAT, m_velocities.rawData());
 }
 
 void FragmentShaderParticles::step(const float elapsed)
@@ -115,7 +120,7 @@ void FragmentShaderParticles::step(const float elapsed)
     m_forces.bind(GL_TEXTURE2);
     m_quadUpdate->program()->setUniform("elapsed", elapsed);
 
-    glViewport(0, 0, 1000, 1000);
+    glViewport(0, 0, m_width, m_height);
     m_quadUpdate->draw();
     glViewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
 
@@ -144,6 +149,7 @@ void FragmentShaderParticles::draw(const float elapsed)
     m_drawProgram->setUniform("vertices", 0);
     m_texVelocities->bind(GL_TEXTURE1);
     m_drawProgram->setUniform("velocities", 1);
+    m_drawProgram->setUniform("texWidth", m_width);
     m_drawProgram->use();
 
     m_vao->bind();

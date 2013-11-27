@@ -39,6 +39,8 @@ protected:
     // Particle data
     glow::ref_ptr<glow::Texture>                m_texPositions;
     glow::ref_ptr<glow::Texture>                m_texVelocities;
+    int                                         m_width;
+    int                                         m_height;
 
     // Update of particles
     glow::ref_ptr<glow::FrameBufferObject>      m_fboUpdate;
