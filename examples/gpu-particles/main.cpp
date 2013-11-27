@@ -117,6 +117,7 @@ public:
             m_techniques[TransformFeedbackTechnique] = new TransformFeedbackParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         }
+
         m_techniques[FragmentShaderTechnique] = new FragmentShaderParticles(
             m_positions, m_velocities, *m_forces, *m_camera);
 
@@ -354,8 +355,8 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
-//  format.setVersion(4, 3);
-//  format.setProfile(ContextFormat::CoreProfile);
+    format.setVersion(3, 2); // minimum required version is 3.2 due to particle drawing using geometry shader.
+    //format.setProfile(ContextFormat::CoreProfile);
 
     Window window;
 
