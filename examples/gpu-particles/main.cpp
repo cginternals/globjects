@@ -28,12 +28,12 @@
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
-
 #include "AbstractParticleTechnique.h"
 
 #include "ComputeShaderParticles.h"
 #include "FragmentShaderParticles.h"
 #include "TransformFeedbackParticles.h"
+
 
 using namespace glowwindow;
 using namespace glm;
@@ -108,11 +108,16 @@ public:
         
         // initialize techniques
 
-//        m_techniques[ComputeShaderTechnique] = new ComputeShaderParticles(
-//            m_positions, m_velocities, *m_forces, *m_camera);
+        // TODO: Implement a better way to check if a feature is supported
+        if (GLEW_ARB_compute_shader) {
+            m_techniques[ComputeShaderTechnique] = new ComputeShaderParticles(
+                m_positions, m_velocities, *m_forces, *m_camera);
+        }
+        if (GLEW_ARB_transform_feedback3) {
+            m_techniques[TransformFeedbackTechnique] = new TransformFeedbackParticles(
+                m_positions, m_velocities, *m_forces, *m_camera);
+        }
         m_techniques[FragmentShaderTechnique] = new FragmentShaderParticles(
-            m_positions, m_velocities, *m_forces, *m_camera);
-        m_techniques[TransformFeedbackTechnique] = new TransformFeedbackParticles(
             m_positions, m_velocities, *m_forces, *m_camera);
 
         for (auto technique : m_techniques)
@@ -200,16 +205,20 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_C:
-            glow::debug() << "switch to Compute Shader Technique";
-            m_technique = ComputeShaderTechnique;
-            break;
-        case GLFW_KEY_F:
-            glow::debug() << "switch to Fragment Shader Technique";
-            m_technique = FragmentShaderTechnique;
+            if (m_techniques[ComputeShaderTechnique]) {
+                glow::debug() << "switch to compute shader technique";
+                m_technique = ComputeShaderTechnique;
+            } else glow::debug() << "compute shader technique not available";
             break;
         case GLFW_KEY_T:
-            glow::debug() << "switch to Transform Feedback Technique";
-            m_technique = TransformFeedbackTechnique;
+            if (m_techniques[TransformFeedbackTechnique]) {
+                glow::debug() << "switch to transform feedback technique";
+                m_technique = TransformFeedbackTechnique;
+            } else glow::debug() << "transform feedback technique not available";
+            break;
+        case GLFW_KEY_F:
+            glow::debug() << "switch to fragment shader technique";
+            m_technique = FragmentShaderTechnique;
             break;
 
         case GLFW_KEY_P:       
