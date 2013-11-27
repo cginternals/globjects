@@ -1,11 +1,15 @@
 
-set(target transparencyexample)
+set(target transparency)
 message(STATUS "example ${target}")
 
 add_executable(${target} 
     main.cpp
     TransparencyAlgorithm.h
     TransparencyAlgorithm.cpp
+    ABufferAlgorithm.h
+    ABufferAlgorithm.cpp
+    GlBlendAlgorithm.h
+    GlBlendAlgorithm.cpp
 )
 
 target_link_libraries(${target} 
