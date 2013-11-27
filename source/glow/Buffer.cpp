@@ -70,6 +70,12 @@ void Buffer::unbind()
 	CheckGLError();
 }
 
+void Buffer::unbind(GLenum target)
+{
+    glBindBuffer(target, 0);
+    CheckGLError();
+}
+
 void* Buffer::map(GLenum access)
 {
     bind();
@@ -143,27 +149,43 @@ void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr 
 
 void Buffer::copySubData(GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)
 {
-	bind(readTarget);
-	glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
-	CheckGLError();
+    glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
+    CheckGLError();
 }
 
 void Buffer::copySubData(GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)
 {
+    glBindBuffer(GL_COPY_READ_BUFFER, m_id);
+    CheckGLError();
+
 	copySubData(GL_COPY_READ_BUFFER, writeTarget, readOffset, writeOffset, size);
+
+    glBindBuffer(GL_COPY_READ_BUFFER, 0);
+    CheckGLError();
 }
 
 void Buffer::copySubData(GLenum writeTarget, GLsizeiptr size)
 {
+    glBindBuffer(GL_COPY_READ_BUFFER, m_id);
+    CheckGLError();
+
 	copySubData(GL_COPY_READ_BUFFER, writeTarget, 0, 0, size);
+
+    glBindBuffer(GL_COPY_READ_BUFFER, 0);
+    CheckGLError();
 }
 
 void Buffer::copySubData(glow::Buffer* buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)
 {
     assert(buffer != nullptr);
 
-	buffer->bind(GL_COPY_WRITE_BUFFER);
+    glBindBuffer(GL_COPY_WRITE_BUFFER, buffer->id());
+    CheckGLError();
+
 	copySubData(GL_COPY_WRITE_BUFFER, readOffset, writeOffset, size);
+
+    glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
+    CheckGLError();
 }
 
 void Buffer::copySubData(glow::Buffer* buffer, GLsizeiptr size)
@@ -177,7 +199,6 @@ void Buffer::copyData(glow::Buffer* buffer, GLsizeiptr size, GLenum usage)
 {
     assert(buffer != nullptr);
 
-	buffer->bind(GL_COPY_WRITE_BUFFER);
 	buffer->setData(static_cast<GLsizei>(size), nullptr, usage);
 	copySubData(buffer, 0, 0, size);
 }
