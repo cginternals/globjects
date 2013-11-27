@@ -7,11 +7,9 @@
 namespace glow
 {
     class Program;
-    class Buffer;
-    class TransformFeedback;
     class Texture;
-    class FrameBufferObject;
     class VertexArrayObject;
+    class FrameBufferObject;
 }
 namespace glowutils
 {
@@ -39,21 +37,18 @@ public:
 
 protected:
     // Particle data
-    glow::ref_ptr<glow::Buffer> m_sourcePositions;
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Texture>                m_texPositions;
+    glow::ref_ptr<glow::Texture>                m_texVelocities;
 
-    // Access to vertex buffers via texture objects
-    glow::ref_ptr<glow::Texture> m_positionsTexture;
-    glow::ref_ptr<glow::Texture> m_velocitiesTexture;
-    glow::ref_ptr<glow::FrameBufferObject> m_fboUpdate;
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_update;
-
-    // Output FBO
-    glow::ref_ptr<glow::FrameBufferObject> m_fbo;
-    glow::ref_ptr<glow::Texture> m_colorBuffer;
+    // Update of particles
+    glow::ref_ptr<glow::FrameBufferObject>      m_fboUpdate;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quadUpdate;
 
     // Rendering
-    glow::ref_ptr<glow::Program> m_drawProgram;
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glow::VertexArrayObject>      m_vao;
+    glow::ref_ptr<glow::FrameBufferObject>      m_fbo;
+    glow::ref_ptr<glow::Texture>                m_colorBuffer;
+    glow::ref_ptr<glow::Program>                m_drawProgram;
     glow::ref_ptr<glowutils::ScreenAlignedQuad> m_clear;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 };
