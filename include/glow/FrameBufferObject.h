@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 
+#include <glm/glm.hpp>
+
 #include <glow/glow.h>
 #include <glow/Object.h>
 #include <glow/ref_ptr.h>
@@ -63,6 +65,15 @@ public:
 	void setDrawBuffer(GLenum mode);
 	void setDrawBuffers(GLsizei n, const GLenum * modes);
 	void setDrawBuffers(const std::vector<GLenum> & modes);
+
+    void clear(GLbitfield mask);
+
+    static void colorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
+    static void colorMask(const glm::bvec4 & mask);
+    static void colorMaski(GLuint buffer, GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
+    static void colorMaski(GLuint buffer, const glm::bvec4 & mask);
+    static void clearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
+    static void clearColor(const glm::vec4 & color);
 
 	void readPixels(
         GLint x

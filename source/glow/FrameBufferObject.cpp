@@ -195,6 +195,46 @@ void FrameBufferObject::setDrawBuffers(const std::vector<GLenum>& modes)
 	setDrawBuffers(modes.size(), modes.data());
 }
 
+void FrameBufferObject::clear(GLbitfield mask)
+{
+    bind(GL_FRAMEBUFFER);
+    glClear(mask);
+    CheckGLError();
+}
+
+void FrameBufferObject::colorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
+{
+    glColorMask(red, green, blue, alpha);
+    CheckGLError();
+}
+
+void FrameBufferObject::colorMask(const glm::bvec4 & mask)
+{
+    colorMask(mask[0], mask[1], mask[2], mask[3]);
+}
+
+void FrameBufferObject::colorMaski(GLuint buffer, GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
+{
+    glColorMaski(buffer, red, green, blue, alpha);
+    CheckGLError();
+}
+
+void FrameBufferObject::colorMaski(GLuint buffer, const glm::bvec4 & mask)
+{
+    colorMaski(buffer, mask[0], mask[1], mask[2], mask[3]);
+}
+
+void FrameBufferObject::clearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
+{
+    glClearColor(red, green, blue, alpha);
+    CheckGLError();
+}
+
+void FrameBufferObject::clearColor(const glm::vec4 & color)
+{
+    clearColor(color.r, color.g, color.b, color.a);
+}
+
 void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* data)
 {
 	bind(GL_FRAMEBUFFER);
