@@ -75,7 +75,7 @@ public:
     ,   GLsizeiptr size);
 
 	// copying
-	void copySubData(
+    static void copySubData(
         GLenum     readTarget
     ,   GLenum     writeTarget
     ,   GLintptr   readOffset
