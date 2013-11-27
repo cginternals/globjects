@@ -32,9 +32,9 @@ public:
     static void createNamedString(const std::string& name, const std::string& string, GLenum type = GL_SHADER_INCLUDE_ARB);
     static void createNamedString(const std::string& name, StringSource* source, GLenum type = GL_SHADER_INCLUDE_ARB);
     static void deleteNamedString(const std::string& name);
-    static bool isNamedString(const std::string& name, bool cached = true);
-    static std::string namedString(const std::string& name, bool cached = true);
-    static GLenum namedStringType(const std::string& name, bool cached = true);
+    static bool isNamedString(const std::string& name, bool cached = false);
+    static std::string namedString(const std::string& name, bool cached = false);
+    static GLenum namedStringType(const std::string& name, bool cached = false);
 
     void notifyChanged(Changeable* changed);
 protected:
@@ -44,7 +44,7 @@ protected:
 
     static void updateNamedString(const std::string& name);
     static void updateNamedString(const NamedString& namedString);
-    static GLint namedStringSize(const std::string& name, bool cached = true);
+    static GLint namedStringSize(const std::string& name, bool cached = false);
     static GLint namedStringParameter(const std::string& name, GLenum pname);
 
     unsigned sourceOccurenceCount(const StringSource* source);
