@@ -70,6 +70,12 @@ void Buffer::unbind()
 	CheckGLError();
 }
 
+void Buffer::unbind(GLenum target)
+{
+    glBindBuffer(target, 0);
+    CheckGLError();
+}
+
 void* Buffer::map(GLenum access)
 {
     bind();
