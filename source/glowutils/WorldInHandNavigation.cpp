@@ -48,7 +48,6 @@ WorldInHandNavigation::WorldInHandNavigation()
 , m_homeUp(DEFAULT_UP)
 , m_i0Valid(false)
 {
-    reset();
 }
 
 WorldInHandNavigation::~WorldInHandNavigation()
@@ -73,9 +72,16 @@ void WorldInHandNavigation::setCoordinateProvider(AbstractCoordinateProvider * p
 void WorldInHandNavigation::setCamera(Camera * camera)
 {
     m_camera = camera;
+
+    if (camera)
+    {
+        m_homeEye = camera->eye();
+        m_homeCenter = camera->center();
+        m_homeUp = camera->up();
+    }
 }
 
-void WorldInHandNavigation::reset(bool update)
+void WorldInHandNavigation::reset()
 {
     if (!m_camera)
         return;
@@ -87,9 +93,6 @@ void WorldInHandNavigation::reset(bool update)
     m_mode = NoInteraction;
 
 //    enforceWholeMapVisible();
-
-    if (update)
-        m_camera->update();
 }
 
 
@@ -415,13 +418,6 @@ void WorldInHandNavigation::enforceScaleConstraints(
     ||  (scale < 0.f && ds <= DEFAULT_DIST_MIN)
     ||  (eye.y <= m_center.y))	// last fixes abnormal scales (e.g., resulting from mouse flywheels)
         scale = 0.f;
-}
-
-void WorldInHandNavigation::setHome(const vec3 &eye, const vec3 &center, const vec3 &up)
-{
-    m_homeEye = eye;
-    m_homeCenter = center;
-    m_homeUp = up;
 }
 
 //void WorldInHandNavigation::enforceWholeMapVisible(const float offset)
