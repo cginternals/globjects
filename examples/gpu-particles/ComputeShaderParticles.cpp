@@ -1,8 +1,10 @@
 
 #include <GL/glew.h>
 
+#include <glow/global.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
+#include <glow/StringSource.h>
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
@@ -14,6 +16,7 @@
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
+#include <glowutils/StringTemplate.h>
 
 #include "ComputeShaderParticles.h"
 
@@ -37,9 +40,32 @@ ComputeShaderParticles::~ComputeShaderParticles()
 
 void ComputeShaderParticles::initialize()
 {
+    static const int max_invocations = query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS);
+    static const ivec3 max_count = ivec3(
+        query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0)
+      , query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1)
+      , query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2));
+
+    const int groups = static_cast<int>(ceil(m_numParticles / static_cast<float>(max_invocations)));
+
+    ivec3 workGroupSize;
+    workGroupSize.x = max(groups % max_count.x, 1);
+    workGroupSize.y = max(max(groups - workGroupSize.x * max_count.x, 1) % max_count.y, 1);
+    workGroupSize.z = max(max((groups - workGroupSize.x * max_count.x) - workGroupSize.y * max_count.y, 1) % max_count.z, 1);
+
+    m_workGroupSize = workGroupSize;
+
+    assert(m_workGroupSize.x * m_workGroupSize.y * m_workGroupSize.z * max_invocations >= m_numParticles);
+    assert(m_workGroupSize.x * m_workGroupSize.y * m_workGroupSize.z * max_invocations < m_numParticles + max_invocations);
+
     m_computeProgram = new Program();
-    m_computeProgram->attach(
-        glowutils::createShaderFromFile(GL_COMPUTE_SHADER, "data/gpu-particles/particle.comp"));
+    
+    glowutils::StringTemplate * stringTemplate = new glowutils::StringTemplate(
+        new glowutils::File("data/gpu-particles/particle.comp"));
+    stringTemplate->replace("MAX_INVOCATION", max_invocations);
+    stringTemplate->update();
+
+    m_computeProgram->attach(new Shader(GL_COMPUTE_SHADER, stringTemplate));
 
     m_drawProgram = new Program();
     m_drawProgram->attach(
@@ -103,15 +129,9 @@ void ComputeShaderParticles::step(const float elapsed)
     m_computeProgram->setUniform("elapsed", elapsed);
 
     m_computeProgram->use();
-
-    int n = m_numParticles;
-    do
-    {
-        m_computeProgram->setUniform("offset", m_numParticles - n);
-        m_computeProgram->dispatchCompute(static_cast<GLuint>(ceil(min(262144.f, static_cast<float>(n)) / 16.f)), 1, 1);
-        n -= 262144;
-    } while (n > 0);
-
+    
+    m_computeProgram->dispatchCompute(m_workGroupSize);
+    
     m_computeProgram->release();
 
     m_forces.unbind();
