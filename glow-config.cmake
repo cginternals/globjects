@@ -16,6 +16,7 @@ find_path(GLOW_INCLUDE_DIR glow/glow.h
 	$ENV{GLOW_DIR}/include
 	${GLOW_DIR}/include
 	$ENV{PROGRAMFILES}/GLOW/include
+	/include
 	/usr/include
 	/usr/local/include
 	/sw/include
@@ -25,6 +26,7 @@ find_path(GLOW_INCLUDE_DIR glow/glow.h
 set(LIB_PATHS 	
 	$ENV{GLOW_DIR}/lib
 	${GLOW_DIR}/lib
+	/lib
 	/usr/lib
 	/usr/local/lib
 	/sw/lib
