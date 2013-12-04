@@ -19,7 +19,7 @@ endif()
 find_path(GLOW_INCLUDE_DIR glow/glow.h
 	$ENV{GLOW_DIR}/include
 	${GLOW_DIR}/include
-	$ENV{PROGRAMFILES}/GLOW/include
+	$ENV{PROGRAMFILES}/glow/include
 	/usr/include
 	/usr/local/include
 	/sw/include
