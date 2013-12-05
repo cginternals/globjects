@@ -16,10 +16,13 @@ if(CMAKE_CURRENT_LIST_FILE)
 	get_filename_component(GLOW_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 endif()
 
+file(TO_CMAKE_PATH "$ENV{PROGRAMFILES}" ENVPROGRAMFILES)
+file(TO_CMAKE_PATH "$ENV{GLOW_DIR}" ENVGLOW_DIR)
+
 find_path(GLOW_INCLUDE_DIR glow/glow.h
-	$ENV{GLOW_DIR}/include
+	${ENVGLOW_DIR}/include
 	${GLOW_DIR}/include
-	$ENV{PROGRAMFILES}/GLOW/include
+	${ENVPROGRAMFILES}/glow/include
 	/usr/include
 	/usr/local/include
 	/sw/include
@@ -32,8 +35,9 @@ set(LIB_PATHS
 	${GLOW_DIR}/build/Debug
 	${GLOW_DIR}/build-release
 	${GLOW_DIR}/build-debug
-	$ENV{GLOW_DIR}/lib
+	${ENVGLOW_DIR}/lib
 	${GLOW_DIR}/lib
+	${ENVPROGRAMFILES}/glow/lib
 	/usr/lib
 	/usr/local/lib
 	/sw/lib
