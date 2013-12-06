@@ -23,8 +23,8 @@ struct ABufferEntry {
 
 void ABufferAlgorithm::initialize() {
     m_program = new glow::Program();
-    m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/transparency.frag"));
-    m_program->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/transparency.vert"));
+    m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/abuffer.frag"));
+    m_program->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/abuffer.vert"));
 
     m_colorTex = createColorTex();
     m_depthBuffer = new glow::RenderBufferObject();

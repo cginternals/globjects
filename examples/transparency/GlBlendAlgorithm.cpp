@@ -12,8 +12,8 @@ namespace glow {
 
 void GlBlendAlgorithm::initialize() {
     m_program = new Program();
-    m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/normal.frag"));
-    m_program->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/normal.vert"));
+    m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/glblend.frag"));
+    m_program->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/glblend.vert"));
 
     m_colorTex = createColorTex();
     m_depthBuffer = new RenderBufferObject();
