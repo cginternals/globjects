@@ -4,8 +4,8 @@ message(STATUS "example ${target}")
 
 add_executable(${target} 
     main.cpp
-    TransparencyAlgorithm.h
-    TransparencyAlgorithm.cpp
+    AbstractTransparencyAlgorithm.h
+    AbstractTransparencyAlgorithm.cpp
     ABufferAlgorithm.h
     ABufferAlgorithm.cpp
     GlBlendAlgorithm.h

@@ -20,6 +20,18 @@ struct ABufferEntry {
     int next;
 };
 
+struct Head {
+    int startIndex;
+    int size;
+
+    Head()
+    : startIndex(-1)
+    , size(0) {
+    }
+};
+
+const int ABUFFER_SIZE = 32;
+
 } // anonymous namespace
 
 void ABufferAlgorithm::initialize() {
@@ -48,23 +60,21 @@ void ABufferAlgorithm::initialize() {
 
     m_postColorBuffer = createColorTex();
     m_postFbo = new glow::FrameBufferObject;
-    m_postFbo->clearColor(0.0f, 0.0f, 0.0f, 1.0f);
     m_postFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_postColorBuffer.get());
     m_postFbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
 }
 
 void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) {
     m_renderFbo->bind();
+    m_renderFbo->clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glViewport(0, 0, width, height);
     camera->setViewport(width, height);
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    CheckGLError();
-
     // reset head buffer & counter
-    std::vector<int> initialHead(width * height, -1);
-    m_headBuffer->setData(width * height * sizeof(int), &initialHead[0], GL_DYNAMIC_DRAW);
+    static std::vector<Head> initialHead;
+    initialHead.resize(width * height);
+    m_headBuffer->setData(width * height * sizeof(Head), &initialHead[0], GL_DYNAMIC_DRAW);
     static int initialCounter = 0;
     m_counter->setData(1 * sizeof(int), &initialCounter, GL_DYNAMIC_DRAW);
 
@@ -95,7 +105,7 @@ void ABufferAlgorithm::resize(int width, int height) {
     int depthBits = FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
     m_renderColorBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
     m_renderDepthBuffer->storage(depthBits == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
-    m_linkedListBuffer->setData(width * height * 6 * sizeof(ABufferEntry), nullptr, GL_DYNAMIC_DRAW);
+    m_linkedListBuffer->setData(width * height * ABUFFER_SIZE * sizeof(ABufferEntry), nullptr, GL_DYNAMIC_DRAW);
     m_postColorBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 }
 

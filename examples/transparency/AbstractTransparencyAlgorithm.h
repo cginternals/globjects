@@ -13,7 +13,7 @@ namespace glow {
 class Program;
 class Texture;
 
-class TransparencyAlgorithm {
+class AbstractTransparencyAlgorithm {
 public:
     typedef std::function<void(Program*)> DrawFunction;
 

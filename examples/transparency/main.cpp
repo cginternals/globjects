@@ -41,13 +41,13 @@ private:
 	glowutils::WorldInHandNavigation m_nav;
 	glowutils::AxisAlignedBoundingBox m_aabb;
 	glowutils::ScreenAlignedQuad* m_quad;
-    std::vector<glow::TransparencyAlgorithm*> m_algos;
+    std::vector<glow::AbstractTransparencyAlgorithm*> m_algos;
 
 public:
 	void initialize(glowwindow::Window & window) override {
 		glow::DebugMessageOutput::enable();
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         m_algos.push_back(new glow::GlBlendAlgorithm);
         m_algos.push_back(new glow::ABufferAlgorithm);
@@ -57,7 +57,7 @@ public:
 
         m_cube = new glowutils::UnitCube;
 
-        m_camera = new glowutils::Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, -8.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        m_camera = new glowutils::Camera(glm::vec3(0.0f, 0.0f, -15.0f), glm::vec3(0.0f, 0.0f, -8.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// Setup the screen aligned quad stuff
 		glow::Program* quadProgram = new glow::Program();

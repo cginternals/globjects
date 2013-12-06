@@ -1,4 +1,4 @@
-#include "TransparencyAlgorithm.h"
+#include "AbstractTransparencyAlgorithm.h"
 
 #include <glow/Program.h>
 #include <glow/FrameBufferObject.h>
@@ -12,7 +12,7 @@
 
 namespace glow {
 
-Texture* TransparencyAlgorithm::createColorTex() {
+    Texture* AbstractTransparencyAlgorithm::createColorTex() {
     Texture* color = new Texture(GL_TEXTURE_2D);
     color->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     color->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);

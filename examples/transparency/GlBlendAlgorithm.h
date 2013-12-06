@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TransparencyAlgorithm.h"
+#include "AbstractTransparencyAlgorithm.h"
 
 namespace glowutils {
 class Camera;
@@ -13,7 +13,7 @@ class FrameBufferObject;
 class Texture;
 class RenderBufferObject;
 
-class GlBlendAlgorithm : public TransparencyAlgorithm {
+class GlBlendAlgorithm : public AbstractTransparencyAlgorithm {
 public:
     virtual void initialize() override;
     virtual void draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) override;

@@ -1,5 +1,4 @@
-#version 140
-#extension GL_ARB_explicit_attrib_location : require
+#version 430
 
 uniform mat4 modelmatrix;
 uniform mat4 viewprojectionmatrix;
