@@ -58,7 +58,7 @@ public:
 
     bool compile();
 	bool isCompiled() const;
-    void setCompiled(bool on);
+    void invalidate();
 
     bool checkCompileStatus() const;
 	std::string infoLog() const;

@@ -12,10 +12,17 @@
 # GLOW_WINDOW_LIBRARY_DEBUG
 # GLOW_WINDOW_LIBRARIES
 
+if(CMAKE_CURRENT_LIST_FILE)
+	get_filename_component(GLOW_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
+endif()
+
+file(TO_CMAKE_PATH "$ENV{PROGRAMFILES}" ENVPROGRAMFILES)
+file(TO_CMAKE_PATH "$ENV{GLOW_DIR}" ENVGLOW_DIR)
+
 find_path(GLOW_INCLUDE_DIR glow/glow.h
-	$ENV{GLOW_DIR}/include
+	${ENVGLOW_DIR}/include
 	${GLOW_DIR}/include
-	$ENV{PROGRAMFILES}/GLOW/include
+	${ENVPROGRAMFILES}/glow/include
 	/usr/include
 	/usr/local/include
 	/sw/include
@@ -23,8 +30,14 @@ find_path(GLOW_INCLUDE_DIR glow/glow.h
 	DOC "The directory where glow/glow.h resides")
 
 set(LIB_PATHS 	
-	$ENV{GLOW_DIR}/lib
+	${GLOW_DIR}/build
+	${GLOW_DIR}/build/Release
+	${GLOW_DIR}/build/Debug
+	${GLOW_DIR}/build-release
+	${GLOW_DIR}/build-debug
+	${ENVGLOW_DIR}/lib
 	${GLOW_DIR}/lib
+	${ENVPROGRAMFILES}/glow/lib
 	/usr/lib
 	/usr/local/lib
 	/sw/lib
@@ -35,7 +48,8 @@ set(LIB_PATHS
 	/opt/local/lib64
 )
 
-macro (find LIB_NAME HINT_PATHS)
+macro (find LIB_NAME)
+	set(HINT_PATHS ${ARGN})
 
 	if (${LIB_NAME} STREQUAL "glow")
 		set(LIB_NAME_UPPER GLOW)
@@ -67,11 +81,5 @@ find(glow ${LIB_PATHS})
 find(utils ${LIB_PATHS})
 #find(window ${LIB_PATHS})
 
-if(GLOW_INCLUDE_DIR AND (GLOW_LIBRARY OR GLOW_LIBRARY_DEBUG))
-    set(GLOW_FOUND 1 CACHE STRING "Set to 1 if glow is found, 0 otherwise")
-else()
-    set(GLOW_FOUND 0 CACHE STRING "Set to 1 if glow is found, 0 otherwise")
-    message(WARNING "Note: an envvar like GLOW_DIR assists this script to locate glow.")
-endif()
-
+find_package_handle_standard_args(GLOW DEFAULT_MSG GLOW_LIBRARIES GLOW_INCLUDE_DIR)
 mark_as_advanced(GLOW_FOUND)

@@ -159,9 +159,9 @@ void Texture::accept(ObjectVisitor& visitor)
 	visitor.visitTexture(this);
 }
 
-Texture::Handle Texture::textureHandle() const
+TextureHandle Texture::textureHandle() const
 {
-	Texture::Handle result(glGetTextureHandleNV(m_id));
+	TextureHandle result(glGetTextureHandleNV(m_id));
 	CheckGLError();
 	return result;
 }
@@ -174,9 +174,9 @@ GLboolean Texture::isResident() const
 	return result;
 }
 
-Texture::Handle Texture::makeResident()
+TextureHandle Texture::makeResident()
 {
-	Handle handle = textureHandle();
+    TextureHandle handle = textureHandle();
 
 	glMakeTextureHandleResidentNV(handle);
 	CheckGLError();
@@ -188,21 +188,6 @@ void Texture::makeNonResident()
 {
 	glMakeTextureHandleNonResidentNV(textureHandle());
 	CheckGLError();
-}
-
-Texture::Handle::Handle()
-: value(0)
-{
-}
-
-Texture::Handle::Handle(const GLuint64& value)
-: value(value)
-{
-}
-
-Texture::Handle::operator GLuint64() const
-{
-	return value;
 }
 
 } // namespace glow

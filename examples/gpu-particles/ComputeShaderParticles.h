@@ -51,4 +51,6 @@ protected:
 
     glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
     glow::ref_ptr<glowutils::ScreenAlignedQuad> m_clear;
+
+    glm::uvec3 m_workGroupSize;
 };

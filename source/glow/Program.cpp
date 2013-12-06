@@ -269,15 +269,20 @@ const std::string Program::infoLog() const
 	return std::string(log.data(), length);
 }
 
+void Program::dispatchCompute(const glm::uvec3 & numGroups)
+{
+    dispatchCompute(numGroups.x, numGroups.y, numGroups.z);
+}
+
 void Program::dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ)
 {
-	use();
+    use();
 
     if (!m_linked)
         return;
 
-	glDispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
-	CheckGLError();
+    glDispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
+    CheckGLError();
 }
 
 void Program::dispatchComputeGroupSize(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ, GLuint groupSizeX, GLuint groupSizeY, GLuint groupSizeZ)
