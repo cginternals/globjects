@@ -47,7 +47,7 @@ public:
 	void initialize(glowwindow::Window & window) override {
 		glow::DebugMessageOutput::enable();
 
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         m_algos.push_back(new glow::GlBlendAlgorithm);
         m_algos.push_back(new glow::ABufferAlgorithm);
@@ -57,7 +57,7 @@ public:
 
         m_cube = new glowutils::UnitCube;
 
-		m_camera = new glowutils::Camera(glm::vec3(0.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        m_camera = new glowutils::Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, -8.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// Setup the screen aligned quad stuff
 		glow::Program* quadProgram = new glow::Program();
@@ -80,9 +80,9 @@ public:
 		int height = event.window()->height();
 
 		const CubeUniformAttributes cubes[3] = {
-			CubeUniformAttributes{ glm::vec3(0.0f, 0.0f, -10.0f), glm::vec4(1.0, 0.0, 0.0, 0.3) },
-			CubeUniformAttributes{ glm::vec3(0.0f, -0.25f, -8.0f), glm::vec4(0.0, 1.0, 0.0, 0.3) },
-			CubeUniformAttributes{ glm::vec3(0.0f, -0.5f, -6.0f), glm::vec4(0.0, 0.0, 1.0, 0.3) }
+            CubeUniformAttributes{ glm::vec3(0.0f, 0.0f, -10.0f), glm::vec4(1.0, 0.0, 0.0, 0.3) },
+            CubeUniformAttributes{ glm::vec3(0.0f, -0.25f, -8.0f), glm::vec4(0.0, 1.0, 0.0, 0.3) },
+            CubeUniformAttributes{ glm::vec3(0.0f, -0.5f, -6.0f), glm::vec4(0.0, 0.0, 1.0, 0.3) }
 		};
 
         for (auto& algo : m_algos) {
