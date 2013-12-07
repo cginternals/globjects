@@ -79,7 +79,7 @@ endmacro()
 
 find(glow ${LIB_PATHS})
 find(utils ${LIB_PATHS})
-#find(window ${LIB_PATHS})
+find(window ${LIB_PATHS})
 
 find_package_handle_standard_args(GLOW DEFAULT_MSG GLOW_LIBRARIES GLOW_INCLUDE_DIR)
 mark_as_advanced(GLOW_FOUND)
