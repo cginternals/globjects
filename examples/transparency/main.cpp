@@ -79,15 +79,16 @@ public:
 		int width = event.window()->width();
 		int height = event.window()->height();
 
-		const CubeUniformAttributes cubes[3] = {
+		const CubeUniformAttributes cubes[4] = {
             CubeUniformAttributes{ glm::vec3(0.0f, 0.0f, -10.0f), glm::vec4(1.0, 0.0, 0.0, 0.3) },
             CubeUniformAttributes{ glm::vec3(0.0f, -0.25f, -8.0f), glm::vec4(0.0, 1.0, 0.0, 0.3) },
-            CubeUniformAttributes{ glm::vec3(0.0f, -0.5f, -6.0f), glm::vec4(0.0, 0.0, 1.0, 0.3) }
+            CubeUniformAttributes{ glm::vec3(0.0f, -0.5f, -6.0f), glm::vec4(0.0, 0.0, 1.0, 0.3) },
+            CubeUniformAttributes{ glm::vec3(0.0f, -0.75f, -4.0f), glm::vec4(0.0, 1.0, 1.0, 1.0) }
 		};
 
         for (auto& algo : m_algos) {
             algo->draw([&](glow::Program* program) {
-                for (int c = 0; c < 3; c++) {
+                for (int c = 0; c < 4; c++) {
                     program->setUniform("modelmatrix", glm::translate<float>(cubes[c].position));
                     program->setUniform("color", cubes[c].color);
                     m_cube->draw();

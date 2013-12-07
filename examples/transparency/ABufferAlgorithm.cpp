@@ -5,6 +5,7 @@
 #include <glow/Texture.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Buffer.h>
+#include <glow/NamedStrings.h>
 
 #include <glowutils/File.h>
 #include <glowutils/Camera.h>
@@ -30,21 +31,24 @@ struct Head {
     }
 };
 
-const int ABUFFER_SIZE = 32;
+const int ABUFFER_SIZE = 8;
 
 } // anonymous namespace
 
 void ABufferAlgorithm::initialize() {
-    m_renderProgram = new glow::Program();
-    m_renderProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/abuffer.frag"));
-    m_renderProgram->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/abuffer.vert"));
+    glow::NamedStrings::createNamedString("/transparency/abuffer_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
+    glow::NamedStrings::createNamedString("/transparency/abuffer.glsl", new glowutils::File("data/transparency/abuffer.glsl"));
 
-    m_renderColorBuffer = createColorTex();
-    m_renderDepthBuffer = new glow::RenderBufferObject();
+    m_program = new glow::Program();
+    m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/abuffer.frag"));
+    m_program->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/abuffer.vert"));
+
+    m_opaqueBuffer = createColorTex();
+    m_depthBuffer = new glow::RenderBufferObject();
 
     m_renderFbo = new glow::FrameBufferObject();
-    m_renderFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_renderColorBuffer.get());
-    m_renderFbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_renderDepthBuffer.get());
+    m_renderFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
+    m_renderFbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
     m_renderFbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
 
     m_linkedListBuffer = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
@@ -56,17 +60,18 @@ void ABufferAlgorithm::initialize() {
     m_counter = new glow::Buffer(GL_ATOMIC_COUNTER_BUFFER);
     m_counter->setName("A Buffer Counter");
 
-    m_postQuad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/abuffer_post.frag"));
+    m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/abuffer_post.frag"));
 
-    m_postColorBuffer = createColorTex();
+    m_colorBuffer = createColorTex();
     m_postFbo = new glow::FrameBufferObject;
-    m_postFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_postColorBuffer.get());
+    m_postFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorBuffer.get());
     m_postFbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
 }
 
 void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) {
     m_renderFbo->bind();
-    m_renderFbo->clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    m_renderFbo->clear(GL_DEPTH_BUFFER_BIT);
+    m_renderFbo->clearBuffer(GL_COLOR, 0, glm::vec4(1.0f, 1.0f, 1.0f, std::numeric_limits<float>::max()));
 
     glViewport(0, 0, width, height);
     camera->setViewport(width, height);
@@ -83,12 +88,12 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
     m_headBuffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
     m_counter->bindBase(GL_ATOMIC_COUNTER_BUFFER, 0);
 
-    m_renderProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
-    m_renderProgram->setUniform("normalmatrix", camera->normal());
-    m_renderProgram->setUniform("screenSize", glm::ivec2(width, height));
-    m_renderProgram->use();
+    m_program->setUniform("viewprojectionmatrix", camera->viewProjection());
+    m_program->setUniform("normalmatrix", camera->normal());
+    m_program->setUniform("screenSize", glm::ivec2(width, height));
+    m_program->use();
 
-    drawFunction(m_renderProgram.get());
+    drawFunction(m_program.get());
 
     m_renderFbo->unbind();
 
@@ -96,17 +101,24 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
 
     m_postFbo->bind();
     m_postFbo->clear(GL_COLOR_BUFFER_BIT);
-    m_postQuad->program()->setUniform("screenSize", glm::ivec2(width, height));
-    m_postQuad->draw();
+
+    m_opaqueBuffer->bind(GL_TEXTURE0);
+
+    m_quad->program()->setUniform("screenSize", glm::ivec2(width, height));
+    m_quad->program()->setUniform("opaqueBuffer", 0);
+    m_quad->draw();
+
+    m_opaqueBuffer->unbind(GL_TEXTURE0);
+
     m_postFbo->unbind();
 }
 
 void ABufferAlgorithm::resize(int width, int height) {
     int depthBits = FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
-    m_renderColorBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-    m_renderDepthBuffer->storage(depthBits == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
+    m_opaqueBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
+    m_depthBuffer->storage(depthBits == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
     m_linkedListBuffer->setData(width * height * ABUFFER_SIZE * sizeof(ABufferEntry), nullptr, GL_DYNAMIC_DRAW);
-    m_postColorBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
+    m_colorBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 }
 
 } // namespace glow
