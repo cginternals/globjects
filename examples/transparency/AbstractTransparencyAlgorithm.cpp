@@ -16,9 +16,8 @@ namespace glow {
     Texture* color = new Texture(GL_TEXTURE_2D);
     color->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     color->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    color->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    color->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    color->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    color->setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+    color->setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
     return color;
 }
 

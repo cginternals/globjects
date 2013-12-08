@@ -22,8 +22,6 @@ void GlBlendAlgorithm::initialize() {
     m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorTex.get());
     m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
     m_fbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
-
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void GlBlendAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) {
@@ -41,12 +39,11 @@ void GlBlendAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
     m_program->use();
 
     glEnable(GL_BLEND);
-    CheckGLError();
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     drawFunction(m_program.get());
 
     glDisable(GL_BLEND);
-    CheckGLError();
 
     m_fbo->unbind();
 }

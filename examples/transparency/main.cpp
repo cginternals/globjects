@@ -23,6 +23,7 @@
 
 #include "GlBlendAlgorithm.h"
 #include "ABufferAlgorithm.h"
+#include "WeightedAverageAlgorithm.h"
 
 namespace {
 
@@ -51,6 +52,7 @@ public:
 
         m_algos.push_back(new glow::GlBlendAlgorithm);
         m_algos.push_back(new glow::ABufferAlgorithm);
+        m_algos.push_back(new glow::WeightedAverageAlgorithm);
         for (auto& algo : m_algos) {
             algo->initialize();
         }
@@ -105,10 +107,14 @@ public:
 		glDepthMask(GL_FALSE);
 		CheckGLError();
 
-		m_quad->program()->setUniform("one", 0);
-		m_quad->program()->setUniform("two", 1);
-        m_algos[0]->getOutput()->bind(GL_TEXTURE0);
-        m_algos[1]->getOutput()->bind(GL_TEXTURE1);
+		m_quad->program()->setUniform("topLeft", 0);
+        m_quad->program()->setUniform("topRight", 1);
+        m_quad->program()->setUniform("bottomLeft", 2);
+        m_quad->program()->setUniform("bottomRight", 3);
+
+        for (int i = 0; i < std::min(size_t(4), m_algos.size()); ++i) {
+            m_algos[i]->getOutput()->bind(GL_TEXTURE0 + i);
+        }
 
 		m_quad->draw();
 

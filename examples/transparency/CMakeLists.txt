@@ -10,6 +10,8 @@ add_executable(${target}
     ABufferAlgorithm.cpp
     GlBlendAlgorithm.h
     GlBlendAlgorithm.cpp
+    WeightedAverageAlgorithm.h
+    WeightedAverageAlgorithm.cpp
 )
 
 target_link_libraries(${target} 
