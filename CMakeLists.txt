@@ -149,7 +149,8 @@ install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION .)
 
 # Generate meta-header
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/source/glow-version.h.in ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h DESTINATION ${INSTALL_INCLUDE}/glow)
+# we do NOT want to deploy this header
+#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h DESTINATION ${INSTALL_INCLUDE}/glow)
 
 
 # GLOW DEPENDENCIES
