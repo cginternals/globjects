@@ -85,6 +85,7 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
     m_postFbo->bind();
     m_postFbo->clear(GL_COLOR_BUFFER_BIT);
 
+    glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
 

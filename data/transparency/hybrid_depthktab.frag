@@ -1,25 +1,24 @@
 #version 430
 
-const float MAX_UINT = 1 << 31;
-const uint ABUFFER_SIZE = 8;
+const float DEPTH_RESOLUTION = 65535.0;
+const uint ABUFFER_SIZE = 4;
 
 layout(std430, binding = 0) buffer DepthKTab {
 	uint[] depth;
-}
+};
 
 uniform ivec2 screenSize;
 
 in float z;
-out vec4 vertexColor;
-in ivec2 gl_FragCoord;
+in vec4 vertexColor;
 
 void main() {
 	if (vertexColor.a > 0.9999) {
 		discard;
 	}
-	uint zi = uint(z * MAX_UINT);
+	uint zi = uint(gl_FragCoord.z * DEPTH_RESOLUTION);
 
-	uint baseIndex = gl_FragCoord.y * screenSize.x + gl_FragCoord.x;
+	uint baseIndex = (int(gl_FragCoord.y) * screenSize.x + int(gl_FragCoord.x)) * ABUFFER_SIZE;
 	for (int i = 0; i < ABUFFER_SIZE; ++i) {
 		zi = max(atomicMin(depth[baseIndex + i], zi), zi);
 	}

@@ -26,8 +26,13 @@ private:
     ref_ptr<Program> m_opaqueProgram;
     ref_ptr<FrameBufferObject> m_fbo;
     ref_ptr<RenderBufferObject> m_depthBuffer;
-    ref_ptr<Buffer> m_kDepthTab;
+    ref_ptr<Texture> m_opaqueBuffer;
 
+    ref_ptr<Program> m_depthKTabProgram;
+    ref_ptr<Buffer> m_depthKTab;
+
+    ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    ref_ptr<FrameBufferObject> m_postFbo;
     ref_ptr<Texture> m_colorBuffer;
 };
 
