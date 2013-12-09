@@ -11,8 +11,9 @@
 
 
 using namespace glm;
+using namespace glow;
 
-namespace glow 
+namespace glowutils 
 {
 
 const Array<vec3> UnitCube::strip()
@@ -94,4 +95,4 @@ void UnitCube::draw()
     m_vao->unbind();
 }
 
-} // namespace glow
+} // namespace glowutils

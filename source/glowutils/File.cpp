@@ -7,16 +7,19 @@
 #include <glowutils/FileRegistry.h>
 #include <glowutils/RawFile.h>
 
-namespace glow
+using namespace glow;
+
+namespace glowutils
 {
 
-Shader* createShaderFromFile(const GLenum type, const std::string& filename)
+Shader * createShaderFromFile(const GLenum type, const std::string& filename)
 {
     return new Shader(type, new File(filename));
 }
 
 File::File(const std::string & filePath)
-:   m_filePath(filePath)
+: m_filePath(filePath)
+, m_registry(nullptr)
 {
     RawFile<char> raw(m_filePath);
     if (raw.valid())
@@ -27,7 +30,10 @@ File::File(const std::string & filePath)
 
 File::~File()
 {
-    FileRegistry::instance().deregisterFile(this);
+    if (m_registry)
+    {
+        m_registry->deregisterFile(this);
+    }
 }
 
 const std::string & File::string() const
@@ -55,4 +61,4 @@ void File::reload()
     }
 }
 
-} // namespace glow
+} // namespace glowutils

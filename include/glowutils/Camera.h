@@ -6,7 +6,7 @@
 #include <glowutils/CachedValue.h>
 
 
-namespace glow
+namespace glowutils
 {
 
 /** \brief Represents matrices for a typical 3d look at camera with perspective.
@@ -92,4 +92,4 @@ protected:
     CachedValue<glm::mat3> m_normal;
 };
 
-} // namespace glow
+} // namespace glowutils

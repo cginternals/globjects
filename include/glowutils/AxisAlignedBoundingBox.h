@@ -4,7 +4,7 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow
+namespace glowutils
 {
 
 /** \brief Axis aligned rectangular bounding volume spanned by lower left front and upper right back points.
@@ -51,4 +51,4 @@ protected:
     float m_radius;
 };
 
-} // namespace glow
+} // namespace glowutils

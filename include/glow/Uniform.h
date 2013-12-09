@@ -2,6 +2,7 @@
 
 #include <glow/glow.h>
 #include <glow/AbstractUniform.h>
+#include <glow/UniformSetter.h>
 
 namespace glow
 {
@@ -30,7 +31,7 @@ namespace glow
 	\see http://www.opengl.org/wiki/Uniform
 */
 template<typename T>
-class GLOW_API Uniform : public AbstractUniform
+class Uniform : public AbstractUniform
 {
 public:
     Uniform(const std::string & name);
@@ -42,9 +43,9 @@ public:
     const T & value() const;
 
 protected:
-	virtual void setLocation(const GLint location);
+	virtual void setLocation(GLint location);
 	void set(
-		const GLint location
+		GLint location
 	,	const T & value);
 
 protected:

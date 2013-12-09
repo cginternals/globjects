@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 
+#include <glm/glm.hpp>
+
 #include <glow/glow.h>
 #include <glow/Object.h>
 #include <glow/ref_ptr.h>
@@ -12,6 +14,8 @@ namespace glow
 {
 
 class FrameBufferAttachment;
+class RenderBufferObject;
+class Texture;
 
 /** \brief Enables creation of arbitrary render targets that are not directly drawn on the screen.
     
@@ -49,6 +53,7 @@ public:
 	void unbind();
 
 	void setParameter(GLenum pname, GLint param);
+    int getAttachmentParameter(GLenum attachment, GLenum pname);
 
 	void attachTexture(GLenum attachment, Texture * texture, GLint level = 0);
 	void attachTexture1D(GLenum attachment, Texture * texture, GLint level = 0);
@@ -60,6 +65,25 @@ public:
 	void setDrawBuffer(GLenum mode);
 	void setDrawBuffers(GLsizei n, const GLenum * modes);
 	void setDrawBuffers(const std::vector<GLenum> & modes);
+
+    void clear(GLbitfield mask);
+
+    void clearBufferiv(GLenum buffer, GLint drawBuffer, const GLint * value);
+    void clearBufferuiv(GLenum buffer, GLint drawBuffer, const GLuint * value);
+    void clearBufferfv(GLenum buffer, GLint drawBuffer, const GLfloat * value);
+    void clearBufferfi(GLenum buffer, GLint drawBuffer, GLfloat depth, GLint stencil);
+
+    void clearBuffer(GLenum buffer, GLint drawBuffer, const glm::ivec4 & value);
+    void clearBuffer(GLenum buffer, GLint drawBuffer, const glm::uvec4 & value);
+    void clearBuffer(GLenum buffer, GLint drawBuffer, const glm::vec4 & value);
+
+    static void colorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
+    static void colorMask(const glm::bvec4 & mask);
+    static void colorMaski(GLuint buffer, GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
+    static void colorMaski(GLuint buffer, const glm::bvec4 & mask);
+    static void clearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
+    static void clearColor(const glm::vec4 & color);
+    static void clearDepth(GLclampd depth);
 
 	void readPixels(
         GLint x

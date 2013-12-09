@@ -10,7 +10,7 @@
 
 #include "WindowEventDispatcher.h"
 
-namespace glow
+namespace glowwindow
 {
 
 WindowEventDispatcher::Timer::Timer()
@@ -253,4 +253,4 @@ void WindowEventDispatcher::handleClose(GLFWwindow* glfwWindow)
     dispatchEvent(glfwWindow, new CloseEvent);
 }
 
-} // namespace glow
+} // namespace glowwindow

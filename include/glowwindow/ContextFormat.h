@@ -8,7 +8,7 @@
 #include <glowwindow/glowwindow.h>
 
 
-namespace glow
+namespace glowwindow
 {
 
 class GLOWWINDOW_API ContextFormat
@@ -30,8 +30,8 @@ public:
 	,   TripleBuffering     ///< Sometimes used in order to decrease the risk of skipping a frame when the rendering rate is just barely keeping up with the screen refresh rate.
 	};
 
-    static const char* profileString(const Profile profile);
-    static const char* swapBehaviorString(const SwapBehavior swapBehavior);
+    static const char * profileString(Profile profile);
+    static const char * swapBehaviorString(SwapBehavior swapBehavior);
 
 public:
 	ContextFormat();
@@ -39,20 +39,20 @@ public:
 
 	// 24 by default
 	int	depthBufferSize() const;
-	void setDepthBufferSize(const int size);
+    void setDepthBufferSize(int size);
 
 	int	redBufferSize() const;
-	void setRedBufferSize(const int size);
+    void setRedBufferSize(int size);
 
 	int	greenBufferSize() const;
-	void setGreenBufferSize(const int size);
+    void setGreenBufferSize(int size);
 
 	int	blueBufferSize() const;
-	void setBlueBufferSize(const int size);
+    void setBlueBufferSize(int size);
 
 	// disabled by default
 	int	alphaBufferSize() const;
-	void setAlphaBufferSize(const int size);
+    void setAlphaBufferSize(int size);
 
 	// disabled by default
 	int	samples() const;
@@ -64,30 +64,27 @@ public:
         Note: OpenGL versions previous to 3.2. are not supported and might not
         work. It is not taken into account in the development of glow.
     */
-    void setVersion(const Version & version);
+    void setVersion(const glow::Version & version);
     void setVersion(unsigned int major, unsigned int minor);
-
-    void setVersionFallback(const glow::Version& version);
-    void setVersionFallback(unsigned int major, unsigned int minor);
 
     int majorVersion() const;
     int minorVersion() const;
-    const Version & version() const;
+    const glow::Version & version() const;
 
 	Profile profile() const;
-	void setProfile(const Profile profile);
+    void setProfile(Profile profile);
 
 	// disabled by default
 	int	stencilBufferSize() const;
-	void setStencilBufferSize(const int size);
+    void setStencilBufferSize(int size);
 
 	// disabled by default
 	bool stereo() const;
-	void setStereo(const bool enable);
+    void setStereo(bool enable);
 
 	// default: SwapBehavior::DoubleBuffering
 	SwapBehavior swapBehavior() const;
-	void setSwapBehavior(const SwapBehavior behavior);
+    void setSwapBehavior(SwapBehavior behavior);
 
 public:
 
@@ -109,13 +106,13 @@ protected:
     /** Used as inline by verifyPixelFormat 
     */
     static void verifyBufferSize(
-        const unsigned int sizeRequested
-    ,   const unsigned int sizeInitialized
+        unsigned int sizeRequested
+    ,   unsigned int sizeInitialized
     ,   const std::string & warning
     ,   std::vector<std::string> & issues);
 
 protected:
-    Version m_version;
+    glow::Version m_version;
 
 	Profile m_profile;
 
@@ -133,4 +130,4 @@ protected:
 	unsigned int m_samples;
 };
 
-} // namespace glow
+} // namespace glowwindow

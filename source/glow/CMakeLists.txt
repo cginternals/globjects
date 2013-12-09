@@ -67,16 +67,20 @@ set(api_includes
     ${header_path}/StringSource.h
     ${header_path}/Texture.h
     ${header_path}/TextureAttachment.h
+    ${header_path}/TextureHandle.h
     ${header_path}/Timer.h
     ${header_path}/TransformFeedback.h
     ${header_path}/Uniform.h
     ${header_path}/Uniform.hpp
+    ${header_path}/UniformSetter.h
     ${header_path}/Version.h
     ${header_path}/VertexArrayObject.h
     ${header_path}/VertexAttributeBinding.h
 )
 
 set(sources
+    ${source_path}/glow.cpp
+    
     ${source_path}/AbstractUniform.cpp
     ${source_path}/AutoTimer.cpp
     ${source_path}/Buffer.cpp
@@ -93,6 +97,8 @@ set(sources
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
     ${source_path}/global.cpp
+    ${source_path}/IncludeProcessor.h
+    ${source_path}/IncludeProcessor.cpp
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/LogMessageBuilder.cpp
@@ -113,10 +119,12 @@ set(sources
     ${source_path}/TextureAttachment.cpp
     ${source_path}/Timer.cpp
     ${source_path}/TransformFeedback.cpp
-    ${source_path}/Uniform.cpp
+    ${source_path}/UniformSetter.cpp
     ${source_path}/Version.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
+    ${source_path}/VertexAttributeBindingImplementation.h
+    ${source_path}/VertexAttributeBindingImplementation.cpp
 )
 
 # Group source files

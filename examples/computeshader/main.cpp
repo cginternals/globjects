@@ -26,7 +26,8 @@
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
-using namespace glow;
+
+using namespace glowwindow;
 
 class EventHandler : public WindowEventHandler
 {
@@ -46,7 +47,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -88,14 +89,14 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glow::FileRegistry::instance().reloadAll();
+            glowutils::FileRegistry::instance().reloadAll();
     }
 
 protected:
 	glow::ref_ptr<glow::Texture> m_texture;
 
     glow::ref_ptr<glow::Program> m_computeProgram;
-    glow::ref_ptr<glow::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 
     unsigned int m_frame;
 };
@@ -106,15 +107,25 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setVersion(4, 3);
+    format.setProfile(ContextFormat::CoreProfile);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "Compute Shader Example");
-    window.show();
-    window.context()->setSwapInterval(Context::NoVerticalSyncronization);
+    if (window.create(format, "Compute Shader Example"))
+    {
+        window.context()->setSwapInterval(Context::NoVerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }
 
 void EventHandler::createAndSetupTexture()
@@ -131,13 +142,13 @@ void EventHandler::createAndSetupTexture()
 void EventHandler::createAndSetupShaders()
 {
     m_computeProgram = new glow::Program();
-    m_computeProgram->attach(glow::createShaderFromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+    m_computeProgram->attach(glowutils::createShaderFromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
 
     m_computeProgram->setUniform("destTex", 0);
 }
 
 void EventHandler::createAndSetupGeometry()
 {
-    m_quad = new glow::ScreenAlignedQuad(m_texture);
+    m_quad = new glowutils::ScreenAlignedQuad(m_texture);
     m_quad->setSamplerUniform(0);
 }

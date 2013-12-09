@@ -10,7 +10,7 @@
 
 using namespace glm;
 
-namespace glow
+namespace glowutils
 {
 
 //void NavigationMath::retrieveNearAndFarPlane(
@@ -225,4 +225,4 @@ float NavigationMath::distanceToClosestPoint(
     return theta / m; // distance from camera to closest point c;
 }
 
-} // namespace glow
+} // namespace glowutils

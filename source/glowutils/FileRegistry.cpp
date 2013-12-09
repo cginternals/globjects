@@ -4,7 +4,7 @@
 
 #include <glowutils/File.h>
 
-namespace glow
+namespace glowutils
 {
 
 FileRegistry FileRegistry::s_registry;
@@ -15,6 +15,10 @@ FileRegistry::FileRegistry()
 
 FileRegistry::~FileRegistry()
 {
+    for (const std::pair<std::string, File*> pair: m_registeredFiles)
+    {
+        pair.second->m_registry = nullptr;
+    }
 }
 
 FileRegistry& FileRegistry::instance()
@@ -42,13 +46,15 @@ void FileRegistry::registerFile(File * file)
     assert(file != nullptr);
 
     m_registeredFiles[file->filePath()] = file;
+    file->m_registry = this;
 }
 
 void FileRegistry::deregisterFile(File * file)
 {
-    assert(file != nullptr);
+    assert(file != nullptr && file->m_registry == this);
 
     m_registeredFiles.erase(file->filePath());
+    file->m_registry = nullptr;
 }
 
 void FileRegistry::reloadAll()
@@ -59,4 +65,4 @@ void FileRegistry::reloadAll()
     }
 }
 
-} // namespace glow
+} // namespace glowutils

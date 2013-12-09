@@ -10,11 +10,14 @@
 
 #include <glowutils/ScreenAlignedQuad.h>
 
-namespace glow 
+using namespace glow;
+
+namespace glowutils 
 {
 
 const char * ScreenAlignedQuad::s_defaultVertexShaderSource = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 layout (location = 0) in vec2 a_vertex;
 out vec2 v_uv;
@@ -27,9 +30,10 @@ void main()
 )";
 
 const char* ScreenAlignedQuad::s_defaultFagmentShaderSource = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
-uniform sampler2D texture;
+uniform sampler2D source;
 
 layout (location = 0) out vec4 fragColor;
 
@@ -37,7 +41,7 @@ in vec2 v_uv;
 
 void main()
 {
-    fragColor = texture2D(texture, v_uv);
+    fragColor = texture(source, v_uv);
 }
 )";
 
@@ -109,7 +113,7 @@ void ScreenAlignedQuad::initialize()
 
 void ScreenAlignedQuad::draw()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT);
 
 	if (m_texture)
 	{
@@ -133,7 +137,7 @@ void ScreenAlignedQuad::setTexture(Texture* texture)
 void ScreenAlignedQuad::setSamplerUniform(int index)
 {
 	m_samplerIndex = index;
-	m_program->setUniform("texture", m_samplerIndex);
+	m_program->setUniform("source", m_samplerIndex);
 }
 
 Program * ScreenAlignedQuad::program()
@@ -151,4 +155,4 @@ Shader * ScreenAlignedQuad::fragmentShader()
     return m_fragmentShader;
 }
 
-} // namespace glow
+} // namespace glowutils

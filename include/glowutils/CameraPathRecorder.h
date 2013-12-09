@@ -9,9 +9,8 @@
 
 
 
-namespace glow
+namespace glowutils
 {
-
 class Camera;
 
 
@@ -68,4 +67,4 @@ protected:
     void find(float t, CameraPathPoint& p1, CameraPathPoint& p2, float& localT);
 };
 
-} // namespace glow
+} // namespace glowutils

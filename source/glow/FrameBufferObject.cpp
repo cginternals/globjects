@@ -85,6 +85,18 @@ void FrameBufferObject::setParameter(GLenum pname, GLint param)
 	CheckGLError();
 }
 
+int FrameBufferObject::getAttachmentParameter(GLenum attachment, GLenum pname)
+{
+    bind();
+
+    int result = 0;
+
+    glGetFramebufferAttachmentParameteriv(m_target, attachment, pname, &result);
+    CheckGLError();
+
+    return result;
+}
+
 void FrameBufferObject::attachTexture(GLenum attachment, Texture* texture, GLint level)
 {
     assert(texture != nullptr);
@@ -181,6 +193,95 @@ void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum* modes)
 void FrameBufferObject::setDrawBuffers(const std::vector<GLenum>& modes)
 {
 	setDrawBuffers(modes.size(), modes.data());
+}
+
+void FrameBufferObject::clear(GLbitfield mask)
+{
+    bind(GL_FRAMEBUFFER);
+    glClear(mask);
+    CheckGLError();
+}
+
+void FrameBufferObject::clearBufferiv(GLenum buffer, GLint drawBuffer, const GLint * value)
+{
+    bind(GL_FRAMEBUFFER);
+    glClearBufferiv(buffer, drawBuffer, value);
+    CheckGLError();
+}
+
+void FrameBufferObject::clearBufferuiv(GLenum buffer, GLint drawBuffer, const GLuint * value)
+{
+    bind(GL_FRAMEBUFFER);
+    glClearBufferuiv(buffer, drawBuffer, value);
+    CheckGLError();
+}
+
+void FrameBufferObject::clearBufferfv(GLenum buffer, GLint drawBuffer, const GLfloat * value)
+{
+    bind(GL_FRAMEBUFFER);
+    glClearBufferfv(buffer, drawBuffer, value);
+    CheckGLError();
+}
+
+void FrameBufferObject::clearBufferfi(GLenum buffer, GLint drawBuffer, GLfloat depth, GLint stencil)
+{
+    bind(GL_FRAMEBUFFER);
+    glClearBufferfi(buffer, drawBuffer, depth, stencil);
+    CheckGLError();
+}
+
+void FrameBufferObject::clearBuffer(GLenum buffer, GLint drawBuffer, const glm::ivec4 & value)
+{
+    clearBufferiv(buffer, drawBuffer, glm::value_ptr(value));
+}
+
+void FrameBufferObject::clearBuffer(GLenum buffer, GLint drawBuffer, const glm::uvec4 & value)
+{
+    clearBufferuiv(buffer, drawBuffer, glm::value_ptr(value));
+}
+
+void FrameBufferObject::clearBuffer(GLenum buffer, GLint drawBuffer, const glm::vec4 & value)
+{
+    clearBufferfv(buffer, drawBuffer, glm::value_ptr(value));
+}
+
+void FrameBufferObject::colorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
+{
+    glColorMask(red, green, blue, alpha);
+    CheckGLError();
+}
+
+void FrameBufferObject::colorMask(const glm::bvec4 & mask)
+{
+    colorMask(mask[0], mask[1], mask[2], mask[3]);
+}
+
+void FrameBufferObject::colorMaski(GLuint buffer, GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
+{
+    glColorMaski(buffer, red, green, blue, alpha);
+    CheckGLError();
+}
+
+void FrameBufferObject::colorMaski(GLuint buffer, const glm::bvec4 & mask)
+{
+    colorMaski(buffer, mask[0], mask[1], mask[2], mask[3]);
+}
+
+void FrameBufferObject::clearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
+{
+    glClearColor(red, green, blue, alpha);
+    CheckGLError();
+}
+
+void FrameBufferObject::clearColor(const glm::vec4 & color)
+{
+    clearColor(color.r, color.g, color.b, color.a);
+}
+
+void FrameBufferObject::clearDepth(GLclampd depth)
+{
+    glClearDepth(depth);
+    CheckGLError();
 }
 
 void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* data)

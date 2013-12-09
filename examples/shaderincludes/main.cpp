@@ -13,7 +13,7 @@
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
-using namespace glow;
+using namespace glowwindow;
 
 class EventHandler : public WindowEventHandler
 {
@@ -30,13 +30,13 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         glow::NamedStrings::createNamedString("/shaderincludestest/colorReset", "color = vec4(0.4, 0.5, 0.6, 1.0);");
 
-        m_quad = new glow::ScreenAlignedQuad(glow::createShaderFromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
+        m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
     }
     
     virtual void resizeEvent(ResizeEvent & event) override
@@ -62,11 +62,11 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glow::FileRegistry::instance().reloadAll();
+            glowutils::FileRegistry::instance().reloadAll();
     }
 
 protected:
-    glow::ref_ptr<glow::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 };
 
 
@@ -75,13 +75,22 @@ protected:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setVersion(3, 0);
 
     Window window;
+
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "Shading Language Include Example");
-    window.show();
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
+    if (window.create(format, "Shading Language Include Example"))
+    {
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }

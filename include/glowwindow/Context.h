@@ -10,7 +10,7 @@
 
 struct GLFWwindow;
 
-namespace glow 
+namespace glowwindow 
 {
 
 class AbstractNativeContext;
@@ -39,11 +39,7 @@ public:
 
         \return isValid() is returned
     */
-    bool create(
-        const ContextFormat & format
-    ,   int width
-    , int height);
-
+    bool create(const ContextFormat & format, int width, int height);
     void release();
 
     void makeCurrent();
@@ -64,7 +60,6 @@ public:
         shared contexts with same format, but individual swap format. 
     */
     void setSwapInterval(SwapInterval interval);
-    void setSwapInterval();
     SwapInterval swapInterval() const;
 
 protected:
@@ -73,6 +68,11 @@ protected:
 
 private:
     GLFWwindow * m_window;
+
+private:
+    static glow::Version maximumSupportedVersion();
+    static glow::Version validateVersion(const glow::Version & version);
+    void prepareFormat(const ContextFormat & format);
 };
 
-} // namespace glow
+} // namespace glowwindow

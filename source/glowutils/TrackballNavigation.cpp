@@ -9,7 +9,7 @@
 
 using namespace glm;
 
-namespace glow 
+namespace glowutils 
 {
 
 TrackballNavigation::TrackballNavigation()
@@ -75,4 +75,4 @@ quat TrackballNavigation::makeRotation(
 	return quat(dot(from, to), cross(from, to) * m_orientation);
 }
 
-} // namespace glow
+} // namespace glowutils

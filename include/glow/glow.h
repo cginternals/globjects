@@ -28,3 +28,10 @@
 #	define IF_DEBUG(statement) statement
 #	define IF_NDEBUG(statement)
 #endif // N_DEBUG
+
+namespace glow
+{
+
+GLOW_API bool init();
+	
+} // namespace glow

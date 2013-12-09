@@ -5,7 +5,7 @@
 
 struct GLFWwindow;
 
-namespace glow
+namespace glowwindow
 {
     
     class Window;

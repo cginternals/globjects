@@ -35,7 +35,7 @@ namespace
     static const float CONSTRAINT_ROT_MAX_V_LO = 0.98f * static_cast<float>(PI);
 }
 
-namespace glow
+namespace glowutils
 {
 
 WorldInHandNavigation::WorldInHandNavigation()
@@ -43,8 +43,11 @@ WorldInHandNavigation::WorldInHandNavigation()
 , m_coordsProvider(nullptr)
 , m_rotationHappened(false)
 , m_mode(NoInteraction)
+, m_homeEye(DEFAULT_EYE)
+, m_homeCenter(DEFAULT_CENTER)
+, m_homeUp(DEFAULT_UP)
+, m_i0Valid(false)
 {
-    reset();
 }
 
 WorldInHandNavigation::~WorldInHandNavigation()
@@ -69,23 +72,27 @@ void WorldInHandNavigation::setCoordinateProvider(AbstractCoordinateProvider * p
 void WorldInHandNavigation::setCamera(Camera * camera)
 {
     m_camera = camera;
+
+    if (camera)
+    {
+        m_homeEye = camera->eye();
+        m_homeCenter = camera->center();
+        m_homeUp = camera->up();
+    }
 }
 
-void WorldInHandNavigation::reset(bool update)
+void WorldInHandNavigation::reset()
 {
     if (!m_camera)
         return;
 
-    m_camera->setEye(DEFAULT_EYE);
-    m_camera->setCenter(DEFAULT_CENTER);
-    m_camera->setUp(DEFAULT_UP);
+    m_camera->setEye(m_homeEye);
+    m_camera->setCenter(m_homeCenter);
+    m_camera->setUp(m_homeUp);
 
     m_mode = NoInteraction;
 
 //    enforceWholeMapVisible();
-
-    if (update)
-        m_camera->update();
 }
 
 
@@ -477,4 +484,4 @@ void WorldInHandNavigation::enforceScaleConstraints(
 //    setDirty();
 //}
 
-} // namespace glow
+} // namespace glowutils

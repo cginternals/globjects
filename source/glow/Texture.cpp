@@ -110,6 +110,15 @@ void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei 
 	CheckGLError();
 }
 
+void Texture::image3D(GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid* data)
+{
+    bind();
+
+    glTexImage3D(m_target, level, internalFormat, width, height, depth, border, format, type, data);
+    CheckGLError();
+}
+
+
 void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height)
 {
 	bind();
@@ -149,9 +158,9 @@ void Texture::accept(ObjectVisitor& visitor)
 	visitor.visitTexture(this);
 }
 
-Texture::Handle Texture::textureHandle() const
+TextureHandle Texture::textureHandle() const
 {
-	Texture::Handle result(glGetTextureHandleNV(m_id));
+	TextureHandle result(glGetTextureHandleNV(m_id));
 	CheckGLError();
 	return result;
 }
@@ -164,9 +173,9 @@ GLboolean Texture::isResident() const
 	return result;
 }
 
-Texture::Handle Texture::makeResident()
+TextureHandle Texture::makeResident()
 {
-	Handle handle = textureHandle();
+    TextureHandle handle = textureHandle();
 
 	glMakeTextureHandleResidentNV(handle);
 	CheckGLError();
@@ -178,21 +187,6 @@ void Texture::makeNonResident()
 {
 	glMakeTextureHandleNonResidentNV(textureHandle());
 	CheckGLError();
-}
-
-Texture::Handle::Handle()
-: value(0)
-{
-}
-
-Texture::Handle::Handle(const GLuint64& value)
-: value(value)
-{
-}
-
-Texture::Handle::operator GLuint64() const
-{
-	return value;
 }
 
 } // namespace glow

@@ -5,7 +5,7 @@
 
 using namespace glm;
 
-namespace glow
+namespace glowutils
 {
 
 AxisAlignedBoundingBox::AxisAlignedBoundingBox()
@@ -80,4 +80,4 @@ bool AxisAlignedBoundingBox::outside(const vec3 & vertex) const
     return !inside(vertex);
 }
 
-} // namespace glow
+} // namespace glowutils

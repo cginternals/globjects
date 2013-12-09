@@ -5,8 +5,10 @@
 
 #include <glowutils/glowutils.h>
 #include <glowutils/StringSourceDecorator.h>
+#include <glowutils/CachedValue.h>
 
-namespace glow 
+
+namespace glowutils 
 {
 
 class GLOWUTILS_API StringTemplate : public StringSourceDecorator
@@ -18,11 +20,17 @@ public:
     virtual const std::string & string() const override;
     virtual void update() override;
 
-	void replace(const std::string & orig, const std::string & str);
-    void replace(const std::string & orig, int i);
+    void replace(const std::string & original, const std::string & str);
+    void replace(const std::string & original, int i);
+
+    void clearReplacements();
+
 protected:
-    std::string m_modifiedSource;
+    CachedValue<std::string> m_modifiedSource;
 	std::map<std::string, std::string> m_replacements;
+
+    void invalidate();
+    std::string modifiedSource() const;
 };
 
-} // namespace glow
+} // namespace glowutils

@@ -124,13 +124,30 @@ void Program::detach(Shader * shader)
 std::set<Shader*> Program::shaders() const
 {
 	std::set<Shader*> shaders;
-	for (ref_ptr<Shader> shader: m_shaders)
+    for (ref_ptr<Shader> shader: m_shaders)
 		shaders.insert(shader);
 	return shaders;
 }
 
 void Program::link()
 {
+    m_linked = false;
+
+    for (Shader* shader : shaders())
+    {
+        if (!shader->isCompiled())
+        {
+            // Some drivers (e.g. nvidia-331 on Ubuntu 13.04 automatically compile shaders during program linkage)
+            // but we don't want to depend on such behavior
+            shader->compile();
+
+            if (!shader->isCompiled())
+            {
+                return;
+            }
+        }
+    }
+
 	glLinkProgram(m_id);
 	CheckGLError();
 
@@ -228,7 +245,7 @@ void Program::updateUniforms()
 
 GLint Program::get(GLenum pname) const
 {
-	GLint value;
+    GLint value = 0;
 	glGetProgramiv(m_id, pname, &value);
 	CheckGLError();
 
@@ -239,7 +256,12 @@ const std::string Program::infoLog() const
 {
 	GLint length = get(GL_INFO_LOG_LENGTH);
 
-	std::vector<char> log(length);
+    if (length == 0)
+    {
+        return std::string();
+    }
+
+    std::vector<char> log(length);
 
 	glGetProgramInfoLog(m_id, length, &length, log.data());
 	CheckGLError();
@@ -247,15 +269,20 @@ const std::string Program::infoLog() const
 	return std::string(log.data(), length);
 }
 
+void Program::dispatchCompute(const glm::uvec3 & numGroups)
+{
+    dispatchCompute(numGroups.x, numGroups.y, numGroups.z);
+}
+
 void Program::dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ)
 {
-	use();
+    use();
 
     if (!m_linked)
         return;
 
-	glDispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
-	CheckGLError();
+    glDispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
+    CheckGLError();
 }
 
 void Program::dispatchComputeGroupSize(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ, GLuint groupSizeX, GLuint groupSizeY, GLuint groupSizeZ)

@@ -8,7 +8,7 @@
 
 #include <glowutils/RawFile.h>
 
-namespace glow 
+namespace glowutils 
 {
 
 template<typename T>
@@ -49,7 +49,7 @@ bool RawFile<T>::read()
 
     if (!ifs)
     {
-        warning() << "Reading from file \"" << m_filePath << "\" failed.";
+        glow::warning() << "Reading from file \"" << m_filePath << "\" failed.";
         return false;
     }
 
@@ -65,4 +65,4 @@ bool RawFile<T>::read()
     return true;
 }
 
-} // namespace glow
+} // namespace glowutils

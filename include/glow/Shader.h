@@ -34,6 +34,7 @@ class Program;
 class GLOW_API Shader : public Object, protected ChangeListener, public Changeable
 {
 	friend class Program;
+    friend class ShaderCompiler;
 
 public:
     static Shader * fromString(
@@ -53,19 +54,20 @@ public:
     void setSource(StringSource * source);
 	void setSource(const std::string & source);
     const StringSource* source() const;
+    void updateSource();
 
-	bool compile();
+    bool compile();
 	bool isCompiled() const;
+    void invalidate();
 
+    bool checkCompileStatus() const;
 	std::string infoLog() const;
 
     std::string typeString() const;
 
 protected:
-    bool checkCompileStatus();
-
     void notifyChanged();
-	void updateSource();
+
 
 protected:
     static GLuint create(GLenum type);

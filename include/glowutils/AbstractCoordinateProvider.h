@@ -6,7 +6,7 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow
+namespace glowutils
 {
 class Camera;
 
@@ -50,7 +50,7 @@ public:
     virtual const float depthAt(const glm::ivec2 & windowCoordinates) = 0;
 
     virtual const glm::vec3 objAt(
-        const glm::ivec2 & windowCoordinates) = 0;
+        const glm::ivec2 & windowCoordinates);
 
     virtual const glm::vec3 objAt(
         const glm::ivec2 & windowCoordinates
@@ -62,4 +62,4 @@ public:
     ,   const glm::mat4 & viewProjectionInverted) = 0;
 };
 
-} // namespace glow
+} // namespace glowutils

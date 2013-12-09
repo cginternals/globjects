@@ -2,6 +2,7 @@
 
 #include <glow/glow.h>
 #include <glow/Object.h>
+#include <glow/TextureHandle.h>
 
 namespace glow 
 {
@@ -17,17 +18,6 @@ namespace glow
  */
 class GLOW_API Texture : public Object
 {
-public:
-	class Handle
-	{
-	public:
-		Handle();
-		Handle(const GLuint64 & value);
-
-		operator GLuint64() const;
-
-		GLuint64 value;
-	};
 public:
 	Texture(GLenum  target = GL_TEXTURE_2D);
 	Texture(GLuint id, GLenum  target, bool ownsGLObject = true);
@@ -58,7 +48,19 @@ public:
     ,   GLenum format
     ,   GLenum type
     ,   const GLvoid * data);
-	void storage2D(
+
+	void image3D(
+        GLint level
+    ,   GLint internalFormat
+    ,   GLsizei width
+    ,   GLsizei height
+    ,   GLsizei depth
+    ,   GLint border
+    ,   GLenum format
+    ,   GLenum type
+    ,   const GLvoid * data);
+
+    void storage2D(
         GLsizei levels
     ,   GLenum internalFormat
     ,   GLsizei width
@@ -74,10 +76,10 @@ public:
 
 	void generateMipmap();
 
-	Handle textureHandle() const;
+    TextureHandle textureHandle() const;
 
 	GLboolean isResident() const;
-	Handle makeResident();
+    TextureHandle makeResident();
 	void makeNonResident();
 
 protected:

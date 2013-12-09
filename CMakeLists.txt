@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 
 set(META_PROJECT_NAME        "glow")
 set(META_VERSION_MAJOR       "0")
-set(META_VERSION_MINOR       "1")
-set(META_VERSION_PATCH       "2")
+set(META_VERSION_MINOR       "2")
+set(META_VERSION_PATCH       "1")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "hpicgs group")
 set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glow/")
@@ -149,7 +149,8 @@ install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION .)
 
 # Generate meta-header
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/source/glow-version.h.in ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h DESTINATION ${INSTALL_INCLUDE}/glow)
+# we do NOT want to deploy this header
+#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h DESTINATION ${INSTALL_INCLUDE}/glow)
 
 
 # GLOW DEPENDENCIES

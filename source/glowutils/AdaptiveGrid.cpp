@@ -18,13 +18,15 @@
 
 
 using namespace glm;
+using namespace glow;
 
-namespace glow 
+namespace glowutils 
 {
 
-    const char * AdaptiveGrid::s_vsSource = R"(
+const char * AdaptiveGrid::s_vsSource = R"(
 
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform mat4 transform;
 uniform vec2 viewPlaneDistance;
@@ -52,7 +54,8 @@ void main()
 
 const char * AdaptiveGrid::s_fsSource = R"(
 
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform vec2 viewPlaneDistance;
 
@@ -245,4 +248,4 @@ void AdaptiveGrid::draw()
     glDisable(GL_BLEND);
 }
 
-} // namespace glow
+} // namespace glowutils

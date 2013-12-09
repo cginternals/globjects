@@ -5,7 +5,7 @@
 #include <glowutils/glowutils.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 
-namespace glow
+namespace glowutils
 {
 
 class AbstractCoordinateProvider;
@@ -31,7 +31,7 @@ public:
     void setCamera(Camera * camera);
     void setCoordinateProvider(AbstractCoordinateProvider * provider);
 
-	virtual void reset(bool update = true);
+    virtual void reset();
 
     InteractionMode mode() const;
 
@@ -95,6 +95,10 @@ protected:
     glm::vec3  m_i1;
     bool  m_i0Valid; // stores if initial interaction pick yielded valid depth
     glm::ivec2  m_m0;
+
+    glm::vec3 m_homeEye;
+    glm::vec3 m_homeCenter;
+    glm::vec3 m_homeUp;
 };
 
-} // namespace glow
+} // namespace glowutils
