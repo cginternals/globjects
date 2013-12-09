@@ -1,6 +1,7 @@
 #version 430
 
-const float DEPTH_RESOLUTION = 65535.0;
+const float DEPTH_RESOLUTION = float((1 << 24) - 1);
+const float ALPHA_RESOLUTION = float((1 << 8) - 1);
 const uint ABUFFER_SIZE = 4;
 
 layout(std430, binding = 0) buffer DepthKTab {
@@ -16,10 +17,10 @@ void main() {
 	if (vertexColor.a > 0.9999) {
 		discard;
 	}
-	uint zi = uint(gl_FragCoord.z * DEPTH_RESOLUTION);
+	uint za = (uint(gl_FragCoord.z * DEPTH_RESOLUTION) << 8) | uint(vertexColor.a * ALPHA_RESOLUTION); // pack depth (24 bit) & alpha (8 bits) into a uint
 
 	uint baseIndex = (int(gl_FragCoord.y) * screenSize.x + int(gl_FragCoord.x)) * ABUFFER_SIZE;
 	for (int i = 0; i < ABUFFER_SIZE; ++i) {
-		zi = max(atomicMin(depth[baseIndex + i], zi), zi);
+		za = max(atomicMin(depth[baseIndex + i], za), za);
 	}
 }

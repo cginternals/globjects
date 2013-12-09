@@ -1,6 +1,7 @@
 #version 430
 
-const float DEPTH_RESOLUTION = 65535.0;
+const float DEPTH_RESOLUTION = float((1 << 24) - 1);
+const float ALPHA_RESOLUTION = float((1 << 8) - 1);
 const uint ABUFFER_SIZE = 4;
 
 layout(std430, binding = 0) buffer DepthKTab {
@@ -20,6 +21,6 @@ vec4 blend(vec4 dst, vec4 src) {
 
 void main() {
 	vec4 opaque = texelFetch(opaqueBuffer, gl_FragCoord.xy, 0);
-	float z = float(depth[(gl_FragCoord.y * screenSize.x + gl_FragCoord.x) * ABUFFER_SIZE + ABUFFER_SIZE - 1]) / DEPTH_RESOLUTION;
+	float z = float(depth[(gl_FragCoord.y * screenSize.x + gl_FragCoord.x) * ABUFFER_SIZE + ABUFFER_SIZE - 1] >> 8) / DEPTH_RESOLUTION;
 	fragColor = vec4(z);
 }

@@ -72,7 +72,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     glDepthMask(GL_FALSE);
 
     static std::vector<unsigned int> initialDepthKTab;
-    initialDepthKTab.resize(width * height * ABUFFER_SIZE, 65535u);
+    initialDepthKTab.resize(width * height * ABUFFER_SIZE, std::numeric_limits<unsigned int>::max());
     m_depthKTab->setData(initialDepthKTab.size() * sizeof(unsigned int), initialDepthKTab.data(), GL_DYNAMIC_DRAW);
     m_depthKTab->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 
