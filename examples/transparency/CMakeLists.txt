@@ -12,6 +12,8 @@ add_executable(${target}
     GlBlendAlgorithm.cpp
     WeightedAverageAlgorithm.h
     WeightedAverageAlgorithm.cpp
+    HybridAlgorithm.h
+    HybridAlgorithm.cpp
 )
 
 target_link_libraries(${target} 

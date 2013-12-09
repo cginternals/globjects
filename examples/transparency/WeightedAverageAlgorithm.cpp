@@ -13,28 +13,6 @@
 
 namespace glow {
 
-namespace {
-
-struct ABufferEntry {
-    glm::vec4 color;
-    float z;
-    int next;
-};
-
-struct Head {
-    int startIndex;
-    int size;
-
-    Head()
-    : startIndex(-1)
-    , size(0) {
-    }
-};
-
-const int ABUFFER_SIZE = 8;
-
-} // anonymous namespace
-
 void WeightedAverageAlgorithm::initialize() {
     glow::Shader* vertexShader = glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/wavg.vert");
 
