@@ -160,14 +160,14 @@ void Texture::accept(ObjectVisitor& visitor)
 
 TextureHandle Texture::textureHandle() const
 {
-	TextureHandle result(glGetTextureHandleNV(m_id));
+    TextureHandle result = glGetTextureHandleARB(m_id);
 	CheckGLError();
 	return result;
 }
 
 GLboolean Texture::isResident() const
 {
-	bool result = glIsTextureHandleResidentNV(textureHandle()) ? true : false;
+    bool result = glIsTextureHandleResidentARB(textureHandle()) == GL_TRUE;
 	CheckGLError();
 
 	return result;
@@ -177,7 +177,7 @@ TextureHandle Texture::makeResident()
 {
     TextureHandle handle = textureHandle();
 
-	glMakeTextureHandleResidentNV(handle);
+    glMakeTextureHandleResidentARB(handle);
 	CheckGLError();
 
 	return handle;
@@ -185,7 +185,7 @@ TextureHandle Texture::makeResident()
 
 void Texture::makeNonResident()
 {
-	glMakeTextureHandleNonResidentNV(textureHandle());
+    glMakeTextureHandleNonResidentARB(textureHandle());
 	CheckGLError();
 }
 
