@@ -155,6 +155,10 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/source/glow-version.h.in ${CMAKE_CURR
 
 # GLOW DEPENDENCIES
 
+if (OPTION_BUILD_STATIC)
+    add_definitions("-DGLOW_STATIC")
+endif()
+
 # Find externals
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)

@@ -10,7 +10,9 @@ set(libs
 )
 
 # Definitions
-add_definitions("-DGLOW_EXPORTS")
+if (NOT OPTION_BUILD_STATIC)
+    add_definitions("-DGLOW_EXPORTS")
+endif()
 
 if (OPTION_ERRORS_AS_EXCEPTION)
 	add_definitions("-DGLOW_GL_ERROR_RAISE_EXCEPTION")
