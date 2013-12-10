@@ -3,9 +3,6 @@
 set(target glowwindow)
 message(STATUS "lib ${target}")
 
-include_directories(
-    ${GLFW_INCLUDE_DIR})
-
 # Libraries
 set(libs
     ${OPENGL_LIBRARIES}
@@ -28,8 +25,6 @@ endif()
 # Sources
 set(header_path "${GLOW_SOURCE_DIR}/include/glowwindow")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
-
-find_package(GLFW REQUIRED)
 
 set(api_includes
     ${header_path}/Context.h
