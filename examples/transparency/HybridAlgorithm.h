@@ -31,6 +31,9 @@ private:
     ref_ptr<Program> m_depthKTabProgram;
     ref_ptr<Buffer> m_depthKTab;
 
+    ref_ptr<Program> m_visibilityKTabProgram;
+    ref_ptr<Buffer> m_visibilityKTab;
+
     ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
     ref_ptr<FrameBufferObject> m_postFbo;
     ref_ptr<Texture> m_colorBuffer;

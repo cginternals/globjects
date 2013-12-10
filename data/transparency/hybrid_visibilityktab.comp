@@ -1,0 +1,57 @@
+#version 430
+
+const float DEPTH_RESOLUTION = float((1 << 24) - 1);
+const float ALPHA_RESOLUTION = float((1 << 8) - 1);
+const uint MAX_UINT = 0xFFFFFFFF;
+const uint ABUFFER_SIZE = 4;
+const uint VISIBILITY_KTAB_SIZE = ABUFFER_SIZE + 1; // one additional value for the wavg tail
+
+layout(std430, binding = 0) buffer DepthKTab {
+	uint[] depth;
+};
+
+layout(std430, binding = 1) buffer VisibilityKTab {
+	float[] visibility;
+};
+
+uniform int dimension;
+
+layout (local_size_x = 32) in;
+
+float unpackAlpha(uint packedAlpha) {
+	return float(packedAlpha & 0xFF) / ALPHA_RESOLUTION;
+}
+
+void main() {
+	if (gl_GlobalInvocationID.x < dimension) {
+		uint depthBaseIndex = gl_GlobalInvocationID.x * ABUFFER_SIZE;
+		uint visibilityBaseIndex = gl_GlobalInvocationID.x * VISIBILITY_KTAB_SIZE;
+
+		uint packedAlpha = depth[depthBaseIndex];
+		if (packedAlpha == MAX_UINT) {
+			visibility[visibilityBaseIndex] = 0.0f;
+			return;
+		}
+		
+		// first fragment
+		float a = unpackAlpha(packedAlpha);
+		visibility[visibilityBaseIndex] = a;
+
+		float accAlpha = a;
+		float v;
+
+		// other fragments
+		for (int i = 1; i < ABUFFER_SIZE; ++i) {
+			packedAlpha = depth[depthBaseIndex + i];
+			if (packedAlpha < MAX_UINT) {
+				a = unpackAlpha(packedAlpha);
+				v = a * (1.0 - accAlpha);
+				accAlpha += v;
+				visibility[visibilityBaseIndex + i] = v;
+			}
+		}
+
+		// tail remainder
+		visibility[visibilityBaseIndex + ABUFFER_SIZE] = accAlpha;
+	}
+}

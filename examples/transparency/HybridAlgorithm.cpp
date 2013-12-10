@@ -6,6 +6,7 @@
 #include <glow/RenderBufferObject.h>
 #include <glow/Buffer.h>
 #include <glow/NamedStrings.h>
+#include <glow/Array.h>
 
 #include <glowutils/File.h>
 #include <glowutils/Camera.h>
@@ -16,6 +17,7 @@ namespace glow {
 namespace {
 
 const int ABUFFER_SIZE = 4;
+const int VISIBILITY_KTAB_SIZE = ABUFFER_SIZE + 1;
 
 }
 
@@ -30,9 +32,13 @@ void HybridAlgorithm::initialize() {
     m_depthKTabProgram->attach(vertexShader);
     m_depthKTabProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_depthktab.frag"));
 
+    m_visibilityKTabProgram = new Program;
+    m_visibilityKTabProgram->attach(glowutils::createShaderFromFile(GL_COMPUTE_SHADER, "data/transparency/hybrid_visibilityktab.comp"));
+
     m_depthBuffer = new RenderBufferObject;
     m_opaqueBuffer = createColorTex();
     m_depthKTab = new Buffer(GL_SHADER_STORAGE_BUFFER);
+    m_visibilityKTab = new Buffer(GL_SHADER_STORAGE_BUFFER);
 
     m_fbo = new FrameBufferObject;
     m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
@@ -71,9 +77,9 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     //
     glDepthMask(GL_FALSE);
 
-    static std::vector<unsigned int> initialDepthKTab;
+    static Array<unsigned int> initialDepthKTab;
     initialDepthKTab.resize(width * height * ABUFFER_SIZE, std::numeric_limits<unsigned int>::max());
-    m_depthKTab->setData(initialDepthKTab.size() * sizeof(unsigned int), initialDepthKTab.data(), GL_DYNAMIC_DRAW);
+    m_depthKTab->setData(initialDepthKTab, GL_DYNAMIC_DRAW);
     m_depthKTab->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 
     m_depthKTabProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
@@ -86,6 +92,16 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     glDepthMask(GL_TRUE);
 
     m_fbo->unbind();
+
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+
+    static Array<float> initialVisibilityKTab;
+    initialVisibilityKTab.resize(width * height * VISIBILITY_KTAB_SIZE, 0.0f);
+    m_visibilityKTab->setData(initialVisibilityKTab, GL_DYNAMIC_DRAW);
+    m_visibilityKTab->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
+
+    m_visibilityKTabProgram->setUniform("dimension", width * height);
+    m_visibilityKTabProgram->dispatchCompute(width * height / 32 + 1, 1, 1);
 
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
