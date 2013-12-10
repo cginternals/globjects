@@ -39,6 +39,8 @@ public:
 
     int width() const;
     int height() const;
+    glm::ivec2 size() const;
+    glm::ivec2 position() const;
 
     /** If enabled, this causes an application wide quit message to be posted
         when the window gets destroyed. Hence, the static window loop (run) 
@@ -96,7 +98,7 @@ protected:
     void swap();
     void destroy();
 
-    void promoteContext();
+    void promoteContext(int width, int height);
 
     void clearEventQueue();
     void processEvent(WindowEvent & event);
@@ -129,9 +131,6 @@ protected:
 private:
     GLFWwindow * m_window;
     static std::set<Window*> s_instances;
-
-    int m_width;
-    int m_height;
 };
 
 } // namespace glowwindow

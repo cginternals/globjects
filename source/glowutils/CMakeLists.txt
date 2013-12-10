@@ -38,6 +38,7 @@ set(api_includes
     ${header_path}/CameraPathRecorder.h
     ${header_path}/File.h
     ${header_path}/FileRegistry.h
+    ${header_path}/FlightNavigation.h
     ${header_path}/Icosahedron.h
     ${header_path}/MathMacros.h
     ${header_path}/NavigationMath.h
@@ -63,6 +64,7 @@ set(sources
     ${source_path}/CameraPathRecorder.cpp
     ${source_path}/File.cpp
     ${source_path}/FileRegistry.cpp
+    ${source_path}/FlightNavigation.cpp
     ${source_path}/Icosahedron.cpp
     ${source_path}/NavigationMath.cpp
     ${source_path}/Plane3.cpp

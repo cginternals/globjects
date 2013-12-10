@@ -37,8 +37,6 @@ Window::Window()
 ,   m_swapts(0.0)
 ,   m_swaps(0)
 ,   m_window(nullptr)
-,   m_width(0)
-,   m_height(0)
 {
     s_instances.insert(this);
 }
@@ -66,12 +64,32 @@ Context * Window::context() const
 
 int Window::width() const
 {
-    return m_width;
+    return size().x;
 }
 
 int Window::height() const
 {
-    return m_height;
+    return size().y;
+}
+
+glm::ivec2 Window::size() const
+{
+    if (!m_window)
+        return glm::ivec2();
+
+    int w, h;
+    glfwGetWindowSize(m_window, &w, &h);
+    return glm::ivec2(w, h);
+}
+
+glm::ivec2 Window::position() const
+{
+    if (!m_window)
+        return glm::ivec2();
+
+    int x, y;
+    glfwGetWindowPos(m_window, &x, &y);
+    return glm::ivec2(x, y);
 }
 
 void Window::quitOnDestroy(const bool enable)
@@ -103,14 +121,11 @@ bool Window::create(
         return false;
     }
 
-    m_width = width;
-    m_height = height;
-
     setTitle(title);
 
     WindowEventDispatcher::registerWindow(this);
 
-    promoteContext();
+    promoteContext(width, height);
 
     return true;
 }
@@ -125,7 +140,7 @@ void Window::setTitle(const std::string & title)
     glfwSetWindowTitle(m_window, m_title.c_str());
 }
 
-void Window::promoteContext()
+void Window::promoteContext(int width, int height)
 {
     if (m_eventHandler)
     {
@@ -133,8 +148,8 @@ void Window::promoteContext()
          m_eventHandler->initialize(*this);
          m_context->doneCurrent();
 
-         queueEvent(new ResizeEvent(glm::ivec2(m_width, m_height)));
-         queueEvent(new ResizeEvent(glm::ivec2(m_width, m_height), true));
+         queueEvent(new ResizeEvent(glm::ivec2(width, height)));
+         queueEvent(new ResizeEvent(glm::ivec2(width, height), true));
     }
 }
 
@@ -217,12 +232,10 @@ void Window::setEventHandler(WindowEventHandler * eventHandler)
     if (!m_context)
         return;
 
-    promoteContext();
+    promoteContext(width(), height());
 }
 
-void Window::resize(
-    const int width
-,   const int height)
+void Window::resize(int width, int height)
 {
     if (!m_window)
         return;
