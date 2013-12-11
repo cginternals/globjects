@@ -97,11 +97,7 @@ void Window::quitOnDestroy(const bool enable)
     m_quitOnDestroy = enable;
 }
 
-bool Window::create(
-    const ContextFormat & format
-,   const std::string & title
-,   int width
-,   int height)
+bool Window::create(const ContextFormat & format, const std::string & title, int width, int height)
 {
     assert(nullptr == m_context);
 
@@ -126,6 +122,8 @@ bool Window::create(
     WindowEventDispatcher::registerWindow(this);
 
     promoteContext(width, height);
+
+    m_windowedModeSize = glm::ivec2(width, height);
 
     return true;
 }
@@ -176,22 +174,73 @@ void Window::hide()
 
 void Window::fullScreen()
 {
-    //if (WindowMode != m_mode)
-    //    return;
+    if (WindowMode != m_mode)
+        return;
 
-    //m_mode = TransitionMode;
-    //m_window->fullScreen();
-    //m_mode = FullScreenMode;
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    if (!monitor)
+        return;
+
+    m_windowedModeSize = size();
+
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    int w = mode->width;
+    int h = mode->height;
+
+    ContextFormat format = m_context->format();
+    m_context->release();
+
+    if (m_eventHandler)
+        m_eventHandler->finalize(*this);
+
+    WindowEventDispatcher::deregisterWindow(this);
+
+    if (m_context->create(format, w, h, monitor))
+    {
+        promoteContext(w, h);
+        WindowEventDispatcher::registerWindow(this);
+
+        m_mode = FullScreenMode;
+    }
+    else
+    {
+        m_context->release();
+        delete m_context;
+        m_context = nullptr;
+        m_window = nullptr;
+    }
 }
 
 void Window::windowed()
 {
-    //if (FullScreenMode != m_mode)
-    //    return;
+    if (FullScreenMode != m_mode)
+        return;
 
-    //m_mode = TransitionMode;
-    //m_window->windowed();
-    //m_mode = WindowMode;
+    int w = m_windowedModeSize.x;
+    int h = m_windowedModeSize.y;
+
+    ContextFormat format = m_context->format();
+    m_context->release();
+
+    if (m_eventHandler)
+        m_eventHandler->finalize(*this);
+
+    WindowEventDispatcher::deregisterWindow(this);
+
+    if (m_context->create(format, w, h, nullptr))
+    {
+        promoteContext(w, h);
+        WindowEventDispatcher::registerWindow(this);
+
+        m_mode = WindowMode;
+    }
+    else
+    {
+        m_context->release();
+        delete m_context;
+        m_context = nullptr;
+        m_window = nullptr;
+    }
 }
 
 bool Window::isFullScreen() const
@@ -208,14 +257,12 @@ void Window::toggleMode()
 {
     switch (m_mode)
     {
-    case TransitionMode:
-        return;
-    case FullScreenMode:
-        windowed();
-        return;
-    case WindowMode:
-        fullScreen();
-        return;
+        case FullScreenMode:
+            windowed();
+            return;
+        case WindowMode:
+            fullScreen();
+            return;
     }
 }
 

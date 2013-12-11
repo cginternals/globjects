@@ -32,7 +32,7 @@ GLFWwindow * Context::window()
     return m_window;
 }
 
-bool Context::create(const ContextFormat & format, const int width, const int height)
+bool Context::create(const ContextFormat & format, const int width, const int height, GLFWmonitor * monitor)
 {
     if (isValid())
     {
@@ -49,7 +49,7 @@ bool Context::create(const ContextFormat & format, const int width, const int he
     m_format = format;
     prepareFormat(m_format);
 
-    m_window = glfwCreateWindow(width, height, "glow", nullptr, nullptr);
+    m_window = glfwCreateWindow(width, height, "glow", monitor, nullptr);
 
     if (!m_window)
     {
@@ -85,6 +85,8 @@ void Context::prepareFormat(const ContextFormat & format)
     {
         glow::warning() << "Changed unsupported OpenGL version from " << format.version() << " to " << version << ".";
     }
+
+    glfwDefaultWindowHints();
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.majorVersion);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.minorVersion);

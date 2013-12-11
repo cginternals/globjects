@@ -9,6 +9,7 @@
 
 
 struct GLFWwindow;
+struct GLFWmonitor;
 
 namespace glowwindow 
 {
@@ -22,8 +23,8 @@ public:
 	enum SwapInterval
 	{
 	    NoVerticalSyncronization       =  0
-	,   VerticalSyncronization         =  1 ///< WGL_EXT_swap_control or GLX_EXT_swap_control 
-	,   AdaptiveVerticalSyncronization = -1 ///< requires EXT_swap_control_tear
+    ,   VerticalSyncronization         =  1
+    ,   AdaptiveVerticalSyncronization = -1
 	};
 
     static const std::string swapIntervalString(SwapInterval swapInterval);
@@ -39,7 +40,7 @@ public:
 
         \return isValid() is returned
     */
-    bool create(const ContextFormat & format, int width, int height);
+    bool create(const ContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
     void release();
 
     void makeCurrent();

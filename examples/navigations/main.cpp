@@ -82,7 +82,13 @@ public:
         m_camera.setZFar(1024.f);
 
         m_agrid->setCamera(&m_camera);
-    }    
+    }
+    virtual void finalize(Window &) override
+    {
+        m_sphere = nullptr;
+        m_icosahedron = nullptr;
+        m_agrid = nullptr;
+    }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
@@ -124,6 +130,9 @@ public:
                 m_camera.setCenter(vec3());
                 m_camera.setEye(vec3(0.f, 1.f, 4.0f));
                 m_camera.setUp(vec3(0,1,0));
+                break;
+            case GLFW_KEY_F11:
+                event.window()->toggleMode();
                 break;
         }
 

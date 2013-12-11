@@ -34,53 +34,46 @@ public:
     Window();
     virtual ~Window();
 
-    WindowEventHandler * eventHandler() const;
-    Context * context() const;
-
-    int width() const;
-    int height() const;
-    glm::ivec2 size() const;
-    glm::ivec2 position() const;
-
-    /** If enabled, this causes an application wide quit message to be posted
-        when the window gets destroyed. Hence, the static window loop (run) 
-        will receive a quit event and destroy all other remaining windows.
-    */
-    void quitOnDestroy(bool enable);
-    bool quitsOnDestroy() const;
+    bool create(const ContextFormat & format, const std::string & title = "glow", int width = 1280, int height = 720);
 
     /** Takes ownership of the given eventhandler and deletes that either on
         quitting, just before the opengl context gets destroyed, or when
         reassigning a new, different handler. 
     */
     void setEventHandler(WindowEventHandler * eventHandler);
+    WindowEventHandler * eventHandler() const;
 
-    bool create(
-        const ContextFormat & format
-    ,   const std::string & title = "glow"
-    ,   int width  =  1280
-    ,   int height =   720);
+    void show();
+    void hide();
+
+    int width() const;
+    int height() const;
+    glm::ivec2 size() const;
+    glm::ivec2 position() const;
 
     void setTitle(const std::string & title);
+    void resize(int width, int height);
+
+    /** If enabled, this causes an application wide quit message to be posted
+        when the window gets destroyed. Hence, the MainLoop will be quit
+        and all other remaining windows destroyed.
+    */
+    void quitOnDestroy(bool enable);
+    bool quitsOnDestroy() const;
+
+    Context * context() const;
 
     void close();
 
     /** Queues a paint event.
     */
     void repaint();
-
-    void resize(int width, int height);
-
     void idle();
-
-    void show();
-    void hide();
 
     void fullScreen();
     bool isFullScreen() const;
     void windowed();
     bool isWindowed() const;
-
     void toggleMode();
 
     GLFWwindow * internalWindow() const;
@@ -109,6 +102,7 @@ protected:
     glow::ref_ptr<WindowEventHandler> m_eventHandler;
     Context * m_context;
     std::queue<WindowEvent*> m_eventQueue;
+    glm::ivec2 m_windowedModeSize;
 
     bool m_quitOnDestroy;
 
@@ -116,7 +110,6 @@ protected:
     {
         WindowMode
     ,   FullScreenMode
-    ,   TransitionMode
     };
 
     Mode m_mode;
