@@ -14,7 +14,8 @@ namespace glowutils
 FlightNavigation::FlightNavigation()
 : m_camera(nullptr)
 , m_mouseSpeed(20.0)
-, m_moveSpeed(0.2)
+, m_moveSpeed(1.0)
+, m_directions(None)
 {
 }
 
@@ -61,37 +62,62 @@ void FlightNavigation::mouseMove(const ivec2 & mouseDelta)
     m_camera->setCenter(m_camera->eye()+delta);
 }
 
-void FlightNavigation::moveLeft()
+void FlightNavigation::move(const glm::vec3 & direction, float delta)
 {
-    vec3 eyeDir = m_camera->center() - m_camera->eye();
-    vec3 sideDir = cross(eyeDir, m_camera->up());
-    move(-sideDir);
+    if (direction == vec3(0.0))
+        return;
+
+    vec3 offset = normalize(direction) * delta * m_moveSpeed;
+    m_camera->setEye(m_camera->eye() + offset);
+    m_camera->setCenter(m_camera->center() + offset);
 }
 
-void FlightNavigation::moveRight()
+void FlightNavigation::startMovement(unsigned direction)
 {
-    vec3 eyeDir = m_camera->center() - m_camera->eye();
-    vec3 sideDir = cross(eyeDir, m_camera->up());
-    move(sideDir);
+    m_directions |= direction;
 }
 
-void FlightNavigation::moveForward()
+void FlightNavigation::stopMovement(unsigned direction)
 {
-    vec3 eyeDir = m_camera->center() - m_camera->eye();
-    move(eyeDir);
+    m_directions &= ~direction;
 }
 
-void FlightNavigation::moveBackward()
+bool FlightNavigation::isMoving(Direction direction) const
 {
-    vec3 eyeDir = m_camera->center() - m_camera->eye();
-    move(-eyeDir);
+    return (m_directions & direction) != 0;
 }
 
-void FlightNavigation::move(const glm::vec3 & direction)
+void FlightNavigation::move(float delta)
 {
-    vec3 delta = normalize(direction) * m_moveSpeed;
-    m_camera->setEye(m_camera->eye() + delta);
-    m_camera->setCenter(m_camera->center() + delta);
+    if (m_directions == None)
+        return;
+
+    vec3 eyeDir = normalize(m_camera->center() - m_camera->eye());
+    vec3 sideDir = normalize(cross(eyeDir, m_camera->up()));
+
+    vec3 moveDir(0.0);
+
+    if (isMoving(Forward))
+    {
+        moveDir += eyeDir;
+    }
+    if (isMoving(Backward))
+    {
+        moveDir -= eyeDir;
+    }
+    if (isMoving(Left))
+    {
+        moveDir -= sideDir;
+    }
+    if (isMoving(Right))
+    {
+        moveDir += sideDir;
+    }
+
+    glow::debug() << moveDir << " " << delta << " " << m_directions
+        << "(" << isMoving(Left)  << isMoving(Right)  << isMoving(Forward)  << isMoving(Backward) << ")";
+
+    move(moveDir, delta);
 }
 
 } // namespace glowutils

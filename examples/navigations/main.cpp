@@ -28,6 +28,7 @@
 #include <glowutils/FlightNavigation.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/File.h>
+#include <glow/Timer.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -53,6 +54,8 @@ public:
         m_nav.setBoundaryHint(m_aabb);
 
         m_flightNav.setCamera(&m_camera);
+
+        m_timer.start();
     }
 
     virtual ~EventHandler()
@@ -82,6 +85,8 @@ public:
         m_camera.setZFar(1024.f);
 
         m_agrid->setCamera(&m_camera);
+
+        window.addTimer(0, 0, false);
     }
     virtual void finalize(Window &) override
     {
@@ -110,12 +115,16 @@ public:
         m_agrid->draw();
     }
 
-    virtual void idle(Window & window) override
+    virtual void timerEvent(TimerEvent & event) override
     {
-        window.repaint();
+        float delta = static_cast<float>(m_timer.elapsed()/1000.0/1000.0/1000.0);
+        m_timer.reset();
+        m_flightNav.move(delta);
+
+        event.window()->repaint();
     }
 
-    virtual void keyPressEvent(KeyEvent & event)
+    virtual void keyPressEvent(KeyEvent & event) override
     {
         switch (event.key())
         {
@@ -124,6 +133,8 @@ public:
                 break;
             case GLFW_KEY_1:
                 m_flightEnabled = !m_flightEnabled;
+                if (!m_flightEnabled)
+                    m_flightNav.stopMovement(glowutils::FlightNavigation::All);
                 event.window()->setInputMode(GLFW_CURSOR, m_flightEnabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
                 break;
             case GLFW_KEY_SPACE:
@@ -142,19 +153,43 @@ public:
         {
             case GLFW_KEY_W:
             case GLFW_KEY_UP:
-                m_flightNav.moveForward();
+                m_flightNav.startMovement(glowutils::FlightNavigation::Forward);
                 break;
             case GLFW_KEY_A:
             case GLFW_KEY_LEFT:
-                m_flightNav.moveLeft();
+                m_flightNav.startMovement(glowutils::FlightNavigation::Left);
                 break;
             case GLFW_KEY_S:
             case GLFW_KEY_DOWN:
-                m_flightNav.moveBackward();
+                m_flightNav.startMovement(glowutils::FlightNavigation::Backward);
                 break;
             case GLFW_KEY_D:
             case GLFW_KEY_RIGHT:
-                m_flightNav.moveRight();
+                m_flightNav.startMovement(glowutils::FlightNavigation::Right);
+                break;
+        }
+    }
+    virtual void keyReleaseEvent(KeyEvent & event) override
+    {
+        if (!m_flightEnabled)
+            return;
+        switch (event.key())
+        {
+            case GLFW_KEY_W:
+            case GLFW_KEY_UP:
+                m_flightNav.stopMovement(glowutils::FlightNavigation::Forward);
+                break;
+            case GLFW_KEY_A:
+            case GLFW_KEY_LEFT:
+                m_flightNav.stopMovement(glowutils::FlightNavigation::Left);
+                break;
+            case GLFW_KEY_S:
+            case GLFW_KEY_DOWN:
+                m_flightNav.stopMovement(glowutils::FlightNavigation::Backward);
+                break;
+            case GLFW_KEY_D:
+            case GLFW_KEY_RIGHT:
+                m_flightNav.stopMovement(glowutils::FlightNavigation::Right);
                 break;
         }
     }
@@ -230,17 +265,17 @@ public:
         event.accept();
     }
 
-    virtual const float depthAt(const ivec2 & windowCoordinates)
+    virtual const float depthAt(const ivec2 & windowCoordinates) override
     {
         return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
     }
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates)
+    virtual const vec3 objAt(const ivec2 & windowCoordinates) override
     {
         return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
     }
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth)
+    virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
     {
         return unproject(m_camera, depth, windowCoordinates);
     }
@@ -248,7 +283,7 @@ public:
     virtual const glm::vec3 objAt(
         const ivec2 & windowCoordinates
     ,   const float depth
-    ,   const mat4 & viewProjectionInverted)
+    ,   const mat4 & viewProjectionInverted) override
     {
         return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
     }
@@ -265,6 +300,7 @@ protected:
     glowutils::FlightNavigation m_flightNav;
     glm::ivec2 m_lastMousePos;
     bool m_flightEnabled;
+    glow::Timer m_timer;
 
     glowutils::AxisAlignedBoundingBox m_aabb;
 };
