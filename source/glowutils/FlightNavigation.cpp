@@ -114,9 +114,6 @@ void FlightNavigation::move(float delta)
         moveDir += sideDir;
     }
 
-    glow::debug() << moveDir << " " << delta << " " << m_directions
-        << "(" << isMoving(Left)  << isMoving(Right)  << isMoving(Forward)  << isMoving(Backward) << ")";
-
     move(moveDir, delta);
 }
 
