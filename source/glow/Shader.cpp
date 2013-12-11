@@ -33,9 +33,7 @@ Shader::Shader(const GLenum type)
 {
 }
 
-Shader * Shader::fromString(
-    const GLenum type
-    , const std::string & sourceString)
+Shader * Shader::fromString(const GLenum type, const std::string & sourceString)
 {
     return new Shader(type, new String(sourceString));
 }
@@ -154,12 +152,18 @@ void Shader::invalidate()
     changed();
 }
 
+GLint Shader::get(GLenum pname) const
+{
+    GLint value = 0;
+    glGetShaderiv(m_id, pname, &value);
+    CheckGLError();
+
+    return value;
+}
+
 bool Shader::checkCompileStatus() const
 {
-    GLint status = 0;
-
-    glGetShaderiv(m_id, GL_COMPILE_STATUS, &status);
-    CheckGLError();
+    GLint status = get(GL_COMPILE_STATUS);
 
     if (GL_FALSE == status)
     {
@@ -176,11 +180,7 @@ bool Shader::checkCompileStatus() const
 
 std::string Shader::infoLog() const
 {
-	GLsizei length;
-
-	glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &length);
-	CheckGLError();
-
+    GLsizei length = get(GL_INFO_LOG_LENGTH);
 	std::vector<char> log(length);
 
 	glGetShaderInfoLog(m_id, length, &length, log.data());
