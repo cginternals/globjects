@@ -290,6 +290,22 @@ void Window::resize(int width, int height)
     glfwSetWindowSize(m_window, width, height);
 }
 
+int Window::inputMode(int mode) const
+{
+    if (!m_window)
+        return -1;
+
+    return glfwGetInputMode(m_window, mode);
+}
+
+void Window::setInputMode(int mode, int value)
+{
+    if (!m_window)
+        return;
+
+    glfwSetInputMode(m_window, mode, value);
+}
+
 void Window::repaint()
 {
     queueEvent(new PaintEvent);

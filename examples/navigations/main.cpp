@@ -124,7 +124,7 @@ public:
                 break;
             case GLFW_KEY_1:
                 m_flightEnabled = !m_flightEnabled;
-                glfwSetInputMode(event.window()->internalWindow(), GLFW_CURSOR, m_flightEnabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+                event.window()->setInputMode(GLFW_CURSOR, m_flightEnabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
                 break;
             case GLFW_KEY_SPACE:
                 m_camera.setCenter(vec3());

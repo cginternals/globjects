@@ -50,9 +50,11 @@ public:
     int height() const;
     glm::ivec2 size() const;
     glm::ivec2 position() const;
+    int inputMode(int mode) const;
 
     void setTitle(const std::string & title);
     void resize(int width, int height);
+    void setInputMode(int mode, int value);
 
     /** If enabled, this causes an application wide quit message to be posted
         when the window gets destroyed. Hence, the MainLoop will be quit
