@@ -22,6 +22,9 @@ const int VISIBILITY_KTAB_SIZE = ABUFFER_SIZE + 1;
 }
 
 void HybridAlgorithm::initialize() {
+    NamedStrings::createNamedString("/transparency/hybrid_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
+    NamedStrings::createNamedString("/transparency/hybrid.glsl", new glowutils::File("data/transparency/hybrid.glsl"));
+
     Shader* vertexShader = glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/hybrid.vert");
 
     m_opaqueProgram = new Program;
@@ -35,48 +38,47 @@ void HybridAlgorithm::initialize() {
     m_visibilityKTabProgram = new Program;
     m_visibilityKTabProgram->attach(glowutils::createShaderFromFile(GL_COMPUTE_SHADER, "data/transparency/hybrid_visibilityktab.comp"));
 
-    m_renderProgram = new Program;
-    m_renderProgram->attach(vertexShader);
-    m_renderProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_color.frag"));
+    m_colorProgram = new Program;
+    m_colorProgram->attach(vertexShader);
+    m_colorProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_color.frag"));
 
     m_depthBuffer = new RenderBufferObject;
     m_opaqueBuffer = createColorTex();
     m_coreBuffer = createColorTex();
     m_accumulationBuffer = createColorTex();
+    m_colorBuffer = createColorTex();
     m_depthKTab = new Buffer(GL_SHADER_STORAGE_BUFFER);
     m_visibilityKTab = new Buffer(GL_SHADER_STORAGE_BUFFER);
     m_depthComplexityBuffer = new Buffer(GL_SHADER_STORAGE_BUFFER);
 
-    m_fbo = new FrameBufferObject;
-    m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
-    m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
-    m_fbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
+    m_prepassFbo = new FrameBufferObject;
+    m_prepassFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
+    m_prepassFbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
 
-    m_renderFbo = new FrameBufferObject;
-    m_renderFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_coreBuffer.get());
-    m_renderFbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_accumulationBuffer.get());
-    m_renderFbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
-    m_renderFbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
+    m_colorFbo = new FrameBufferObject;
+    m_colorFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_coreBuffer.get());
+    m_colorFbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_accumulationBuffer.get());
+    m_colorFbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
+    m_colorFbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
 
-    m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_post.frag"));
-    m_colorBuffer = createColorTex();
-    m_postFbo = new glow::FrameBufferObject;
-    m_postFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorBuffer.get());
-    m_postFbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
+    m_compositionQuad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_post.frag"));
+    m_compositionFbo = new glow::FrameBufferObject;
+    m_compositionFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorBuffer.get());
+    m_compositionFbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
 }
 
 void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) {
     glViewport(0, 0, width, height);
     camera->setViewport(width, height);
 
-    m_fbo->bind();
+    m_prepassFbo->bind();
 
     //
     // render opaque geometry
     //
-    m_fbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
-    m_fbo->clear(GL_DEPTH_BUFFER_BIT);
-    m_fbo->clearBuffer(GL_COLOR, 0, glm::vec4(1.0f));
+    m_prepassFbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
+    m_prepassFbo->clear(GL_DEPTH_BUFFER_BIT);
+    m_prepassFbo->clearBuffer(GL_COLOR, 0, glm::vec4(1.0f));
 
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
@@ -90,7 +92,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     //
     // render translucent geometry into depth k-TAB
     //
-    m_fbo->setDrawBuffer(GL_NONE);
+    m_prepassFbo->setDrawBuffer(GL_NONE);
     glDepthMask(GL_FALSE);
 
     static Array<unsigned int> initialDepthKTab;
@@ -107,7 +109,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
 
     glDepthMask(GL_TRUE);
 
-    m_fbo->unbind();
+    m_prepassFbo->unbind();
 
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
@@ -127,9 +129,9 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     //
     // render translucent colors
     //
-    m_renderFbo->bind();
-    m_renderFbo->clearBuffer(GL_COLOR, 0, glm::vec4(0.0f));
-    m_renderFbo->clearBuffer(GL_COLOR, 1, glm::vec4(0.0f));
+    m_colorFbo->bind();
+    m_colorFbo->clearBuffer(GL_COLOR, 0, glm::vec4(0.0f));
+    m_colorFbo->clearBuffer(GL_COLOR, 1, glm::vec4(0.0f));
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE);
@@ -140,40 +142,40 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_depthComplexityBuffer->setData(initialDepthComplexity, GL_DYNAMIC_DRAW);
     m_depthComplexityBuffer->bindBase(GL_SHADER_STORAGE_BUFFER, 2);
 
-    m_renderProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
-    m_renderProgram->setUniform("normalmatrix", camera->normal());
-    m_renderProgram->setUniform("screenSize", glm::ivec2(width, height));
-    m_renderProgram->use();
+    m_colorProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
+    m_colorProgram->setUniform("normalmatrix", camera->normal());
+    m_colorProgram->setUniform("screenSize", glm::ivec2(width, height));
+    m_colorProgram->use();
 
-    drawFunction(m_renderProgram.get());
+    drawFunction(m_colorProgram.get());
 
     glDepthMask(GL_TRUE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_BLEND);
 
-    m_renderFbo->unbind();
+    m_colorFbo->unbind();
 
     //
     // compose core and tail
     //
-    m_postFbo->bind();
-    m_postFbo->clear(GL_COLOR_BUFFER_BIT);
+    m_compositionFbo->bind();
+    m_compositionFbo->clear(GL_COLOR_BUFFER_BIT);
 
     m_opaqueBuffer->bind(GL_TEXTURE0);
     m_coreBuffer->bind(GL_TEXTURE1);
     m_accumulationBuffer->bind(GL_TEXTURE2);
 
-    m_quad->program()->setUniform("screenSize", glm::ivec2(width, height));
-    m_quad->program()->setUniform("opaqueBuffer", 0);
-    m_quad->program()->setUniform("coreBuffer", 1);
-    m_quad->program()->setUniform("accumulationBuffer", 2);
-    m_quad->draw();
+    m_compositionQuad->program()->setUniform("screenSize", glm::ivec2(width, height));
+    m_compositionQuad->program()->setUniform("opaqueBuffer", 0);
+    m_compositionQuad->program()->setUniform("coreBuffer", 1);
+    m_compositionQuad->program()->setUniform("accumulationBuffer", 2);
+    m_compositionQuad->draw();
 
     m_opaqueBuffer->unbind(GL_TEXTURE0);
     m_coreBuffer->unbind(GL_TEXTURE1);
     m_accumulationBuffer->unbind(GL_TEXTURE2);
 
-    m_postFbo->unbind();
+    m_compositionFbo->unbind();
 }
 
 void HybridAlgorithm::resize(int width, int height) {

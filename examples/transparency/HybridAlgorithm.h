@@ -23,25 +23,32 @@ public:
     virtual Texture* getOutput() override { return m_colorBuffer.get(); }
 
 private:
-    ref_ptr<Program> m_opaqueProgram;
-    ref_ptr<FrameBufferObject> m_fbo;
+    // shared
+    ref_ptr<FrameBufferObject> m_prepassFbo;
     ref_ptr<RenderBufferObject> m_depthBuffer;
+
+    // opaque geometry pass
+    ref_ptr<Program> m_opaqueProgram;
     ref_ptr<Texture> m_opaqueBuffer;
 
+    // depth k-TAB pass
     ref_ptr<Program> m_depthKTabProgram;
     ref_ptr<Buffer> m_depthKTab;
 
+    // visibility k-TAB pass
     ref_ptr<Program> m_visibilityKTabProgram;
     ref_ptr<Buffer> m_visibilityKTab;
 
-    ref_ptr<Program> m_renderProgram;
-    ref_ptr<FrameBufferObject> m_renderFbo;
+    // translucent color pass
+    ref_ptr<Program> m_colorProgram;
+    ref_ptr<FrameBufferObject> m_colorFbo;
     ref_ptr<Texture> m_coreBuffer;
     ref_ptr<Texture> m_accumulationBuffer;
     ref_ptr<Buffer> m_depthComplexityBuffer;
 
-    ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
-    ref_ptr<FrameBufferObject> m_postFbo;
+    // composition pass
+    ref_ptr<FrameBufferObject> m_compositionFbo;
+    ref_ptr<glowutils::ScreenAlignedQuad> m_compositionQuad;
     ref_ptr<Texture> m_colorBuffer;
 };
 
