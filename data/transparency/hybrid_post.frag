@@ -24,29 +24,26 @@ uniform sampler2D accumulationBuffer;
 
 in ivec4 gl_FragCoord;
 
-layout (location = 0) out vec4 fragColor;
-
-vec4 blend(vec4 dst, vec4 src) {
-	return dst + src * (1.0 - dst.a);
-}
+layout (location = 0) out vec4 outColor;
 
 void main() {
 	vec4 opaque = texelFetch(opaqueBuffer, gl_FragCoord.xy, 0);
-	float z = float(depth[(gl_FragCoord.y * screenSize.x + gl_FragCoord.x) * ABUFFER_SIZE] >> 8) / DEPTH_RESOLUTION;
-	float a = visibility[(gl_FragCoord.y * screenSize.x + gl_FragCoord.x) * VISIBILITY_KTAB_SIZE];
-
+	vec4 core = texelFetch(coreBuffer, gl_FragCoord.xy, 0);
 	vec4 accumulated = texelFetch(accumulationBuffer, gl_FragCoord.xy, 0);
 	uint currentN = n[gl_FragCoord.y * screenSize.x + gl_FragCoord.x];
+	float v = visibility[(gl_FragCoord.y * screenSize.x + gl_FragCoord.x) * VISIBILITY_KTAB_SIZE + ABUFFER_SIZE];
 
-	vec4 weightedAverage = vec4(0.0);
+	// compute wavg tail
+	vec4 weightedAverage = vec4(0.0, 0.0, 0.0, 1.0);
 	if (currentN > 0) {
 		weightedAverage = vec4(accumulated.rgb / accumulated.a, accumulated.a / currentN);
+		weightedAverage.a = pow(abs(1.0 - weightedAverage.a), currentN);
 	}
-	weightedAverage.a = pow(1 - weightedAverage.a, currentN);
 
-	vec4 c = weightedAverage * (1 - weightedAverage.a) + opaque * weightedAverage.a;
+	// blend all together
+	vec3 color = core.rgb 
+		+ weightedAverage.rgb * (1.0 - v) * (1.0 - weightedAverage.a)
+		+ opaque.rgb * (1.0 - v) * weightedAverage.a;
 
-	vec4 core = texelFetch(coreBuffer, gl_FragCoord.xy, 0);
-
-	fragColor = c;
+	outColor = vec4(color, 1.0);
 }

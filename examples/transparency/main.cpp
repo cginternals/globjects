@@ -52,7 +52,7 @@ public:
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         m_algos.push_back(new glow::GlBlendAlgorithm);
-        //m_algos.push_back(new glow::ABufferAlgorithm);
+        m_algos.push_back(new glow::ABufferAlgorithm);
         m_algos.push_back(new glow::WeightedAverageAlgorithm);
         m_algos.push_back(new glow::HybridAlgorithm);
         for (auto& algo : m_algos) {

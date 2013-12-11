@@ -1,5 +1,7 @@
 #version 430
 
+layout(early_fragment_tests) in;
+
 const float DEPTH_RESOLUTION = float((1 << 24) - 1);
 const float ALPHA_RESOLUTION = float((1 << 8) - 1);
 const uint MAX_UINT = 0xFFFFFFFF;
@@ -11,7 +13,6 @@ layout(std430, binding = 0) buffer DepthKTab {
 
 uniform ivec2 screenSize;
 
-in float z;
 in vec4 vertexColor;
 
 void main() {
