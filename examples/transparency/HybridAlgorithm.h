@@ -34,6 +34,12 @@ private:
     ref_ptr<Program> m_visibilityKTabProgram;
     ref_ptr<Buffer> m_visibilityKTab;
 
+    ref_ptr<Program> m_renderProgram;
+    ref_ptr<FrameBufferObject> m_renderFbo;
+    ref_ptr<Texture> m_coreBuffer;
+    ref_ptr<Texture> m_accumulationBuffer;
+    ref_ptr<Buffer> m_depthComplexityBuffer;
+
     ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
     ref_ptr<FrameBufferObject> m_postFbo;
     ref_ptr<Texture> m_colorBuffer;
