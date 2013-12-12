@@ -79,6 +79,7 @@ protected:
     ref_ptr<StringSource> m_source;
 
     bool m_compiled;
+    bool m_compilationFailed;
 
 };
 

@@ -16,20 +16,19 @@
 namespace glow
 {
 
-Shader::Shader(
-    const GLenum type
-,   StringSource * source)
-:   Object(create(type))
-,   m_type(type)
-,   m_source(nullptr)
-,   m_compiled(false)
+Shader::Shader(const GLenum type, StringSource * source)
+: Object(create(type))
+, m_type(type)
+, m_source(nullptr)
+, m_compiled(false)
+, m_compilationFailed(false)
 {
 	if (source)
 		setSource(source);
 }
 
 Shader::Shader(const GLenum type)
-:   Shader(type, nullptr)
+: Shader(type, nullptr)
 {
 }
 
@@ -121,6 +120,9 @@ void Shader::updateSource()
 
 bool Shader::compile()
 {
+    if (m_compilationFailed)
+        return false;
+
     if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
     {
         // This call seems to be identical to glCompileShader(m_id) on this nvidia-331 driver on Ubuntu 13.04.
@@ -136,6 +138,9 @@ bool Shader::compile()
     }
 
     m_compiled = checkCompileStatus();
+
+    m_compilationFailed = !m_compiled;
+
     changed();
 
     return m_compiled;
@@ -149,6 +154,7 @@ bool Shader::isCompiled() const
 void Shader::invalidate()
 {
     m_compiled = false;
+    m_compilationFailed = false;
     changed();
 }
 
