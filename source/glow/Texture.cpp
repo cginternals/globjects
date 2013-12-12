@@ -37,20 +37,26 @@ void Texture::bind() const
 	CheckGLError();
 }
 
-void Texture::bind(const GLenum texture) const
-{
-    glActiveTexture(texture);
-    glBindTexture(m_target, m_id);
-    CheckGLError();
-}
-
 void Texture::unbind() const
 {
     glBindTexture(m_target, 0);
 	CheckGLError();
 }
 
-void Texture::unbind(const GLenum texture) const
+void Texture::unbind(const GLenum target)
+{
+    glBindTexture(target, 0);
+    CheckGLError();
+}
+
+void Texture::bindActive(const GLenum texture) const
+{
+    glActiveTexture(texture);
+    glBindTexture(m_target, m_id);
+    CheckGLError();
+}
+
+void Texture::unbindActive(const GLenum texture) const
 {
     glActiveTexture(texture);
     glBindTexture(m_target, 0);

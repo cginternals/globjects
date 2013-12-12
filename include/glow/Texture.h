@@ -26,10 +26,11 @@ public:
 	virtual void accept(ObjectVisitor & visitor);
 
 	void bind() const;
-    void bind(GLenum texture) const;
-
     void unbind() const;
-    void unbind(GLenum texture) const;
+    static void unbind(GLenum target);
+
+    void bindActive(GLenum texture) const;
+    void unbindActive(GLenum texture) const;
 
 	void setParameter(GLenum name, GLint value);
 	void setParameter(GLenum name, GLfloat value);
