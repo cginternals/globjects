@@ -35,6 +35,8 @@ set(api_includes
     ${header_path}/CachedValue.h
     ${header_path}/CachedValue.hpp
     ${header_path}/Camera.h
+    ${header_path}/CameraPath.h
+    ${header_path}/CameraPathPlayer.h
     ${header_path}/CameraPathRecorder.h
     ${header_path}/File.h
     ${header_path}/FileRegistry.h
@@ -61,6 +63,8 @@ set(sources
     ${source_path}/AxisAlignedBoundingBox.cpp
     ${source_path}/AxonometricLookAt.cpp
     ${source_path}/Camera.cpp
+    ${source_path}/CameraPath.cpp
+    ${source_path}/CameraPathPlayer.cpp
     ${source_path}/CameraPathRecorder.cpp
     ${source_path}/File.cpp
     ${source_path}/FileRegistry.cpp

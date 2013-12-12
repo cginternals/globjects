@@ -31,6 +31,7 @@
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/CameraPathRecorder.h>
+#include <glowutils/CameraPathPlayer.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -38,6 +39,8 @@
 #include <glowwindow/WindowEventHandler.h>
 
 using namespace glow;
+using namespace glowwindow;
+using namespace glowutils;
 using namespace glm;
 
 
