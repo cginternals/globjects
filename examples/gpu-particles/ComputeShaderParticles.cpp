@@ -1,8 +1,10 @@
 
 #include <GL/glew.h>
 
+#include <glow/global.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
+#include <glow/StringSource.h>
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
@@ -14,6 +16,7 @@
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
+#include <glowutils/StringTemplate.h>
 
 #include "ComputeShaderParticles.h"
 
@@ -26,34 +29,49 @@ ComputeShaderParticles::ComputeShaderParticles(
     const Array<vec4> & positions
 ,   const Array<vec4> & velocities
 ,   const Texture & forces
-,   const Camera & camera)
+,   const glowutils::Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
-, m_quad(nullptr)
-, m_clear(nullptr)
 {
 }
 
 ComputeShaderParticles::~ComputeShaderParticles()
 {
-    delete m_clear;
-    delete m_quad;
 }
 
 void ComputeShaderParticles::initialize()
 {
+    static const int max_invocations = query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS);
+    static const ivec3 max_count = ivec3(
+        query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0)
+      , query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1)
+      , query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2));
+
+    const int groups = static_cast<int>(ceil(m_numParticles / static_cast<float>(max_invocations)));
+
+    ivec3 workGroupSize;
+    workGroupSize.x = max(groups % max_count.x, 1);
+    workGroupSize.y = max(max(groups - workGroupSize.x * max_count.x, 1) % max_count.y, 1);
+    workGroupSize.z = max(max((groups - workGroupSize.x * max_count.x) - workGroupSize.y * max_count.y, 1) % max_count.z, 1);
+
+    m_workGroupSize = workGroupSize;
+
+    assert(m_workGroupSize.x * m_workGroupSize.y * m_workGroupSize.z * max_invocations >= m_numParticles);
+    assert(m_workGroupSize.x * m_workGroupSize.y * m_workGroupSize.z * max_invocations < m_numParticles + max_invocations);
+
     m_computeProgram = new Program();
-    m_computeProgram->attach(
-        createShaderFromFile(GL_COMPUTE_SHADER, "data/gpu-particles/particle.comp"));
+    
+    glowutils::StringTemplate * stringTemplate = new glowutils::StringTemplate(
+        new glowutils::File("data/gpu-particles/particle.comp"));
+    stringTemplate->replace("MAX_INVOCATION", max_invocations);
+    stringTemplate->update();
+
+    m_computeProgram->attach(new Shader(GL_COMPUTE_SHADER, stringTemplate));
 
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
-    ,   createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-    ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
-    
-    m_drawProgram->use();
-    m_drawProgram->bindAttributeLocation(0, "a_vertex");
-    m_drawProgram->release();
+        glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
+        , glowutils::createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+        , glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 
     m_positionsSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
     m_velocitiesSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
@@ -87,13 +105,12 @@ void ComputeShaderParticles::initialize()
     m_color->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_color);
-
     m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0 });
     m_fbo->unbind();
 
-    m_quad = new ScreenAlignedQuad(m_color);
-    m_clear = new ScreenAlignedQuad(
-        createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
+    m_quad = new glowutils::ScreenAlignedQuad(m_color);
+    m_clear = new glowutils::ScreenAlignedQuad(
+        glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 
 void ComputeShaderParticles::reset()
@@ -108,20 +125,13 @@ void ComputeShaderParticles::step(const float elapsed)
     m_velocitiesSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 
     m_forces.bind();
-    m_clear->program()->setUniform("elapsed", elapsed);
     m_computeProgram->setUniform("forces", 0);
     m_computeProgram->setUniform("elapsed", elapsed);
 
     m_computeProgram->use();
-
-    int n = m_numParticles;
-    do
-    {
-        m_computeProgram->setUniform("offset", m_numParticles - n);
-        m_computeProgram->dispatchCompute(static_cast<GLuint>(ceil(min(262144.f, static_cast<float>(n)) / 16.f)), 1, 1);
-        n -= 262144;
-    } while (n > 0);
-
+    
+    m_computeProgram->dispatchCompute(m_workGroupSize);
+    
     m_computeProgram->release();
 
     m_forces.unbind();
@@ -132,15 +142,15 @@ void ComputeShaderParticles::step(const float elapsed)
     //glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
-void ComputeShaderParticles::draw()
+void ComputeShaderParticles::draw(const float elapsed)
 {
     glDisable(GL_DEPTH_TEST);
 
     m_fbo->bind();
 
     glEnable(GL_BLEND);
-    
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+    m_clear->program()->setUniform("elapsed", elapsed);
     m_clear->draw();
 
 
@@ -169,4 +179,10 @@ void ComputeShaderParticles::resize()
     m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
 
     m_color->image2D(0, GL_RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, GL_RGB, GL_FLOAT, nullptr);
+
+    m_fbo->bind();
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    m_fbo->unbind();
 }

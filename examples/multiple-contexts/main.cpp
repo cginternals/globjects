@@ -10,7 +10,7 @@
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 
-using namespace glow;
+using namespace glowwindow;
 
 class EventHandler : public WindowEventHandler
 {
@@ -25,7 +25,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(1.f, 1.f, 1.f, 1.f);
     }
@@ -55,19 +55,25 @@ public:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setVersion(3, 0);
 
     Window windows[8];
 
     for (int i = 0; i < 8; ++i)
     {
         windows[i].setEventHandler(new EventHandler());
-        windows[i].create(format, "Multiple Contexts Example", 320, 240);
+
+        if (!windows[i].create(format, "Multiple Contexts Example", 320, 240))
+        {
+            return 1;
+        }
+
         windows[i].show();
         windows[i].context()->setSwapInterval(Context::NoVerticalSyncronization);
 
         // make some random windows post quit on destroy ;)
-        if (0 == rand() % 2)
-            windows[i].quitOnDestroy(false);
+        windows[i].quitOnDestroy(0 != rand() % 2);
     }
+
     return MainLoop::run();
 }

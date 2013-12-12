@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <glow/ref_ptr.h>
@@ -12,9 +11,13 @@ namespace glow
     class FrameBufferObject;
     class Texture;
     class RenderBufferObject;
-    class ScreenAlignedQuad;
+    class VertexArrayObject;
 }
 
+namespace glowutils
+{
+    class ScreenAlignedQuad;
+}
 
 class ComputeShaderParticles : public AbstractParticleTechnique
 {
@@ -23,16 +26,16 @@ public:
         const glow::Array<glm::vec4> & positions
     ,   const glow::Array<glm::vec4> & velocities
     ,   const glow::Texture & forces
-    ,   const glow::Camera & camera);
+    ,   const glowutils::Camera & camera);
     virtual ~ComputeShaderParticles();
 
-    virtual void initialize();
-    virtual void reset();
+    virtual void initialize() override;
+    virtual void reset() override;
 
-    virtual void step(float elapsed);
-    virtual void draw();
+    virtual void step(float elapsed) override;
+    virtual void draw(float elapsed) override;
 
-    virtual void resize();
+    virtual void resize() override;
 
 protected:
     glow::ref_ptr<glow::Buffer> m_positionsSSBO;
@@ -46,6 +49,8 @@ protected:
     glow::ref_ptr<glow::FrameBufferObject> m_fbo;
     glow::ref_ptr<glow::Texture> m_color;
 
-    glow::ScreenAlignedQuad * m_quad;
-    glow::ScreenAlignedQuad * m_clear;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_clear;
+
+    glm::uvec3 m_workGroupSize;
 };

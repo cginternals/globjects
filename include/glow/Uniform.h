@@ -2,6 +2,7 @@
 
 #include <glow/glow.h>
 #include <glow/AbstractUniform.h>
+#include <glow/UniformSetter.h>
 
 namespace glow
 {
@@ -18,7 +19,7 @@ namespace glow
 	Simple usage of an Uniform:
 	\code{.cpp}
 
-		Uniform<float> * u(new Uniform<float>("u_ratio"));
+        Uniform<float> * u = new Uniform<float>("u_ratio");
 		u->set(1.618f);
 
 		program->addUniform(u);
@@ -30,7 +31,7 @@ namespace glow
 	\see http://www.opengl.org/wiki/Uniform
 */
 template<typename T>
-class GLOW_API Uniform : public AbstractUniform
+class Uniform : public AbstractUniform
 {
 public:
     Uniform(const std::string & name);
@@ -42,10 +43,8 @@ public:
     const T & value() const;
 
 protected:
-	virtual void setLocation(const GLint location);
-	void set(
-		const GLint location
-	,	const T & value);
+	virtual void setLocation(GLint location);
+    void set(GLint location, const T & value);
 
 protected:
     T m_value; ///< The uniforms value, explictly required when relinking programs.

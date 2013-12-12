@@ -34,11 +34,10 @@ class Program;
 class GLOW_API Shader : public Object, protected ChangeListener, public Changeable
 {
 	friend class Program;
+    friend class ShaderCompiler;
 
 public:
-    static Shader * fromString(
-        const GLenum type
-    ,   const std::string & sourceString);
+    static Shader * fromString(const GLenum type, const std::string & sourceString);
 
 public:
 	Shader(const GLenum type);
@@ -53,25 +52,25 @@ public:
     void setSource(StringSource * source);
 	void setSource(const std::string & source);
     const StringSource* source() const;
+    void updateSource();
 
-	bool compile();
+    bool compile();
 	bool isCompiled() const;
+    void invalidate();
 
+    GLint get(GLenum pname) const;
+    bool checkCompileStatus() const;
 	std::string infoLog() const;
 
     std::string typeString() const;
 
 protected:
-    bool checkCompileStatus();
-
     void notifyChanged();
-	void updateSource();
+
 
 protected:
     static GLuint create(GLenum type);
-    static void setSource(
-        const Shader & shader
-    ,   const std::string & source);
+    static void setSource(const Shader & shader, const std::string & source);
 
     std::string shaderString() const;
 
@@ -79,9 +78,8 @@ protected:
 	GLenum m_type;
     ref_ptr<StringSource> m_source;
 
-    std::string m_currentSource;
-
     bool m_compiled;
+    bool m_compilationFailed;
 
 };
 

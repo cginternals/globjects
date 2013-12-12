@@ -18,7 +18,7 @@
 
 using namespace glm;
 
-namespace glow
+namespace glowutils
 {
 
 CameraPathPoint::CameraPathPoint(const Camera& camera)
@@ -346,4 +346,4 @@ void CameraPathPlayer::draw(const mat4& viewProjection)
     m_program->release();
 }
 
-} // namespace glow
+} // namespace glowutils

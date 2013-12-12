@@ -9,8 +9,9 @@
 
 
 struct GLFWwindow;
+struct GLFWmonitor;
 
-namespace glow 
+namespace glowwindow 
 {
 
 class AbstractNativeContext;
@@ -22,8 +23,8 @@ public:
 	enum SwapInterval
 	{
 	    NoVerticalSyncronization       =  0
-	,   VerticalSyncronization         =  1 ///< WGL_EXT_swap_control or GLX_EXT_swap_control 
-	,   AdaptiveVerticalSyncronization = -1 ///< requires EXT_swap_control_tear
+    ,   VerticalSyncronization         =  1
+    ,   AdaptiveVerticalSyncronization = -1
 	};
 
     static const std::string swapIntervalString(SwapInterval swapInterval);
@@ -39,11 +40,7 @@ public:
 
         \return isValid() is returned
     */
-    bool create(
-        const ContextFormat & format
-    ,   int width
-    , int height);
-
+    bool create(const ContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
     void release();
 
     void makeCurrent();
@@ -64,7 +61,6 @@ public:
         shared contexts with same format, but individual swap format. 
     */
     void setSwapInterval(SwapInterval interval);
-    void setSwapInterval();
     SwapInterval swapInterval() const;
 
 protected:
@@ -73,6 +69,11 @@ protected:
 
 private:
     GLFWwindow * m_window;
+
+private:
+    static glow::Version maximumSupportedVersion();
+    static glow::Version validateVersion(const glow::Version & version);
+    void prepareFormat(const ContextFormat & format);
 };
 
-} // namespace glow
+} // namespace glowwindow

@@ -1,7 +1,6 @@
 
 #include <GL/glew.h>
 
-#include <glow/AutoTimer.h>
 #include <glowwindow/ContextFormat.h>
 #include <glow/Error.h>
 #include <glow/ref_ptr.h>
@@ -18,7 +17,7 @@
 
 #include <glow/logging.h>
 
-using namespace glow;
+using namespace glowwindow;
 
 struct Element
 {
@@ -38,18 +37,18 @@ struct Element
     {
     }
 
-    glm::vec4 point; // 0
-    glm::vec2 extent; // 1
+    glm::vec4 point;    // 0
+    glm::vec2 extent;   // 1
     glm::vec2 fullSize; // 2
-    glm::vec4 color; // 3
-    float average; // 4
-    float min; // 5
-    float max; // 6
-    float median; // 7
-    int id; // 8
-    int count; // 9
-    float random; // 10
-    float random2; // 11
+    glm::vec4 color;    // 3
+    float average;      // 4
+    float min;          // 5
+    float max;          // 6
+    float median;       // 7
+    int id;             // 8
+    int count;          // 9
+    float random;       // 10
+    float random2;      // 11
 };
 
 class EventHandler : public WindowEventHandler
@@ -65,22 +64,22 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         glPointSize(10.0);
 
-        m_vao = new VertexArrayObject();
-        m_buffer = new Buffer(GL_ARRAY_BUFFER);
+        m_vao = new glow::VertexArrayObject();
+        m_buffer = new glow::Buffer(GL_ARRAY_BUFFER);
 
         m_shaderProgram = new glow::Program();
         m_shaderProgram->attach(
-            glow::createShaderFromFile(GL_VERTEX_SHADER, "data/vertexarrayattributes/test.vert"),
-            glow::createShaderFromFile(GL_FRAGMENT_SHADER, "data/vertexarrayattributes/test.frag")
+            glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/vertexarrayattributes/test.vert")
+        ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/vertexarrayattributes/test.frag")
         );
         m_shaderProgram->bindFragDataLocation(0, "fragColor");
 
-        m_buffer->setData(Array<Element>()
+        m_buffer->setData(glow::Array<Element>()
             << Element(glm::vec4(-0.3, -0.3, 0.0, 1.0))
             << Element(glm::vec4(0.3, 0.3, 0.0, 1.0)),
             GL_STATIC_DRAW
@@ -166,27 +165,30 @@ public:
         window.repaint();
     }
 protected:
-    ref_ptr<VertexArrayObject> m_vao;
-    ref_ptr<Buffer> m_buffer;
-    ref_ptr<glow::Program> m_shaderProgram;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Buffer> m_buffer;
+    glow::ref_ptr<glow::Program> m_shaderProgram;
 };
 
 int main(int argc, char* argv[])
 {
     ContextFormat format;
+    format.setVersion(3, 0);
 
     Window window;
 
-    {
-        AutoTimer t("Initialization");
-
         window.setEventHandler(new EventHandler());
 
-        window.create(format, "Vertex Array Attributes Example");
+    if (window.create(format, "Vertex Array Attributes Example"))
+    {
         window.context()->setSwapInterval(Context::VerticalSyncronization);
 
         window.show();
-    }
 
     return MainLoop::run();
+}
+    else
+    {
+        return 1;
+    }
 }

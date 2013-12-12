@@ -7,7 +7,9 @@
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
+#include <glow/FrameBufferObject.h>
 
+#include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
 
@@ -17,12 +19,11 @@
 using namespace glow;
 using namespace glm;
 
-
 TransformFeedbackParticles::TransformFeedbackParticles(
     const Array<vec4> & positions
 ,   const Array<vec4> & velocities
 ,   const Texture & forces
-,   const Camera & camera)
+,   const glowutils::Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
 {
 }
@@ -33,74 +34,147 @@ TransformFeedbackParticles::~TransformFeedbackParticles()
 
 void TransformFeedbackParticles::initialize()
 {
-    //m_transformFeedbackProgram = new glow::Program();
-    //m_transformFeedbackProgram->attach(glow::createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
-    //m_transformFeedbackProgram->setUniform("delta", 0.0f);
-    //m_transformFeedbackVertexBuffer1 = new glow::Buffer(GL_ARRAY_BUFFER);
-    //m_transformFeedbackVertexBuffer1->setData(glow::Array<glm::vec4>(m_positions));
-    //m_transformFeedbackVertexBuffer2 = new glow::Buffer(GL_ARRAY_BUFFER);
-    //m_transformFeedbackVertexBuffer2->setData(glow::Array<glm::vec4>(m_positions));
+    m_sourcePositions = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_sourceVelocities = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_targetPositions = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_targetVelocities = new glow::Buffer(GL_ARRAY_BUFFER);
 
-    //m_transformFeedback = new glow::TransformFeedback();
-    //m_transformFeedback->setVaryings(m_transformFeedbackProgram, glow::Array<const char*>{ "out_position" }, GL_INTERLEAVED_ATTRIBS);
+    reset();
 
-    //m_transformFeedbackVAO = new glow::VertexArrayObject();
-    //m_transformFeedbackVAO->binding(0)->setAttribute(m_transformFeedbackProgram->getAttributeLocation("in_position"));
-    //m_transformFeedbackVAO->binding(0)->setFormat(4, GL_FLOAT);
-    //m_transformFeedbackVAO->enable(m_transformFeedbackProgram->getAttributeLocation("in_position"));
+    m_transformFeedbackProgram = new glow::Program();
+    m_transformFeedbackProgram->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
+
+    m_transformFeedbackProgram->link();
+
+    m_transformFeedback = new glow::TransformFeedback();
+    m_transformFeedback->setVaryings(m_transformFeedbackProgram, glow::Array<const char*>{ "out_position", "out_velocity" }, GL_SEPARATE_ATTRIBS);
+
+    m_drawProgram = new Program();
+    m_drawProgram->attach(
+        glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
+    ,   glowutils::createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+    ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+
+    m_vao = new VertexArrayObject();
+    m_vao->bind();
+
+    auto positionsBinding = m_vao->binding(0);
+    positionsBinding->setAttribute(0);
+    positionsBinding->setFormat(4, GL_FLOAT);
+    m_vao->enable(0);
+
+    auto velocitiesBinding = m_vao->binding(1);
+    velocitiesBinding->setAttribute(1);
+    velocitiesBinding->setFormat(4, GL_FLOAT);
+    m_vao->enable(1);
+
+    m_vao->unbind();
+
+    // setup fbo
+
+    m_fbo = new FrameBufferObject();
+
+    m_color = new Texture(GL_TEXTURE_2D);
+    m_color->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    m_color->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_color->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    m_color->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    m_color->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_color);
+
+    m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0 });
+    m_fbo->unbind();
+
+    m_quad = new glowutils::ScreenAlignedQuad(m_color);
+    m_clear = new glowutils::ScreenAlignedQuad(
+        glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 
 void TransformFeedbackParticles::reset()
 {
-
+    m_sourcePositions->setData(m_positions, GL_DYNAMIC_DRAW);
+    m_sourceVelocities->setData(m_velocities, GL_DYNAMIC_DRAW);
+    m_targetPositions->setData(m_numParticles*sizeof(glm::vec4), nullptr, GL_DYNAMIC_DRAW);
+    m_targetVelocities->setData(m_numParticles*sizeof(glm::vec4), nullptr, GL_DYNAMIC_DRAW);
 }
 
 void TransformFeedbackParticles::step(const float elapsed)
 {
-    //m_transformFeedbackVAO->bind();
+    m_vao->bind();
 
-    //m_transformFeedbackProgram->setUniform("delta", elapsed);
+    m_vao->binding(0)->setBuffer(m_sourcePositions, 0, sizeof(glm::vec4));
+    m_vao->binding(1)->setBuffer(m_sourceVelocities, 0, sizeof(glm::vec4));
 
-    //m_transformFeedbackVAO->binding(0)->setBuffer(m_transformFeedbackVertexBuffer1, 0, sizeof(glm::vec4));
+    m_targetPositions->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
+    m_targetVelocities->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1);
 
-    //m_transformFeedbackVertexBuffer2->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
+    m_forces.bind();
+    m_transformFeedbackProgram->setUniform("forces", 0);
+    m_transformFeedbackProgram->setUniform("elapsed", elapsed);
 
-    //glEnable(GL_RASTERIZER_DISCARD);
-    //m_transformFeedbackProgram->use();
-    //m_transformFeedback->bind();
-    //m_transformFeedback->begin(GL_POINTS);
-    //m_transformFeedbackVAO->drawArrays(GL_POINTS, 0, m_positions.size());
-    //m_transformFeedback->end();
-    //m_transformFeedback->unbind();
-    //glDisable(GL_RASTERIZER_DISCARD);
+    glEnable(GL_RASTERIZER_DISCARD);
+    m_transformFeedbackProgram->use();
+    m_transformFeedback->bind();
+    m_transformFeedback->begin(GL_POINTS);
+    m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+    m_transformFeedback->end();
+    m_transformFeedback->unbind();
+    m_transformFeedbackProgram->release();
+    glDisable(GL_RASTERIZER_DISCARD);
 
-    //m_transformFeedbackVAO->unbind();
+    m_vao->unbind();
 
-    //std::swap(m_transformFeedbackVertexBuffer1, m_transformFeedbackVertexBuffer2);
+    m_forces.unbind();
+
+    std::swap(m_sourcePositions, m_targetPositions);
+    std::swap(m_sourceVelocities, m_targetVelocities);
 }
 
-void TransformFeedbackParticles::draw()
+void TransformFeedbackParticles::draw(const float elapsed)
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    m_vao->binding(0)->setBuffer(m_sourcePositions, 0, sizeof(glm::vec4));
+    m_vao->binding(1)->setBuffer(m_sourceVelocities, 0, sizeof(glm::vec4));
+
+    glDisable(GL_DEPTH_TEST);
+
+    m_fbo->bind();
 
     glEnable(GL_BLEND);
+    glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+    m_clear->program()->setUniform("elapsed", elapsed);
+    m_clear->draw();
 
-    //m_transformFeedbackVAO->binding(0)->setBuffer(m_transformFeedbackVertexBuffer1, 0, sizeof(vec4));
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-    //m_drawProgram->use();
-    //m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
-    //m_vao->bind();
-    ////m_transformFeedback->draw(GL_POINTS);
+    m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
+    m_drawProgram->use();
 
-    //m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+    m_vao->bind();
+    //m_vao->drawArrays(GL_POINTS, 0, m_numParticles); // don't use this, it is erroneous
+    m_transformFeedback->draw(GL_POINTS);
+    m_vao->unbind();
 
-    //m_vao->unbind();
-    //m_renderProgram->release();
+    m_drawProgram->release();
 
     glDisable(GL_BLEND);
+
+    m_fbo->unbind();
+
+    m_quad->draw();
+
+    glEnable(GL_DEPTH_TEST);
 }
 
 void TransformFeedbackParticles::resize()
 {
-    //m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
+    m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
+
+    m_color->image2D(0, GL_RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, GL_RGB, GL_FLOAT, nullptr);
+
+    m_fbo->bind();
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    m_fbo->unbind();
 }

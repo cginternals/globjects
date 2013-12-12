@@ -41,6 +41,7 @@ public:
 	void bind();
 	void bind(GLenum target);
 	void unbind();
+    static void unbind(GLenum target);
 
 	void setData(
         const AbstractArray & data
@@ -75,7 +76,7 @@ public:
     ,   GLsizeiptr size);
 
 	// copying
-	void copySubData(
+    static void copySubData(
         GLenum     readTarget
     ,   GLenum     writeTarget
     ,   GLintptr   readOffset

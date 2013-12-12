@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glow/logging.h>
+#include <glow/global.h>
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/ObjectVisitor.h>
@@ -73,12 +74,9 @@ void Program::release()
 
 bool Program::isUsed() const
 {
-	GLint currentProgram = 0;
+    GLuint currentProgram = static_cast<GLuint>(query::getInteger(GL_CURRENT_PROGRAM));
 
-	glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-	CheckGLError();
-
-	return currentProgram > 0 && currentProgram == (int)m_id;
+    return currentProgram > 0 && currentProgram == m_id;
 }
 
 bool Program::isLinked() const
@@ -124,13 +122,30 @@ void Program::detach(Shader * shader)
 std::set<Shader*> Program::shaders() const
 {
 	std::set<Shader*> shaders;
-	for (ref_ptr<Shader> shader: m_shaders)
+    for (ref_ptr<Shader> shader: m_shaders)
 		shaders.insert(shader);
 	return shaders;
 }
 
 void Program::link()
 {
+    m_linked = false;
+
+    for (Shader* shader : shaders())
+    {
+        if (!shader->isCompiled())
+        {
+            // Some drivers (e.g. nvidia-331 on Ubuntu 13.04 automatically compile shaders during program linkage)
+            // but we don't want to depend on such behavior
+            shader->compile();
+
+            if (!shader->isCompiled())
+            {
+                return;
+            }
+        }
+    }
+
 	glLinkProgram(m_id);
 	CheckGLError();
 
@@ -252,15 +267,20 @@ const std::string Program::infoLog() const
 	return std::string(log.data(), length);
 }
 
+void Program::dispatchCompute(const glm::uvec3 & numGroups)
+{
+    dispatchCompute(numGroups.x, numGroups.y, numGroups.z);
+}
+
 void Program::dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ)
 {
-	use();
+    use();
 
     if (!m_linked)
         return;
 
-	glDispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
-	CheckGLError();
+    glDispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
+    CheckGLError();
 }
 
 void Program::dispatchComputeGroupSize(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ, GLuint groupSizeX, GLuint groupSizeY, GLuint groupSizeZ)

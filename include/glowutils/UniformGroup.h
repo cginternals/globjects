@@ -8,11 +8,16 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow 
-{
 
-class AbstractUniform;
-class Program;
+namespace glow
+{
+    class AbstractUniform;
+    class Program;
+}
+    
+ 
+namespace glowutils
+{
 
 class GLOWUTILS_API UniformGroup
 {
@@ -21,18 +26,18 @@ public:
     virtual ~UniformGroup();
 
     template <typename T>
-    Uniform<T> * uniform(const std::string & name);
+    glow::Uniform<T> * uniform(const std::string & name);
 
     template <typename T>
-    const Uniform<T> * uniform(const std::string & name) const;
+    const glow::Uniform<T> * uniform(const std::string & name) const;
 
-    void addUniform(AbstractUniform * uniform);
-    void addToProgram(Program * program);
+    void addUniform(glow::AbstractUniform * uniform);
+    void addToProgram(glow::Program * program);
 
 protected:
-    std::unordered_map<std::string, ref_ptr<AbstractUniform>> m_uniforms;
+    std::unordered_map<std::string, glow::ref_ptr<glow::AbstractUniform>> m_uniforms;
 };
 
-} // namespace glow
+} // namespace glowutils
 
 #include <glowutils/UniformGroup.hpp>

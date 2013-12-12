@@ -24,7 +24,7 @@ class Program;
 
 	\code{.cpp}
 
-		Uniform<float> * u(new Uniform<float>("u_ratio"));
+        Uniform<float> * u = new Uniform<float>("u_ratio");
 
 		u->set(1.618f);
 		program->addUniform(u);
@@ -70,7 +70,7 @@ protected:
 
 	/** This function requires knowledge of the unifom's value.
 	*/
-	virtual void setLocation(const GLint location) = 0;
+	virtual void setLocation(GLint location) = 0;
 
 protected:
 	std::string m_name;

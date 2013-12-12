@@ -15,10 +15,14 @@
 #	define __API_IMPORT_DECLARATION
 #endif
 
+#ifndef GLOW_STATIC
 #ifdef GLOW_EXPORTS
 #	define GLOW_API __API_EXPORT_DECLARATION
 #else
 #	define GLOW_API __API_IMPORT_DECLARATION
+#endif
+#else
+#   define GLOW_API
 #endif
 
 #ifdef N_DEBUG
@@ -28,3 +32,10 @@
 #	define IF_DEBUG(statement) statement
 #	define IF_NDEBUG(statement)
 #endif // N_DEBUG
+
+namespace glow
+{
+
+GLOW_API bool init();
+	
+} // namespace glow

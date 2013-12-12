@@ -1,4 +1,5 @@
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform mat4 transform;
 uniform float timef;

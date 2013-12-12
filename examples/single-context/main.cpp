@@ -1,7 +1,6 @@
 
 #include <GL/glew.h>
 
-#include <glow/AutoTimer.h>
 #include <glowwindow/ContextFormat.h>
 #include <glow/Error.h>
 #include <glowwindow/Context.h>
@@ -10,7 +9,7 @@
 
 #include <glow/logging.h>
 
-using namespace glow;
+using namespace glowwindow;
 
 class EventHandler : public WindowEventHandler
 {
@@ -25,7 +24,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
     }
@@ -52,19 +51,22 @@ public:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
-    format.setVersion(4, 3);
-    format.setProfile(ContextFormat::CoreProfile);
+    format.setVersion(3, 0);
 
     Window window;
-    {
-    AutoTimer t("Initialization");
 
     window.setEventHandler(new EventHandler());
-    if (!window.create(format, "Single Context Example"))
-        return 0;
 
+    if (window.create(format, "Single Context Example"))
+    {
     window.context()->setSwapInterval(Context::VerticalSyncronization);
+
     window.show();
+
+        return MainLoop::run();
     }
-    return MainLoop::run();
+    else
+    {
+        return 1;
+    }
 }

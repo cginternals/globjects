@@ -5,7 +5,8 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow
+
+namespace glowutils
 {
 
 /** \brief Fast binary file to memory dump.
@@ -46,6 +47,6 @@ protected:
     bool m_valid;
 };
 
-} // namespace glow
+} // namespace glowutils
 
 #include <glowutils/RawFile.hpp>

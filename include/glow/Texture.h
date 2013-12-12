@@ -2,6 +2,7 @@
 
 #include <glow/glow.h>
 #include <glow/Object.h>
+#include <glow/TextureHandle.h>
 
 namespace glow 
 {
@@ -18,17 +19,6 @@ namespace glow
 class GLOW_API Texture : public Object
 {
 public:
-	class Handle
-	{
-	public:
-		Handle();
-		Handle(const GLuint64 & value);
-
-		operator GLuint64() const;
-
-		GLuint64 value;
-	};
-public:
 	Texture(GLenum  target = GL_TEXTURE_2D);
 	Texture(GLuint id, GLenum  target, bool ownsGLObject = true);
 	virtual ~Texture();
@@ -36,10 +26,11 @@ public:
 	virtual void accept(ObjectVisitor & visitor);
 
 	void bind() const;
-    void bind(GLenum texture) const;
-
     void unbind() const;
-    void unbind(GLenum texture) const;
+    static void unbind(GLenum target);
+
+    void bindActive(GLenum texture) const;
+    void unbindActive(GLenum texture) const;
 
 	void setParameter(GLenum name, GLint value);
 	void setParameter(GLenum name, GLfloat value);
@@ -86,10 +77,10 @@ public:
 
 	void generateMipmap();
 
-	Handle textureHandle() const;
+    TextureHandle textureHandle() const;
 
 	GLboolean isResident() const;
-	Handle makeResident();
+    TextureHandle makeResident();
 	void makeNonResident();
 
 protected:

@@ -8,7 +8,7 @@
 
 using namespace glm;
 
-namespace glow
+namespace glowutils
 {
 
 Camera::Camera(
@@ -260,4 +260,4 @@ void Camera::changed() const
 {
 }
 
-} // namespace glow
+} // namespace glowutils

@@ -4,9 +4,8 @@
 #include <string>
 
 #include <glowwindow/glowwindow.h>
-#include <glow/ref_ptr.h>
 
-namespace glow
+namespace glowwindow
 {
 
 class GLOWWINDOW_API MainLoop
@@ -32,8 +31,9 @@ protected:
 
     void pollEvents();
     void processEvents();
+
 protected:
     static MainLoop s_mainLoop;
 };
 
-} // namespace glow
+} // namespace glowwindow

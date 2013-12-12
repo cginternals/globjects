@@ -10,9 +10,8 @@
 
 
 
-namespace glow
+namespace glowutils
 {
-
 class Camera;
 class VertexArrayObject;
 class Program;
@@ -96,4 +95,4 @@ protected:
     void moveCamera(const CameraPathPoint& point);
 };
 
-} // namespace glow
+} // namespace glowutils

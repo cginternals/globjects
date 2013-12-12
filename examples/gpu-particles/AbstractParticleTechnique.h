@@ -11,8 +11,12 @@
 
 namespace glow
 {
-    class Camera;
     class Texture;
+}
+
+namespace glowutils
+{
+    class Camera;
 }
 
 class AbstractParticleTechnique
@@ -22,7 +26,7 @@ public:
         const glow::Array<glm::vec4> & postions
     ,   const glow::Array<glm::vec4> & velocities
     ,   const glow::Texture & forces
-    ,   const glow::Camera & camera);
+    ,   const glowutils::Camera & camera);
 
     virtual ~AbstractParticleTechnique();
 
@@ -30,7 +34,7 @@ public:
     virtual void reset() = 0;
 
     virtual void step(float elapsed) = 0;
-    virtual void draw() = 0;
+    virtual void draw(float elapsed) = 0;
 
     virtual void resize() = 0; // use m_camera viewport etc.
 
@@ -39,7 +43,7 @@ protected:
     const glow::Array<glm::vec4> & m_velocities;
 
     const glow::Texture & m_forces;
-    const glow::Camera & m_camera;
+    const glowutils::Camera & m_camera;
 
     const unsigned int m_numParticles;
 };

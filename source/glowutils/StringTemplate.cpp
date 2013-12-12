@@ -22,7 +22,7 @@ void replaceAll(
 
 }
 
-namespace glow 
+namespace glowutils 
 {
 
 StringTemplate::StringTemplate(StringSource * source)
@@ -36,29 +36,51 @@ StringTemplate::~StringTemplate()
 
 const std::string & StringTemplate::string() const
 {
-	return m_modifiedSource;
+    if (!m_modifiedSource.isValid())
+    {
+        m_modifiedSource.setValue(modifiedSource());
+    }
+
+    return m_modifiedSource.value();
 }
 
-void StringTemplate::replace(
-    const std::string & orig
-,   const std::string & str)
+void StringTemplate::clearReplacements()
 {
-	m_replacements[orig] = str;
+    m_replacements.clear();
+    invalidate();
 }
 
-void StringTemplate::replace(const std::string & orig, int i)
+void StringTemplate::replace(const std::string & original, const std::string & str)
+{
+    m_replacements[original] = str;
+    invalidate();
+}
+
+void StringTemplate::replace(const std::string & original, int i)
 {
 	std::stringstream ss;
 	ss << i;
-	replace(orig, ss.str());
+    replace(original, ss.str());
 }
 
 void StringTemplate::update()
 {
-    m_modifiedSource = m_internal->string();
-
-    for (const std::pair<std::string, std::string>& pair: m_replacements)
-        replaceAll(m_modifiedSource, pair.first, pair.second);
+    invalidate();
 }
 
-} // namespace glow
+void StringTemplate::invalidate()
+{
+    m_modifiedSource.invalidate();
+}
+
+std::string StringTemplate::modifiedSource() const
+{
+    std::string source = m_internal->string();
+
+    for (const std::pair<std::string, std::string>& pair: m_replacements)
+        replaceAll(source, pair.first, pair.second);
+
+    return source;
+}
+
+} // namespace glowutils

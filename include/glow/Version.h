@@ -15,7 +15,8 @@ namespace glow
 class GLOW_API Version
 {
 public:
-    Version(int majorVersion = 0, int minorversion = 0);
+    Version();
+    Version(int majorVersion, int minorversion = 0);
 
 	static Version current();
 
@@ -29,6 +30,7 @@ public:
 	std::string toString() const;
 
     bool isValid() const;
+    bool isNull() const;
 
     Version nearestValidVersion() const;
 public:

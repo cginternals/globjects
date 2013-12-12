@@ -5,8 +5,10 @@
 #include <glow/logging.h>
 #include <glowwindow/ContextFormat.h>
 
+using namespace glow;
 
-namespace glow
+
+namespace glowwindow
 {
 
 ContextFormat::ContextFormat()
@@ -21,7 +23,6 @@ ContextFormat::ContextFormat()
 , m_swapBehavior(DoubleBuffering)
 , m_samples(0)
 {
-    setVersion(4, 1); // Use setter to avoid invalid initialization.
 }
 
 ContextFormat::~ContextFormat()
@@ -36,29 +37,6 @@ void ContextFormat::setVersion(unsigned int major, unsigned int minor)
 void ContextFormat::setVersion(const Version & version)
 {
     m_version = version;
-
-    if (!m_version.isValid())
-    {
-        m_version = m_version.nearestValidVersion();
-        warning() << "Unknown OpenGL Version " << version << " was adjusted to " << m_version << ".";
-    }
-}
-
-void ContextFormat::setVersionFallback(unsigned int major, unsigned int minor)
-{
-    setVersionFallback(Version(major, minor));
-}
-
-void ContextFormat::setVersionFallback(const Version& version)
-{
-    Version fallbackVersion = version.nearestValidVersion();
-
-    if (fallbackVersion >= m_version)
-        return;
-
-    warning() << "OpenGL Version fallback for " << m_version << " was adjusted to " << fallbackVersion << ".";
-
-    m_version = fallbackVersion;
 }
 
 int ContextFormat::majorVersion() const
@@ -204,21 +182,14 @@ const char* ContextFormat::swapBehaviorString(const SwapBehavior swapBehavior)
     }
 }
 
-bool ContextFormat::verify(
-	const ContextFormat & requested
-,   const ContextFormat & created)
+bool ContextFormat::verify(const ContextFormat & requested, const ContextFormat & created)
 {
-	bool result = true;
-
-    result &= verifyVersionAndProfile(requested, created);
-	result &= verifyPixelFormat(requested, created);
-
-	return result;
+    return
+        verifyVersionAndProfile(requested, created) &&
+        verifyPixelFormat(requested, created);
 }
 
-bool ContextFormat::verifyVersionAndProfile(
-	const ContextFormat & requested
-,   const ContextFormat & created)
+bool ContextFormat::verifyVersionAndProfile(const ContextFormat & requested, const ContextFormat & created)
 {
 	const bool sameProfiles(requested.profile() == created.profile());
 
@@ -321,4 +292,4 @@ bool ContextFormat::verifyPixelFormat(
 	return false;
 }
 
-} // namespace glow
+} // namespace glowwindow

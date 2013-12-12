@@ -7,7 +7,7 @@ void ChangeListener::notifyChanged()
 {
 }
 
-void ChangeListener::notifyChanged(Changeable* sender)
+void ChangeListener::notifyChanged(Changeable *)
 {
 }
 

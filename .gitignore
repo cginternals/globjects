@@ -26,3 +26,4 @@ release_build
 
 #qt cache
 CMakeLists.txt.user
+CMakeLists.txt.user.*

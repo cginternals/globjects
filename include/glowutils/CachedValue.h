@@ -1,7 +1,7 @@
 
 #pragma once
 
-namespace glow
+namespace glowutils
 {
 
 /** \brief Extends a value of arbitrary type by an invalidation flag.
@@ -49,6 +49,6 @@ protected:
 	mutable T m_value;
 };
 
-} // namespace glow
+} // namespace glowutils
 
 #include <glowutils/CachedValue.hpp>
