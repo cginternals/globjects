@@ -1,4 +1,4 @@
-#include "ABufferAlgorithm.h"
+#include <glowutils/ABufferAlgorithm.h>
 
 #include <glow/Program.h>
 #include <glow/FrameBufferObject.h>
@@ -11,7 +11,7 @@
 #include <glowutils/Camera.h>
 #include <glowutils/ScreenAlignedQuad.h>
 
-namespace glow {
+namespace glowutils {
 
 namespace {
 
@@ -35,13 +35,14 @@ const int ABUFFER_SIZE = 8;
 
 } // anonymous namespace
 
-void ABufferAlgorithm::initialize() {
+void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
     glow::NamedStrings::createNamedString("/transparency/abuffer_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
-    glow::NamedStrings::createNamedString("/transparency/abuffer.glsl", new glowutils::File("data/transparency/abuffer.glsl"));
+	glow::NamedStrings::createNamedString("/transparency/abuffer.glsl", new glowutils::File(transparencyShaderFilePath + "abuffer.glsl"));
 
     m_program = new glow::Program();
-    m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/abuffer.frag"));
-    m_program->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/abuffer.vert"));
+	m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath +  "abuffer.frag"));
+	m_program->attach(vertexShader);
+	if (geometryShader != nullptr) m_program->attach(geometryShader);
 
     m_opaqueBuffer = createColorTex();
     m_depthBuffer = new glow::RenderBufferObject();
@@ -60,7 +61,7 @@ void ABufferAlgorithm::initialize() {
     m_counter = new glow::Buffer(GL_ATOMIC_COUNTER_BUFFER);
     m_counter->setName("A Buffer Counter");
 
-    m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/abuffer_post.frag"));
+	m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath +  "abuffer_post.frag"));
 
     m_colorBuffer = createColorTex();
     m_postFbo = new glow::FrameBufferObject;
@@ -114,7 +115,7 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
 }
 
 void ABufferAlgorithm::resize(int width, int height) {
-    int depthBits = FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
+    int depthBits = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
     m_opaqueBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
     m_depthBuffer->storage(depthBits == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
     m_linkedListBuffer->setData(width * height * ABUFFER_SIZE * sizeof(ABufferEntry), nullptr, GL_DYNAMIC_DRAW);

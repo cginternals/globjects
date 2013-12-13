@@ -20,11 +20,10 @@
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/ScreenAlignedQuad.h>
-
-#include "GlBlendAlgorithm.h"
-#include "ABufferAlgorithm.h"
-#include "WeightedAverageAlgorithm.h"
-#include "HybridAlgorithm.h"
+#include <glowutils/GlBlendAlgorithm.h>
+#include <glowutils/ABufferAlgorithm.h>
+#include <glowutils/WeightedAverageAlgorithm.h>
+#include <glowutils/HybridAlgorithm.h>
 
 namespace {
 
@@ -43,20 +42,22 @@ private:
 	glowutils::WorldInHandNavigation m_nav;
 	glowutils::AxisAlignedBoundingBox m_aabb;
 	glowutils::ScreenAlignedQuad* m_quad;
-    std::vector<glow::AbstractTransparencyAlgorithm*> m_algos;
-
+	std::vector<glowutils::AbstractTransparencyAlgorithm*> m_algos;
+	
 public:
 	void initialize(glowwindow::Window & window) override {
 		glow::DebugMessageOutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-        m_algos.push_back(new glow::GlBlendAlgorithm);
-        m_algos.push_back(new glow::ABufferAlgorithm);
-        m_algos.push_back(new glow::WeightedAverageAlgorithm);
-        m_algos.push_back(new glow::HybridAlgorithm);
+		glow::Shader* vertexShader = glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/transparency.vert");
+
+		m_algos.push_back(new glowutils::GlBlendAlgorithm);
+		m_algos.push_back(new glowutils::ABufferAlgorithm);
+		m_algos.push_back(new glowutils::WeightedAverageAlgorithm);
+		m_algos.push_back(new glowutils::HybridAlgorithm);
         for (auto& algo : m_algos) {
-            algo->initialize();
+			algo->initialize("data/transparency/", vertexShader, nullptr);
         }
 
         m_cube = new glowutils::UnitCube;

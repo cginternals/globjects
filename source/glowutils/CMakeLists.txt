@@ -50,6 +50,12 @@ set(api_includes
     ${header_path}/UniformGroup.hpp
     ${header_path}/UnitCube.h
     ${header_path}/WorldInHandNavigation.h
+	${header_path}/AbstractTransparencyAlgorithm.h
+    ${header_path}/ABufferAlgorithm.h
+    ${header_path}/GlBlendAlgorithm.h
+    ${header_path}/WeightedAverageAlgorithm.h
+    ${header_path}/HybridAlgorithm.h
+    
 )
 
 set(sources
@@ -71,6 +77,11 @@ set(sources
     ${source_path}/UniformGroup.cpp
     ${source_path}/UnitCube.cpp
     ${source_path}/WorldInHandNavigation.cpp
+	${source_path}/AbstractTransparencyAlgorithm.cpp
+	${source_path}/ABufferAlgorithm.cpp
+	${source_path}/GlBlendAlgorithm.cpp
+	${source_path}/WeightedAverageAlgorithm.cpp
+	${source_path}/HybridAlgorithm.cpp
 )
 
 # Group source files

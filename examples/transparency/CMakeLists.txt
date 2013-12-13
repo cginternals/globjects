@@ -4,16 +4,6 @@ message(STATUS "example ${target}")
 
 add_executable(${target} 
     main.cpp
-    AbstractTransparencyAlgorithm.h
-    AbstractTransparencyAlgorithm.cpp
-    ABufferAlgorithm.h
-    ABufferAlgorithm.cpp
-    GlBlendAlgorithm.h
-    GlBlendAlgorithm.cpp
-    WeightedAverageAlgorithm.h
-    WeightedAverageAlgorithm.cpp
-    HybridAlgorithm.h
-    HybridAlgorithm.cpp
 )
 
 target_link_libraries(${target} 

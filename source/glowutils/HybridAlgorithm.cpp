@@ -1,4 +1,4 @@
-#include "HybridAlgorithm.h"
+#include <glowutils/HybridAlgorithm.h>
 
 #include <glow/Program.h>
 #include <glow/FrameBufferObject.h>
@@ -12,7 +12,7 @@
 #include <glowutils/Camera.h>
 #include <glowutils/ScreenAlignedQuad.h>
 
-namespace glow {
+namespace glowutils {
 
 namespace {
 
@@ -21,41 +21,42 @@ const int VISIBILITY_KTAB_SIZE = ABUFFER_SIZE + 1;
 
 }
 
-void HybridAlgorithm::initialize() {
-    NamedStrings::createNamedString("/transparency/hybrid_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
-    NamedStrings::createNamedString("/transparency/hybrid.glsl", new glowutils::File("data/transparency/hybrid.glsl"));
+void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
+    glow::NamedStrings::createNamedString("/transparency/hybrid_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
+	glow::NamedStrings::createNamedString("/transparency/hybrid.glsl", new glowutils::File("data/transparency/hybrid.glsl"));
 
-    Shader* vertexShader = glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/hybrid.vert");
-
-    m_opaqueProgram = new Program;
+	m_opaqueProgram = new glow::Program;
     m_opaqueProgram->attach(vertexShader);
     m_opaqueProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_opaque.frag"));
+	if (geometryShader != nullptr) m_opaqueProgram->attach(geometryShader);
 
-    m_depthKTabProgram = new Program;
+	m_depthKTabProgram = new glow::Program;
     m_depthKTabProgram->attach(vertexShader);
     m_depthKTabProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_depthktab.frag"));
+	if (geometryShader != nullptr) m_depthKTabProgram->attach(geometryShader);
 
-    m_visibilityKTabProgram = new Program;
+	m_visibilityKTabProgram = new glow::Program;
     m_visibilityKTabProgram->attach(glowutils::createShaderFromFile(GL_COMPUTE_SHADER, "data/transparency/hybrid_visibilityktab.comp"));
 
-    m_colorProgram = new Program;
+	m_colorProgram = new glow::Program;
     m_colorProgram->attach(vertexShader);
     m_colorProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_color.frag"));
+	if (geometryShader != nullptr) m_colorProgram->attach(geometryShader);
 
-    m_depthBuffer = new RenderBufferObject;
+	m_depthBuffer = new glow::RenderBufferObject;
     m_opaqueBuffer = createColorTex();
     m_coreBuffer = createColorTex();
     m_accumulationBuffer = createColorTex();
     m_colorBuffer = createColorTex();
-    m_depthKTab = new Buffer(GL_SHADER_STORAGE_BUFFER);
-    m_visibilityKTab = new Buffer(GL_SHADER_STORAGE_BUFFER);
-    m_depthComplexityBuffer = new Buffer(GL_SHADER_STORAGE_BUFFER);
+	m_depthKTab = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
+	m_visibilityKTab = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
+	m_depthComplexityBuffer = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
 
-    m_prepassFbo = new FrameBufferObject;
+	m_prepassFbo = new glow::FrameBufferObject;
     m_prepassFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
     m_prepassFbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
 
-    m_colorFbo = new FrameBufferObject;
+	m_colorFbo = new glow::FrameBufferObject;
     m_colorFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_coreBuffer.get());
     m_colorFbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_accumulationBuffer.get());
     m_colorFbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
@@ -95,7 +96,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_prepassFbo->setDrawBuffer(GL_NONE);
     glDepthMask(GL_FALSE);
 
-    static Array<unsigned int> initialDepthKTab;
+	static glow::Array<unsigned int> initialDepthKTab;
     initialDepthKTab.resize(width * height * ABUFFER_SIZE, std::numeric_limits<unsigned int>::max());
     m_depthKTab->setData(initialDepthKTab, GL_DYNAMIC_DRAW);
     m_depthKTab->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
@@ -122,7 +123,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
 	//		acc_i = acc_(i-1) + src_i * factor
 	//	
 	// This pass computes "factor" for each fragment so that in the final path the colors of the k fragments can be combined order independent
-    static Array<float> initialVisibilityKTab;
+	static glow::Array<float> initialVisibilityKTab;
     initialVisibilityKTab.resize(width * height * VISIBILITY_KTAB_SIZE, 0.0f);
     m_visibilityKTab->setData(initialVisibilityKTab, GL_DYNAMIC_DRAW);
     m_visibilityKTab->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
@@ -143,7 +144,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     glBlendFunc(GL_ONE, GL_ONE);
     glDepthMask(GL_FALSE);
 
-    static Array<unsigned int> initialDepthComplexity;
+	static glow::Array<unsigned int> initialDepthComplexity;
     initialDepthComplexity.resize(width * height, 0);
     m_depthComplexityBuffer->setData(initialDepthComplexity, GL_DYNAMIC_DRAW);
     m_depthComplexityBuffer->bindBase(GL_SHADER_STORAGE_BUFFER, 2);
