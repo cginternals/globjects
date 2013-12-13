@@ -11,11 +11,16 @@ void main() {
 	if (vertexColor.a > 0.9999) {
 		discard;
 	}
+
+	// Store z and alpha into 32bit integer
 	uint packedDepth = pack(gl_FragCoord.z, vertexColor.a);
 
 	uint baseIndex = (int(gl_FragCoord.y) * screenSize.x + int(gl_FragCoord.x)) * ABUFFER_SIZE;
+
+	// do ascending insert sort (since gl_FragCoord.z occupies the most significant bits the entries will be sorted by depth first)
 	for (int i = 0; i < ABUFFER_SIZE; ++i) {
 		if (packedDepth < MAX_UINT) {
+			// replaces depthKTab[baseIndex + i] with packedDepth if packedDepth < depthKTab[baseIndex + i] 
 			packedDepth = max(atomicMin(depthKTab[baseIndex + i], packedDepth), packedDepth);
 		}
 	}

@@ -10,6 +10,7 @@ layout (pixel_center_integer) in ivec4 gl_FragCoord;
 
 layout (location = 0) out vec4 fragColor;
 
+// blends dst over src
 vec4 blend(vec4 dst, vec4 src) {
 	return dst + src * (1.0 - dst.a);
 }

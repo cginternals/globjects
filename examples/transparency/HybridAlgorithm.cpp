@@ -90,7 +90,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     drawFunction(m_opaqueProgram.get());
 
     //
-    // render translucent geometry into depth k-TAB
+    // render translucent geometry into depth k-TAB (store depth and alpha for the first (minimum depth) k fragments)
     //
     m_prepassFbo->setDrawBuffer(GL_NONE);
     glDepthMask(GL_FALSE);
@@ -114,8 +114,14 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
     //
-    // compute visibility k-TAB
-    //
+    // compute visibility k-TAB: The alpha visibility for each of the first k fragments.
+	// The alpha blended color for the k front most fragments of a single pixel is calculated by the following equation:
+	//	acc_0 = src_0 (src_i is the i-th k-Tab entry of the pixel)
+	//	for i = 1 to k: 
+	//		factor = 1.0 - acc_(i-1).a
+	//		acc_i = acc_(i-1) + src_i * factor
+	//	
+	// This pass computes "factor" for each fragment so that in the final path the colors of the k fragments can be combined order independent
     static Array<float> initialVisibilityKTab;
     initialVisibilityKTab.resize(width * height * VISIBILITY_KTAB_SIZE, 0.0f);
     m_visibilityKTab->setData(initialVisibilityKTab, GL_DYNAMIC_DRAW);

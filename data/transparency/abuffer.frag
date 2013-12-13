@@ -15,12 +15,17 @@ layout(location = 0) out vec4 opaqueFragColorZ;
 
 void main() {
 	if (vertexColor.a < 0.9999) { // damned floats...
+
+		// Increment size counter for pixel
 		int size = atomicAdd(headList[gl_FragCoord.y * screenSize.x + gl_FragCoord.x].size, 1) + 1;
 		if (size > ABUFFER_SIZE) {
 			discard;
 		}
 
+		// Get index of abuffer entry (current value of counter) and increment global counter
 		int index = int(atomicCounterIncrement(counter));
+
+		// Read the last abuffer index from the headlist and replace with current index
 		int previousHead = atomicExchange(headList[gl_FragCoord.y * screenSize.x + gl_FragCoord.x].startIndex, index);
 
 		list[index].next = previousHead;

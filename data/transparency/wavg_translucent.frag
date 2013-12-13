@@ -1,7 +1,7 @@
 #version 430
 
 layout(std430, binding = 0) buffer DepthComplexity {
-	uint n[];
+	uint n[]; // Stores the number of transcluent fragments per pixel
 };
 
 uniform ivec2 screenSize;
