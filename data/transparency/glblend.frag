@@ -1,10 +1,10 @@
 #version 140
 
 in vec3 normal;
-uniform vec4 color;
+in vec4 vertex_color;
 
 out vec4 fragColor;
 
 void main() {
-	fragColor = color;
+	fragColor = vertex_color;
 }

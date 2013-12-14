@@ -5,15 +5,15 @@ layout(early_fragment_tests) in;
 
 #include </transparency/hybrid.glsl>
 
-in vec4 vertexColor;
+in vec4 vertex_color;
 
 void main() {
-	if (vertexColor.a > 0.9999) {
+	if (vertex_color.a > 0.9999) {
 		discard;
 	}
 
 	// Store z and alpha into 32bit integer
-	uint packedDepth = pack(gl_FragCoord.z, vertexColor.a);
+	uint packedDepth = pack(gl_FragCoord.z, vertex_color.a);
 
 	uint baseIndex = (int(gl_FragCoord.y) * screenSize.x + int(gl_FragCoord.x)) * ABUFFER_SIZE;
 

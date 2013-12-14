@@ -10,12 +10,12 @@ layout (location = 1) in vec3 a_normal;
 
 out vec3 normal;
 out float z;
-out vec4 vertexColor;
+out vec4 vertex_color;
 
 void main() {
 	normal = normalmatrix * a_normal;
 	vec4 pos = viewprojectionmatrix * modelmatrix * vec4(a_vertex, 1.0);
 	gl_Position = pos;
 	z = pos.z;
-	vertexColor = color;
+	vertex_color = color;
 }

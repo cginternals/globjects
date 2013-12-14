@@ -12,7 +12,7 @@ namespace glowutils {
 
 void GlBlendAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
 	m_program = new glow::Program();
-    m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/glblend.frag"));
+	m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath + "glblend.frag"));
     m_program->attach(vertexShader);
 	if (geometryShader != nullptr) m_program->attach(geometryShader);
 

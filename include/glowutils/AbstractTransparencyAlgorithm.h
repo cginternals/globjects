@@ -16,7 +16,8 @@ namespace glowutils {
 
 	class Camera;
 
-	class GLOWUTILS_API AbstractTransparencyAlgorithm {
+	// TODO: Implement destructor in subclasses
+	class GLOWUTILS_API AbstractTransparencyAlgorithm : public glow::Referenced {
 	public:
 		typedef std::function<void(glow::Program*)> DrawFunction;
 

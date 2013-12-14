@@ -23,24 +23,24 @@ const int VISIBILITY_KTAB_SIZE = ABUFFER_SIZE + 1;
 
 void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
     glow::NamedStrings::createNamedString("/transparency/hybrid_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
-	glow::NamedStrings::createNamedString("/transparency/hybrid.glsl", new glowutils::File("data/transparency/hybrid.glsl"));
+	glow::NamedStrings::createNamedString("/transparency/hybrid.glsl", new glowutils::File(transparencyShaderFilePath + "hybrid.glsl"));
 
 	m_opaqueProgram = new glow::Program;
     m_opaqueProgram->attach(vertexShader);
-    m_opaqueProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_opaque.frag"));
+	m_opaqueProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_opaque.frag"));
 	if (geometryShader != nullptr) m_opaqueProgram->attach(geometryShader);
 
 	m_depthKTabProgram = new glow::Program;
     m_depthKTabProgram->attach(vertexShader);
-    m_depthKTabProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_depthktab.frag"));
+	m_depthKTabProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_depthktab.frag"));
 	if (geometryShader != nullptr) m_depthKTabProgram->attach(geometryShader);
 
 	m_visibilityKTabProgram = new glow::Program;
-    m_visibilityKTabProgram->attach(glowutils::createShaderFromFile(GL_COMPUTE_SHADER, "data/transparency/hybrid_visibilityktab.comp"));
+	m_visibilityKTabProgram->attach(glowutils::createShaderFromFile(GL_COMPUTE_SHADER, transparencyShaderFilePath + "hybrid_visibilityktab.comp"));
 
 	m_colorProgram = new glow::Program;
     m_colorProgram->attach(vertexShader);
-    m_colorProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_color.frag"));
+	m_colorProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_color.frag"));
 	if (geometryShader != nullptr) m_colorProgram->attach(geometryShader);
 
 	m_depthBuffer = new glow::RenderBufferObject;
@@ -62,7 +62,7 @@ void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath,
     m_colorFbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
     m_colorFbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
 
-    m_compositionQuad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/hybrid_post.frag"));
+	m_compositionQuad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_post.frag"));
     m_compositionFbo = new glow::FrameBufferObject;
     m_compositionFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorBuffer.get());
     m_compositionFbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
