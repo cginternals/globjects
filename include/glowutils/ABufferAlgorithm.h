@@ -16,6 +16,13 @@ namespace glowutils {
 	class Camera;
 	class ScreenAlignedQuad;
 
+	/**
+		Implements the A-Buffer transparency algorithm.
+		Expected shader files:
+		abuffer.glsl			- defines functions used in different shaders
+		abuffer.frag			- stores the transcluent fragments per pixel in the A-Buffer
+		abuffer_post.frag		- combines the opaque and transcluent geometry by sorting and blending the a A-Buffer
+	*/
 	class GLOWUTILS_API ABufferAlgorithm : public AbstractTransparencyAlgorithm {
 	public:
 		virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) override;

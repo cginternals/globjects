@@ -16,6 +16,16 @@ namespace glowutils {
 	class Camera;
 	class ScreenAlignedQuad;
 
+	/**
+		Implements the hybrid transparency algorithm.
+		Expected shader files:
+		hybrid.glsl					- defines functions that are used in different shaders
+		hybrid_opaque.frag			- renders the opaque geometry
+		hybrid_depthktab.frag		- stores the alpha values of the k fragments next to the camera per pixel ordered by depth
+		hybrid_visibilityktab.comp	- computes the visibility of the k fragments stored for each pixel
+		hybrid_color.frag			- renders the transcluent geometry
+		hybrid_post.frag			- combines the transcluent and opaque geometry
+	*/
 	class GLOWUTILS_API HybridAlgorithm : public AbstractTransparencyAlgorithm {
 	public:
 		virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) override;

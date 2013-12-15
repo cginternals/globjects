@@ -17,6 +17,13 @@ namespace glowutils {
 	class Camera;
 	class ScreenAlignedQuad;
 
+	/**
+		Implements the weighted average transparency algorithm.
+		Expected shader files:
+			wavg_opaque.frag		- renders the opaque geometry
+			wavg_translucent.frag	- renders the transcluent geometry and counts the fragments per pixel
+			wavg_post.frag			- combines the opaque and transcluent geometry using weighted average
+	*/
 	class GLOWUTILS_API WeightedAverageAlgorithm : public AbstractTransparencyAlgorithm {
 	public:
 		virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) override;
