@@ -103,13 +103,13 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
     m_postFbo->bind();
     m_postFbo->clear(GL_COLOR_BUFFER_BIT);
 
-    m_opaqueBuffer->bind(GL_TEXTURE0);
+    m_opaqueBuffer->bindActive(GL_TEXTURE0);
 
     m_quad->program()->setUniform("screenSize", glm::ivec2(width, height));
     m_quad->program()->setUniform("opaqueBuffer", 0);
     m_quad->draw();
 
-    m_opaqueBuffer->unbind(GL_TEXTURE0);
+    m_opaqueBuffer->unbindActive(GL_TEXTURE0);
 
     m_postFbo->unbind();
 }

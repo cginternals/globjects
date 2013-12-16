@@ -168,9 +168,9 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_compositionFbo->bind();
     m_compositionFbo->clear(GL_COLOR_BUFFER_BIT);
 
-    m_opaqueBuffer->bind(GL_TEXTURE0);
-    m_coreBuffer->bind(GL_TEXTURE1);
-    m_accumulationBuffer->bind(GL_TEXTURE2);
+    m_opaqueBuffer->bindActive(GL_TEXTURE0);
+    m_coreBuffer->bindActive(GL_TEXTURE1);
+    m_accumulationBuffer->bindActive(GL_TEXTURE2);
 
     m_compositionQuad->program()->setUniform("screenSize", glm::ivec2(width, height));
     m_compositionQuad->program()->setUniform("opaqueBuffer", 0);
@@ -178,9 +178,9 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_compositionQuad->program()->setUniform("accumulationBuffer", 2);
     m_compositionQuad->draw();
 
-    m_opaqueBuffer->unbind(GL_TEXTURE0);
-    m_coreBuffer->unbind(GL_TEXTURE1);
-    m_accumulationBuffer->unbind(GL_TEXTURE2);
+    m_opaqueBuffer->unbindActive(GL_TEXTURE0);
+    m_coreBuffer->unbindActive(GL_TEXTURE1);
+    m_accumulationBuffer->unbindActive(GL_TEXTURE2);
 
     m_compositionFbo->unbind();
 }

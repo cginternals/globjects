@@ -13,7 +13,6 @@
 
 #include <glow/Error.h>
 #include <glow/Uniform.h>
-#include <glow/ShaderFile.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
