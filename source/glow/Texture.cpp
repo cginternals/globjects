@@ -108,6 +108,14 @@ GLint Texture::getLevelParameter(GLint level, GLenum pname)
 	return value;
 }
 
+void Texture::image1D(GLint level, GLint internalFormat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid* data)
+{
+    bind();
+
+    glTexImage1D(m_target, level, internalFormat, width, border, format, type, data);
+    CheckGLError();
+}
+
 void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data)
 {
 	bind();
@@ -124,6 +132,13 @@ void Texture::image3D(GLint level, GLint internalFormat, GLsizei width, GLsizei 
     CheckGLError();
 }
 
+void Texture::storage1D(GLsizei levels, GLenum internalFormat, GLsizei width)
+{
+    bind();
+
+    glTexStorage1D(m_target, levels, internalFormat, width);
+    CheckGLError();
+}
 
 void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height)
 {
@@ -133,6 +148,14 @@ void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GL
 	CheckGLError();
 }
 
+
+void Texture::storage3D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth)
+{
+    bind();
+
+    glTexStorage3D(m_target, levels, internalFormat, width, height, depth);
+    CheckGLError();
+}
 
 void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)
 {

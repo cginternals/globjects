@@ -40,6 +40,15 @@ public:
 
 	GLenum target() const;
 
+    void image1D(
+        GLint level
+    ,   GLint internalFormat
+    ,   GLsizei width
+    ,   GLint border
+    ,   GLenum format
+    ,   GLenum type
+    ,   const GLvoid * data);
+
 	void image2D(
         GLint level
     ,   GLint internalFormat
@@ -61,11 +70,23 @@ public:
     ,   GLenum type
     ,   const GLvoid * data);
 
+    void storage1D(
+        GLsizei levels
+    ,   GLenum internalFormat
+    ,   GLsizei width);
+
     void storage2D(
         GLsizei levels
     ,   GLenum internalFormat
     ,   GLsizei width
     ,   GLsizei height);
+
+    void storage3D(
+        GLsizei levels
+    ,   GLenum internalFormat
+    ,   GLsizei width
+    ,   GLsizei height
+    ,   GLsizei depth);
 
 	void bindImageTexture(
         GLuint unit
