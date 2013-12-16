@@ -108,7 +108,15 @@ GLint Texture::getLevelParameter(GLint level, GLenum pname)
 	return value;
 }
 
-void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data)
+void Texture::image1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid* data)
+{
+    bind();
+
+    glTexImage1D(m_target, level, internalFormat, width, border, format, type, data);
+    CheckGLError();
+}
+
+void Texture::image2D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data)
 {
 	bind();
 
@@ -116,7 +124,12 @@ void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei 
 	CheckGLError();
 }
 
-void Texture::image3D(GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid* data)
+void Texture::image2D(GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLenum format, GLenum type, const GLvoid* data)
+{
+    image2D(level, internalFormat, size.x, size.y, border, format, type, data);
+}
+
+void Texture::image3D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid* data)
 {
     bind();
 
@@ -124,6 +137,44 @@ void Texture::image3D(GLint level, GLint internalFormat, GLsizei width, GLsizei 
     CheckGLError();
 }
 
+void Texture::image3D(GLint level, GLenum internalFormat, const glm::ivec3 & size, GLint border, GLenum format, GLenum type, const GLvoid* data)
+{
+    image3D(level, internalFormat, size.x, size.y, size.z, border, format, type, data);
+}
+
+void Texture::image2DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLboolean fixedSamplesLocations)
+{
+    bind();
+
+    glTexImage2DMultisample(m_target, samples, internalFormat, width, height, fixedSamplesLocations);
+    CheckGLError();
+}
+
+void Texture::image2DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec2 & size, GLboolean fixedSamplesLocations)
+{
+    image2DMultisample(samples, internalFormat, size.x, size.y, fixedSamplesLocations);
+}
+
+void Texture::image3DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedSamplesLocations)
+{
+    bind();
+
+    glTexImage3DMultisample(m_target, samples, internalFormat, width, height, depth, fixedSamplesLocations);
+    CheckGLError();
+}
+
+void Texture::image3DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec3 & size, GLboolean fixedSamplesLocations)
+{
+    image3DMultisample(samples, internalFormat, size.x, size.y, size.z, fixedSamplesLocations);
+}
+
+void Texture::storage1D(GLsizei levels, GLenum internalFormat, GLsizei width)
+{
+    bind();
+
+    glTexStorage1D(m_target, levels, internalFormat, width);
+    CheckGLError();
+}
 
 void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height)
 {
@@ -133,6 +184,40 @@ void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GL
 	CheckGLError();
 }
 
+void Texture::storage2D(GLsizei levels, GLenum internalFormat, const glm::ivec2 & size)
+{
+    storage2D(levels, internalFormat, size.x, size.y);
+}
+
+void Texture::storage3D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth)
+{
+    bind();
+
+    glTexStorage3D(m_target, levels, internalFormat, width, height, depth);
+    CheckGLError();
+}
+
+void Texture::storage3D(GLsizei levels, GLenum internalFormat, const glm::ivec3 & size)
+{
+    storage3D(levels, internalFormat, size.x, size.y, size.z);
+}
+
+void Texture::clearImage(GLint level, GLenum format, GLenum type, const void * data)
+{
+    glClearTexImage(m_id, level, format, type, data);
+    CheckGLError();
+}
+
+void Texture::clearSubImage(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * data)
+{
+    glClearTexSubImage(m_id, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
+    CheckGLError();
+}
+
+void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const void * data)
+{
+    clearSubImage(level, offset.x, offset.y, offset.z, size.x, size.y, size.z, format, type, data);
+}
 
 void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)
 {

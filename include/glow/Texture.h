@@ -4,6 +4,8 @@
 #include <glow/Object.h>
 #include <glow/TextureHandle.h>
 
+#include <glm/glm.hpp>
+
 namespace glow 
 {
 
@@ -40,9 +42,18 @@ public:
 
 	GLenum target() const;
 
+    void image1D(
+        GLint level
+    ,   GLenum internalFormat
+    ,   GLsizei width
+    ,   GLint border
+    ,   GLenum format
+    ,   GLenum type
+    ,   const GLvoid * data);
+
 	void image2D(
         GLint level
-    ,   GLint internalFormat
+    ,   GLenum internalFormat
     ,   GLsizei width
     ,   GLsizei height
     ,   GLint border
@@ -50,9 +61,18 @@ public:
     ,   GLenum type
     ,   const GLvoid * data);
 
-	void image3D(
+    void image2D(
         GLint level
-    ,   GLint internalFormat
+    ,   GLenum internalFormat
+    ,   const glm::ivec2 & size
+    ,   GLint border
+    ,   GLenum format
+    ,   GLenum type
+    ,   const GLvoid * data);
+
+    void image3D(
+        GLint level
+    ,   GLenum internalFormat
     ,   GLsizei width
     ,   GLsizei height
     ,   GLsizei depth
@@ -61,11 +81,95 @@ public:
     ,   GLenum type
     ,   const GLvoid * data);
 
+	void image3D(
+        GLint level
+    ,   GLenum internalFormat
+    ,   const glm::ivec3 & size
+    ,   GLint border
+    ,   GLenum format
+    ,   GLenum type
+    ,   const GLvoid * data);
+
+    void image2DMultisample(
+        GLsizei samples
+    ,   GLenum internalFormat
+    ,   GLsizei width
+    ,   GLsizei height
+    ,   GLboolean fixedSamplesLocations);
+
+    void image2DMultisample(
+        GLsizei samples
+    ,   GLenum internalFormat
+    ,   const glm::ivec2 & size
+    ,   GLboolean fixedSamplesLocations);
+
+    void image3DMultisample(
+        GLsizei samples
+    ,   GLenum internalFormat
+    ,   GLsizei width
+    ,   GLsizei height
+    ,   GLsizei depth
+    ,   GLboolean fixedSamplesLocations);
+
+    void image3DMultisample(
+        GLsizei samples
+    ,   GLenum internalFormat
+    ,   const glm::ivec3 & size
+    ,   GLboolean fixedSamplesLocations);
+
+    void storage1D(
+        GLsizei levels
+    ,   GLenum internalFormat
+    ,   GLsizei width);
+
     void storage2D(
         GLsizei levels
     ,   GLenum internalFormat
     ,   GLsizei width
     ,   GLsizei height);
+
+    void storage2D(
+        GLsizei levels
+    ,   GLenum internalFormat
+    ,   const glm::ivec2 & size);
+
+    void storage3D(
+        GLsizei levels
+    ,   GLenum internalFormat
+    ,   GLsizei width
+    ,   GLsizei height
+    ,   GLsizei depth);
+
+    void storage3D(
+        GLsizei levels
+    ,   GLenum internalFormat
+    ,   const glm::ivec3 & size);
+
+    void clearImage(
+        GLint level
+    ,   GLenum format
+    ,   GLenum type
+    ,   const void * data);
+
+    void clearSubImage(
+        GLint level
+    ,   GLint xOffset
+    ,   GLint yOffset
+    ,   GLint zOffset
+    ,   GLsizei width
+    ,   GLsizei height
+    ,   GLsizei depth
+    ,   GLenum format
+    ,   GLenum type
+    ,   const void * data);
+
+    void clearSubImage(
+        GLint level
+    ,   const glm::ivec3 & offset
+    ,   const glm::ivec3 & size
+    ,   GLenum format
+    ,   GLenum type
+    ,   const void * data);
 
 	void bindImageTexture(
         GLuint unit
