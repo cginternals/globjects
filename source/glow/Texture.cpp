@@ -133,6 +133,7 @@ void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GL
 	CheckGLError();
 }
 
+
 void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)
 {
 	bind();
