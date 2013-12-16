@@ -23,6 +23,7 @@ release_build
 /_start-cmake-gui.bat
 /bin
 /lib
+/install
 
 #qt cache
 CMakeLists.txt.user

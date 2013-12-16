@@ -20,7 +20,7 @@ The following dev-libraries and programs need to be provided for correct CMake c
 * CMake (>=2.8.9, better 2.8.12): http://www.cmake.org/
 * OpenGL Extension Wrangler (GLEW, >=1.10.0): http://glew.sourceforge.net/, https://github.com/nigels-com/glew
 * OpenGL Mathematics (GLM, >=0.9.3): http://glm.g-truc.net/
-* Window and Context creation (GLFW, >=3.0.3): http://www.glfw.org/ (only needed for the optional glowwindow module)
+* Window and Context creation (GLFW 3.0.3): http://www.glfw.org/ (needed for the now mandatory glowwindow module)
 
 
 ## Development Notes
