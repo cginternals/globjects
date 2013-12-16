@@ -52,12 +52,9 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
     m_renderFbo->clearBuffer(GL_COLOR, 1, glm::vec4(0.0f)); // clear accumulation buffer with 0
     m_renderFbo->clearBufferfv(GL_DEPTH, 0, &clearDepth);
 
-    glViewport(0, 0, width, height);
-    camera->setViewport(width, height);
-
     // reset depth complexity
-    std::vector<unsigned int> initialDepthComplexity(width * height, 0);
-    m_depthComplexityBuffer->setData(width * height * sizeof(unsigned int), initialDepthComplexity.data(), GL_DYNAMIC_DRAW);
+    static unsigned int initialDepthComplexity = 0;
+    m_depthComplexityBuffer->clearData(GL_R32UI, GL_RED, GL_UNSIGNED_INT, &initialDepthComplexity);
     m_depthComplexityBuffer->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 
     glEnable(GL_DEPTH_TEST);
@@ -112,6 +109,7 @@ void WeightedAverageAlgorithm::resize(int width, int height) {
     m_accumulationBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
     m_colorBuffer->image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     m_depthBuffer->storage(GL_DEPTH_COMPONENT, width, height);
+    m_depthComplexityBuffer->setData(width * height * sizeof(unsigned int), nullptr, GL_DYNAMIC_DRAW);
 }
 
 } // namespace glow

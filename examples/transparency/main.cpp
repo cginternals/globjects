@@ -56,9 +56,9 @@ public:
 		glow::Shader* vertexShader = glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/transparency.vert");
 
 		m_algos.push_back(new glowutils::GlBlendAlgorithm);
-		m_algos.push_back(new glowutils::ABufferAlgorithm);
-		m_algos.push_back(new glowutils::WeightedAverageAlgorithm);
-		m_algos.push_back(new glowutils::HybridAlgorithm);
+        m_algos.push_back(new glowutils::ABufferAlgorithm);
+        m_algos.push_back(new glowutils::WeightedAverageAlgorithm);
+        m_algos.push_back(new glowutils::HybridAlgorithm);
         for (auto& algo : m_algos) {
 			algo->initialize("data/transparency/", vertexShader, nullptr);
         }
@@ -105,8 +105,6 @@ public:
         }
 
         // STAGE2 - Draw the texture of each algorithm& onto the screen aligned quad
-		glViewport(0, 0, width, height);
-		
 		glDisable(GL_DEPTH_TEST);
 		CheckGLError();
 
@@ -131,9 +129,10 @@ public:
 		CheckGLError();
 	}
 
-	void resizeEvent(glowwindow::ResizeEvent & event) override {
+    void resizeEvent(glowwindow::ResizeEvent & event) override {
 		int width = event.width();
 		int height = event.height();
+        glViewport(0, 0, width, height);
         for (auto& algo : m_algos) {
             algo->resize(width, height);
         }		
@@ -235,7 +234,7 @@ int main(int argc, char* argv[]) {
 	glowwindow::Window window;
 
 	if (!window.create(format, "Transparency")) return 1;
-	window.context()->setSwapInterval(glowwindow::Context::VerticalSyncronization);
+    window.context()->setSwapInterval(glowwindow::Context::NoVerticalSyncronization);
 	window.setEventHandler(new EventHandler());
 	window.show();
 	return glowwindow::MainLoop::run();
