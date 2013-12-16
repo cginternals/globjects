@@ -43,6 +43,7 @@ set(api_includes
     ${header_path}/FlightNavigation.h
     ${header_path}/Icosahedron.h
     ${header_path}/MathMacros.h
+    ${header_path}/NamedStringHelper.h
     ${header_path}/NavigationMath.h
     ${header_path}/Plane3.h
     ${header_path}/RawFile.h
@@ -76,6 +77,7 @@ set(sources
     ${source_path}/FileRegistry.cpp
     ${source_path}/FlightNavigation.cpp
     ${source_path}/Icosahedron.cpp
+    ${source_path}/NamedStringHelper.cpp
     ${source_path}/NavigationMath.cpp
     ${source_path}/Plane3.cpp
     ${source_path}/ScreenAlignedQuad.cpp
