@@ -148,13 +148,29 @@ void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GL
 	CheckGLError();
 }
 
-
 void Texture::storage3D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth)
 {
     bind();
 
     glTexStorage3D(m_target, levels, internalFormat, width, height, depth);
     CheckGLError();
+}
+
+void Texture::clearImage(GLint level, GLenum format, GLenum type, const void * data)
+{
+    glClearTexImage(m_id, level, format, type, data);
+    CheckGLError();
+}
+
+void Texture::clearSubImage(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * data)
+{
+    glClearTexSubImage(m_id, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
+    CheckGLError();
+}
+
+void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const void * data)
+{
+    clearSubImage(level, offset.x, offset.y, offset.z, size.x, size.y, size.z, format, type, data);
 }
 
 void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)

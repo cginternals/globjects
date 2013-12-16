@@ -4,6 +4,8 @@
 #include <glow/Object.h>
 #include <glow/TextureHandle.h>
 
+#include <glm/glm.hpp>
+
 namespace glow 
 {
 
@@ -87,6 +89,32 @@ public:
     ,   GLsizei width
     ,   GLsizei height
     ,   GLsizei depth);
+
+    void clearImage(
+        GLint level
+    ,   GLenum format
+    ,   GLenum type
+    ,   const void * data);
+
+    void clearSubImage(
+        GLint level
+    ,   GLint xOffset
+    ,   GLint yOffset
+    ,   GLint zOffset
+    ,   GLsizei width
+    ,   GLsizei height
+    ,   GLsizei depth
+    ,   GLenum format
+    ,   GLenum type
+    ,   const void * data);
+
+    void clearSubImage(
+        GLint level
+    ,   const glm::ivec3 & offset
+    ,   const glm::ivec3 & size
+    ,   GLenum format
+    ,   GLenum type
+    ,   const void * data);
 
 	void bindImageTexture(
         GLuint unit
