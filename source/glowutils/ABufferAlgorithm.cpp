@@ -74,15 +74,13 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
     m_renderFbo->clear(GL_DEPTH_BUFFER_BIT);
     m_renderFbo->clearBuffer(GL_COLOR, 0, glm::vec4(1.0f, 1.0f, 1.0f, std::numeric_limits<float>::max()));
 
-    glViewport(0, 0, width, height);
-    camera->setViewport(width, height);
-
     // reset head buffer & counter
-    static std::vector<Head> initialHead;
-    initialHead.resize(width * height);
-    m_headBuffer->setData(width * height * sizeof(Head), &initialHead[0], GL_DYNAMIC_DRAW);
+    static glm::ivec2 initialHead(-1, 0);
     static int initialCounter = 0;
-    m_counter->setData(1 * sizeof(int), &initialCounter, GL_DYNAMIC_DRAW);
+    m_headBuffer->setData(width * height * sizeof(Head), nullptr, GL_DYNAMIC_DRAW);
+    m_headBuffer->clearData(GL_RG32I, GL_RG, GL_INT, &initialHead);
+    m_counter->setData(1 * sizeof(int), nullptr, GL_DYNAMIC_DRAW);
+    m_counter->clearData(GL_R32I, GL_RED, GL_UNSIGNED_INT, &initialCounter);
 
     // bind buffers
     m_linkedListBuffer->bindBase(GL_SHADER_STORAGE_BUFFER, 0);

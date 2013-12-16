@@ -69,9 +69,6 @@ void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath,
 }
 
 void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) {
-    glViewport(0, 0, width, height);
-    camera->setViewport(width, height);
-
     m_prepassFbo->bind();
 
     //
@@ -96,9 +93,8 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_prepassFbo->setDrawBuffer(GL_NONE);
     glDepthMask(GL_FALSE);
 
-	static glow::Array<unsigned int> initialDepthKTab;
-    initialDepthKTab.resize(width * height * ABUFFER_SIZE, std::numeric_limits<unsigned int>::max());
-    m_depthKTab->setData(initialDepthKTab, GL_DYNAMIC_DRAW);
+    static unsigned int initialDepthKTab = std::numeric_limits<unsigned int>::max();
+    m_depthKTab->clearData(GL_R32UI, GL_RED, GL_UNSIGNED_INT, &initialDepthKTab);
     m_depthKTab->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 
     m_depthKTabProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
@@ -122,10 +118,9 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
 	//		factor = 1.0 - acc_(i-1).a
 	//		acc_i = acc_(i-1) + src_i * factor
 	//	
-	// This pass computes "factor" for each fragment so that in the final path the colors of the k fragments can be combined order independent
-	static glow::Array<float> initialVisibilityKTab;
-    initialVisibilityKTab.resize(width * height * VISIBILITY_KTAB_SIZE, 0.0f);
-    m_visibilityKTab->setData(initialVisibilityKTab, GL_DYNAMIC_DRAW);
+    // This pass computes "factor" for each fragment so that in the final path the colors of the k fragments can be combined order independent
+    static float initialVisibilityKTab = 0.0f;
+    m_visibilityKTab->clearData(GL_R32F, GL_RED, GL_FLOAT, &initialVisibilityKTab);
     m_visibilityKTab->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 
     m_visibilityKTabProgram->setUniform("dimension", width * height);
@@ -144,9 +139,8 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     glBlendFunc(GL_ONE, GL_ONE);
     glDepthMask(GL_FALSE);
 
-	static glow::Array<unsigned int> initialDepthComplexity;
-    initialDepthComplexity.resize(width * height, 0);
-    m_depthComplexityBuffer->setData(initialDepthComplexity, GL_DYNAMIC_DRAW);
+    static unsigned int initialDepthComplexity = 0;
+    m_depthComplexityBuffer->clearData(GL_R32UI, GL_RED, GL_UNSIGNED_INT, &initialDepthComplexity);
     m_depthComplexityBuffer->bindBase(GL_SHADER_STORAGE_BUFFER, 2);
 
     m_colorProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
@@ -191,6 +185,9 @@ void HybridAlgorithm::resize(int width, int height) {
     m_colorBuffer->image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     m_accumulationBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
     m_coreBuffer->image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    m_depthKTab->setData(width * height * ABUFFER_SIZE * sizeof(unsigned int), nullptr, GL_DYNAMIC_DRAW);
+    m_visibilityKTab->setData(width * height * VISIBILITY_KTAB_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+    m_depthComplexityBuffer->setData(width * height * sizeof(unsigned int), nullptr, GL_DYNAMIC_DRAW);
 }
 
 } // namespace glow
