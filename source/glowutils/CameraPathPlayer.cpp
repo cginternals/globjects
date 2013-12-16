@@ -96,15 +96,16 @@ float bernstein(int n, float t)
     switch (n)
     {
         case 0:
-            return std::pow(1.0-t, 3.0);
+            return std::pow(1.0f-t, 3.0f);
         case 1:
-            return 3*std::pow(1.0-t, 2.0)*t;
+            return 3*std::pow(1.0f-t, 2.0f)*t;
         case 2:
-            return 3*(1.0-t)*std::pow(t, 2.0);
+            return 3*(1.0f-t)*std::pow(t, 2.0f);
         case 3:
-            return std::pow(t, 3.0);
+            return std::pow(t, 3.0f);
         default:
             assert(false);
+			return 0.0f;
     }
 }
 
@@ -191,7 +192,7 @@ void CameraPathPlayer::prepareControlPoints()
         vec3 p1 = section.start->eye;
         vec3 p2 = section.end->eye;
 
-        float f = glm::length(p2-p1)/2.7;
+        float f = glm::length(p2-p1)/2.7f;
 
         section.c1 = p1 + d1 * f;
         section.c2 = p2 - d2 * f;

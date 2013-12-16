@@ -46,6 +46,9 @@ private:
 	
 public:
 	void initialize(glowwindow::Window & window) override {
+
+		window.addTimer(0, 0);
+
 		glow::DebugMessageOutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -136,11 +139,6 @@ public:
         }		
 	}
 
-	virtual void idle(glowwindow::Window & window) override
-	{
-        window.repaint();
-	}
-
 	virtual const float depthAt(const glm::ivec2 & windowCoordinates) override
 	{
 		return glowutils::AbstractCoordinateProvider::depthAt(*m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
@@ -168,13 +166,11 @@ public:
 		case GLFW_MOUSE_BUTTON_LEFT:
 			m_nav.panBegin(event.pos());
 			event.accept();
-			event.window()->repaint();
 			break;
 
 		case GLFW_MOUSE_BUTTON_RIGHT:
 			m_nav.rotateBegin(event.pos());
 			event.accept();
-			event.window()->repaint();
 			break;
 		}
 	}
@@ -186,13 +182,11 @@ public:
 		case glowutils::WorldInHandNavigation::PanInteraction:
 			m_nav.panProcess(event.pos());
 			event.accept();
-			event.window()->repaint();
 			break;
 
 		case glowutils::WorldInHandNavigation::RotateInteraction:
 			m_nav.rotateProcess(event.pos());
 			event.accept();
-			event.window()->repaint();
 		}
 	}
 
@@ -203,13 +197,11 @@ public:
 		case GLFW_MOUSE_BUTTON_LEFT:
 			m_nav.panEnd();
 			event.accept();
-			event.window()->repaint();
 			break;
 
 		case GLFW_MOUSE_BUTTON_RIGHT:
 			m_nav.rotateEnd();
 			event.accept();
-			event.window()->repaint();
 			break;
 		}
 	}
@@ -224,6 +216,11 @@ public:
 			glowutils::FileRegistry::instance().reloadAll();
 			break;
 		}
+	}
+
+	virtual void timerEvent(glowwindow::TimerEvent & event) override
+	{
+		event.window()->repaint();
 	}
 
 };
