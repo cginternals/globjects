@@ -51,6 +51,7 @@ public:
 	void bind();
 	void bind(GLenum target);
 	void unbind();
+    static void unbind(GLenum target);
 
 	void setParameter(GLenum pname, GLint param);
     int getAttachmentParameter(GLenum attachment, GLenum pname);

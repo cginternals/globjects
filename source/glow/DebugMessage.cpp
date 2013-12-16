@@ -57,7 +57,7 @@ std::string DebugMessage::toString() const
             << ", " << severityString(severity) << " severity"
             << " (" << sourceString(source) << ")"
             << std::endl
-            << "\t|-" << message;
+            << "\t" << message;
 
     return stream.str();
 }
