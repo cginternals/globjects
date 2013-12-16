@@ -120,23 +120,36 @@ bool Query::resultAvailable() const
 	return get(GL_QUERY_RESULT_AVAILABLE) == GL_TRUE;
 }
 
-void Query::wait() const
+void Query::wait(const std::chrono::duration<int, std::nano>& timeout) const
 {
-	while (!resultAvailable());
+    if (timeout.count() >= 0)
+    {
+        std::chrono::high_resolution_clock::time_point start;
+
+        std::chrono::high_resolution_clock::time_point current;
+        while (!resultAvailable() && start + timeout > current)
+        {
+            current = std::chrono::high_resolution_clock::time_point();
+        }
+    }
+    else
+    {
+        while (!resultAvailable());
+    }
 }
 
-GLuint Query::waitAndGet(GLenum pname) const
+GLuint Query::waitAndGet(GLenum pname, const std::chrono::duration<int, std::nano>& timeout) const
 {
-	wait();
+    wait(timeout);
 	
 	return get(pname);
 }
 
-GLuint64 Query::waitAndGet64(GLenum pname) const
+GLuint64 Query::waitAndGet64(GLenum pname, const std::chrono::duration<int, std::nano>& timeout) const
 {
-	wait();
+    wait(timeout);
 	
-	return get64(pname);
+    return get64(pname);
 }
 
 void Query::counter(GLenum target)
