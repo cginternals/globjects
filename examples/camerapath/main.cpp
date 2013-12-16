@@ -187,7 +187,7 @@ public:
 
         if (usePath)
         {
-            angle+= d/std::chrono::duration_cast<std::chrono::duration<long double, std::nano>>(duration);
+			angle += static_cast<float>(d.count() / std::chrono::duration_cast<std::chrono::duration<long double, std::nano>>(duration).count());
 
             while (angle>1)
                 angle = 0;
