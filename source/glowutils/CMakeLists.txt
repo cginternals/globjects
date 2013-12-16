@@ -11,7 +11,9 @@ set(libs
 )
 
 # Definitions
-add_definitions("-DGLOWUTILS_EXPORTS")
+if (NOT OPTION_BUILD_STATIC)
+    add_definitions("-DGLOWUTILS_EXPORTS")
+endif()
 
 if (OPTION_ERRORS_AS_EXCEPTION)
 	add_definitions("-DGLOW_GL_ERROR_RAISE_EXCEPTION")
@@ -33,9 +35,12 @@ set(api_includes
     ${header_path}/CachedValue.h
     ${header_path}/CachedValue.hpp
     ${header_path}/Camera.h
+    ${header_path}/CameraPath.h
+    ${header_path}/CameraPathPlayer.h
     ${header_path}/CameraPathRecorder.h
     ${header_path}/File.h
     ${header_path}/FileRegistry.h
+    ${header_path}/FlightNavigation.h
     ${header_path}/Icosahedron.h
     ${header_path}/MathMacros.h
     ${header_path}/NavigationMath.h
@@ -64,9 +69,12 @@ set(sources
     ${source_path}/AxisAlignedBoundingBox.cpp
     ${source_path}/AxonometricLookAt.cpp
     ${source_path}/Camera.cpp
+    ${source_path}/CameraPath.cpp
+    ${source_path}/CameraPathPlayer.cpp
     ${source_path}/CameraPathRecorder.cpp
     ${source_path}/File.cpp
     ${source_path}/FileRegistry.cpp
+    ${source_path}/FlightNavigation.cpp
     ${source_path}/Icosahedron.cpp
     ${source_path}/NavigationMath.cpp
     ${source_path}/Plane3.cpp

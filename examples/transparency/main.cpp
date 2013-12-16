@@ -119,7 +119,7 @@ public:
         m_quad->program()->setUniform("bottomRight", 3);
 
         for (int i = 0; i < std::min(size_t(4), m_algos.size()); ++i) {
-            m_algos[i]->getOutput()->bind(GL_TEXTURE0 + i);
+            m_algos[i]->getOutput()->bindActive(GL_TEXTURE0 + i);
         }
 
 		m_quad->draw();

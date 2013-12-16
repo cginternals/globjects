@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+
 #include <glow/glow.h>
 
 #include <glow/Object.h>
@@ -80,10 +82,17 @@ public:
 	GLuint64 get64(GLenum pname = GL_QUERY_RESULT) const;
 	
 	bool resultAvailable() const;
-	void wait() const;
+    void wait() const;
+    void wait(const std::chrono::duration<int, std::nano>& timeout) const;
 	
-	GLuint waitAndGet(GLenum pname = GL_QUERY_RESULT) const;
-	GLuint64 waitAndGet64(GLenum pname = GL_QUERY_RESULT) const;
+    GLuint waitAndGet(GLenum pname = GL_QUERY_RESULT) const;
+    GLuint64 waitAndGet64(GLenum pname = GL_QUERY_RESULT) const;
+
+    GLuint waitAndGet(const std::chrono::duration<int, std::nano>& timeout, GLenum pname = GL_QUERY_RESULT) const;
+    GLuint64 waitAndGet64(const std::chrono::duration<int, std::nano>& timeout, GLenum pname = GL_QUERY_RESULT) const;
+
+    GLuint waitAndGet(GLenum pname, const std::chrono::duration<int, std::nano>& timeout) const;
+    GLuint64 waitAndGet64(GLenum pname, const std::chrono::duration<int, std::nano>& timeout) const;
 	
 	void counter(GLenum target = GL_TIMESTAMP);
 protected:

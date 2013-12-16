@@ -77,6 +77,12 @@ void FrameBufferObject::unbind()
 	CheckGLError();
 }
 
+void FrameBufferObject::unbind(GLenum target)
+{
+    glBindFramebuffer(target, 0);
+    CheckGLError();
+}
+
 void FrameBufferObject::setParameter(GLenum pname, GLint param)
 {
 	bind();

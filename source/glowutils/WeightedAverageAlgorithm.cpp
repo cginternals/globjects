@@ -90,8 +90,8 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
     glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
 
-    m_opaqueBuffer->bind(GL_TEXTURE0);
-    m_accumulationBuffer->bind(GL_TEXTURE1);
+    m_opaqueBuffer->bindActive(GL_TEXTURE0);
+    m_accumulationBuffer->bindActive(GL_TEXTURE1);
 
     m_quad->program()->setUniform("opaqueBuffer", 0);
     m_quad->program()->setUniform("accumulationBuffer", 1);
@@ -99,8 +99,8 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
 
     m_quad->draw();
 
-    m_opaqueBuffer->unbind(GL_TEXTURE0);
-    m_accumulationBuffer->unbind(GL_TEXTURE1);
+    m_opaqueBuffer->unbindActive(GL_TEXTURE0);
+    m_accumulationBuffer->unbindActive(GL_TEXTURE1);
 
     glEnable(GL_DEPTH_TEST);
 

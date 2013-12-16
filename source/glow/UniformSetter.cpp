@@ -238,13 +238,13 @@ void UniformSetter::set(const GLint location, const Array<glm::mat4x3> & value)
 
 void UniformSetter::set(const GLint location, const TextureHandle & value)
 {
-    glUniformHandleui64NV(location, value);
+    glUniformHandleui64ARB(location, value);
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<TextureHandle> & value)
 {
     const TextureHandle * handle = value.data();
-    glUniformHandleui64vNV(location, value.size(), handle);
+    glUniformHandleui64vARB(location, value.size(), handle);
     CheckGLError();
 }
 

@@ -151,13 +151,13 @@ public:
 
 		m_phong->setUniform("normal", 0);
 		m_phong->setUniform("geom", 1);
-        m_normal->bind(GL_TEXTURE0);
-        m_geom->bind(GL_TEXTURE1);
+        m_normal->bindActive(GL_TEXTURE0);
+        m_geom->bindActive(GL_TEXTURE1);
 
 		m_quad->draw();
 
-        m_geom->unbind(GL_TEXTURE1);
-        m_normal->unbind(GL_TEXTURE0);
+        m_geom->unbindActive(GL_TEXTURE1);
+        m_normal->unbindActive(GL_TEXTURE0);
 
 		glEnable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE);

@@ -37,20 +37,26 @@ void Texture::bind() const
 	CheckGLError();
 }
 
-void Texture::bind(const GLenum texture) const
-{
-    glActiveTexture(texture);
-    glBindTexture(m_target, m_id);
-    CheckGLError();
-}
-
 void Texture::unbind() const
 {
     glBindTexture(m_target, 0);
 	CheckGLError();
 }
 
-void Texture::unbind(const GLenum texture) const
+void Texture::unbind(const GLenum target)
+{
+    glBindTexture(target, 0);
+    CheckGLError();
+}
+
+void Texture::bindActive(const GLenum texture) const
+{
+    glActiveTexture(texture);
+    glBindTexture(m_target, m_id);
+    CheckGLError();
+}
+
+void Texture::unbindActive(const GLenum texture) const
 {
     glActiveTexture(texture);
     glBindTexture(m_target, 0);
@@ -161,14 +167,14 @@ void Texture::accept(ObjectVisitor& visitor)
 
 TextureHandle Texture::textureHandle() const
 {
-	TextureHandle result(glGetTextureHandleNV(m_id));
+    TextureHandle result = glGetTextureHandleARB(m_id);
 	CheckGLError();
 	return result;
 }
 
 GLboolean Texture::isResident() const
 {
-	bool result = glIsTextureHandleResidentNV(textureHandle()) ? true : false;
+    bool result = glIsTextureHandleResidentARB(textureHandle()) == GL_TRUE;
 	CheckGLError();
 
 	return result;
@@ -178,7 +184,7 @@ TextureHandle Texture::makeResident()
 {
     TextureHandle handle = textureHandle();
 
-	glMakeTextureHandleResidentNV(handle);
+    glMakeTextureHandleResidentARB(handle);
 	CheckGLError();
 
 	return handle;
@@ -186,7 +192,7 @@ TextureHandle Texture::makeResident()
 
 void Texture::makeNonResident()
 {
-	glMakeTextureHandleNonResidentNV(textureHandle());
+    glMakeTextureHandleNonResidentARB(textureHandle());
 	CheckGLError();
 }
 

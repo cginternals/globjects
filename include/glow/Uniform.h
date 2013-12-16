@@ -19,7 +19,7 @@ namespace glow
 	Simple usage of an Uniform:
 	\code{.cpp}
 
-		Uniform<float> * u(new Uniform<float>("u_ratio"));
+        Uniform<float> * u = new Uniform<float>("u_ratio");
 		u->set(1.618f);
 
 		program->addUniform(u);
@@ -44,9 +44,7 @@ public:
 
 protected:
 	virtual void setLocation(GLint location);
-	void set(
-		GLint location
-	,	const T & value);
+    void set(GLint location, const T & value);
 
 protected:
     T m_value; ///< The uniforms value, explictly required when relinking programs.
