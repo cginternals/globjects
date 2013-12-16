@@ -211,11 +211,12 @@ void Buffer::clearData(GLenum internalformat, GLenum format, GLenum type, const 
     CheckGLError();
 }
 
-void Buffer::clearData(GLenum target, GLenum internalformat, GLenum format, GLenum type, const void* data)
+void Buffer::clearSubData(GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void* data)
 {
-    m_target = target;
+    bind();
 
-    clearData(internalformat, format, type, data);
+    glClearBufferSubData(m_target, internalformat, offset, size, format, type, data);
+    CheckGLError();
 }
 
 } // namespace glow

@@ -109,9 +109,11 @@ public:
     ,   GLenum format
     ,   GLenum type
     ,   const void * data = nullptr);
-    void clearData(
-        GLenum target
-    ,   GLenum internalformat
+
+    void clearSubData(
+        GLenum internalformat
+    ,   GLintptr offset
+    ,   GLsizeiptr size
     ,   GLenum format
     ,   GLenum type
     ,   const void * data = nullptr);
