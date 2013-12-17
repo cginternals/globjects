@@ -145,6 +145,14 @@ public:
     ,   GLenum internalFormat
     ,   const glm::ivec3 & size);
 
+    void textureView(
+        GLuint originalTexture
+    ,   GLenum internalFormat
+    ,   GLuint minLevel
+    ,   GLuint numLevels
+    ,   GLuint minLayer
+    ,   GLuint numLayers);
+
     void clearImage(
         GLint level
     ,   GLenum format
