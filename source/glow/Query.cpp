@@ -127,12 +127,12 @@ void Query::wait() const
 
 void Query::wait(const std::chrono::duration<int, std::nano>& timeout) const
 {
-    std::chrono::high_resolution_clock::time_point start;
+    std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 
     std::chrono::high_resolution_clock::time_point current;
     while (!resultAvailable() && start + timeout > current)
     {
-        current = std::chrono::high_resolution_clock::time_point();
+        current = std::chrono::high_resolution_clock::now();
     }
 }
 
