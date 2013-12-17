@@ -294,6 +294,11 @@ void Program::dispatchComputeGroupSize(GLuint numGroupsX, GLuint numGroupsY, GLu
     CheckGLError();
 }
 
+void Program::dispatchComputeGroupSize(const glm::uvec3 & numGroups, const glm::uvec3 & groupSizes)
+{
+    dispatchComputeGroupSize(numGroups.x, numGroups.y, numGroups.z, groupSizes.x, groupSizes.y, groupSizes.z);
+}
+
 void Program::setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding)
 {
 	checkDirty();
