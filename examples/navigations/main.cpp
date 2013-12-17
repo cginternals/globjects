@@ -15,7 +15,6 @@
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/logging.h>
-#include <glow/AutoTimer.h>
 #include <glow/VertexArrayObject.h>
 
 #include <glowutils/AxisAlignedBoundingBox.h>
@@ -28,7 +27,8 @@
 #include <glowutils/FlightNavigation.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/File.h>
-#include <glow/Timer.h>
+#include <glowutils/Timer.h>
+#include <glowutils/AutoTimer.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -300,7 +300,7 @@ protected:
     glowutils::FlightNavigation m_flightNav;
     glm::ivec2 m_lastMousePos;
     bool m_flightEnabled;
-    glow::Timer m_timer;
+    glowutils::Timer m_timer;
 
     glowutils::AxisAlignedBoundingBox m_aabb;
 };

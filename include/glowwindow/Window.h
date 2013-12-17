@@ -13,7 +13,7 @@
 
 struct GLFWwindow;
 
-namespace glow
+namespace glowutils
 {
     class Timer;
 }
@@ -118,7 +118,7 @@ protected:
 
     std::string m_title;
 
-    glow::Timer * m_timer;
+    glowutils::Timer * m_timer;
 
     long double m_swapts;
     unsigned int m_swaps;

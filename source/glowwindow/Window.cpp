@@ -6,7 +6,8 @@
 #include <GLFW/glfw3.h>
 
 #include <glow/logging.h>
-#include <glow/Timer.h>
+
+#include <glowutils/Timer.h>
 
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
@@ -326,7 +327,7 @@ void Window::swap()
 {
     if (!m_timer)
     {
-        m_timer = new Timer(true, false);
+        m_timer = new glowutils::Timer(true, false);
         m_swapts = 0.0;
     }
 

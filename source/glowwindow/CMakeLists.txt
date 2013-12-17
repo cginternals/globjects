@@ -9,6 +9,7 @@ set(libs
     ${GLEW_LIBRARY}
     ${GLFW_LIBRARY}
     glow
+    glowutils
 )
 
 # Definitions

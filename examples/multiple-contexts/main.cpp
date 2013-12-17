@@ -4,7 +4,6 @@
 #include <GL/glew.h>
 
 #include <glow/Error.h>
-#include <glow/Screen.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>

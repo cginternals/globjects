@@ -5,10 +5,14 @@
 
 #include <glow/logging.h>
 
-#include <glow/Screen.h>
+#include <glowutils/Screen.h>
+
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 
-namespace glow
+namespace glowutils
 {
 
 const unsigned int Screen::getNumScreens()

@@ -2,31 +2,29 @@
 
 #include <chrono>
 
-namespace glow
+#include <glowutils/glowutils.h>
+
+namespace glowutils
 {
 
-class ChronoTimer
+class GLOWUTILS_API Timer
 {
 public:
-    ChronoTimer(
-        const bool start = true
-    ,   const bool autoUpdate = true);
-
-    virtual ~ChronoTimer();
+    Timer(bool start = true, bool autoUpdate = true);
+    virtual ~Timer();
 
     void setAutoUpdating(const bool autoUpdate);
-    const bool autoUpdating() const;
+    bool autoUpdating() const;
 
-    const bool paused() const;
+    bool paused() const;
 
     void update() const;
-    const long double elapsed() const;
+    long double elapsed() const;
 
     void start();
     void pause();
     void stop ();
     void reset();
-
 protected:
     bool m_paused;
     bool m_auto;
@@ -46,4 +44,4 @@ protected:
     mutable long double m_elapsed;
 };
 
-} // namespace glow
+} // namespace glowutils

@@ -15,12 +15,10 @@
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/logging.h>
-#include <glow/AutoTimer.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Texture.h>
-#include <glow/Timer.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/MathMacros.h>
@@ -30,6 +28,8 @@
 #include <glowutils/Camera.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/File.h>
+#include <glowutils/AutoTimer.h>
+#include <glowutils/Timer.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -203,7 +203,7 @@ protected:
     glow::ref_ptr<glow::RenderBufferObject> m_depth;
 
     glowutils::Camera m_camera;
-	glow::Timer m_time;
+    glowutils::Timer m_time;
 };
 
 

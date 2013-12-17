@@ -11,7 +11,6 @@
 
 #include <glow/Error.h>
 #include <glow/logging.h>
-#include <glow/Timer.h>
 #include <glow/Texture.h>
 #include <glow/Array.h>
 #include <glow/NamedStrings.h>
@@ -22,6 +21,7 @@
 #include <glowutils/MathMacros.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
+#include <glowutils/Timer.h>
 
 #include <glowwindow/Context.h>
 #include <glowwindow/ContextFormat.h>
@@ -326,7 +326,7 @@ protected:
     ParticleTechnique m_technique;
     std::map<ParticleTechnique, AbstractParticleTechnique *> m_techniques;
 
-    glow::Timer m_timer;
+    glowutils::Timer m_timer;
 
     glowutils::Camera * m_camera;
     int m_numParticles;

@@ -17,8 +17,6 @@
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/logging.h>
-#include <glow/AutoTimer.h>
-#include <glow/Timer.h>
 #include <glow/VertexArrayObject.h>
 
 #include <glowutils/File.h>
@@ -31,6 +29,8 @@
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/CameraPathRecorder.h>
 #include <glowutils/CameraPathPlayer.h>
+#include <glowutils/AutoTimer.h>
+#include <glowutils/Timer.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>

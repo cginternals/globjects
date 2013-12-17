@@ -2,21 +2,17 @@
 
 #include <map>
 
-#ifdef WIN32
-#include <windows.h>
-#endif
-
-#include <glow/glow.h>
+#include <glowutils/glowutils.h>
 
 
-namespace glow 
+namespace glowutils
 {
 
 /** \brief Static inquiries for primary screen properties.
 
     All information should be available at anytime.
  */
-class GLOW_API Screen
+class GLOWUTILS_API Screen
 {
 public:
 
@@ -57,4 +53,4 @@ private:
     ~Screen();
 };
 
-} // namespace glow
+} // namespace glowutils
