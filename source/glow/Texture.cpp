@@ -31,6 +31,16 @@ Texture::~Texture()
 	}
 }
 
+GLuint Texture::genTexture()
+{
+    GLuint id = 0;
+
+    glGenTextures(1, &id);
+    CheckGLError();
+
+    return id;
+}
+
 void Texture::bind() const
 {
     glBindTexture(m_target, m_id);
@@ -202,6 +212,12 @@ void Texture::storage3D(GLsizei levels, GLenum internalFormat, const glm::ivec3 
     storage3D(levels, internalFormat, size.x, size.y, size.z);
 }
 
+void Texture::textureView(GLuint originalTexture, GLenum internalFormat, GLuint minLevel, GLuint numLevels, GLuint minLayer, GLuint numLayers)
+{
+    glTextureView(m_id, m_target, originalTexture, internalFormat, minLevel, numLevels, minLayer, numLayers);
+    CheckGLError();
+}
+
 void Texture::clearImage(GLint level, GLenum format, GLenum type, const void * data)
 {
     glClearTexImage(m_id, level, format, type, data);
@@ -233,16 +249,6 @@ void Texture::generateMipmap()
 
     glGenerateMipmap(m_target);
 	CheckGLError();
-}
-
-GLuint Texture::genTexture()
-{
-	GLuint id = 0;
-
-	glGenTextures(1, &id);
-	CheckGLError();
-
-	return id;
 }
 
 void Texture::accept(ObjectVisitor& visitor)
