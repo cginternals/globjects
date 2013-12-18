@@ -19,8 +19,8 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/logging.h>
 #include <glow/TransformFeedback.h>
-#include <glow/Timer.h>
 
+#include <glowutils/Timer.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/File.h>
 
@@ -139,7 +139,7 @@ protected:
     glow::ref_ptr<glow::Buffer> m_vertexBuffer2;
     glow::ref_ptr<glow::Buffer> m_colorBuffer;
 
-    glow::Timer m_timer;
+    glowutils::Timer m_timer;
 };
 
 

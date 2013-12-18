@@ -7,7 +7,7 @@ namespace glow
 {
 
 AbstractUniform::AbstractUniform(const std::string & name)
-:	m_name(name)
+: m_name(name)
 {
 }
 

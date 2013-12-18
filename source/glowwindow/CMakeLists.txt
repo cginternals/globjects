@@ -3,19 +3,19 @@
 set(target glowwindow)
 message(STATUS "lib ${target}")
 
-include_directories(
-    ${GLFW_INCLUDE_DIR})
-
 # Libraries
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARY}
     ${GLFW_LIBRARY}
     glow
+    glowutils
 )
 
 # Definitions
-add_definitions("-DGLOWWINDOW_EXPORTS")
+if (NOT OPTION_BUILD_STATIC)
+    add_definitions("-DGLOWWINDOW_EXPORTS")
+endif()
 
 if (OPTION_ERRORS_AS_EXCEPTION)
 	add_definitions("-DGLOW_GL_ERROR_RAISE_EXCEPTION")
@@ -26,8 +26,6 @@ endif()
 # Sources
 set(header_path "${GLOW_SOURCE_DIR}/include/glowwindow")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
-
-find_package(GLFW REQUIRED)
 
 set(api_includes
     ${header_path}/Context.h

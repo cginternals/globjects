@@ -10,23 +10,16 @@
 namespace glow
 {
 
-class TemplateError 
-{
-	private:
-		TemplateError();
-};
-
-
 template<typename T>
 Uniform<T>::Uniform(const std::string & name)
-:	Uniform(name, T())
+: Uniform(name, T())
 {
 }
 
 template<typename T>
 Uniform<T>::Uniform(const std::string & name, const T & value)
-:	AbstractUniform(name)
-,	m_value(value)
+: AbstractUniform(name)
+, m_value(value)
 {
 }
 

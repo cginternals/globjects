@@ -122,21 +122,56 @@ bool Query::resultAvailable() const
 
 void Query::wait() const
 {
-	while (!resultAvailable());
+    while (!resultAvailable());
+}
+
+void Query::wait(const std::chrono::duration<int, std::nano>& timeout) const
+{
+    std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+
+    std::chrono::high_resolution_clock::time_point current;
+    while (!resultAvailable() && start + timeout > current)
+    {
+        current = std::chrono::high_resolution_clock::now();
+    }
 }
 
 GLuint Query::waitAndGet(GLenum pname) const
 {
-	wait();
+    wait();
 	
 	return get(pname);
 }
 
 GLuint64 Query::waitAndGet64(GLenum pname) const
 {
-	wait();
+    wait();
 	
-	return get64(pname);
+    return get64(pname);
+}
+
+GLuint Query::waitAndGet(const std::chrono::duration<int, std::nano>& timeout, GLenum pname) const
+{
+    return waitAndGet(pname, timeout);
+}
+
+GLuint64 Query::waitAndGet64(const std::chrono::duration<int, std::nano>& timeout, GLenum pname) const
+{
+    return waitAndGet64(pname, timeout);
+}
+
+GLuint Query::waitAndGet(GLenum pname, const std::chrono::duration<int, std::nano>& timeout) const
+{
+    wait(timeout);
+
+    return get(pname);
+}
+
+GLuint64 Query::waitAndGet64(GLenum pname, const std::chrono::duration<int, std::nano>& timeout) const
+{
+    wait(timeout);
+
+    return get64(pname);
 }
 
 void Query::counter(GLenum target)

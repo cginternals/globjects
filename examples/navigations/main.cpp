@@ -15,18 +15,19 @@
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/logging.h>
-#include <glow/AutoTimer.h>
 #include <glow/VertexArrayObject.h>
 
 #include <glowutils/AxisAlignedBoundingBox.h>
-#include <glowutils/MathMacros.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/Camera.h>
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
+#include <glowutils/FlightNavigation.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/File.h>
+#include <glowutils/Timer.h>
+#include <glowutils/AutoTimer.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -42,6 +43,7 @@ class EventHandler : public WindowEventHandler, glowutils::AbstractCoordinatePro
 public:
     EventHandler()
     : m_camera(vec3(0.f, 1.f, 4.0f))
+    , m_flightEnabled(false)
     {
         m_aabb.extend(vec3(-8.f, -1.f, -8.f));
         m_aabb.extend(vec3(8.f, 1.f, 8.f));
@@ -49,6 +51,10 @@ public:
         m_nav.setCamera(&m_camera);
         m_nav.setCoordinateProvider(this);
         m_nav.setBoundaryHint(m_aabb);
+
+        m_flightNav.setCamera(&m_camera);
+
+        m_timer.start();
     }
 
     virtual ~EventHandler()
@@ -78,7 +84,15 @@ public:
         m_camera.setZFar(1024.f);
 
         m_agrid->setCamera(&m_camera);
-    }    
+
+        window.addTimer(0, 0, false);
+    }
+    virtual void finalize(Window &) override
+    {
+        m_sphere = nullptr;
+        m_icosahedron = nullptr;
+        m_agrid = nullptr;
+    }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
@@ -100,40 +114,113 @@ public:
         m_agrid->draw();
     }
 
-    virtual void idle(Window & window) override
+    virtual void timerEvent(TimerEvent & event) override
     {
-        window.repaint();
+        float delta = static_cast<float>(m_timer.elapsed()/1000.0/1000.0/1000.0);
+        m_timer.reset();
+        m_flightNav.move(delta);
+
+        event.window()->repaint();
     }
 
-    virtual void keyPressEvent(KeyEvent & event)
+    virtual void keyPressEvent(KeyEvent & event) override
     {
-        const float d = 0.08f;
-
         switch (event.key())
         {
-        case GLFW_KEY_F5:
-            glowutils::FileRegistry::instance().reloadAll();
-            break;
+            case GLFW_KEY_F5:
+                glowutils::FileRegistry::instance().reloadAll();
+                break;
+            case GLFW_KEY_1:
+                m_flightEnabled = !m_flightEnabled;
+                if (!m_flightEnabled)
+                    m_flightNav.stopMovement(glowutils::FlightNavigation::All);
+                event.window()->setInputMode(GLFW_CURSOR, m_flightEnabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+                break;
+            case GLFW_KEY_SPACE:
+                m_camera.setCenter(vec3());
+                m_camera.setEye(vec3(0.f, 1.f, 4.0f));
+                m_camera.setUp(vec3(0,1,0));
+                break;
+            case GLFW_KEY_F11:
+                event.window()->toggleMode();
+                break;
+        }
+
+        if (!m_flightEnabled)
+            return;
+        switch (event.key())
+        {
+            case GLFW_KEY_W:
+            case GLFW_KEY_UP:
+                m_flightNav.startMovement(glowutils::FlightNavigation::Forward);
+                break;
+            case GLFW_KEY_A:
+            case GLFW_KEY_LEFT:
+                m_flightNav.startMovement(glowutils::FlightNavigation::Left);
+                break;
+            case GLFW_KEY_S:
+            case GLFW_KEY_DOWN:
+                m_flightNav.startMovement(glowutils::FlightNavigation::Backward);
+                break;
+            case GLFW_KEY_D:
+            case GLFW_KEY_RIGHT:
+                m_flightNav.startMovement(glowutils::FlightNavigation::Right);
+                break;
+        }
+    }
+    virtual void keyReleaseEvent(KeyEvent & event) override
+    {
+        if (!m_flightEnabled)
+            return;
+        switch (event.key())
+        {
+            case GLFW_KEY_W:
+            case GLFW_KEY_UP:
+                m_flightNav.stopMovement(glowutils::FlightNavigation::Forward);
+                break;
+            case GLFW_KEY_A:
+            case GLFW_KEY_LEFT:
+                m_flightNav.stopMovement(glowutils::FlightNavigation::Left);
+                break;
+            case GLFW_KEY_S:
+            case GLFW_KEY_DOWN:
+                m_flightNav.stopMovement(glowutils::FlightNavigation::Backward);
+                break;
+            case GLFW_KEY_D:
+            case GLFW_KEY_RIGHT:
+                m_flightNav.stopMovement(glowutils::FlightNavigation::Right);
+                break;
         }
     }
 
     virtual void mousePressEvent(MouseEvent & event) override
     {
+        if (m_flightEnabled)
+            return;
+
         switch (event.button())
         {
-        case GLFW_MOUSE_BUTTON_LEFT:
-            m_nav.panBegin(event.pos());
-            event.accept();
-            break;
+            case GLFW_MOUSE_BUTTON_LEFT:
+                m_nav.panBegin(event.pos());
+                event.accept();
+                break;
 
-        case GLFW_MOUSE_BUTTON_RIGHT:
-            m_nav.rotateBegin(event.pos());
-            event.accept();
-            break;
+            case GLFW_MOUSE_BUTTON_RIGHT:
+                m_nav.rotateBegin(event.pos());
+                event.accept();
+                break;
         }
     }
     virtual void mouseMoveEvent(MouseEvent & event) override
     {
+        if (m_flightEnabled)
+        {
+            m_flightNav.mouseMove((event.pos()-m_lastMousePos));
+            m_lastMousePos = event.pos();
+            event.accept();
+            return;
+        }
+
         switch (m_nav.mode())
         {
         case glowutils::WorldInHandNavigation::PanInteraction:
@@ -148,22 +235,28 @@ public:
     }
     virtual void mouseReleaseEvent(MouseEvent & event) override
     {
+        if (m_flightEnabled)
+            return;
+
         switch (event.button())
         {
-        case GLFW_MOUSE_BUTTON_LEFT:
-            m_nav.panEnd();
-            event.accept();
-            break;
+            case GLFW_MOUSE_BUTTON_LEFT:
+                m_nav.panEnd();
+                event.accept();
+                break;
 
-        case GLFW_MOUSE_BUTTON_RIGHT:
-            m_nav.rotateEnd();
-            event.accept();
-            break;
+            case GLFW_MOUSE_BUTTON_RIGHT:
+                m_nav.rotateEnd();
+                event.accept();
+                break;
         }
     }
 
     void scrollEvent(ScrollEvent & event) override
     {
+        if (m_flightEnabled)
+            return;
+
         if (glowutils::WorldInHandNavigation::NoInteraction != m_nav.mode())
             return;
 
@@ -171,17 +264,17 @@ public:
         event.accept();
     }
 
-    virtual const float depthAt(const ivec2 & windowCoordinates)
+    virtual const float depthAt(const ivec2 & windowCoordinates) override
     {
         return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
     }
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates)
+    virtual const vec3 objAt(const ivec2 & windowCoordinates) override
     {
         return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
     }
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth)
+    virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
     {
         return unproject(m_camera, depth, windowCoordinates);
     }
@@ -189,7 +282,7 @@ public:
     virtual const glm::vec3 objAt(
         const ivec2 & windowCoordinates
     ,   const float depth
-    ,   const mat4 & viewProjectionInverted)
+    ,   const mat4 & viewProjectionInverted) override
     {
         return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
     }
@@ -203,6 +296,10 @@ protected:
 
     glowutils::Camera m_camera;
     glowutils::WorldInHandNavigation m_nav;
+    glowutils::FlightNavigation m_flightNav;
+    glm::ivec2 m_lastMousePos;
+    bool m_flightEnabled;
+    glowutils::Timer m_timer;
 
     glowutils::AxisAlignedBoundingBox m_aabb;
 };
@@ -210,7 +307,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
     ContextFormat format;
     format.setVersion(3, 0);

@@ -1,6 +1,8 @@
 
 #include <algorithm>
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/ObjectVisitor.h>
@@ -31,17 +33,20 @@ Texture::~Texture()
 	}
 }
 
+GLuint Texture::genTexture()
+{
+    GLuint id = 0;
+
+    glGenTextures(1, &id);
+    CheckGLError();
+
+    return id;
+}
+
 void Texture::bind() const
 {
     glBindTexture(m_target, m_id);
 	CheckGLError();
-}
-
-void Texture::bind(const GLenum texture) const
-{
-    glActiveTexture(texture);
-    glBindTexture(m_target, m_id);
-    CheckGLError();
 }
 
 void Texture::unbind() const
@@ -50,7 +55,20 @@ void Texture::unbind() const
 	CheckGLError();
 }
 
-void Texture::unbind(const GLenum texture) const
+void Texture::unbind(const GLenum target)
+{
+    glBindTexture(target, 0);
+    CheckGLError();
+}
+
+void Texture::bindActive(const GLenum texture) const
+{
+    glActiveTexture(texture);
+    glBindTexture(m_target, m_id);
+    CheckGLError();
+}
+
+void Texture::unbindActive(const GLenum texture) const
 {
     glActiveTexture(texture);
     glBindTexture(m_target, 0);
@@ -102,7 +120,15 @@ GLint Texture::getLevelParameter(GLint level, GLenum pname)
 	return value;
 }
 
-void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data)
+void Texture::image1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid* data)
+{
+    bind();
+
+    glTexImage1D(m_target, level, internalFormat, width, border, format, type, data);
+    CheckGLError();
+}
+
+void Texture::image2D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data)
 {
 	bind();
 
@@ -110,7 +136,12 @@ void Texture::image2D(GLint level, GLint internalFormat, GLsizei width, GLsizei 
 	CheckGLError();
 }
 
-void Texture::image3D(GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid* data)
+void Texture::image2D(GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLenum format, GLenum type, const GLvoid* data)
+{
+    image2D(level, internalFormat, size.x, size.y, border, format, type, data);
+}
+
+void Texture::image3D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid* data)
 {
     bind();
 
@@ -118,6 +149,44 @@ void Texture::image3D(GLint level, GLint internalFormat, GLsizei width, GLsizei 
     CheckGLError();
 }
 
+void Texture::image3D(GLint level, GLenum internalFormat, const glm::ivec3 & size, GLint border, GLenum format, GLenum type, const GLvoid* data)
+{
+    image3D(level, internalFormat, size.x, size.y, size.z, border, format, type, data);
+}
+
+void Texture::image2DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLboolean fixedSamplesLocations)
+{
+    bind();
+
+    glTexImage2DMultisample(m_target, samples, internalFormat, width, height, fixedSamplesLocations);
+    CheckGLError();
+}
+
+void Texture::image2DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec2 & size, GLboolean fixedSamplesLocations)
+{
+    image2DMultisample(samples, internalFormat, size.x, size.y, fixedSamplesLocations);
+}
+
+void Texture::image3DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedSamplesLocations)
+{
+    bind();
+
+    glTexImage3DMultisample(m_target, samples, internalFormat, width, height, depth, fixedSamplesLocations);
+    CheckGLError();
+}
+
+void Texture::image3DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec3 & size, GLboolean fixedSamplesLocations)
+{
+    image3DMultisample(samples, internalFormat, size.x, size.y, size.z, fixedSamplesLocations);
+}
+
+void Texture::storage1D(GLsizei levels, GLenum internalFormat, GLsizei width)
+{
+    bind();
+
+    glTexStorage1D(m_target, levels, internalFormat, width);
+    CheckGLError();
+}
 
 void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height)
 {
@@ -125,6 +194,77 @@ void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GL
 
     glTexStorage2D(m_target, levels, internalFormat, width, height);
 	CheckGLError();
+}
+
+void Texture::storage2D(GLsizei levels, GLenum internalFormat, const glm::ivec2 & size)
+{
+    storage2D(levels, internalFormat, size.x, size.y);
+}
+
+void Texture::storage3D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth)
+{
+    bind();
+
+    glTexStorage3D(m_target, levels, internalFormat, width, height, depth);
+    CheckGLError();
+}
+
+void Texture::storage3D(GLsizei levels, GLenum internalFormat, const glm::ivec3 & size)
+{
+    storage3D(levels, internalFormat, size.x, size.y, size.z);
+}
+
+void Texture::textureView(GLuint originalTexture, GLenum internalFormat, GLuint minLevel, GLuint numLevels, GLuint minLayer, GLuint numLayers)
+{
+    glTextureView(m_id, m_target, originalTexture, internalFormat, minLevel, numLevels, minLayer, numLayers);
+    CheckGLError();
+}
+
+void Texture::clearImage(GLint level, GLenum format, GLenum type, const void * data)
+{
+    glClearTexImage(m_id, level, format, type, data);
+    CheckGLError();
+}
+
+void Texture::clearImage(GLint level, GLenum format, GLenum type, const glm::vec4 & value)
+{
+    clearImage(level, format, type, glm::value_ptr(value));
+}
+
+void Texture::clearImage(GLint level, GLenum format, GLenum type, const glm::ivec4 & value)
+{
+    clearImage(level, format, type, glm::value_ptr(value));
+}
+
+void Texture::clearImage(GLint level, GLenum format, GLenum type, const glm::uvec4 & value)
+{
+    clearImage(level, format, type, glm::value_ptr(value));
+}
+
+void Texture::clearSubImage(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * data)
+{
+    glClearTexSubImage(m_id, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
+    CheckGLError();
+}
+
+void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const void * data)
+{
+    clearSubImage(level, offset.x, offset.y, offset.z, size.x, size.y, size.z, format, type, data);
+}
+
+void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::vec4 & value)
+{
+    clearSubImage(level, offset, size, format, type, glm::value_ptr(value));
+}
+
+void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::ivec4 & value)
+{
+    clearSubImage(level, offset, size, format, type, glm::value_ptr(value));
+}
+
+void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::uvec4 & value)
+{
+    clearSubImage(level, offset, size, format, type, glm::value_ptr(value));
 }
 
 void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)
@@ -143,16 +283,6 @@ void Texture::generateMipmap()
 	CheckGLError();
 }
 
-GLuint Texture::genTexture()
-{
-	GLuint id = 0;
-
-	glGenTextures(1, &id);
-	CheckGLError();
-
-	return id;
-}
-
 void Texture::accept(ObjectVisitor& visitor)
 {
 	visitor.visitTexture(this);
@@ -160,14 +290,14 @@ void Texture::accept(ObjectVisitor& visitor)
 
 TextureHandle Texture::textureHandle() const
 {
-	TextureHandle result(glGetTextureHandleNV(m_id));
+    TextureHandle result = glGetTextureHandleARB(m_id);
 	CheckGLError();
 	return result;
 }
 
 GLboolean Texture::isResident() const
 {
-	bool result = glIsTextureHandleResidentNV(textureHandle()) ? true : false;
+    bool result = glIsTextureHandleResidentARB(textureHandle()) == GL_TRUE;
 	CheckGLError();
 
 	return result;
@@ -177,7 +307,7 @@ TextureHandle Texture::makeResident()
 {
     TextureHandle handle = textureHandle();
 
-	glMakeTextureHandleResidentNV(handle);
+    glMakeTextureHandleResidentARB(handle);
 	CheckGLError();
 
 	return handle;
@@ -185,7 +315,7 @@ TextureHandle Texture::makeResident()
 
 void Texture::makeNonResident()
 {
-	glMakeTextureHandleNonResidentNV(textureHandle());
+    glMakeTextureHandleNonResidentARB(textureHandle());
 	CheckGLError();
 }
 

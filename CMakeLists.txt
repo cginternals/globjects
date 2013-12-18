@@ -155,14 +155,15 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/source/glow-version.h.in ${CMAKE_CURR
 
 # GLOW DEPENDENCIES
 
+if (OPTION_BUILD_STATIC)
+    add_definitions("-DGLOW_STATIC")
+endif()
+
 # Find externals
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(GLEW REQUIRED)
-
-if(OPTION_BUILD_EXAMPLES)
-    find_package(GLFW REQUIRED glfw3)
-endif()
+find_package(GLFW REQUIRED glfw3)
 
 # Include directories
 include_directories(
@@ -170,7 +171,9 @@ include_directories(
     ${GLOW_SOURCE_DIR}/include
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
-    ${GLEW_INCLUDE_DIR})
+    ${GLEW_INCLUDE_DIR}
+    ${GLFW_INCLUDE_DIR}
+)
 
 # LIBRARIES
 

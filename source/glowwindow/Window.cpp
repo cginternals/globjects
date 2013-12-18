@@ -6,7 +6,8 @@
 #include <GLFW/glfw3.h>
 
 #include <glow/logging.h>
-#include <glow/Timer.h>
+
+#include <glowutils/Timer.h>
 
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
@@ -37,8 +38,6 @@ Window::Window()
 ,   m_swapts(0.0)
 ,   m_swaps(0)
 ,   m_window(nullptr)
-,   m_width(0)
-,   m_height(0)
 {
     s_instances.insert(this);
 }
@@ -66,12 +65,32 @@ Context * Window::context() const
 
 int Window::width() const
 {
-    return m_width;
+    return size().x;
 }
 
 int Window::height() const
 {
-    return m_height;
+    return size().y;
+}
+
+glm::ivec2 Window::size() const
+{
+    if (!m_window)
+        return glm::ivec2();
+
+    int w, h;
+    glfwGetWindowSize(m_window, &w, &h);
+    return glm::ivec2(w, h);
+}
+
+glm::ivec2 Window::position() const
+{
+    if (!m_window)
+        return glm::ivec2();
+
+    int x, y;
+    glfwGetWindowPos(m_window, &x, &y);
+    return glm::ivec2(x, y);
 }
 
 void Window::quitOnDestroy(const bool enable)
@@ -79,11 +98,7 @@ void Window::quitOnDestroy(const bool enable)
     m_quitOnDestroy = enable;
 }
 
-bool Window::create(
-    const ContextFormat & format
-,   const std::string & title
-,   int width
-,   int height)
+bool Window::create(const ContextFormat & format, const std::string & title, int width, int height)
 {
     assert(nullptr == m_context);
 
@@ -103,14 +118,13 @@ bool Window::create(
         return false;
     }
 
-    m_width = width;
-    m_height = height;
-
     setTitle(title);
 
     WindowEventDispatcher::registerWindow(this);
 
-    promoteContext();
+    promoteContext(width, height);
+
+    m_windowedModeSize = glm::ivec2(width, height);
 
     return true;
 }
@@ -125,7 +139,7 @@ void Window::setTitle(const std::string & title)
     glfwSetWindowTitle(m_window, m_title.c_str());
 }
 
-void Window::promoteContext()
+void Window::promoteContext(int width, int height)
 {
     if (m_eventHandler)
     {
@@ -133,8 +147,8 @@ void Window::promoteContext()
          m_eventHandler->initialize(*this);
          m_context->doneCurrent();
 
-         queueEvent(new ResizeEvent(glm::ivec2(m_width, m_height)));
-         queueEvent(new ResizeEvent(glm::ivec2(m_width, m_height), true));
+         queueEvent(new ResizeEvent(glm::ivec2(width, height)));
+         queueEvent(new ResizeEvent(glm::ivec2(width, height), true));
     }
 }
 
@@ -161,22 +175,73 @@ void Window::hide()
 
 void Window::fullScreen()
 {
-    //if (WindowMode != m_mode)
-    //    return;
+    if (WindowMode != m_mode)
+        return;
 
-    //m_mode = TransitionMode;
-    //m_window->fullScreen();
-    //m_mode = FullScreenMode;
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    if (!monitor)
+        return;
+
+    m_windowedModeSize = size();
+
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    int w = mode->width;
+    int h = mode->height;
+
+    ContextFormat format = m_context->format();
+    m_context->release();
+
+    if (m_eventHandler)
+        m_eventHandler->finalize(*this);
+
+    WindowEventDispatcher::deregisterWindow(this);
+
+    if (m_context->create(format, w, h, monitor))
+    {
+        promoteContext(w, h);
+        WindowEventDispatcher::registerWindow(this);
+
+        m_mode = FullScreenMode;
+    }
+    else
+    {
+        m_context->release();
+        delete m_context;
+        m_context = nullptr;
+        m_window = nullptr;
+    }
 }
 
 void Window::windowed()
 {
-    //if (FullScreenMode != m_mode)
-    //    return;
+    if (FullScreenMode != m_mode)
+        return;
 
-    //m_mode = TransitionMode;
-    //m_window->windowed();
-    //m_mode = WindowMode;
+    int w = m_windowedModeSize.x;
+    int h = m_windowedModeSize.y;
+
+    ContextFormat format = m_context->format();
+    m_context->release();
+
+    if (m_eventHandler)
+        m_eventHandler->finalize(*this);
+
+    WindowEventDispatcher::deregisterWindow(this);
+
+    if (m_context->create(format, w, h, nullptr))
+    {
+        promoteContext(w, h);
+        WindowEventDispatcher::registerWindow(this);
+
+        m_mode = WindowMode;
+    }
+    else
+    {
+        m_context->release();
+        delete m_context;
+        m_context = nullptr;
+        m_window = nullptr;
+    }
 }
 
 bool Window::isFullScreen() const
@@ -193,14 +258,12 @@ void Window::toggleMode()
 {
     switch (m_mode)
     {
-    case TransitionMode:
-        return;
-    case FullScreenMode:
-        windowed();
-        return;
-    case WindowMode:
-        fullScreen();
-        return;
+        case FullScreenMode:
+            windowed();
+            return;
+        case WindowMode:
+            fullScreen();
+            return;
     }
 }
 
@@ -217,17 +280,31 @@ void Window::setEventHandler(WindowEventHandler * eventHandler)
     if (!m_context)
         return;
 
-    promoteContext();
+    promoteContext(width(), height());
 }
 
-void Window::resize(
-    const int width
-,   const int height)
+void Window::resize(int width, int height)
 {
     if (!m_window)
         return;
 
     glfwSetWindowSize(m_window, width, height);
+}
+
+int Window::inputMode(int mode) const
+{
+    if (!m_window)
+        return -1;
+
+    return glfwGetInputMode(m_window, mode);
+}
+
+void Window::setInputMode(int mode, int value)
+{
+    if (!m_window)
+        return;
+
+    glfwSetInputMode(m_window, mode, value);
 }
 
 void Window::repaint()
@@ -250,7 +327,7 @@ void Window::swap()
 {
     if (!m_timer)
     {
-        m_timer = new Timer(true, false);
+        m_timer = new glowutils::Timer(true, false);
         m_swapts = 0.0;
     }
 

@@ -1,10 +1,10 @@
 
 #pragma once
 
-#include <glow/glow.h>
+#include <glowutils/glowutils.h>
 
 
-namespace glow
+namespace glowutils
 {
 
 class Timer;
@@ -27,7 +27,7 @@ class Timer;
     If more control over time measurement is required, condier 
     using Timer directly.
 */
-class GLOW_API AutoTimer
+class GLOWUTILS_API AutoTimer
 {
 public:
     explicit AutoTimer(const char * info);
@@ -42,4 +42,4 @@ protected:
     Timer * m_timer;
 };
 
-} // namespace glow
+} // namespace glowutils

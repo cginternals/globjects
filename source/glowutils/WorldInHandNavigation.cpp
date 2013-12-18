@@ -2,15 +2,17 @@
 #include <cassert>
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/constants.hpp>
 
 #include <glow/logging.h>
 
-#include <glowutils/MathMacros.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/Camera.h>
 #include <glowutils/NavigationMath.h>
 
 #include <glowutils/WorldInHandNavigation.h>
+
+#include <limits>
 
 using namespace glm;
 
@@ -25,14 +27,14 @@ namespace
     static const float DEFAULT_DIST_MIN   = 0.1f;
     static const float DEFAULT_DIST_MAX   = 4.0f;
 
-    static const float ROTATION_HOR_DOF   = 0.8f * static_cast<float>(PI);
-    static const float ROTATION_VER_DOF   = 0.8f * static_cast<float>(PI);
+    static const float ROTATION_HOR_DOF   = 0.8f * glm::pi<float>();
+    static const float ROTATION_VER_DOF   = 0.8f * glm::pi<float>();
 
     static const float ROTATION_KEY_SCALE = 1.0f;
 
     //static const float NAV_CONSTRAINT_PAN_CIRCLE_R = 2.83;
-    static const float CONSTRAINT_ROT_MAX_V_UP = 0.02f * static_cast<float>(PI);
-    static const float CONSTRAINT_ROT_MAX_V_LO = 0.98f * static_cast<float>(PI);
+    static const float CONSTRAINT_ROT_MAX_V_UP = 0.02f * glm::pi<float>();
+    static const float CONSTRAINT_ROT_MAX_V_LO = 0.98f * glm::pi<float>();
 }
 
 namespace glowutils
@@ -211,7 +213,10 @@ void WorldInHandNavigation::pan(vec3 t)
         return;
 
     //enforceTranslationConstraints(t);
-
+	if (glm::isinf(t.x) || glm::isinf(t.y) || glm::isinf(t.z)) {
+		return;
+	}
+	
     m_camera->setEye(t + m_eye);
     m_camera->setCenter(t + m_center);
 
@@ -251,9 +256,9 @@ void WorldInHandNavigation::rotateProcess(const ivec2 & mouse)
 
     const vec2 delta(m_m0 - mouse);
     // setup the degree of freedom for horizontal rotation within a single action
-    const float wDeltaX = deg(delta.x / m_camera->viewport().x);
+    const float wDeltaX = glm::degrees(delta.x / m_camera->viewport().x);
     // setup the degree of freedom for vertical rotation within a single action
-    const float wDeltaY = deg(delta.y / m_camera->viewport().y);
+    const float wDeltaY = glm::degrees(delta.y / m_camera->viewport().y);
 
     rotate(wDeltaX, wDeltaY);
 }
@@ -388,12 +393,12 @@ void WorldInHandNavigation::enforceRotationConstraints(
     // to up/down it can be rotated and clamp if required.
 
     static const vec3 up(0.f, 1.f, 0.f);
-    const float va = deg(acos(dot(normalize(m_eye - m_center), up)));
+    const float va = glm::degrees(glm::acos(dot(normalize(m_eye - m_center), up)));
 
     if (vAngle <= 0.f)
-        vAngle = ma(vAngle, deg(CONSTRAINT_ROT_MAX_V_UP) - va);
+        vAngle = std::max(vAngle, glm::degrees(CONSTRAINT_ROT_MAX_V_UP) - va);
     else
-        vAngle = mi(vAngle, deg(CONSTRAINT_ROT_MAX_V_LO) - va);
+        vAngle = std::min(vAngle, glm::degrees(CONSTRAINT_ROT_MAX_V_LO) - va);
 }
  
 void WorldInHandNavigation::enforceScaleConstraints(

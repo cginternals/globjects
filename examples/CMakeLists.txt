@@ -13,6 +13,7 @@ unset(api_includes)
 include_directories(
 	${GLFW_INCLUDE_DIR})
 
+add_subdirectory("camerapath")
 add_subdirectory("computeshader")
 add_subdirectory("gpu-particles")
 add_subdirectory("multiple-contexts")
@@ -27,3 +28,4 @@ add_subdirectory("shaderincludes")
 add_subdirectory("tessellation")
 add_subdirectory("vertexarrayattributes")
 add_subdirectory("wikiexample")
+add_subdirectory("transparency")

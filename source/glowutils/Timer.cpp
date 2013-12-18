@@ -1,13 +1,10 @@
 
+#include <glowutils/Timer.h>
 
-#include "ChronoTimer.h"
-
-namespace glow
+namespace glowutils
 {
 
-ChronoTimer::ChronoTimer(
-    const bool start
-,   const bool autoUpdate)
+Timer::Timer(bool start, bool autoUpdate)
 :   m_paused(true)
 ,   m_auto(autoUpdate)
 ,   m_t0(clock::now())
@@ -21,11 +18,11 @@ ChronoTimer::ChronoTimer(
         this->start();
 }
 
-ChronoTimer::~ChronoTimer()
+Timer::~Timer()
 {
 }
 
-void ChronoTimer::update() const
+void Timer::update() const
 {
     m_t1 = m_paused ? m_tp : clock::now();
 
@@ -33,12 +30,12 @@ void ChronoTimer::update() const
     m_elapsed = nano(delta).count() + m_offset;
 }
 
-const bool ChronoTimer::paused() const
+bool Timer::paused() const
 {
     return m_paused;
 }
 
-void ChronoTimer::start()
+void Timer::start()
 {
     if(!m_paused)
         return;
@@ -50,7 +47,7 @@ void ChronoTimer::start()
     m_paused = false;
 }
 
-void ChronoTimer::pause()
+void Timer::pause()
 {
     if(m_paused)
         return;
@@ -59,13 +56,13 @@ void ChronoTimer::pause()
     m_paused = true;
 }
 
-void ChronoTimer::stop()
+void Timer::stop()
 {
     pause();
     reset();
 }
 
-void ChronoTimer::reset()
+void Timer::reset()
 {
     m_offset = 0.0L;
     m_elapsed = 0.0L;
@@ -75,7 +72,7 @@ void ChronoTimer::reset()
     m_tp = m_t0;
 }
 
-const long double ChronoTimer::elapsed() const
+long double Timer::elapsed() const
 {
     if(m_auto)
         update();
@@ -83,14 +80,14 @@ const long double ChronoTimer::elapsed() const
     return m_elapsed;
 }
 
-void ChronoTimer::setAutoUpdating(const bool auto_update)
+void Timer::setAutoUpdating(const bool auto_update)
 {
     m_auto = auto_update;
 }
 
-const bool ChronoTimer::autoUpdating() const
+bool Timer::autoUpdating() const
 {
     return m_auto;
 }
 
-} // namespace glow
+} // namespace glowutils

@@ -15,21 +15,20 @@
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/logging.h>
-#include <glow/AutoTimer.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Texture.h>
-#include <glow/Timer.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/MathMacros.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/UnitCube.h>
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/Camera.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/File.h>
+#include <glowutils/AutoTimer.h>
+#include <glowutils/Timer.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -151,13 +150,13 @@ public:
 
 		m_phong->setUniform("normal", 0);
 		m_phong->setUniform("geom", 1);
-        m_normal->bind(GL_TEXTURE0);
-        m_geom->bind(GL_TEXTURE1);
+        m_normal->bindActive(GL_TEXTURE0);
+        m_geom->bindActive(GL_TEXTURE1);
 
 		m_quad->draw();
 
-        m_geom->unbind(GL_TEXTURE1);
-        m_normal->unbind(GL_TEXTURE0);
+        m_geom->unbindActive(GL_TEXTURE1);
+        m_normal->unbindActive(GL_TEXTURE0);
 
 		glEnable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE);
@@ -203,7 +202,7 @@ protected:
     glow::ref_ptr<glow::RenderBufferObject> m_depth;
 
     glowutils::Camera m_camera;
-	glow::Timer m_time;
+    glowutils::Timer m_time;
 };
 
 

@@ -3,7 +3,6 @@
 
 #include <glm/gtx/norm.hpp>
 
-#include <glowutils/MathMacros.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 
 #include <glowutils/NavigationMath.h>
@@ -187,7 +186,7 @@ const vec3 NavigationMath::cameraWithPointInView(
     const vec3 u(normalize(cross(v, n)));
 
 	// get both field of view vectors
-	const float vFov(rad(fovy));
+    const float vFov(glm::radians(fovy));
 	const float hFov(2.f * atan(tan(vFov * .5f) * aspect));
 
 	// closest point c
@@ -196,14 +195,14 @@ const vec3 NavigationMath::cameraWithPointInView(
 	// project bc = t to u and v using scalar projection
 	const vec3 t = point - c;
 
-	const float uPart = abs(dot(t, u));
-	const float vPart = abs(dot(t, v)) / aspect;
+    const float uPart = abs(dot(t, u));
+    const float vPart = abs(dot(t, v)) / aspect;
 
 	// retrieve max distance to camera with required fov for the bigger part
-	const float p = max(uPart, vPart);
+    const float p = max(uPart, vPart);
 
 	// required distance from c to new camera position
-	const float a = p / tan(vFov * .5f);
+    const float a = p / tan(vFov * .5f);
 
     return c - a * n;
 }

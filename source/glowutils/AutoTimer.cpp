@@ -6,14 +6,14 @@
 #include <iomanip>
 
 #include <glow/logging.h>
-#include <glow/Timer.h>
-#include <glow/AutoTimer.h>
+#include <glowutils/Timer.h>
+#include <glowutils/AutoTimer.h>
 
 
-namespace glow
+namespace glowutils
 {
 
-int AutoTimer::m_numActiveInstances(0);
+int AutoTimer::m_numActiveInstances = 0;
 
 AutoTimer::AutoTimer(const char * info)
 :   m_info(info)
@@ -42,7 +42,7 @@ AutoTimer::~AutoTimer()
     // shorten the time to nearest time unit
     delta /= pow(1000.0, u);
 
-    debug() << m_info << " took " 
+    glow::debug() << m_info << " took "
         << std::setprecision(4) << delta << unit
         << " (timer_" << std::setfill('0') << std::setw(2) << m_index << ").";
 
@@ -52,4 +52,4 @@ AutoTimer::~AutoTimer()
     --m_numActiveInstances;
 }
 
-} // namespace glow
+} // namespace glowutils

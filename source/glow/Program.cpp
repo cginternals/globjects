@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glow/logging.h>
+#include <glow/global.h>
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/ObjectVisitor.h>
@@ -73,12 +74,9 @@ void Program::release()
 
 bool Program::isUsed() const
 {
-	GLint currentProgram = 0;
+    GLuint currentProgram = static_cast<GLuint>(query::getInteger(GL_CURRENT_PROGRAM));
 
-	glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-	CheckGLError();
-
-	return currentProgram > 0 && currentProgram == (int)m_id;
+    return currentProgram > 0 && currentProgram == m_id;
 }
 
 bool Program::isLinked() const
@@ -294,6 +292,11 @@ void Program::dispatchComputeGroupSize(GLuint numGroupsX, GLuint numGroupsY, GLu
 
     glDispatchComputeGroupSizeARB(numGroupsX, numGroupsY, numGroupsZ, groupSizeX, groupSizeY, groupSizeZ);
     CheckGLError();
+}
+
+void Program::dispatchComputeGroupSize(const glm::uvec3 & numGroups, const glm::uvec3 & groupSizes)
+{
+    dispatchComputeGroupSize(numGroups.x, numGroups.y, numGroups.z, groupSizes.x, groupSizes.y, groupSizes.z);
 }
 
 void Program::setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding)

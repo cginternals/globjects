@@ -49,12 +49,12 @@ void setLoggingHandler(AbstractLogHandler* handler)
 	g_logHandler = handler;
 }
 
-GLOW_API void setVerbosityLevel(LogMessage::Level verbosity)
+void setVerbosityLevel(LogMessage::Level verbosity)
 {
 	g_verbosityLevel = verbosity;
 }
 
-GLOW_API LogMessage::Level verbosityLevel()
+LogMessage::Level verbosityLevel()
 {
 	return g_verbosityLevel;
 }

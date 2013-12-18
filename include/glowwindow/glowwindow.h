@@ -15,10 +15,14 @@
 #	define __API_IMPORT_DECLARATION
 #endif
 
+#ifndef GLOW_STATIC
 #ifdef GLOWWINDOW_EXPORTS
 #	define GLOWWINDOW_API __API_EXPORT_DECLARATION
 #else
 #	define GLOWWINDOW_API __API_IMPORT_DECLARATION
+#endif
+#else
+#	define GLOWWINDOW_API
 #endif
 
 #ifdef N_DEBUG
