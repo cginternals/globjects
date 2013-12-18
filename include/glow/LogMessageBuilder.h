@@ -7,6 +7,7 @@
 
 #include <glow/glow.h>
 #include <glow/LogMessage.h>
+#include <glow/ref_ptr.h>
 
 namespace glow 
 {
@@ -67,6 +68,7 @@ public:
 	LogMessageBuilder& operator<<(long double d);
 	LogMessageBuilder& operator<<(unsigned u);
 	LogMessageBuilder& operator<<(long l);
+    LogMessageBuilder& operator<<(long long l);
 	LogMessageBuilder& operator<<(unsigned long ul);
 	LogMessageBuilder& operator<<(unsigned char uc);
 	LogMessageBuilder& operator<<(void* pointer);
@@ -75,25 +77,27 @@ public:
 	LogMessageBuilder& operator<<(std::ostream& (*manipulator)(std::ostream&));
 	
 	// glow objects
-	LogMessageBuilder& operator<<(Object* object);
-	LogMessageBuilder& operator<<(Buffer* object);
-	LogMessageBuilder& operator<<(FrameBufferObject* object);
-	LogMessageBuilder& operator<<(Program* object);
-	LogMessageBuilder& operator<<(Query* object);
-	LogMessageBuilder& operator<<(RenderBufferObject* object);
-	LogMessageBuilder& operator<<(Shader* object);
-	LogMessageBuilder& operator<<(Texture* object);
-	LogMessageBuilder& operator<<(TransformFeedback* object);
-	LogMessageBuilder& operator<<(VertexArrayObject* object);
+    LogMessageBuilder& operator<<(Object* object);
+    LogMessageBuilder& operator<<(Buffer* object);
+    LogMessageBuilder& operator<<(FrameBufferObject* object);
+    LogMessageBuilder& operator<<(Program* object);
+    LogMessageBuilder& operator<<(Query* object);
+    LogMessageBuilder& operator<<(RenderBufferObject* object);
+    LogMessageBuilder& operator<<(Shader* object);
+    LogMessageBuilder& operator<<(Texture* object);
+    LogMessageBuilder& operator<<(TransformFeedback* object);
+    LogMessageBuilder& operator<<(VertexArrayObject* object);
     LogMessageBuilder& operator<<(AbstractUniform* uniform);
     template <typename T>
     LogMessageBuilder& operator<<(Uniform<T>* uniform);
     LogMessageBuilder& operator<<(const Version& version);
+    template <typename T>
+    LogMessageBuilder& operator<<(ref_ptr<T> ref_pointer);
 	
 
 	// pointers
 	template <typename T>
-	LogMessageBuilder& operator<<(T* t_pointer);
+    LogMessageBuilder& operator<<(T* pointer);
 
 	// glm types
 	LogMessageBuilder& operator<<(const glm::vec2& v);
@@ -110,8 +114,6 @@ public:
 protected:
 	LogMessage::Level m_level;
 	AbstractLogHandler* m_handler;
-
-    void logObject(const std::string& type, Object* object);
 };
 
 } // namespace glow

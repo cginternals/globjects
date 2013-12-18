@@ -13,8 +13,78 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/Version.h>
 #include <glow/AbstractUniform.h>
+#include <glow/ObjectVisitor.h>
 
 #include <glow/LogMessageBuilder.h>
+
+namespace {
+
+using namespace glow;
+
+class TypeGetter : public glow::ObjectVisitor
+{
+public:
+    static std::string getType(Object * object)
+    {
+        return TypeGetter().typeFor(object);
+    }
+
+    std::string typeFor(Object * object)
+    {
+        m_typeName = "glow::Object";
+        visit(object);
+        return m_typeName;
+    }
+
+    virtual void visitBuffer(Buffer * buffer) override
+    {
+        m_typeName = "Buffer";
+    }
+
+    virtual void visitFrameBufferObject(FrameBufferObject * fbo) override
+    {
+        m_typeName = "FrameBufferObject";
+    }
+
+    virtual void visitProgram(Program * program) override
+    {
+        m_typeName = "Program";
+    }
+
+    virtual void visitQuery(Query * query) override
+    {
+        m_typeName = "Query";
+    }
+
+    virtual void visitRenderBufferObject(RenderBufferObject * rbo) override
+    {
+        m_typeName = "RenderBufferObject";
+    }
+
+    virtual void visitShader(Shader * shader) override
+    {
+        m_typeName = "Shader";
+    }
+
+    virtual void visitTexture(Texture * texture) override
+    {
+        m_typeName = "Texture";
+    }
+
+    virtual void visitTransformFeedback(TransformFeedback * transformfeedback) override
+    {
+        m_typeName = "TransformFeedback";
+    }
+
+    virtual void visitVertexArrayObject(VertexArrayObject * vao) override
+    {
+        m_typeName = "VertexArrayObject";
+    }
+protected:
+    std::string m_typeName;
+};
+
+}
 
 namespace glow 
 {
@@ -99,6 +169,12 @@ LogMessageBuilder& LogMessageBuilder::operator<<(long l)
 {
 	std::stringstream::operator<<(l);
 	return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(long long l)
+{
+    std::stringstream::operator<<(l);
+    return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(unsigned long ul)
@@ -198,90 +274,54 @@ LogMessageBuilder& LogMessageBuilder::operator<<(Object* object)
 {
     assert(object != nullptr);
 
-    logObject("Unknown glow Object", object);
+    *this << TypeGetter::getType(object) << " (" << object->id() << ")";
 
     return *this;
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(Buffer* object)
 {
-    assert(object != nullptr);
-
-    logObject("Buffer", object);
-
-    return *this;
+    return *this<<static_cast<Object*>(object);
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(FrameBufferObject* object)
 {
-    assert(object != nullptr);
-
-    logObject("Framebuffer Object", object);
-
-    return *this;
+    return *this<<static_cast<Object*>(object);
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(Program* object)
 {
-    assert(object != nullptr);
-
-    logObject("Program", object);
-
-    return *this;
+    return *this<<static_cast<Object*>(object);
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(Query* object)
 {
-    assert(object != nullptr);
-
-    logObject("Query", object);
-
-    return *this;
+    return *this<<static_cast<Object*>(object);
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(RenderBufferObject* object)
 {
-    assert(object != nullptr);
-
-    logObject("Renderbuffer Object", object);
-
-    return *this;
+    return *this<<static_cast<Object*>(object);
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(Shader* object)
 {
-    assert(object != nullptr);
-
-    logObject("Shader", object);
-
-    return *this;
+    return *this<<static_cast<Object*>(object);
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(Texture* object)
 {
-    assert(object != nullptr);
-
-    logObject("Texture", object);
-
-    return *this;
+    return *this<<static_cast<Object*>(object);
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(TransformFeedback* object)
 {
-    assert(object != nullptr);
-
-    logObject("Transform Feedback", object);
-
-    return *this;
+    return *this<<static_cast<Object*>(object);
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(VertexArrayObject* object)
 {
-    assert(object != nullptr);
-
-    logObject("Vertex Array Object", object);
-
-    return *this;
+    return *this<<static_cast<Object*>(object);
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(AbstractUniform* uniform)
@@ -298,13 +338,6 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const Version& version)
     *this << "Version " << version.toString();
 
     return *this;
-}
-
-void LogMessageBuilder::logObject(const std::string& type, Object* object)
-{
-    assert(object != nullptr);
-
-    *this << type << " (" << object->id() << ") at " << (void*)object;
 }
 
 } // namespace glow

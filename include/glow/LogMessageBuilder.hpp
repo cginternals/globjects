@@ -16,9 +16,15 @@ LogMessageBuilder& LogMessageBuilder::operator<<(Uniform<T>* uniform)
 }
 
 template <typename T>
-LogMessageBuilder& LogMessageBuilder::operator<< (T * t_pointer)
+LogMessageBuilder& LogMessageBuilder::operator<<(ref_ptr<T> ref_pointer)
 {
-	return *this << static_cast<void*>(t_pointer);
+    return *this<<ref_pointer.get();
+}
+
+template <typename T>
+LogMessageBuilder& LogMessageBuilder::operator<< (T * pointer)
+{
+    return *this << static_cast<void*>(pointer);
 }
 
 } // namespace glow
