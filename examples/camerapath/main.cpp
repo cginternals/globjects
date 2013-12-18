@@ -21,7 +21,6 @@
 
 #include <glowutils/File.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
-#include <glowutils/MathMacros.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/Camera.h>
 #include <glowutils/AdaptiveGrid.h>

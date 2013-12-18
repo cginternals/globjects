@@ -18,7 +18,6 @@
 #include <glow/VertexArrayObject.h>
 
 #include <glowutils/AxisAlignedBoundingBox.h>
-#include <glowutils/MathMacros.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/Camera.h>
 #include <glowutils/AdaptiveGrid.h>

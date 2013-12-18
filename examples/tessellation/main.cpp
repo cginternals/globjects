@@ -16,7 +16,6 @@
 #include <glow/Buffer.h>
 #include <glow/logging.h>
 
-#include <glowutils/MathMacros.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/Camera.h>

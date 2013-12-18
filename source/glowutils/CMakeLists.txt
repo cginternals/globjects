@@ -47,7 +47,7 @@ set(api_includes
     ${header_path}/GlBlendAlgorithm.h
     ${header_path}/HybridAlgorithm.h
     ${header_path}/Icosahedron.h
-    ${header_path}/MathMacros.h
+    ${header_path}/Interpolation.h
     ${header_path}/NamedStringHelper.h
     ${header_path}/NavigationMath.h
     ${header_path}/Plane3.h

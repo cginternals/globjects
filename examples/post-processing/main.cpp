@@ -21,7 +21,6 @@
 #include <glow/Texture.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/MathMacros.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/UnitCube.h>
 #include <glowutils/AdaptiveGrid.h>
