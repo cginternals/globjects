@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GLFW/glfw3.h> ///< promote keys
+#include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
 
