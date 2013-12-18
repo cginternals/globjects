@@ -32,7 +32,7 @@ namespace glowutils
         template <typename T>
         inline T linear(T t)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return t;
         }
@@ -40,7 +40,7 @@ namespace glowutils
         template <typename T>
         inline T smoothstep(T t)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return t * t * (3 - 2 * t);
         }
@@ -48,7 +48,7 @@ namespace glowutils
         template <typename T>
         inline T smoothstep2(T t)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return smoothstep(smoothstep(t));
         }
@@ -56,7 +56,7 @@ namespace glowutils
         template <typename T>
         inline T smoothstep3(T t)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return smoothstep(smoothstep2(t));
         }
@@ -64,7 +64,7 @@ namespace glowutils
         template <typename T>
         inline T smootherstep(T t)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return t * t * t * (t * (6 * t - 15) + 10);
         }
@@ -72,7 +72,7 @@ namespace glowutils
         template <typename T>
         inline T squared(T t)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return t * t;
         }
@@ -80,7 +80,7 @@ namespace glowutils
         template <typename T>
         inline T squareroot(T t)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return std::sqrt(t);
         }
@@ -88,7 +88,7 @@ namespace glowutils
         template <typename T, typename V>
         inline T exponential(T t, V v)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return (std::exp(t * v) - 1) / (std::exp(v) - 1);
         }
@@ -96,7 +96,7 @@ namespace glowutils
         template <typename T, typename V>
         inline T logarithmic(T t, V v)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return std::log(1 + (v - 1) * t) / std::log(v);
         }
@@ -104,7 +104,7 @@ namespace glowutils
         template <typename T>
         inline T cube(T t)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return t * t * t;
         }
@@ -112,7 +112,7 @@ namespace glowutils
         template <typename T>
         inline T cupola(T t)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return std::sin(t * glm::pi<T>());
         }
@@ -120,7 +120,7 @@ namespace glowutils
         template <typename T>
         inline T roof(T t)
         {
-            static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+            static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
             return 1 - 2 * std::abs(t - 0.5);
         }
@@ -135,7 +135,7 @@ namespace glowutils
     template<typename T>
     inline T interpolate(T t, InterpolationType function = LinearInterpolation, bool invert = false)
     {
-        static_assert(std::is_arithmetic<T>::value, "T should be an integral type");
+        static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type");
 
         T r;
 
