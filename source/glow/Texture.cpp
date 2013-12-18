@@ -1,6 +1,8 @@
 
 #include <algorithm>
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/ObjectVisitor.h>
@@ -224,6 +226,21 @@ void Texture::clearImage(GLint level, GLenum format, GLenum type, const void * d
     CheckGLError();
 }
 
+void Texture::clearImage(GLint level, GLenum format, GLenum type, const glm::vec4 & value)
+{
+    clearImage(level, format, type, glm::value_ptr(value));
+}
+
+void Texture::clearImage(GLint level, GLenum format, GLenum type, const glm::ivec4 & value)
+{
+    clearImage(level, format, type, glm::value_ptr(value));
+}
+
+void Texture::clearImage(GLint level, GLenum format, GLenum type, const glm::uvec4 & value)
+{
+    clearImage(level, format, type, glm::value_ptr(value));
+}
+
 void Texture::clearSubImage(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * data)
 {
     glClearTexSubImage(m_id, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
@@ -233,6 +250,21 @@ void Texture::clearSubImage(GLint level, GLint xOffset, GLint yOffset, GLint zOf
 void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const void * data)
 {
     clearSubImage(level, offset.x, offset.y, offset.z, size.x, size.y, size.z, format, type, data);
+}
+
+void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::vec4 & value)
+{
+    clearSubImage(level, offset, size, format, type, glm::value_ptr(value));
+}
+
+void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::ivec4 & value)
+{
+    clearSubImage(level, offset, size, format, type, glm::value_ptr(value));
+}
+
+void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::uvec4 & value)
+{
+    clearSubImage(level, offset, size, format, type, glm::value_ptr(value));
 }
 
 void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)

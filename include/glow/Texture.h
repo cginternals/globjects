@@ -159,6 +159,24 @@ public:
     ,   GLenum type
     ,   const void * data);
 
+    void clearImage(
+        GLint level
+    ,   GLenum format
+    ,   GLenum type
+    ,   const glm::vec4 & value);
+
+    void clearImage(
+        GLint level
+    ,   GLenum format
+    ,   GLenum type
+    ,   const glm::ivec4 & value);
+
+    void clearImage(
+        GLint level
+    ,   GLenum format
+    ,   GLenum type
+    ,   const glm::uvec4 & value);
+
     void clearSubImage(
         GLint level
     ,   GLint xOffset
@@ -178,6 +196,30 @@ public:
     ,   GLenum format
     ,   GLenum type
     ,   const void * data);
+
+    void clearSubImage(
+        GLint level
+    ,   const glm::ivec3 & offset
+    ,   const glm::ivec3 & size
+    ,   GLenum format
+    ,   GLenum type
+    ,   const glm::vec4 & value);
+
+    void clearSubImage(
+        GLint level
+    ,   const glm::ivec3 & offset
+    ,   const glm::ivec3 & size
+    ,   GLenum format
+    ,   GLenum type
+    ,   const glm::ivec4 & value);
+
+    void clearSubImage(
+        GLint level
+    ,   const glm::ivec3 & offset
+    ,   const glm::ivec3 & size
+    ,   GLenum format
+    ,   GLenum type
+    ,   const glm::uvec4 & value);
 
 	void bindImageTexture(
         GLuint unit
