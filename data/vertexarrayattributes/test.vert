@@ -1,18 +1,18 @@
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
 
-in vec4 in_point; // 0
-in vec2 in_extent; // 1
-in vec2 in_fullSize; // 2
-in vec4 in_color; // 3
-in float in_average; // 4
-in float in_min; // 5
-in float in_max; // 6
-in float in_median; // 7
-in int in_id; // 8
-in int in_count; // 9
-in float in_random; // 10
-in float in_random2; // 11
+layout (location = 0) in vec4 in_point;
+layout (location = 1) in vec2 in_extent;
+layout (location = 2) in vec2 in_fullSize;
+layout (location = 3) in vec4 in_color;
+layout (location = 4) in float in_average;
+layout (location = 5) in float in_min;
+layout (location = 6) in float in_max;
+layout (location = 7) in float in_median;
+layout (location = 8) in int in_id;
+layout (location = 9) in int in_count;
+layout (location = 10) in float in_random;
+layout (location = 11) in float in_random2;
 
 out vec4 vertex_color;
 

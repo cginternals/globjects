@@ -2,7 +2,7 @@
 
 uniform float deltaT;
 
-in vec4 in_position;
+layout (location = 0) in vec4 in_position;
 out vec4 next_position;
 
 const float PI = 3.1415926535897932384626433832795;

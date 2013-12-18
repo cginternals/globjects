@@ -17,7 +17,7 @@ namespace {
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
 
-in vec2 corner;
+layout (location = 0) in vec2 corner;
 
 out vec4 color;
 
@@ -77,10 +77,10 @@ public:
 			glm::vec2(1, 1)
 		}));
 
-		vao->binding(0)->setAttribute(program->getAttributeLocation("corner"));
+        vao->binding(0)->setAttribute(0);
 		vao->binding(0)->setBuffer(cornerBuffer, 0, sizeof(glm::vec2));
 		vao->binding(0)->setFormat(2, GL_FLOAT);
-		vao->enable(program->getAttributeLocation("corner"));
+        vao->enable(0);
     }
     
     virtual void resizeEvent(ResizeEvent & event) override

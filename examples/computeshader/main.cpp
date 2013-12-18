@@ -8,6 +8,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtx/constants.hpp>
 
 #include <glow/Uniform.h>
 #include <glow/Array.h>
@@ -68,7 +69,7 @@ public:
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        ++m_frame %= 628; // int(pi * 100)
+        ++m_frame %= static_cast<int>(200 * glm::pi<double>());
 
 	    m_computeProgram->setUniform("roll", static_cast<float>(m_frame) * 0.01f);
 
