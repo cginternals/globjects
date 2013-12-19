@@ -6,8 +6,8 @@ uniform mat4 projection;
 const float PI = 3.1415926535897932384626433832795;
 const vec2 origin = vec2(0.5, 0.5);
 
-in vec4 in_position;
-in vec4 in_color;
+layout (location = 0) in vec4 in_position;
+layout (location = 1) in vec4 in_color;
 
 out vec4 color;
 

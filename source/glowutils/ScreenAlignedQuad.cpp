@@ -113,9 +113,7 @@ void ScreenAlignedQuad::initialize()
 
 void ScreenAlignedQuad::draw()
 {
-    //glClear(GL_COLOR_BUFFER_BIT);
-
-	if (m_texture)
+    if (m_texture)
 	{
         glActiveTexture(GL_TEXTURE0 + m_samplerIndex);
 		m_texture->bind();

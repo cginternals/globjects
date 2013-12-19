@@ -3,7 +3,7 @@
 uniform mat4 modelView;
 uniform mat4 projection;
 
-in vec3 a_vertex;
+layout (location = 0) in vec3 a_vertex;
 out vec2 v_uv;
 
 void main()
