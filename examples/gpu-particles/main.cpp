@@ -8,7 +8,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/random.hpp>
+#include <glm/gtc/random.hpp>
 
 #include <glow/Error.h>
 #include <glow/logging.h>
@@ -56,7 +56,7 @@ public:
 
         m_positions.resize(m_numParticles);
         for (int i = 0; i < m_numParticles; ++i)
-            m_positions[i] = vec4(glm::signedRand3<float>(), 1.f);
+            m_positions[i] = vec4(glm::sphericalRand<float>(1.0), 1.f);
 
         m_velocities.resize(m_numParticles);
         for (int i = 0; i < m_numParticles; ++i)
@@ -182,7 +182,7 @@ public:
         for (int x = 0; x < fdim.x; ++x)
         {
             const int i = z *  fdim.x * fdim.y + y * fdim.x + x;
-            const vec3 f(glm::signedRand3<float>());
+            const vec3 f(glm::sphericalRand<float>(1.0));
 
             forces[i] = f * (1.f - length(vec3(x, y, z)) / sqrt(3.f));
         }
