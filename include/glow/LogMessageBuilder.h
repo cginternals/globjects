@@ -19,6 +19,7 @@ class FrameBufferObject;
 class Program;
 class Query;
 class RenderBufferObject;
+class Sampler;
 class Shader;
 class Texture;
 class TransformFeedback;
@@ -83,6 +84,7 @@ public:
     LogMessageBuilder& operator<<(Program* object);
     LogMessageBuilder& operator<<(Query* object);
     LogMessageBuilder& operator<<(RenderBufferObject* object);
+    LogMessageBuilder& operator<<(Sampler* object);
     LogMessageBuilder& operator<<(Shader* object);
     LogMessageBuilder& operator<<(Texture* object);
     LogMessageBuilder& operator<<(TransformFeedback* object);

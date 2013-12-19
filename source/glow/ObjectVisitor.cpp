@@ -47,6 +47,11 @@ void ObjectVisitor::visitRenderBufferObject(RenderBufferObject* rbo)
     assert(rbo != nullptr);
 }
 
+void ObjectVisitor::visitSampler(Sampler * sampler)
+{
+    assert(sampler != nullptr);
+}
+
 void ObjectVisitor::visitShader(Shader* shader)
 {
     assert(shader != nullptr);

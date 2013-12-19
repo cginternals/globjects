@@ -10,6 +10,7 @@ class FrameBufferObject;
 class Program;
 class Query;
 class RenderBufferObject;
+class Sampler;
 class Shader;
 class Texture;
 class TransformFeedback;
@@ -34,6 +35,7 @@ public:
 	virtual void visitProgram(Program * program);
 	virtual void visitQuery(Query * query);
 	virtual void visitRenderBufferObject(RenderBufferObject * rbo);
+    virtual void visitSampler(Sampler * sampler);
 	virtual void visitShader(Shader * shader);
 	virtual void visitTexture(Texture * texture);
 	virtual void visitTransformFeedback(TransformFeedback * transformfeedback);

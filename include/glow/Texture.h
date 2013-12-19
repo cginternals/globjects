@@ -25,7 +25,7 @@ public:
 	Texture(GLuint id, GLenum  target, bool ownsGLObject = true);
 	virtual ~Texture();
 
-	virtual void accept(ObjectVisitor & visitor);
+    virtual void accept(ObjectVisitor & visitor) override;
 
 	void bind() const;
     void unbind() const;
