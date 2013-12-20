@@ -64,6 +64,7 @@ public:
 	virtual void visitFrameBufferObject(FrameBufferObject * fbo);
 	virtual void visitProgram(Program * program);
 	virtual void visitRenderBufferObject(RenderBufferObject * rbo);
+    virtual void visitSampler(Sampler * sampler);
 	virtual void visitShader(Shader * shader);
 	virtual void visitTexture(Texture * texture);
 	virtual void visitTransformFeedback(TransformFeedback * transformfeedback);

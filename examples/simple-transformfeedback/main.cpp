@@ -84,11 +84,7 @@ public:
         m_transformFeedbackProgram->setUniform("deltaT", float(m_timer.elapsed() * float(std::nano::num) / float(std::nano::den)));
         m_timer.reset();
 
-        m_vao->disable(m_shaderProgram->getAttributeLocation("in_position"));
-        m_vao->disable(m_shaderProgram->getAttributeLocation("in_color"));
         m_vao->binding(0)->setBuffer(drawBuffer, 0, sizeof(glm::vec4));
-        m_vao->binding(0)->setAttribute(m_transformFeedbackProgram->getAttributeLocation("in_position"));
-        m_vao->enable(m_transformFeedbackProgram->getAttributeLocation("in_position"));
 
         writeBuffer->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
 
@@ -101,11 +97,7 @@ public:
         m_transformFeedback->unbind();
         glDisable(GL_RASTERIZER_DISCARD);
 
-        m_vao->disable(m_transformFeedbackProgram->getAttributeLocation("in_position"));
         m_vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(glm::vec4));
-        m_vao->binding(0)->setAttribute(m_shaderProgram->getAttributeLocation("in_position"));
-        m_vao->enable(m_shaderProgram->getAttributeLocation("in_position"));
-        m_vao->enable(m_shaderProgram->getAttributeLocation("in_color"));
 
         m_shaderProgram->use();
         m_transformFeedback->draw(GL_TRIANGLE_STRIP);
@@ -175,7 +167,6 @@ void EventHandler::createAndSetupShaders()
     m_shaderProgram->attach(
         glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transformfeedback/simple.vert")
     ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
-	m_shaderProgram->bindFragDataLocation(0, "fragColor");
 
     m_transformFeedbackProgram = new glow::Program();
     m_transformFeedbackProgram->attach(
@@ -212,15 +203,15 @@ void EventHandler::createAndSetupGeometry()
 
 	m_vao = new glow::VertexArrayObject();
 
-    m_vao->binding(0)->setAttribute(m_shaderProgram->getAttributeLocation("in_position"));
+    m_vao->binding(0)->setAttribute(0);
     m_vao->binding(0)->setFormat(4, GL_FLOAT);
 
-    m_vao->binding(1)->setAttribute(m_shaderProgram->getAttributeLocation("in_color"));
+    m_vao->binding(1)->setAttribute(1);
     m_vao->binding(1)->setBuffer(m_colorBuffer, 0, sizeof(glm::vec4));
     m_vao->binding(1)->setFormat(4, GL_FLOAT);
 
-    m_vao->enable(m_shaderProgram->getAttributeLocation("in_position"));
-    m_vao->enable(m_shaderProgram->getAttributeLocation("in_color"));
+    m_vao->enable(0);
+    m_vao->enable(1);
 }
 
 void EventHandler::createAndSetupTransformFeedback()

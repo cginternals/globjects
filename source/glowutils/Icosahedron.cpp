@@ -115,6 +115,8 @@ void Icosahedron::draw(const GLenum mode)
     m_vao->bind();
     m_vao->drawElements(mode, m_size, GL_UNSIGNED_SHORT, nullptr);
     m_vao->unbind();
+
+    // glDisable(GL_DEPTH_TEST); // TODO: Use stackable states
 }
 
 void Icosahedron::refine(

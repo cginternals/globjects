@@ -7,6 +7,7 @@
 #include <glow/Program.h>
 #include <glow/Query.h>
 #include <glow/RenderBufferObject.h>
+#include <glow/Sampler.h>
 #include <glow/Shader.h>
 #include <glow/Texture.h>
 #include <glow/TransformFeedback.h>
@@ -59,6 +60,11 @@ public:
     virtual void visitRenderBufferObject(RenderBufferObject * rbo) override
     {
         m_typeName = "RenderBufferObject";
+    }
+
+    virtual void visitSampler(Sampler * sampler) override
+    {
+        m_typeName = "Sampler";
     }
 
     virtual void visitShader(Shader * shader) override
@@ -300,6 +306,11 @@ LogMessageBuilder& LogMessageBuilder::operator<<(Query* object)
 }
 
 LogMessageBuilder& LogMessageBuilder::operator<<(RenderBufferObject* object)
+{
+    return *this<<static_cast<Object*>(object);
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(Sampler* object)
 {
     return *this<<static_cast<Object*>(object);
 }

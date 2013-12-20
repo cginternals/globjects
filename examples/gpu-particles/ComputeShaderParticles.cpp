@@ -82,11 +82,13 @@ void ComputeShaderParticles::initialize()
     m_vao->bind();
 
     auto positionsBinding = m_vao->binding(0);
+    positionsBinding->setAttribute(0);
     positionsBinding->setBuffer(m_positionsSSBO, 0, sizeof(vec4));
     positionsBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
     m_vao->enable(0);
 
     auto velocitiesBinding = m_vao->binding(1);
+    velocitiesBinding->setAttribute(1);
     velocitiesBinding->setBuffer(m_velocitiesSSBO, 0, sizeof(vec4));
     velocitiesBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
     m_vao->enable(1);
@@ -138,8 +140,6 @@ void ComputeShaderParticles::step(const float elapsed)
 
     m_positionsSSBO->unbind();
     m_velocitiesSSBO->unbind();
-
-    //glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
 void ComputeShaderParticles::draw(const float elapsed)

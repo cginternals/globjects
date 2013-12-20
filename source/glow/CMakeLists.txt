@@ -62,6 +62,7 @@ set(api_includes
     ${header_path}/Referenced.h
     ${header_path}/RenderBufferAttachment.h
     ${header_path}/RenderBufferObject.h
+    ${header_path}/Sampler.h
     ${header_path}/Shader.h
     ${header_path}/String.h
     ${header_path}/StringSource.h
@@ -107,6 +108,7 @@ set(sources
     ${source_path}/Referenced.cpp
     ${source_path}/RenderBufferAttachment.cpp
     ${source_path}/RenderBufferObject.cpp
+    ${source_path}/Sampler.cpp
     ${source_path}/Shader.cpp
     ${source_path}/String.cpp
     ${source_path}/StringSource.cpp

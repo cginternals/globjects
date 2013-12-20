@@ -169,12 +169,10 @@ public:
                 usePath = !usePath;
                 break;
         }
-        //glow::debug() << event.key();
     }
 
     virtual void idle(Window & window) override
     {
-        //window.repaint();
     }
 
     virtual void timerEvent(TimerEvent & event) override
@@ -198,9 +196,6 @@ public:
 
         event.window()->repaint();
     }
-
-
-//-----------------
 
     virtual void mousePressEvent(MouseEvent & event) override
     {

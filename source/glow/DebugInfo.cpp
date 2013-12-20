@@ -14,6 +14,7 @@
 #include <glow/Program.h>
 #include <glow/Query.h>
 #include <glow/RenderBufferObject.h>
+#include <glow/Sampler.h>
 #include <glow/Shader.h>
 #include <glow/StringSource.h>
 #include <glow/Texture.h>
@@ -242,6 +243,16 @@ void DebugInfo::visitRenderBufferObject(RenderBufferObject* rbo)
 	info.addProperty("size", std::to_string(w)+" x "+std::to_string(h));
 
 	addInfo("RenderBufferObjects", info);
+}
+
+void DebugInfo::visitSampler(Sampler * sampler)
+{
+    assert(sampler != nullptr);
+
+    InfoUnit info;
+    info.name = name("Sampler", sampler);
+
+    addInfo("Samplers", info);
 }
 
 void DebugInfo::visitShader(Shader* shader)
