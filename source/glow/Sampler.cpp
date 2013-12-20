@@ -67,6 +67,7 @@ GLint Sampler::getParameteri(GLenum pname)
     GLint value = 0;
     glGetSamplerParameteriv(m_id, pname, &value);
     CheckGLError();
+	return value;
 }
 
 GLfloat Sampler::getParameterf(GLenum pname)
@@ -74,6 +75,7 @@ GLfloat Sampler::getParameterf(GLenum pname)
     GLfloat value = 0;
     glGetSamplerParameterfv(m_id, pname, &value);
     CheckGLError();
+	return value;
 }
 
 } // namespace glow
