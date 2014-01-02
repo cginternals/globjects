@@ -46,7 +46,7 @@ void Screen::getPhysicalSize(
 
     if (0 == dc)
     {
-        warning() << "Could not't get a device context from the desktop window.";
+        glow::warning() << "Could not't get a device context from the desktop window.";
         return;
     }
 
@@ -54,7 +54,7 @@ void Screen::getPhysicalSize(
     height = GetDeviceCaps(dc, VERTSIZE);
 
     if(0 == ReleaseDC(hWnd, dc))
-        warning() << "Releasing temporary (query) device context failed.";
+        glow::warning() << "Releasing temporary (query) device context failed.";
 
 #elif __APPLE__
 

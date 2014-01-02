@@ -33,7 +33,6 @@ public:
 	void draw();
 
     glow::Program * program();
-    void setProgram(glow::Program * program);
 
     glow::Shader * vertexShader();
     glow::Shader * fragmentShader();
