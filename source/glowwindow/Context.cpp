@@ -49,14 +49,7 @@ bool Context::create(const ContextFormat & format, const int width, const int he
     m_format = format;
     prepareFormat(m_format);
 
-    
-    /*
-     * GLFW3 does not set default hint values on window creation so at least
-     * the default values must be set before glfwCreateWindow can be called.
-     * c.f. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
-     */
-    glfwDefaultWindowHints();
-    m_window = glfwCreateWindow(width, height, "glow", monitor, nullptr);
+        m_window = glfwCreateWindow(width, height, "glow", monitor, nullptr);
 
     if (!m_window)
     {
@@ -93,6 +86,11 @@ void Context::prepareFormat(const ContextFormat & format)
         glow::warning() << "Changed unsupported OpenGL version from " << format.version() << " to " << version << ".";
     }
 
+    /*
+     * GLFW3 does not set default hint values on window creation so at least
+     * the default values must be set before glfwCreateWindow can be called.
+     * c.f. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
+     */
     glfwDefaultWindowHints();
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.majorVersion);
