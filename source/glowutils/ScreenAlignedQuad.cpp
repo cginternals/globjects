@@ -16,7 +16,7 @@ namespace glowutils {
 
     
     const char * ScreenAlignedQuad::s_defaultVertexShaderSource = R"(
-#version 140
+#version 150
 #extension GL_ARB_explicit_attrib_location : require
     
     layout (location = 0) in vec2 a_vertex;
@@ -31,7 +31,7 @@ namespace glowutils {
 
     
     const char* ScreenAlignedQuad::s_defaultFagmentShaderSource = R"(
-#version 140
+#version 150
 #extension GL_ARB_explicit_attrib_location : require
     
     uniform sampler2D source;

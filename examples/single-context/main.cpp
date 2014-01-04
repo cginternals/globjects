@@ -51,7 +51,7 @@ public:
 int main(int argc, char* argv[])
 {
     ContextFormat format;
-    format.setVersion(3, 0);
+    format.setVersion(3, 2);
 
     Window window;
 

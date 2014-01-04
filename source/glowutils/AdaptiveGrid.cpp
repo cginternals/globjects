@@ -25,7 +25,7 @@ namespace glowutils
 
 const char * AdaptiveGrid::s_vsSource = R"(
 
-#version 140
+#version 150
 #extension GL_ARB_explicit_attrib_location : require
 
 uniform mat4 transform;
@@ -54,7 +54,7 @@ void main()
 
 const char * AdaptiveGrid::s_fsSource = R"(
 
-#version 140
+#version 150
 #extension GL_ARB_explicit_attrib_location : require
 
 uniform vec2 viewPlaneDistance;
