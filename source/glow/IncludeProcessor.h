@@ -5,21 +5,22 @@
 
 #include <glow/glow.h>
 
-namespace glow 
-{
+namespace glow {
+    
+    class IncludeProcessor {
+        
+    public:
+        
+        virtual ~IncludeProcessor();
 
-class IncludeProcessor
-{
-public:
-    virtual ~IncludeProcessor();
-
-    static std::string resolveIncludes(const std::string& source);
-protected:
-    std::set<std::string> m_includes;
-
-    IncludeProcessor();
-
-    std::string process(const std::string& source);
-};
-
+        static std::string resolveIncludes(const std::string& source);
+        
+    protected:
+        
+        IncludeProcessor();
+        
+        std::set<std::string> m_includes;
+        std::string process(const std::string& source);
+    };
+    
 } // namespace glow

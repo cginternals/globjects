@@ -29,7 +29,7 @@ std::vector<std::string> getFiles(const std::string & dirName)
     }
     else
     {
-        while (entry = readdir(dir))
+        while ((entry = readdir(dir)))
         {
             std::string filename(entry->d_name);
             if (filename == "." || std::string(entry->d_name) == "..")

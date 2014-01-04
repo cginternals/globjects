@@ -22,8 +22,8 @@ namespace glowwindow
 MainLoop MainLoop::s_mainLoop;
 
 MainLoop::MainLoop()
-: m_exitCode(0)
-, m_running(false)
+: m_running(false)
+, m_exitCode(0)
 {
 }
 
