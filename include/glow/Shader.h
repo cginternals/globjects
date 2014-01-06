@@ -2,6 +2,7 @@
 
 #include <string>
 #include <set>
+#include <vector>
 
 #include <glow/glow.h>
 
@@ -42,6 +43,7 @@ public:
 public:
 	Shader(const GLenum type);
     Shader(const GLenum type, StringSource * source);
+    Shader(const GLenum type, StringSource * source, const std::vector<const char*> & includePaths);
 
 	virtual ~Shader();
 
@@ -53,6 +55,7 @@ public:
 	void setSource(const std::string & source);
     const StringSource* source() const;
     void updateSource();
+    void setIncludePaths(const std::vector<const char*> & includePaths);
 
     bool compile();
 	bool isCompiled() const;
@@ -77,6 +80,7 @@ protected:
 protected:
 	GLenum m_type;
     ref_ptr<StringSource> m_source;
+    std::vector<const char*> m_includePaths;
 
     bool m_compiled;
     bool m_compilationFailed;

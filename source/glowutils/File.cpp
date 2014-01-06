@@ -12,9 +12,14 @@ using namespace glow;
 namespace glowutils
 {
 
-Shader * createShaderFromFile(const GLenum type, const std::string& filename)
+Shader * createShaderFromFile(const GLenum type, const std::string& fileName)
 {
-    return new Shader(type, new File(filename));
+    return new Shader(type, new File(fileName));
+}
+
+Shader * createShaderFromFile(GLenum type, const std::string & fileName, const std::vector<const char*> & includePaths)
+{
+    return new Shader(type, new File(fileName), includePaths);
 }
 
 File::File(const std::string & filePath)

@@ -27,6 +27,12 @@ Shader::Shader(const GLenum type, StringSource * source)
 		setSource(source);
 }
 
+Shader::Shader(const GLenum type, StringSource * source, const std::vector<const char*> & includePaths)
+: Shader(type, source)
+{
+    setIncludePaths(includePaths);
+}
+
 Shader::Shader(const GLenum type)
 : Shader(type, nullptr)
 {
@@ -118,6 +124,13 @@ void Shader::updateSource()
     invalidate();
 }
 
+void Shader::setIncludePaths(const std::vector<const char*> & includePaths)
+{
+    m_includePaths = includePaths;
+
+    invalidate();
+}
+
 bool Shader::compile()
 {
     if (m_compilationFailed)
@@ -125,10 +138,7 @@ bool Shader::compile()
 
     if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
     {
-        // This call seems to be identical to glCompileShader(m_id) on this nvidia-331 driver on Ubuntu 13.04.
-        // Since we don't want to depend on such driver dependent behavior, we call glCompileShaderIncludeARB
-        // even though we don't use include paths yet
-        glCompileShaderIncludeARB(m_id, 0, nullptr, nullptr);
+        glCompileShaderIncludeARB(m_id, m_includePaths.size(), m_includePaths.data(), nullptr);
         CheckGLError();
     }
     else

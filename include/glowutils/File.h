@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <GL/glew.h>
 
@@ -16,10 +17,6 @@ namespace glow
 namespace glowutils
 {
 class FileRegistry;
-
-GLOWUTILS_API glow::Shader * createShaderFromFile(
-    GLenum type
-,   const std::string & fileName);
 
 /** \brief String source associated to a file.
     
@@ -46,5 +43,8 @@ protected:
     std::string m_source;
     FileRegistry* m_registry;
 };
+
+GLOWUTILS_API glow::Shader * createShaderFromFile(GLenum type, const std::string & fileName);
+GLOWUTILS_API glow::Shader * createShaderFromFile(GLenum type, const std::string & fileName, const std::vector<const char*> & includePaths);
 
 } // namespace glowutils
