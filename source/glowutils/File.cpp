@@ -17,10 +17,12 @@ Shader * createShaderFromFile(const GLenum type, const std::string& fileName)
     return new Shader(type, new File(fileName));
 }
 
-Shader * createShaderFromFile(GLenum type, const std::string & fileName, const std::vector<const char*> & includePaths)
+Shader * createShaderFromFile(GLenum type, const std::string & fileName, const std::vector<std::string> & includePaths)
 {
     return new Shader(type, new File(fileName), includePaths);
 }
+
+
 
 File::File(const std::string & filePath)
 : m_filePath(filePath)
@@ -41,7 +43,7 @@ File::~File()
     }
 }
 
-const std::string & File::string() const
+std::string File::string() const
 {
 	return m_source;
 }

@@ -17,7 +17,7 @@ public:
     StringTemplate(StringSource * source);
     virtual ~StringTemplate();
 
-    virtual const std::string & string() const override;
+    virtual std::string string() const override;
     virtual void update() override;
 
     void replace(const std::string & original, const std::string & str);

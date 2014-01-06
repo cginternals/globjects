@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <glow/glow.h>
 #include <glow/Referenced.h>
@@ -8,6 +9,7 @@
 
 namespace glow
 {
+class CompositeStringSource;
 
 /** \brief Superclass for all types of static and dynamic strings, e.g. for the use as Shader code.
  *
@@ -18,7 +20,8 @@ namespace glow
 class GLOW_API StringSource : public Referenced, public Changeable
 {
 public:
-    virtual const std::string & string() const = 0;
+    virtual std::string string() const = 0;
+    virtual std::vector<std::string> strings() const;
 
     virtual std::string shortInfo() const;
 };

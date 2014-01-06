@@ -38,14 +38,7 @@ IncludeProcessor::~IncludeProcessor()
 
 std::string IncludeProcessor::resolveIncludes(const std::string& source)
 {
-    if (GLEW_ARB_shading_language_include && Version::current() >= Version(3, 2))
-    {
-        return source;
-    }
-    else
-    {
-        return IncludeProcessor().process(source);
-    }
+    return IncludeProcessor().process(source);
 }
 
 std::string IncludeProcessor::process(const std::string& source)

@@ -34,7 +34,7 @@ StringTemplate::~StringTemplate()
 {
 }
 
-const std::string & StringTemplate::string() const
+std::string StringTemplate::string() const
 {
     if (!m_modifiedSource.isValid())
     {

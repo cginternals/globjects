@@ -5,11 +5,11 @@ namespace glow
 {
 
 String::String(const std::string& string)
-:    m_string(string)
+: m_string(string)
 {
 }
 
-const std::string & String::string() const
+std::string String::string() const
 {
     return m_string;
 }

@@ -32,7 +32,7 @@ public:
     File(const std::string & filePath);
     virtual ~File();
 
-    virtual const std::string & string() const override;
+    virtual std::string string() const override;
     virtual std::string shortInfo() const override;
 
 	const std::string & filePath() const;
@@ -45,6 +45,6 @@ protected:
 };
 
 GLOWUTILS_API glow::Shader * createShaderFromFile(GLenum type, const std::string & fileName);
-GLOWUTILS_API glow::Shader * createShaderFromFile(GLenum type, const std::string & fileName, const std::vector<const char*> & includePaths);
+GLOWUTILS_API glow::Shader * createShaderFromFile(GLenum type, const std::string & fileName, const std::vector<std::string> & includePaths);
 
 } // namespace glowutils

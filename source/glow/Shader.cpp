@@ -13,6 +13,23 @@
 
 #include "IncludeProcessor.h"
 
+namespace
+{
+
+std::vector<const char*> collectCStrings(std::vector<std::string> & strings)
+{
+    std::vector<const char*> cStrings;
+
+    for (const std::string & str : strings)
+    {
+        cStrings.push_back(str.c_str());
+    }
+
+    return cStrings;
+}
+
+}
+
 namespace glow
 {
 
@@ -27,7 +44,7 @@ Shader::Shader(const GLenum type, StringSource * source)
 		setSource(source);
 }
 
-Shader::Shader(const GLenum type, StringSource * source, const std::vector<const char*> & includePaths)
+Shader::Shader(const GLenum type, StringSource * source, const std::vector<std::string> & includePaths)
 : Shader(type, source)
 {
     setIncludePaths(includePaths);
@@ -109,12 +126,19 @@ void Shader::updateSource()
 {
     if (m_source)
     {
-        std::string source = IncludeProcessor::resolveIncludes(m_source->string());
+        std::vector<std::string> sources = m_source->strings();
 
-        const char * sourcePointer = source.c_str();
-        const int sourceSize = source.size();
+        if (!GLEW_ARB_shading_language_include || Version::current() < Version(3, 2)) // fallback
+        {
+            for (std::string & str : sources)
+            {
+                str = IncludeProcessor::resolveIncludes(str);
+            }
+        }
 
-        glShaderSource(m_id, 1, &sourcePointer, &sourceSize);
+        std::vector<const char*> cStrings = collectCStrings(sources);
+
+        glShaderSource(m_id, cStrings.size(), cStrings.data(), nullptr);
     }
     else
     {
@@ -124,7 +148,7 @@ void Shader::updateSource()
     invalidate();
 }
 
-void Shader::setIncludePaths(const std::vector<const char*> & includePaths)
+void Shader::setIncludePaths(const std::vector<std::string> & includePaths)
 {
     m_includePaths = includePaths;
 
@@ -138,7 +162,8 @@ bool Shader::compile()
 
     if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
     {
-        glCompileShaderIncludeARB(m_id, m_includePaths.size(), m_includePaths.data(), nullptr);
+        std::vector<const char*> cStrings = collectCStrings(m_includePaths);
+        glCompileShaderIncludeARB(m_id, cStrings.size(), cStrings.data(), nullptr);
         CheckGLError();
     }
     else
