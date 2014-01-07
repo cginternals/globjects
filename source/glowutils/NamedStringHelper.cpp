@@ -71,7 +71,7 @@ void NamedStringHelper::scanDirectory(const std::string & directory, const std::
 
         std::string fileName = directory+"/"+file;
 
-        NamedStrings::createNamedString(fileName, new File(fileName));
+        NamedStrings::createNamedString("/"+fileName, new File(fileName));
     }
 }
 
