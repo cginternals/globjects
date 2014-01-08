@@ -70,7 +70,7 @@ public:
         glow::DebugMessageOutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.f);
-
+        CheckGLError();
 
         m_sphere = new glow::Program();
         m_sphere->attach(
@@ -97,12 +97,15 @@ public:
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         glViewport(0, 0, event.width(), event.height());
+        CheckGLError();
+
         m_camera.setViewport(event.width(), event.height());
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        CheckGLError();
 
         m_agrid->update();
         m_sphere->setUniform("transform", m_camera.viewProjection());

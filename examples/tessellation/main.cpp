@@ -51,11 +51,10 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        glEnable(GL_TEXTURE_2D);
-
         glow::DebugMessageOutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.f);
+        CheckGLError();
 
         m_sphere = new glow::Program();
         m_sphere->attach(
@@ -78,18 +77,21 @@ public:
         m_agrid->setCamera(&m_camera);
     }
 
-    virtual void resizeEvent(ResizeEvent & event) override
+    virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         int width = event.width();
         int height = event.height();
 
         glViewport(0, 0, width, height);
+        CheckGLError();
+
         m_camera.setViewport(width, height);
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        CheckGLError();
 
         m_agrid->update();
 

@@ -51,23 +51,27 @@ public:
         glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        CheckGLError();
 
 	    createAndSetupTexture();
 	    createAndSetupShaders();
 	    createAndSetupGeometry();
     }
     
-    virtual void resizeEvent(ResizeEvent & event) override
+    virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         int width = event.width();
         int height = event.height();
         int side = std::min<int>(width, height);
+
         glViewport((width - side) / 2, (height - side) / 2, side, side);
+        CheckGLError();
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        CheckGLError();
 
         ++m_frame %= static_cast<int>(200 * glm::pi<double>());
 
@@ -75,8 +79,7 @@ public:
 
 	    m_texture->bind();
 
-	    m_computeProgram->use();
-	    glDispatchCompute(512/16, 512/16, 1); // 512^2 threads in blocks of 16^2
+        m_computeProgram->dispatchCompute(512/16, 512/16, 1); // 512^2 threads in blocks of 16^2
 	    m_computeProgram->release();
 
         m_quad->draw();

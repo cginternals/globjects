@@ -52,6 +52,7 @@ public:
 		glow::DebugMessageOutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        CheckGLError();
 
 		glow::Shader* vertexShader = glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/transparency.vert");
 
@@ -78,9 +79,7 @@ public:
 
 		m_nav.setCamera(m_camera);
 		m_nav.setCoordinateProvider(this);
-		m_nav.setBoundaryHint(m_aabb);
-
-		CheckGLError();
+        m_nav.setBoundaryHint(m_aabb);
 	}
 
 	void paintEvent(glowwindow::PaintEvent& event) override {
@@ -129,10 +128,13 @@ public:
 		CheckGLError();
 	}
 
-    void resizeEvent(glowwindow::ResizeEvent & event) override {
+    void framebufferResizeEvent(glowwindow::ResizeEvent & event) override {
 		int width = event.width();
 		int height = event.height();
+
         glViewport(0, 0, width, height);
+        CheckGLError();
+
         for (auto& algo : m_algos) {
             algo->resize(width, height);
         }		

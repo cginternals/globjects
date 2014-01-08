@@ -52,6 +52,7 @@ public:
         glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        CheckGLError();
 
 	    createAndSetupShaders();
 	    createAndSetupGeometry();
@@ -60,13 +61,14 @@ public:
         m_timer.start();
     }
     
-    virtual void resizeEvent(ResizeEvent & event) override
+    virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         int width = event.width();
         int height = event.height();
-
     	int side = std::min<int>(width, height);
+
 	    glViewport((width - side) / 2, (height - side) / 2, side, side);
+        CheckGLError();
 
 	    m_shaderProgram->setUniform("modelView", glm::mat4());
         m_shaderProgram->setUniform("projection", glm::ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
@@ -75,6 +77,7 @@ public:
     virtual void paintEvent(PaintEvent &) override
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        CheckGLError();
 
         glow::Buffer* drawBuffer = m_vertexBuffer1;
         glow::Buffer* writeBuffer = m_vertexBuffer2;

@@ -36,23 +36,26 @@ public:
         glow::DebugMessageOutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        CheckGLError();
 
         createAndSetupTexture();
 	    createAndSetupGeometry();
     }
     
-    virtual void resizeEvent(ResizeEvent & event) override
+    virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         int width = event.width();
         int height = event.height();
-
     	int side = std::min<int>(width, height);
+
         glViewport((width - side) / 2, (height - side) / 2, side, side);
+        CheckGLError();
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        CheckGLError();
 
         m_quad->draw();
     }
