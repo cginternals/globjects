@@ -92,11 +92,12 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
     m_program->setUniform("screenSize", glm::ivec2(width, height));
     m_program->use();
 
-    drawFunction(m_program.get());
+    drawFunction(m_program);
 
     m_renderFbo->unbind();
 
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+    CheckGLError();
 
     m_postFbo->bind();
     m_postFbo->clear(GL_COLOR_BUFFER_BIT);

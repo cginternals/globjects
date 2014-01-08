@@ -100,7 +100,7 @@ const vec2 NavigationMath::rayCircleIntersection(
 
 	const float a = length2(ray);
 	const float b = 2.f * dot(ray, origin);
-    const float c = length2(origin) - static_cast<float>(radius * radius);
+    const float c = length2(origin) - radius * radius;
 
 	const float delta = b * b - 4.f * a * c;
 
@@ -167,7 +167,7 @@ bool NavigationMath::pointVisible(
 {
 	const vec3 t = vec3(mvp * vec4(p, 0.f));
 
-    return abs(t.x) <= 1.f && abs(t.y) <= 1.f;
+    return glm::abs(t.x) <= 1.f && glm::abs(t.y) <= 1.f;
 }
 
 const vec3 NavigationMath::cameraWithPointInView(

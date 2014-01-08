@@ -8,6 +8,7 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
+#include <glow/Error.h>
 
 #include <glowutils/Icosahedron.h>
 
@@ -111,6 +112,7 @@ Icosahedron::~Icosahedron()
 void Icosahedron::draw(const GLenum mode)
 {
     glEnable(GL_DEPTH_TEST);
+    CheckGLError();
 
     m_vao->bind();
     m_vao->drawElements(mode, m_size, GL_UNSIGNED_SHORT, nullptr);

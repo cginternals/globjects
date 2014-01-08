@@ -50,7 +50,7 @@ Window::~Window()
     if (s_instances.empty())
         MainLoop::quit(0);
 
-    delete m_timer;    
+    delete m_timer;
 }
 
 WindowEventHandler * Window::eventHandler() const

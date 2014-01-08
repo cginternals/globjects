@@ -1,4 +1,5 @@
 #include <sstream>
+#include <cassert>
 
 #include <glow/CompositeStringSource.h>
 
@@ -27,6 +28,8 @@ CompositeStringSource::~CompositeStringSource()
 
 void CompositeStringSource::appendSource(StringSource * source)
 {
+    assert(source != nullptr);
+
     m_sources.push_back(source);
     source->registerListener(this);
     changed();

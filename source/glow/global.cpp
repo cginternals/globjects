@@ -88,19 +88,6 @@ GLint query::getInteger(GLenum pname, unsigned index)
 	return value;
 }
 
-std::vector<GLint> query::getIntegers(GLenum pname, unsigned size)
-{
-	GLint* values = new GLint[size];
-
-	glGetIntegerv(pname, values);
-	CheckGLError();
-
-	std::vector<GLint> result(values, values+size);
-	delete[] values;
-
-	return result;
-}
-
 std::string query::vendor()
 {
 	return getString(GL_VENDOR);

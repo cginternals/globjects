@@ -6,6 +6,7 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
+#include <glow/Error.h>
 
 #include <glowutils/UnitCube.h>
 
@@ -89,6 +90,7 @@ UnitCube::UnitCube(
 void UnitCube::draw()
 {
     glEnable(GL_DEPTH_TEST);
+    CheckGLError();
 
     m_vao->bind();
     m_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 14);

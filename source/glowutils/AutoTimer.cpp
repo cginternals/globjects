@@ -9,6 +9,10 @@
 #include <glowutils/Timer.h>
 #include <glowutils/AutoTimer.h>
 
+namespace {
+    // use number of digits to retrieve exp in 10^(3 exp)
+    static const char * units("num ");
+}
 
 namespace glowutils
 {
@@ -28,9 +32,6 @@ AutoTimer::~AutoTimer()
     m_timer->pause();
 
     double delta(static_cast<double>(m_timer->elapsed()));
-
-    // use number of digits to retrieve exp in 10^(3 exp)
-    static const char * units("num ");
 
     const unsigned char u(std::min<char>(3, static_cast<char>(ceil(log10(delta) / 3.0))));
 

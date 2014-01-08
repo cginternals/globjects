@@ -60,15 +60,15 @@ public:
 	static void print(const std::vector<InfoGroup> & info);
 
 public:
-	virtual void visitBuffer(Buffer * buffer);
-	virtual void visitFrameBufferObject(FrameBufferObject * fbo);
-	virtual void visitProgram(Program * program);
-	virtual void visitRenderBufferObject(RenderBufferObject * rbo);
+    virtual void visitBuffer(Buffer * buffer);
+    virtual void visitFrameBufferObject(FrameBufferObject * fbo);
+    virtual void visitProgram(Program * program);
+    virtual void visitRenderBufferObject(RenderBufferObject * rbo);
     virtual void visitSampler(Sampler * sampler);
-	virtual void visitShader(Shader * shader);
-	virtual void visitTexture(Texture * texture);
-	virtual void visitTransformFeedback(TransformFeedback * transformfeedback);
-	virtual void visitVertexArrayObject(VertexArrayObject * vao);
+    virtual void visitShader(Shader * shader);
+    virtual void visitTexture(Texture * texture);
+    virtual void visitTransformFeedback(TransformFeedback * transformfeedback);
+    virtual void visitVertexArrayObject(VertexArrayObject * vao);
 
 protected:
 	DebugInfo();

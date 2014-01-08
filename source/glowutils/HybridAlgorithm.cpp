@@ -79,7 +79,9 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_prepassFbo->clearBuffer(GL_COLOR, 0, glm::vec4(1.0f));
 
     glEnable(GL_DEPTH_TEST);
+    CheckGLError();
     glDisable(GL_BLEND);
+    CheckGLError();
 
     m_opaqueProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
     m_opaqueProgram->setUniform("normalmatrix", camera->normal());
@@ -92,6 +94,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     //
     m_prepassFbo->setDrawBuffer(GL_NONE);
     glDepthMask(GL_FALSE);
+    CheckGLError();
 
     static unsigned int initialDepthKTab = std::numeric_limits<unsigned int>::max();
     m_depthKTab->clearData(GL_R32UI, GL_RED, GL_UNSIGNED_INT, &initialDepthKTab);
@@ -105,10 +108,12 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     drawFunction(m_depthKTabProgram.get());
 
     glDepthMask(GL_TRUE);
+    CheckGLError();
 
     m_prepassFbo->unbind();
 
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+    CheckGLError();
 
     //
     // compute visibility k-TAB: The alpha visibility for each of the first k fragments.
@@ -127,6 +132,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_visibilityKTabProgram->dispatchCompute(width * height / 32 + 1, 1, 1);
 
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+    CheckGLError();
 
     //
     // render translucent colors
@@ -136,8 +142,11 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_colorFbo->clearBuffer(GL_COLOR, 1, glm::vec4(0.0f));
 
     glEnable(GL_BLEND);
+    CheckGLError();
     glBlendFunc(GL_ONE, GL_ONE);
+    CheckGLError();
     glDepthMask(GL_FALSE);
+    CheckGLError();
 
     static unsigned int initialDepthComplexity = 0;
     m_depthComplexityBuffer->clearData(GL_R32UI, GL_RED, GL_UNSIGNED_INT, &initialDepthComplexity);
@@ -148,11 +157,14 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_colorProgram->setUniform("screenSize", glm::ivec2(width, height));
     m_colorProgram->use();
 
-    drawFunction(m_colorProgram.get());
+    drawFunction(m_colorProgram);
 
     glDepthMask(GL_TRUE);
+    CheckGLError();
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    CheckGLError();
     glDisable(GL_BLEND);
+    CheckGLError();
 
     m_colorFbo->unbind();
 

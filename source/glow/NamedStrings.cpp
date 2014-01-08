@@ -1,5 +1,7 @@
 #include <glow/NamedStrings.h>
 
+#include <cassert>
+
 #include <glow/Error.h>
 #include <glow/StringSource.h>
 #include <glow/String.h>
@@ -22,6 +24,8 @@ void NamedStrings::createNamedString(const std::string& name, const std::string&
 
 void NamedStrings::createNamedString(const std::string& name, StringSource* source, GLenum type)
 {
+    assert(source != nullptr);
+
     if (isNamedString(name, true))
     {
         if (s_instance.sourceOccurenceCount(source) <= 1 )
@@ -64,7 +68,6 @@ bool NamedStrings::isNamedString(const std::string& name, bool cached)
         return s_instance.m_registeredStringSources.count(name) > 0;
     }
 
-    CheckGLError();
     bool result = glIsNamedStringARB(name.size(), name.c_str()) == GL_TRUE;
     CheckGLError();
     return result;

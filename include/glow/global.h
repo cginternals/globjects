@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <array>
 
 #include <GL/glew.h>
 
@@ -25,8 +26,9 @@ public:
 	static GLdouble getDouble(GLenum pname);
 	static GLboolean getBoolean(GLenum pname);
 
-	static GLint getInteger(GLenum pname, unsigned index);
-	static std::vector<GLint> getIntegers(GLenum pname, unsigned size);
+    static GLint getInteger(GLenum pname, unsigned index);
+    template <int Count>
+    static std::array<GLint, Count> getIntegers(GLenum pname);
 
 	static std::string vendor();
 	static std::string renderer();
@@ -57,3 +59,5 @@ protected:
 };
 
 } // namespace glow
+
+#include <glow/global.hpp>
