@@ -128,9 +128,11 @@ public:
         reset();
     }
     
-    virtual void resizeEvent(ResizeEvent & event) override
+    virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         glViewport(0, 0, event.width(), event.height());
+        CheckGLError();
+
         m_camera->setViewport(event.size());
 
         for (auto technique : m_techniques)

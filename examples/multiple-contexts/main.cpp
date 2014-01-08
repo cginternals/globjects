@@ -27,17 +27,21 @@ public:
         glow::DebugMessageOutput::enable();
 
         glClearColor(1.f, 1.f, 1.f, 1.f);
+        CheckGLError();
     }
 
-    virtual void resizeEvent(ResizeEvent & event) override
+    virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         glViewport(0, 0, event.width(), event.height());
+        CheckGLError();
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         glClearColor(rand() / static_cast<float>(RAND_MAX), rand() / static_cast<float>(RAND_MAX), rand() / static_cast<float>(RAND_MAX), 1.f);
+        CheckGLError();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        CheckGLError();
     }
 
     virtual void idle(Window & window) override
