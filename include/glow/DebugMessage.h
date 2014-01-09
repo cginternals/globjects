@@ -40,13 +40,13 @@ public:
 	static const char * typeString(GLenum type);
 
 public:
-	const char* file;
-	int line;
 	GLenum source;
 	GLenum type;
 	GLuint id;
 	GLenum severity;
 	std::string message;
+    const char* file;
+    int line;
 };
 
 } // namespace glow

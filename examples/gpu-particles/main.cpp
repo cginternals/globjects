@@ -79,7 +79,7 @@ public:
         delete m_camera;
     }
 
-    virtual void initialize(Window & window) override
+    virtual void initialize(Window & ) override
     {
         glow::DebugMessageOutput::enable();
 
@@ -296,20 +296,20 @@ public:
         event.accept();
     }
 
-    virtual float depthAt(const ivec2 & windowCoordinates) override
+    virtual float depthAt(const ivec2 & /*windowCoordinates*/) override
     {
         return 2.0;
     }
 
-    virtual vec3 objAt(const ivec2 & windowCoordinates) override
+    virtual vec3 objAt(const ivec2 & /*windowCoordinates*/) override
     {
         return vec3(0.f);
     }
-    virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
+    virtual vec3 objAt(const ivec2 & /*windowCoordinates*/, const float /*depth*/) override
     {
         return vec3(0.f);
     }
-    virtual glm::vec3 objAt(const ivec2 & windowCoordinates, const float depth, const mat4 & viewProjectionInverted) override
+    virtual glm::vec3 objAt(const ivec2 & /*windowCoordinates*/, const float /*depth*/, const mat4 & /*viewProjectionInverted*/) override
     {
         return vec3(0.f);
     }
@@ -330,8 +330,8 @@ protected:
 
     glowutils::Timer m_timer;
 
-    glowutils::Camera * m_camera;
     int m_numParticles;
+    glowutils::Camera * m_camera;
 
     glow::Array<vec4> m_positions;
     glow::Array<vec4> m_velocities;
@@ -354,7 +354,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(3, 2); // minimum required version is 3.2 due to particle drawing using geometry shader.

@@ -31,7 +31,7 @@ public:
     void createAndSetupTexture();
 	void createAndSetupGeometry();
 
-    virtual void initialize(Window & window) override
+    virtual void initialize(Window & ) override
     {
         glow::DebugMessageOutput::enable();
 
@@ -73,7 +73,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(3, 0);
@@ -108,7 +108,7 @@ void EventHandler::createAndSetupTexture()
     std::poisson_distribution<> r(0.2);
 
     for (int i = 0; i < w * h * 4; ++i)
-        data[i] = 255 - static_cast<unsigned char>(r(generator) * 255);
+        data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
 
 	m_texture = new glow::Texture(GL_TEXTURE_2D);
 

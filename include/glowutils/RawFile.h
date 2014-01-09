@@ -33,7 +33,7 @@ public:
     virtual ~RawFile();
 
     const T * data() const;
-    const size_t size() const;
+    size_t size() const;
 
     bool valid() const;
     const std::string & filePath() const;

@@ -213,7 +213,7 @@ void WindowEventDispatcher::handleCursorPos(GLFWwindow* glfwWindow, double xPos,
     dispatchEvent(glfwWindow, new MouseEvent(glm::ivec2(std::floor(xPos), std::floor(yPos))));
 }
 
-void WindowEventDispatcher::handleCursorEnter(GLFWwindow* glfwWindow, int entered)
+void WindowEventDispatcher::handleCursorEnter(GLFWwindow* /*glfwWindow*/, int /*entered*/)
 {
     // TODO: implement
 }

@@ -11,6 +11,7 @@ namespace glowutils
 AxisAlignedBoundingBox::AxisAlignedBoundingBox()
 : m_urb(vec3(-FLT_MAX, -FLT_MAX, -FLT_MAX))
 , m_llf(vec3(+FLT_MAX, +FLT_MAX, +FLT_MAX))
+, m_radius(0)
 {
 }
 
@@ -26,7 +27,7 @@ AxisAlignedBoundingBox::AxisAlignedBoundingBox(const glm::vec3& llf, const glm::
     glm::min(llf.z, urb.z)
 ))
 , m_center(m_llf + (m_urb - m_llf) * .5f)
-, m_radius((m_urb - m_llf).length() * .5f)
+, m_radius(static_cast<float>((m_urb - m_llf).length()) * .5f)
 {
 }
 
@@ -59,7 +60,7 @@ bool AxisAlignedBoundingBox::extend(const vec3 & vertex)
     if (extended)
     {
         m_center = m_llf + (m_urb - m_llf) * .5f;
-        m_radius = (m_urb - m_llf).length() * .5f;
+        m_radius = static_cast<float>((m_urb - m_llf).length()) * .5f;
     }
     return extended;
 }

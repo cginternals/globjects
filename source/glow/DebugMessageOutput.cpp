@@ -124,7 +124,7 @@ void DebugMessageOutput::insertMessage(GLenum source, GLenum type, GLuint id, GL
 
 void DebugMessageOutput::insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string& message)
 {
-    insertMessage(source, type, id, severity, message.length(), message.c_str());
+    insertMessage(source, type, id, severity, static_cast<int>(message.length()), message.c_str());
 }
 
 void DebugMessageOutput::insertMessage(const DebugMessage& message)
@@ -147,7 +147,7 @@ void DebugMessageOutput::enableMessages(GLenum source, GLenum type, GLenum sever
 
 void DebugMessageOutput::enableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint>& ids)
 {
-    enableMessages(source, type, severity, ids.size(), ids.data());
+    enableMessages(source, type, severity, static_cast<int>(ids.size()), ids.data());
 }
 
 void DebugMessageOutput::disableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
@@ -165,12 +165,12 @@ void DebugMessageOutput::disableMessages(GLenum source, GLenum type, GLenum seve
 
 void DebugMessageOutput::disableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint>& ids)
 {
-    disableMessages(source, type, severity, ids.size(), ids.data());
+    disableMessages(source, type, severity, static_cast<int>(ids.size()), ids.data());
 }
 
 void APIENTRY DebugMessageOutput::handleMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, void * param)
 {
-    handleMessage(DebugMessage(source, type, id, severity, message), *reinterpret_cast<int*>(&param));
+    handleMessage(DebugMessage(source, type, id, severity, std::string(message, length)), *reinterpret_cast<int*>(&param));
 }
 
 void DebugMessageOutput::handleMessage(const DebugMessage& message, int id)

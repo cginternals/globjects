@@ -28,7 +28,7 @@ public:
 
     void createAndSetupShaders();
 
-    virtual void initialize(Window & window) override
+    virtual void initialize(Window & ) override
     {
         glow::DebugMessageOutput::enable();
 
@@ -76,7 +76,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(3, 0);

@@ -42,7 +42,7 @@ void CameraPathPlayer::prepare()
     float totalLength = 0.0;
     const CameraPathPoint* previous = &points[0];
 
-    for (int i = 1; i<points.size(); ++i)
+    for (unsigned int i = 1; i<points.size(); ++i)
     {
         const CameraPathPoint* current = &points[i];
         float distance = glm::length(current->eye - previous->eye);
@@ -50,7 +50,7 @@ void CameraPathPlayer::prepare()
         float startT = totalLength;
         float endT = startT + distance;
 
-        PathSection section{ previous, current, startT, endT };
+        PathSection section{ previous, current, startT, endT, glm::vec3(), glm::vec3() };
         m_sections.push_back(section);
 
         totalLength = endT;
@@ -157,7 +157,7 @@ void CameraPathPlayer::prepareControlPoints()
     const CameraPathPoint* previous = &points[0];
     const CameraPathPoint* current = &points[1];
 
-    const CameraPathPoint* first = &points[0];
+    //const CameraPathPoint* first = &points[0];
     const CameraPathPoint* last = &points[points.size()-1];
 
     std::vector<glm::vec3> dirs;
@@ -165,7 +165,7 @@ void CameraPathPlayer::prepareControlPoints()
     dir0 = (dir0 + (previous->eye - (&points[points.size()-2])->eye))/2.f;
     dirs.push_back(dir0);
 
-    for (int i = 1; i<points.size()-1; ++i)
+    for (unsigned int i = 1; i<points.size()-1; ++i)
     {
         const CameraPathPoint* current = &points[i];
         const CameraPathPoint* next = &points[i+1];

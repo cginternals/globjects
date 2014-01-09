@@ -37,7 +37,7 @@ const T * RawFile<T>::data() const
 }
 
 template<typename T>
-const size_t RawFile<T>::size() const
+size_t RawFile<T>::size() const
 {
     return m_data.size();
 }

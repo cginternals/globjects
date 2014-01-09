@@ -15,7 +15,7 @@
 namespace glowutils
 {
 
-const unsigned int Screen::getNumScreens()
+unsigned int Screen::getNumScreens()
 {
     unsigned int numScreens = 0;
 

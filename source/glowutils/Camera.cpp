@@ -156,7 +156,7 @@ void Camera::setViewport(const ivec2 & viewport)
     if (viewport == m_viewport)
         return;
 
-    m_aspect = viewport.x / max(static_cast<float>(viewport.y), 1.f);
+    m_aspect = static_cast<float>(viewport.x) / max(static_cast<float>(viewport.y), 1.f);
     m_viewport = viewport;
 
     dirty();

@@ -123,6 +123,10 @@ AbstractCapabilitySetting::AbstractCapabilitySetting(Type type)
 {
 }
 
+AbstractCapabilitySetting::~AbstractCapabilitySetting()
+{
+}
+
 AbstractCapabilitySetting::Type AbstractCapabilitySetting::type() const
 {
     return m_type;

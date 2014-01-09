@@ -15831,8 +15831,8 @@ std::vector<std::string> extensions = {
 
 int extensionProiority(const std::string & name)
 {
-    int pos = name.find_last_of('_');
-    if (pos<0)
+    std::size_t pos = name.find_last_of('_');
+    if (pos == std::string::npos)
         return -1;
 
     std::string extension = name.substr(pos+1);
@@ -15840,7 +15840,7 @@ int extensionProiority(const std::string & name)
     if (it == extensions.end())
         return -1;
 
-    return it - extensions.begin();
+    return static_cast<int>(it - extensions.begin());
 }
 
 void sortByExtension(std::vector<std::string> & names)

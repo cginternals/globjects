@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <memory>
+#include <iomanip>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -56,11 +58,17 @@ class Uniform;
 	\see debug
 	\see warning
 */
-class GLOW_API LogMessageBuilder : public std::stringstream
+class GLOW_API LogMessageBuilder
 {
 public:
+    /* These types are unspecified by the C++ standard -> we need to query the compiler specific types
+    */
+    using PrecisionManipulator = decltype(std::setprecision(0));
+    using FillManipulator = decltype(std::setfill('0'));
+    using WidthManipulator = decltype(std::setw(0));
+public:
 	LogMessageBuilder(LogMessage::Level level, AbstractLogHandler* handler);
-	LogMessageBuilder(const LogMessageBuilder& builder);
+    LogMessageBuilder(const LogMessageBuilder& builder);
 	virtual ~LogMessageBuilder();
 
 	// primitive types
@@ -81,6 +89,9 @@ public:
 
 	// manipulators
 	LogMessageBuilder& operator<<(std::ostream& (*manipulator)(std::ostream&));
+    LogMessageBuilder& operator<<(PrecisionManipulator manipulator);
+    LogMessageBuilder& operator<<(FillManipulator manipulator);
+    LogMessageBuilder& operator<<(WidthManipulator manipulator);
 	
 	// glow objects
     LogMessageBuilder& operator<<(Object* object);
@@ -128,6 +139,7 @@ public:
 protected:
 	LogMessage::Level m_level;
 	AbstractLogHandler* m_handler;
+    std::shared_ptr<std::stringstream> m_stream;
 };
 
 } // namespace glow

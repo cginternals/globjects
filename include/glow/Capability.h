@@ -66,6 +66,7 @@ public:
 
 public:
     AbstractCapabilitySetting(Type type);
+    virtual ~AbstractCapabilitySetting();
 
     virtual void apply() = 0;
 
@@ -125,11 +126,11 @@ public:
 
     virtual void apply() override;
 protected:
-    bool useFloat;
     GLdouble nearVal;
     GLdouble farVal;
     GLfloat nearValF;
     GLfloat farValF;
+    bool useFloat;
 };
 
 class LineWidth : public AbstractCapabilitySetting

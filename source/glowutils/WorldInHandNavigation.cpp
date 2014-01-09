@@ -257,9 +257,9 @@ void WorldInHandNavigation::rotateProcess(const ivec2 & mouse)
 
     const vec2 delta(m_m0 - mouse);
     // setup the degree of freedom for horizontal rotation within a single action
-    const float wDeltaX = glm::degrees(delta.x / m_camera->viewport().x);
+    const float wDeltaX = glm::degrees(delta.x / static_cast<float>(m_camera->viewport().x));
     // setup the degree of freedom for vertical rotation within a single action
-    const float wDeltaY = glm::degrees(delta.y / m_camera->viewport().y);
+    const float wDeltaY = glm::degrees(delta.y / static_cast<float>(m_camera->viewport().y));
 
     rotate(wDeltaX, wDeltaY);
 }
@@ -342,7 +342,7 @@ void WorldInHandNavigation::resetScaleAtMouse(const ivec2 & mouse)
     if (!intersects && !AbstractCoordinateProvider::validDepth(m_coordsProvider->depthAt(mouse)))
         return;
 
-    float scale = (DEFAULT_DISTANCE / (ln - i).length());
+    float scale = (DEFAULT_DISTANCE / static_cast<float>((ln - i).length()));
 
     //enforceScaleConstraints(scale, i);
 
@@ -384,9 +384,7 @@ void WorldInHandNavigation::enforceTranslationConstraints(vec3 & p) const
     p = vec3(i.x, 0.f, i.y) - m_center;
 }
 
-void WorldInHandNavigation::enforceRotationConstraints(
-    float & hAngle
-,   float & vAngle) const
+void WorldInHandNavigation::enforceRotationConstraints(float & /*hAngle*/, float & vAngle) const
 {
     // hAngle is not constrained, vAngle is.
 

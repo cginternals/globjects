@@ -76,8 +76,8 @@ ScreenAlignedQuad::ScreenAlignedQuad(Texture * texture)
 ScreenAlignedQuad::ScreenAlignedQuad(Program * program)
 :   m_vertexShader(nullptr)
 ,   m_fragmentShader(nullptr)
-,   m_texture(nullptr)
 ,   m_program(program)
+,   m_texture(nullptr)
 ,   m_samplerIndex(0)
 {
     assert(program != nullptr);

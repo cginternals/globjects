@@ -68,10 +68,10 @@ State* State::currentState()
     state->addCapabilitySetting(new SampleCoverage(query::getFloat(GL_SAMPLE_COVERAGE_VALUE), query::getBoolean(GL_SAMPLE_COVERAGE_INVERT)));
 
     state->setToCurrent(GL_PRIMITIVE_RESTART);
-    state->addCapabilitySetting(new PrimitiveRestartIndex(query::getFloat(GL_PRIMITIVE_RESTART_INDEX)));
+    state->addCapabilitySetting(new PrimitiveRestartIndex(query::getInteger(GL_PRIMITIVE_RESTART_INDEX)));
 
     state->setToCurrent(GL_SCISSOR_TEST);
-    auto box = query::getFloats<4>(GL_SCISSOR_BOX);
+    auto box = query::getIntegers<4>(GL_SCISSOR_BOX);
     state->addCapabilitySetting(new Scissor(box[0], box[1], box[2], box[3]));
 
     state->setToCurrent(GL_STENCIL_TEST);

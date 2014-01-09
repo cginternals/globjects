@@ -71,6 +71,9 @@ void WindowEventHandler::handleEvent(WindowEvent & event)
         case WindowEvent::Timer:
             timerEvent(static_cast<TimerEvent&>(event));
             break;
+
+        default:
+            break;
     }
 }
 

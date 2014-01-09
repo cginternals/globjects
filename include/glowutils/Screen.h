@@ -16,7 +16,7 @@ class GLOWUTILS_API Screen
 {
 public:
 
-    static const unsigned int getNumScreens();
+    static unsigned int getNumScreens();
 
     /** Returns the primary screen's physical size in mm.
     */

@@ -115,7 +115,7 @@ public:
         m_quad->program()->setUniform("bottomLeft", 2);
         m_quad->program()->setUniform("bottomRight", 3);
 
-        for (int i = 0; i < std::min(size_t(4), m_algos.size()); ++i) {
+        for (unsigned int i = 0; i < std::min(size_t(4), m_algos.size()); ++i) {
             m_algos[i]->getOutput()->bindActive(GL_TEXTURE0 + i);
         }
 
@@ -209,7 +209,7 @@ public:
 
 	virtual void keyPressEvent(glowwindow::KeyEvent & event) override
 	{
-		const float d = 0.08f;
+        //const float d = 0.08f;
 
 		switch (event.key())
 		{
@@ -226,8 +226,8 @@ public:
 
 };
 
-int main(int argc, char* argv[]) {
-
+int main(int /*argc*/, char* /*argv*/[])
+{
 	glowwindow::ContextFormat format;
 	format.setVersion(4, 3);
 	format.setDepthBufferSize(16);

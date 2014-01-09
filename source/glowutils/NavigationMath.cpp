@@ -187,7 +187,7 @@ const vec3 NavigationMath::cameraWithPointInView(
 
 	// get both field of view vectors
     const float vFov(glm::radians(fovy));
-	const float hFov(2.f * atan(tan(vFov * .5f) * aspect));
+    //const float hFov(2.f * atan(tan(vFov * .5f) * aspect));
 
 	// closest point c
     const vec3 c = eye + ray * distanceToClosestPoint(eye, center, point);

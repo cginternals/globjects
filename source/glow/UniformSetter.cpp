@@ -1,4 +1,3 @@
-#pragma once
 
 #include <glow/Error.h>
 #include <glow/Array.h>
@@ -127,112 +126,112 @@ void UniformSetter::set(const GLint location, const glm::mat4x3 & value)
 
 void UniformSetter::set(const GLint location, const Array<float> & value)
 {
-    glUniform1fv(location, value.size(), value.data());
+    glUniform1fv(location, static_cast<GLint>(value.size()), value.data());
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<int> & value)
 {
-    glUniform1iv(location, value.size(), value.data());
+    glUniform1iv(location, static_cast<GLint>(value.size()), value.data());
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<unsigned int> & value)
 {
-    glUniform1uiv(location, value.size(), value.data());
+    glUniform1uiv(location, static_cast<GLint>(value.size()), value.data());
     CheckGLError();
 }
 
 void UniformSetter::set(const GLint location, const Array<glm::vec2> & value)
 {
-    glUniform2fv(location, value.size(), reinterpret_cast<const float*>(value.rawData()));
+    glUniform2fv(location, static_cast<GLint>(value.size()), reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::vec3> & value)
 {
-    glUniform3fv(location, value.size(), reinterpret_cast<const float*>(value.rawData()));
+    glUniform3fv(location, static_cast<GLint>(value.size()), reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::vec4> & value)
 {
-    glUniform4fv(location, value.size(), reinterpret_cast<const float*>(value.rawData()));
+    glUniform4fv(location, static_cast<GLint>(value.size()), reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 
 void UniformSetter::set(const GLint location, const Array<glm::ivec2> & value)
 {
-    glUniform2iv(location, value.size(), reinterpret_cast<const int*>(value.rawData()));
+    glUniform2iv(location, static_cast<GLint>(value.size()), reinterpret_cast<const int*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::ivec3> & value)
 {
-    glUniform3iv(location, value.size(), reinterpret_cast<const int*>(value.rawData()));
+    glUniform3iv(location, static_cast<GLint>(value.size()), reinterpret_cast<const int*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::ivec4> & value)
 {
-    glUniform4iv(location, value.size(), reinterpret_cast<const int*>(value.rawData()));
+    glUniform4iv(location, static_cast<GLint>(value.size()), reinterpret_cast<const int*>(value.rawData()));
     CheckGLError();
 }
 
 void UniformSetter::set(const GLint location, const Array<glm::uvec2> & value)
 {
-    glUniform2uiv(location, value.size(), reinterpret_cast<const unsigned*>(value.rawData()));
+    glUniform2uiv(location, static_cast<GLint>(value.size()), reinterpret_cast<const unsigned*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::uvec3> & value)
 {
-    glUniform3uiv(location, value.size(), reinterpret_cast<const unsigned*>(value.rawData()));
+    glUniform3uiv(location, static_cast<GLint>(value.size()), reinterpret_cast<const unsigned*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::uvec4> & value)
 {
-    glUniform4uiv(location, value.size(), reinterpret_cast<const unsigned*>(value.rawData()));
+    glUniform4uiv(location, static_cast<GLint>(value.size()), reinterpret_cast<const unsigned*>(value.rawData()));
     CheckGLError();
 }
 
 void UniformSetter::set(const GLint location, const Array<glm::mat2> & value)
 {
-    glUniformMatrix2fv(location, value.size(), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
+    glUniformMatrix2fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::mat3> & value)
 {
-    glUniformMatrix3fv(location, value.size(), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
+    glUniformMatrix3fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::mat4> & value)
 {
-    glUniformMatrix2fv(location, value.size(), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
+    glUniformMatrix2fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 
 void UniformSetter::set(const GLint location, const Array<glm::mat2x3> & value)
 {
-    glUniformMatrix2x3fv(location, value.size(), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
+    glUniformMatrix2x3fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::mat3x2> & value)
 {
-    glUniformMatrix3x2fv(location, value.size(), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
+    glUniformMatrix3x2fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::mat2x4> & value)
 {
-    glUniformMatrix2x4fv(location, value.size(), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
+    glUniformMatrix2x4fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::mat4x2> & value)
 {
-    glUniformMatrix4x2fv(location, value.size(), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
+    glUniformMatrix4x2fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::mat3x4> & value)
 {
-    glUniformMatrix3x4fv(location, value.size(), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
+    glUniformMatrix3x4fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 void UniformSetter::set(const GLint location, const Array<glm::mat4x3> & value)
 {
-    glUniformMatrix4x3fv(location, value.size(), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
+    glUniformMatrix4x3fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.rawData()));
     CheckGLError();
 }
 
@@ -244,7 +243,7 @@ void UniformSetter::set(const GLint location, const TextureHandle & value)
 void UniformSetter::set(const GLint location, const Array<TextureHandle> & value)
 {
     const TextureHandle * handle = value.data();
-    glUniformHandleui64vARB(location, value.size(), handle);
+    glUniformHandleui64vARB(location, static_cast<GLint>(value.size()), handle);
     CheckGLError();
 }
 

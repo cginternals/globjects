@@ -22,9 +22,7 @@ class GLOWUTILS_API UnitCube : public glow::Referenced
     static const glow::Array<glm::vec3> strip();
 
 public:
-    UnitCube(
-        GLuint vertexAttribLocation = 0
-    ,   GLuint normalAttribLocation = 1);
+    UnitCube(GLuint vertexAttribLocation = 0, GLuint normalAttribLocation = 1);
 
     /** draws the unit cube as single triangle strip. Note: interleaved array 
         is used, so the normal comes from the provoking vertex (expected to be
@@ -34,8 +32,8 @@ public:
     void draw();
 
 private:
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
     glow::ref_ptr<glow::Buffer> m_strip;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
 };
 
 } // namespace glowutils

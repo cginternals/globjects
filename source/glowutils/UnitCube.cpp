@@ -62,9 +62,7 @@ const Array<vec3> UnitCube::strip()
     };
 }
 
-UnitCube::UnitCube(
-    const GLuint vertexAttribLocation
-,   const GLuint normalAttribLocation)
+UnitCube::UnitCube(const GLuint vertexAttribLocation, const GLuint normalAttribLocation)
 : m_strip(new Buffer(GL_ARRAY_BUFFER))
 , m_vao(new VertexArrayObject)
 {
@@ -74,13 +72,13 @@ UnitCube::UnitCube(
 
     auto vertexBinding = m_vao->binding(0);
     vertexBinding->setAttribute(vertexAttribLocation);
-    vertexBinding->setBuffer(m_strip.get(), 0, sizeof(vec3) * 2);
+    vertexBinding->setBuffer(m_strip.get(), 0, static_cast<GLint>(sizeof(vec3) * 2));
     vertexBinding->setFormat(3, GL_FLOAT, GL_FALSE, 0);
     m_vao->enable(0);
 
     auto normalBinding = m_vao->binding(1);
     normalBinding->setAttribute(normalAttribLocation);
-    normalBinding->setBuffer(m_strip.get(), 0, sizeof(vec3) * 2);
+    normalBinding->setBuffer(m_strip.get(), 0, static_cast<GLint>(sizeof(vec3) * 2));
     normalBinding->setFormat(3, GL_FLOAT, GL_TRUE, sizeof(vec3));
     m_vao->enable(1);
 

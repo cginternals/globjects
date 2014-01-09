@@ -54,7 +54,7 @@ std::string IncludeProcessor::process(const std::string& source)
 
         std::string trimmedLine = trim(line);
 
-        if (trimmedLine.size() >= 0)
+        if (trimmedLine.size() > 0)
         {
             if (trimmedLine[0] == '#')
             {

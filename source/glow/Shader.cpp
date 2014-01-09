@@ -138,7 +138,7 @@ void Shader::updateSource()
 
         std::vector<const char*> cStrings = collectCStrings(sources);
 
-        glShaderSource(m_id, cStrings.size(), cStrings.data(), nullptr);
+        glShaderSource(m_id, static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
     }
     else
     {
@@ -163,7 +163,7 @@ bool Shader::compile()
     if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
     {
         std::vector<const char*> cStrings = collectCStrings(m_includePaths);
-        glCompileShaderIncludeARB(m_id, cStrings.size(), cStrings.data(), nullptr);
+        glCompileShaderIncludeARB(m_id, static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
         CheckGLError();
     }
     else

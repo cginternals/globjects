@@ -168,10 +168,12 @@ public:
             case GLFW_KEY_T:
                 usePath = !usePath;
                 break;
+            default:
+                break;
         }
     }
 
-    virtual void idle(Window & window) override
+    virtual void idle(Window & ) override
     {
     }
 
@@ -224,6 +226,9 @@ public:
             case WorldInHandNavigation::RotateInteraction:
                 m_nav.rotateProcess(event.pos());
                 event.accept();
+
+            default:
+                break;
         }
     }
     virtual void mouseReleaseEvent(MouseEvent & event) override
@@ -297,7 +302,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(4, 0);

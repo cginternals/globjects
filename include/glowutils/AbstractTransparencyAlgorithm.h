@@ -47,7 +47,7 @@ namespace glowutils {
 				vec4 vertex_color : The color of the vertex
 			If a geometry shader is used the varying variables must be passed through.
 		*/
-		virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {}
+        virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader);
 
 		/**
 			\brief draws the given scene with transparency
@@ -63,7 +63,7 @@ namespace glowutils {
 			\param width the width of the viewport
 			\param height the height of the viewport
 		*/
-		virtual void resize(int width, int height) {}
+        virtual void resize(int width, int height);
 
 		/**
 			\return the texture that contains the scene rendered with transparency after AbstractTransparencyAlgorithm#draw has been called and returned

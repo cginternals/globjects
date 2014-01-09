@@ -62,7 +62,7 @@ public:
     {
     }
 
-    virtual void initialize(Window & window) override
+    virtual void initialize(Window & ) override
     {
         glow::DebugMessageOutput::enable();
 
@@ -175,7 +175,7 @@ protected:
     glow::ref_ptr<glow::Program> m_shaderProgram;
 };
 
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(3, 0);

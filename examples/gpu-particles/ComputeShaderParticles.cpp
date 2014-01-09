@@ -46,7 +46,7 @@ void ComputeShaderParticles::initialize()
       , query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1)
       , query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2));
 
-    const int groups = static_cast<int>(ceil(m_numParticles / static_cast<float>(max_invocations)));
+    const int groups = static_cast<int>(ceil(static_cast<float>(m_numParticles) / static_cast<float>(max_invocations)));
 
     ivec3 workGroupSize;
     workGroupSize.x = max(groups % max_count.x, 1);
