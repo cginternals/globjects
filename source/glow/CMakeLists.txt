@@ -38,6 +38,7 @@ set(api_includes
     ${header_path}/ChangeListener.h
     ${header_path}/CompositeStringSource.h
     ${header_path}/ConsoleLogger.h
+    ${header_path}/constants.h
     ${header_path}/DebugInfo.h
     ${header_path}/DebugMessage.h
     ${header_path}/DebugMessageOutput.h
@@ -92,6 +93,7 @@ set(sources
     ${source_path}/ChangeListener.cpp
     ${source_path}/CompositeStringSource.cpp
     ${source_path}/ConsoleLogger.cpp
+    ${source_path}/constants.cpp
     ${source_path}/DebugInfo.cpp
     ${source_path}/DebugMessage.cpp
     ${source_path}/DebugMessageOutput.cpp

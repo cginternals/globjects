@@ -174,6 +174,18 @@ Capability* State::getCapability(GLenum capability)
     return m_capabilities[capability];
 }
 
+std::vector<Capability*> State::capabilities() const
+{
+    std::vector<Capability*> caps;
+
+    for (const std::pair<GLenum, Capability*>& capability : m_capabilities)
+    {
+        caps.push_back(capability.second);
+    }
+
+    return caps;
+}
+
 // specific parameters
 
 void State::blendFunc(GLenum sFactor, GLenum dFactor)
