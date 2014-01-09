@@ -33,6 +33,7 @@ set(api_includes
     ${header_path}/Array.h
     ${header_path}/Array.hpp
     ${header_path}/Buffer.h
+    ${header_path}/Capability.h
     ${header_path}/Changeable.h
     ${header_path}/ChangeListener.h
     ${header_path}/CompositeStringSource.h
@@ -66,6 +67,7 @@ set(api_includes
     ${header_path}/RenderBufferObject.h
     ${header_path}/Sampler.h
     ${header_path}/Shader.h
+    ${header_path}/State.h
     ${header_path}/String.h
     ${header_path}/StringSource.h
     ${header_path}/Texture.h
@@ -85,6 +87,7 @@ set(sources
     
     ${source_path}/AbstractUniform.cpp
     ${source_path}/Buffer.cpp
+    ${source_path}/Capability.cpp
     ${source_path}/Changeable.cpp
     ${source_path}/ChangeListener.cpp
     ${source_path}/CompositeStringSource.cpp
@@ -113,6 +116,7 @@ set(sources
     ${source_path}/RenderBufferObject.cpp
     ${source_path}/Sampler.cpp
     ${source_path}/Shader.cpp
+    ${source_path}/State.cpp
     ${source_path}/String.cpp
     ${source_path}/StringSource.cpp
     ${source_path}/Texture.cpp
