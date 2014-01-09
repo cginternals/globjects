@@ -38,6 +38,13 @@ std::string query::getString(GLenum pname)
 	return reinterpret_cast<const char*>(result);
 }
 
+std::string query::getString(GLenum pname, GLuint index)
+{
+    const GLubyte* result = glGetStringi(pname, index);
+    CheckGLError();
+    return reinterpret_cast<const char*>(result);
+}
+
 GLint query::getInteger(GLenum pname)
 {
 	GLint value;
@@ -78,7 +85,7 @@ GLboolean query::getBoolean(GLenum pname)
 	return value;
 }
 
-GLint query::getInteger(GLenum pname, unsigned index)
+GLint query::getInteger(GLenum pname, GLuint index)
 {
 	GLint value;
 
@@ -86,6 +93,36 @@ GLint query::getInteger(GLenum pname, unsigned index)
 	CheckGLError();
 
 	return value;
+}
+
+GLfloat query::getFloat(GLenum pname, GLuint index)
+{
+    GLfloat value;
+
+    glGetFloati_v(pname, index, &value);
+    CheckGLError();
+
+    return value;
+}
+
+GLdouble query::getDouble(GLenum pname, GLuint index)
+{
+    GLdouble value;
+
+    glGetDoublei_v(pname, index, &value);
+    CheckGLError();
+
+    return value;
+}
+
+GLboolean query::getBoolean(GLenum pname, GLuint index)
+{
+    GLboolean value;
+
+    glGetBooleani_v(pname, index, &value);
+    CheckGLError();
+
+    return value;
 }
 
 std::string query::vendor()

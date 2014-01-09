@@ -21,14 +21,27 @@ class GLOW_API query
 {
 public:
 	static std::string getString(GLenum pname);
+    static std::string getString(GLenum pname, GLuint index);
+
 	static GLint getInteger(GLenum pname);
 	static GLfloat getFloat(GLenum pname);
 	static GLdouble getDouble(GLenum pname);
 	static GLboolean getBoolean(GLenum pname);
 
-    static GLint getInteger(GLenum pname, unsigned index);
+    static GLint getInteger(GLenum pname, GLuint index);
+    static GLfloat getFloat(GLenum pname, GLuint index);
+    static GLdouble getDouble(GLenum pname, GLuint index);
+    static GLboolean getBoolean(GLenum pname, GLuint index);
+
+
     template <int Count>
     static std::array<GLint, Count> getIntegers(GLenum pname);
+    template <int Count>
+    static std::array<GLfloat, Count> getFloats(GLenum pname);
+    template <int Count>
+    static std::array<GLdouble, Count> getDoubles(GLenum pname);
+    template <int Count>
+    static std::array<GLboolean, Count> getBooleans(GLenum pname);
 
 	static std::string vendor();
 	static std::string renderer();
