@@ -9,10 +9,12 @@ namespace glow
 
 template <typename T>
 LogMessageBuilder& LogMessageBuilder::operator<<(Uniform<T>* uniform)
-{
+{  
     assert(uniform != nullptr);
 
-    return *this << static_cast<AbstractUniform*>(uniform) << " " << uniform->value();
+    *this << "Uniform (" << uniform->name() << ", " << uniform->value() << ")";
+
+    return *this;
 }
 
 template <typename T>

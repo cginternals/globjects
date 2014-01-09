@@ -77,8 +77,12 @@ public:
 
         glow::ref_ptr<glow::Uniform<float>> uniform(new glow::Uniform<float>("Pi", 3.14f));
         std::cout << "glow::Uniform = "; glow::info() << uniform.get();
+        std::cout << "glow::AbstractUniform = "; glow::info() << static_cast<glow::AbstractUniform*>(uniform.get());
 
         std::cout << "glow::Version = "; glow::info() << glow::Version::current();
+
+        std::vector<glow::Buffer*> buffers{new glow::Buffer(), new glow::Buffer()};
+         std::cout << "std::vector<glow::Buffer*> = "; glow::info() << buffers;
 
         window.close();
     }
@@ -110,6 +114,11 @@ int main(int /*argc*/, char* /*argv*/[])
     std::cout << "unsigned long integer 45123 = "; glow::info() << 45123ul;
     std::cout << "unsigned char 97 = "; glow::info() << 'a';
     std::cout << "void* " << &window << " = "; glow::info() << static_cast<void*>(&window);
+
+    std::cout << std::endl;
+
+    std::cout << "std::array<int, 2> = "; glow::info() << std::array<int, 2>{ 0, 1 };
+    std::cout << "glow::Array<float> = "; glow::info() << (glow::Array<float>() << 0.1f << 0.2f << 0.3f);
 
     std::cout << std::endl;
 

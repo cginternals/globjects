@@ -380,7 +380,7 @@ LogMessageBuilder& LogMessageBuilder::operator<<(AbstractUniform* uniform)
 {
     assert(uniform != nullptr);
 
-    *this << "Uniform " << uniform->name();
+    *this << "Uniform (" << uniform->name() << ")";
 
     return *this;
 }
