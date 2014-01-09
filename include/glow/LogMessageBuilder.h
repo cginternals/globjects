@@ -2,6 +2,8 @@
 
 #include <sstream>
 #include <string>
+#include <vector>
+#include <array>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -11,6 +13,9 @@
 
 namespace glow 
 {
+
+template <typename T>
+class Array;
 
 class AbstractLogHandler;
 class Object;
@@ -96,10 +101,17 @@ public:
     template <typename T>
     LogMessageBuilder& operator<<(ref_ptr<T> ref_pointer);
 	
-
 	// pointers
 	template <typename T>
     LogMessageBuilder& operator<<(T* pointer);
+
+    // array types
+    template <typename T>
+    LogMessageBuilder& operator<<(const Array<T>& array);
+    template <typename T>
+    LogMessageBuilder& operator<<(const std::vector<T>& vector);
+    template <typename T, std::size_t Count>
+    LogMessageBuilder& operator<<(const std::array<T, Count>& array);
 
 	// glm types
 	LogMessageBuilder& operator<<(const glm::vec2& v);
