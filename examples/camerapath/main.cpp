@@ -242,7 +242,7 @@ public:
         }
     }
 
-    void scrollEvent(ScrollEvent & event) override
+    virtual void scrollEvent(ScrollEvent & event) override
     {
         if (WorldInHandNavigation::NoInteraction != m_nav.mode())
             return;
@@ -251,25 +251,25 @@ public:
         event.accept();
     }
 
-    virtual const float depthAt(const ivec2 & windowCoordinates)
+    virtual float depthAt(const ivec2 & windowCoordinates) override
     {
         return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
     }
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates)
+    virtual vec3 objAt(const ivec2 & windowCoordinates) override
     {
         return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
     }
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth)
+    virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
     {
         return unproject(m_camera, depth, windowCoordinates);
     }
 
-    virtual const glm::vec3 objAt(
+    virtual glm::vec3 objAt(
         const ivec2 & windowCoordinates
     ,   const float depth
-    ,   const mat4 & viewProjectionInverted)
+    ,   const mat4 & viewProjectionInverted) override
     {
         return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
     }

@@ -64,4 +64,9 @@ void GlBlendAlgorithm::resize(int width, int height) {
     m_depthBuffer->storage(depthBits == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
 }
 
+glow::Texture* GlBlendAlgorithm::getOutput()
+{
+    return m_colorTex;
+}
+
 } // namespace glow

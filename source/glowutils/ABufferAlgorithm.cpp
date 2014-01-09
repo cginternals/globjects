@@ -121,4 +121,9 @@ void ABufferAlgorithm::resize(int width, int height) {
     m_colorBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 }
 
+glow::Texture* ABufferAlgorithm::getOutput()
+{
+    return m_colorBuffer;
+}
+
 } // namespace glow

@@ -67,7 +67,7 @@ public:
 
 protected:
     glow::ref_ptr<glow::Texture> m_texture;
-    glowutils::ScreenAlignedQuad * m_quad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 };
 
 

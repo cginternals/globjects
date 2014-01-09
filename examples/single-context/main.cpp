@@ -36,7 +36,7 @@ public:
         CheckGLError();
     }
 
-    virtual void paintEvent(PaintEvent &)
+    virtual void paintEvent(PaintEvent &) override
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         CheckGLError();
@@ -62,9 +62,9 @@ int main(int argc, char* argv[])
 
     if (window.create(format, "Single Context Example"))
     {
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    window.show();
+        window.show();
 
         return MainLoop::run();
     }

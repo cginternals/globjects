@@ -182,7 +182,7 @@ int main(int argc, char* argv[])
 
     Window window;
 
-        window.setEventHandler(new EventHandler());
+    window.setEventHandler(new EventHandler());
 
     if (window.create(format, "Vertex Array Attributes Example"))
     {
@@ -190,8 +190,8 @@ int main(int argc, char* argv[])
 
         window.show();
 
-    return MainLoop::run();
-}
+        return MainLoop::run();
+    }
     else
     {
         return 1;

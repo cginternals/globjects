@@ -69,7 +69,7 @@ public:
 	Program();
 	virtual ~Program();
 
-	virtual void accept(ObjectVisitor& visitor);
+    virtual void accept(ObjectVisitor& visitor) override;
 
 	void use();
 	void release();
@@ -132,7 +132,7 @@ protected:
 
 	// ChangeListener Interface
 
-	virtual void notifyChanged();
+    virtual void notifyChanged() override;
 
 protected:
 	static GLuint createProgram();

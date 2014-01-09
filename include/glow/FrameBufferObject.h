@@ -47,7 +47,7 @@ public:
 
 	static FrameBufferObject* defaultFBO();
 
-	virtual void accept(ObjectVisitor& visitor);
+    virtual void accept(ObjectVisitor& visitor) override;
 
 	void bind();
 	void bind(GLenum target);

@@ -4,6 +4,8 @@
 
 #include <glow/glow.h>
 
+#include <glow/Referenced.h>
+
 namespace glow 
 {
 

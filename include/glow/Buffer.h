@@ -36,7 +36,7 @@ public:
 	Buffer(GLuint id, GLenum target);
 	virtual ~Buffer();
 
-	virtual void accept(ObjectVisitor & visitor);
+    virtual void accept(ObjectVisitor & visitor) override;
 
 	void bind();
 	void bind(GLenum target);

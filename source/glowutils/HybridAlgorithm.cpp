@@ -202,4 +202,9 @@ void HybridAlgorithm::resize(int width, int height) {
     m_depthComplexityBuffer->setData(width * height * sizeof(unsigned int), nullptr, GL_DYNAMIC_DRAW);
 }
 
+glow::Texture* HybridAlgorithm::getOutput()
+{
+    return m_colorBuffer;
+}
+
 } // namespace glow

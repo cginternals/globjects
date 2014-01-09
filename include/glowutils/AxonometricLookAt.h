@@ -14,7 +14,7 @@ public:
     enum ProjectionType
     {
         Custom      // set horizontal/vertical angles as you like
-    ,   Isometric30 // 30° Isometric projection (NEN/ISO)
+    ,   Isometric30 // 30 degree Isometric projection (NEN/ISO)
     ,   Isometric12 // 1:2 Isometric projection (NEN/ISO)
     ,   Military    // isometric projection (no skewed z-plane)
     ,   Dimetric427 // dimetric projection

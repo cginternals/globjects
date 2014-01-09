@@ -45,8 +45,8 @@ public:
 	Array(T * data, const unsigned size);
 	Array(void * data, const unsigned size);
 	
-	virtual const void * rawData() const;
-	virtual GLint rawSize() const;
+    virtual const void * rawData() const override;
+    virtual GLint rawSize() const override;
 
 	Array & operator<<(const T & element);
 };

@@ -21,7 +21,7 @@ class GLOW_API TextureAttachment : public FrameBufferAttachment
 public:
 	TextureAttachment(Texture * texture, GLenum attachment);
 
-	virtual bool isTextureAttachment() const;
+    virtual bool isTextureAttachment() const override;
 	Texture * texture();
 
 protected:
