@@ -75,7 +75,7 @@ public:
         glow::ref_ptr<glow::VertexArrayObject> vao(new glow::VertexArrayObject());
         std::cout << "glow::VertexArrayObject = "; glow::info() << vao.get();
 
-        glow::ref_ptr<glow::Uniform<float>> uniform(new glow::Uniform<float>("Pi", 3.14));
+        glow::ref_ptr<glow::Uniform<float>> uniform(new glow::Uniform<float>("Pi", 3.14f));
         std::cout << "glow::Uniform = "; glow::info() << uniform.get();
 
         std::cout << "glow::Version = "; glow::info() << glow::Version::current();
@@ -86,7 +86,7 @@ public:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     glowwindow::ContextFormat format;
     format.setVersion(3, 0);
