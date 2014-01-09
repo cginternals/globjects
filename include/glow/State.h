@@ -49,6 +49,8 @@ public:
     void stencilFunc(GLenum func, GLint ref, GLuint mask);
     void stencilOp(GLenum fail, GLenum zFail, GLenum zPass);
 
+    std::vector<Capability*> capabilities() const;
+
 public:
     void addCapability(Capability * capability);
     void addCapabilitySetting(AbstractCapabilitySetting * capabilitySetting);
