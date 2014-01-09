@@ -102,7 +102,7 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::generalInfo()
 	textureInfo.addProperty("Max Vertex Texture Image Units", query::getInteger(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS));
 	textureInfo.addProperty("Max Texture Image Units", query::getInteger(GL_MAX_IMAGE_UNITS));
 	textureInfo.addProperty("Max Geometry Texture Units", query::getInteger(GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS));
-	std::vector<int> maxViewportSize = query::getIntegers(GL_MAX_VIEWPORT_DIMS, 2);
+    auto maxViewportSize = query::getIntegers<2>(GL_MAX_VIEWPORT_DIMS);
 	textureInfo.addProperty("Max viewport size", std::to_string(maxViewportSize[0])+" x "+std::to_string(maxViewportSize[1]));
 	textureInfo.addProperty("Max clip distances", query::getInteger(GL_MAX_CLIP_DISTANCES));
 	textureInfo.addProperty("Max Samples", query::getInteger(GL_MAX_SAMPLES));

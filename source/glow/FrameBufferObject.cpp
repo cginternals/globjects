@@ -372,7 +372,7 @@ void FrameBufferObject::printStatus(bool onlyErrors)
 
 		critical() << statusString(status) << " (" << ss.str() << ")";
 	}
-	}
+}
 
 FrameBufferAttachment* FrameBufferObject::attachment(GLenum attachment)
 {

@@ -46,6 +46,7 @@ set(api_includes
     ${header_path}/formatString.h
     ${header_path}/formatString.hpp
     ${header_path}/global.h
+    ${header_path}/global.hpp
     ${header_path}/logging.h
     ${header_path}/logging.hpp
     ${header_path}/LogMessage.h

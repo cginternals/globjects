@@ -32,6 +32,8 @@ public:
 
     std::string typeFor(Object * object)
     {
+        assert(object != nullptr);
+
         m_typeName = "glow::Object";
         visit(object);
         return m_typeName;
@@ -39,51 +41,71 @@ public:
 
     virtual void visitBuffer(Buffer * buffer) override
     {
+        assert(buffer != nullptr);
+
         m_typeName = "Buffer";
     }
 
     virtual void visitFrameBufferObject(FrameBufferObject * fbo) override
     {
+        assert(fbo != nullptr);
+
         m_typeName = "FrameBufferObject";
     }
 
     virtual void visitProgram(Program * program) override
     {
+        assert(program != nullptr);
+
         m_typeName = "Program";
     }
 
     virtual void visitQuery(Query * query) override
     {
+        assert(query != nullptr);
+
         m_typeName = "Query";
     }
 
     virtual void visitRenderBufferObject(RenderBufferObject * rbo) override
     {
+        assert(rbo != nullptr);
+
         m_typeName = "RenderBufferObject";
     }
 
     virtual void visitSampler(Sampler * sampler) override
     {
+        assert(sampler != nullptr);
+
         m_typeName = "Sampler";
     }
 
     virtual void visitShader(Shader * shader) override
     {
+        assert(shader != nullptr);
+
         m_typeName = "Shader";
     }
 
     virtual void visitTexture(Texture * texture) override
     {
+        assert(texture != nullptr);
+
         m_typeName = "Texture";
     }
 
     virtual void visitTransformFeedback(TransformFeedback * transformfeedback) override
     {
+        assert(transformfeedback != nullptr);
+
         m_typeName = "TransformFeedback";
     }
 
     virtual void visitVertexArrayObject(VertexArrayObject * vao) override
     {
+        assert(vao != nullptr);
+
         m_typeName = "VertexArrayObject";
     }
 protected:
@@ -100,6 +122,7 @@ LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, AbstractLogHandler
 , m_level(level)
 , m_handler(handler)
 {
+    assert(handler != nullptr);
 }
 
 LogMessageBuilder::LogMessageBuilder(const LogMessageBuilder& builder)

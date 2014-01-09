@@ -134,7 +134,7 @@ void WindowEventDispatcher::checkForTimerEvents()
                 dispatchEvent(window, new TimerEvent(id));
                 if (timer.singleShot)
                 {
-                    discarded.push_back(std::pair<Window*, int>(window, id));
+                    discarded.emplace_back(window, id);
                 }
                 else
                 {

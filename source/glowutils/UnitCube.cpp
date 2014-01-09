@@ -6,6 +6,7 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
+#include <glow/Error.h>
 
 #include <glowutils/UnitCube.h>
 

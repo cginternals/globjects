@@ -32,16 +32,16 @@ void WeightedAverageAlgorithm::initialize(const std::string & transparencyShader
 	m_depthComplexityBuffer = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
 
     m_renderFbo = new glow::FrameBufferObject();
-    m_renderFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
-    m_renderFbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_accumulationBuffer.get());
-    m_renderFbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
+    m_renderFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_opaqueBuffer);
+    m_renderFbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_accumulationBuffer);
+    m_renderFbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer);
     m_renderFbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
 
 	m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_post.frag"));
 
     m_colorBuffer = createColorTex();
     m_postFbo = new glow::FrameBufferObject;
-    m_postFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorBuffer.get());
+    m_postFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorBuffer);
     m_postFbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
 }
 
@@ -58,8 +58,11 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
     m_depthComplexityBuffer->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 
     glEnable(GL_DEPTH_TEST);
+    CheckGLError();
     glDepthMask(GL_TRUE);
+    CheckGLError();
     glDisable(GL_BLEND);
+    CheckGLError();
 
     m_opaqueProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
     m_opaqueProgram->setUniform("normalmatrix", camera->normal());
@@ -68,8 +71,11 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
     drawFunction(m_opaqueProgram.get());
 
     glDepthMask(GL_FALSE);
+    CheckGLError();
     glEnable(GL_BLEND);
+    CheckGLError();
     glBlendFunc(GL_ONE, GL_ONE);
+    CheckGLError();
 
     m_accumulationProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
     m_accumulationProgram->setUniform("normalmatrix", camera->normal());
@@ -84,8 +90,11 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
     m_postFbo->clear(GL_COLOR_BUFFER_BIT);
 
     glDepthMask(GL_TRUE);
+    CheckGLError();
     glDisable(GL_BLEND);
+    CheckGLError();
     glDisable(GL_DEPTH_TEST);
+    CheckGLError();
 
     m_opaqueBuffer->bindActive(GL_TEXTURE0);
     m_accumulationBuffer->bindActive(GL_TEXTURE1);
@@ -100,6 +109,7 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
     m_accumulationBuffer->unbindActive(GL_TEXTURE1);
 
     glEnable(GL_DEPTH_TEST);
+    CheckGLError();
 
     m_postFbo->unbind();
 }

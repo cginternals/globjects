@@ -233,9 +233,11 @@ void AdaptiveGrid::update(
 void AdaptiveGrid::draw()
 {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    CheckGLError();
     glEnable(GL_BLEND);
-
+    CheckGLError();
     glEnable(GL_DEPTH_TEST);
+    CheckGLError();
 
     m_program->use();
 
@@ -246,6 +248,7 @@ void AdaptiveGrid::draw()
     m_program->release();
 
     glDisable(GL_BLEND);
+    CheckGLError();
 }
 
 } // namespace glowutils

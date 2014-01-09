@@ -119,6 +119,7 @@ namespace glowutils {
         if (m_texture)
         {
             glActiveTexture(GL_TEXTURE0 + m_samplerIndex);
+			CheckGLError();
             m_texture->bind();
         }
         
