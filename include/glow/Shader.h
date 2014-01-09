@@ -47,7 +47,7 @@ public:
 
 	virtual ~Shader();
 
-	virtual void accept(ObjectVisitor& visitor);
+    virtual void accept(ObjectVisitor& visitor) override;
 
 	GLenum type() const;
 
@@ -68,7 +68,7 @@ public:
     std::string typeString() const;
 
 protected:
-    void notifyChanged();
+    virtual void notifyChanged() override;
 
 
 protected:

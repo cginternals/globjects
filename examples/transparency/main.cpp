@@ -45,7 +45,7 @@ private:
 	std::vector<glowutils::AbstractTransparencyAlgorithm*> m_algos;
 	
 public:
-	void initialize(glowwindow::Window & window) override {
+    virtual void initialize(glowwindow::Window & window) override {
 
 		window.addTimer(0, 0);
 
@@ -82,7 +82,7 @@ public:
         m_nav.setBoundaryHint(m_aabb);
 	}
 
-	void paintEvent(glowwindow::PaintEvent& event) override {
+    virtual void paintEvent(glowwindow::PaintEvent& event) override {
 		int width = event.window()->width();
 		int height = event.window()->height();
 
@@ -128,7 +128,7 @@ public:
 		CheckGLError();
 	}
 
-    void framebufferResizeEvent(glowwindow::ResizeEvent & event) override {
+    virtual void framebufferResizeEvent(glowwindow::ResizeEvent & event) override {
 		int width = event.width();
 		int height = event.height();
 
@@ -140,22 +140,22 @@ public:
         }		
 	}
 
-	virtual const float depthAt(const glm::ivec2 & windowCoordinates) override
+    virtual float depthAt(const glm::ivec2 & windowCoordinates) override
 	{
 		return glowutils::AbstractCoordinateProvider::depthAt(*m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
 	}
 
-	virtual const glm::vec3 objAt(const glm::ivec2 & windowCoordinates) override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) override
 	{
 		return unproject(*m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
 	}
 
-	virtual const glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) override
 	{
 		return unproject(*m_camera, depth, windowCoordinates);
 	}
 
-	virtual const glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth, const glm::mat4 & viewProjectionInverted) override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth, const glm::mat4 & viewProjectionInverted) override
 	{
 		return unproject(*m_camera, viewProjectionInverted, depth, windowCoordinates);
 	}

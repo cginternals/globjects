@@ -70,7 +70,7 @@ public:
 	
 	static int counterBits(GLenum target);
 
-	virtual void accept(ObjectVisitor& visitor);
+    virtual void accept(ObjectVisitor& visitor) override;
 
 	void begin();
 	void begin(GLenum target);

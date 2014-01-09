@@ -25,7 +25,7 @@ public:
 	VertexArrayObject(GLuint id, bool ownsGLObject = true);
 	virtual ~VertexArrayObject();
 
-	virtual void accept(ObjectVisitor & visitor);
+    virtual void accept(ObjectVisitor & visitor) override;
 
 	void bind();
 	void unbind();

@@ -92,6 +92,7 @@ public:
         writeBuffer->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
 
         glEnable(GL_RASTERIZER_DISCARD);
+        CheckGLError();
         m_transformFeedbackProgram->use();
         m_transformFeedback->bind();
         m_transformFeedback->begin(GL_TRIANGLES);
@@ -99,6 +100,7 @@ public:
         m_transformFeedback->end();
         m_transformFeedback->unbind();
         glDisable(GL_RASTERIZER_DISCARD);
+        CheckGLError();
 
         m_vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(glm::vec4));
 

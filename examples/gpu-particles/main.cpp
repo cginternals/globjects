@@ -203,7 +203,7 @@ public:
 
     // EVENT HANDLING
 
-    virtual void keyPressEvent(KeyEvent & event)
+    virtual void keyPressEvent(KeyEvent & event) override
     {
         switch (event.key())
         {
@@ -287,7 +287,7 @@ public:
         }
     }
 
-    void scrollEvent(ScrollEvent & event) override
+    virtual void scrollEvent(ScrollEvent & event) override
     {
         if (glowutils::WorldInHandNavigation::NoInteraction != m_nav->mode())
             return;
@@ -296,20 +296,20 @@ public:
         event.accept();
     }
 
-    virtual const float depthAt(const ivec2 & windowCoordinates)
+    virtual float depthAt(const ivec2 & windowCoordinates) override
     {
         return 2.0;
     }
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates)
+    virtual vec3 objAt(const ivec2 & windowCoordinates) override
     {
         return vec3(0.f);
     }
-    virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth)
+    virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
     {
         return vec3(0.f);
     }
-    virtual const glm::vec3 objAt(const ivec2 & windowCoordinates, const float depth, const mat4 & viewProjectionInverted)
+    virtual glm::vec3 objAt(const ivec2 & windowCoordinates, const float depth, const mat4 & viewProjectionInverted) override
     {
         return vec3(0.f);
     }

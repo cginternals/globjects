@@ -27,13 +27,13 @@ public:
     ,   const glowutils::Camera & camera);
     virtual ~FragmentShaderParticles();
 
-    virtual void initialize();
-    virtual void reset();
+    virtual void initialize() override;
+    virtual void reset() override;
 
-    virtual void step(float elapsed);
-    virtual void draw(float elapsed);
+    virtual void step(float elapsed) override;
+    virtual void draw(float elapsed) override;
 
-    virtual void resize();
+    virtual void resize() override;
 
 protected:
     // Particle data

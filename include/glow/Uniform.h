@@ -43,7 +43,7 @@ public:
     const T & value() const;
 
 protected:
-	virtual void setLocation(GLint location);
+    virtual void setLocation(GLint location) override;
     void set(GLint location, const T & value);
 
 protected:

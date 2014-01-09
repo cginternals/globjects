@@ -18,7 +18,7 @@ public:
 	RenderBufferObject();
 	virtual ~RenderBufferObject();
 
-	virtual void accept(ObjectVisitor & visitor);
+    virtual void accept(ObjectVisitor & visitor) override;
 
 	void bind();
 	void unbind();

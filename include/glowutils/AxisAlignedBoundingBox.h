@@ -30,6 +30,7 @@ class GLOWUTILS_API AxisAlignedBoundingBox
 {
 public:
     AxisAlignedBoundingBox();
+    AxisAlignedBoundingBox(const glm::vec3& llf, const glm::vec3 urb);
     virtual ~AxisAlignedBoundingBox();
 
     bool extend(const glm::vec3 & vertex);

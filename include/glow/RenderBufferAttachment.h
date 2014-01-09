@@ -25,7 +25,7 @@ public:
         RenderBufferObject * renderBuffer
     ,   GLenum attachment);
 
-	virtual bool isRenderBufferAttachment() const;
+    virtual bool isRenderBufferAttachment() const override;
 	RenderBufferObject * renderBuffer();
 protected:
 	ref_ptr<RenderBufferObject> m_renderBuffer;

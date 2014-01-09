@@ -122,4 +122,9 @@ void WeightedAverageAlgorithm::resize(int width, int height) {
     m_depthComplexityBuffer->setData(width * height * sizeof(unsigned int), nullptr, GL_DYNAMIC_DRAW);
 }
 
+glow::Texture* WeightedAverageAlgorithm::getOutput()
+{
+    return m_colorBuffer;
+}
+
 } // namespace glow

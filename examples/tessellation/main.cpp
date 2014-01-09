@@ -45,10 +45,6 @@ public:
     {
     }
 
-    void createAndSetupTexture();
-    void createAndSetupShaders();
-    void createAndSetupGeometry();
-
     virtual void initialize(Window & window) override
     {
         glow::DebugMessageOutput::enable();

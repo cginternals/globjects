@@ -20,7 +20,7 @@ namespace glowutils {
 		virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) override;
 		virtual void draw(const DrawFunction& drawFunction, Camera* camera, int width, int height) override;
 		virtual void resize(int width, int height) override;
-		virtual glow::Texture* getOutput() override { return m_colorTex.get(); }
+        virtual glow::Texture* getOutput() override;
 
 	private:
 		glow::ref_ptr<glow::Program> m_program;

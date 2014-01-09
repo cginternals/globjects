@@ -14,6 +14,22 @@ AxisAlignedBoundingBox::AxisAlignedBoundingBox()
 {
 }
 
+AxisAlignedBoundingBox::AxisAlignedBoundingBox(const glm::vec3& llf, const glm::vec3 urb)
+: m_urb(vec3(
+    glm::max(llf.x, urb.x),
+    glm::max(llf.y, urb.y),
+    glm::max(llf.z, urb.z)
+))
+, m_llf(vec3(
+    glm::min(llf.x, urb.x),
+    glm::min(llf.y, urb.y),
+    glm::min(llf.z, urb.z)
+))
+, m_center(m_llf + (m_urb - m_llf) * .5f)
+, m_radius((m_urb - m_llf).length() * .5f)
+{
+}
+
 AxisAlignedBoundingBox::~AxisAlignedBoundingBox()
 {
 }

@@ -1,47 +1,29 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-PROJECT(SSBODemo)
+set(target ssbo)
+message(STATUS "example ${target}")
 
-SET(target ssbodemo)
-
-FIND_PACKAGE(OpenGL REQUIRED)
-FIND_PACKAGE(GLEW REQUIRED)
-FIND_PACKAGE(FREEGLUT REQUIRED)
-
-# Include directories
-INCLUDE_DIRECTORIES(
-	.
-	..
-	${GLM_INCLUDE_PATH}
-	${GLEW_INCLUDE_PATH}
-	${FREEGLUT_INCLUDE_PATH}
-	${GLOW_INCLUDE_DIR}
-)
-
-# Libraries
-SET(libs
-	${GLEW_LIBRARIES}
-	${FREEGLUT_LIBRARY}
-	glow
-)
-
-# Sources
-SET(sources
+add_executable(${target} 
 	main.cpp
-	SSBOWindow.cpp
-	../GlutWindow.cpp
 )
 
-SET(headers
-	SSBOWindow.h
-	../GlutWindow.h
+target_link_libraries(${target} 
+	${GLEW_LIBRARIES}
+	glow
+        glowutils
+        glowwindow
 )
 
-ADD_EXECUTABLE(${target} ${sources} ${headers})
+set_target_properties(${target}
+    PROPERTIES
+    LINKER_LANGUAGE CXX
+    FOLDER ${GLOW_EXAMPLES_FOLDER}
+    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
+    COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
+    COMPILE_FLAGS               "${DEFAULT_COMPILE_FLAGS}"
+    LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
+    LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
+    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
 
-TARGET_LINK_LIBRARIES(${target} ${libs})
-
-# Deployment
 install(TARGETS ${target}
     RUNTIME DESTINATION ${INSTALL_EXAMPLES}
 #    LIBRARY DESTINATION ${INSTALL_SHARED}
