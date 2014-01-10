@@ -45,15 +45,15 @@ set(api_includes
     ${header_path}/FileRegistry.h
     ${header_path}/FlightNavigation.h
     ${header_path}/GlBlendAlgorithm.h
+    ${header_path}/global.h
     ${header_path}/HybridAlgorithm.h
     ${header_path}/Icosahedron.h
     ${header_path}/Interpolation.h
-    ${header_path}/NamedStringHelper.h
-    ${header_path}/NavigationMath.h
+    ${header_path}/navigationmath.h
     ${header_path}/Plane3.h
     ${header_path}/RawFile.h
     ${header_path}/RawFile.hpp
-    ${header_path}/Screen.h
+    ${header_path}/screen.h
     ${header_path}/ScreenAlignedQuad.h
     ${header_path}/StringSourceDecorator.h
     ${header_path}/StringTemplate.h
@@ -82,12 +82,12 @@ set(sources
     ${source_path}/FileRegistry.cpp
     ${source_path}/FlightNavigation.cpp
     ${source_path}/GlBlendAlgorithm.cpp
+    ${source_path}/global.cpp
     ${source_path}/HybridAlgorithm.cpp
     ${source_path}/Icosahedron.cpp
-    ${source_path}/NamedStringHelper.cpp
-    ${source_path}/NavigationMath.cpp
+    ${source_path}/navigationmath.cpp
     ${source_path}/Plane3.cpp
-    ${source_path}/Screen.cpp
+    ${source_path}/screen.cpp
     ${source_path}/ScreenAlignedQuad.cpp
     ${source_path}/StringSourceDecorator.cpp
     ${source_path}/StringTemplate.cpp

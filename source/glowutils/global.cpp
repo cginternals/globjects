@@ -1,3 +1,4 @@
+#include <glowutils/global.h>
 
 #include <vector>
 
@@ -5,7 +6,6 @@
 #include <glow/global.h>
 
 #include <glowutils/File.h>
-#include <glowutils/NamedStringHelper.h>
 
 #ifdef _MSC_VER
 #include "windows.h"
@@ -60,7 +60,7 @@ using namespace glow;
 namespace glowutils
 {
 
-void NamedStringHelper::scanDirectory(const std::string & directory, const std::string & fileExtension)
+void scanDirectory(const std::string & directory, const std::string & fileExtension)
 {
     for (const std::string & file: getFiles(directory))
     {
