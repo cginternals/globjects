@@ -234,6 +234,9 @@ public:
         case glowutils::WorldInHandNavigation::RotateInteraction:
             m_nav.rotateProcess(event.pos());
             event.accept();
+            break;
+        case glowutils::WorldInHandNavigation::NoInteraction:
+            break;
         }
     }
     virtual void mouseReleaseEvent(MouseEvent & event) override

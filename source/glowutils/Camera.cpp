@@ -100,7 +100,7 @@ float Camera::zNear() const
 
 void Camera::setZNear(const float zNear)
 {
-    if (zNear == m_zNear)
+    if (std::abs(zNear - m_zNear) < std::numeric_limits<float>::epsilon())
         return;
 
     m_zNear = zNear;
@@ -116,7 +116,7 @@ float Camera::zFar() const
 
 void Camera::setZFar(const float zFar)
 {
-    if (zFar == m_zFar)
+    if (std::abs(zFar - m_zFar) < std::numeric_limits<float>::epsilon())
         return;
 
     m_zFar = zFar;
@@ -132,7 +132,7 @@ float Camera::fovy() const
 
 void Camera::setFovy(const float fovy)
 {
-    if (fovy == m_fovy)
+    if (std::abs(fovy - m_fovy) < std::numeric_limits<float>::epsilon())
         return;
 
     m_fovy = fovy;

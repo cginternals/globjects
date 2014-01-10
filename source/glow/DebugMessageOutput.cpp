@@ -170,7 +170,7 @@ void DebugMessageOutput::disableMessages(GLenum source, GLenum type, GLenum seve
 
 void APIENTRY DebugMessageOutput::handleMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, void * param)
 {
-    handleMessage(DebugMessage(source, type, id, severity, std::string(message, length)), *reinterpret_cast<int*>(&param));
+    handleMessage(DebugMessage(source, type, id, severity, std::string(message, length)), *reinterpret_cast<int*>(param));
 }
 
 void DebugMessageOutput::handleMessage(const DebugMessage& message, int id)

@@ -89,7 +89,7 @@ AxonometricLookAt::ProjectionType AxonometricLookAt::type() const
 
 void AxonometricLookAt::setVerticalAngle(float angle)
 {
-    if(m_verticalAngle == angle)
+    if(std::abs(m_verticalAngle - angle) < std::numeric_limits<float>::epsilon())
         return;
 
     m_verticalAngle = angle;
@@ -104,7 +104,7 @@ float AxonometricLookAt::verticalAngle() const
 
 void AxonometricLookAt::setHorizontalAngle(float angle)
 {
-    if (m_horizontalAngle == angle)
+    if (std::abs(m_horizontalAngle - angle) < std::numeric_limits<float>::epsilon())
         return;
 
     m_horizontalAngle = angle;
@@ -140,7 +140,7 @@ void AxonometricLookAt::setZoom(float zoom)
         zoom = 0.f;
     }
 
-    if (m_zoom == zoom)
+    if (std::abs(m_zoom - zoom) < std::numeric_limits<float>::epsilon())
         return;
 
     m_zoom = zoom;

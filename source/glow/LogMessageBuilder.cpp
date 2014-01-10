@@ -39,73 +39,53 @@ public:
         return m_typeName;
     }
 
-    virtual void visitBuffer(Buffer * buffer) override
+    virtual void visitBuffer(Buffer * /*buffer*/) override
     {
-        assert(buffer != nullptr);
-
         m_typeName = "Buffer";
     }
 
-    virtual void visitFrameBufferObject(FrameBufferObject * fbo) override
+    virtual void visitFrameBufferObject(FrameBufferObject * /*fbo*/) override
     {
-        assert(fbo != nullptr);
-
         m_typeName = "FrameBufferObject";
     }
 
-    virtual void visitProgram(Program * program) override
+    virtual void visitProgram(Program * /*program*/) override
     {
-        assert(program != nullptr);
-
         m_typeName = "Program";
     }
 
-    virtual void visitQuery(Query * query) override
+    virtual void visitQuery(Query * /*query*/) override
     {
-        assert(query != nullptr);
-
         m_typeName = "Query";
     }
 
-    virtual void visitRenderBufferObject(RenderBufferObject * rbo) override
+    virtual void visitRenderBufferObject(RenderBufferObject * /*rbo*/) override
     {
-        assert(rbo != nullptr);
-
         m_typeName = "RenderBufferObject";
     }
 
-    virtual void visitSampler(Sampler * sampler) override
+    virtual void visitSampler(Sampler * /*sampler*/) override
     {
-        assert(sampler != nullptr);
-
         m_typeName = "Sampler";
     }
 
-    virtual void visitShader(Shader * shader) override
+    virtual void visitShader(Shader * /*shader*/) override
     {
-        assert(shader != nullptr);
-
         m_typeName = "Shader";
     }
 
-    virtual void visitTexture(Texture * texture) override
+    virtual void visitTexture(Texture * /*texture*/) override
     {
-        assert(texture != nullptr);
-
         m_typeName = "Texture";
     }
 
-    virtual void visitTransformFeedback(TransformFeedback * transformfeedback) override
+    virtual void visitTransformFeedback(TransformFeedback * /*transformfeedback*/) override
     {
-        assert(transformfeedback != nullptr);
-
         m_typeName = "TransformFeedback";
     }
 
-    virtual void visitVertexArrayObject(VertexArrayObject * vao) override
+    virtual void visitVertexArrayObject(VertexArrayObject * /*vao*/) override
     {
-        assert(vao != nullptr);
-
         m_typeName = "VertexArrayObject";
     }
 protected:

@@ -221,7 +221,7 @@ float distanceToClosestPoint(
 	const float m = length2(ray); // magnitude of ray
 	const float theta = dot(b, ray);
 
-	if(m == 0.f)
+    if(std::abs(m) < std::numeric_limits<float>::epsilon())
 		return 0.f;
 
     return theta / m; // distance from camera to closest point c;
