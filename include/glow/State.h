@@ -53,11 +53,11 @@ public:
 
 public:
     void addCapability(Capability * capability);
-    void addCapabilitySetting(AbstractCapabilitySetting * capabilitySetting);
+    void addCapabilitySetting(capability::AbstractCapabilitySetting * capabilitySetting);
 
 protected:
     std::unordered_map<GLenum, Capability*> m_capabilities;
-    std::unordered_map<unsigned, AbstractCapabilitySetting*> m_capabilitySettings;
+    std::unordered_map<unsigned, capability::AbstractCapabilitySetting*> m_capabilitySettings;
 
     void setToCurrent(GLenum capability);
     Capability* getCapability(GLenum capability);

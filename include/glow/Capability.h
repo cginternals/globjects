@@ -43,6 +43,9 @@ protected:
     std::map<int, bool> m_indexEnabled;
 };
 
+namespace capability
+{
+
 class AbstractCapabilitySetting
 {
 public:
@@ -234,5 +237,6 @@ protected:
     GLenum zPass;
 };
 
+} // namespace capability
 
 } // namespace glow

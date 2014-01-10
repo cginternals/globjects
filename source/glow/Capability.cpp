@@ -116,7 +116,8 @@ void Capability::apply()
     }
 }
 
-//===================================================================================
+namespace capability
+{
 
 AbstractCapabilitySetting::AbstractCapabilitySetting(Type type)
 : m_type(type)
@@ -330,5 +331,7 @@ void StencilOp::apply()
     glStencilOp(fail, zFail, zPass);
     CheckGLError();
 }
+
+} // namespace capability
 
 } // namespace glow

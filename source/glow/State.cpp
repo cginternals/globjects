@@ -14,7 +14,7 @@ State::~State()
     {
         delete capability.second;
     }
-    for (const std::pair<unsigned, AbstractCapabilitySetting*>& capabilitySetting : m_capabilitySettings)
+    for (const std::pair<unsigned, capability::AbstractCapabilitySetting*>& capabilitySetting : m_capabilitySettings)
     {
         delete capabilitySetting.second;
     }
@@ -37,46 +37,46 @@ State* State::currentState()
     state->setToCurrent(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
     state->setToCurrent(GL_COLOR_LOGIC_OP);
-    state->addCapabilitySetting(new LogicOp(getInteger(GL_LOGIC_OP_MODE)));
+    state->addCapabilitySetting(new capability::LogicOp(getInteger(GL_LOGIC_OP_MODE)));
 
     state->setToCurrent(GL_CULL_FACE);
-    state->addCapabilitySetting(new CullFace(getInteger(GL_CULL_FACE_MODE)));
+    state->addCapabilitySetting(new capability::CullFace(getInteger(GL_CULL_FACE_MODE)));
 
     state->setToCurrent(GL_DEPTH_TEST);
-    state->addCapabilitySetting(new DepthFunc(getInteger(GL_DEPTH_FUNC)));
+    state->addCapabilitySetting(new capability::DepthFunc(getInteger(GL_DEPTH_FUNC)));
     auto depthRangeF = getFloats<2>(GL_DEPTH_RANGE);
-    state->addCapabilitySetting(new DepthRange(depthRangeF[0], depthRangeF[1]));
+    state->addCapabilitySetting(new capability::DepthRange(depthRangeF[0], depthRangeF[1]));
 
     state->setToCurrent(GL_LINE_SMOOTH);
-    state->addCapabilitySetting(new LineWidth(getFloat(GL_LINE_WIDTH)));
+    state->addCapabilitySetting(new capability::LineWidth(getFloat(GL_LINE_WIDTH)));
 
     state->setToCurrent(GL_PROGRAM_POINT_SIZE);
-    state->addCapabilitySetting(new PointSize(getFloat(GL_POINT_SIZE)));
+    state->addCapabilitySetting(new capability::PointSize(getFloat(GL_POINT_SIZE)));
 
     state->setToCurrent(GL_POLYGON_SMOOTH);
     state->setToCurrent(GL_POLYGON_OFFSET_FILL);
     state->setToCurrent(GL_POLYGON_OFFSET_LINE);
     state->setToCurrent(GL_POLYGON_OFFSET_POINT);
-    state->addCapabilitySetting(new PolygonMode(GL_FRONT_AND_BACK, getInteger(GL_POLYGON_MODE))); // documentation wrong?
-    state->addCapabilitySetting(new PolygonOffset(getFloat(GL_POLYGON_OFFSET_FACTOR), getFloat(GL_POLYGON_OFFSET_UNITS)));
+    state->addCapabilitySetting(new capability::PolygonMode(GL_FRONT_AND_BACK, getInteger(GL_POLYGON_MODE))); // documentation wrong?
+    state->addCapabilitySetting(new capability::PolygonOffset(getFloat(GL_POLYGON_OFFSET_FACTOR), getFloat(GL_POLYGON_OFFSET_UNITS)));
 
     state->setToCurrent(GL_SAMPLE_COVERAGE);
     state->setToCurrent(GL_MULTISAMPLE);
     state->setToCurrent(GL_SAMPLE_ALPHA_TO_COVERAGE);
     state->setToCurrent(GL_SAMPLE_ALPHA_TO_ONE);
     state->setToCurrent(GL_SAMPLE_MASK);
-    state->addCapabilitySetting(new SampleCoverage(getFloat(GL_SAMPLE_COVERAGE_VALUE), getBoolean(GL_SAMPLE_COVERAGE_INVERT)));
+    state->addCapabilitySetting(new capability::SampleCoverage(getFloat(GL_SAMPLE_COVERAGE_VALUE), getBoolean(GL_SAMPLE_COVERAGE_INVERT)));
 
     state->setToCurrent(GL_PRIMITIVE_RESTART);
-    state->addCapabilitySetting(new PrimitiveRestartIndex(getInteger(GL_PRIMITIVE_RESTART_INDEX)));
+    state->addCapabilitySetting(new capability::PrimitiveRestartIndex(getInteger(GL_PRIMITIVE_RESTART_INDEX)));
 
     state->setToCurrent(GL_SCISSOR_TEST);
     auto box = getIntegers<4>(GL_SCISSOR_BOX);
-    state->addCapabilitySetting(new Scissor(box[0], box[1], box[2], box[3]));
+    state->addCapabilitySetting(new capability::Scissor(box[0], box[1], box[2], box[3]));
 
     state->setToCurrent(GL_STENCIL_TEST);
-    state->addCapabilitySetting(new StencilFunc(getInteger(GL_STENCIL_FUNC), getInteger(GL_STENCIL_REF), getInteger(GL_STENCIL_VALUE_MASK)));
-    state->addCapabilitySetting(new StencilOp(getInteger(GL_STENCIL_FAIL), getInteger(GL_STENCIL_PASS_DEPTH_FAIL), getInteger(GL_STENCIL_PASS_DEPTH_PASS)));
+    state->addCapabilitySetting(new capability::StencilFunc(getInteger(GL_STENCIL_FUNC), getInteger(GL_STENCIL_REF), getInteger(GL_STENCIL_VALUE_MASK)));
+    state->addCapabilitySetting(new capability::StencilOp(getInteger(GL_STENCIL_FAIL), getInteger(GL_STENCIL_PASS_DEPTH_FAIL), getInteger(GL_STENCIL_PASS_DEPTH_PASS)));
 
     return state;
 }
@@ -138,7 +138,7 @@ void State::apply()
     {
         capability.second->apply();
     }
-    for (const std::pair<unsigned, AbstractCapabilitySetting*>& capabilitySetting : m_capabilitySettings)
+    for (const std::pair<unsigned, capability::AbstractCapabilitySetting*>& capabilitySetting : m_capabilitySettings)
     {
         capabilitySetting.second->apply();
     }
@@ -154,7 +154,7 @@ void State::addCapability(Capability * capability)
     m_capabilities[capability->capability()] = capability;
 }
 
-void State::addCapabilitySetting(AbstractCapabilitySetting * capabilitySetting)
+void State::addCapabilitySetting(capability::AbstractCapabilitySetting * capabilitySetting)
 {
     if (m_capabilitySettings.find(capabilitySetting->type()) != m_capabilitySettings.end())
     {
@@ -190,77 +190,77 @@ std::vector<Capability*> State::capabilities() const
 
 void State::blendFunc(GLenum sFactor, GLenum dFactor)
 {
-    addCapabilitySetting(new BlendFunc(sFactor, dFactor));
+    addCapabilitySetting(new capability::BlendFunc(sFactor, dFactor));
 }
 
 void State::logicOp(GLenum opcode)
 {
-    addCapabilitySetting(new LogicOp(opcode));
+    addCapabilitySetting(new capability::LogicOp(opcode));
 }
 
 void State::cullFace(GLenum mode)
 {
-    addCapabilitySetting(new CullFace(mode));
+    addCapabilitySetting(new capability::CullFace(mode));
 }
 
 void State::depthFunc(GLenum func)
 {
-    addCapabilitySetting(new DepthFunc(func));
+    addCapabilitySetting(new capability::DepthFunc(func));
 }
 
 void State::depthRange(GLdouble nearVal, GLdouble farVal)
 {
-    addCapabilitySetting(new DepthRange(nearVal, farVal));
+    addCapabilitySetting(new capability::DepthRange(nearVal, farVal));
 }
 
 void State::depthRange(GLfloat nearVal, GLfloat farVal)
 {
-    addCapabilitySetting(new DepthRange(nearVal, farVal));
+    addCapabilitySetting(new capability::DepthRange(nearVal, farVal));
 }
 
 void State::lineWidth(GLfloat width)
 {
-    addCapabilitySetting(new LineWidth(width));
+    addCapabilitySetting(new capability::LineWidth(width));
 }
 
 void State::pointSize(GLfloat size)
 {
-    addCapabilitySetting(new PointSize(size));
+    addCapabilitySetting(new capability::PointSize(size));
 }
 
 void State::polygonMode(GLenum face, GLenum mode)
 {
-    addCapabilitySetting(new PolygonMode(face, mode));
+    addCapabilitySetting(new capability::PolygonMode(face, mode));
 }
 
 void State::polygonOffset(GLfloat factor, GLfloat units)
 {
-    addCapabilitySetting(new PolygonOffset(factor, units));
+    addCapabilitySetting(new capability::PolygonOffset(factor, units));
 }
 
 void State::primitiveRestartIndex(GLuint index)
 {
-    addCapabilitySetting(new PrimitiveRestartIndex(index));
+    addCapabilitySetting(new capability::PrimitiveRestartIndex(index));
 }
 
 void State::sampleCoverage(GLfloat value, GLboolean invert)
 {
-    addCapabilitySetting(new SampleCoverage(value, invert));
+    addCapabilitySetting(new capability::SampleCoverage(value, invert));
 }
 
 void State::scissor(GLint x, GLint y, GLsizei width, GLsizei height)
 {
-    addCapabilitySetting(new Scissor(x, y, width, height));
+    addCapabilitySetting(new capability::Scissor(x, y, width, height));
 }
 
 void State::stencilFunc(GLenum func, GLint ref, GLuint mask)
 {
-    addCapabilitySetting(new StencilFunc(func, ref, mask));
+    addCapabilitySetting(new capability::StencilFunc(func, ref, mask));
 }
 
 void State::stencilOp(GLenum fail, GLenum zFail, GLenum zPass)
 {
-    addCapabilitySetting(new StencilOp(fail, zFail, zPass));
+    addCapabilitySetting(new capability::StencilOp(fail, zFail, zPass));
 }
 
 } // namespace glow
