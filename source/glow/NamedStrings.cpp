@@ -1,4 +1,4 @@
-#include <glow/NamedStrings.h>
+#include "NamedStrings.h"
 
 #include <cassert>
 

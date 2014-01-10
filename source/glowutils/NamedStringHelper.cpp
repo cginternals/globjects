@@ -2,7 +2,7 @@
 #include <vector>
 
 #include <glow/logging.h>
-#include <glow/NamedStrings.h>
+#include <glow/global.h>
 
 #include <glowutils/File.h>
 #include <glowutils/NamedStringHelper.h>
@@ -71,7 +71,7 @@ void NamedStringHelper::scanDirectory(const std::string & directory, const std::
 
         std::string fileName = directory+"/"+file;
 
-        NamedStrings::createNamedString("/"+fileName, new File(fileName));
+        createNamedString("/"+fileName, new File(fileName));
     }
 }
 

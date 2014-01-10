@@ -5,6 +5,8 @@
 
 #include <glow/Error.h>
 
+#include "NamedStrings.h"
+
 
 namespace glow
 {
@@ -123,6 +125,36 @@ GLboolean getBoolean(GLenum pname, GLuint index)
     CheckGLError();
 
     return value;
+}
+
+void createNamedString(const std::string& name, const std::string& string, GLenum type)
+{
+    NamedStrings::createNamedString(name, string, type);
+}
+
+void createNamedString(const std::string& name, StringSource* source, GLenum type)
+{
+    NamedStrings::createNamedString(name, source, type);
+}
+
+void deleteNamedString(const std::string& name)
+{
+    NamedStrings::deleteNamedString(name);
+}
+
+bool isNamedString(const std::string& name, bool cached)
+{
+    return NamedStrings::isNamedString(name, cached);
+}
+
+std::string getNamedString(const std::string& name, bool cached)
+{
+    return NamedStrings::namedString(name, cached);
+}
+
+GLenum getNamedStringType(const std::string& name, bool cached)
+{
+    return NamedStrings::namedStringType(name, cached);
 }
 
 } // namespace glow

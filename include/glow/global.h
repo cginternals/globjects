@@ -13,6 +13,8 @@
 namespace glow 
 {
 
+class StringSource;
+
 GLOW_API bool init();
 
 GLOW_API std::string getString(GLenum pname);
@@ -37,6 +39,13 @@ template <int Count>
 GLOW_API std::array<GLdouble, Count> getDoubles(GLenum pname);
 template <int Count>
 GLOW_API std::array<GLboolean, Count> getBooleans(GLenum pname);
+
+GLOW_API void createNamedString(const std::string& name, const std::string& string, GLenum type = GL_SHADER_INCLUDE_ARB);
+GLOW_API void createNamedString(const std::string& name, StringSource* source, GLenum type = GL_SHADER_INCLUDE_ARB);
+GLOW_API void deleteNamedString(const std::string& name);
+GLOW_API bool isNamedString(const std::string& name, bool cached = false);
+GLOW_API std::string getNamedString(const std::string& name, bool cached = false);
+GLOW_API GLenum getNamedStringType(const std::string& name, bool cached = false);
 
 } // namespace glow
 

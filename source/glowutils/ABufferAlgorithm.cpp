@@ -5,7 +5,7 @@
 #include <glow/Texture.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Buffer.h>
-#include <glow/NamedStrings.h>
+#include <glow/global.h>
 
 #include <glowutils/File.h>
 #include <glowutils/Camera.h>
@@ -36,8 +36,8 @@ const int ABUFFER_SIZE = 8;
 } // anonymous namespace
 
 void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
-    glow::NamedStrings::createNamedString("/transparency/abuffer_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
-	glow::NamedStrings::createNamedString("/transparency/abuffer.glsl", new glowutils::File(transparencyShaderFilePath + "abuffer.glsl"));
+    glow::createNamedString("/transparency/abuffer_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
+    glow::createNamedString("/transparency/abuffer.glsl", new glowutils::File(transparencyShaderFilePath + "abuffer.glsl"));
 
     m_program = new glow::Program();
 	m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath +  "abuffer.frag"));

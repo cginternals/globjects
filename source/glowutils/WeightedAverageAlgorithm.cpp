@@ -5,7 +5,6 @@
 #include <glow/Texture.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Buffer.h>
-#include <glow/NamedStrings.h>
 
 #include <glowutils/File.h>
 #include <glowutils/Camera.h>
