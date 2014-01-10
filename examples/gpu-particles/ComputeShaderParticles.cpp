@@ -40,11 +40,11 @@ ComputeShaderParticles::~ComputeShaderParticles()
 
 void ComputeShaderParticles::initialize()
 {
-    static const int max_invocations = query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS);
+    static const int max_invocations = getInteger(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS);
     static const ivec3 max_count = ivec3(
-        query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0)
-      , query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1)
-      , query::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2));
+        getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0)
+      , getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1)
+      , getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2));
 
     const int groups = static_cast<int>(ceil(static_cast<float>(m_numParticles) / static_cast<float>(max_invocations)));
 

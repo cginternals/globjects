@@ -8,7 +8,7 @@ namespace glow
 {
 
 template <int Count>
-std::array<GLint, Count> query::getIntegers(GLenum pname)
+std::array<GLint, Count> getIntegers(GLenum pname)
 {
     std::array<GLint, Count> values;
 
@@ -19,7 +19,7 @@ std::array<GLint, Count> query::getIntegers(GLenum pname)
 }
 
 template <int Count>
-std::array<GLfloat, Count> query::getFloats(GLenum pname)
+std::array<GLfloat, Count> getFloats(GLenum pname)
 {
     std::array<GLfloat, Count> values;
 
@@ -30,7 +30,7 @@ std::array<GLfloat, Count> query::getFloats(GLenum pname)
 }
 
 template <int Count>
-std::array<GLdouble, Count> query::getDoubles(GLenum pname)
+std::array<GLdouble, Count> getDoubles(GLenum pname)
 {
     std::array<GLdouble, Count> values;
 
@@ -41,7 +41,7 @@ std::array<GLdouble, Count> query::getDoubles(GLenum pname)
 }
 
 template <int Count>
-std::array<GLboolean, Count> query::getBooleans(GLenum pname)
+std::array<GLboolean, Count> getBooleans(GLenum pname)
 {
     std::array<GLboolean, Count> values;
 

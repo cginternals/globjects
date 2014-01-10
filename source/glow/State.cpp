@@ -37,46 +37,46 @@ State* State::currentState()
     state->setToCurrent(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
     state->setToCurrent(GL_COLOR_LOGIC_OP);
-    state->addCapabilitySetting(new LogicOp(query::getInteger(GL_LOGIC_OP_MODE)));
+    state->addCapabilitySetting(new LogicOp(getInteger(GL_LOGIC_OP_MODE)));
 
     state->setToCurrent(GL_CULL_FACE);
-    state->addCapabilitySetting(new CullFace(query::getInteger(GL_CULL_FACE_MODE)));
+    state->addCapabilitySetting(new CullFace(getInteger(GL_CULL_FACE_MODE)));
 
     state->setToCurrent(GL_DEPTH_TEST);
-    state->addCapabilitySetting(new DepthFunc(query::getInteger(GL_DEPTH_FUNC)));
-    auto depthRangeF = query::getFloats<2>(GL_DEPTH_RANGE);
+    state->addCapabilitySetting(new DepthFunc(getInteger(GL_DEPTH_FUNC)));
+    auto depthRangeF = getFloats<2>(GL_DEPTH_RANGE);
     state->addCapabilitySetting(new DepthRange(depthRangeF[0], depthRangeF[1]));
 
     state->setToCurrent(GL_LINE_SMOOTH);
-    state->addCapabilitySetting(new LineWidth(query::getFloat(GL_LINE_WIDTH)));
+    state->addCapabilitySetting(new LineWidth(getFloat(GL_LINE_WIDTH)));
 
     state->setToCurrent(GL_PROGRAM_POINT_SIZE);
-    state->addCapabilitySetting(new PointSize(query::getFloat(GL_POINT_SIZE)));
+    state->addCapabilitySetting(new PointSize(getFloat(GL_POINT_SIZE)));
 
     state->setToCurrent(GL_POLYGON_SMOOTH);
     state->setToCurrent(GL_POLYGON_OFFSET_FILL);
     state->setToCurrent(GL_POLYGON_OFFSET_LINE);
     state->setToCurrent(GL_POLYGON_OFFSET_POINT);
-    state->addCapabilitySetting(new PolygonMode(GL_FRONT_AND_BACK, query::getInteger(GL_POLYGON_MODE))); // documentation wrong?
-    state->addCapabilitySetting(new PolygonOffset(query::getFloat(GL_POLYGON_OFFSET_FACTOR), query::getFloat(GL_POLYGON_OFFSET_UNITS)));
+    state->addCapabilitySetting(new PolygonMode(GL_FRONT_AND_BACK, getInteger(GL_POLYGON_MODE))); // documentation wrong?
+    state->addCapabilitySetting(new PolygonOffset(getFloat(GL_POLYGON_OFFSET_FACTOR), getFloat(GL_POLYGON_OFFSET_UNITS)));
 
     state->setToCurrent(GL_SAMPLE_COVERAGE);
     state->setToCurrent(GL_MULTISAMPLE);
     state->setToCurrent(GL_SAMPLE_ALPHA_TO_COVERAGE);
     state->setToCurrent(GL_SAMPLE_ALPHA_TO_ONE);
     state->setToCurrent(GL_SAMPLE_MASK);
-    state->addCapabilitySetting(new SampleCoverage(query::getFloat(GL_SAMPLE_COVERAGE_VALUE), query::getBoolean(GL_SAMPLE_COVERAGE_INVERT)));
+    state->addCapabilitySetting(new SampleCoverage(getFloat(GL_SAMPLE_COVERAGE_VALUE), getBoolean(GL_SAMPLE_COVERAGE_INVERT)));
 
     state->setToCurrent(GL_PRIMITIVE_RESTART);
-    state->addCapabilitySetting(new PrimitiveRestartIndex(query::getInteger(GL_PRIMITIVE_RESTART_INDEX)));
+    state->addCapabilitySetting(new PrimitiveRestartIndex(getInteger(GL_PRIMITIVE_RESTART_INDEX)));
 
     state->setToCurrent(GL_SCISSOR_TEST);
-    auto box = query::getIntegers<4>(GL_SCISSOR_BOX);
+    auto box = getIntegers<4>(GL_SCISSOR_BOX);
     state->addCapabilitySetting(new Scissor(box[0], box[1], box[2], box[3]));
 
     state->setToCurrent(GL_STENCIL_TEST);
-    state->addCapabilitySetting(new StencilFunc(query::getInteger(GL_STENCIL_FUNC), query::getInteger(GL_STENCIL_REF), query::getInteger(GL_STENCIL_VALUE_MASK)));
-    state->addCapabilitySetting(new StencilOp(query::getInteger(GL_STENCIL_FAIL), query::getInteger(GL_STENCIL_PASS_DEPTH_FAIL), query::getInteger(GL_STENCIL_PASS_DEPTH_PASS)));
+    state->addCapabilitySetting(new StencilFunc(getInteger(GL_STENCIL_FUNC), getInteger(GL_STENCIL_REF), getInteger(GL_STENCIL_VALUE_MASK)));
+    state->addCapabilitySetting(new StencilOp(getInteger(GL_STENCIL_FAIL), getInteger(GL_STENCIL_PASS_DEPTH_FAIL), getInteger(GL_STENCIL_PASS_DEPTH_PASS)));
 
     return state;
 }

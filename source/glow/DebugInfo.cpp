@@ -7,6 +7,7 @@
 #include <glow/ObjectRegistry.h>
 #include <glow/logging.h>
 #include <glow/global.h>
+#include <glow/memory.h>
 
 #include <glow/Object.h>
 #include <glow/Buffer.h>
@@ -85,11 +86,11 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::generalInfo()
 	memoryInfo.name = "Memory";
 	textureInfo.name = "General Texture Info";
 
-	generalInfo.addProperty("version", query::version().toString());
-	generalInfo.addProperty("vendor", query::vendor());
-	generalInfo.addProperty("renderer", query::renderer());
-	generalInfo.addProperty("core profile", query::isCoreProfile()?"true":"false");
-	generalInfo.addProperty("GLSL version", query::getString(GL_SHADING_LANGUAGE_VERSION));
+    generalInfo.addProperty("version", Version::current().toString());
+    generalInfo.addProperty("vendor", Version::vendor());
+    generalInfo.addProperty("renderer", Version::renderer());
+    generalInfo.addProperty("core profile", Version::currentVersionIsInCoreProfile()?"true":"false");
+    generalInfo.addProperty("GLSL version", getString(GL_SHADING_LANGUAGE_VERSION));
 
 	memoryInfo.addProperty("total", humanReadableSize(1024ll*memory::total()));
 	memoryInfo.addProperty("dedicated", humanReadableSize(1024ll*memory::dedicated()));
@@ -97,15 +98,15 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::generalInfo()
 	memoryInfo.addProperty("evicted", humanReadableSize(1024ll*memory::evicted()));
 	memoryInfo.addProperty("evictionCount", memory::evictionCount());
 
-	int maxTextureSize = query::getInteger(GL_MAX_TEXTURE_SIZE);
+    int maxTextureSize = getInteger(GL_MAX_TEXTURE_SIZE);
 	textureInfo.addProperty("Max Texture Size", std::to_string(maxTextureSize)+" x "+std::to_string(maxTextureSize));
-	textureInfo.addProperty("Max Vertex Texture Image Units", query::getInteger(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS));
-	textureInfo.addProperty("Max Texture Image Units", query::getInteger(GL_MAX_IMAGE_UNITS));
-	textureInfo.addProperty("Max Geometry Texture Units", query::getInteger(GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS));
-    auto maxViewportSize = query::getIntegers<2>(GL_MAX_VIEWPORT_DIMS);
+    textureInfo.addProperty("Max Vertex Texture Image Units", getInteger(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS));
+    textureInfo.addProperty("Max Texture Image Units", getInteger(GL_MAX_IMAGE_UNITS));
+    textureInfo.addProperty("Max Geometry Texture Units", getInteger(GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS));
+    auto maxViewportSize = getIntegers<2>(GL_MAX_VIEWPORT_DIMS);
 	textureInfo.addProperty("Max viewport size", std::to_string(maxViewportSize[0])+" x "+std::to_string(maxViewportSize[1]));
-	textureInfo.addProperty("Max clip distances", query::getInteger(GL_MAX_CLIP_DISTANCES));
-	textureInfo.addProperty("Max Samples", query::getInteger(GL_MAX_SAMPLES));
+    textureInfo.addProperty("Max clip distances", getInteger(GL_MAX_CLIP_DISTANCES));
+    textureInfo.addProperty("Max Samples", getInteger(GL_MAX_SAMPLES));
 
 	generalGroup.addInfoUnit(generalInfo);
 	generalGroup.addInfoUnit(memoryInfo);
@@ -278,7 +279,7 @@ void DebugInfo::visitTexture(Texture* texture)
 	InfoUnit info;
 	info.name = name("Texture", texture);
 
-	int maxTextureSize = query::getInteger(GL_MAX_TEXTURE_SIZE);
+    int maxTextureSize = getInteger(GL_MAX_TEXTURE_SIZE);
 	int maxLevels = (int)std::ceil(std::log(maxTextureSize)/std::log(2))+1;
 
 	int memory = 0;

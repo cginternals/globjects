@@ -1,7 +1,10 @@
+#include <glowwindow/MainLoop.h>
 
 #include <cassert>
 #include <string>
 #include <iomanip>
+
+#include <GL/glew.h>
 
 #include <GLFW/glfw3.h>
 
@@ -13,8 +16,6 @@
 #include <glowwindow/events.h>
 
 #include "WindowEventDispatcher.h"
-
-#include <glowwindow/MainLoop.h>
 
 namespace glowwindow
 {
