@@ -242,11 +242,13 @@ LogMessageBuilder& LogMessageBuilder::operator<<(LogMessageBuilder::FillManipula
     return *this;
 }
 
+#ifndef _MSC_VER
 LogMessageBuilder& LogMessageBuilder::operator<<(LogMessageBuilder::WidthManipulator manipulator)
 {
     *m_stream << manipulator;
     return *this;
 }
+#endif
 
 LogMessageBuilder& LogMessageBuilder::operator<<(const glm::vec2 & v)
 {

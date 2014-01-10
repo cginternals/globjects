@@ -15829,7 +15829,7 @@ std::vector<std::string> extensions = {
     "WEBGL"
 };
 
-int extensionProiority(const std::string & name)
+int extensionPriority(const std::string & name)
 {
     std::size_t pos = name.find_last_of('_');
     if (pos == std::string::npos)
@@ -15847,8 +15847,8 @@ void sortByExtension(std::vector<std::string> & names)
 {
     std::sort(names.begin(), names.end(), [](const std::string& name1, const std::string& name2) {
 
-        int priority1 = extensionProiority(name1);
-        int priority2 = extensionProiority(name2);
+		int priority1 = extensionPriority(name1);
+		int priority2 = extensionPriority(name2);
 
         if (priority1 == priority2)
             return name1.size() < name2.size();

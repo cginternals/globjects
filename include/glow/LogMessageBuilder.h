@@ -91,7 +91,10 @@ public:
 	LogMessageBuilder& operator<<(std::ostream& (*manipulator)(std::ostream&));
     LogMessageBuilder& operator<<(PrecisionManipulator manipulator);
     LogMessageBuilder& operator<<(FillManipulator manipulator);
+#ifndef _MSC_VER
+	// in windows PrecisionManipulator = WidthManipulator
     LogMessageBuilder& operator<<(WidthManipulator manipulator);
+#endif
 	
 	// glow objects
     LogMessageBuilder& operator<<(Object* object);
