@@ -2,10 +2,13 @@
 
 #include <unordered_map>
 #include <algorithm>
+#include <cstdint>
 
 namespace {
 
-std::unordered_multimap<GLenum, std::string> enums = {
+/* GL_TIMEOUT_IGNORED is 64 bit on windows, but GLenum is 32 bit, so the map keys need to be 64 bit */
+
+std::unordered_multimap<std::uint64_t, std::string> enums = {
 #ifdef GL_1PASS_EXT
     { GL_1PASS_EXT, "GL_1PASS_EXT" },
 #endif
@@ -15863,7 +15866,7 @@ namespace glow {
 
 std::vector<std::string> enumNames(GLenum param)
 {
-    auto range = enums.equal_range(param);
+    auto range = enums.equal_range(static_cast<std::uint64_t>(param));
 
     std::vector<std::string> names;
     for (auto it = range.first; it != range.second; ++it)
