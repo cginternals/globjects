@@ -20,10 +20,8 @@ float pointToPlaneDistance(
 ,   const vec3 & normal
 ,   const vec3 & point)
 {
-    assert(length(normal) == 1.f);
-
     const float distance = length(location);
-    return abs(dot(point, normal) - distance);
+    return abs(dot(point, normalize(normal)) - distance);
 }
 
 const mat4 rotate(
