@@ -12,7 +12,9 @@
 
 #include <glow/debugmessageoutput.h>
 
-#ifndef _MSC_VER
+#ifdef WIN32
+#include <Windows.h>
+#else
 #define APIENTRY
 #endif
 
