@@ -15,6 +15,7 @@
 #include <glow/Texture.h>
 #include <glow/Array.h>
 #include <glow/global.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
@@ -81,7 +82,7 @@ public:
 
     virtual void initialize(Window & ) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         m_forces = new glow::Texture(GL_TEXTURE_3D);
 

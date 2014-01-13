@@ -23,6 +23,7 @@
 #include <glow/logging.h>
 #include <glow/ref_ptr.h>
 #include <glow/formatString.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -42,7 +43,7 @@ public:
 
     virtual void initialize(glowwindow::Window & window) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         std::cout << "glow Objects tests" << std::endl;
 

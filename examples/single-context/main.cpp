@@ -1,13 +1,14 @@
 
 #include <GL/glew.h>
 
-#include <glowwindow/ContextFormat.h>
 #include <glow/Error.h>
+#include <glow/logging.h>
+#include <glow/debugmessageoutput.h>
+
+#include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
-
-#include <glow/logging.h>
 
 using namespace glowwindow;
 
@@ -24,7 +25,7 @@ public:
 
     virtual void initialize(Window & ) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();

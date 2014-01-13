@@ -19,6 +19,7 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Error.h>
 #include <glow/logging.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowutils/File.h>
 #include <glowutils/FileRegistry.h>
@@ -51,7 +52,7 @@ public:
 
     virtual void initialize(Window & ) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();

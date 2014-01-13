@@ -15,6 +15,7 @@
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/logging.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowutils/Icosahedron.h>
 #include <glowutils/AdaptiveGrid.h>
@@ -48,7 +49,7 @@ public:
 
     virtual void initialize(Window & ) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.f);
         CheckGLError();

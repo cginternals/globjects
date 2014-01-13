@@ -19,6 +19,7 @@
 #include <glow/FrameBufferObject.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Texture.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Icosahedron.h>
@@ -58,7 +59,7 @@ public:
 
     virtual void initialize(Window & ) override
 	{
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
 		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
         CheckGLError();

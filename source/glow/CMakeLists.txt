@@ -41,7 +41,7 @@ set(api_includes
     ${header_path}/constants.h
     ${header_path}/DebugInfo.h
     ${header_path}/DebugMessage.h
-    ${header_path}/DebugMessageOutput.h
+    ${header_path}/debugmessageoutput.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferAttachment.h
     ${header_path}/FrameBufferObject.h
@@ -92,9 +92,13 @@ set(sources
     ${source_path}/CompositeStringSource.cpp
     ${source_path}/ConsoleLogger.cpp
     ${source_path}/constants.cpp
+    ${source_path}/contextid.h
+    ${source_path}/contextid.cpp
     ${source_path}/DebugInfo.cpp
     ${source_path}/DebugMessage.cpp
-    ${source_path}/DebugMessageOutput.cpp
+    ${source_path}/DebugMessageCallback.h
+    ${source_path}/DebugMessageCallback.cpp
+    ${source_path}/debugmessageoutput.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferAttachment.cpp
     ${source_path}/FrameBufferObject.cpp

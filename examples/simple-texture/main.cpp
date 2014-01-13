@@ -7,6 +7,7 @@
 #include <glow/Array.h>
 #include <glow/logging.h>
 #include <glow/Texture.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowwindow/ContextFormat.h>
@@ -33,7 +34,7 @@ public:
 
     virtual void initialize(Window & ) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();

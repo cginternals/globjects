@@ -157,4 +157,52 @@ GLenum getNamedStringType(const std::string& name, bool cached)
     return NamedStrings::namedStringType(name, cached);
 }
 
+void enable(GLenum capability)
+{
+    glEnable(capability);
+    CheckGLError();
+}
+
+void disable(GLenum capability)
+{
+    glDisable(capability);
+    CheckGLError();
+}
+
+bool isEnabled(GLenum capability)
+{
+    GLboolean value = glIsEnabled(capability);
+    CheckGLError();
+    return value == GL_TRUE;
+}
+
+void setEnabled(GLenum capability, bool enabled)
+{
+    enabled ? enable(capability) : disable(capability);
+}
+
+void enable(GLenum capability, int index)
+{
+    glEnablei(capability, index);
+    CheckGLError();
+}
+
+void disable(GLenum capability, int index)
+{
+    glDisablei(capability, index);
+    CheckGLError();
+}
+
+bool isEnabled(GLenum capability, int index)
+{
+    GLboolean value = glIsEnabledi(capability, index);
+    CheckGLError();
+    return value == GL_TRUE;
+}
+
+void setEnabled(GLenum capability, int index, bool enabled)
+{
+    enabled ? enable(capability, index) : disable(capability, index);
+}
+
 } // namespace glow

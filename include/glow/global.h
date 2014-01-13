@@ -47,6 +47,15 @@ GLOW_API bool isNamedString(const std::string& name, bool cached = false);
 GLOW_API std::string getNamedString(const std::string& name, bool cached = false);
 GLOW_API GLenum getNamedStringType(const std::string& name, bool cached = false);
 
+GLOW_API void enable(GLenum capability);
+GLOW_API void disable(GLenum capability);
+GLOW_API bool isEnabled(GLenum capability);
+GLOW_API void setEnabled(GLenum capability, bool enabled);
+GLOW_API void enable(GLenum capability, int index);
+GLOW_API void disable(GLenum capability, int index);
+GLOW_API bool isEnabled(GLenum capability, int index);
+GLOW_API void setEnabled(GLenum capability, int index, bool enabled);
+
 } // namespace glow
 
 #include <glow/global.hpp>

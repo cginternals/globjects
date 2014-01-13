@@ -10,16 +10,6 @@
 namespace glow
 {
 
-void enable(GLenum capability);
-void disable(GLenum capability);
-bool isEnabled(GLenum capability);
-void setEnabled(GLenum capability, bool enabled);
-
-void enable(GLenum capability, int index);
-void disable(GLenum capability, int index);
-bool isEnabled(GLenum capability, int index);
-void setEnabled(GLenum capability, int index, bool enabled);
-
 class Capability
 {
 public:

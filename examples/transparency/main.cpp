@@ -5,7 +5,7 @@
 
 #include <glow/Program.h>
 #include <glow/Texture.h>
-#include <glow/DebugMessageOutput.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Window.h>
@@ -50,7 +50,7 @@ public:
 
 		window.addTimer(0, 0);
 
-		glow::DebugMessageOutput::enable();
+		glow::debugmessageoutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         CheckGLError();

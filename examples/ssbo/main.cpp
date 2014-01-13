@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 
 #include <glow/Buffer.h>
-#include <glow/DebugMessageOutput.h>
+#include <glow/debugmessageoutput.h>
 #include <glow/Program.h>
 
 #include <glowutils/File.h>
@@ -30,7 +30,7 @@ public:
 
     virtual void initialize(Window & ) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();

@@ -18,6 +18,7 @@
 #include <glow/Buffer.h>
 #include <glow/logging.h>
 #include <glow/VertexArrayObject.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowutils/File.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
@@ -107,7 +108,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        debugmessageoutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
