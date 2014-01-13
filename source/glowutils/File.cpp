@@ -12,18 +12,6 @@ using namespace glow;
 namespace glowutils
 {
 
-Shader * createShaderFromFile(const GLenum type, const std::string& fileName)
-{
-    return new Shader(type, new File(fileName));
-}
-
-Shader * createShaderFromFile(GLenum type, const std::string & fileName, const std::vector<std::string> & includePaths)
-{
-    return new Shader(type, new File(fileName), includePaths);
-}
-
-
-
 File::File(const std::string & filePath)
 : m_filePath(filePath)
 , m_registry(nullptr)

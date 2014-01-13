@@ -24,6 +24,7 @@
 #include <glowutils/ABufferAlgorithm.h>
 #include <glowutils/WeightedAverageAlgorithm.h>
 #include <glowutils/HybridAlgorithm.h>
+#include <glowutils/global.h>
 
 namespace {
 

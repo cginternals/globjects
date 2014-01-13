@@ -29,6 +29,7 @@
 #include <glowutils/File.h>
 #include <glowutils/AutoTimer.h>
 #include <glowutils/Timer.h>
+#include <glowutils/global.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>

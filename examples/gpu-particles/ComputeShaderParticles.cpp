@@ -17,6 +17,7 @@
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
 #include <glowutils/StringTemplate.h>
+#include <glowutils/global.h>
 
 #include "ComputeShaderParticles.h"
 

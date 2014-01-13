@@ -4,6 +4,7 @@
 
 #include <glow/logging.h>
 #include <glow/global.h>
+#include <glow/Shader.h>
 
 #include <glowutils/File.h>
 
@@ -59,6 +60,16 @@ using namespace glow;
 
 namespace glowutils
 {
+
+Shader * createShaderFromFile(const GLenum type, const std::string& fileName)
+{
+    return new Shader(type, new File(fileName));
+}
+
+Shader * createShaderFromFile(GLenum type, const std::string & fileName, const std::vector<std::string> & includePaths)
+{
+    return new Shader(type, new File(fileName), includePaths);
+}
 
 void scanDirectory(const std::string & directory, const std::string & fileExtension)
 {

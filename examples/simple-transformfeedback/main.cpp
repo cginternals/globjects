@@ -23,6 +23,7 @@
 #include <glowutils/Timer.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/File.h>
+#include <glowutils/global.h>
 
 #include <glowwindow/Window.h>
 #include <glowwindow/ContextFormat.h>

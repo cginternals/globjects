@@ -9,6 +9,7 @@
 
 #include <glowutils/File.h>
 #include <glowutils/Camera.h>
+#include <glowutils/global.h>
 
 namespace glowutils {
 

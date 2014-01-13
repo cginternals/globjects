@@ -44,7 +44,4 @@ protected:
     FileRegistry* m_registry;
 };
 
-GLOWUTILS_API glow::Shader * createShaderFromFile(GLenum type, const std::string & fileName);
-GLOWUTILS_API glow::Shader * createShaderFromFile(GLenum type, const std::string & fileName, const std::vector<std::string> & includePaths);
-
 } // namespace glowutils
