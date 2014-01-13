@@ -19,8 +19,12 @@
 namespace {
 
 bool manualErrorCheckFallbackEnabled = false;
-std::unordered_map<long long, DebugMessageCallback> callbackStates;
+std::unordered_map<long long, glow::DebugMessageCallback> callbackStates;
 
+}
+
+namespace glow
+{
 
 DebugMessageCallback * currentDebugMessageCallback()
 {
@@ -50,10 +54,6 @@ void registerDebugMessageCallback(DebugMessageCallback * messageCallback)
     }
 }
 
-}
-
-namespace glow
-{
 namespace debugmessageoutput
 {
 

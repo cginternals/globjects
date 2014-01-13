@@ -32,6 +32,7 @@ public:
 
     static const char * errorString(GLenum errorCode);
 
+    static void check(const char * file, int line);
 protected:
 	GLenum m_errorCode;
 };
@@ -39,8 +40,7 @@ protected:
 #ifdef NDEBUG
 #define CheckGLError()
 #else
-namespace debugmessageoutput { GLOW_API void manualErrorCheck(const char * file, int line); }
-#define CheckGLError() glow::debugmessageoutput::manualErrorCheck(__FILE__, __LINE__)
+#define CheckGLError() glow::Error::check(__FILE__, __LINE__)
 #endif
 
 } // namespace glow
