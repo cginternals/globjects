@@ -5,14 +5,16 @@
 
 #include <glow/DebugMessage.h>
 
+namespace glow {
+
 class DebugMessageCallback
 {
 public:
-    using Callback = std::function<void(const glow::DebugMessage&)>;
+    using Callback = std::function<void(const DebugMessage&)>;
 
     DebugMessageCallback();
 
-    void operator()(const glow::DebugMessage & message);
+    void operator()(const DebugMessage & message);
 
     bool isRegistered() const;
     void setRegistered(bool registered);
@@ -20,12 +22,14 @@ public:
     void addCallback(Callback callback);
     void clearCallbacks();
 protected:
-    void callCallbacks(const glow::DebugMessage & message);
-    void defaultAction(const glow::DebugMessage & message);
+    void callCallbacks(const DebugMessage & message);
+    void defaultAction(const DebugMessage & message);
 
-    void handleError(const glow::DebugMessage & message);
-    void handleDebug(const glow::DebugMessage & message);
+    void handleError(const DebugMessage & message);
+    void handleDebug(const DebugMessage & message);
 protected:
     std::vector<Callback> m_callbacks;
     bool m_registered;
 };
+
+} // namespace glow
