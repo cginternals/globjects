@@ -2,6 +2,10 @@
 
 #include <sstream>
 #include <string>
+#include <vector>
+#include <array>
+#include <memory>
+#include <iomanip>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -11,6 +15,9 @@
 
 namespace glow 
 {
+
+template <typename T>
+class Array;
 
 class AbstractLogHandler;
 class Object;
@@ -51,11 +58,17 @@ class Uniform;
 	\see debug
 	\see warning
 */
-class GLOW_API LogMessageBuilder : public std::stringstream
+class GLOW_API LogMessageBuilder
 {
 public:
+    /* These types are unspecified by the C++ standard -> we need to query the compiler specific types
+    */
+    using PrecisionManipulator = decltype(std::setprecision(0));
+    using FillManipulator = decltype(std::setfill('0'));
+    using WidthManipulator = decltype(std::setw(0));
+public:
 	LogMessageBuilder(LogMessage::Level level, AbstractLogHandler* handler);
-	LogMessageBuilder(const LogMessageBuilder& builder);
+    LogMessageBuilder(const LogMessageBuilder& builder);
 	virtual ~LogMessageBuilder();
 
 	// primitive types
@@ -76,6 +89,12 @@ public:
 
 	// manipulators
 	LogMessageBuilder& operator<<(std::ostream& (*manipulator)(std::ostream&));
+    LogMessageBuilder& operator<<(PrecisionManipulator manipulator);
+    LogMessageBuilder& operator<<(FillManipulator manipulator);
+#ifndef _MSC_VER
+	// in windows PrecisionManipulator = WidthManipulator
+    LogMessageBuilder& operator<<(WidthManipulator manipulator);
+#endif
 	
 	// glow objects
     LogMessageBuilder& operator<<(Object* object);
@@ -96,10 +115,17 @@ public:
     template <typename T>
     LogMessageBuilder& operator<<(ref_ptr<T> ref_pointer);
 	
-
 	// pointers
 	template <typename T>
     LogMessageBuilder& operator<<(T* pointer);
+
+    // array types
+    template <typename T>
+    LogMessageBuilder& operator<<(const Array<T>& array);
+    template <typename T>
+    LogMessageBuilder& operator<<(const std::vector<T>& vector);
+    template <typename T, std::size_t Count>
+    LogMessageBuilder& operator<<(const std::array<T, Count>& array);
 
 	// glm types
 	LogMessageBuilder& operator<<(const glm::vec2& v);
@@ -116,6 +142,7 @@ public:
 protected:
 	LogMessage::Level m_level;
 	AbstractLogHandler* m_handler;
+    std::shared_ptr<std::stringstream> m_stream;
 };
 
 } // namespace glow

@@ -1,6 +1,7 @@
 
 #include <glow/Error.h>
 
+#include <glow/debugmessageoutput.h>
 
 namespace glow
 {
@@ -65,6 +66,11 @@ const char* Error::errorString(GLenum errorCode)
         default:
 			return "Unknown GLenum.";
 	}
+}
+
+void Error::check(const char *file, int line)
+{
+    debugmessageoutput::manualErrorCheck(file, line);
 }
 
 } // namespace glow

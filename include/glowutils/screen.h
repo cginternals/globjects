@@ -12,45 +12,41 @@ namespace glowutils
 
     All information should be available at anytime.
  */
-class GLOWUTILS_API Screen
+namespace screen
 {
-public:
+    typedef std::multimap<unsigned int, unsigned int> Resolutions;
 
-    static const unsigned int getNumScreens();
+    GLOWUTILS_API unsigned int getNumScreens();
 
     /** Returns the primary screen's physical size in mm.
     */
-    static void getPhysicalSize(
+    GLOWUTILS_API void getPhysicalSize(
         unsigned int & width
     ,   unsigned int & height);
 
     /** Returns the primary screen's maximum resolution in px. 
     */
-    static void getMaximumResolution(
+    GLOWUTILS_API void getMaximumResolution(
         unsigned int & width
     ,   unsigned int & height);
 
     /** Returns the primary screen's current resolution in px. 
     */
-    static void getDesktopResolution(
+    GLOWUTILS_API void getDesktopResolution(
         unsigned int & width
     ,   unsigned int & height);
 
     /** Returns the primary screen's pixel density in ppi. 
     */
-    static void getPixelDensity(
+    GLOWUTILS_API void getPixelDensity(
         float & ppiHorizontal
     ,   float & ppiVertical);
 
 
     /** Returns all unique valid resolutions sorted in px. 
     */
-    typedef std::multimap<unsigned int, unsigned int> Resolutions;
-    static void getValidResolutions(Resolutions & resolutions);
+    GLOWUTILS_API void getValidResolutions(Resolutions & resolutions);
 
-private:
-    Screen();
-    ~Screen();
-};
+} // namespace screen
 
 } // namespace glowutils

@@ -6,9 +6,7 @@
 
 #include <glow/glow.h>
 
-#include <glow/DebugMessageOutput.h>
-
-namespace glow 
+namespace glow
 {
 
 /** \brief Wrapper for OpenGL errors.
@@ -34,8 +32,15 @@ public:
 
     static const char * errorString(GLenum errorCode);
 
+    static void check(const char * file, int line);
 protected:
 	GLenum m_errorCode;
 };
+
+#ifdef NDEBUG
+#define CheckGLError()
+#else
+#define CheckGLError() glow::Error::check(__FILE__, __LINE__)
+#endif
 
 } // namespace glow

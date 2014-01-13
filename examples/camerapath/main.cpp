@@ -18,6 +18,7 @@
 #include <glow/Buffer.h>
 #include <glow/logging.h>
 #include <glow/VertexArrayObject.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowutils/File.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
@@ -30,6 +31,7 @@
 #include <glowutils/CameraPathPlayer.h>
 #include <glowutils/AutoTimer.h>
 #include <glowutils/Timer.h>
+#include <glowutils/global.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -106,7 +108,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        DebugMessageOutput::enable();
+        debugmessageoutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
@@ -168,10 +170,12 @@ public:
             case GLFW_KEY_T:
                 usePath = !usePath;
                 break;
+            default:
+                break;
         }
     }
 
-    virtual void idle(Window & window) override
+    virtual void idle(Window & ) override
     {
     }
 
@@ -224,6 +228,9 @@ public:
             case WorldInHandNavigation::RotateInteraction:
                 m_nav.rotateProcess(event.pos());
                 event.accept();
+
+            default:
+                break;
         }
     }
     virtual void mouseReleaseEvent(MouseEvent & event) override
@@ -242,7 +249,7 @@ public:
         }
     }
 
-    void scrollEvent(ScrollEvent & event) override
+    virtual void scrollEvent(ScrollEvent & event) override
     {
         if (WorldInHandNavigation::NoInteraction != m_nav.mode())
             return;
@@ -251,25 +258,25 @@ public:
         event.accept();
     }
 
-    virtual const float depthAt(const ivec2 & windowCoordinates)
+    virtual float depthAt(const ivec2 & windowCoordinates) override
     {
         return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
     }
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates)
+    virtual vec3 objAt(const ivec2 & windowCoordinates) override
     {
         return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
     }
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth)
+    virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
     {
         return unproject(m_camera, depth, windowCoordinates);
     }
 
-    virtual const glm::vec3 objAt(
+    virtual glm::vec3 objAt(
         const ivec2 & windowCoordinates
     ,   const float depth
-    ,   const mat4 & viewProjectionInverted)
+    ,   const mat4 & viewProjectionInverted) override
     {
         return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
     }
@@ -297,7 +304,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(4, 0);

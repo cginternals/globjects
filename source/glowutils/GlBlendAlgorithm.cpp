@@ -9,6 +9,7 @@
 
 #include <glowutils/File.h>
 #include <glowutils/Camera.h>
+#include <glowutils/global.h>
 
 namespace glowutils {
 
@@ -62,6 +63,11 @@ void GlBlendAlgorithm::resize(int width, int height) {
 	int depthBits = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
     m_colorTex->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
     m_depthBuffer->storage(depthBits == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
+}
+
+glow::Texture* GlBlendAlgorithm::getOutput()
+{
+    return m_colorTex;
 }
 
 } // namespace glow

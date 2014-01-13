@@ -5,12 +5,13 @@
 #include <glow/Texture.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Buffer.h>
-#include <glow/NamedStrings.h>
+#include <glow/global.h>
 #include <glow/Array.h>
 
 #include <glowutils/File.h>
 #include <glowutils/Camera.h>
 #include <glowutils/ScreenAlignedQuad.h>
+#include <glowutils/global.h>
 
 namespace glowutils {
 
@@ -22,8 +23,8 @@ const int VISIBILITY_KTAB_SIZE = ABUFFER_SIZE + 1;
 }
 
 void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
-    glow::NamedStrings::createNamedString("/transparency/hybrid_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
-	glow::NamedStrings::createNamedString("/transparency/hybrid.glsl", new glowutils::File(transparencyShaderFilePath + "hybrid.glsl"));
+    glow::createNamedString("/transparency/hybrid_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
+    glow::createNamedString("/transparency/hybrid.glsl", new glowutils::File(transparencyShaderFilePath + "hybrid.glsl"));
 
 	m_opaqueProgram = new glow::Program;
     m_opaqueProgram->attach(vertexShader);
@@ -197,9 +198,14 @@ void HybridAlgorithm::resize(int width, int height) {
     m_colorBuffer->image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     m_accumulationBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
     m_coreBuffer->image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-    m_depthKTab->setData(width * height * ABUFFER_SIZE * sizeof(unsigned int), nullptr, GL_DYNAMIC_DRAW);
-    m_visibilityKTab->setData(width * height * VISIBILITY_KTAB_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
-    m_depthComplexityBuffer->setData(width * height * sizeof(unsigned int), nullptr, GL_DYNAMIC_DRAW);
+    m_depthKTab->setData(static_cast<GLsizei>(width * height * ABUFFER_SIZE * sizeof(unsigned int)), nullptr, GL_DYNAMIC_DRAW);
+    m_visibilityKTab->setData(static_cast<GLsizei>(width * height * VISIBILITY_KTAB_SIZE * sizeof(float)), nullptr, GL_DYNAMIC_DRAW);
+    m_depthComplexityBuffer->setData(static_cast<GLsizei>(width * height * sizeof(unsigned int)), nullptr, GL_DYNAMIC_DRAW);
+}
+
+glow::Texture* HybridAlgorithm::getOutput()
+{
+    return m_colorBuffer;
 }
 
 } // namespace glow

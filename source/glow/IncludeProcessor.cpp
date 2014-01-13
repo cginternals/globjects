@@ -8,7 +8,7 @@
 
 #include <glow/Error.h>
 #include <glow/logging.h>
-#include <glow/NamedStrings.h>
+#include <glow/global.h>
 #include <glow/Version.h>
 
 namespace {
@@ -54,7 +54,7 @@ std::string IncludeProcessor::process(const std::string& source)
 
         std::string trimmedLine = trim(line);
 
-        if (trimmedLine.size() >= 0)
+        if (trimmedLine.size() > 0)
         {
             if (trimmedLine[0] == '#')
             {
@@ -92,7 +92,7 @@ std::string IncludeProcessor::process(const std::string& source)
                             if (m_includes.count(include) == 0)
                             {
                                 m_includes.insert(include);
-                                destinationstream << resolveIncludes(NamedStrings::namedString(include));
+                                destinationstream << resolveIncludes(getNamedString(include));
                             }
                         }
                     }

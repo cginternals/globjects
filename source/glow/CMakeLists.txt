@@ -38,9 +38,10 @@ set(api_includes
     ${header_path}/ChangeListener.h
     ${header_path}/CompositeStringSource.h
     ${header_path}/ConsoleLogger.h
+    ${header_path}/constants.h
     ${header_path}/DebugInfo.h
     ${header_path}/DebugMessage.h
-    ${header_path}/DebugMessageOutput.h
+    ${header_path}/debugmessageoutput.h
     ${header_path}/Error.h
     ${header_path}/FrameBufferAttachment.h
     ${header_path}/FrameBufferObject.h
@@ -53,7 +54,7 @@ set(api_includes
     ${header_path}/LogMessage.h
     ${header_path}/LogMessageBuilder.h
     ${header_path}/LogMessageBuilder.hpp
-    ${header_path}/NamedStrings.h
+    ${header_path}/memory.h
     ${header_path}/Object.h
     ${header_path}/ObjectRegistry.h
     ${header_path}/ObjectVisitor.h
@@ -83,8 +84,6 @@ set(api_includes
 )
 
 set(sources
-    ${source_path}/glow.cpp
-    
     ${source_path}/AbstractUniform.cpp
     ${source_path}/Buffer.cpp
     ${source_path}/Capability.cpp
@@ -92,9 +91,15 @@ set(sources
     ${source_path}/ChangeListener.cpp
     ${source_path}/CompositeStringSource.cpp
     ${source_path}/ConsoleLogger.cpp
+    ${source_path}/constants.cpp
+    ${source_path}/gl_constants.h
+    ${source_path}/contextid.h
+    ${source_path}/contextid.cpp
     ${source_path}/DebugInfo.cpp
     ${source_path}/DebugMessage.cpp
-    ${source_path}/DebugMessageOutput.cpp
+    ${source_path}/DebugMessageCallback.h
+    ${source_path}/DebugMessageCallback.cpp
+    ${source_path}/debugmessageoutput.cpp
     ${source_path}/Error.cpp
     ${source_path}/FrameBufferAttachment.cpp
     ${source_path}/FrameBufferObject.cpp
@@ -105,7 +110,9 @@ set(sources
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/LogMessageBuilder.cpp
+    ${source_path}/memory.cpp
     ${source_path}/NamedStrings.cpp
+    ${source_path}/NamedStrings.h
     ${source_path}/Object.cpp
     ${source_path}/ObjectRegistry.cpp
     ${source_path}/ObjectVisitor.cpp

@@ -90,11 +90,11 @@ ref_ptr<T>::operator const T *() const
 	return static_cast<const T *>(m_referenced);
 }
 
-template<typename T>
+/*template<typename T>
 ref_ptr<T>::operator bool() const
 {
 	return m_referenced ? true : false;
-}
+}*/
 
 template<typename T>
 bool ref_ptr<T>::operator<(const ref_ptr & reference) const
@@ -139,19 +139,3 @@ void ref_ptr<T>::decreaseRef()
 }
 
 } // namespace glow
-
-/*
-Its strange that those two comparison operators aren't needed.
-
-template<typename T>
-bool operator==(const glow::ref_ptr<T>& reference, const T* pointer)
-{
-    return reference.get() == pointer;
-}
-
-template<typename T>
-bool operator==(const T* pointer, const glow::ref_ptr<T>& reference)
-{
-    return pointer == reference.get();
-}
-*/

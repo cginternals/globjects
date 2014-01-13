@@ -44,7 +44,7 @@ public:
 	const T * operator->() const;
 	operator T *();
 	operator const T *() const;
-	operator bool() const;
+    //operator bool() const;
 
 	bool operator<(const ref_ptr & reference) const;
 	bool operator>(const ref_ptr & reference) const;
@@ -59,12 +59,5 @@ protected:
 };
 
 } // namespace glow
-
-/*
-template<typename T>
-bool operator==(const glow::ref_ptr<T>& reference, const T* pointer);
-template<typename T>
-bool operator==(const T* pointer, const glow::ref_ptr<T>& reference);
-*/
 
 #include <glow/ref_ptr.hpp>

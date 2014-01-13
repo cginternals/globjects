@@ -4,6 +4,8 @@
 #include <string>
 #include <set>
 
+#include <GL/glew.h>
+
 #include <glow/glow.h>
 
 
@@ -16,9 +18,19 @@ class GLOW_API Version
 {
 public:
     Version();
-    Version(int majorVersion, int minorversion = 0);
+    Version(GLint majorVersion, GLint minorversion);
 
 	static Version current();
+
+    static std::string vendor();
+    static std::string renderer();
+
+    static Version version();
+    static std::string versionString();
+
+    static GLint currentMajorVersion();
+    static GLint currentMinorVersion();
+    static bool currentVersionIsInCoreProfile();
 
     bool operator< (const Version & version) const;
     bool operator> (const Version & version) const;
@@ -34,8 +46,8 @@ public:
 
     Version nearestValidVersion() const;
 public:
-    int majorVersion;
-    int minorVersion;
+    GLint majorVersion;
+    GLint minorVersion;
 
 private:
     static std::set<Version> s_validVersions;

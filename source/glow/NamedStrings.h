@@ -36,7 +36,7 @@ public:
     static std::string namedString(const std::string& name, bool cached = false);
     static GLenum namedStringType(const std::string& name, bool cached = false);
 
-    void notifyChanged(Changeable* changed);
+    virtual void notifyChanged(Changeable* changed) override;
 protected:
     static NamedStrings s_instance;
     std::unordered_map<std::string, NamedString> m_registeredStringSources;

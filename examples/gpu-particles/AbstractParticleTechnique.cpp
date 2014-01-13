@@ -15,7 +15,7 @@ AbstractParticleTechnique::AbstractParticleTechnique(
 , m_velocities(velocities)
 , m_forces(forces)
 , m_camera(camera)
-, m_numParticles(positions.size())
+, m_numParticles(static_cast<unsigned>(positions.size()))
 {
     assert(positions.size() == velocities.size());
 }

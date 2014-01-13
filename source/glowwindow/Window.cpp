@@ -3,6 +3,8 @@
 #include <string>
 #include <iomanip>
 
+#include <GL/glew.h>
+
 #include <GLFW/glfw3.h>
 
 #include <glow/logging.h>
@@ -442,7 +444,7 @@ void Window::defaultEventAction(WindowEvent & event)
             destroy();
             break;
 
-        case WindowEvent::KeyPress:
+        case WindowEvent::KeyPress: {
             KeyEvent& keyEvent = static_cast<KeyEvent&>(event);
             switch (keyEvent.key())
             {
@@ -456,6 +458,10 @@ void Window::defaultEventAction(WindowEvent & event)
                     }
                     break;
             }
+            break;
+        }
+
+        default:
             break;
     }
 }

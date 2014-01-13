@@ -4,6 +4,7 @@
 #include <glow/Program.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowwindow/Window.h>
 #include <glowwindow/ContextFormat.h>
@@ -55,9 +56,9 @@ public:
     {
     }
 
-    virtual void initialize(Window & window) override
+    virtual void initialize(Window &) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
@@ -111,7 +112,7 @@ private:
 
 };
 
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(3, 2);

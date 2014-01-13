@@ -5,7 +5,7 @@
 
 #include <glow/Program.h>
 #include <glow/Texture.h>
-#include <glow/DebugMessageOutput.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Window.h>
@@ -24,6 +24,7 @@
 #include <glowutils/ABufferAlgorithm.h>
 #include <glowutils/WeightedAverageAlgorithm.h>
 #include <glowutils/HybridAlgorithm.h>
+#include <glowutils/global.h>
 
 namespace {
 
@@ -45,11 +46,11 @@ private:
 	std::vector<glowutils::AbstractTransparencyAlgorithm*> m_algos;
 	
 public:
-	void initialize(glowwindow::Window & window) override {
+    virtual void initialize(glowwindow::Window & window) override {
 
 		window.addTimer(0, 0);
 
-		glow::DebugMessageOutput::enable();
+		glow::debugmessageoutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         CheckGLError();
@@ -82,7 +83,7 @@ public:
         m_nav.setBoundaryHint(m_aabb);
 	}
 
-	void paintEvent(glowwindow::PaintEvent& event) override {
+    virtual void paintEvent(glowwindow::PaintEvent& event) override {
 		int width = event.window()->width();
 		int height = event.window()->height();
 
@@ -115,7 +116,7 @@ public:
         m_quad->program()->setUniform("bottomLeft", 2);
         m_quad->program()->setUniform("bottomRight", 3);
 
-        for (int i = 0; i < std::min(size_t(4), m_algos.size()); ++i) {
+        for (unsigned int i = 0; i < std::min(size_t(4), m_algos.size()); ++i) {
             m_algos[i]->getOutput()->bindActive(GL_TEXTURE0 + i);
         }
 
@@ -128,7 +129,7 @@ public:
 		CheckGLError();
 	}
 
-    void framebufferResizeEvent(glowwindow::ResizeEvent & event) override {
+    virtual void framebufferResizeEvent(glowwindow::ResizeEvent & event) override {
 		int width = event.width();
 		int height = event.height();
 
@@ -140,22 +141,22 @@ public:
         }		
 	}
 
-	virtual const float depthAt(const glm::ivec2 & windowCoordinates) override
+    virtual float depthAt(const glm::ivec2 & windowCoordinates) override
 	{
 		return glowutils::AbstractCoordinateProvider::depthAt(*m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
 	}
 
-	virtual const glm::vec3 objAt(const glm::ivec2 & windowCoordinates) override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) override
 	{
 		return unproject(*m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
 	}
 
-	virtual const glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) override
 	{
 		return unproject(*m_camera, depth, windowCoordinates);
 	}
 
-	virtual const glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth, const glm::mat4 & viewProjectionInverted) override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth, const glm::mat4 & viewProjectionInverted) override
 	{
 		return unproject(*m_camera, viewProjectionInverted, depth, windowCoordinates);
 	}
@@ -188,6 +189,9 @@ public:
 		case glowutils::WorldInHandNavigation::RotateInteraction:
 			m_nav.rotateProcess(event.pos());
 			event.accept();
+            break;
+        case glowutils::WorldInHandNavigation::NoInteraction:
+            break;
 		}
 	}
 
@@ -209,7 +213,7 @@ public:
 
 	virtual void keyPressEvent(glowwindow::KeyEvent & event) override
 	{
-		const float d = 0.08f;
+        //const float d = 0.08f;
 
 		switch (event.key())
 		{
@@ -226,8 +230,8 @@ public:
 
 };
 
-int main(int argc, char* argv[]) {
-
+int main(int /*argc*/, char* /*argv*/[])
+{
 	glowwindow::ContextFormat format;
 	format.setVersion(4, 3);
 	format.setDepthBufferSize(16);

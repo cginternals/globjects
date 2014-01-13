@@ -89,7 +89,7 @@ AxonometricLookAt::ProjectionType AxonometricLookAt::type() const
 
 void AxonometricLookAt::setVerticalAngle(float angle)
 {
-    if(m_verticalAngle == angle)
+    if(std::abs(m_verticalAngle - angle) < std::numeric_limits<float>::epsilon())
         return;
 
     m_verticalAngle = angle;
@@ -104,7 +104,7 @@ float AxonometricLookAt::verticalAngle() const
 
 void AxonometricLookAt::setHorizontalAngle(float angle)
 {
-    if (m_horizontalAngle == angle)
+    if (std::abs(m_horizontalAngle - angle) < std::numeric_limits<float>::epsilon())
         return;
 
     m_horizontalAngle = angle;
@@ -140,7 +140,7 @@ void AxonometricLookAt::setZoom(float zoom)
         zoom = 0.f;
     }
 
-    if (m_zoom == zoom)
+    if (std::abs(m_zoom - zoom) < std::numeric_limits<float>::epsilon())
         return;
 
     m_zoom = zoom;
@@ -169,7 +169,7 @@ void AxonometricLookAt::rebuild() const
     const mat4 vrot = mat4_cast(angleAxis(-m_verticalAngle, vec3( 0.f, 1.f, 0.f)));
     const mat4 hrot = mat4_cast(angleAxis(m_horizontalAngle, vec3( 1.f, 0.f, 0.f)));
 
-    const mat4 zoom = scale(vec3(m_zoom, m_zoom, 1.f));
+    //const mat4 zoom = scale(vec3(m_zoom, m_zoom, 1.f));
     const mat4 t    = translate(-m_position);
 
     const mat4 T1 = translate(vec3(0.f, 0.f, -512.f));

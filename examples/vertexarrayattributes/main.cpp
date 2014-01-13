@@ -1,7 +1,6 @@
 
 #include <GL/glew.h>
 
-#include <glowwindow/ContextFormat.h>
 #include <glow/Error.h>
 #include <glow/ref_ptr.h>
 #include <glow/Buffer.h>
@@ -10,8 +9,13 @@
 #include <glow/Shader.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
+#include <glow/debugmessageoutput.h>
+
 #include <glowutils/File.h>
+#include <glowutils/global.h>
+
 #include <glowwindow/Context.h>
+#include <glowwindow/ContextFormat.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
@@ -62,9 +66,9 @@ public:
     {
     }
 
-    virtual void initialize(Window & window) override
+    virtual void initialize(Window & ) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
@@ -175,14 +179,14 @@ protected:
     glow::ref_ptr<glow::Program> m_shaderProgram;
 };
 
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(3, 2);
 
     Window window;
 
-        window.setEventHandler(new EventHandler());
+    window.setEventHandler(new EventHandler());
 
     if (window.create(format, "Vertex Array Attributes Example"))
     {
@@ -190,8 +194,8 @@ int main(int argc, char* argv[])
 
         window.show();
 
-    return MainLoop::run();
-}
+        return MainLoop::run();
+    }
     else
     {
         return 1;

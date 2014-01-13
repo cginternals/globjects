@@ -10,16 +10,6 @@
 namespace glow
 {
 
-void enable(GLenum capability);
-void disable(GLenum capability);
-bool isEnabled(GLenum capability);
-void setEnabled(GLenum capability, bool enabled);
-
-void enable(GLenum capability, int index);
-void disable(GLenum capability, int index);
-bool isEnabled(GLenum capability, int index);
-void setEnabled(GLenum capability, int index, bool enabled);
-
 class Capability
 {
 public:
@@ -42,6 +32,9 @@ protected:
     bool m_enabled;
     std::map<int, bool> m_indexEnabled;
 };
+
+namespace capability
+{
 
 class AbstractCapabilitySetting
 {
@@ -66,6 +59,7 @@ public:
 
 public:
     AbstractCapabilitySetting(Type type);
+    virtual ~AbstractCapabilitySetting();
 
     virtual void apply() = 0;
 
@@ -125,11 +119,11 @@ public:
 
     virtual void apply() override;
 protected:
-    bool useFloat;
     GLdouble nearVal;
     GLdouble farVal;
     GLfloat nearValF;
     GLfloat farValF;
+    bool useFloat;
 };
 
 class LineWidth : public AbstractCapabilitySetting
@@ -233,5 +227,6 @@ protected:
     GLenum zPass;
 };
 
+} // namespace capability
 
 } // namespace glow

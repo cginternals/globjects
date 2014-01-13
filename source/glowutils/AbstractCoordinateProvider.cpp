@@ -51,8 +51,8 @@ const vec3 AbstractCoordinateProvider::unproject(
     const glm::mat4 viewProjectionInverted = camera.viewProjectionInverted();
     const float depth = depthAt(camera, depthFormat, windowCoordinates);
 
-    const GLint x(static_cast<GLint>(windowCoordinates.x));
-    const GLint y(static_cast<GLint>(windowCoordinates.y));
+    const float x = static_cast<float>(windowCoordinates.x);
+    const float y = static_cast<float>(windowCoordinates.y);
 
     // transform viewport to [-1;+1] (including z!)
 
@@ -80,8 +80,8 @@ const vec3 AbstractCoordinateProvider::unproject(
 ,   const float depth
 ,   const ivec2 & windowCoordinates)
 {
-    const GLint x(static_cast<GLint>(windowCoordinates.x));
-    const GLint y(static_cast<GLint>(windowCoordinates.y));
+    const float x = static_cast<float>(windowCoordinates.x);
+    const float y = static_cast<float>(windowCoordinates.y);
 
     // transform viewport to [-1;+1] (including z!)
 
@@ -95,7 +95,7 @@ const vec3 AbstractCoordinateProvider::unproject(
     return vec3(u) / u.w;
 }
 
-const glm::vec3 AbstractCoordinateProvider::objAt(const glm::ivec2 & windowCoordinates)
+glm::vec3 AbstractCoordinateProvider::objAt(const glm::ivec2 & windowCoordinates)
 {
     return objAt(windowCoordinates, depthAt(windowCoordinates));
 }

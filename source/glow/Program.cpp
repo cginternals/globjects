@@ -74,7 +74,7 @@ void Program::release()
 
 bool Program::isUsed() const
 {
-    GLuint currentProgram = static_cast<GLuint>(query::getInteger(GL_CURRENT_PROGRAM));
+    GLuint currentProgram = static_cast<GLuint>(getInteger(GL_CURRENT_PROGRAM));
 
     return currentProgram > 0 && currentProgram == m_id;
 }

@@ -105,7 +105,7 @@ void TransformFeedback::setVaryings(Program* program, GLsizei count, const char*
 
 void TransformFeedback::setVaryings(Program* program, const Array<const char*>& varyingNames, GLenum bufferMode)
 {
-    setVaryings(program, varyingNames.size(), const_cast<const char**>(varyingNames.data()), bufferMode);
+    setVaryings(program, static_cast<GLint>(varyingNames.size()), const_cast<const char**>(varyingNames.data()), bufferMode);
 }
 
 bool TransformFeedback::isTransformFeedback() const

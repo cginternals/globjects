@@ -16,6 +16,7 @@
 #include <glow/Buffer.h>
 #include <glow/logging.h>
 #include <glow/VertexArrayObject.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/Icosahedron.h>
@@ -28,6 +29,7 @@
 #include <glowutils/File.h>
 #include <glowutils/Timer.h>
 #include <glowutils/AutoTimer.h>
+#include <glowutils/global.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -67,7 +69,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.f);
         CheckGLError();
@@ -234,6 +236,9 @@ public:
         case glowutils::WorldInHandNavigation::RotateInteraction:
             m_nav.rotateProcess(event.pos());
             event.accept();
+            break;
+        case glowutils::WorldInHandNavigation::NoInteraction:
+            break;
         }
     }
     virtual void mouseReleaseEvent(MouseEvent & event) override
@@ -255,7 +260,7 @@ public:
         }
     }
 
-    void scrollEvent(ScrollEvent & event) override
+    virtual void scrollEvent(ScrollEvent & event) override
     {
         if (m_flightEnabled)
             return;
@@ -267,22 +272,22 @@ public:
         event.accept();
     }
 
-    virtual const float depthAt(const ivec2 & windowCoordinates) override
+    virtual float depthAt(const ivec2 & windowCoordinates) override
     {
         return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
     }
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates) override
+    virtual vec3 objAt(const ivec2 & windowCoordinates) override
     {
         return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
     }
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
+    virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
     {
         return unproject(m_camera, depth, windowCoordinates);
     }
 
-    virtual const glm::vec3 objAt(
+    virtual glm::vec3 objAt(
         const ivec2 & windowCoordinates
     ,   const float depth
     ,   const mat4 & viewProjectionInverted) override
@@ -310,7 +315,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(3, 2);

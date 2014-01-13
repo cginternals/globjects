@@ -198,7 +198,7 @@ void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum* modes)
 
 void FrameBufferObject::setDrawBuffers(const std::vector<GLenum>& modes)
 {
-	setDrawBuffers(modes.size(), modes.data());
+    setDrawBuffers(static_cast<int>(modes.size()), modes.data());
 }
 
 void FrameBufferObject::clear(GLbitfield mask)

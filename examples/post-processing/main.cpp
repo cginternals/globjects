@@ -19,6 +19,7 @@
 #include <glow/FrameBufferObject.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Texture.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Icosahedron.h>
@@ -29,6 +30,7 @@
 #include <glowutils/File.h>
 #include <glowutils/AutoTimer.h>
 #include <glowutils/Timer.h>
+#include <glowutils/global.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -55,9 +57,9 @@ public:
 	void createAndSetupShaders();
 	void createAndSetupGeometry();
 
-    virtual void initialize(Window & window) override
+    virtual void initialize(Window & ) override
 	{
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
 		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
         CheckGLError();
@@ -216,7 +218,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
 	ContextFormat format;
     format.setVersion(3, 2);

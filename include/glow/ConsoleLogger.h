@@ -16,7 +16,7 @@ namespace glow
 class ConsoleLogger : public AbstractLogHandler
 {
 public:
-	void handle(const LogMessage & message) override;
+    virtual void handle(const LogMessage & message) override;
 
 protected:
 	std::string levelString(LogMessage::Level level);

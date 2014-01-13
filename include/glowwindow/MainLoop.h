@@ -26,8 +26,8 @@ public:
     bool isRunning() const;
 
 protected:
-    bool m_running;
     int m_exitCode;
+    bool m_running;
 
     void pollEvents();
     void processEvents();

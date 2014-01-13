@@ -85,12 +85,12 @@ Icosahedron::Icosahedron(
     auto v(vertices());
     auto i(indices());
 
-    refine(v, i, clamp(iterations, 0, 8));
+    refine(v, i, static_cast<char>(clamp(iterations, 0, 8)));
 
     m_indices->setData(i, GL_STATIC_DRAW);
     m_vertices->setData(v, GL_STATIC_DRAW);
 
-    m_size = i.size() * 3;
+    m_size = static_cast<GLsizei>(i.size() * 3);
 
     m_vao->bind();
 
@@ -171,7 +171,7 @@ lowp_uint Icosahedron::split(
 
     points << normalize((points[a] + points[b]) * .5f);
 
-    const lowp_uint i(static_cast<lowp_uint>(points.size()) - 1);
+    const lowp_uint i = static_cast<lowp_uint>(points.size() - 1);
 
     cache[hash] = i;
 

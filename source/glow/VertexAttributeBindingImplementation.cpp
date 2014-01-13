@@ -51,13 +51,13 @@ VertexAttributeBinding_GL_3_0::VertexAttributeBinding_GL_3_0(VertexAttributeBind
     assert(binding != nullptr);
 }
 
-void VertexAttributeBinding_GL_3_0::bindAttribute(GLint attributeIndex)
+void VertexAttributeBinding_GL_3_0::bindAttribute(GLint /*attributeIndex*/)
 {
     m_hasAttribute = true;
     finishIfComplete();
 }
 
-void VertexAttributeBinding_GL_3_0::bindBuffer(Buffer* vbo, GLint baseoffset, GLint stride)
+void VertexAttributeBinding_GL_3_0::bindBuffer(Buffer* /*vbo*/, GLint baseoffset, GLint stride)
 {
     //assert(vbo != nullptr);
 

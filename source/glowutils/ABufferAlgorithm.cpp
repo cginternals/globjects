@@ -5,11 +5,12 @@
 #include <glow/Texture.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Buffer.h>
-#include <glow/NamedStrings.h>
+#include <glow/global.h>
 
 #include <glowutils/File.h>
 #include <glowutils/Camera.h>
 #include <glowutils/ScreenAlignedQuad.h>
+#include <glowutils/global.h>
 
 namespace glowutils {
 
@@ -36,8 +37,8 @@ const int ABUFFER_SIZE = 8;
 } // anonymous namespace
 
 void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
-    glow::NamedStrings::createNamedString("/transparency/abuffer_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
-	glow::NamedStrings::createNamedString("/transparency/abuffer.glsl", new glowutils::File(transparencyShaderFilePath + "abuffer.glsl"));
+    glow::createNamedString("/transparency/abuffer_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
+    glow::createNamedString("/transparency/abuffer.glsl", new glowutils::File(transparencyShaderFilePath + "abuffer.glsl"));
 
     m_program = new glow::Program();
 	m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath +  "abuffer.frag"));
@@ -77,9 +78,9 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
     // reset head buffer & counter
     static glm::ivec2 initialHead(-1, 0);
     static int initialCounter = 0;
-    m_headBuffer->setData(width * height * sizeof(Head), nullptr, GL_DYNAMIC_DRAW);
+    m_headBuffer->setData(static_cast<GLsizei>(width * height * sizeof(Head)), nullptr, GL_DYNAMIC_DRAW);
     m_headBuffer->clearData(GL_RG32I, GL_RG, GL_INT, &initialHead);
-    m_counter->setData(1 * sizeof(int), nullptr, GL_DYNAMIC_DRAW);
+    m_counter->setData(static_cast<GLsizei>(sizeof(int)), nullptr, GL_DYNAMIC_DRAW);
     m_counter->clearData(GL_R32I, GL_RED, GL_UNSIGNED_INT, &initialCounter);
 
     // bind buffers
@@ -117,8 +118,13 @@ void ABufferAlgorithm::resize(int width, int height) {
     int depthBits = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
     m_opaqueBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
     m_depthBuffer->storage(depthBits == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
-    m_linkedListBuffer->setData(width * height * ABUFFER_SIZE * sizeof(ABufferEntry), nullptr, GL_DYNAMIC_DRAW);
+    m_linkedListBuffer->setData(static_cast<GLsizei>(width * height * ABUFFER_SIZE * sizeof(ABufferEntry)), nullptr, GL_DYNAMIC_DRAW);
     m_colorBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
+}
+
+glow::Texture* ABufferAlgorithm::getOutput()
+{
+    return m_colorBuffer;
 }
 
 } // namespace glow

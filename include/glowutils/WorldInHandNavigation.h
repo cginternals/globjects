@@ -87,6 +87,10 @@ protected:
     bool m_rotationHappened;
 	InteractionMode m_mode;
 
+    glm::vec3 m_homeEye;
+    glm::vec3 m_homeCenter;
+    glm::vec3 m_homeUp;
+
     glm::vec3 m_eye;
     glm::vec3 m_center;
     glm::mat4 m_viewProjectionInverted;
@@ -96,9 +100,7 @@ protected:
     bool  m_i0Valid; // stores if initial interaction pick yielded valid depth
     glm::ivec2  m_m0;
 
-    glm::vec3 m_homeEye;
-    glm::vec3 m_homeCenter;
-    glm::vec3 m_homeUp;
+
 };
 
 } // namespace glowutils

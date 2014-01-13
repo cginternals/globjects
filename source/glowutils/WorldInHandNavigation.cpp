@@ -9,7 +9,7 @@
 
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/Camera.h>
-#include <glowutils/NavigationMath.h>
+#include <glowutils/navigationmath.h>
 
 #include <glowutils/WorldInHandNavigation.h>
 
@@ -113,7 +113,7 @@ const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     const vec3 ln = m_coordsProvider->objAt(mouse, 0.0);
     const vec3 lf = m_coordsProvider->objAt(mouse, 1.0);
 
-    return NavigationMath::rayPlaneIntersection(intersects, ln, lf, p0);
+    return navigationmath::rayPlaneIntersection(intersects, ln, lf, p0);
 }
 
 const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
@@ -131,7 +131,7 @@ const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     const vec3 ln = m_coordsProvider->objAt(mouse, 0.0, viewProjectionInverted);
     const vec3 lf = m_coordsProvider->objAt(mouse, 1.0, viewProjectionInverted);
 
-    return NavigationMath::rayPlaneIntersection(intersects, ln, lf, p0);
+    return navigationmath::rayPlaneIntersection(intersects, ln, lf, p0);
 }
 
 const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
@@ -257,9 +257,9 @@ void WorldInHandNavigation::rotateProcess(const ivec2 & mouse)
 
     const vec2 delta(m_m0 - mouse);
     // setup the degree of freedom for horizontal rotation within a single action
-    const float wDeltaX = glm::degrees(delta.x / m_camera->viewport().x);
+    const float wDeltaX = glm::degrees(delta.x / static_cast<float>(m_camera->viewport().x));
     // setup the degree of freedom for vertical rotation within a single action
-    const float wDeltaY = glm::degrees(delta.y / m_camera->viewport().y);
+    const float wDeltaY = glm::degrees(delta.y / static_cast<float>(m_camera->viewport().y));
 
     rotate(wDeltaX, wDeltaY);
 }
@@ -326,7 +326,7 @@ void WorldInHandNavigation::scaleAtMouse(
     // the new viewray-groundplane intersection as new center.
     const vec3 center = lf + scale * (lf - i);
 
-    m_camera->setCenter(NavigationMath::rayPlaneIntersection(intersects, eye, center));
+    m_camera->setCenter(navigationmath::rayPlaneIntersection(intersects, eye, center));
     m_camera->update();
 }
 
@@ -342,7 +342,7 @@ void WorldInHandNavigation::resetScaleAtMouse(const ivec2 & mouse)
     if (!intersects && !AbstractCoordinateProvider::validDepth(m_coordsProvider->depthAt(mouse)))
         return;
 
-    float scale = (DEFAULT_DISTANCE / (ln - i).length());
+    float scale = (DEFAULT_DISTANCE / static_cast<float>((ln - i).length()));
 
     //enforceScaleConstraints(scale, i);
 
@@ -358,7 +358,7 @@ void WorldInHandNavigation::scaleAtCenter(float scale)
     const vec3 lf = m_camera->center();
 
     bool intersects;
-    vec3 i = NavigationMath::rayPlaneIntersection(intersects, ln, lf);
+    vec3 i = navigationmath::rayPlaneIntersection(intersects, ln, lf);
     if (!intersects)
         return;
 
@@ -377,16 +377,14 @@ void WorldInHandNavigation::enforceTranslationConstraints(vec3 & p) const
     translate(m, p);
 
     const vec2 center(vec3(m * vec4(m_center, 0.f)));
-    if (NavigationMath::insideSquare(center))
+    if (navigationmath::insideSquare(center))
         return;
 
-    const vec2 i = NavigationMath::raySquareIntersection(center);
+    const vec2 i = navigationmath::raySquareIntersection(center);
     p = vec3(i.x, 0.f, i.y) - m_center;
 }
 
-void WorldInHandNavigation::enforceRotationConstraints(
-    float & hAngle
-,   float & vAngle) const
+void WorldInHandNavigation::enforceRotationConstraints(float & /*hAngle*/, float & vAngle) const
 {
     // hAngle is not constrained, vAngle is.
 
@@ -409,9 +407,9 @@ void WorldInHandNavigation::enforceScaleConstraints(
     // first constraint: i must be within the ground quad...
     vec2 i2(i);
 
-    if (!NavigationMath::insideSquare(i2))
+    if (!navigationmath::insideSquare(i2))
     {
-        i2 = NavigationMath::raySquareIntersection(i2);
+        i2 = navigationmath::raySquareIntersection(i2);
         i = vec3(i2.x, 0.f, i2.y);
     }
 

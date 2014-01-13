@@ -5,11 +5,11 @@
 #include <glow/Texture.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Buffer.h>
-#include <glow/NamedStrings.h>
 
 #include <glowutils/File.h>
 #include <glowutils/Camera.h>
 #include <glowutils/ScreenAlignedQuad.h>
+#include <glowutils/global.h>
 
 namespace glowutils {
 
@@ -119,7 +119,12 @@ void WeightedAverageAlgorithm::resize(int width, int height) {
     m_accumulationBuffer->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
     m_colorBuffer->image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     m_depthBuffer->storage(GL_DEPTH_COMPONENT, width, height);
-    m_depthComplexityBuffer->setData(width * height * sizeof(unsigned int), nullptr, GL_DYNAMIC_DRAW);
+    m_depthComplexityBuffer->setData(static_cast<GLint>(width * height * sizeof(unsigned int)), nullptr, GL_DYNAMIC_DRAW);
+}
+
+glow::Texture* WeightedAverageAlgorithm::getOutput()
+{
+    return m_colorBuffer;
 }
 
 } // namespace glow

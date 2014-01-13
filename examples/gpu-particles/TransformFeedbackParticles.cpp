@@ -12,6 +12,7 @@
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
+#include <glowutils/global.h>
 
 #include "TransformFeedbackParticles.h"
 
@@ -95,8 +96,8 @@ void TransformFeedbackParticles::reset()
 {
     m_sourcePositions->setData(m_positions, GL_DYNAMIC_DRAW);
     m_sourceVelocities->setData(m_velocities, GL_DYNAMIC_DRAW);
-    m_targetPositions->setData(m_numParticles*sizeof(glm::vec4), nullptr, GL_DYNAMIC_DRAW);
-    m_targetVelocities->setData(m_numParticles*sizeof(glm::vec4), nullptr, GL_DYNAMIC_DRAW);
+    m_targetPositions->setData(static_cast<GLsizei>(m_numParticles*sizeof(glm::vec4)), nullptr, GL_DYNAMIC_DRAW);
+    m_targetVelocities->setData(static_cast<GLsizei>(m_numParticles*sizeof(glm::vec4)), nullptr, GL_DYNAMIC_DRAW);
 }
 
 void TransformFeedbackParticles::step(const float elapsed)

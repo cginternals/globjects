@@ -1,12 +1,13 @@
 
 #include <GL/glew.h>
 
-#include <glow/NamedStrings.h>
-#include <glow/DebugMessageOutput.h>
+#include <glow/global.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowutils/File.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/ScreenAlignedQuad.h>
+#include <glowutils/global.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -28,14 +29,14 @@ public:
 
     void createAndSetupShaders();
 
-    virtual void initialize(Window & window) override
+    virtual void initialize(Window & ) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
 
-        glow::NamedStrings::createNamedString("/shaderincludestest/colorReset", "color = vec4(0.4, 0.5, 0.6, 1.0);");
+        glow::createNamedString("/shaderincludestest/colorReset", "color = vec4(0.4, 0.5, 0.6, 1.0);");
 
         m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
     }
@@ -76,7 +77,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(3, 2);

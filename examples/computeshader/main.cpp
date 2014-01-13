@@ -17,13 +17,17 @@
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
-#include <glowwindow/ContextFormat.h>
 #include <glow/Error.h>
 #include <glow/logging.h>
+#include <glow/debugmessageoutput.h>
+
 #include <glowutils/File.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/ScreenAlignedQuad.h>
+#include <glowutils/global.h>
+
 #include <glowwindow/Context.h>
+#include <glowwindow/ContextFormat.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
@@ -46,9 +50,9 @@ public:
     void createAndSetupShaders();
 	void createAndSetupGeometry();
 
-    virtual void initialize(Window & window) override
+    virtual void initialize(Window & ) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
@@ -108,7 +112,7 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(4, 3);

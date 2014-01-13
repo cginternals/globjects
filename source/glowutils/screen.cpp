@@ -5,7 +5,7 @@
 
 #include <glow/logging.h>
 
-#include <glowutils/Screen.h>
+#include <glowutils/screen.h>
 
 #ifdef WIN32
 #include <windows.h>
@@ -15,7 +15,10 @@
 namespace glowutils
 {
 
-const unsigned int Screen::getNumScreens()
+namespace screen
+{
+
+unsigned int getNumScreens()
 {
     unsigned int numScreens = 0;
 
@@ -32,7 +35,7 @@ const unsigned int Screen::getNumScreens()
     return numScreens;
 }
 
-void Screen::getPhysicalSize(
+void getPhysicalSize(
     unsigned int & width
 ,   unsigned int & height)
 {
@@ -63,7 +66,7 @@ void Screen::getPhysicalSize(
 #endif 
 }
 
-void Screen::getDesktopResolution(
+void getDesktopResolution(
     unsigned int & width
 ,   unsigned int & height)
 {
@@ -84,7 +87,7 @@ void Screen::getDesktopResolution(
 #endif 
 }
 
-void Screen::getMaximumResolution(
+void getMaximumResolution(
     unsigned int & width
 ,   unsigned int & height)
 {
@@ -104,7 +107,7 @@ void Screen::getMaximumResolution(
     }
 }
 
-void Screen::getPixelDensity(
+void getPixelDensity(
     float & ppiHorizontal
 ,   float & ppiVertical)
 {
@@ -118,7 +121,7 @@ void Screen::getPixelDensity(
     ppiVertical   = 25.4f * static_cast<float>(hpx) / static_cast<float>(hmm);
 }
 
-void Screen::getValidResolutions(Resolutions & resolutions)
+void getValidResolutions(Resolutions & resolutions)
 {
     resolutions.clear();
 
@@ -154,5 +157,7 @@ void Screen::getValidResolutions(Resolutions & resolutions)
 
 #endif 
 }
+
+} // namespace screen
 
 } // namespace glow

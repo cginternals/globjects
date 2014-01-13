@@ -5,14 +5,17 @@
 
 #include <glowutils/AxisAlignedBoundingBox.h>
 
-#include <glowutils/NavigationMath.h>
+#include <glowutils/navigationmath.h>
 
 using namespace glm;
 
 namespace glowutils
 {
 
-//void NavigationMath::retrieveNearAndFarPlane(
+namespace navigationmath
+{
+
+//void retrieveNearAndFarPlane(
 //    const vec3 & camera
 //,   const vec3 & center
 //,   const Boundary & boundary
@@ -23,7 +26,7 @@ namespace glowutils
 //    assert(zFar > zNear);
 //}
 
-const vec3 NavigationMath::rayPlaneIntersection(
+vec3 rayPlaneIntersection(
 	bool & valid
 ,	const vec3 & rnear
 ,	const vec3 & rfar
@@ -45,7 +48,7 @@ const vec3 NavigationMath::rayPlaneIntersection(
 	return t * r + r0; // retrieve point via the ray
 }
 
-//const vec3 NavigationMath::rayPlaneIntersectionExt(
+//vec3 rayPlaneIntersectionExt(
 //	const vec3 & rnear
 //,	const vec3 & rfar
 //,	const vec3 & location
@@ -66,7 +69,7 @@ const vec3 NavigationMath::rayPlaneIntersection(
 //	return vec3(i.x(), 0.0, i.y);
 //}
 
-const vec2 NavigationMath::raySquareIntersection(
+vec2 raySquareIntersection(
 	const vec2 & point
 ,	const float length)
 {
@@ -79,14 +82,14 @@ const vec2 NavigationMath::raySquareIntersection(
 		return vec2(point.x / ay, sign(point.y)) * length;
 }
 
-bool NavigationMath::insideSquare(
+bool insideSquare(
 	const vec2 & point
 ,	const float length)
 {
 	return abs(point.x) <= length && abs(point.y) <= length;
 }
 
-const vec2 NavigationMath::rayCircleIntersection(
+vec2 rayCircleIntersection(
 	bool & valid
 ,	const vec2 & origin
 ,	const vec2 & ray
@@ -123,14 +126,14 @@ const vec2 NavigationMath::rayCircleIntersection(
 	return t * ray + origin;
 }
 
-float NavigationMath::angle(
+float angle(
 	const vec3 & a
 ,	const vec3 & b) 
 {
 	return acos(dot(normalize(a), normalize(b)));
 }
 
-bool NavigationMath::boundaryVisible(
+bool boundaryVisible(
     const mat4 & mvp
 ,   const AxisAlignedBoundingBox & b)
 {
@@ -161,7 +164,7 @@ bool NavigationMath::boundaryVisible(
 	return true;
 }
 
-bool NavigationMath::pointVisible(
+bool pointVisible(
 	const mat4 & mvp
 ,	const vec3 & p)
 {
@@ -170,7 +173,7 @@ bool NavigationMath::pointVisible(
     return glm::abs(t.x) <= 1.f && glm::abs(t.y) <= 1.f;
 }
 
-const vec3 NavigationMath::cameraWithPointInView(
+vec3 cameraWithPointInView(
 	const vec3 & eye
 ,	const vec3 & center
 ,	const vec3 & up
@@ -187,7 +190,7 @@ const vec3 NavigationMath::cameraWithPointInView(
 
 	// get both field of view vectors
     const float vFov(glm::radians(fovy));
-	const float hFov(2.f * atan(tan(vFov * .5f) * aspect));
+    //const float hFov(2.f * atan(tan(vFov * .5f) * aspect));
 
 	// closest point c
     const vec3 c = eye + ray * distanceToClosestPoint(eye, center, point);
@@ -207,7 +210,7 @@ const vec3 NavigationMath::cameraWithPointInView(
     return c - a * n;
 }
 
-float NavigationMath::distanceToClosestPoint(
+float distanceToClosestPoint(
 	const vec3 & eye
 ,	const vec3 & center
 ,	const vec3 & point)
@@ -218,10 +221,12 @@ float NavigationMath::distanceToClosestPoint(
 	const float m = length2(ray); // magnitude of ray
 	const float theta = dot(b, ray);
 
-	if(m == 0.f)
+    if(std::abs(m) < std::numeric_limits<float>::epsilon())
 		return 0.f;
 
     return theta / m; // distance from camera to closest point c;
 }
+
+} // namespace navigationamth
 
 } // namespace glowutils

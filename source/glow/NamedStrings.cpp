@@ -1,4 +1,4 @@
-#include <glow/NamedStrings.h>
+#include "NamedStrings.h"
 
 #include <cassert>
 
@@ -56,7 +56,7 @@ void NamedStrings::deleteNamedString(const std::string& name)
 
     if (glDeleteNamedStringARB && GLEW_ARB_shading_language_include && Version::current() >= Version(3, 2))
     {
-        glDeleteNamedStringARB(name.size(), name.c_str());
+        glDeleteNamedStringARB(static_cast<GLint>(name.size()), name.c_str());
         CheckGLError();
     }
 }
@@ -68,7 +68,7 @@ bool NamedStrings::isNamedString(const std::string& name, bool cached)
         return s_instance.m_registeredStringSources.count(name) > 0;
     }
 
-    bool result = glIsNamedStringARB(name.size(), name.c_str()) == GL_TRUE;
+    bool result = glIsNamedStringARB(static_cast<GLint>(name.size()), name.c_str()) == GL_TRUE;
     CheckGLError();
     return result;
 }
@@ -83,7 +83,7 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
     GLint size = namedStringSize(name);
     GLchar* string = nullptr;
 
-    glGetNamedStringARB(name.size(), name.c_str(), size, &size, string);
+    glGetNamedStringARB(static_cast<GLint>(name.size()), name.c_str(), size, &size, string);
     CheckGLError();
 
     return std::string(string, size);
@@ -93,7 +93,7 @@ GLint NamedStrings::namedStringSize(const std::string& name, bool cached)
 {
     if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
     {
-        return s_instance.m_registeredStringSources[name].source->string().size();
+        return static_cast<GLint>(s_instance.m_registeredStringSources[name].source->string().size());
     }
 
     return namedStringParameter(name, GL_NAMED_STRING_LENGTH_ARB);
@@ -118,7 +118,7 @@ GLint NamedStrings::namedStringParameter(const std::string& name, GLenum pname)
 
     int result;
 
-    glGetNamedStringivARB(name.size(), name.c_str(), pname, &result);
+    glGetNamedStringivARB(static_cast<GLint>(name.size()), name.c_str(), pname, &result);
     CheckGLError();
 
     return result;
@@ -143,7 +143,7 @@ void NamedStrings::updateNamedString(const NamedString& namedString)
 
     std::string string = namedString.source->string();
 
-    glNamedStringARB(namedString.type, namedString.name.size(), namedString.name.c_str(), string.size(), string.c_str());
+    glNamedStringARB(namedString.type, static_cast<GLint>(namedString.name.size()), namedString.name.c_str(), static_cast<GLint>(string.size()), string.c_str());
     CheckGLError();
 }
 

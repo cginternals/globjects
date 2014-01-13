@@ -19,10 +19,12 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/logging.h>
 #include <glow/TransformFeedback.h>
+#include <glow/debugmessageoutput.h>
 
 #include <glowutils/Timer.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/File.h>
+#include <glowutils/global.h>
 
 #include <glowwindow/Window.h>
 #include <glowwindow/ContextFormat.h>
@@ -47,9 +49,9 @@ public:
 	void createAndSetupGeometry();
     void createAndSetupTransformFeedback();
 
-    virtual void initialize(Window & window) override
+    virtual void initialize(Window & ) override
     {
-        glow::DebugMessageOutput::enable();
+        glow::debugmessageoutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
@@ -92,6 +94,7 @@ public:
         writeBuffer->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
 
         glEnable(GL_RASTERIZER_DISCARD);
+        CheckGLError();
         m_transformFeedbackProgram->use();
         m_transformFeedback->bind();
         m_transformFeedback->begin(GL_TRIANGLES);
@@ -99,6 +102,7 @@ public:
         m_transformFeedback->end();
         m_transformFeedback->unbind();
         glDisable(GL_RASTERIZER_DISCARD);
+        CheckGLError();
 
         m_vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(glm::vec4));
 
@@ -140,7 +144,7 @@ protected:
 
 /** This example shows a simple point which walks a circle using transform feedback.
 */
-int main(int argc, char** argv)
+int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
     format.setVersion(4, 0);
