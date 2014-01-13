@@ -3,6 +3,7 @@
 #include <string>
 #include <algorithm>
 #include <functional>
+#include <limits>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -85,7 +86,7 @@ vec3 intersection(const vec3& a, const vec3& r, const vec3& p, const vec3& n)
 {
     float rDotN = dot(r, n);
 
-    assert(rDotN!=0);
+    assert(std::abs(rDotN) < std::numeric_limits<float>::epsilon());
 
     float t = dot(p - a, n) / rDotN;
     return a + r * t;
