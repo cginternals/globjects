@@ -8,7 +8,8 @@
 
 #include <glowutils/glowutils.h>
 
-namespace glow {
+namespace glow
+{
     class VertexArrayObject;
     class Buffer;
 }
