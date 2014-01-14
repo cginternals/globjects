@@ -145,9 +145,9 @@ void Window::promoteContext(int width, int height)
 {
     if (m_eventHandler)
     {
-         m_context->makeCurrent();
-         m_eventHandler->initialize(*this);
-         m_context->doneCurrent();
+        m_context->makeCurrent();
+        m_eventHandler->initialize(*this);
+        m_context->doneCurrent();
 
       int w;
       int h;

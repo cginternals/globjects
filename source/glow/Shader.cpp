@@ -126,10 +126,10 @@ void Shader::notifyChanged()
 
 void Shader::updateSource()
 {
+    std::vector<std::string> sources;
+
     if (m_source)
     {
-        std::vector<std::string> sources;
-
         if (!GLEW_ARB_shading_language_include || Version::current() < Version(3, 2)) // fallback
         {
             ref_ptr<StringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source, m_includePaths);
@@ -140,15 +140,12 @@ void Shader::updateSource()
         {
             sources = m_source->strings();
         }
-
-        std::vector<const char*> cStrings = collectCStrings(sources);
-
-        glShaderSource(m_id, static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
     }
-    else
-    {
-        glShaderSource(m_id, 0, nullptr, nullptr);
-    }
+
+    std::vector<const char*> cStrings = collectCStrings(sources);
+
+    glShaderSource(m_id, static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
+    CheckGLError();
 
     invalidate();
 }
@@ -165,7 +162,7 @@ bool Shader::compile()
     if (m_compilationFailed)
         return false;
 
-    if (glCompileShaderIncludeARB && Version::current() >= Version(3, 2))
+    if (GLEW_ARB_shading_language_include && glCompileShaderIncludeARB && Version::current() >= Version(4, 0))
     {
         std::vector<const char*> cStrings = collectCStrings(m_includePaths);
         glCompileShaderIncludeARB(m_id, static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
