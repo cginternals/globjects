@@ -149,15 +149,12 @@ void Window::promoteContext(int width, int height)
         m_eventHandler->initialize(*this);
         m_context->doneCurrent();
 
-      int w;
-      int h;
-      
-//      glfwSetWindowSize(m_window, width, height);
-      glfwGetFramebufferSize(m_window, &w, &h);
-      
-         queueEvent(new ResizeEvent(glm::ivec2(width, height)));
-         queueEvent(new ResizeEvent(glm::ivec2(w, h), true));
-      
+        int frameBufferWidth = 0;
+        int frameBufferHeight = 0;
+        glfwGetFramebufferSize(m_window, &frameBufferWidth, &frameBufferHeight);
+
+        queueEvent(new ResizeEvent(glm::ivec2(width, height)));
+        queueEvent(new ResizeEvent(glm::ivec2(frameBufferWidth, frameBufferHeight), true));
     }
 }
 
