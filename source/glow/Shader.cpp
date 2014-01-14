@@ -11,6 +11,8 @@
 
 #include <glow/Shader.h>
 
+#include <glow/ref_ptr.h>
+
 #include "IncludeProcessor.h"
 
 namespace
@@ -126,14 +128,17 @@ void Shader::updateSource()
 {
     if (m_source)
     {
-        std::vector<std::string> sources = m_source->strings();
+        std::vector<std::string> sources;
 
         if (!GLEW_ARB_shading_language_include || Version::current() < Version(3, 2)) // fallback
         {
-            for (std::string & str : sources)
-            {
-                str = IncludeProcessor::resolveIncludes(str);
-            }
+            ref_ptr<StringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source, m_includePaths);
+
+            sources = resolvedSource->strings();
+        }
+        else
+        {
+            sources = m_source->strings();
         }
 
         std::vector<const char*> cStrings = collectCStrings(sources);

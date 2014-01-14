@@ -8,9 +8,9 @@ in vec2 v_uv;
 
 void main()
 {
-	vec4 color = vec4(0.2, 0.3, 0.4, 1.0);
+	vec4 color = vec4(0.6, 0.3, 0.3, 1.0);
 	
-	#include </shaderincludestest/colorReset>
+	#include </shaderincludes/color.glsl>
 	
 	fragColor = color;
 }

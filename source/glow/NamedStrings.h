@@ -34,6 +34,7 @@ public:
     static void deleteNamedString(const std::string& name);
     static bool isNamedString(const std::string& name, bool cached = false);
     static std::string namedString(const std::string& name, bool cached = false);
+    static StringSource* namedStringSource(const std::string& name);
     static GLenum namedStringType(const std::string& name, bool cached = false);
 
     virtual void notifyChanged(Changeable* changed) override;
@@ -45,9 +46,9 @@ protected:
     static void updateNamedString(const std::string& name);
     static void updateNamedString(const NamedString& namedString);
     static GLint namedStringSize(const std::string& name, bool cached = false);
-    static GLint namedStringParameter(const std::string& name, GLenum pname);
+    static GLint namedStringParameter(const std::string& name, GLenum pname, bool cached = false);
 
-    unsigned sourceOccurenceCount(const StringSource* source);
+    unsigned occurenceCount(const StringSource* source);
 };
 
 } // namespace glow
