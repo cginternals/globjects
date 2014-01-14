@@ -145,12 +145,16 @@ void Window::promoteContext(int width, int height)
 {
     if (m_eventHandler)
     {
-         m_context->makeCurrent();
-         m_eventHandler->initialize(*this);
-         m_context->doneCurrent();
+        m_context->makeCurrent();
+        m_eventHandler->initialize(*this);
+        m_context->doneCurrent();
 
-         queueEvent(new ResizeEvent(glm::ivec2(width, height)));
-         queueEvent(new ResizeEvent(glm::ivec2(width, height), true));
+        int frameBufferWidth = 0;
+        int frameBufferHeight = 0;
+        glfwGetFramebufferSize(m_window, &frameBufferWidth, &frameBufferHeight);
+
+        queueEvent(new ResizeEvent(glm::ivec2(width, height)));
+        queueEvent(new ResizeEvent(glm::ivec2(frameBufferWidth, frameBufferHeight), true));
     }
 }
 
