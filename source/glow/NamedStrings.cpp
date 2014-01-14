@@ -1,6 +1,7 @@
 #include "NamedStrings.h"
 
 #include <cassert>
+#include <algorithm>
 
 #include <glow/Error.h>
 #include <glow/StringSource.h>
@@ -28,7 +29,7 @@ void NamedStrings::createNamedString(const std::string& name, StringSource* sour
 
     if (isNamedString(name, true))
     {
-        if (s_instance.sourceOccurenceCount(source) <= 1 )
+        if (s_instance.occurenceCount(source) <= 1 )
         {
             s_instance.m_registeredStringSources[name].source->deregisterListener(&s_instance);
         }
@@ -46,7 +47,7 @@ void NamedStrings::deleteNamedString(const std::string& name)
 {
     if (isNamedString(name))
     {
-        if (s_instance.sourceOccurenceCount(s_instance.m_registeredStringSources[name].source) <= 1)
+        if (s_instance.occurenceCount(s_instance.m_registeredStringSources[name].source) <= 1)
         {
             s_instance.m_registeredStringSources[name].source->deregisterListener(&s_instance);
         }
@@ -77,6 +78,9 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
 {
     if (cached || !glGetNamedStringARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
     {
+        if (s_instance.m_registeredStringSources.find(name) == s_instance.m_registeredStringSources.end())
+            return "";
+
         return s_instance.m_registeredStringSources[name].source->string();
     }
 
@@ -91,29 +95,30 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
 
 GLint NamedStrings::namedStringSize(const std::string& name, bool cached)
 {
-    if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
-    {
-        return static_cast<GLint>(s_instance.m_registeredStringSources[name].source->string().size());
-    }
-
-    return namedStringParameter(name, GL_NAMED_STRING_LENGTH_ARB);
+    return namedStringParameter(name, GL_NAMED_STRING_LENGTH_ARB, cached);
 }
 
 GLenum NamedStrings::namedStringType(const std::string& name, bool cached)
 {
-    if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
-    {
-        return s_instance.m_registeredStringSources[name].type;
-    }
-
-    return static_cast<GLenum>(namedStringParameter(name, GL_NAMED_STRING_TYPE_ARB));
+    return static_cast<GLenum>(namedStringParameter(name, GL_NAMED_STRING_TYPE_ARB, cached));
 }
 
-GLint NamedStrings::namedStringParameter(const std::string& name, GLenum pname)
+GLint NamedStrings::namedStringParameter(const std::string& name, GLenum pname, bool cached)
 {
-    if (!glGetNamedStringivARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
+    if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
     {
-        return -1;
+        if (s_instance.m_registeredStringSources.find(name) == s_instance.m_registeredStringSources.end())
+            return -1;
+
+        switch (pname)
+        {
+            case GL_NAMED_STRING_LENGTH_ARB:
+                return static_cast<GLint>(s_instance.m_registeredStringSources[name].source->string().size());
+            case GL_NAMED_STRING_TYPE_ARB:
+                return s_instance.m_registeredStringSources[name].type;
+            default:
+                return -1;
+        }
     }
 
     int result;
@@ -158,19 +163,16 @@ void NamedStrings::notifyChanged(Changeable* changed)
     }
 }
 
-unsigned NamedStrings::sourceOccurenceCount(const StringSource* source)
+unsigned NamedStrings::occurenceCount(const StringSource* source)
 {
-    unsigned count = 0;
-
-    for (const std::pair<std::string, NamedString>& pair : m_registeredStringSources)
-    {
-        if (pair.second.source == source)
-        {
-            ++count;
-        }
-    }
-
-    return count;
+    return static_cast<unsigned>(
+        std::count_if(
+            m_registeredStringSources.begin(), m_registeredStringSources.end(),
+            [source](const std::pair<std::string, NamedString>& pair) {
+                return pair.second.source == source;
+            }
+        )
+    );
 }
 
 
