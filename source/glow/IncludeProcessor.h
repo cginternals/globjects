@@ -6,22 +6,26 @@
 
 #include <glow/glow.h>
 
-namespace glow {
-    
-    class IncludeProcessor {
-        
-    public:
-        
-        virtual ~IncludeProcessor();
+namespace glow
+{
 
-        static std::string resolveIncludes(const std::string& source);
-        
-    protected:
-        
-        IncludeProcessor();
-        
-        std::set<std::string> m_includes;
-        std::string process(const std::string& source);
-    };
-    
+class StringSource;
+class CompositeStringSource;
+
+class IncludeProcessor
+{
+public:
+    virtual ~IncludeProcessor();
+
+    static StringSource* resolveIncludes(const StringSource* source, const std::vector<std::string>& includePaths);
+protected:
+    std::set<std::string> m_includes;
+    std::vector<std::string> m_includePaths;
+
+    IncludeProcessor();
+
+    CompositeStringSource* process(const StringSource* source);
+    CompositeStringSource* processComposite(const StringSource* source);
+};
+
 } // namespace glow
