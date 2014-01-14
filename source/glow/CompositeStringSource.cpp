@@ -61,6 +61,14 @@ std::vector<std::string> CompositeStringSource::strings() const
     return m_strings;
 }
 
+void CompositeStringSource::flattenInto(std::vector<StringSource*>& vector) const
+{
+    for (const ref_ptr<StringSource>& source : m_sources)
+    {
+        source->flattenInto(vector);
+    }
+}
+
 void CompositeStringSource::update() const
 {
     m_strings.clear();

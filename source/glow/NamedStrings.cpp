@@ -93,6 +93,11 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
     return std::string(string, size);
 }
 
+StringSource* NamedStrings::namedStringSource(const std::string& name)
+{
+    return s_instance.m_registeredStringSources[name].source;
+}
+
 GLint NamedStrings::namedStringSize(const std::string& name, bool cached)
 {
     return namedStringParameter(name, GL_NAMED_STRING_LENGTH_ARB, cached);

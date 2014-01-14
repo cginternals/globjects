@@ -152,6 +152,11 @@ std::string getNamedString(const std::string& name, bool cached)
     return NamedStrings::namedString(name, cached);
 }
 
+StringSource* getNamedStringSource(const std::string& name)
+{
+    return NamedStrings::namedStringSource(name);
+}
+
 GLenum getNamedStringType(const std::string& name, bool cached)
 {
     return NamedStrings::namedStringType(name, cached);

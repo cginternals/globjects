@@ -2,24 +2,30 @@
 
 #include <string>
 #include <set>
+#include <vector>
 
 #include <glow/glow.h>
 
-namespace glow 
+namespace glow
 {
+
+class StringSource;
+class CompositeStringSource;
 
 class IncludeProcessor
 {
 public:
     virtual ~IncludeProcessor();
 
-    static std::string resolveIncludes(const std::string& source);
+    static StringSource* resolveIncludes(const StringSource* source, const std::vector<std::string>& includePaths);
 protected:
     std::set<std::string> m_includes;
+    std::vector<std::string> m_includePaths;
 
     IncludeProcessor();
 
-    std::string process(const std::string& source);
+    CompositeStringSource* process(const StringSource* source);
+    CompositeStringSource* processComposite(const StringSource* source);
 };
 
 } // namespace glow

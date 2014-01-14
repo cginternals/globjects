@@ -34,6 +34,7 @@ public:
     static void deleteNamedString(const std::string& name);
     static bool isNamedString(const std::string& name, bool cached = false);
     static std::string namedString(const std::string& name, bool cached = false);
+    static StringSource* namedStringSource(const std::string& name);
     static GLenum namedStringType(const std::string& name, bool cached = false);
 
     virtual void notifyChanged(Changeable* changed) override;
