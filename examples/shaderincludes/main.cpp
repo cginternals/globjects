@@ -36,7 +36,7 @@ public:
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
 
-        glow::createNamedString("/shaderincludestest/colorReset", "color = vec4(0.4, 0.5, 0.6, 1.0);");
+        glow::createNamedString("/shaderincludes/color.glsl", new glowutils::File("data/shaderincludes/color.glsl"));
 
         m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
     }

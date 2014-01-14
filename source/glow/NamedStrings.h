@@ -46,9 +46,9 @@ protected:
     static void updateNamedString(const std::string& name);
     static void updateNamedString(const NamedString& namedString);
     static GLint namedStringSize(const std::string& name, bool cached = false);
-    static GLint namedStringParameter(const std::string& name, GLenum pname);
+    static GLint namedStringParameter(const std::string& name, GLenum pname, bool cached = false);
 
-    unsigned sourceOccurenceCount(const StringSource* source);
+    unsigned occurenceCount(const StringSource* source);
 };
 
 } // namespace glow
