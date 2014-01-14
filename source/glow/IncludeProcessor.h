@@ -2,10 +2,11 @@
 
 #include <string>
 #include <set>
+#include <vector>
 
 #include <glow/glow.h>
 
-namespace glow 
+namespace glow
 {
 
 class StringSource;
@@ -16,9 +17,10 @@ class IncludeProcessor
 public:
     virtual ~IncludeProcessor();
 
-    static StringSource* resolveIncludes(const StringSource* source);
+    static StringSource* resolveIncludes(const StringSource* source, const std::vector<std::string>& includePaths);
 protected:
     std::set<std::string> m_includes;
+    std::vector<std::string> m_includePaths;
 
     IncludeProcessor();
 

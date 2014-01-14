@@ -39,9 +39,11 @@ IncludeProcessor::~IncludeProcessor()
 {
 }
 
-StringSource* IncludeProcessor::resolveIncludes(const StringSource* source)
+StringSource* IncludeProcessor::resolveIncludes(const StringSource* source, const std::vector<std::string>& includePaths)
 {
     IncludeProcessor processor;
+    processor.m_includePaths = includePaths;
+    processor.m_includePaths.insert(processor.m_includePaths.begin(), "");
 
     return processor.processComposite(source);
 }
@@ -113,7 +115,21 @@ CompositeStringSource* IncludeProcessor::process(const StringSource* source)
                                 m_includes.insert(include);
                                 compositeSource->appendSource(new String(destinationstream.str()));
 
-                                compositeSource->appendSource(processComposite(getNamedStringSource(include)));
+                                bool found = false;
+                                for (const std::string& prefix : m_includePaths)
+                                {
+                                    if (isNamedString(prefix + include, true))
+                                    {
+                                        compositeSource->appendSource(processComposite(getNamedStringSource(prefix + include)));
+                                        found = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!found)
+                                {
+                                    glow::warning() << "Did not find include " << include;
+                                }
 
                                 destinationstream.str("");
                             }

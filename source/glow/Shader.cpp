@@ -132,7 +132,7 @@ void Shader::updateSource()
 
         if (!GLEW_ARB_shading_language_include || Version::current() < Version(3, 2)) // fallback
         {
-            ref_ptr<StringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source);
+            ref_ptr<StringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source, m_includePaths);
 
             sources = resolvedSource->strings();
         }
