@@ -38,13 +38,15 @@
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
+#include <ExampleWindowEventHandler.h>
+
 using namespace glow;
 using namespace glowwindow;
 using namespace glowutils;
 using namespace glm;
 
 
-class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
+class EventHandler : public ExampleWindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler()

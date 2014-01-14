@@ -30,7 +30,7 @@ public:
     WindowEventHandler();
     virtual ~WindowEventHandler();
 
-    void handleEvent(WindowEvent & event);
+    virtual void handleEvent(WindowEvent & event);
 
     /** initialize is called only once when starting to run a window.
     */

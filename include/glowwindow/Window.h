@@ -34,6 +34,7 @@ public:
     Window();
     virtual ~Window();
 
+    bool create(const ContextFormat & format, int width = 1280, int height = 720);
     bool create(const ContextFormat & format, const std::string & title = "glow", int width = 1280, int height = 720);
 
     /** Takes ownership of the given eventhandler and deletes that either on
@@ -52,6 +53,7 @@ public:
     glm::ivec2 position() const;
     glm::ivec2 framebufferSize() const;
     int inputMode(int mode) const;
+    const std::string & title() const;
 
     void setTitle(const std::string & title);
     void resize(int width, int height);
@@ -101,14 +103,14 @@ protected:
 
     void clearEventQueue();
     void processEvent(WindowEvent & event);
-    void finishEvent(WindowEvent & event);
-    void defaultEventAction(WindowEvent & event);
-
+    void postprocessEvent(WindowEvent & event);
 protected:
-    glow::ref_ptr<WindowEventHandler> m_eventHandler;
     Context * m_context;
+    GLFWwindow * m_window;
+    glow::ref_ptr<WindowEventHandler> m_eventHandler;
     std::queue<WindowEvent*> m_eventQueue;
     glm::ivec2 m_windowedModeSize;
+    std::string m_title;
 
     bool m_quitOnDestroy;
 
@@ -119,16 +121,7 @@ protected:
     };
 
     Mode m_mode;
-
-    std::string m_title;
-
-    glowutils::Timer * m_timer;
-
-    long double m_swapts;
-    unsigned int m_swaps;
-
 private:
-    GLFWwindow * m_window;
     static std::set<Window*> s_instances;
 };
 

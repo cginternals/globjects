@@ -1,17 +1,17 @@
 
-set(target camerapath)
-message(STATUS "example ${target}")
+set(target ${EXAMPLE_COMMON})
+message(STATUS "${target}")
 
-add_executable(${target} 
-    main.cpp
+add_library(${target} STATIC
+    ExampleWindowEventHandler.h
+    ExampleWindowEventHandler.cpp
 )
 
-target_link_libraries(${target} 
+target_link_libraries(${target}
     ${GLEW_LIBRARIES}
     glow
     glowutils
     glowwindow
-    ${EXAMPLE_COMMON}
 )
 
 set_target_properties(${target}
@@ -24,9 +24,3 @@ set_target_properties(${target}
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
-
-install(TARGETS ${target}
-    RUNTIME DESTINATION ${INSTALL_EXAMPLES}
-#    LIBRARY DESTINATION ${INSTALL_SHARED}
-#    ARCHIVE DESTINATION ${INSTALL_LIB}
-)
