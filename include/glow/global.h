@@ -45,6 +45,7 @@ GLOW_API void createNamedString(const std::string& name, StringSource* source, G
 GLOW_API void deleteNamedString(const std::string& name);
 GLOW_API bool isNamedString(const std::string& name, bool cached = false);
 GLOW_API std::string getNamedString(const std::string& name, bool cached = false);
+GLOW_API StringSource* getNamedStringSource(const std::string& name);
 GLOW_API GLenum getNamedStringType(const std::string& name, bool cached = false);
 
 GLOW_API void enable(GLenum capability);

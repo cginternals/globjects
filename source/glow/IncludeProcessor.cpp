@@ -10,6 +10,9 @@
 #include <glow/logging.h>
 #include <glow/global.h>
 #include <glow/Version.h>
+#include <glow/StringSource.h>
+#include <glow/String.h>
+#include <glow/CompositeStringSource.h>
 
 namespace {
     // From http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
@@ -36,14 +39,30 @@ IncludeProcessor::~IncludeProcessor()
 {
 }
 
-std::string IncludeProcessor::resolveIncludes(const std::string& source)
+StringSource* IncludeProcessor::resolveIncludes(const StringSource* source)
 {
-    return IncludeProcessor().process(source);
+    IncludeProcessor processor;
+
+    return processor.processComposite(source);
 }
 
-std::string IncludeProcessor::process(const std::string& source)
+CompositeStringSource* IncludeProcessor::processComposite(const StringSource* source)
 {
-    std::istringstream sourcestream(source);
+    CompositeStringSource* composite = new CompositeStringSource();
+
+    for (StringSource* innerSource : source->flatten())
+    {
+        composite->appendSource(process(innerSource));
+    }
+
+    return composite;
+}
+
+CompositeStringSource* IncludeProcessor::process(const StringSource* source)
+{
+    CompositeStringSource* compositeSource = new CompositeStringSource();
+
+    std::istringstream sourcestream(source->string());
     std::stringstream destinationstream;
 
     do
@@ -92,7 +111,11 @@ std::string IncludeProcessor::process(const std::string& source)
                             if (m_includes.count(include) == 0)
                             {
                                 m_includes.insert(include);
-                                destinationstream << resolveIncludes(getNamedString(include));
+                                compositeSource->appendSource(new String(destinationstream.str()));
+
+                                compositeSource->appendSource(processComposite(getNamedStringSource(include)));
+
+                                destinationstream.str("");
                             }
                         }
                     }
@@ -112,7 +135,12 @@ std::string IncludeProcessor::process(const std::string& source)
     }
     while (sourcestream.good());
 
-    return destinationstream.str();
+    if (!destinationstream.str().empty())
+    {
+        compositeSource->appendSource(new String(destinationstream.str()));
+    }
+
+    return compositeSource;
 }
 
 } // namespace glow

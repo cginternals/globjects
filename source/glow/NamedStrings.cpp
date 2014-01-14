@@ -89,6 +89,11 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
     return std::string(string, size);
 }
 
+StringSource* NamedStrings::namedStringSource(const std::string& name)
+{
+    return s_instance.m_registeredStringSources[name].source;
+}
+
 GLint NamedStrings::namedStringSize(const std::string& name, bool cached)
 {
     if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))

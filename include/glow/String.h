@@ -20,6 +20,8 @@ public:
     String(const std::string& string);
 
     virtual std::string string() const override;
+
+    void setString(const std::string& string);
 protected:
     std::string m_string;
 };

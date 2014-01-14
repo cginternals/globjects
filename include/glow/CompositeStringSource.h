@@ -23,6 +23,7 @@ public:
 
     virtual std::string string() const override;
     virtual std::vector<std::string> strings() const override;
+    virtual void flattenInto(std::vector<StringSource*>& vector) const override;
 
     virtual std::string shortInfo() const override;
 protected:
