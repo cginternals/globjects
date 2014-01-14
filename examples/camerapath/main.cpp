@@ -131,7 +131,14 @@ public:
         timer.start();
 
         window.addTimer(0, 0);
-    }    
+    }
+    virtual void finalize(Window & ) override
+    {
+        m_sphere = nullptr;
+        m_icosahedron = nullptr;
+        m_agrid = nullptr;
+        player.freeVao();
+    }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {

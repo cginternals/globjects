@@ -31,6 +31,7 @@ public:
 
     void createVao();
     void draw(const glm::mat4& viewProjection);
+    void freeVao();
 protected:
     struct PathSection
     {

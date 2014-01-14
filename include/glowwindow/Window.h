@@ -50,6 +50,7 @@ public:
     int height() const;
     glm::ivec2 size() const;
     glm::ivec2 position() const;
+    glm::ivec2 framebufferSize() const;
     int inputMode(int mode) const;
 
     void setTitle(const std::string & title);
@@ -89,11 +90,14 @@ public:
     void addTimer(int id, int interval, bool singleShot = false);
     void removeTimer(int id);
 
-protected:
     void swap();
     void destroy();
+protected:
+    bool createContext(const ContextFormat & format, int width, int height, GLFWmonitor* monitor = nullptr);
+    void destroyContext();
 
-    void promoteContext(int width, int height);
+    void initializeEventHandler();
+    void finalizeEventHandler();
 
     void clearEventQueue();
     void processEvent(WindowEvent & event);

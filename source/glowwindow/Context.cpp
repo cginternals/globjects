@@ -49,7 +49,7 @@ bool Context::create(const ContextFormat & format, const int width, const int he
     m_format = format;
     prepareFormat(m_format);
 
-        m_window = glfwCreateWindow(width, height, "glow", monitor, nullptr);
+    m_window = glfwCreateWindow(width, height, "glow", monitor, nullptr);
 
     if (!m_window)
     {

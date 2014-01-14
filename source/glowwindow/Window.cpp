@@ -47,7 +47,13 @@ Window::Window()
 Window::~Window()
 {
     s_instances.erase(this);
-    WindowEventDispatcher::deregisterWindow(this);
+
+    if (m_context)
+    {
+        finalizeEventHandler();
+        WindowEventDispatcher::deregisterWindow(this);
+        destroyContext();
+    }
 
     if (s_instances.empty())
         MainLoop::quit(0);
@@ -95,6 +101,16 @@ glm::ivec2 Window::position() const
     return glm::ivec2(x, y);
 }
 
+glm::ivec2 Window::framebufferSize() const
+{
+    if (!m_window)
+        return glm::ivec2();
+
+    int w, h;
+    glfwGetFramebufferSize(m_window, &w, &h);
+    return glm::ivec2(w, h);
+}
+
 void Window::quitOnDestroy(const bool enable)
 {
     m_quitOnDestroy = enable;
@@ -104,31 +120,51 @@ bool Window::create(const ContextFormat & format, const std::string & title, int
 {
     assert(nullptr == m_context);
 
-    m_context = new Context();
-    if (!m_context->create(format, width, height))
-    {
-        delete m_context;
-        m_context = nullptr;
-
-        return false;
-    }
-
-    m_window = m_context->window();
-    if (!m_window)
+    if (!createContext(format, width, height))
     {
         fatal() << "Creating native window with OpenGL context failed.";
         return false;
     }
 
-    setTitle(title);
-
     WindowEventDispatcher::registerWindow(this);
 
-    promoteContext(width, height);
-
+    setTitle(title);
     m_windowedModeSize = glm::ivec2(width, height);
 
+    initializeEventHandler();
+
     return true;
+}
+
+bool Window::createContext(const ContextFormat & format, int width, int height, GLFWmonitor* monitor)
+{
+    assert(nullptr == m_context);
+
+    m_context = new Context();
+
+    if (m_context->create(format, width, height, monitor))
+    {
+        m_window = m_context->window();
+    }
+    else
+    {
+        delete m_context;
+        m_context = nullptr;
+        m_window = nullptr;
+
+        return false;
+    }
+
+    return true;
+}
+
+void Window::destroyContext()
+{
+    m_context->release();
+    delete m_context;
+
+    m_context = nullptr;
+    m_window = nullptr;
 }
 
 void Window::setTitle(const std::string & title)
@@ -141,7 +177,7 @@ void Window::setTitle(const std::string & title)
     glfwSetWindowTitle(m_window, m_title.c_str());
 }
 
-void Window::promoteContext(int width, int height)
+void Window::initializeEventHandler()
 {
     if (m_eventHandler)
     {
@@ -149,12 +185,21 @@ void Window::promoteContext(int width, int height)
         m_eventHandler->initialize(*this);
         m_context->doneCurrent();
 
-        int frameBufferWidth = 0;
-        int frameBufferHeight = 0;
-        glfwGetFramebufferSize(m_window, &frameBufferWidth, &frameBufferHeight);
+        if (size() == glm::ivec2())
+            assert(false);
 
-        queueEvent(new ResizeEvent(glm::ivec2(width, height)));
-        queueEvent(new ResizeEvent(glm::ivec2(frameBufferWidth, frameBufferHeight), true));
+        queueEvent(new ResizeEvent(size()));
+        queueEvent(new ResizeEvent(framebufferSize(), true));
+    }
+}
+
+void Window::finalizeEventHandler()
+{
+    if (m_eventHandler)
+    {
+        m_context->makeCurrent();
+        m_eventHandler->finalize(*this);
+        m_context->doneCurrent();
     }
 }
 
@@ -195,26 +240,17 @@ void Window::fullScreen()
     int h = mode->height;
 
     ContextFormat format = m_context->format();
-    m_context->release();
 
-    if (m_eventHandler)
-        m_eventHandler->finalize(*this);
-
+    finalizeEventHandler();
     WindowEventDispatcher::deregisterWindow(this);
+    destroyContext();
 
-    if (m_context->create(format, w, h, monitor))
+    if (createContext(format, w, h, monitor))
     {
-        promoteContext(w, h);
         WindowEventDispatcher::registerWindow(this);
+        initializeEventHandler();
 
         m_mode = FullScreenMode;
-    }
-    else
-    {
-        m_context->release();
-        delete m_context;
-        m_context = nullptr;
-        m_window = nullptr;
     }
 }
 
@@ -227,26 +263,18 @@ void Window::windowed()
     int h = m_windowedModeSize.y;
 
     ContextFormat format = m_context->format();
-    m_context->release();
 
-    if (m_eventHandler)
-        m_eventHandler->finalize(*this);
-
+    finalizeEventHandler();
     WindowEventDispatcher::deregisterWindow(this);
+    destroyContext();
 
-    if (m_context->create(format, w, h, nullptr))
+
+    if (createContext(format, w, h, nullptr))
     {
-        promoteContext(w, h);
         WindowEventDispatcher::registerWindow(this);
+        initializeEventHandler();
 
         m_mode = WindowMode;
-    }
-    else
-    {
-        m_context->release();
-        delete m_context;
-        m_context = nullptr;
-        m_window = nullptr;
     }
 }
 
@@ -286,7 +314,7 @@ void Window::setEventHandler(WindowEventHandler * eventHandler)
     if (!m_context)
         return;
 
-    promoteContext(width(), height());
+    initializeEventHandler();
 }
 
 void Window::resize(int width, int height)
@@ -326,7 +354,9 @@ void Window::close()
 void Window::idle()
 {
     if (m_eventHandler)
+    {
         m_eventHandler->idle(*this);
+    }
 }
 
 void Window::swap()
@@ -360,14 +390,8 @@ void Window::swap()
 
 void Window::destroy()
 {
-    m_context->release();
-
-    delete m_context;
-    m_context = nullptr;
-    m_window = nullptr;
-
-    if (m_eventHandler)
-        m_eventHandler->finalize(*this);
+    finalizeEventHandler();
+    destroyContext();
 
     if (m_quitOnDestroy)
         MainLoop::quit(0);
