@@ -38,13 +38,15 @@
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
+#include <ExampleWindowEventHandler.h>
+
 using namespace glow;
 using namespace glowwindow;
 using namespace glowutils;
 using namespace glm;
 
 
-class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
+class EventHandler : public ExampleWindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler()
@@ -131,7 +133,14 @@ public:
         timer.start();
 
         window.addTimer(0, 0);
-    }    
+    }
+    virtual void finalize(Window & ) override
+    {
+        m_sphere = nullptr;
+        m_icosahedron = nullptr;
+        m_agrid = nullptr;
+        player.freeVao();
+    }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {

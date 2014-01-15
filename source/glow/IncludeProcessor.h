@@ -26,6 +26,8 @@ protected:
 
     CompositeStringSource* process(const StringSource* source);
     CompositeStringSource* processComposite(const StringSource* source);
+
+    static std::string expandPath(const std::string& include, const std::string includePath);
 };
 
 } // namespace glow

@@ -294,4 +294,11 @@ void CameraPathPlayer::draw(const mat4& viewProjection)
     m_program->release();
 }
 
+void CameraPathPlayer::freeVao()
+{
+    m_vao = nullptr;
+    m_program = nullptr;
+    m_buffer = nullptr;
+}
+
 } // namespace glowutils

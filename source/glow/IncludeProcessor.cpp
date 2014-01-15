@@ -27,6 +27,16 @@ namespace {
     {
         return string.find(search) != std::string::npos;
     }
+
+    inline bool startsWith(const std::string& string, char firstChar)
+    {
+        return !string.empty() && string.front() == firstChar;
+    }
+
+    inline bool endsWith(const std::string& string, char firstChar)
+    {
+        return !string.empty() && string.back() == firstChar;
+    }
 }
 
 namespace glow {
@@ -43,7 +53,6 @@ StringSource* IncludeProcessor::resolveIncludes(const StringSource* source, cons
 {
     IncludeProcessor processor;
     processor.m_includePaths = includePaths;
-    processor.m_includePaths.insert(processor.m_includePaths.begin(), "");
 
     return processor.processComposite(source);
 }
@@ -93,20 +102,32 @@ CompositeStringSource* IncludeProcessor::process(const StringSource* source)
                 }
                 else if (contains(trimmedLine, "include"))
                 {
-                    size_t leftBracketPosition = trimmedLine.find('<');
-                    size_t rightBracketPosition = trimmedLine.find('>');
+                    size_t leftBracketPosition = trimmedLine.find_first_of('<');
+                    size_t rightBracketPosition = trimmedLine.find_last_of('>');
+                    size_t leftQuotePosition = trimmedLine.find_first_of('"');
+                    size_t rightQuotePosition = trimmedLine.find_last_of('"');
 
-                    if (leftBracketPosition == std::string::npos || rightBracketPosition == std::string::npos)
+                    size_t leftDelimiter = std::string::npos;
+                    size_t rightDelimiter = std::string::npos;
+
+                    if (leftBracketPosition != std::string::npos && rightBracketPosition != std::string::npos)
                     {
-                        glow::warning() << "Malformed #include";
+                        leftDelimiter = leftBracketPosition;
+                        rightDelimiter = rightBracketPosition;
                     }
-                    else
+                    else if (leftQuotePosition != std::string::npos && rightQuotePosition != std::string::npos && leftQuotePosition < rightQuotePosition)
                     {
-                        std::string include = trimmedLine.substr(leftBracketPosition+1, rightBracketPosition - leftBracketPosition - 1);
+                        leftDelimiter = leftQuotePosition;
+                        rightDelimiter = rightQuotePosition;
+                    }
 
-                        if (include.size() == 0 || include[0] != '/')
+                    if (leftDelimiter != std::string::npos && rightDelimiter != std::string::npos)
+                    {
+                        std::string include = trimmedLine.substr(leftDelimiter+1, rightDelimiter - leftDelimiter - 1);
+
+                        if (include.size() == 0 || endsWith(include, '/'))
                         {
-                            glow::warning() << "Malformed #include";
+                            glow::warning() << "Malformed #include " << include;
                         }
                         else
                         {
@@ -116,17 +137,33 @@ CompositeStringSource* IncludeProcessor::process(const StringSource* source)
                                 compositeSource->appendSource(new String(destinationstream.str()));
 
                                 bool found = false;
-                                for (const std::string& prefix : m_includePaths)
+                                std::string fullPath;
+                                if (startsWith(include, '/'))
                                 {
-                                    if (isNamedString(prefix + include, true))
+                                    if (isNamedString(include, true))
                                     {
-                                        compositeSource->appendSource(processComposite(getNamedStringSource(prefix + include)));
                                         found = true;
-                                        break;
+                                        fullPath = include;
+                                    }
+                                }
+                                else
+                                {
+                                    for (const std::string& prefix : m_includePaths)
+                                    {
+                                        fullPath = expandPath(include, prefix);
+                                        if (isNamedString(fullPath, true))
+                                        {
+                                            found = true;
+                                            break;
+                                        }
                                     }
                                 }
 
-                                if (!found)
+                                if (found)
+                                {
+                                    compositeSource->appendSource(processComposite(getNamedStringSource(fullPath)));
+                                }
+                                else
                                 {
                                     glow::warning() << "Did not find include " << include;
                                 }
@@ -134,6 +171,10 @@ CompositeStringSource* IncludeProcessor::process(const StringSource* source)
                                 destinationstream.str("");
                             }
                         }
+                    }
+                    else
+                    {
+                        glow::warning() << "Malformed #include " << trimmedLine;
                     }
                 }
                 else
@@ -157,6 +198,11 @@ CompositeStringSource* IncludeProcessor::process(const StringSource* source)
     }
 
     return compositeSource;
+}
+
+std::string IncludeProcessor::expandPath(const std::string& include, const std::string includePath)
+{
+    return endsWith(includePath, '/') ? includePath + include : includePath + "/" + include;
 }
 
 } // namespace glow

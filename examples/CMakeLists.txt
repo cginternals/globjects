@@ -13,6 +13,10 @@ unset(api_includes)
 include_directories(
 	${GLFW_INCLUDE_DIR})
 
+set(EXAMPLE_COMMON examplecommon)
+add_subdirectory("common")
+include_directories("common")
+
 add_subdirectory("camerapath")
 add_subdirectory("commandlineoutput")
 add_subdirectory("computeshader")

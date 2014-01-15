@@ -35,26 +35,30 @@ std::vector<const char*> collectCStrings(std::vector<std::string> & strings)
 namespace glow
 {
 
-Shader::Shader(const GLenum type, StringSource * source)
+bool Shader::forceFallbackIncludeProcessor = false;
+
+
+Shader::Shader(const GLenum type)
 : Object(create(type))
 , m_type(type)
 , m_source(nullptr)
 , m_compiled(false)
 , m_compilationFailed(false)
 {
-	if (source)
-		setSource(source);
+}
+
+
+Shader::Shader(const GLenum type, StringSource * source)
+: Shader(type)
+{
+    setSource(source);
 }
 
 Shader::Shader(const GLenum type, StringSource * source, const std::vector<std::string> & includePaths)
-: Shader(type, source)
+: Shader(type)
 {
     setIncludePaths(includePaths);
-}
-
-Shader::Shader(const GLenum type)
-: Shader(type, nullptr)
-{
+    setSource(source);
 }
 
 Shader * Shader::fromString(const GLenum type, const std::string & sourceString)
@@ -130,7 +134,7 @@ void Shader::updateSource()
 
     if (m_source)
     {
-        if (!GLEW_ARB_shading_language_include || Version::current() < Version(3, 2)) // fallback
+        if (forceFallbackIncludeProcessor || !GLEW_ARB_shading_language_include || Version::current() < Version(4, 0)) // fallback
         {
             ref_ptr<StringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source, m_includePaths);
 
@@ -162,7 +166,7 @@ bool Shader::compile()
     if (m_compilationFailed)
         return false;
 
-    if (GLEW_ARB_shading_language_include && glCompileShaderIncludeARB && Version::current() >= Version(4, 0))
+    if (!forceFallbackIncludeProcessor && GLEW_ARB_shading_language_include && glCompileShaderIncludeARB && Version::current() >= Version(4, 0))
     {
         std::vector<const char*> cStrings = collectCStrings(m_includePaths);
         glCompileShaderIncludeARB(m_id, static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
