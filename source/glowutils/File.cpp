@@ -14,25 +14,21 @@ namespace glowutils
 
 File::File(const std::string & filePath)
 : m_filePath(filePath)
-, m_registry(nullptr)
+, m_valid(false)
 {
-    RawFile<char> raw(m_filePath);
-    if (raw.valid())
-        m_source = std::string(raw.data(), raw.size());
-
     FileRegistry::instance().registerFile(this);
 }
 
 File::~File()
 {
-    if (m_registry)
-    {
-        m_registry->deregisterFile(this);
-    }
+    FileRegistry::instance().deregisterFile(this);
 }
 
 std::string File::string() const
 {
+    if (!m_valid)
+        loadFileContent();
+
 	return m_source;
 }
 
@@ -48,12 +44,23 @@ const std::string& File::filePath() const
 
 void File::reload()
 {
+    m_valid = false;
+    changed();
+}
+
+void File::loadFileContent() const
+{
     RawFile<char> raw(m_filePath);
     if (raw.valid())
     {
         m_source = std::string(raw.data(), raw.size());
-	    changed();
     }
+    else
+    {
+        m_source = "";
+    }
+
+    m_valid = true;
 }
 
 } // namespace glowutils
