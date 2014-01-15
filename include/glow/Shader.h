@@ -85,6 +85,8 @@ protected:
     bool m_compiled;
     bool m_compilationFailed;
 
+public:
+    static bool forceFallbackIncludeProcessor;
 };
 
 } // namespace glow

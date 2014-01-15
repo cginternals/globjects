@@ -53,7 +53,6 @@ StringSource* IncludeProcessor::resolveIncludes(const StringSource* source, cons
 {
     IncludeProcessor processor;
     processor.m_includePaths = includePaths;
-    processor.m_includePaths.insert(processor.m_includePaths.begin(), "");
 
     return processor.processComposite(source);
 }
