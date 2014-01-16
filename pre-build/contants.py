@@ -4,7 +4,7 @@ import sys, getopt
 import xml.etree.ElementTree as ET
 
 inputfile = "gl.xml"
-outputfile = "gl_contants.h"
+outputfile = "gl_constants.h"
 
 try:
 	opts, args = getopt.getopt(sys.argv[1:], "i:o:", ["input=","output="])
@@ -28,9 +28,11 @@ for enums in registry.iter("enums"):
 	if enums.get("namespace", "") == "GL":
 		for enum in enums.findall("enum"):
 			if "name" in enum.attrib:
+				if "api" in enum.attrib and enum.attrib["api"] <> "gl":
+					continue
 				enumNames.append(enum.attrib["name"])
 				
-enumNames.sort()
+enumNames = sorted(set(enumNames))
 				
 pre = """#include <GL/glew.h>
 #include <unordered_map>
