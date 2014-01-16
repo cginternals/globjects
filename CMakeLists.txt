@@ -37,6 +37,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 if(OPTION_LIMIT_CONFIGS)
     set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Limited Configs" FORCE)
 endif()
+set (CMAKE_BUILD_TYPE "Debug" CACHE STRING "Use build type 'Debug' per
+default" FORCE)
 
 # Project
 project(${META_PROJECT_NAME} C CXX)
