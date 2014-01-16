@@ -15,7 +15,9 @@ namespace glow
 
 class StringSource;
 
-GLOW_API bool init();
+GLOW_API bool isInitialized();
+
+GLOW_API bool init(bool showWarnings = false);
 
 GLOW_API bool hasFeature();
 

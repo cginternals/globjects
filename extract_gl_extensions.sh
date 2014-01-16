@@ -16,13 +16,14 @@ else
 	OUTPUT="output.h"
 fi
 
-PRE="#include <GL/glew.h>\n\
+PRE="#pragma once\n\
 \n\
 namespace glow {\n\
 \n\
 enum Extension {
 "
-POST="}\n\
+POST="\tGLOW_Unknown\n\
+};\n\
 \n\
 } //namespace glow"
 

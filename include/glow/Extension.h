@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#pragma once
 
 namespace glow {
 
@@ -610,6 +610,7 @@ enum Extension {
 	GLOW_VIV_shader_binary,
 	GLOW_WIN_phong_shading,
 	GLOW_WIN_specular_fog,
-}
+    GLOW_Unknown
+};
 
-} //namespace glow
+} // namespace glow

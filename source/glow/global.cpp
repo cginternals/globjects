@@ -4,31 +4,82 @@
 #include <glow/global.h>
 
 #include <glow/Error.h>
+#include <glow/logging.h>
 
 #include "NamedStrings.h"
-
+#include "FeatureRegistry.h"
 
 namespace glow
 {
 
-bool init()
+bool glowIsInitialized = false;
+
+bool initializeGLEW(bool showWarnings)
 {
     glewExperimental = GL_TRUE;
 
-    if (glewInit() != GLEW_OK)
+    GLenum result = glewInit();
+    if (result != GLEW_OK)
     {
-        // possible errors:
-        // GLEW_ERROR_NO_GL_VERSION
-        // GLEW_ERROR_GL_VERSION_10_ONLY
-        // GLEW_ERROR_GLX_VERSION_11_ONLY
-        // TODO: handle?
+        if (showWarnings)
+        {
+            glow::warning() << reinterpret_cast<const char*>(glewGetErrorString(result));
+        }
 
         return false;
     }
 
     // NOTE: should be safe to ignore:
     // http://www.opengl.org/wiki/OpenGL_Loading_Library
-    Error::clear(); // ignore GL_INVALID_ENUM
+    glow::Error::clear(); // ignore GL_INVALID_ENUM
+
+    return true;
+}
+void initializeExtensions(bool showWarnings)
+{
+    for (const std::string& extensionName : getExtensions())
+    {
+        Extension extension = FeatureRegistry::getExtensionValue(extensionName);
+
+        if (extension == GLOW_Unknown)
+        {
+            if (showWarnings)
+            {
+                glow::warning() << "OpenGL supports unregistered extension " << extensionName;
+            }
+        }
+        else
+        {
+            FeatureRegistry::instance().addSupportedFeature(extension);
+        }
+    }
+}
+
+bool isInitialized()
+{
+    return glowIsInitialized;
+}
+
+bool init(bool showWarnings)
+{
+    if (glowIsInitialized)
+    {
+        if (showWarnings)
+        {
+            glow::warning() << "glow is already initialized";
+        }
+
+        return true;
+    }
+
+    if (!initializeGLEW(showWarnings))
+    {
+        return false;
+    }
+
+    initializeExtensions(showWarnings);
+
+    glowIsInitialized = true;
 
     return true;
 }
