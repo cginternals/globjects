@@ -41,7 +41,6 @@ bool Shader::forceFallbackIncludeProcessor = false;
 Shader::Shader(const GLenum type)
 : Object(create(type))
 , m_type(type)
-, m_source(nullptr)
 , m_compiled(false)
 , m_compilationFailed(false)
 {
@@ -154,13 +153,6 @@ void Shader::updateSource()
     invalidate();
 }
 
-void Shader::setIncludePaths(const std::vector<std::string> & includePaths)
-{
-    m_includePaths = includePaths;
-
-    invalidate();
-}
-
 bool Shader::compile()
 {
     if (m_compilationFailed)
@@ -199,6 +191,13 @@ void Shader::invalidate()
     changed();
 }
 
+void Shader::setIncludePaths(const std::vector<std::string> & includePaths)
+{
+    m_includePaths = includePaths;
+
+    invalidate();
+}
+
 GLint Shader::get(GLenum pname) const
 {
     GLint value = 0;
@@ -206,6 +205,17 @@ GLint Shader::get(GLenum pname) const
     CheckGLError();
 
     return value;
+}
+
+std::string Shader::getSource() const
+{
+    GLint sourceLength = get(GL_SHADER_SOURCE_LENGTH);
+    std::vector<char> source(sourceLength);
+
+    glGetShaderSource(m_id, sourceLength, nullptr, source.data());
+    CheckGLError();
+
+    return std::string(source.data(), sourceLength);
 }
 
 bool Shader::checkCompileStatus() const

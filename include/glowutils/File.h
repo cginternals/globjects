@@ -27,7 +27,6 @@ class FileRegistry;
  */
 class GLOWUTILS_API File : public glow::StringSource
 {
-    friend class FileRegistry;
 public:
     File(const std::string & filePath);
     virtual ~File();
@@ -40,8 +39,10 @@ public:
     void reload();
 protected:
     std::string m_filePath;
-    std::string m_source;
-    FileRegistry* m_registry;
+    mutable std::string m_source;
+    mutable bool m_valid;
+
+    void loadFileContent() const;
 };
 
 } // namespace glowutils

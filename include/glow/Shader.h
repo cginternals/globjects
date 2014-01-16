@@ -62,6 +62,7 @@ public:
     void invalidate();
 
     GLint get(GLenum pname) const;
+    std::string getSource() const;
     bool checkCompileStatus() const;
 	std::string infoLog() const;
 
