@@ -17,6 +17,8 @@ class StringSource;
 
 GLOW_API bool init();
 
+GLOW_API bool hasFeature();
+
 GLOW_API std::string getString(GLenum pname);
 GLOW_API std::string getString(GLenum pname, GLuint index);
 
@@ -30,7 +32,6 @@ GLOW_API GLfloat getFloat(GLenum pname, GLuint index);
 GLOW_API GLdouble getDouble(GLenum pname, GLuint index);
 GLOW_API GLboolean getBoolean(GLenum pname, GLuint index);
 
-
 template <int Count>
 GLOW_API std::array<GLint, Count> getIntegers(GLenum pname);
 template <int Count>
@@ -39,6 +40,8 @@ template <int Count>
 GLOW_API std::array<GLdouble, Count> getDoubles(GLenum pname);
 template <int Count>
 GLOW_API std::array<GLboolean, Count> getBooleans(GLenum pname);
+
+GLOW_API std::vector<std::string> getExtensions();
 
 GLOW_API void createNamedString(const std::string& name, const std::string& string, GLenum type = GL_SHADER_INCLUDE_ARB);
 GLOW_API void createNamedString(const std::string& name, StringSource* source, GLenum type = GL_SHADER_INCLUDE_ARB);

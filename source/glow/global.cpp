@@ -127,6 +127,20 @@ GLboolean getBoolean(GLenum pname, GLuint index)
     return value;
 }
 
+std::vector<std::string> getExtensions()
+{
+    int count = getInteger(GL_NUM_EXTENSIONS);
+
+    std::vector<std::string> extensions(count);
+
+    for (int i=0; i<count; ++i)
+    {
+        extensions[i] = getString(GL_EXTENSIONS, i);
+    }
+
+    return extensions;
+}
+
 void createNamedString(const std::string& name, const std::string& string, GLenum type)
 {
     NamedStrings::createNamedString(name, string, type);
