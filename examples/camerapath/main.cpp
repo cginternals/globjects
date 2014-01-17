@@ -316,8 +316,7 @@ protected:
 int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
-    format.setVersion(4, 0);
-    format.setProfile(ContextFormat::CoreProfile);
+    format.setVersion(3, 0);
     format.setDepthBufferSize(16);
 
     Window window;

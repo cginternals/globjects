@@ -94,14 +94,26 @@ void Context::prepareFormat(const ContextFormat & format)
      */
     glfwDefaultWindowHints();
 
+#ifdef MAC_OS
+  
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  
+#else
+  
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.majorVersion);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.minorVersion);
-
+  
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     if (version >= Version(3, 2))
     {
         glfwWindowHint(GLFW_OPENGL_PROFILE, format.profile() == ContextFormat::CoreProfile ? GLFW_OPENGL_CORE_PROFILE : GLFW_OPENGL_COMPAT_PROFILE);
     }
+  
+#endif
+
 
     glfwWindowHint(GLFW_DEPTH_BITS, format.depthBufferSize());
     glfwWindowHint(GLFW_STENCIL_BITS, format.stencilBufferSize());
@@ -197,7 +209,8 @@ Version Context::maximumSupportedVersion()
      * cf. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
      */
     glfwDefaultWindowHints();
-    
+
+#ifdef MAC_OS
     /*
      * Using OS X the following hints must be set for proper context initialization
      * (cf. http://stackoverflow.com/questions/19969937/getting-a-glsl-330-context-on-osx-10-9-mavericks)
@@ -206,7 +219,7 @@ Version Context::maximumSupportedVersion()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
+#endif
     
     GLFWwindow * versionCheckWindow = glfwCreateWindow(1, 1, "VersionCheck", nullptr, nullptr);
 
@@ -231,7 +244,12 @@ Version Context::validateVersion(const Version & version)
     
     if (maxVersion.isNull())
     {
+#ifdef MAC_OS
+        maxVersion = Version(3, 2);
+#else
         maxVersion = Version(3, 0);
+#endif
+      
     }
 
     if (version.isNull() || version > maxVersion)

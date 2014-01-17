@@ -64,7 +64,7 @@ public:
 int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
-    format.setVersion(3, 2);
+    format.setVersion(3, 0);
 
     Window windows[8];
 
