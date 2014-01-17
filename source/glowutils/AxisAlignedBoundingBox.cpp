@@ -62,7 +62,10 @@ bool AxisAlignedBoundingBox::extend(const vec3 & vertex)
         m_center = m_llf + (m_urb - m_llf) * .5f;
         m_radius = static_cast<float>((m_urb - m_llf).length()) * .5f;
     }
-}    
+
+    return extended;
+}
+
     const vec3 & AxisAlignedBoundingBox::center() const
     {
         return m_center;

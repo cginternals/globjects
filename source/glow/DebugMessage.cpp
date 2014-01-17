@@ -13,13 +13,13 @@ namespace glow {
                                GLenum severity,
                                const std::string& message
                                )
-    : file(nullptr)
-    , line(0)
-    , source(source)
+    : source(source)
     , type(type)
     , id(id)
     , severity(severity)
     , message(message)
+    , file(nullptr)
+    , line(0)
     {
     }
     
@@ -32,13 +32,13 @@ namespace glow {
                                const std::string& message,
                                const char* file, int line
                                )
-    : file(file)
-    , line(line)
-    , source(source)
+    : source(source)
     , type(type)
     , id(id)
     , severity(severity)
     , message(message)
+    , file(file)
+    , line(line)
     {
     }
     
