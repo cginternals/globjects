@@ -78,18 +78,25 @@ elseif(WIN32 AND CMAKE_COMPILER_IS_GNUCXX)
 
 elseif(APPLE)
 
-    # check regex, it's just a quick-hack for now but should work if the
-    # version string format returned by ${XCODE_VERSION} does not change.
-    # required format is <MAJOR>.<MINOR>.<PATCH>
-    string(REGEX REPLACE "^([0-9]+).*" "\\1" XCODE_MAJOR ${XCODE_VERSION})
-    string(LENGTH ${XCODE_MAJOR} XCODE_MAJOR_LENGTH)
-    string(REGEX MATCH "[0-4]" XCODE_MAJOR_TO_OLD ${XCODE_MAJOR})
-
-    if (NOT (${XCODE_MAJOR_LENGTH} EQUAL 1 AND "${XCODE_MAJOR_TO_OLD}" GREATER ""))
-	message(STATUS "Configuring for platform MacOS with XCode Version 5+.")
-	include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
+    message(STATUS "XCODE VERSION :: ${XCODE_VERSION}")
+    
+    if ("${XCODE_VERSION}")
+	# check regex, it's just a quick-hack for now but should work if the
+	# version string format returned by ${XCODE_VERSION} does not change.
+	# required format is <MAJOR>.<MINOR>.<PATCH>
+	string(REGEX REPLACE "^([0-9]+).*" "\\1" XCODE_MAJOR "${XCODE_VERSION}")
+	string(LENGTH ${XCODE_MAJOR} XCODE_MAJOR_LENGTH)
+	string(REGEX MATCH "[0-4]" XCODE_MAJOR_TO_OLD ${XCODE_MAJOR})
+	
+	if (NOT (${XCODE_MAJOR_LENGTH} EQUAL 1 AND "${XCODE_MAJOR_TO_OLD}" GREATER ""))
+	    message(STATUS "Configuring for platform MacOS with XCode Version 5+.")
+	    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
+	else ()
+	    message (WARNING "Insufficient XCode Version (upgrade to XCode 5.x or higher)!")
+	endif()
     else ()
-	message (WARNING "Insufficient XCode Version (upgrade to XCode 5.x or higher)!")
+	    message (STATUS "Configuring for platform MacOS without XCode, using plain make.")
+	    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
     endif()
 
 elseif(UNIX AND CMAKE_COMPILER_IS_GNUCXX)
