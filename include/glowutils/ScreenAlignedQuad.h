@@ -6,8 +6,7 @@
 #include <glowutils/glowutils.h>
 
 
-namespace glow
-{
+namespace glow {
     class Buffer;
     class Program;
     class Shader;
@@ -59,5 +58,4 @@ protected:
 	static const char * s_defaultVertexShaderSource;
 	static const char * s_defaultFagmentShaderSource;
 };
-
 } // namespace glowutils

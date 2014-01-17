@@ -25,9 +25,8 @@ class ContextFormat;
 class Context;
 
 /**
-
-    Attach a WindowEventHandler specialization for event handling.
-*/
+ * Attach a WindowEventHandler specialization for event handling.
+ */
 class GLOWWINDOW_API Window
 {
 public:
@@ -37,10 +36,11 @@ public:
     bool create(const ContextFormat & format, int width = 1280, int height = 720);
     bool create(const ContextFormat & format, const std::string & title = "glow", int width = 1280, int height = 720);
 
-    /** Takes ownership of the given eventhandler and deletes that either on
-        quitting, just before the opengl context gets destroyed, or when
-        reassigning a new, different handler. 
-    */
+    /**
+     * Takes ownership of the given eventhandler and deletes that either on
+     * quitting, just before the opengl context gets destroyed, or when
+     * reassigning a new, different handler.
+     */
     void setEventHandler(WindowEventHandler * eventHandler);
     WindowEventHandler * eventHandler() const;
 
@@ -59,10 +59,11 @@ public:
     void resize(int width, int height);
     void setInputMode(int mode, int value);
 
-    /** If enabled, this causes an application wide quit message to be posted
-        when the window gets destroyed. Hence, the MainLoop will be quit
-        and all other remaining windows destroyed.
-    */
+    /**
+     * If enabled, this causes an application wide quit message to be posted
+     * when the window gets destroyed. Hence, the MainLoop will be quit
+     * and all other remaining windows destroyed.
+     */
     void quitOnDestroy(bool enable);
     bool quitsOnDestroy() const;
 
@@ -70,8 +71,9 @@ public:
 
     void close();
 
-    /** Queues a paint event.
-    */
+    /**
+     * Queues a paint event.
+     */
     void repaint();
     void idle();
 

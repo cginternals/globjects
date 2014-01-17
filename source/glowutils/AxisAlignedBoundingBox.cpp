@@ -62,39 +62,40 @@ bool AxisAlignedBoundingBox::extend(const vec3 & vertex)
         m_center = m_llf + (m_urb - m_llf) * .5f;
         m_radius = static_cast<float>((m_urb - m_llf).length()) * .5f;
     }
+
     return extended;
 }
 
-const vec3 & AxisAlignedBoundingBox::center() const
-{
-    return m_center;
-}
-
-float AxisAlignedBoundingBox::radius() const
-{
-    return m_radius;
-}
-
-const vec3 & AxisAlignedBoundingBox::llf() const
-{
-    return m_llf;
-}
-
-const vec3 & AxisAlignedBoundingBox::urb() const
-{
-    return m_urb;
-}
-
-bool AxisAlignedBoundingBox::inside(const vec3 & vertex) const
-{
-    return vertex.x >= m_llf.x && vertex.x <= m_urb.x
+    const vec3 & AxisAlignedBoundingBox::center() const
+    {
+        return m_center;
+    }
+    
+    float AxisAlignedBoundingBox::radius() const
+    {
+        return m_radius;
+    }
+    
+    const vec3 & AxisAlignedBoundingBox::llf() const
+    {
+        return m_llf;
+    }
+    
+    const vec3 & AxisAlignedBoundingBox::urb() const
+    {
+        return m_urb;
+    }
+    
+    bool AxisAlignedBoundingBox::inside(const vec3 & vertex) const
+    {
+        return vertex.x >= m_llf.x && vertex.x <= m_urb.x
         && vertex.y >= m_llf.y && vertex.y <= m_urb.y
         && vertex.z >= m_llf.z && vertex.z <= m_urb.z;
-}
-
-bool AxisAlignedBoundingBox::outside(const vec3 & vertex) const
-{
-    return !inside(vertex);
-}
-
+    }
+    
+    bool AxisAlignedBoundingBox::outside(const vec3 & vertex) const
+    {
+        return !inside(vertex);
+    }
+    
 } // namespace glowutils

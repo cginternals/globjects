@@ -13,6 +13,7 @@
 
 #include <glowutils/File.h>
 #include <glowutils/global.h>
+#include <glowutils/StringTemplate.h>
 
 #include <glowwindow/Context.h>
 #include <glowwindow/ContextFormat.h>
@@ -79,11 +80,18 @@ public:
         m_vao = new glow::VertexArrayObject();
         m_buffer = new glow::Buffer(GL_ARRAY_BUFFER);
 
+        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glowutils::File("data/vertexarrayattributes/test.vert"));
+        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glowutils::File("data/vertexarrayattributes/test.frag"));
+        
+#ifdef MAC_OS
+        vertexShaderSource->replace("#version 140", "#version 150");
+        fragmentShaderSource->replace("#version 140", "#version 150");
+#endif
+        
         m_shaderProgram = new glow::Program();
-        m_shaderProgram->attach(
-            glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/vertexarrayattributes/test.vert")
-        ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/vertexarrayattributes/test.frag")
-        );
+        m_shaderProgram->attach(new glow::Shader(GL_VERTEX_SHADER, vertexShaderSource),
+                                new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderSource));
+        
         m_shaderProgram->bindFragDataLocation(0, "fragColor");
 
         m_buffer->setData(glow::Array<Element>()

@@ -49,9 +49,10 @@ public:
     }
 };
 
-/** This example shows how to create a single window, probably in fullscreen
-    mode. All window and system events are handled with the event handler.
-*/
+/**
+ * This example shows how to create a single window, probably in fullscreen
+ * mode. All window and system events are handled with the event handler.
+ */
 int main(int /*argc*/, char* /*argv*/[])
 {
     ContextFormat format;
