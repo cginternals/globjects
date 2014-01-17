@@ -30,6 +30,7 @@
 #include <glowutils/Timer.h>
 #include <glowutils/AutoTimer.h>
 #include <glowutils/global.h>
+#include <glowutils/StringTemplate.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -75,9 +76,18 @@ public:
         CheckGLError();
 
         m_sphere = new glow::Program();
+        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glowutils::File("data/adaptive-grid/sphere.vert"));
+        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glowutils::File("data/adaptive-grid/sphere.frag"));
+
+#ifdef MAC_OS
+        vertexShaderSource->replace("#version 140", "#version 150");
+        fragmentShaderSource->replace("#version 140", "#version 150");
+#endif
+        
         m_sphere->attach(
-            glowutils::createShaderFromFile(GL_VERTEX_SHADER,   "data/adaptive-grid/sphere.vert")
-        ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/adaptive-grid/sphere.frag"));
+            new glow::Shader(GL_VERTEX_SHADER, vertexShaderSource)
+        ,   new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderSource));
+        
 
         m_icosahedron = new glowutils::Icosahedron(2);
         m_agrid = new glowutils::AdaptiveGrid(16U);

@@ -2,20 +2,23 @@
 
 #include <glow/Buffer.h>
 #include <glow/Program.h>
+#include <glow/Shader.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/debugmessageoutput.h>
+#include <glow/String.h>
 
 #include <glowwindow/Window.h>
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
+#include <glowutils/StringTemplate.h>
 
 using namespace glowwindow;
 
 namespace {
     const char* vertexShaderCode = R"(
-#version 150
+#version 140
 #extension GL_ARB_explicit_attrib_location : require
 
 layout (location = 0) in vec2 corner;
@@ -30,7 +33,7 @@ void main()
 
 )";
     const char* fragmentShaderCode = R"(
-#version 150
+#version 140
 #extension GL_ARB_explicit_attrib_location : require
 
 layout (location = 0) out vec4 fragColor;
@@ -63,14 +66,26 @@ public:
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
 
+        
+        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::String(vertexShaderCode));
+        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::String(fragmentShaderCode));
+        
+        
+#ifdef MAC_OS
+        vertexShaderSource->replace("#version 140", "#version 150");
+        fragmentShaderSource->replace("#version 140", "#version 150");
+#endif
+        
+        
+        
 		cornerBuffer = new glow::Buffer(GL_ARRAY_BUFFER);
 		program = new glow::Program();
 		vao = new glow::VertexArrayObject();
 
 		program->attach(
-			glow::Shader::fromString(GL_VERTEX_SHADER, vertexShaderCode),
-			glow::Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode)
-			);
+                        new glow::Shader(GL_VERTEX_SHADER, vertexShaderSource),
+                        new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderSource)
+                        );
 
 		cornerBuffer->setData(glow::Array<glm::vec2>({
 			glm::vec2(0, 0),

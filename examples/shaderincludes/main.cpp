@@ -2,12 +2,14 @@
 #include <GL/glew.h>
 
 #include <glow/global.h>
+#include <glow/Shader.h>
 #include <glow/debugmessageoutput.h>
 
 #include <glowutils/File.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/global.h>
+#include <glowutils/StringTemplate.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -38,7 +40,12 @@ public:
 
         glow::createNamedString("/shaderincludes/color.glsl", new glowutils::File("data/shaderincludes/color.glsl"));
 
-        m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
+      glowutils::StringTemplate* fragmentShaderString = new glowutils::StringTemplate(new glowutils::File("data/shaderincludes/test.frag"));
+#ifdef MAC_OS
+      fragmentShaderString->replace("#version 140", "#version 150");
+#endif
+
+      m_quad = new glowutils::ScreenAlignedQuad(new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderString));
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
