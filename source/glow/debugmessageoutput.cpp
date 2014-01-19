@@ -35,12 +35,12 @@ DebugMessageCallback * currentDebugMessageCallback()
     return &callbackStates[id];
 }
 
-void APIENTRY debugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, void * param)
+void APIENTRY debugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, const void * param)
 {
     if (!param)
         return;
 
-    DebugMessageCallback & messageCallback = *reinterpret_cast<DebugMessageCallback*>(param);
+    DebugMessageCallback & messageCallback = *reinterpret_cast<DebugMessageCallback*>(const_cast<void*>(param));
     messageCallback(glow::DebugMessage(source, type, id, severity, std::string(message, length)));
 }
 
