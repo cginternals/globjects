@@ -67,7 +67,7 @@ extensions = []
 for feature in registry.iter("feature"):
 	features.append(Feature(feature))
 	
-#features = filter(lambda f: f.prefix=="GL_VERSION", features)
+features = filter(lambda f: f.prefix=="GL_VERSION", features)
 	
 for extensionGroup in registry.iter("extensions"):
 	for extension in registry.iter("extension"):
@@ -78,34 +78,59 @@ deprecatedMap = dict()
 
 for f in features:
 	for req in f.requirements:
-		if not req in featureMap or f<featureMap[req]:
-			featureMap[req] = f
+		if not req in featureMap:
+			featureMap[req] = set()
+		featureMap[req].add(f)
 	for dep in f.deprecates:
-		if not dep in deprecatedMap or f<deprecatedMap[dep]:
-			deprecatedMap[dep] = f
+		if not dep in deprecatedMap:
+			deprecatedMap[dep] = set()
+		deprecatedMap[dep].add(f)
 		
 """
-for r in sorted(featureMap.keys()):
-	print(r+":")
-	print("\tsince: "+str(featureMap[r]))
-	if r in deprecatedMap:
-		print("\tdepracated: "+str(deprecatedMap[r]))
-	
-"""	
-	
-foo = dict()
+for r, fs in featureMap.items():
+	if len(fs)==1 and any(ff.prefix != "GL_VERSION" for ff in fs):
+		s = set()
+		for f in fs:
+			s.add(str(f))
+		print("%s: %s" % (r,list(s)))
+
+sys.exit(0)
+"""
 
 for e in extensions:
-	required = set()
+	required = dict()
+	deprecated = dict()
 	for r in e.requirements:
-		if r in featureMap:
-			required.add(str(featureMap[r]))
-		else:
-			#print("\t%s not in map" % r)
-			required.add("---")
-	a = sorted(required)
-	if len(a)>1 and not "---" in a:
+		required[r] = featureMap.get(r, None)
+		if r in deprecatedMap:
+			deprecated[r] = deprecatedMap[r]
+		
+	#a = sorted(required)
+	if len(required)>0 and not any(v is None for v in required.values()):
+	#~ if len(required)>0:
 		print("%s:" % e)
-		print("\t%s" % a)
+		"""
+		for k,v in required.items():
+			s = set()
+			if v:
+				for f in v:
+					s.add(str(f))
+			print("\t%s: %s" % (k,list(s)))
+		"""
+		s = set()
+		for fs in required.values():
+			for f in fs:
+				s.add(f) 
+		print("\tsince: %s" % max(s))
+		if len(deprecated)>0:
+			d = set()
+			for k,v in deprecated.items():
+				d.add("%s -> %s" % (k,min(v)))
+			print("\tdeprecated: %s" % list(d))
+	
+	#if len(a)>1 and not "---" in a:
+	#if 1==1:
+	#	print("%s:" % e)
+	#	print("\t%s" % a)
 		
 		
