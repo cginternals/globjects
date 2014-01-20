@@ -4,12 +4,13 @@ import sys, getopt
 import xml.etree.ElementTree as ET
 
 inputfile = "gl.xml"
-outputfile = "gl_constants.h"
+outputfile = "gl_extensions.h"
+outputfile2 = "gl_extension_info.h"
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:], "i:o:", ["input=","output="])
+	opts, args = getopt.getopt(sys.argv[1:], "i:o:o2:", ["input=","output=", "output2="])
 except getopt.GetoptError:
-	print("usage: %s [-i <input>] [-o <output>]" % sys.argv[0])
+	print("usage: %s [-i <input>] [-o <output>] [-o2 <output2>]" % sys.argv[0])
 	sys.exit(1)
 	
 for opt, arg in opts:
@@ -17,6 +18,8 @@ for opt, arg in opts:
 		inputfile = arg
 	elif opt in ("-o", "--output"):
 		outputfile = arg
+	elif opt in ("-o2", "--output2"):
+		outputfile2 = arg
 
 
 tree = ET.parse(inputfile)
@@ -51,7 +54,8 @@ class Feature:
 class Extension:
 	def __init__(self, xml):
 		self.name = xml.attrib["name"]
-				
+		self.incore = None
+		
 		self.requirements = []
 		for req in xml.findall("require"):
 			for child in req:
@@ -60,6 +64,9 @@ class Extension:
 		
 	def __str__(self):
 		return "Extension(%s)" % (self.name)
+		
+	def enumName(self):
+		return "GLOW_"+ self.name[3:]
 	
 features = []
 extensions = []
@@ -105,32 +112,71 @@ for e in extensions:
 		if r in deprecatedMap:
 			deprecated[r] = deprecatedMap[r]
 		
-	#a = sorted(required)
 	if len(required)>0 and not any(v is None for v in required.values()):
-	#~ if len(required)>0:
-		print("%s:" % e)
-		"""
-		for k,v in required.items():
-			s = set()
-			if v:
-				for f in v:
-					s.add(str(f))
-			print("\t%s: %s" % (k,list(s)))
-		"""
+		#print("%s:" % e)
 		s = set()
 		for fs in required.values():
 			for f in fs:
 				s.add(f) 
-		print("\tsince: %s" % max(s))
+		#print("\tsince: %s" % max(s))
+		e.incore = max(s)
+		"""
 		if len(deprecated)>0:
 			d = set()
 			for k,v in deprecated.items():
 				d.add("%s -> %s" % (k,min(v)))
 			print("\tdeprecated: %s" % list(d))
+		"""
+
+			
+enumDecl = "enum Extension\n{\n"
+namesMap = "std::unordered_map<glow::Extension, std::string> extensionStrings = {\n"
+extensionMap = "std::unordered_map<std::string, glow::Extension> extensions = {\n"
+incoreMap = "std::unordered_map<glow::Extension, glow::Version> extensionVersions = {\n"
+
+for e in extensions:
+	enumDecl += "\t%s,\n" % e.enumName()
+	namesMap += '\t{ %s, "%s" },\n' % (e.enumName(), e.name)
+	extensionMap += '\t{ "%s", %s },\n' % (e.name, e.enumName())
+	if e.incore:
+		incoreMap += "\t{ %s, glow::Version(%s, %s) },\n" % (e.enumName(), e.incore.major, e.incore.minor)
 	
-	#if len(a)>1 and not "---" in a:
-	#if 1==1:
-	#	print("%s:" % e)
-	#	print("\t%s" % a)
+enumDecl += "\tGLOW_Unknown_Extension\n}"
+namesMap += "};\n"
+extensionMap += "};\n"
+incoreMap += "};\n"
+
 		
+		
+pre = """#pragma once
+
+namespace glow {
+
+"""
+post = """
+
+} // namespace glow
+"""
+
+with open(outputfile, 'w') as file:
+	file.write(pre)
+	file.write(enumDecl)
+	file.write(post)
+	
+pre = """#include <string>
+#include <unordered_map>
+
+#include <glow/Version.h>
+
+"""
+post = ""
+		
+with open(outputfile2, 'w') as file:
+	file.write(pre)
+	file.write(namesMap)
+	file.write("\n")
+	file.write(extensionMap)
+	file.write("\n")
+	file.write(incoreMap)
+	file.write(post)
 		
