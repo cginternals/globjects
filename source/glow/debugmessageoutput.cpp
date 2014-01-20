@@ -50,7 +50,7 @@ void registerDebugMessageCallback(DebugMessageCallback * messageCallback)
     {
         if (!messageCallback->isRegistered())
         {
-            glDebugMessageCallback(debugMessageCallback, reinterpret_cast<void*>(messageCallback));
+            glDebugMessageCallback(reinterpret_cast<GLDEBUGPROC>(debugMessageCallback), reinterpret_cast<const void*>(messageCallback));
             messageCallback->setRegistered(true);
         }
     }
