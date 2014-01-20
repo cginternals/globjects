@@ -4,7 +4,7 @@ import sys, getopt
 import xml.etree.ElementTree as ET
 
 inputfile = "gl.xml"
-outputfile = "gl_extensions.h"
+outputfile = "Extension.h"
 outputfile2 = "gl_extension_info.h"
 
 try:
@@ -136,17 +136,16 @@ incoreMap = "std::unordered_map<glow::Extension, glow::Version> extensionVersion
 
 for e in extensions:
 	enumDecl += "\t%s,\n" % e.enumName()
-	namesMap += '\t{ %s, "%s" },\n' % (e.enumName(), e.name)
-	extensionMap += '\t{ "%s", %s },\n' % (e.name, e.enumName())
+	namesMap += '\t{ glow::%s, "%s" },\n' % (e.enumName(), e.name)
+	extensionMap += '\t{ "%s", glow::%s },\n' % (e.name, e.enumName())
 	if e.incore:
-		incoreMap += "\t{ %s, glow::Version(%s, %s) },\n" % (e.enumName(), e.incore.major, e.incore.minor)
+		incoreMap += "\t{ glow::%s, glow::Version(%s, %s) },\n" % (e.enumName(), e.incore.major, e.incore.minor)
 	
 enumDecl += "\tGLOW_Unknown_Extension\n}"
 namesMap += "};\n"
 extensionMap += "};\n"
 incoreMap += "};\n"
 
-		
 		
 pre = """#pragma once
 
@@ -166,6 +165,7 @@ with open(outputfile, 'w') as file:
 pre = """#include <string>
 #include <unordered_map>
 
+#include <glow/Extension.h>
 #include <glow/Version.h>
 
 """
