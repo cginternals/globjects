@@ -1,4 +1,4 @@
-#version 420
+#version 410
 
 layout (location = 0) in vec3 a_vertex;
 out vec3 v_vertex;

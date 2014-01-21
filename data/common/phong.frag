@@ -1,4 +1,4 @@
-#version 420
+#version 410
 
 vec3 phong(
 	in vec3 eye

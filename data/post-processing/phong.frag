@@ -19,8 +19,8 @@ const float ambifake = 0.33;
 
 void main()
 {
-	vec3 n = normalize(texture2D(normal, v_uv).rgb);
-	vec3 g = texture2D(geom, v_uv).rgb;
+	vec3 n = normalize(texture(normal, v_uv).rgb);
+	vec3 g = texture(geom, v_uv).rgb;
 	
 	vec3 l = normalize(lpos - g);
 	vec3 e = normalize(v_eye);

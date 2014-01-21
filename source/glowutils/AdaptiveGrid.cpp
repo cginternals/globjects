@@ -11,10 +11,12 @@
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
+#include <glow/String.h>
 
 #include <glowutils/Plane3.h>
 #include <glowutils/Camera.h>
 #include <glowutils/AdaptiveGrid.h>
+#include <glowutils/StringTemplate.h>
 
 
 using namespace glm;
@@ -104,11 +106,20 @@ AdaptiveGrid::AdaptiveGrid(
 ,   m_normal(normal)
 ,   m_size(0)
 {
-    m_transform = transform(m_location, m_normal); 
-
-    m_program->attach(
-        Shader::fromString(GL_VERTEX_SHADER,   s_vsSource)
-    ,   Shader::fromString(GL_FRAGMENT_SHADER, s_fsSource));
+    m_transform = transform(m_location, m_normal);
+  
+    StringTemplate* vertexShaderString = new StringTemplate(new glow::String(s_vsSource));
+    StringTemplate* fragmentShaderString = new StringTemplate(new glow::String(s_fsSource));
+  
+  
+#ifdef MAC_OS
+  vertexShaderString->replace("#version 140", "#version 150");
+  fragmentShaderString->replace("#version 140", "#version 150");
+#endif
+  
+  
+    m_program->attach(new Shader(GL_VERTEX_SHADER, vertexShaderString),
+                      new Shader(GL_FRAGMENT_SHADER, fragmentShaderString));
 
     setColor(vec3(.8f));
 
