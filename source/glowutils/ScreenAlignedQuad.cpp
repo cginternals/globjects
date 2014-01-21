@@ -7,8 +7,10 @@
 #include <glow/Buffer.h>
 #include <glow/Shader.h>
 #include <glow/Array.h>
+#include <glow/String.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
+#include <glowutils/StringTemplate.h>
 
 using namespace glow;
 
@@ -54,9 +56,20 @@ ScreenAlignedQuad::ScreenAlignedQuad(
 ,   m_texture(texture)
 ,   m_samplerIndex(0)
 {
-    m_vertexShader   = Shader::fromString(GL_VERTEX_SHADER, s_defaultVertexShaderSource);
+    
+    glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new String(s_defaultVertexShaderSource));
+    glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new String(s_defaultFagmentShaderSource));
+    
+    
+#ifdef MAC_OS
+    vertexShaderSource->replace("#version 140", "#version 150");
+    fragmentShaderSource->replace("#version 140", "#version 150");
+#endif
+    
+    m_vertexShader   = new Shader(GL_VERTEX_SHADER, vertexShaderSource);
+    
     if (!m_fragmentShader)
-        m_fragmentShader = Shader::fromString(GL_FRAGMENT_SHADER, s_defaultFagmentShaderSource);
+        m_fragmentShader = new Shader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 
     m_program->attach(m_vertexShader, m_fragmentShader);
 

@@ -37,6 +37,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 if(OPTION_LIMIT_CONFIGS)
     set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Limited Configs" FORCE)
 endif()
+set (CMAKE_BUILD_TYPE "Debug" CACHE STRING "Use build type 'Debug' per
+default" FORCE)
 
 # Project
 project(${META_PROJECT_NAME} C CXX)
@@ -56,32 +58,61 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(X64 ON)
 endif()
 
+
 # Check for linux
-if(UNIX AND NOT APPLE)
-    set(LINUX 1)
-endif()
+#if(UNIX AND NOT APPLE)
+#    set(LINUX 1)
+#endif()
+
 
 # Setup platform specifics (compile flags, etc., ...)
 if(MSVC)
+
     message(STATUS "Configuring for platform Windows/MSVC.")
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsMSVC.cmake)
+
 elseif(WIN32 AND CMAKE_COMPILER_IS_GNUCXX)
+
     message(STATUS "Configuring for platform Windows/GCC.")
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsGCC.cmake)
-elseif(LINUX AND CMAKE_COMPILER_IS_GNUCXX)
+
+elseif(APPLE)
+
+    message(STATUS "XCODE VERSION :: ${XCODE_VERSION}")
+    
+    if ("${XCODE_VERSION}")
+	# check regex, it's just a quick-hack for now but should work if the
+	# version string format returned by ${XCODE_VERSION} does not change.
+	# required format is <MAJOR>.<MINOR>.<PATCH>
+	string(REGEX REPLACE "^([0-9]+).*" "\\1" XCODE_MAJOR "${XCODE_VERSION}")
+	string(LENGTH ${XCODE_MAJOR} XCODE_MAJOR_LENGTH)
+	string(REGEX MATCH "[0-4]" XCODE_MAJOR_TO_OLD ${XCODE_MAJOR})
+	
+	if (NOT (${XCODE_MAJOR_LENGTH} EQUAL 1 AND "${XCODE_MAJOR_TO_OLD}" GREATER ""))
+	    message(STATUS "Configuring for platform MacOS with XCode Version 5+.")
+	    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
+	else ()
+	    message (WARNING "Insufficient XCode Version (upgrade to XCode 5.x or higher)!")
+	endif()
+    else ()
+	    message (STATUS "Configuring for platform MacOS without XCode, using plain make.")
+	    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
+    endif()
+
+elseif(UNIX AND CMAKE_COMPILER_IS_GNUCXX)
+
     message(STATUS "Configuring for platform Linux/GCC.")
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformLinuxGCC.cmake)
-elseif(APPLE)
-    message(STATUS "Configuring for platform MacOS.")
-    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
+
 else()
+
     # Unsupported system/compiler
     message(WARNING "Unsupported platform/compiler combination")
+
 endif()
 
 
 # INSTALL
-
 if(X64)
     # http://public.kitware.com/Bug/view.php?id=9094
     set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64")

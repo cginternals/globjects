@@ -31,6 +31,7 @@
 #include <glowutils/AutoTimer.h>
 #include <glowutils/Timer.h>
 #include <glowutils/global.h>
+#include <glowutils/StringTemplate.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -89,16 +90,28 @@ public:
 		// ToDo: this could be done automatically by default..
 		m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
 
+                
+        glowutils::StringTemplate* sphereVertexShader = new glowutils::StringTemplate(new glowutils::File("data/post-processing/sphere.vert"));
+        glowutils::StringTemplate* sphereFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/post-processing/sphere.frag"));
+        glowutils::StringTemplate* phongVertexShader = new glowutils::StringTemplate(new glowutils::File("data/post-processing/phong.vert"));
+        glowutils::StringTemplate* phongFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/post-processing/phong.frag"));
 
+#ifdef MAC_OS
+                sphereVertexShader->replace("#version 140", "#version 150");
+                sphereFragmentShader->replace("#version 140", "#version 150");
+                phongVertexShader->replace("#version 140", "#version 150");
+                phongFragmentShader->replace("#version 140", "#version 150");
+#endif
+
+                
 		m_sphere = new glow::Program();
-		m_sphere->attach(
-            glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/post-processing/sphere.vert")
-        ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/post-processing/sphere.frag"));
+        m_sphere->attach(new glow::Shader(GL_VERTEX_SHADER, sphereVertexShader), new glow::Shader(GL_FRAGMENT_SHADER, sphereFragmentShader));
+                
 
 		m_phong = new glow::Program();
-		m_phong->attach(
-            glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/post-processing/phong.vert")
-        ,	glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/post-processing/phong.frag"));
+        m_phong->attach(new glow::Shader(GL_VERTEX_SHADER, phongVertexShader), new glow::Shader(GL_FRAGMENT_SHADER, phongFragmentShader));
+                
+                
 
         m_icosahedron = new glowutils::Icosahedron(2);
         m_agrid = new glowutils::AdaptiveGrid(16U);
