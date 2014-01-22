@@ -4,7 +4,7 @@
 #include <glow/Extension.h>
 #include <glow/Version.h>
 
-std::unordered_map<glow::Extension, std::string> extensionStrings = {
+std::unordered_map<glow::Extension, std::string, std::hash<unsigned int>> extensionStrings = {
 	{ glow::GLOW_3DFX_multisample, "GL_3DFX_multisample" },
 	{ glow::GLOW_3DFX_tbuffer, "GL_3DFX_tbuffer" },
 	{ glow::GLOW_3DFX_texture_compression_FXT1, "GL_3DFX_texture_compression_FXT1" },
@@ -1224,7 +1224,7 @@ std::unordered_map<std::string, glow::Extension> extensions = {
 	{ "GL_WIN_specular_fog", glow::GLOW_WIN_specular_fog },
 };
 
-std::unordered_map<glow::Extension, glow::Version> extensionVersions = {
+std::unordered_map<glow::Extension, glow::Version, std::hash<unsigned int>> extensionVersions = {
 	{ glow::GLOW_AMD_seamless_cubemap_per_texture, glow::Version(3, 2) },
 	{ glow::GLOW_ARB_ES2_compatibility, glow::Version(4, 1) },
 	{ glow::GLOW_ARB_ES3_compatibility, glow::Version(4, 3) },

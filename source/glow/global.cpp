@@ -41,7 +41,7 @@ void initializeExtensions(bool showWarnings)
     {
         Extension extension = FeatureRegistry::getExtensionValue(extensionName);
 
-        if (extension == GLOW_Unknown)
+        if (extension == GLOW_Unknown_Extension)
         {
             if (showWarnings)
             {

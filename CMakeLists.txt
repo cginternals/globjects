@@ -214,6 +214,7 @@ if (OPTION_GENERATE_GL_INFO)
 	add_subdirectory("pre-build")
 endif()
 include_directories(${PREBUILD_PATH})
+install(FILES ${PREBUILD_PATH}/gl_extensions.h DESTINATION include/glow)
 	
 
 # LIBRARIES

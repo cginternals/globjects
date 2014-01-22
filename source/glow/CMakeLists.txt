@@ -43,6 +43,7 @@ set(api_includes
     ${header_path}/DebugMessage.h
     ${header_path}/debugmessageoutput.h
     ${header_path}/Error.h
+    ${header_path}/Extension.h
     ${header_path}/FrameBufferAttachment.h
     ${header_path}/FrameBufferObject.h
     ${header_path}/formatString.h
@@ -81,8 +82,6 @@ set(api_includes
     ${header_path}/Version.h
     ${header_path}/VertexArrayObject.h
     ${header_path}/VertexAttributeBinding.h
-    
-    ${PREBUILD_PATH}/Extension.h
 )
 
 set(sources

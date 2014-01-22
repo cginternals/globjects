@@ -612,6 +612,6 @@ enum Extension
 	GLOW_WIN_phong_shading,
 	GLOW_WIN_specular_fog,
 	GLOW_Unknown_Extension
-}
+};
 
 } // namespace glow

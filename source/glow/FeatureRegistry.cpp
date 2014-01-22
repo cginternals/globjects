@@ -2,7 +2,7 @@
 
 #include <glow/Version.h>
 
-#include "gl_extensions.h"
+#include <gl_extension_info.h>
 
 namespace glow {
 
@@ -30,9 +30,9 @@ void FeatureRegistry::addSupportedFeature(const std::string& extensionName)
 
 Extension FeatureRegistry::getExtensionValue(const std::string& extensionName)
 {
-    std::unordered_map<std::string, glow::Extension>::const_iterator it = GLextensions.find(extensionName);
+    const auto it = extensions.find(extensionName);
 
-    return it == GLextensions.end() ? GLOW_Unknown : it->second;
+    return it == extensions.cend() ? GLOW_Unknown_Extension : it->second;
 }
 
 FeatureRegistry::FeatureRegistry()

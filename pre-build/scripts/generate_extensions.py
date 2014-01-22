@@ -6,7 +6,7 @@ from classes.extensions_generation import *
 
 def main(argv):
 	inputfile = "gl.xml"
-	outputfile = "Extension.h"
+	outputfile = "gl_extensions.h"
 	outputfile2 = "gl_extension_info.h"
 
 	try:
