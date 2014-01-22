@@ -134,15 +134,15 @@ void Shader::updateSource()
 
     if (m_source)
     {
-        if (glow::hasExtension(GLOW_ARB_shading_language_include) || forceFallbackIncludeProcessor)
+        if (glow::hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
+        {
+            sources = m_source->strings();
+        }
+        else
         {
             ref_ptr<StringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source, m_includePaths);
 
             sources = resolvedSource->strings();
-        }
-        else
-        {
-            sources = m_source->strings();
         }
     }
 
