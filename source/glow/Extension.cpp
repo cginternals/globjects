@@ -43,11 +43,8 @@ bool hasExtension(Extension extension)
 {
     initializeExtensions();
 
-    auto it = extensionVersions.find(extension);
-    if (it != extensionVersions.end() && it->second <= Version::current())
-    {
+    if (isInCoreProfile(extension))
         return true;
-    }
 
     return availableExtensions.find(extension) != availableExtensions.end();
 }
@@ -66,6 +63,15 @@ bool hasExtension(const std::string & extensionName)
     {
         return additionalAvailableExtensions.find(extensionName) != additionalAvailableExtensions.end();
     }
+}
+
+bool isInCoreProfile(Extension extension)
+{
+    auto it = extensionVersions.find(extension);
+    if (it == extensionVersions.end())
+        return false;
+
+    return it->second <= Version::current();
 }
 
 std::string extensionString(Extension extension)

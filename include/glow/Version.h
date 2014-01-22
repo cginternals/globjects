@@ -22,16 +22,6 @@ public:
 
 	static Version current();
 
-    static std::string vendor();
-    static std::string renderer();
-
-    static Version version();
-    static std::string versionString();
-
-    static GLint currentMajorVersion();
-    static GLint currentMinorVersion();
-    static bool currentVersionIsInCoreProfile();
-
     bool operator< (const Version & version) const;
     bool operator> (const Version & version) const;
     bool operator==(const Version & version) const;

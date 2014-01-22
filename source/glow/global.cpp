@@ -156,6 +156,46 @@ GLboolean getBoolean(GLenum pname, GLuint index)
     return value;
 }
 
+std::string vendor()
+{
+    return getString(GL_VENDOR);
+}
+
+std::string renderer()
+{
+    return getString(GL_RENDERER);
+}
+
+std::string versionString()
+{
+    return getString(GL_VERSION);
+}
+
+GLint majorVersion()
+{
+    return getInteger(GL_MAJOR_VERSION);
+}
+
+GLint minorVersion()
+{
+    return getInteger(GL_MINOR_VERSION);
+}
+
+Version version()
+{
+    return Version(majorVersion(), minorVersion());
+}
+
+bool isCoreProfile()
+{
+    if (version()<Version(3,2))
+    {
+        return false;
+    }
+
+    return (getInteger(GL_CONTEXT_PROFILE_MASK) & GL_CONTEXT_CORE_PROFILE_BIT) > 0;
+}
+
 std::vector<std::string> getExtensions()
 {
     int count = getInteger(GL_NUM_EXTENSIONS);
