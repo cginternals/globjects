@@ -7,7 +7,6 @@
 #include <glow/logging.h>
 
 #include "NamedStrings.h"
-#include "FeatureRegistry.h"
 
 namespace glow
 {
@@ -35,25 +34,6 @@ bool initializeGLEW(bool showWarnings)
 
     return true;
 }
-void initializeExtensions(bool showWarnings)
-{
-    for (const std::string& extensionName : getExtensions())
-    {
-        Extension extension = FeatureRegistry::getExtensionValue(extensionName);
-
-        if (extension == GLOW_Unknown_Extension)
-        {
-            if (showWarnings)
-            {
-                glow::warning() << "OpenGL supports unregistered extension " << extensionName;
-            }
-        }
-        else
-        {
-            FeatureRegistry::instance().addSupportedFeature(extension);
-        }
-    }
-}
 
 bool isInitialized()
 {
@@ -76,8 +56,6 @@ bool init(bool showWarnings)
     {
         return false;
     }
-
-    initializeExtensions(showWarnings);
 
     glowIsInitialized = true;
 

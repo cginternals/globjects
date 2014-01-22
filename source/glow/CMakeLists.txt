@@ -101,8 +101,7 @@ set(sources
     ${source_path}/DebugMessageCallback.cpp
     ${source_path}/debugmessageoutput.cpp
     ${source_path}/Error.cpp
-    ${source_path}/FeatureRegistry.cpp
-    ${source_path}/FeatureRegistry.h
+    ${source_path}/Extension.cpp
     ${source_path}/FrameBufferAttachment.cpp
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
