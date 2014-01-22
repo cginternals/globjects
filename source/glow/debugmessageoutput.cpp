@@ -6,6 +6,7 @@
 #include <glow/Error.h>
 #include <glow/DebugMessage.h>
 #include <glow/global.h>
+#include <glow/Extension.h>
 
 #include "contextid.h"
 #include "DebugMessageCallback.h"
@@ -46,7 +47,7 @@ void APIENTRY debugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum
 
 void registerDebugMessageCallback(DebugMessageCallback * messageCallback)
 {
-    if (GLEW_ARB_debug_output && glDebugMessageCallback)
+    if (glow::hasExtension(GLOW_ARB_debug_output))
     {
         if (!messageCallback->isRegistered())
         {
@@ -79,7 +80,7 @@ void addCallback(Callback callback)
 
 void enable(bool synchronous, bool registerDefaultCallback)
 {
-    if (!GLEW_ARB_debug_output || !glDebugMessageCallback)
+    if (!glow::hasExtension(GLOW_ARB_debug_output))
     {
         manualErrorCheckFallbackEnabled = true;
 
@@ -98,7 +99,7 @@ void enable(bool synchronous, bool registerDefaultCallback)
 
 void disable()
 {
-    if (!GLEW_ARB_debug_output)
+    if (!glow::hasExtension(GLOW_ARB_debug_output))
     {
         manualErrorCheckFallbackEnabled = false;
 
@@ -110,7 +111,7 @@ void disable()
 
 void setSynchronous(bool synchronous)
 {
-    if (!GLEW_ARB_debug_output)
+    if (!glow::hasExtension(GLOW_ARB_debug_output))
         return;
 
     setEnabled(GL_DEBUG_OUTPUT_SYNCHRONOUS, synchronous);
@@ -120,7 +121,7 @@ void insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsiz
 {
     assert(message != nullptr);
 
-    if (!GLEW_ARB_debug_output)
+    if (!glow::hasExtension(GLOW_ARB_debug_output))
         return;
 
     glDebugMessageInsert(source, type, id, severity, length, message);
@@ -169,7 +170,7 @@ void disableMessages(GLenum source, GLenum type, GLenum severity, const std::vec
 
 void controlMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids, GLboolean enabled)
 {
-    if (!GLEW_ARB_debug_output)
+    if (!glow::hasExtension(GLOW_ARB_debug_output))
         return;
 
     assert(ids != nullptr || count == 0);

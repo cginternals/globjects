@@ -3,6 +3,7 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/Version.h>
 #include <glow/Error.h>
+#include <glow/Extension.h>
 
 #include <glow/VertexAttributeBinding.h>
 #include "VertexAttributeBindingImplementation.h"
@@ -21,10 +22,9 @@ VertexAttributeBinding::VertexAttributeBinding(
 {
     assert(vao != nullptr);
 
-    // Can't check for GLEW_ARB_vertex_attrib_binding because it falsely resolves to 1 on Gentoo with Intel 965 driver
-    m_implementation = Version::current() >= Version(4, 3)// || GLEW_ARB_vertex_attrib_binding
-        ? (VertexAttributeBindingImplementation*) new VertexAttributeBinding_GL_4_3(this)
-        : (VertexAttributeBindingImplementation*) new VertexAttributeBinding_GL_3_0(this);
+    m_implementation = glow::hasExtension(GLOW_ARB_vertex_attrib_binding)
+        ? static_cast<VertexAttributeBindingImplementation*>(new VertexAttributeBinding_GL_4_3(this))
+        : static_cast<VertexAttributeBindingImplementation*>(new VertexAttributeBinding_GL_3_0(this));
 
 	setAttribute(bindingIndex); // as default
 }
