@@ -86,10 +86,10 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::generalInfo()
 	memoryInfo.name = "Memory";
 	textureInfo.name = "General Texture Info";
 
-    generalInfo.addProperty("version", Version::current().toString());
-    generalInfo.addProperty("vendor", Version::vendor());
-    generalInfo.addProperty("renderer", Version::renderer());
-    generalInfo.addProperty("core profile", Version::currentVersionIsInCoreProfile()?"true":"false");
+    generalInfo.addProperty("version", versionString());
+    generalInfo.addProperty("vendor", vendor());
+    generalInfo.addProperty("renderer", renderer());
+    generalInfo.addProperty("core profile", isCoreProfile()?"true":"false");
     generalInfo.addProperty("GLSL version", getString(GL_SHADING_LANGUAGE_VERSION));
 
 	memoryInfo.addProperty("total", humanReadableSize(1024ll*memory::total()));

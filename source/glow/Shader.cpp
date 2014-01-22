@@ -8,6 +8,7 @@
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
 #include <glow/Version.h>
+#include <glow/Extension.h>
 
 #include <glow/Shader.h>
 
@@ -133,15 +134,15 @@ void Shader::updateSource()
 
     if (m_source)
     {
-        if (forceFallbackIncludeProcessor || !GLEW_ARB_shading_language_include || Version::current() < Version(4, 0)) // fallback
+        if (glow::hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
+        {
+            sources = m_source->strings();
+        }
+        else
         {
             ref_ptr<StringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source, m_includePaths);
 
             sources = resolvedSource->strings();
-        }
-        else
-        {
-            sources = m_source->strings();
         }
     }
 
@@ -158,7 +159,7 @@ bool Shader::compile()
     if (m_compilationFailed)
         return false;
 
-    if (!forceFallbackIncludeProcessor && GLEW_ARB_shading_language_include && glCompileShaderIncludeARB && Version::current() >= Version(4, 0))
+    if (glow::hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
     {
         std::vector<const char*> cStrings = collectCStrings(m_includePaths);
         glCompileShaderIncludeARB(m_id, static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);

@@ -30,7 +30,7 @@ Version::Version(int majorVersion, int minorVersion)
 
 Version Version::current()
 {
-    return Version(currentMajorVersion(), currentMinorVersion());
+    return version();
 }
 
 bool Version::operator<(const Version & version) const
@@ -95,41 +95,6 @@ Version Version::nearestValidVersion() const
     }
 
     return *iterator;
-}
-
-std::string Version::vendor()
-{
-    return getString(GL_VENDOR);
-}
-
-std::string Version::renderer()
-{
-    return getString(GL_RENDERER);
-}
-
-std::string Version::versionString()
-{
-    return getString(GL_VERSION);
-}
-
-GLint Version::currentMajorVersion()
-{
-    return getInteger(GL_MAJOR_VERSION);
-}
-
-GLint Version::currentMinorVersion()
-{
-    return getInteger(GL_MINOR_VERSION);
-}
-
-bool Version::currentVersionIsInCoreProfile()
-{
-    if (current()<Version(3,2))
-    {
-        return false;
-    }
-
-    return (getInteger(GL_CONTEXT_PROFILE_MASK) & GL_CONTEXT_CORE_PROFILE_BIT) > 0;
 }
 
 } // namespace glow

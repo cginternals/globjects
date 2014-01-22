@@ -4,31 +4,60 @@
 #include <glow/global.h>
 
 #include <glow/Error.h>
+#include <glow/logging.h>
 
 #include "NamedStrings.h"
-
 
 namespace glow
 {
 
-bool init()
+bool glowIsInitialized = false;
+
+bool initializeGLEW(bool showWarnings)
 {
     glewExperimental = GL_TRUE;
 
-    if (glewInit() != GLEW_OK)
+    GLenum result = glewInit();
+    if (result != GLEW_OK)
     {
-        // possible errors:
-        // GLEW_ERROR_NO_GL_VERSION
-        // GLEW_ERROR_GL_VERSION_10_ONLY
-        // GLEW_ERROR_GLX_VERSION_11_ONLY
-        // TODO: handle?
+        if (showWarnings)
+        {
+            glow::warning() << reinterpret_cast<const char*>(glewGetErrorString(result));
+        }
 
         return false;
     }
 
     // NOTE: should be safe to ignore:
     // http://www.opengl.org/wiki/OpenGL_Loading_Library
-    Error::clear(); // ignore GL_INVALID_ENUM
+    glow::Error::clear(); // ignore GL_INVALID_ENUM
+
+    return true;
+}
+
+bool isInitialized()
+{
+    return glowIsInitialized;
+}
+
+bool init(bool showWarnings)
+{
+    if (glowIsInitialized)
+    {
+        if (showWarnings)
+        {
+            glow::warning() << "glow is already initialized";
+        }
+
+        return true;
+    }
+
+    if (!initializeGLEW(showWarnings))
+    {
+        return false;
+    }
+
+    glowIsInitialized = true;
 
     return true;
 }
@@ -125,6 +154,60 @@ GLboolean getBoolean(GLenum pname, GLuint index)
     CheckGLError();
 
     return value;
+}
+
+std::string vendor()
+{
+    return getString(GL_VENDOR);
+}
+
+std::string renderer()
+{
+    return getString(GL_RENDERER);
+}
+
+std::string versionString()
+{
+    return getString(GL_VERSION);
+}
+
+GLint majorVersion()
+{
+    return getInteger(GL_MAJOR_VERSION);
+}
+
+GLint minorVersion()
+{
+    return getInteger(GL_MINOR_VERSION);
+}
+
+Version version()
+{
+    return Version(majorVersion(), minorVersion());
+}
+
+bool isCoreProfile()
+{
+    if (version()<Version(3,2))
+    {
+        return false;
+    }
+
+    return (getInteger(GL_CONTEXT_PROFILE_MASK) & GL_CONTEXT_CORE_PROFILE_BIT) > 0;
+}
+
+std::vector<std::string> getExtensions()
+{
+    int count = getInteger(GL_NUM_EXTENSIONS);
+
+    std::vector<std::string> extensions(count);
+
+    for (int i=0; i<count; ++i)
+    {
+        extensions[i] = getString(GL_EXTENSIONS, i);
+    }
+
+    return extensions;
 }
 
 void createNamedString(const std::string& name, const std::string& string, GLenum type)

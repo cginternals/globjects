@@ -8,6 +8,7 @@
 #include <glow/String.h>
 #include <glow/logging.h>
 #include <glow/Version.h>
+#include <glow/Extension.h>
 
 namespace glow
 {
@@ -55,7 +56,7 @@ void NamedStrings::deleteNamedString(const std::string& name)
         s_instance.m_registeredStringSources.erase(name);
     }
 
-    if (glDeleteNamedStringARB && GLEW_ARB_shading_language_include && Version::current() >= Version(3, 2))
+    if (glow::hasExtension(GLOW_ARB_shading_language_include))
     {
         glDeleteNamedStringARB(static_cast<GLint>(name.size()), name.c_str());
         CheckGLError();
@@ -64,7 +65,7 @@ void NamedStrings::deleteNamedString(const std::string& name)
 
 bool NamedStrings::isNamedString(const std::string& name, bool cached)
 {
-    if (cached || !glIsNamedStringARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
+    if (cached || !glow::hasExtension(GLOW_ARB_shading_language_include))
     {
         return s_instance.m_registeredStringSources.count(name) > 0;
     }
@@ -76,7 +77,7 @@ bool NamedStrings::isNamedString(const std::string& name, bool cached)
 
 std::string NamedStrings::namedString(const std::string& name, bool cached)
 {
-    if (cached || !glGetNamedStringARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
+    if (cached || !glow::hasExtension(GLOW_ARB_shading_language_include))
     {
         if (s_instance.m_registeredStringSources.find(name) == s_instance.m_registeredStringSources.end())
             return "";
@@ -110,7 +111,7 @@ GLenum NamedStrings::namedStringType(const std::string& name, bool cached)
 
 GLint NamedStrings::namedStringParameter(const std::string& name, GLenum pname, bool cached)
 {
-    if (cached || !glGetNamedStringivARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
+    if (cached || !glow::hasExtension(GLOW_ARB_shading_language_include))
     {
         if (s_instance.m_registeredStringSources.find(name) == s_instance.m_registeredStringSources.end())
             return -1;
@@ -146,7 +147,7 @@ void NamedStrings::updateNamedString(const std::string& name)
 
 void NamedStrings::updateNamedString(const NamedString& namedString)
 {
-    if (namedString.name == "" || !glNamedStringARB || !GLEW_ARB_shading_language_include || Version::current() < Version(3, 2))
+    if (!glow::hasExtension(GLOW_ARB_shading_language_include))
     {
         return;
     }

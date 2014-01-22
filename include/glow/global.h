@@ -9,13 +9,13 @@
 #include <glow/glow.h>
 #include <glow/Version.h>
 
-
 namespace glow 
 {
 
 class StringSource;
 
-GLOW_API bool init();
+GLOW_API bool isInitialized();
+GLOW_API bool init(bool showWarnings = false);
 
 GLOW_API std::string getString(GLenum pname);
 GLOW_API std::string getString(GLenum pname, GLuint index);
@@ -30,6 +30,15 @@ GLOW_API GLfloat getFloat(GLenum pname, GLuint index);
 GLOW_API GLdouble getDouble(GLenum pname, GLuint index);
 GLOW_API GLboolean getBoolean(GLenum pname, GLuint index);
 
+std::string vendor();
+std::string renderer();
+std::string versionString();
+GLint majorVersion();
+GLint minorVersion();
+Version version();
+bool isCoreProfile();
+
+GLOW_API std::vector<std::string> getExtensions();
 
 template <int Count>
 GLOW_API std::array<GLint, Count> getIntegers(GLenum pname);

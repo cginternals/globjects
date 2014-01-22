@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys, getopt, os
+import sys, getopt
 from classes.constants_generation import *
 
 def main(argv):
@@ -19,10 +19,7 @@ def main(argv):
 		elif opt in ("-o", "--output"):
 			outputfile = arg
 
-	outputfile = os.path.join("generated", outputfile)
-
 	generateConstantsHeader(inputfile, outputfile)
-
 
 if __name__ == "__main__":
 	main(sys.argv)

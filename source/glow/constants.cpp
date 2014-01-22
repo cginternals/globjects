@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "gl_constants.h"
+#include <gl_constants.h>
 
 namespace {
 

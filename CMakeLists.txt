@@ -19,6 +19,7 @@ option(OPTION_LOCAL_INSTALL  "Install to a local directory instead of the system
 option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
 option(OPTION_BUILD_EXAMPLES "Build examples" ON)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
+option(OPTION_GENERATE_GL_INFO "Automatically generate OpenGL extension and enum information" OFF)
 
 
 # CMAKE CONFIGURATION
@@ -206,11 +207,22 @@ include_directories(
     ${GLFW_INCLUDE_DIR}
 )
 
+# PREBUILD
+
+set(PREBUILD_PATH "${CMAKE_CURRENT_SOURCE_DIR}/pre-build/generated")
+if (OPTION_GENERATE_GL_INFO)
+	add_subdirectory("pre-build")
+endif()
+include_directories(${PREBUILD_PATH})
+install(FILES ${PREBUILD_PATH}/gl_extensions.h DESTINATION include/glow)
+	
+
 # LIBRARIES
 
 add_subdirectory(source)
 install(FILES glow-config.cmake DESTINATION ".")
 
+add_dependencies(glow prebuild)
 
 # EXAMPLES
 

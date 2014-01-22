@@ -7,7 +7,7 @@ pre = \
 
 std::unordered_multimap<GLuint64, const char*> GLconstants = {
 """
-post = "}\n"
+post = "};\n"
 
 def generateConstantsHeader(inputfile, outputfile):
 	tree = ET.parse(inputfile)

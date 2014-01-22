@@ -43,6 +43,7 @@ set(api_includes
     ${header_path}/DebugMessage.h
     ${header_path}/debugmessageoutput.h
     ${header_path}/Error.h
+    ${header_path}/Extension.h
     ${header_path}/FrameBufferAttachment.h
     ${header_path}/FrameBufferObject.h
     ${header_path}/formatString.h
@@ -92,7 +93,6 @@ set(sources
     ${source_path}/CompositeStringSource.cpp
     ${source_path}/ConsoleLogger.cpp
     ${source_path}/constants.cpp
-    ${source_path}/gl_constants.h
     ${source_path}/contextid.h
     ${source_path}/contextid.cpp
     ${source_path}/DebugInfo.cpp
@@ -101,6 +101,7 @@ set(sources
     ${source_path}/DebugMessageCallback.cpp
     ${source_path}/debugmessageoutput.cpp
     ${source_path}/Error.cpp
+    ${source_path}/Extension.cpp
     ${source_path}/FrameBufferAttachment.cpp
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
