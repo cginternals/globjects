@@ -13,9 +13,11 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Array.h>
 #include <glow/logging.h>
+#include <glow/String.h>
 
 #include <glowutils/Camera.h>
 #include <glowutils/CameraPathPlayer.h>
+#include <glowutils/StringTemplate.h>
 
 using namespace glm;
 
@@ -120,7 +122,8 @@ vec3 bezier(const vec3& p0, const vec3& p1, const vec3& p2, const vec3& p3, floa
 }
 
 const char* vertexSource = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform mat4 transform;
 
@@ -137,7 +140,8 @@ void main()
 )";
 
 const char* fragmentSource = R"(
-#version 330
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
 
 layout(location=0) out vec4 fragColor;
 
@@ -275,9 +279,18 @@ void CameraPathPlayer::createVao()
     m_vao->enable(0);
 
     m_program = new glow::Program();
+
+    StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::String(vertexSource));
+    StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::String(fragmentSource));
+
+#ifdef MAC_OS
+    vertexShaderSource->replace("#version 140", "#version 150");
+    fragmentShaderSource->replace("#version 140", "#version 150");
+#endif
+
     m_program->attach(
-        glow::Shader::fromString(GL_VERTEX_SHADER, vertexSource),
-        glow::Shader::fromString(GL_FRAGMENT_SHADER, fragmentSource)
+        new glow::Shader(GL_VERTEX_SHADER, vertexShaderSource),
+        new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderSource)
     );
 
     m_program->addUniform(new glow::Uniform<mat4>("transform"));
