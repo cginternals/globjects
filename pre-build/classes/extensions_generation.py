@@ -62,7 +62,7 @@ def generateExtensionFiles(inputfile, outputfile, outputfile2):
 		if e.incore:
 			incoreMap += "\t{ glow::%s, glow::Version(%s, %s) },\n" % (e.enumName(), e.incore.major, e.incore.minor)
 		
-	enumDecl += "\tGLOW_Unknown_Extension\n}"
+	enumDecl += "\tGLOW_Unknown_Extension\n};"
 	namesMap += "};\n"
 	extensionMap += "};\n"
 	incoreMap += "};\n"
