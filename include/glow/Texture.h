@@ -70,6 +70,27 @@ public:
     ,   GLenum type
     ,   const GLvoid * data);
 
+    void image2D(
+        GLenum target
+    ,   GLint level
+    ,   GLenum internalFormat
+    ,   GLsizei width
+    ,   GLsizei height
+    ,   GLint border
+    ,   GLenum format
+    ,   GLenum type
+    ,   const GLvoid * data);
+
+    void image2D(
+        GLenum target
+    ,   GLint level
+    ,   GLenum internalFormat
+    ,   const glm::ivec2 & size
+    ,   GLint border
+    ,   GLenum format
+    ,   GLenum type
+    ,   const GLvoid * data);
+
     void image3D(
         GLint level
     ,   GLenum internalFormat
