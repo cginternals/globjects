@@ -49,7 +49,7 @@ public:
     Array(T * data, unsigned size);
     Array(void * data, unsigned size);
 
-    Array(Array&& other) noexcept;
+    Array(Array&& other) NOEXCEPT;
 	
     virtual const void * rawData() const override;
     virtual GLint rawSize() const override;

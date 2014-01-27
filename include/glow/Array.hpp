@@ -61,7 +61,7 @@ Array<T>::Array(
 }
 
 template<typename T>
-Array<T>::Array(Array&& other) noexcept
+Array<T>::Array(Array&& other) NOEXCEPT
 : std::vector<T>(other)
 {
 }
