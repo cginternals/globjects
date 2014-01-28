@@ -44,16 +44,20 @@ public:
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
 
-        m_defaultLinesState = new glow::State();
-        m_defaultLinesState->lineWidth(glow::getFloat(GL_LINE_WIDTH));
-        m_thinnestLinesState = new glow::State();
-        m_thinnestLinesState->lineWidth(0.2f);
-        m_thinLinesState = new glow::State();
-        m_thinLinesState->lineWidth(0.6f);
-        m_normalLinesState = new glow::State();
-        m_normalLinesState->lineWidth(1.0f);
-        m_thickLinesState = new glow::State();
-        m_thickLinesState->lineWidth(2.0f);
+        m_defaultPointSizeState = new glow::State();
+        m_defaultPointSizeState->pointSize(glow::getFloat(GL_POINT_SIZE));
+        m_thinnestPointSizeState = new glow::State();
+        m_thinnestPointSizeState->pointSize(2.0f);
+        m_thinPointSizeState = new glow::State();
+        m_thinPointSizeState->pointSize(5.0f);
+        m_normalPointSizeState = new glow::State();
+        m_normalPointSizeState->pointSize(10.0f);
+        m_thickPointSizeState = new glow::State();
+        m_thickPointSizeState->pointSize(20.0f);
+        m_disableRasterizerState = new glow::State();
+        m_disableRasterizerState->enable(GL_RASTERIZER_DISCARD);
+        m_enableRasterizerState = new glow::State();
+        m_enableRasterizerState->disable(GL_RASTERIZER_DISCARD);
 
         m_vao = new glow::VertexArrayObject();
         m_buffer = new glow::Buffer(GL_ARRAY_BUFFER);
@@ -71,15 +75,15 @@ public:
                                 new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderSource));
         
         m_buffer->setData(glow::Array<glm::vec2>()
-            << glm::vec2(-0.8, 0.8) << glm::vec2(0.8, 0.8)
-            << glm::vec2(-0.8, 0.6) << glm::vec2(0.8, 0.6)
-            << glm::vec2(-0.8, 0.4) << glm::vec2(0.8, 0.4)
-            << glm::vec2(-0.8, 0.2) << glm::vec2(0.8, 0.2)
-            << glm::vec2(-0.8, 0.0) << glm::vec2(0.8, 0.0)
-            << glm::vec2(-0.8, -0.2) << glm::vec2(0.8, -0.2)
-            << glm::vec2(-0.8, -0.4) << glm::vec2(0.8, -0.4)
-            << glm::vec2(-0.8, -0.6) << glm::vec2(0.8, -0.6)
-            << glm::vec2(-0.8, -0.8) << glm::vec2(0.8, -0.8)
+            << glm::vec2(-0.8, 0.8) << glm::vec2(-0.4, 0.8) << glm::vec2(0.0, 0.8) << glm::vec2(0.4, 0.8) << glm::vec2(0.8, 0.8)
+            << glm::vec2(-0.8, 0.6) << glm::vec2(-0.4, 0.6) << glm::vec2(0.0, 0.6) << glm::vec2(0.4, 0.6) << glm::vec2(0.8, 0.6)
+            << glm::vec2(-0.8, 0.4) << glm::vec2(-0.4, 0.4) << glm::vec2(0.0, 0.4) << glm::vec2(0.4, 0.4) << glm::vec2(0.8, 0.4)
+            << glm::vec2(-0.8, 0.2) << glm::vec2(-0.4, 0.2) << glm::vec2(0.0, 0.2) << glm::vec2(0.4, 0.2) << glm::vec2(0.8, 0.2)
+            << glm::vec2(-0.8, 0.0) << glm::vec2(-0.4, 0.0) << glm::vec2(0.0, 0.0) << glm::vec2(0.4, 0.0) << glm::vec2(0.8, 0.0)
+            << glm::vec2(-0.8, -0.2) << glm::vec2(-0.4, -0.2) << glm::vec2(0.0, -0.2) << glm::vec2(0.4, -0.2) << glm::vec2(0.8, -0.2)
+            << glm::vec2(-0.8, -0.4) << glm::vec2(-0.4, -0.4) << glm::vec2(0.0, -0.4) << glm::vec2(0.4, -0.4) << glm::vec2(0.8, -0.4)
+            << glm::vec2(-0.8, -0.6) << glm::vec2(-0.4, -0.6) << glm::vec2(0.0, -0.6) << glm::vec2(0.4, -0.6) << glm::vec2(0.8, -0.6)
+            << glm::vec2(-0.8, -0.8) << glm::vec2(-0.4, -0.8) << glm::vec2(0.0, -0.8) << glm::vec2(0.4, -0.8) << glm::vec2(0.8, -0.8)
             , GL_STATIC_DRAW
         );
 
@@ -102,32 +106,41 @@ public:
 
         m_shaderProgram->use();
 
-        m_defaultLinesState->apply();
-        m_vao->drawArrays(GL_LINE, 0, 2);
+        m_defaultPointSizeState->apply();
+        m_vao->drawArrays(GL_POINTS, 0, 5);
 
-        m_thinnestLinesState->apply();
-        m_vao->drawArrays(GL_LINE, 2, 2);
+        m_thinnestPointSizeState->apply();
+        m_vao->drawArrays(GL_POINTS, 5, 5);
 
-        m_thinLinesState->apply();
-        m_vao->drawArrays(GL_LINE, 4, 2);
+        m_thinPointSizeState->apply();
+        m_vao->drawArrays(GL_POINTS, 10, 5);
 
-        m_normalLinesState->apply();
-        m_vao->drawArrays(GL_LINE, 6, 2);
+        m_normalPointSizeState->apply();
+        m_vao->drawArrays(GL_POINTS, 15, 5);
 
-        m_thickLinesState->apply();
-        m_vao->drawArrays(GL_LINE, 8, 2);
+        m_thickPointSizeState->apply();
 
-        m_normalLinesState->apply();
-        m_vao->drawArrays(GL_LINE, 10, 2);
+        m_vao->drawArrays(GL_POINTS, 20, 1);
+        m_disableRasterizerState->apply();
+        m_vao->drawArrays(GL_POINTS, 21, 1);
+        m_enableRasterizerState->apply();
+        m_vao->drawArrays(GL_POINTS, 22, 1);
+        m_disableRasterizerState->apply();
+        m_vao->drawArrays(GL_POINTS, 23, 1);
+        m_enableRasterizerState->apply();
+        m_vao->drawArrays(GL_POINTS, 24, 1);
 
-        m_thinLinesState->apply();
-        m_vao->drawArrays(GL_LINE, 12, 2);
+        m_normalPointSizeState->apply();
+        m_vao->drawArrays(GL_POINTS, 25, 5);
 
-        m_thinnestLinesState->apply();
-        m_vao->drawArrays(GL_LINE, 14, 2);
+        m_thinPointSizeState->apply();
+        m_vao->drawArrays(GL_POINTS, 30, 5);
 
-        m_defaultLinesState->apply();
-        m_vao->drawArrays(GL_LINE, 16, 2);
+        m_thinnestPointSizeState->apply();
+        m_vao->drawArrays(GL_POINTS, 35, 5);
+
+        m_defaultPointSizeState->apply();
+        m_vao->drawArrays(GL_POINTS, 35, 5);
 
         m_shaderProgram->release();
     }
@@ -141,11 +154,13 @@ protected:
     glow::ref_ptr<glow::Buffer> m_buffer;
     glow::ref_ptr<glow::Program> m_shaderProgram;
 
-    glow::ref_ptr<glow::State> m_defaultLinesState;
-    glow::ref_ptr<glow::State> m_thinnestLinesState;
-    glow::ref_ptr<glow::State> m_thinLinesState;
-    glow::ref_ptr<glow::State> m_normalLinesState;
-    glow::ref_ptr<glow::State> m_thickLinesState;
+    glow::ref_ptr<glow::State> m_defaultPointSizeState;
+    glow::ref_ptr<glow::State> m_thinnestPointSizeState;
+    glow::ref_ptr<glow::State> m_thinPointSizeState;
+    glow::ref_ptr<glow::State> m_normalPointSizeState;
+    glow::ref_ptr<glow::State> m_thickPointSizeState;
+    glow::ref_ptr<glow::State> m_disableRasterizerState;
+    glow::ref_ptr<glow::State> m_enableRasterizerState;
 };
 
 int main(int /*argc*/, char* /*argv*/[])
