@@ -42,7 +42,6 @@ set(api_includes
     ${header_path}/CameraPathPlayer.h
     ${header_path}/CameraPathRecorder.h
     ${header_path}/File.h
-    ${header_path}/FileRegistry.h
     ${header_path}/FlightNavigation.h
     ${header_path}/GlBlendAlgorithm.h
     ${header_path}/global.h
@@ -79,6 +78,7 @@ set(sources
     ${source_path}/CameraPathPlayer.cpp
     ${source_path}/CameraPathRecorder.cpp
     ${source_path}/File.cpp
+    ${source_path}/FileRegistry.h
     ${source_path}/FileRegistry.cpp
     ${source_path}/FlightNavigation.cpp
     ${source_path}/GlBlendAlgorithm.cpp

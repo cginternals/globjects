@@ -37,13 +37,19 @@ class Array : public AbstractArray, public std::vector<T>
 {
 public:
 	Array();
+
+    Array(size_t count);
+    Array(size_t count, const T& value);
+
 	Array(const Array<T> & array);
-	
-	Array(const std::vector<T> & vector);
-	Array(const std::initializer_list<T> & list);
-	
-	Array(T * data, const unsigned size);
-	Array(void * data, const unsigned size);
+
+    Array(const std::vector<T> & vector);
+    Array(const std::initializer_list<T> & list);
+
+    Array(T * data, unsigned size);
+    Array(void * data, unsigned size);
+
+    Array(Array&& other) NOEXCEPT;
 	
     virtual const void * rawData() const override;
     virtual GLint rawSize() const override;

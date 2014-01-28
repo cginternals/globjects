@@ -33,6 +33,15 @@
 #	define IF_NDEBUG(statement)
 #endif // N_DEBUG
 
+// http://stackoverflow.com/questions/18387640/how-to-deal-with-noexcept-in-visual-studio
+#ifndef NOEXCEPT
+#	ifdef _MSC_VER
+#		define NOEXCEPT
+#	else
+#		define NOEXCEPT noexcept
+#	endif
+#endif
+
 #ifndef GL_VERSION_3_0
 #define GL_NUM_EXTENSIONS                       0x821D
 #define GL_CONTEXT_FLAGS                        0x821E

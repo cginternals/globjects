@@ -13,6 +13,18 @@ Array<T>::Array()
 }
 
 template<typename T>
+Array<T>::Array(size_t count)
+: std::vector<T>(count)
+{
+}
+
+template<typename T>
+Array<T>::Array(size_t count, const T& value)
+: std::vector<T>(count, value)
+{
+}
+
+template<typename T>
 Array<T>::Array(const Array<T> & array)
 :   std::vector<T>(array)
 {
@@ -46,6 +58,12 @@ Array<T>::Array(
 :   std::vector<T>(reinterpret_cast<T*>(data), reinterpret_cast<T*>(data) + size / sizeof(T))
 {
     assert(data != nullptr);
+}
+
+template<typename T>
+Array<T>::Array(Array&& other) NOEXCEPT
+: std::vector<T>(other)
+{
 }
 
 template<typename T>

@@ -22,7 +22,7 @@
 #include <glow/debugmessageoutput.h>
 
 #include <glowutils/Timer.h>
-#include <glowutils/FileRegistry.h>
+#include <glowutils/File.h>
 #include <glowutils/File.h>
 #include <glowutils/global.h>
 
@@ -123,7 +123,7 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glowutils::FileRegistry::instance().reloadAll();
+            glowutils::File::reloadAll();
     }
 
 protected:

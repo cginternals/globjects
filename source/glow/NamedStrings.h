@@ -39,7 +39,7 @@ public:
 
     virtual void notifyChanged(Changeable* changed) override;
 protected:
-    static NamedStrings s_instance;
+    static NamedStrings* s_instance;
     std::unordered_map<std::string, NamedString> m_registeredStringSources;
     NamedStrings();
 

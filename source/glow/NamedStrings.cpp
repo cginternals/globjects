@@ -13,7 +13,7 @@
 namespace glow
 {
 
-NamedStrings NamedStrings::s_instance;
+NamedStrings* NamedStrings::s_instance = new NamedStrings;
 
 NamedStrings::NamedStrings()
 {
@@ -30,30 +30,30 @@ void NamedStrings::createNamedString(const std::string& name, StringSource* sour
 
     if (isNamedString(name, true))
     {
-        if (s_instance.occurenceCount(source) <= 1 )
+        if (s_instance->occurenceCount(source) <= 1 )
         {
-            s_instance.m_registeredStringSources[name].source->deregisterListener(&s_instance);
+            s_instance->m_registeredStringSources[name].source->deregisterListener(s_instance);
         }
     }
 
-    s_instance.m_registeredStringSources[name].name = name;
-    s_instance.m_registeredStringSources[name].source = source;
-    s_instance.m_registeredStringSources[name].type = type;
-    source->registerListener(&s_instance);
+    s_instance->m_registeredStringSources[name].name = name;
+    s_instance->m_registeredStringSources[name].source = source;
+    s_instance->m_registeredStringSources[name].type = type;
+    source->registerListener(s_instance);
 
-    updateNamedString(s_instance.m_registeredStringSources[name]);
+    updateNamedString(s_instance->m_registeredStringSources[name]);
 }
 
 void NamedStrings::deleteNamedString(const std::string& name)
 {
     if (isNamedString(name))
     {
-        if (s_instance.occurenceCount(s_instance.m_registeredStringSources[name].source) <= 1)
+        if (s_instance->occurenceCount(s_instance->m_registeredStringSources[name].source) <= 1)
         {
-            s_instance.m_registeredStringSources[name].source->deregisterListener(&s_instance);
+            s_instance->m_registeredStringSources[name].source->deregisterListener(s_instance);
         }
 
-        s_instance.m_registeredStringSources.erase(name);
+        s_instance->m_registeredStringSources.erase(name);
     }
 
     if (glow::hasExtension(GLOW_ARB_shading_language_include))
@@ -67,7 +67,7 @@ bool NamedStrings::isNamedString(const std::string& name, bool cached)
 {
     if (cached || !glow::hasExtension(GLOW_ARB_shading_language_include))
     {
-        return s_instance.m_registeredStringSources.count(name) > 0;
+        return s_instance->m_registeredStringSources.count(name) > 0;
     }
 
     bool result = glIsNamedStringARB(static_cast<GLint>(name.size()), name.c_str()) == GL_TRUE;
@@ -79,10 +79,10 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
 {
     if (cached || !glow::hasExtension(GLOW_ARB_shading_language_include))
     {
-        if (s_instance.m_registeredStringSources.find(name) == s_instance.m_registeredStringSources.end())
+        if (s_instance->m_registeredStringSources.find(name) == s_instance->m_registeredStringSources.end())
             return "";
 
-        return s_instance.m_registeredStringSources[name].source->string();
+        return s_instance->m_registeredStringSources[name].source->string();
     }
 
     GLint size = namedStringSize(name);
@@ -96,7 +96,7 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
 
 StringSource* NamedStrings::namedStringSource(const std::string& name)
 {
-    return s_instance.m_registeredStringSources[name].source;
+    return s_instance->m_registeredStringSources[name].source;
 }
 
 GLint NamedStrings::namedStringSize(const std::string& name, bool cached)
@@ -113,15 +113,15 @@ GLint NamedStrings::namedStringParameter(const std::string& name, GLenum pname, 
 {
     if (cached || !glow::hasExtension(GLOW_ARB_shading_language_include))
     {
-        if (s_instance.m_registeredStringSources.find(name) == s_instance.m_registeredStringSources.end())
+        if (s_instance->m_registeredStringSources.find(name) == s_instance->m_registeredStringSources.end())
             return -1;
 
         switch (pname)
         {
             case GL_NAMED_STRING_LENGTH_ARB:
-                return static_cast<GLint>(s_instance.m_registeredStringSources[name].source->string().size());
+                return static_cast<GLint>(s_instance->m_registeredStringSources[name].source->string().size());
             case GL_NAMED_STRING_TYPE_ARB:
-                return s_instance.m_registeredStringSources[name].type;
+                return s_instance->m_registeredStringSources[name].type;
             default:
                 return -1;
         }
@@ -142,7 +142,7 @@ void NamedStrings::updateNamedString(const std::string& name)
         return;
     }
 
-    updateNamedString(s_instance.m_registeredStringSources[name]);
+    updateNamedString(s_instance->m_registeredStringSources[name]);
 }
 
 void NamedStrings::updateNamedString(const NamedString& namedString)
