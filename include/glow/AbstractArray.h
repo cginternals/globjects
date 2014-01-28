@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 
+#include <glow/glow.h>
+
 namespace glow 
 {
 
@@ -15,7 +17,7 @@ namespace glow
     
     \see Array
  */
-class AbstractArray
+class GLOW_API AbstractArray
 {
 public:
 	virtual const void * rawData() const = 0;
