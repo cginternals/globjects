@@ -37,6 +37,8 @@ public:
 	const std::string & filePath() const;
 
     void reload();
+
+    static void reloadAll();
 protected:
     std::string m_filePath;
     mutable std::string m_source;

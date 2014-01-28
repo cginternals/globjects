@@ -25,7 +25,7 @@
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/FlightNavigation.h>
-#include <glowutils/FileRegistry.h>
+#include <glowutils/File.h>
 #include <glowutils/File.h>
 #include <glowutils/Timer.h>
 #include <glowutils/AutoTimer.h>
@@ -143,7 +143,7 @@ public:
         switch (event.key())
         {
             case GLFW_KEY_F5:
-                glowutils::FileRegistry::instance().reloadAll();
+                glowutils::File::reloadAll();
                 break;
             case GLFW_KEY_1:
                 m_flightEnabled = !m_flightEnabled;

@@ -19,7 +19,7 @@
 
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
-#include <glowutils/FileRegistry.h>
+#include <glowutils/File.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/Timer.h>
@@ -253,7 +253,7 @@ public:
             break;
 
         case GLFW_KEY_F5:
-            glowutils::FileRegistry::instance().reloadAll();
+            glowutils::File::reloadAll();
             break;
         }
     }

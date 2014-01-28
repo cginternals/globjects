@@ -1,13 +1,13 @@
 #include <cassert>
 
-#include <glowutils/FileRegistry.h>
+#include "FileRegistry.h"
 
 #include <glowutils/File.h>
 
 namespace glowutils
 {
 
-FileRegistry FileRegistry::s_registry;
+FileRegistry* FileRegistry::s_instance = new FileRegistry;
 
 FileRegistry::FileRegistry()
 {
@@ -17,45 +17,26 @@ FileRegistry::~FileRegistry()
 {
 }
 
-FileRegistry& FileRegistry::instance()
-{
-    return s_registry;
-}
-
-bool FileRegistry::contains(const std::string& filename) const
-{
-    return m_registeredFiles.count(filename) > 0;
-}
-
-File * FileRegistry::obtain(const std::string& filename)
-{
-    if (!contains(filename))
-    {
-        return new File(filename);
-    }
-
-    return m_registeredFiles[filename];
-}
-
 void FileRegistry::registerFile(File * file)
 {
     assert(file != nullptr);
 
-    m_registeredFiles[file->filePath()] = file;
+    s_instance->m_registeredFiles.insert(file);
 }
 
 void FileRegistry::deregisterFile(File * file)
 {
     assert(file != nullptr);
+    assert(s_instance->m_registeredFiles.find(file) != s_instance->m_registeredFiles.end());
 
-    m_registeredFiles.erase(file->filePath());
+    s_instance->m_registeredFiles.erase(file);
 }
 
 void FileRegistry::reloadAll()
 {
-    for (const std::pair<std::string, File*> pair: m_registeredFiles)
+    for (File* file: s_instance->m_registeredFiles)
     {
-        pair.second->reload();
+        file->reload();
     }
 }
 

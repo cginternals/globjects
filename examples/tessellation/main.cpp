@@ -20,7 +20,7 @@
 #include <glowutils/Icosahedron.h>
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/Camera.h>
-#include <glowutils/FileRegistry.h>
+#include <glowutils/File.h>
 #include <glowutils/File.h>
 #include <glowutils/AutoTimer.h>
 #include <glowutils/Timer.h>
@@ -120,7 +120,7 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_F5:
-            glowutils::FileRegistry::instance().reloadAll();
+            glowutils::File::reloadAll();
             break;
         }
     }
