@@ -10,7 +10,7 @@
 namespace glow
 {
 
-class Capability
+class GLOW_API Capability
 {
 public:
     Capability(GLenum capability);
@@ -36,7 +36,7 @@ protected:
 namespace capability
 {
 
-class AbstractCapabilitySetting
+class GLOW_API AbstractCapabilitySetting
 {
 public:
     enum Type {
@@ -70,7 +70,7 @@ protected:
 
 // concrete CapabilitySettings subclasses
 
-class BlendFunc : public AbstractCapabilitySetting
+class GLOW_API BlendFunc : public AbstractCapabilitySetting
 {
 public:
     BlendFunc(GLenum sFactor, GLenum dFactor);
@@ -81,7 +81,7 @@ protected:
     GLenum dFactor;
 };
 
-class LogicOp : public AbstractCapabilitySetting
+class GLOW_API LogicOp : public AbstractCapabilitySetting
 {
 public:
     LogicOp(GLenum opCode);
@@ -91,7 +91,7 @@ protected:
     GLenum opCode;
 };
 
-class CullFace : public AbstractCapabilitySetting
+class GLOW_API CullFace : public AbstractCapabilitySetting
 {
 public:
     CullFace(GLenum mode);
@@ -101,7 +101,7 @@ protected:
     GLenum mode;
 };
 
-class DepthFunc : public AbstractCapabilitySetting
+class GLOW_API DepthFunc : public AbstractCapabilitySetting
 {
 public:
     DepthFunc(GLenum func);
@@ -111,7 +111,7 @@ protected:
     GLenum func;
 };
 
-class DepthRange : public AbstractCapabilitySetting
+class GLOW_API DepthRange : public AbstractCapabilitySetting
 {
 public:
     DepthRange(GLdouble nearVal, GLdouble farVal);
@@ -126,7 +126,7 @@ protected:
     bool useFloat;
 };
 
-class LineWidth : public AbstractCapabilitySetting
+class GLOW_API LineWidth : public AbstractCapabilitySetting
 {
 public:
     LineWidth(GLfloat width);
@@ -136,7 +136,7 @@ protected:
     GLfloat width;
 };
 
-class PointSize : public AbstractCapabilitySetting
+class GLOW_API PointSize : public AbstractCapabilitySetting
 {
 public:
     PointSize(GLfloat size);
@@ -146,7 +146,7 @@ protected:
     GLfloat size;
 };
 
-class PolygonMode : public AbstractCapabilitySetting
+class GLOW_API PolygonMode : public AbstractCapabilitySetting
 {
 public:
     PolygonMode(GLenum face, GLenum mode);
@@ -157,7 +157,7 @@ protected:
     GLenum mode;
 };
 
-class PolygonOffset : public AbstractCapabilitySetting
+class GLOW_API PolygonOffset : public AbstractCapabilitySetting
 {
 public:
     PolygonOffset(GLfloat factor, GLfloat units);
@@ -168,7 +168,7 @@ protected:
     GLfloat units;
 };
 
-class PrimitiveRestartIndex : public AbstractCapabilitySetting
+class GLOW_API PrimitiveRestartIndex : public AbstractCapabilitySetting
 {
 public:
     PrimitiveRestartIndex(GLuint index);
@@ -178,7 +178,7 @@ protected:
     GLuint index;
 };
 
-class SampleCoverage : public AbstractCapabilitySetting
+class GLOW_API SampleCoverage : public AbstractCapabilitySetting
 {
 public:
     SampleCoverage(GLfloat value, GLboolean invert);
@@ -190,7 +190,7 @@ protected:
 };
 
 
-class Scissor : public AbstractCapabilitySetting
+class GLOW_API Scissor : public AbstractCapabilitySetting
 {
 public:
     Scissor(GLint x, GLint y, GLsizei width, GLsizei height);
@@ -203,7 +203,7 @@ protected:
     GLsizei height;
 };
 
-class StencilFunc : public AbstractCapabilitySetting
+class GLOW_API StencilFunc : public AbstractCapabilitySetting
 {
 public:
     StencilFunc(GLenum func, GLint ref, GLuint mask);
@@ -215,7 +215,7 @@ protected:
     GLuint mask;
 };
 
-class StencilOp : public AbstractCapabilitySetting
+class GLOW_API StencilOp : public AbstractCapabilitySetting
 {
 public:
     StencilOp(GLenum fail, GLenum zFail, GLenum zPass);

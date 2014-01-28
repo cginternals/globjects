@@ -13,7 +13,7 @@
 namespace glow
 {
 
-class State : public Referenced
+class GLOW_API State : public Referenced
 {
 public:
     State();

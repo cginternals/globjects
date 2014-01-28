@@ -9,7 +9,7 @@ namespace glowutils
 {
 class File;
 
-class GLOWUTILS_API FileRegistry
+class FileRegistry
 {
 public:
     static void registerFile(File * file);
