@@ -1,10 +1,10 @@
 #pragma once
 
-#include <GL/glew.h>
-
 #include <string>
 #include <vector>
 #include <functional>
+
+#include <GL/glew.h>
 
 #include <glow/glow.h>
 

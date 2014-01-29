@@ -1,11 +1,10 @@
 #pragma once
 
+#include <map>
+
 #include <GL/glew.h>
 
 #include <glow/glow.h>
-
-#include <map>
-#include <functional>
 
 namespace glow
 {

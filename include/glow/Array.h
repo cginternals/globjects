@@ -5,6 +5,7 @@
 
 #include <glm/glm.hpp>
 
+#include <glow/glow.h>
 #include <glow/AbstractArray.h>
 
 namespace glow
@@ -33,7 +34,7 @@ namespace glow
     \see http://www.cplusplus.com/reference/vector/vector/
  */
 template<typename T>
-class Array : public AbstractArray, public std::vector<T>
+class GLOW_API Array : public AbstractArray, public std::vector<T>
 {
 public:
 	Array();

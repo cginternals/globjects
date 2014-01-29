@@ -9,6 +9,7 @@
 
 namespace glow
 {
+
 class CompositeStringSource;
 
 /** \brief Superclass for all types of static and dynamic strings, e.g. for the use as Shader code.
