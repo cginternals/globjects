@@ -10,7 +10,7 @@ To find out more about glow and how to use it, check out our [wiki](https://gith
 
 ### Documentation
 
-A first basic glow documentation can be found at http://costumebrother.de/glow.
+The documentation is regularly generated and can be found [here](http://libglow.org/doxygen-master).
 
 
 ### Dependencies
