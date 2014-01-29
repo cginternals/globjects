@@ -24,6 +24,12 @@ Program::Program()
 {
 }
 
+Program::Program(ProgramBinary * binary)
+: Program()
+{
+    setBinary(binary);
+}
+
 Program::~Program()
 {
 	for (ref_ptr<Shader> shader: std::set<ref_ptr<Shader>>(m_shaders))

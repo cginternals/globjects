@@ -14,6 +14,12 @@
 namespace glow
 {
 
+/**
+ * \brief The ProgramBinary class is used for directly setting binary sources for a Program.
+ *
+ * \see Program
+ * \see http://www.opengl.org/registry/specs/ARB/get_program_binary.txt
+ */
 class GLOW_API ProgramBinary : public Referenced, public Changeable, protected ChangeListener
 {
 public:

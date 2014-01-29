@@ -68,6 +68,7 @@ class GLOW_API Program : public Object, protected ChangeListener
 {
 public:
 	Program();
+    Program(ProgramBinary * binary);
 	virtual ~Program();
 
     virtual void accept(ObjectVisitor& visitor) override;
