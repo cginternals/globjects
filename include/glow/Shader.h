@@ -69,7 +69,7 @@ public:
     std::string typeString() const;
 
 protected:
-    virtual void notifyChanged() override;
+    virtual void notifyChanged(Changeable * changebale) override;
 
 
 protected:

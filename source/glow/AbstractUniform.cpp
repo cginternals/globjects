@@ -50,4 +50,4 @@ void AbstractUniform::update(Program * program)
 	    setLocation(program->getUniformLocation(m_name));
 }
 
-} // namespace glowsp
+} // namespace glow

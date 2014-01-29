@@ -50,6 +50,16 @@ public:
 	bool operator>(const ref_ptr & reference) const;
 	bool operator==(const ref_ptr & reference) const;
     bool operator!=(const ref_ptr & reference) const;
+
+    bool operator<(const T * pointer) const;
+    bool operator>(const T * pointer) const;
+    bool operator==(const T * pointer) const;
+    bool operator!=(const T * pointer) const;
+
+    bool operator<(T * pointer) const;
+    bool operator>(T * pointer) const;
+    bool operator==(T * pointer) const;
+    bool operator!=(T * pointer) const;
 protected:
 	void increaseRef();
 	void decreaseRef();

@@ -1,14 +1,30 @@
+#include <glow/Changeable.h>
+
 #include <glow/ChangeListener.h>
 
 namespace glow
 {
 
-void ChangeListener::notifyChanged()
+ChangeListener::~ChangeListener()
 {
+    for (Changeable * subject : m_subjects)
+    {
+        subject->deregisterListener(this);
+    }
 }
 
 void ChangeListener::notifyChanged(Changeable *)
 {
+}
+
+void ChangeListener::addSubject(Changeable * subject)
+{
+    m_subjects.insert(subject);
+}
+
+void ChangeListener::removeSubject(Changeable * subject)
+{
+    m_subjects.erase(subject);
 }
 
 } // namespace glow

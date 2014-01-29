@@ -35,7 +35,7 @@ void CompositeStringSource::appendSource(AbstractStringSource * source)
     changed();
 }
 
-void CompositeStringSource::notifyChanged()
+void CompositeStringSource::notifyChanged(Changeable *)
 {
     m_dirty = true;
     changed();

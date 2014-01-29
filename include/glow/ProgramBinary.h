@@ -14,18 +14,26 @@
 namespace glow
 {
 
-class GLOW_API ProgramBinary : public Referenced, protected ChangeListener
+class GLOW_API ProgramBinary : public Referenced, public Changeable, protected ChangeListener
 {
 public:
-    ProgramBinary(GLenum binaryFormat, const std::vector<unsigned char> & binaryData);
-    ProgramBinary(GLenum binaryFormat, AbstractStringSource * binaryData);
+    ProgramBinary(GLenum binaryFormat, const std::vector<char> & binaryData);
+    ProgramBinary(GLenum binaryFormat, AbstractStringSource * dataSource);
+    virtual ~ProgramBinary();
 
     GLenum format() const;
-    void * data() const;
+    const void * data() const;
     GLsizei length() const;
+
+     virtual void notifyChanged(Changeable* sender) override;
 protected:
     GLenum m_binaryFormat;
-    ref_ptr<AbstractStringSource> m_binaryData;
+    ref_ptr<AbstractStringSource> m_dataSource;
+
+    mutable bool m_valid;
+    mutable std::vector<unsigned char> m_binaryData;
+
+    void validate() const;
 };
 
 } // namespace glow

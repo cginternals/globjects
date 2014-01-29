@@ -27,7 +27,7 @@ public:
 
     virtual std::string shortInfo() const override;
 protected:
-    virtual void notifyChanged() override;
+    virtual void notifyChanged(Changeable * changeable) override;
     void update() const;
 protected:
     std::vector<ref_ptr<AbstractStringSource>> m_sources;

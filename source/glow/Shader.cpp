@@ -123,7 +123,7 @@ const AbstractStringSource* Shader::source() const
 	return m_source;
 }
 
-void Shader::notifyChanged()
+void Shader::notifyChanged(Changeable *)
 {
 	updateSource();
 }

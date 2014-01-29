@@ -18,7 +18,7 @@ public:
 
     virtual void update();
 protected:
-    virtual void notifyChanged() override;
+    virtual void notifyChanged(Changeable * changeable) override;
 protected:
     glow::ref_ptr<glow::AbstractStringSource> m_internal;
 };
