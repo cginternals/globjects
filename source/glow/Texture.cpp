@@ -1,13 +1,11 @@
+#include <glow/Texture.h>
 
 #include <algorithm>
 
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glow/Error.h>
-#include <glow/logging.h>
 #include <glow/ObjectVisitor.h>
-
-#include <glow/Texture.h>
 
 namespace glow
 {

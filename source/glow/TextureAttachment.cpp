@@ -1,7 +1,8 @@
+#include <glow/TextureAttachment.h>
+
 #include <cassert>
 
 #include <glow/Texture.h>
-#include <glow/TextureAttachment.h>
 
 namespace glow
 {

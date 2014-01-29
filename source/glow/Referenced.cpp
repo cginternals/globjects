@@ -1,4 +1,3 @@
-
 #include <glow/Referenced.h>
 
 namespace glow

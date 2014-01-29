@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GL/glew.h>
+
 #include <glow/glow.h>
 #include <glow/ref_ptr.h>
 #include <glow/FrameBufferAttachment.h>

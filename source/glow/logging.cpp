@@ -1,21 +1,21 @@
+#include <glow/logging.h>
+
 #include <cassert>
 
 #include <glow/ConsoleLogger.h>
 
-#include <glow/logging.h>
+namespace
+{
+    glow::LogMessage::Level l_verbosityLevel = glow::LogMessage::Info;
+    glow::AbstractLogHandler * l_logHandler = new glow::ConsoleLogger();
+}
 
 namespace glow 
 {
 
-namespace 
-{
-LogMessage::Level g_verbosityLevel = LogMessage::Info;
-AbstractLogHandler * g_logHandler = new ConsoleLogger();
-}
-
 LogMessageBuilder info(LogMessage::Level level)
 {
-	return LogMessageBuilder(level, level <= g_verbosityLevel ? g_logHandler : nullptr);
+    return LogMessageBuilder(level, level <= l_verbosityLevel ? l_logHandler : nullptr);
 }
 
 LogMessageBuilder debug()
@@ -40,23 +40,23 @@ LogMessageBuilder fatal()
 
 AbstractLogHandler* loggingHandler()
 {
-	return g_logHandler;
+    return l_logHandler;
 }
 
 void setLoggingHandler(AbstractLogHandler* handler)
 {
-	delete g_logHandler;
-	g_logHandler = handler;
+    delete l_logHandler;
+    l_logHandler = handler;
 }
 
 void setVerbosityLevel(LogMessage::Level verbosity)
 {
-	g_verbosityLevel = verbosity;
+    l_verbosityLevel = verbosity;
 }
 
 LogMessage::Level verbosityLevel()
 {
-	return g_verbosityLevel;
+    return l_verbosityLevel;
 }
 
 } // namespace glow

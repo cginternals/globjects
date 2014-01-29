@@ -1,10 +1,10 @@
+#include "DebugMessageCallback.h"
+
 #ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
 #include <stdexcept>
 #endif
 
 #include <glow/logging.h>
-
-#include "DebugMessageCallback.h"
 
 namespace glow
 {

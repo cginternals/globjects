@@ -1,6 +1,7 @@
-#include <glow/StaticStringSource.h>
-
 #include <glow/ProgramBinary.h>
+
+#include <glow/StaticStringSource.h>
+#include <glow/AbstractStringSource.h>
 
 namespace glow
 {

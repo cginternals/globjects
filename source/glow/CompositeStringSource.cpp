@@ -1,7 +1,7 @@
+#include <glow/CompositeStringSource.h>
+
 #include <sstream>
 #include <cassert>
-
-#include <glow/CompositeStringSource.h>
 
 namespace glow
 {
@@ -95,6 +95,5 @@ std::string CompositeStringSource::shortInfo() const
 
     return info.str();
 }
-
 
 } // namespace glow

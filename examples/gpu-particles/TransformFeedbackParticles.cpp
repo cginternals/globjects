@@ -8,6 +8,7 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/FrameBufferObject.h>
+#include <glow/Texture.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Camera.h>

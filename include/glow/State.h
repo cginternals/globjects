@@ -1,17 +1,23 @@
 #pragma once
 
-#include <GL/glew.h>
-
-#include <glow/glow.h>
-#include <glow/Capability.h>
-#include <glow/Referenced.h>
-
-#include <map>
 #include <unordered_map>
 #include <vector>
 
+#include <GL/glew.h>
+
+#include <glow/glow.h>
+#include <glow/Referenced.h>
+
 namespace glow
 {
+
+class Capability;
+
+namespace capability {
+
+class AbstractCapabilitySetting;
+
+} // namespace capability
 
 class GLOW_API State : public Referenced
 {

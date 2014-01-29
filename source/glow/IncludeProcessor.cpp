@@ -4,8 +4,6 @@
 #include <algorithm>
 #include <cctype>
 
-#include <GL/glew.h>
-
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/global.h>

@@ -1,7 +1,7 @@
+#include <glow/Program.h>
+
 #include <cassert>
 #include <vector>
-
-#include <glm/gtc/type_ptr.hpp>
 
 #include <glow/logging.h>
 #include <glow/global.h>
@@ -11,8 +11,6 @@
 #include <glow/Shader.h>
 #include <glow/ProgramBinary.h>
 #include <glow/Extension.h>
-
-#include <glow/Program.h>
 
 namespace glow
 {

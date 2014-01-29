@@ -11,13 +11,13 @@
 #include "contextid.h"
 #include "DebugMessageCallback.h"
 
-#include <glow/debugmessageoutput.h>
-
 #ifdef WIN32
 #include <Windows.h>
 #else
 #define APIENTRY
 #endif
+
+#include <glow/debugmessageoutput.h>
 
 namespace {
 

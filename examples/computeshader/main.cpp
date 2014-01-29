@@ -20,6 +20,7 @@
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/debugmessageoutput.h>
+#include <glow/Texture.h>
 
 #include <glowutils/File.h>
 #include <glowutils/File.h>

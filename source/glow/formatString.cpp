@@ -1,3 +1,4 @@
+#include <glow/formatString.h>
 
 #include <string>
 #include <sstream>
@@ -6,8 +7,6 @@
 #include <iomanip>
 
 #include <iostream>
-
-#include <glow/formatString.h>
 
 namespace glow
 {

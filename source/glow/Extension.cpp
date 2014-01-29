@@ -1,8 +1,8 @@
+#include <glow/Extension.h>
+
 #include <set>
 
 #include <glow/global.h>
-#include <glow/Extension.h>
-
 #include <gl_extension_info.h>
 
 
@@ -91,6 +91,5 @@ Extension extensionFromString(const std::string & extensionName)
 
     return it->second;
 }
-
 
 } // namespace glow

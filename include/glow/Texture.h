@@ -1,10 +1,12 @@
 #pragma once
 
+#include <GL/glew.h>
+
+#include <glm/glm.hpp>
+
 #include <glow/glow.h>
 #include <glow/Object.h>
 #include <glow/TextureHandle.h>
-
-#include <glm/glm.hpp>
 
 namespace glow 
 {

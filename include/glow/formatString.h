@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+#include <string>
 
 #include <glow/glow.h>
 
@@ -12,10 +13,10 @@ GLOW_API void parseFormat(std::ostream& stream, const char*& format);
 
 GLOW_API void streamprintf(std::ostream& stream, const char* format);
 template <typename T, typename... Args>
-void streamprintf(std::ostream& stream, const char* format, const T& value, Args... args);
+GLOW_API void streamprintf(std::ostream& stream, const char* format, const T& value, Args... args);
 
 template <typename... Args>
-std::string formatString(const char* format, Args... args);
+GLOW_API std::string formatString(const char* format, Args... args);
 
 } // namespace glow
 

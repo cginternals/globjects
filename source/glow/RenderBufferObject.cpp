@@ -1,10 +1,9 @@
+#include <glow/RenderBufferObject.h>
 
 #include <cmath>
 
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
-#include <glow/RenderBufferObject.h>
-
 
 namespace glow
 {

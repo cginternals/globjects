@@ -1,8 +1,6 @@
 #pragma once
 
-#include <ostream>
 #include <string>
-#include <set>
 
 #include <GL/glew.h>
 
@@ -38,9 +36,6 @@ public:
 public:
     GLint majorVersion;
     GLint minorVersion;
-
-private:
-    static std::set<Version> s_validVersions;
 };
 
 } // namespace glow

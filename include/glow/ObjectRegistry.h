@@ -2,10 +2,12 @@
 
 #include <set>
 
-#include <glow/Object.h>
+#include <glow/glow.h>
 
 namespace glow 
 {
+
+class Object;
 
 /** \brief Tracks all wrapped OpenGL objects in glow.
     

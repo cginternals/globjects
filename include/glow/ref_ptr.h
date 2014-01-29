@@ -1,5 +1,7 @@
 #pragma once
 
+//#include <type_traits>
+
 namespace glow 
 {
 
@@ -28,6 +30,8 @@ class Referenced;
 template<typename T>
 class ref_ptr
 {
+    // This prevents T to be forward declared when using ref_ptr
+    //static_assert(std::is_base_of<Referenced, T>::value, "T is not a subclass of Referenced");
 public:
 	ref_ptr();
 	ref_ptr(T * referenced);

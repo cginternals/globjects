@@ -7,6 +7,7 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/debugmessageoutput.h>
 #include <glow/StaticStringSource.h>
+#include <glow/Array.h>
 
 #include <glowwindow/Window.h>
 #include <glowwindow/ContextFormat.h>

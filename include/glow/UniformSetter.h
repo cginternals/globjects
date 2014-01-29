@@ -1,9 +1,12 @@
 #pragma once
 
+#include <GL/glew.h>
+
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glow/glow.h>
 #include <glow/AbstractUniform.h>
+#include <glow/Array.h>
 #include <glow/TextureHandle.h>
 
 namespace glow
