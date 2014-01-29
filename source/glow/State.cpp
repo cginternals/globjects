@@ -48,7 +48,6 @@ State* State::currentState()
     state->addCapabilitySetting(new capability::DepthRange(depthRangeF[0], depthRangeF[1]));
 
     state->setToCurrent(GL_LINE_SMOOTH);
-    state->addCapabilitySetting(new capability::LineWidth(getFloat(GL_LINE_WIDTH)));
 
     state->setToCurrent(GL_PROGRAM_POINT_SIZE);
     state->addCapabilitySetting(new capability::PointSize(getFloat(GL_POINT_SIZE)));
@@ -216,11 +215,6 @@ void State::depthRange(GLdouble nearVal, GLdouble farVal)
 void State::depthRange(GLfloat nearVal, GLfloat farVal)
 {
     addCapabilitySetting(new capability::DepthRange(nearVal, farVal));
-}
-
-void State::lineWidth(GLfloat width)
-{
-    addCapabilitySetting(new capability::LineWidth(width));
 }
 
 void State::pointSize(GLfloat size)

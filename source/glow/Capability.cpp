@@ -164,18 +164,6 @@ void DepthRange::apply()
     }
 }
 
-LineWidth::LineWidth(GLfloat width)
-: AbstractCapabilitySetting(T_LineWidth)
-, width(width)
-{
-}
-
-void LineWidth::apply()
-{
-    glLineWidth(width);
-    CheckGLError();
-}
-
 PointSize::PointSize(GLfloat size)
 : AbstractCapabilitySetting(T_PointSize)
 , size(size)

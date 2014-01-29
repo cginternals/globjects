@@ -39,7 +39,6 @@ public:
     void depthFunc(GLenum func);
     void depthRange(GLdouble nearVal, GLdouble farVal);
     void depthRange(GLfloat nearVal, GLfloat farVal);
-    void lineWidth(GLfloat width);
     void pointSize(GLfloat size);
     void polygonMode(GLenum face, GLenum mode);
     void polygonOffset(GLfloat factor, GLfloat units);
