@@ -17,7 +17,9 @@ body
 
 body, table, div, p, dl
 {
-  font: normal 13px/1.2 Verdana;
+  /*font: normal 13px/1.2 Arial;*/
+  font: 12px/1.2 Arial,FreeSans,sans-serif;
+  font-family: "Open Sans",sans-serif;
   color: #363534;
 }
 
@@ -142,10 +144,7 @@ a.codeRef { color: #4665A2; }
 {
   font-family: monospace, fixed;
   font-size: 11px;
-}
-
-pre.fragment
-{
+  
   padding: 4px 6px;
   margin: 4px 20px 4px 10px;
   overflow: auto;
@@ -162,6 +161,11 @@ pre.fragment
   border-radius: 7px 7px 7px 7px;
 }
 
+.fragment .line
+{
+  font-family: monospace, fixed;
+  font-size: 11px;
+}
 
 /***********************************************************
  * Top navigation tabs.
@@ -593,6 +597,12 @@ table.memberdecls td.memSeparator {
         -webkit-border-bottom-right-radius: 8px;
         -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
         background-image: -webkit-gradient(linear,center top,center bottom,from(#FFFFFF), color-stop(0.6,#FFFFFF), color-stop(0.60,#FFFFFF), color-stop(0.95,#F7F8FB), to(#EEF1F7));*/
+}
+
+.mlabels .mlabel {
+	color: #555;
+	font-style: italic;
+	margin-right: 0.5em;
 }
 
 dl.reflist dt {
