@@ -34,7 +34,7 @@ namespace glow
     \see http://www.cplusplus.com/reference/vector/vector/
  */
 template<typename T>
-class GLOW_API Array : public AbstractArray, public std::vector<T>
+class Array : public AbstractArray, public std::vector<T>
 {
 public:
 	Array();
