@@ -1,6 +1,7 @@
 #include <glowutils/screen.h>
 
 #include <cstdio>
+#include <set>
 
 #include <glow/logging.h>
 
