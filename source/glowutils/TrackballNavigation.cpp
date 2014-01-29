@@ -1,11 +1,9 @@
+#include <glowutils/TrackballNavigation.h>
 
 #include <cmath>
 
 #include <glm/glm.hpp>
 #include <glm/gtx/norm.hpp>
-
-#include <glowutils/TrackballNavigation.h>
-
 
 using namespace glm;
 

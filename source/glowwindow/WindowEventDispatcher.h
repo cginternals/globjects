@@ -3,12 +3,15 @@
 #include <unordered_map>
 #include <chrono>
 
+#include <glm/glm.hpp>
+
 struct GLFWwindow;
 
 namespace glowwindow
 {
     
     class Window;
+    class WindowEvent;
     
     class WindowEventDispatcher
     {

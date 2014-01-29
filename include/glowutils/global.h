@@ -9,7 +9,9 @@
 
 namespace glow
 {
+
 class Shader;
+
 }
 
 namespace glowutils

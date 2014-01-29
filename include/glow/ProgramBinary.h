@@ -7,12 +7,13 @@
 #include <glow/glow.h>
 #include <glow/Referenced.h>
 #include <glow/ChangeListener.h>
-#include <glow/AbstractStringSource.h>
+#include <glow/Changeable.h>
 #include <glow/ref_ptr.h>
-
 
 namespace glow
 {
+
+class AbstractStringSource;
 
 /**
  * \brief The ProgramBinary class is used for directly setting binary sources for a Program.

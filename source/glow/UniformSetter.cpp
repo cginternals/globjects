@@ -1,9 +1,6 @@
+#include <glow/UniformSetter.h>
 
 #include <glow/Error.h>
-#include <glow/Array.h>
-#include <glow/Texture.h>
-
-#include <glow/UniformSetter.h>
 
 namespace glow
 {

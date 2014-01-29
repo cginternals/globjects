@@ -1,9 +1,10 @@
 #pragma once
 
-#include <set>
 #include <string>
 #include <vector>
 #include <map>
+
+#include <GL/glew.h>
 
 #include <glow/glow.h>
 #include <glow/ObjectVisitor.h>

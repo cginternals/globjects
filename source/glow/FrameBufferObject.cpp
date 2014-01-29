@@ -1,3 +1,5 @@
+#include <glow/FrameBufferObject.h>
+
 #include <cassert>
 
 #include <glow/logging.h>
@@ -9,8 +11,6 @@
 #include <glow/Buffer.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Texture.h>
-
-#include <glow/FrameBufferObject.h>
 
 namespace glow
 {

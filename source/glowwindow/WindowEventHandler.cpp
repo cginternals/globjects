@@ -1,5 +1,5 @@
-
 #include <glowwindow/WindowEventHandler.h>
+
 #include <glowwindow/events.h>
 
 namespace glowwindow

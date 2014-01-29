@@ -1,12 +1,13 @@
 #pragma once
 
+#include <glow/Program.h>
+
 #include <cassert>
 
 #include <glow/logging.h>
 #include <glow/Uniform.h>
 #include <glow/Error.h>
 #include <glow/Shader.h>
-#include <glow/Program.h>
 
 namespace glow
 {

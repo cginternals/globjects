@@ -1,6 +1,6 @@
-#include <glow/Changeable.h>
-
 #include <glow/ChangeListener.h>
+
+#include <glow/Changeable.h>
 
 namespace glow
 {

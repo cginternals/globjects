@@ -1,8 +1,8 @@
 #pragma once
 
-#include <cassert>
-
 #include <glow/Array.h>
+
+#include <cassert>
 
 namespace glow
 {

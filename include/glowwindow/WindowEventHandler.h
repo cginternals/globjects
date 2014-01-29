@@ -1,7 +1,8 @@
 #pragma once
 
-#include <glowwindow/glowwindow.h>
 #include <glow/Referenced.h>
+
+#include <glowwindow/glowwindow.h>
 
 namespace glowwindow
 {

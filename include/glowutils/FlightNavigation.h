@@ -9,7 +9,6 @@ namespace glowutils
 
 class Camera;
 
-
 class GLOWUTILS_API FlightNavigation
 {
 public:

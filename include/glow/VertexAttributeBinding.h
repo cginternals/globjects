@@ -3,7 +3,6 @@
 #include <GL/glew.h>
 
 #include <glow/glow.h>
-
 #include <glow/Referenced.h>
 
 namespace glow 
@@ -47,12 +46,12 @@ public:
 	Buffer * buffer() const;
 
 protected:
-    VertexArrayObject * m_vao;
+    VertexArrayObject * m_vao; // TODO: weak_ptr?
    
     GLint m_bindingIndex;
     GLint m_attributeIndex;
     
-    Buffer * m_vbo;
+    Buffer * m_vbo; // TODO: weak_ptr?
 
     VertexAttributeBindingImplementation * m_implementation;
 };

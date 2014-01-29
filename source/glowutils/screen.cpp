@@ -1,11 +1,9 @@
+#include <glowutils/screen.h>
 
-#include <set>
-#include <functional>
 #include <cstdio>
+#include <set>
 
 #include <glow/logging.h>
-
-#include <glowutils/screen.h>
 
 #ifdef WIN32
 #include <windows.h>

@@ -1,6 +1,7 @@
+#include <glow/Changeable.h>
+
 #include <cassert>
 
-#include <glow/Changeable.h>
 #include <glow/ChangeListener.h>
 
 namespace glow

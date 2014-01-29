@@ -5,7 +5,6 @@
 #include <glowutils/glowutils.h>
 #include <glowutils/CachedValue.h>
 
-
 namespace glowutils
 {
 

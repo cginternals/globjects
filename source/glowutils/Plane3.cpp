@@ -1,14 +1,11 @@
+#include <glowutils/Plane3.h>
 
 #include <cmath>
-#include <cassert>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/quaternion.hpp>
-
-#include <glowutils/Plane3.h>
-
 
 using namespace glm;
 

@@ -1,6 +1,6 @@
-#include <cassert>
-
 #include "FileRegistry.h"
+
+#include <cassert>
 
 #include <glowutils/File.h>
 

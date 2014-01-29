@@ -12,6 +12,7 @@
 #include <glowwindow/MainLoop.h>
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
+#include <glowwindow/events.h>
 
 #include <glowutils/UnitCube.h>
 #include <glowutils/File.h>

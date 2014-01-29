@@ -1,7 +1,5 @@
 #include <glowutils/global.h>
 
-#include <vector>
-
 #include <glow/logging.h>
 #include <glow/global.h>
 #include <glow/Shader.h>

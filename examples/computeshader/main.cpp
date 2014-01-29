@@ -20,6 +20,7 @@
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/debugmessageoutput.h>
+#include <glow/Texture.h>
 
 #include <glowutils/File.h>
 #include <glowutils/File.h>
@@ -30,6 +31,7 @@
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
+#include <glowwindow/events.h>
 
 
 using namespace glowwindow;

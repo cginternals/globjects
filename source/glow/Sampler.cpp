@@ -1,11 +1,7 @@
-
-
-#include <glm/gtc/type_ptr.hpp>
+#include <glow/Sampler.h>
 
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
-
-#include <glow/Sampler.h>
 
 namespace glow
 {

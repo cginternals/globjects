@@ -1,11 +1,11 @@
+#include <glow/TransformFeedback.h>
+
 #include <cassert>
 
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
 #include <glow/Program.h>
 #include <glow/Array.h>
-
-#include <glow/TransformFeedback.h>
 
 namespace glow
 {

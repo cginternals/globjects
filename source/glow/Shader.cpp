@@ -1,3 +1,5 @@
+#include <glow/Shader.h>
+
 #include <vector>
 #include <sstream>
 
@@ -9,9 +11,6 @@
 #include <glow/ObjectVisitor.h>
 #include <glow/Version.h>
 #include <glow/Extension.h>
-
-#include <glow/Shader.h>
-
 #include <glow/ref_ptr.h>
 
 #include "IncludeProcessor.h"

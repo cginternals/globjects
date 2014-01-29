@@ -1,3 +1,5 @@
+#include <glow/VertexAttributeBinding.h>
+
 #include <cassert>
 
 #include <glow/VertexArrayObject.h>
@@ -5,7 +7,6 @@
 #include <glow/Error.h>
 #include <glow/Extension.h>
 
-#include <glow/VertexAttributeBinding.h>
 #include "VertexAttributeBindingImplementation.h"
 
 namespace glow

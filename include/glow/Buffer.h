@@ -1,11 +1,13 @@
 #pragma once
 
-#include <glow/glow.h>
+#include <GL/glew.h>
 
+#include <glow/glow.h>
 #include <glow/Object.h>
 
 namespace glow
 {
+
 class AbstractArray;
 
 /** \brief Wrapper for OpenGL buffer objects.

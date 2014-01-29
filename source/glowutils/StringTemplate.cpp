@@ -1,7 +1,7 @@
+#include <glowutils/StringTemplate.h>
+
 #include <sstream>
 #include <cassert>
-
-#include <glowutils/StringTemplate.h>
 
 namespace 
 {

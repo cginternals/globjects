@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glow/glow.h>
 #include <glow/AbstractLogHandler.h>
 #include <glow/LogMessageBuilder.h>
 
@@ -34,22 +35,27 @@ template <typename... Arguments> void info(const char* format, Arguments... argu
 /**
  *  \see info
  */
-template <typename... Arguments> void debug(const char* format, Arguments... arguments);
+template <typename... Arguments>
+GLOW_API void debug(const char* format, Arguments... arguments);
 
 /**
  *  \see info
  */
-template <typename... Arguments> void warning(const char* format, Arguments... arguments);
+template <typename... Arguments>
+GLOW_API void warning(const char* format, Arguments... arguments);
 
 /**
  *  \see info
  */
-template <typename... Arguments> void critical(const char* format, Arguments... arguments);
+template <typename... Arguments>
+GLOW_API void critical(const char* format, Arguments... arguments);
 
 /**
  *  \see info
  */
-template <typename... Arguments> void fatal(const char* format, Arguments... arguments);
+template <typename... Arguments>
+GLOW_API void fatal(const char* format, Arguments... arguments);
+
 
 } // namespace glow
 

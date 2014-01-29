@@ -1,11 +1,10 @@
+#include <glow/Buffer.h>
+
 #include <cassert>
 
 #include <glow/Error.h>
-#include <glow/logging.h>
 #include <glow/ObjectVisitor.h>
 #include <glow/AbstractArray.h>
-
-#include <glow/Buffer.h>
 
 namespace glow
 {

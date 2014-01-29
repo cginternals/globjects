@@ -1,4 +1,3 @@
-
 #include <glow/LogMessage.h>
 
 namespace glow 

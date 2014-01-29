@@ -14,6 +14,7 @@
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/Query.h>
+#include <glow/Array.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Sampler.h>

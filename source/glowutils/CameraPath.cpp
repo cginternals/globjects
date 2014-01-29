@@ -1,10 +1,8 @@
-
-#include <string>
+#include <glowutils/CameraPath.h>
 
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glowutils/Camera.h>
-#include <glowutils/CameraPath.h>
 
 namespace glowutils
 {

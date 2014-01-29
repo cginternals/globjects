@@ -1,8 +1,8 @@
 #pragma once
 
-#include <cassert>
-
 #include <glow/LogMessageBuilder.h>
+
+#include <cassert>
 
 namespace glow
 {

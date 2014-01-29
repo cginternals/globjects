@@ -1,12 +1,10 @@
+#include <glowutils/AxonometricLookAt.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 
 #include <glow/logging.h>
-
-#include <glowutils/AxonometricLookAt.h>
-
 
 using namespace glm;
 

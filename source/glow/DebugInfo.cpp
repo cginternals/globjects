@@ -1,3 +1,4 @@
+#include <glow/DebugInfo.h>
 
 #include <sstream>
 #include <algorithm>
@@ -24,8 +25,6 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/TextureAttachment.h>
 #include <glow/RenderBufferAttachment.h>
-
-#include <glow/DebugInfo.h>
 
 namespace glow
 {

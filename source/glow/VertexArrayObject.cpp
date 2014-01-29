@@ -1,11 +1,10 @@
+#include <glow/VertexArrayObject.h>
+
 #include <cassert>
 
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
-#include <glow/Buffer.h>
 #include <glow/VertexAttributeBinding.h>
-
-#include <glow/VertexArrayObject.h>
 
 namespace glow
 {

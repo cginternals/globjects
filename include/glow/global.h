@@ -30,13 +30,13 @@ GLOW_API GLfloat getFloat(GLenum pname, GLuint index);
 GLOW_API GLdouble getDouble(GLenum pname, GLuint index);
 GLOW_API GLboolean getBoolean(GLenum pname, GLuint index);
 
-std::string vendor();
-std::string renderer();
-std::string versionString();
-GLint majorVersion();
-GLint minorVersion();
-Version version();
-bool isCoreProfile();
+GLOW_API std::string vendor();
+GLOW_API std::string renderer();
+GLOW_API std::string versionString();
+GLOW_API GLint majorVersion();
+GLOW_API GLint minorVersion();
+GLOW_API Version version();
+GLOW_API bool isCoreProfile();
 
 GLOW_API std::vector<std::string> getExtensions();
 

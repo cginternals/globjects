@@ -5,15 +5,15 @@
 
 #include <glowutils/glowutils.h>
 
-
 namespace glow {
-    class Buffer;
-    class Program;
-    class Shader;
-    class Texture;
-    class VertexArrayObject;
+
+class Buffer;
+class Program;
+class Shader;
+class Texture;
+class VertexArrayObject;
+
 }
-    
 
 namespace glowutils
 {
@@ -58,4 +58,5 @@ protected:
 	static const char * s_defaultVertexShaderSource;
 	static const char * s_defaultFagmentShaderSource;
 };
+
 } // namespace glowutils

@@ -1,7 +1,8 @@
+#include <glow/AbstractUniform.h>
+
 #include <cassert>
 
 #include <glow/Program.h>
-#include <glow/AbstractUniform.h>
 
 namespace glow
 {

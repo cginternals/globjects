@@ -11,13 +11,16 @@
 #include <glowutils/CameraPath.h>
 
 namespace glow {
+
 class VertexArrayObject;
 class Program;
 class Buffer;
+
 }
 
 namespace glowutils
 {
+
 class Camera;
 
 class GLOWUTILS_API CameraPathPlayer

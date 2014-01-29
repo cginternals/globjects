@@ -1,12 +1,11 @@
 #pragma once
 
-#include <cassert>
+#include <glowutils/RawFile.h>
+
 #include <algorithm>
 #include <fstream>
 
 #include <glow/logging.h>
-
-#include <glowutils/RawFile.h>
 
 namespace glowutils 
 {

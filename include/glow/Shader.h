@@ -1,8 +1,9 @@
 #pragma once
 
 #include <string>
-#include <set>
 #include <vector>
+
+#include <GL/glew.h>
 
 #include <glow/glow.h>
 

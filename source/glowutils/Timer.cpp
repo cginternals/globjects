@@ -1,4 +1,3 @@
-
 #include <glowutils/Timer.h>
 
 namespace glowutils

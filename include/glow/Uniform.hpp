@@ -1,11 +1,8 @@
 #pragma once
 
-#include <glm/gtc/type_ptr.hpp>
-
-#include <glow/Error.h>
-#include <glow/Array.h>
-#include <glow/Texture.h>
 #include <glow/Uniform.h>
+
+#include <glow/UniformSetter.h>
 
 namespace glow
 {

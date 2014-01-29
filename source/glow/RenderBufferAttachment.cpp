@@ -1,7 +1,8 @@
+#include <glow/RenderBufferAttachment.h>
+
 #include <cassert>
 
 #include <glow/RenderBufferObject.h>
-#include <glow/RenderBufferAttachment.h>
 
 namespace glow
 {

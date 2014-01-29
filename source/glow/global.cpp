@@ -1,6 +1,3 @@
-
-#include <GL/glew.h>
-
 #include <glow/global.h>
 
 #include <glow/Error.h>

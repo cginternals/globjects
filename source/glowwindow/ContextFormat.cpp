@@ -1,9 +1,9 @@
+#include <glowwindow/ContextFormat.h>
 
 #include <cassert>
 #include <sstream>
 
 #include <glow/logging.h>
-#include <glowwindow/ContextFormat.h>
 
 using namespace glow;
 

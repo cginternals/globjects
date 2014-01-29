@@ -1,6 +1,8 @@
+#include <glow/ObjectRegistry.h>
+
 #include <cassert>
 
-#include <glow/ObjectRegistry.h>
+#include <glow/Object.h>
 
 namespace glow 
 {

@@ -1,9 +1,9 @@
 #pragma once
 
+#include <glow/formatString.h>
+
 #include <sstream>
 #include <cassert>
-
-#include <glow/formatString.h>
 
 namespace glow
 {

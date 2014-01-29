@@ -1,11 +1,5 @@
 #pragma once
 
-#include <vector>
-#include <map>
-
-#include <glm/glm.hpp>
-
-#include <glow/ref_ptr.h>
 #include <glowutils/glowutils.h>
 
 #include <glowutils/CameraPath.h>

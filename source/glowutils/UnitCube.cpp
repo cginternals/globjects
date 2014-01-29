@@ -1,3 +1,4 @@
+#include <glowutils/UnitCube.h>
 
 #include <cmath>
 
@@ -7,9 +8,6 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
 #include <glow/Error.h>
-
-#include <glowutils/UnitCube.h>
-
 
 using namespace glm;
 using namespace glow;

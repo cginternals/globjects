@@ -1,4 +1,3 @@
-
 #include <glow/Error.h>
 
 #include <glow/debugmessageoutput.h>

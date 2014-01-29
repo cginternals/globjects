@@ -7,12 +7,14 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/debugmessageoutput.h>
 #include <glow/StaticStringSource.h>
+#include <glow/Array.h>
 
 #include <glowwindow/Window.h>
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 #include <glowutils/StringTemplate.h>
+#include <glowwindow/events.h>
 
 using namespace glowwindow;
 

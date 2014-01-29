@@ -1,6 +1,6 @@
+#include <glowutils/CameraPathRecorder.h>
 
 #include <glowutils/Camera.h>
-#include <glowutils/CameraPathRecorder.h>
 
 namespace glowutils
 {

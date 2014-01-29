@@ -1,16 +1,14 @@
-
-#include <GL/glew.h>
+#include <glowutils/AbstractCoordinateProvider.h>
 
 #include <cfloat>
+
+#include <GL/glew.h>
 
 #include <glm/glm.hpp>
 
 #include <glow/Error.h>
 
 #include <glowutils/Camera.h>
-
-#include <glowutils/AbstractCoordinateProvider.h>
-
 
 using namespace glm;
 

@@ -1,8 +1,7 @@
+#include <glow/FrameBufferAttachment.h>
 
 #include <sstream>
 #include <string>
-
-#include <glow/FrameBufferAttachment.h>
 
 namespace glow
 {

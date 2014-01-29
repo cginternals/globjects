@@ -1,14 +1,6 @@
 #include <glowutils/AbstractTransparencyAlgorithm.h>
 
-#include <glow/Program.h>
-#include <glow/FrameBufferObject.h>
 #include <glow/Texture.h>
-#include <glow/RenderBufferObject.h>
-#include <glow/debugmessageoutput.h>
-#include <glow/Buffer.h>
-
-#include <glowutils/File.h>
-#include <glowutils/Camera.h>
 
 namespace glowutils {
 

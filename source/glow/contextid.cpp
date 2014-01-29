@@ -10,6 +10,8 @@
 
 #include "contextid.h"
 
+namespace glow {
+
 long long getContextId()
 {
     long long handle = 0;
@@ -27,3 +29,5 @@ long long getContextId()
 
     return handle;
 }
+
+} // namespace glow

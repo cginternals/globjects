@@ -1,8 +1,9 @@
 #include <glow/State.h>
+
 #include <glow/global.h>
+#include <glow/Capability.h>
 
 namespace glow {
-
 
 State::State()
 {

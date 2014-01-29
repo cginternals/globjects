@@ -12,8 +12,10 @@
 
 namespace glow
 {
-    class VertexArrayObject;
-    class Buffer;
+
+class VertexArrayObject;
+class Buffer;
+
 }
 
 namespace glowutils 

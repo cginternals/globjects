@@ -1,12 +1,11 @@
+#include <glowutils/UniformGroup.h>
+
 #include <cassert>
 
 #include <glow/AbstractUniform.h>
 #include <glow/Program.h>
 
 #include <glow/logging.h>
-
-#include <glowutils/UniformGroup.h>
-
 
 using namespace glow;
 

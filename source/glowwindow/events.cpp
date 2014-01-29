@@ -1,13 +1,6 @@
-
-#include <cassert>
-
-#include <unordered_map>
-
-#include <GLFW/glfw3.h>
-
-#include <glow/logging.h>
 #include <glowwindow/events.h>
 
+#include <GLFW/glfw3.h>
 
 namespace glowwindow
 {

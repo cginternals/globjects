@@ -1,15 +1,11 @@
 #pragma once
 
 #include <map>
-#include <set>
 #include <vector>
 
 #include <glow/glow.h>
-
 #include <glow/Object.h>
 #include <glow/ref_ptr.h>
-
-// http://www.opengl.org/wiki/Vertex_Array_Object
 
 namespace glow 
 {
@@ -17,7 +13,7 @@ class ObjectVisitor;
 class Buffer;
 class VertexAttributeBinding;
 
-
+// http://www.opengl.org/wiki/Vertex_Array_Object
 class GLOW_API VertexArrayObject : public Object
 {
 public:
