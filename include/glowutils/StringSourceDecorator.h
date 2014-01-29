@@ -6,7 +6,6 @@
 
 #include <glowutils/glowutils.h>
 
-
 namespace glowutils 
 {
 

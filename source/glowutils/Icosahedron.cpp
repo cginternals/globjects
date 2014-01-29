@@ -1,7 +1,7 @@
+#include <glowutils/Icosahedron.h>
 
 #include <cmath>
 #include <iterator>
-
 
 #include <glm/glm.hpp>
 
@@ -9,9 +9,6 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
 #include <glow/Error.h>
-
-#include <glowutils/Icosahedron.h>
-
 
 using namespace glm;
 using namespace glow;

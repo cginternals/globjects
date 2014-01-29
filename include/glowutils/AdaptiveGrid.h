@@ -7,19 +7,19 @@
 
 #include <glowutils/glowutils.h>
 
-
 namespace glow
 {
-    class Program;
-    class VertexArrayObject;
-    class Buffer;
+
+class Program;
+class VertexArrayObject;
+class Buffer;
+
 }
-    
  
 namespace glowutils 
 {
-class Camera;
 
+class Camera;
 
 /** \brief A plane aligned regular raster with camera position based refinement.
 

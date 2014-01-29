@@ -1,3 +1,5 @@
+#include <glowutils/ScreenAlignedQuad.h>
+
 #include <cassert>
 
 #include <glow/Program.h>
@@ -9,7 +11,6 @@
 #include <glow/Array.h>
 #include <glow/StaticStringSource.h>
 
-#include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/StringTemplate.h>
 
 using namespace glow;

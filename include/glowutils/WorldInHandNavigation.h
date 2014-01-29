@@ -11,7 +11,6 @@ namespace glowutils
 class AbstractCoordinateProvider;
 class Camera;
 
-
 class GLOWUTILS_API WorldInHandNavigation
 {
 public:
@@ -99,8 +98,6 @@ protected:
     glm::vec3  m_i1;
     bool  m_i0Valid; // stores if initial interaction pick yielded valid depth
     glm::ivec2  m_m0;
-
-
 };
 
 } // namespace glowutils

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <cassert>
-
 #include <glowutils/CachedValue.h>
+
+#include <cassert>
 
 namespace glowutils
 {

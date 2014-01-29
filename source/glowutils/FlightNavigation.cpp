@@ -1,7 +1,7 @@
+#include <glowutils/FlightNavigation.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <glowutils/FlightNavigation.h>
 #include <glowutils/Camera.h>
 
 #include <glow/logging.h>

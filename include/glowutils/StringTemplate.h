@@ -7,7 +7,6 @@
 #include <glowutils/StringSourceDecorator.h>
 #include <glowutils/CachedValue.h>
 
-
 namespace glowutils 
 {
 

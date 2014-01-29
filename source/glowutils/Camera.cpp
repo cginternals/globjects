@@ -1,10 +1,9 @@
+#include <glowutils/Camera.h>
 
 #include <cassert>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
-
-#include <glowutils/Camera.h>
 
 using namespace glm;
 

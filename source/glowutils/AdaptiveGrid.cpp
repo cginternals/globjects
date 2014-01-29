@@ -1,3 +1,4 @@
+#include <glowutils/AdaptiveGrid.h>
 
 #include <cmath>
 
@@ -15,9 +16,7 @@
 
 #include <glowutils/Plane3.h>
 #include <glowutils/Camera.h>
-#include <glowutils/AdaptiveGrid.h>
 #include <glowutils/StringTemplate.h>
-
 
 using namespace glm;
 using namespace glow;

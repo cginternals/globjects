@@ -1,6 +1,8 @@
+#include <glowutils/WorldInHandNavigation.h>
 
 #include <cassert>
 #include <algorithm>
+#include <limits>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/constants.hpp>
@@ -10,10 +12,6 @@
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/Camera.h>
 #include <glowutils/navigationmath.h>
-
-#include <glowutils/WorldInHandNavigation.h>
-
-#include <limits>
 
 using namespace glm;
 

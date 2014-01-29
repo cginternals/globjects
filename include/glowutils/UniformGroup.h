@@ -4,18 +4,17 @@
 #include <string>
 
 #include <glow/ref_ptr.h>
+#include <glow/AbstractUniform.h>
 #include <glow/Uniform.h>
 
 #include <glowutils/glowutils.h>
-
 
 namespace glow
 {
     class AbstractUniform;
     class Program;
 }
-    
- 
+
 namespace glowutils
 {
 

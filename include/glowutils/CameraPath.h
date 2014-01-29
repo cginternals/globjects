@@ -9,8 +9,8 @@
 
 namespace glowutils
 {
-class Camera;
 
+class Camera;
 
 struct GLOWUTILS_API CameraPathPoint
 {

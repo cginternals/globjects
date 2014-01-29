@@ -1,8 +1,8 @@
+#include <glowutils/File.h>
 
-#include <glow/Shader.h>
 #include <cassert>
 
-#include <glowutils/File.h>
+#include <glow/Shader.h>
 
 #include <glowutils/RawFile.h>
 #include "FileRegistry.h"

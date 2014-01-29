@@ -1,3 +1,4 @@
+#include <glowutils/AutoTimer.h>
 
 #include <cassert>
 #include <cmath>
@@ -7,7 +8,6 @@
 
 #include <glow/logging.h>
 #include <glowutils/Timer.h>
-#include <glowutils/AutoTimer.h>
 
 namespace {
     // use number of digits to retrieve exp in 10^(3 exp)

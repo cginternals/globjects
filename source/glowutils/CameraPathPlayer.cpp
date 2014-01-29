@@ -1,3 +1,4 @@
+#include <glowutils/CameraPathPlayer.h>
 
 #include <cassert>
 #include <string>
@@ -16,7 +17,6 @@
 #include <glow/StaticStringSource.h>
 
 #include <glowutils/Camera.h>
-#include <glowutils/CameraPathPlayer.h>
 #include <glowutils/StringTemplate.h>
 
 using namespace glm;

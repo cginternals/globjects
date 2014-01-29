@@ -1,11 +1,10 @@
+#include <glowutils/navigationmath.h>
 
-#include <cassert>
+//#include <cassert>
 
 #include <glm/gtx/norm.hpp>
 
 #include <glowutils/AxisAlignedBoundingBox.h>
-
-#include <glowutils/navigationmath.h>
 
 using namespace glm;
 

@@ -1,6 +1,6 @@
-#include <cassert>
-
 #include <glowutils/StringSourceDecorator.h>
+
+#include <cassert>
 
 namespace glowutils 
 {
