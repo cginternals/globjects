@@ -7,7 +7,7 @@
 #include <glow/Buffer.h>
 #include <glow/Shader.h>
 #include <glow/Array.h>
-#include <glow/String.h>
+#include <glow/StaticStringSource.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/StringTemplate.h>
@@ -57,8 +57,8 @@ ScreenAlignedQuad::ScreenAlignedQuad(
 ,   m_samplerIndex(0)
 {
     
-    glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new String(s_defaultVertexShaderSource));
-    glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new String(s_defaultFagmentShaderSource));
+    glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new StaticStringSource(s_defaultVertexShaderSource));
+    glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new StaticStringSource(s_defaultFagmentShaderSource));
     
     
 #ifdef MAC_OS

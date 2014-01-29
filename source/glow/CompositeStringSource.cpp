@@ -11,22 +11,22 @@ CompositeStringSource::CompositeStringSource()
 {
 }
 
-CompositeStringSource::CompositeStringSource(const std::vector<StringSource*> & sources)
+CompositeStringSource::CompositeStringSource(const std::vector<AbstractStringSource*> & sources)
 : m_dirty(true)
 {
-    for (StringSource * source : sources)
+    for (AbstractStringSource * source : sources)
         m_sources.push_back(source);
 }
 
 CompositeStringSource::~CompositeStringSource()
 {
-    for (ref_ptr<StringSource> source : m_sources)
+    for (ref_ptr<AbstractStringSource> source : m_sources)
     {
         source->deregisterListener(this);
     }
 }
 
-void CompositeStringSource::appendSource(StringSource * source)
+void CompositeStringSource::appendSource(AbstractStringSource * source)
 {
     assert(source != nullptr);
 
@@ -35,7 +35,7 @@ void CompositeStringSource::appendSource(StringSource * source)
     changed();
 }
 
-void CompositeStringSource::notifyChanged()
+void CompositeStringSource::notifyChanged(Changeable *)
 {
     m_dirty = true;
     changed();
@@ -61,9 +61,9 @@ std::vector<std::string> CompositeStringSource::strings() const
     return m_strings;
 }
 
-void CompositeStringSource::flattenInto(std::vector<StringSource*>& vector) const
+void CompositeStringSource::flattenInto(std::vector<AbstractStringSource*>& vector) const
 {
-    for (const ref_ptr<StringSource>& source : m_sources)
+    for (const ref_ptr<AbstractStringSource>& source : m_sources)
     {
         source->flattenInto(vector);
     }
@@ -73,7 +73,7 @@ void CompositeStringSource::update() const
 {
     m_strings.clear();
 
-    for (const ref_ptr<StringSource>& source : m_sources)
+    for (const ref_ptr<AbstractStringSource>& source : m_sources)
     {
         for (const std::string & str : source->strings())
         {
@@ -88,7 +88,7 @@ std::string CompositeStringSource::shortInfo() const
 {
     std::stringstream info;
 
-    for (const ref_ptr<StringSource>& source : m_sources)
+    for (const ref_ptr<AbstractStringSource>& source : m_sources)
     {
         info << source->shortInfo() << std::endl;
     }

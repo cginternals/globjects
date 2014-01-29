@@ -5,7 +5,7 @@
 
 #include <GL/glew.h>
 
-#include <glow/StringSource.h>
+#include <glow/AbstractStringSource.h>
 
 #include <glowutils/glowutils.h>
 
@@ -25,7 +25,7 @@ class FileRegistry;
 
     \see StringSource
  */
-class GLOWUTILS_API File : public glow::StringSource
+class GLOWUTILS_API File : public glow::AbstractStringSource
 {
 public:
     File(const std::string & filePath);

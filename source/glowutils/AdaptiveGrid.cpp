@@ -11,7 +11,7 @@
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
-#include <glow/String.h>
+#include <glow/StaticStringSource.h>
 
 #include <glowutils/Plane3.h>
 #include <glowutils/Camera.h>
@@ -108,8 +108,8 @@ AdaptiveGrid::AdaptiveGrid(
 {
     m_transform = transform(m_location, m_normal);
   
-    StringTemplate* vertexShaderString = new StringTemplate(new glow::String(s_vsSource));
-    StringTemplate* fragmentShaderString = new StringTemplate(new glow::String(s_fsSource));
+    StringTemplate* vertexShaderString = new StringTemplate(new glow::StaticStringSource(s_vsSource));
+    StringTemplate* fragmentShaderString = new StringTemplate(new glow::StaticStringSource(s_fsSource));
   
   
 #ifdef MAC_OS

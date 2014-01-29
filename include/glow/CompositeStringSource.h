@@ -5,32 +5,32 @@
 
 #include <glow/glow.h>
 #include <glow/ref_ptr.h>
-#include <glow/StringSource.h>
+#include <glow/AbstractStringSource.h>
 #include <glow/ChangeListener.h>
 
 namespace glow
 {
 
-class GLOW_API CompositeStringSource : public StringSource, protected ChangeListener
+class GLOW_API CompositeStringSource : public AbstractStringSource, protected ChangeListener
 {
 public:
     CompositeStringSource();
-    CompositeStringSource(const std::vector<StringSource*> & sources);
+    CompositeStringSource(const std::vector<AbstractStringSource*> & sources);
 
     ~CompositeStringSource();
 
-    void appendSource(StringSource * source);
+    void appendSource(AbstractStringSource * source);
 
     virtual std::string string() const override;
     virtual std::vector<std::string> strings() const override;
-    virtual void flattenInto(std::vector<StringSource*>& vector) const override;
+    virtual void flattenInto(std::vector<AbstractStringSource*>& vector) const override;
 
     virtual std::string shortInfo() const override;
 protected:
-    virtual void notifyChanged() override;
+    virtual void notifyChanged(Changeable * changeable) override;
     void update() const;
 protected:
-    std::vector<ref_ptr<StringSource>> m_sources;
+    std::vector<ref_ptr<AbstractStringSource>> m_sources;
     mutable bool m_dirty;
     mutable std::vector<std::string> m_strings;
 };

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <set>
+
 #include <glow/glow.h>
 
 namespace glow 
@@ -16,9 +18,17 @@ class Changeable;
  */
 class GLOW_API ChangeListener
 {
+    friend class Changeable;
 public:
-    virtual void notifyChanged();
-    virtual void notifyChanged(Changeable* sender);
+    virtual ~ChangeListener();
+
+    virtual void notifyChanged(Changeable * sender);
+
+private:
+    std::set<Changeable*> m_subjects;
+
+    void addSubject(Changeable * subject);
+    void removeSubject(Changeable * subject);
 };
 
 } // namespace glow

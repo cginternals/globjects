@@ -13,6 +13,7 @@
 namespace glow
 {
 class Shader;
+class ProgramBinary;
 
 class AbstractUniform;
 template<typename T> class Uniform;
@@ -67,6 +68,7 @@ class GLOW_API Program : public Object, protected ChangeListener
 {
 public:
 	Program();
+    Program(ProgramBinary * binary);
 	virtual ~Program();
 
     virtual void accept(ObjectVisitor& visitor) override;
@@ -87,6 +89,9 @@ public:
 
 	void link();
 	void invalidate();
+
+    void setBinary(ProgramBinary * binary);
+    ProgramBinary * getBinary() const;
 
 	const std::string infoLog() const;
 	GLint get(GLenum pname) const;
@@ -128,17 +133,20 @@ protected:
 	bool checkLinkStatus();
 	void checkDirty();
 
+    bool prepareForLinkage();
+    bool compileAttachedShaders();
 	void updateUniforms();
 
 	// ChangeListener Interface
 
-    virtual void notifyChanged() override;
+    virtual void notifyChanged(Changeable * sender) override;
 
 protected:
 	static GLuint createProgram();
 
 protected:
 	std::set<ref_ptr<Shader>> m_shaders;
+    ref_ptr<ProgramBinary> m_binary;
 	std::unordered_map<std::string, ref_ptr<AbstractUniform>> m_uniforms;
 
 	bool m_linked;

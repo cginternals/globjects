@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glow/StringSource.h>
+#include <glow/AbstractStringSource.h>
 #include <glow/ChangeListener.h>
 #include <glow/ref_ptr.h>
 
@@ -10,17 +10,17 @@
 namespace glowutils 
 {
 
-class GLOWUTILS_API StringSourceDecorator : public glow::StringSource, protected glow::ChangeListener
+class GLOWUTILS_API StringSourceDecorator : public glow::AbstractStringSource, protected glow::ChangeListener
 {
 public:
-    StringSourceDecorator(glow::StringSource * source);
+    StringSourceDecorator(glow::AbstractStringSource * source);
     virtual ~StringSourceDecorator();
 
     virtual void update();
 protected:
-    virtual void notifyChanged() override;
+    virtual void notifyChanged(Changeable * changeable) override;
 protected:
-    glow::ref_ptr<glow::StringSource> m_internal;
+    glow::ref_ptr<glow::AbstractStringSource> m_internal;
 };
 
 } // namespace glowutils

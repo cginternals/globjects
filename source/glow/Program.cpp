@@ -9,6 +9,8 @@
 #include <glow/Uniform.h>
 #include <glow/ObjectVisitor.h>
 #include <glow/Shader.h>
+#include <glow/ProgramBinary.h>
+#include <glow/Extension.h>
 
 #include <glow/Program.h>
 
@@ -22,15 +24,17 @@ Program::Program()
 {
 }
 
+Program::Program(ProgramBinary * binary)
+: Program()
+{
+    setBinary(binary);
+}
+
 Program::~Program()
 {
 	for (ref_ptr<Shader> shader: std::set<ref_ptr<Shader>>(m_shaders))
 	{
 		detach(shader);
-	}
-	for (std::pair<std::string, ref_ptr<AbstractUniform>> uniformPair: m_uniforms)
-	{
-		uniformPair.second->deregisterProgram(this);
 	}
 
 	if (ownsGLObject())
@@ -89,7 +93,7 @@ void Program::invalidate()
 	m_dirty = true;
 }
 
-void Program::notifyChanged()
+void Program::notifyChanged(Changeable *)
 {
 	invalidate();
 }
@@ -131,6 +135,33 @@ void Program::link()
 {
     m_linked = false;
 
+    if (!prepareForLinkage())
+        return;
+
+	glLinkProgram(m_id);
+	CheckGLError();
+
+    m_linked = checkLinkStatus();
+	m_dirty = false;
+
+    updateUniforms();
+}
+
+bool Program::prepareForLinkage()
+{
+    if (m_binary && glow::hasExtension(GLOW_ARB_get_program_binary))
+    {
+        glProgramBinary(m_id, m_binary->format(), m_binary->data(), m_binary->length());
+        CheckGLError();
+
+        return true;
+    }
+
+    return compileAttachedShaders();
+}
+
+bool Program::compileAttachedShaders()
+{
     for (Shader* shader : shaders())
     {
         if (!shader->isCompiled())
@@ -141,19 +172,12 @@ void Program::link()
 
             if (!shader->isCompiled())
             {
-                return;
+                return false;
             }
         }
     }
 
-	glLinkProgram(m_id);
-	CheckGLError();
-
-    m_linked = checkLinkStatus();
-	m_dirty = false;
-
-	updateUniforms();
-	CheckGLError();
+    return true;
 }
 
 bool Program::checkLinkStatus()
@@ -239,6 +263,43 @@ void Program::updateUniforms()
 	{
 		uniformPair.second->update(this);
 	}
+}
+
+void Program::setBinary(ProgramBinary * binary)
+{
+    if (m_binary == binary)
+        return;
+
+    if (m_binary)
+        m_binary->deregisterListener(this);
+
+    m_binary = binary;
+
+    if (m_binary)
+        m_binary->registerListener(this);
+}
+
+ProgramBinary * Program::getBinary() const
+{
+    if (!glow::hasExtension(GLOW_ARB_get_program_binary))
+    {
+        return nullptr;
+    }
+
+    int length = get(GL_PROGRAM_BINARY_LENGTH);
+
+    if (length == 0)
+    {
+        return nullptr;
+    }
+
+    GLenum format;
+    std::vector<char> binary(length);
+
+    glGetProgramBinary(m_id, length, nullptr, &format, binary.data());
+    CheckGLError();
+
+    return new ProgramBinary(format, binary);
 }
 
 GLint Program::get(GLenum pname) const

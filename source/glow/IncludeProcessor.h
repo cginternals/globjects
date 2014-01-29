@@ -9,7 +9,7 @@
 namespace glow
 {
 
-class StringSource;
+class AbstractStringSource;
 class CompositeStringSource;
 
 class IncludeProcessor
@@ -17,15 +17,15 @@ class IncludeProcessor
 public:
     virtual ~IncludeProcessor();
 
-    static StringSource* resolveIncludes(const StringSource* source, const std::vector<std::string>& includePaths);
+    static AbstractStringSource* resolveIncludes(const AbstractStringSource* source, const std::vector<std::string>& includePaths);
 protected:
     std::set<std::string> m_includes;
     std::vector<std::string> m_includePaths;
 
     IncludeProcessor();
 
-    CompositeStringSource* process(const StringSource* source);
-    CompositeStringSource* processComposite(const StringSource* source);
+    CompositeStringSource* process(const AbstractStringSource* source);
+    CompositeStringSource* processComposite(const AbstractStringSource* source);
 
     static std::string expandPath(const std::string& include, const std::string includePath);
 };

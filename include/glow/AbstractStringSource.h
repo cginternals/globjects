@@ -17,13 +17,13 @@ class CompositeStringSource;
  *
  * \see Shader
  */
-class GLOW_API StringSource : public Referenced, public Changeable
+class GLOW_API AbstractStringSource : public Referenced, public Changeable
 {
 public:
     virtual std::string string() const = 0;
     virtual std::vector<std::string> strings() const;
-    std::vector<StringSource*> flatten() const;
-    virtual void flattenInto(std::vector<StringSource*>& vector) const;
+    std::vector<AbstractStringSource*> flatten() const;
+    virtual void flattenInto(std::vector<AbstractStringSource*>& vector) const;
 
     virtual std::string shortInfo() const;
 };

@@ -10,8 +10,8 @@
 #include <glow/logging.h>
 #include <glow/global.h>
 #include <glow/Version.h>
-#include <glow/StringSource.h>
-#include <glow/String.h>
+#include <glow/AbstractStringSource.h>
+#include <glow/StaticStringSource.h>
 #include <glow/CompositeStringSource.h>
 
 namespace {
@@ -49,7 +49,7 @@ IncludeProcessor::~IncludeProcessor()
 {
 }
 
-StringSource* IncludeProcessor::resolveIncludes(const StringSource* source, const std::vector<std::string>& includePaths)
+AbstractStringSource* IncludeProcessor::resolveIncludes(const AbstractStringSource* source, const std::vector<std::string>& includePaths)
 {
     IncludeProcessor processor;
     processor.m_includePaths = includePaths;
@@ -57,11 +57,11 @@ StringSource* IncludeProcessor::resolveIncludes(const StringSource* source, cons
     return processor.processComposite(source);
 }
 
-CompositeStringSource* IncludeProcessor::processComposite(const StringSource* source)
+CompositeStringSource* IncludeProcessor::processComposite(const AbstractStringSource* source)
 {
     CompositeStringSource* composite = new CompositeStringSource();
 
-    for (StringSource* innerSource : source->flatten())
+    for (AbstractStringSource* innerSource : source->flatten())
     {
         composite->appendSource(process(innerSource));
     }
@@ -69,7 +69,7 @@ CompositeStringSource* IncludeProcessor::processComposite(const StringSource* so
     return composite;
 }
 
-CompositeStringSource* IncludeProcessor::process(const StringSource* source)
+CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* source)
 {
     CompositeStringSource* compositeSource = new CompositeStringSource();
 
@@ -134,7 +134,7 @@ CompositeStringSource* IncludeProcessor::process(const StringSource* source)
                             if (m_includes.count(include) == 0)
                             {
                                 m_includes.insert(include);
-                                compositeSource->appendSource(new String(destinationstream.str()));
+                                compositeSource->appendSource(new StaticStringSource(destinationstream.str()));
 
                                 bool found = false;
                                 std::string fullPath;
@@ -194,7 +194,7 @@ CompositeStringSource* IncludeProcessor::process(const StringSource* source)
 
     if (!destinationstream.str().empty())
     {
-        compositeSource->appendSource(new String(destinationstream.str()));
+        compositeSource->appendSource(new StaticStringSource(destinationstream.str()));
     }
 
     return compositeSource;

@@ -4,8 +4,8 @@
 #include <algorithm>
 
 #include <glow/Error.h>
-#include <glow/StringSource.h>
-#include <glow/String.h>
+#include <glow/AbstractStringSource.h>
+#include <glow/StaticStringSource.h>
 #include <glow/logging.h>
 #include <glow/Version.h>
 #include <glow/Extension.h>
@@ -21,10 +21,10 @@ NamedStrings::NamedStrings()
 
 void NamedStrings::createNamedString(const std::string& name, const std::string& string, GLenum type)
 {
-    createNamedString(name, new String(string), type);
+    createNamedString(name, new StaticStringSource(string), type);
 }
 
-void NamedStrings::createNamedString(const std::string& name, StringSource* source, GLenum type)
+void NamedStrings::createNamedString(const std::string& name, AbstractStringSource* source, GLenum type)
 {
     assert(source != nullptr);
 
@@ -94,7 +94,7 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
     return std::string(string, size);
 }
 
-StringSource* NamedStrings::namedStringSource(const std::string& name)
+AbstractStringSource* NamedStrings::namedStringSource(const std::string& name)
 {
     return s_instance->m_registeredStringSources[name].source;
 }
@@ -169,7 +169,7 @@ void NamedStrings::notifyChanged(Changeable* changed)
     }
 }
 
-unsigned NamedStrings::occurenceCount(const StringSource* source)
+unsigned NamedStrings::occurenceCount(const AbstractStringSource* source)
 {
     return static_cast<unsigned>(
         std::count_if(

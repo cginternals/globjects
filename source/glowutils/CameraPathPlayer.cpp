@@ -13,7 +13,7 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Array.h>
 #include <glow/logging.h>
-#include <glow/String.h>
+#include <glow/StaticStringSource.h>
 
 #include <glowutils/Camera.h>
 #include <glowutils/CameraPathPlayer.h>
@@ -280,8 +280,8 @@ void CameraPathPlayer::createVao()
 
     m_program = new glow::Program();
 
-    StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::String(vertexSource));
-    StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::String(fragmentSource));
+    StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::StaticStringSource(vertexSource));
+    StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::StaticStringSource(fragmentSource));
 
 #ifdef MAC_OS
     vertexShaderSource->replace("#version 140", "#version 150");
