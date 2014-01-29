@@ -50,6 +50,13 @@ public:
         GLsizei size
     ,   const GLvoid * data = nullptr
     ,   GLenum usage = GL_STATIC_DRAW);
+
+    /**
+     * Wrapper for OpenGL function:
+     *
+     *      glBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const GLvoid* data)
+     */
+    void setSubData (const AbstractArray& data, GLintptr offset = 0);
     
     /**
      * Wrapper for OpenGL function:
