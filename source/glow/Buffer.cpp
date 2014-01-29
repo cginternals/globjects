@@ -123,6 +123,18 @@ void Buffer::setData(GLsizei size, const GLvoid* data, GLenum usage)
 	CheckGLError();
 }
 
+void Buffer::setSubData(const glow::AbstractArray &data, GLintptr offset) {
+    setSubData(data.rawSize(), offset, data.rawData());
+}
+    
+void Buffer::setSubData (GLsizeiptr size, GLintptr offset, const GLvoid* data) {
+    
+    bind();
+    glBufferSubData(m_target, offset, size, data);
+    CheckGLError();
+}
+
+
 GLint Buffer::getParameter(GLenum pname)
 {
 	bind();
