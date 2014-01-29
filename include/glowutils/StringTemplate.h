@@ -14,7 +14,7 @@ namespace glowutils
 class GLOWUTILS_API StringTemplate : public StringSourceDecorator
 {
 public:
-    StringTemplate(StringSource * source);
+    StringTemplate(AbstractStringSource * source);
     virtual ~StringTemplate();
 
     virtual std::string string() const override;

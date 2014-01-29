@@ -30,6 +30,7 @@ set(api_includes
     ${header_path}/AbstractLogHandler.h
     ${header_path}/AbstractUniform.h
     ${header_path}/AbstractArray.h
+    ${header_path}/AbstractStringSource.h
     ${header_path}/Array.h
     ${header_path}/Array.hpp
     ${header_path}/Buffer.h
@@ -61,6 +62,7 @@ set(api_includes
     ${header_path}/ObjectVisitor.h
     ${header_path}/Program.h
     ${header_path}/Program.hpp
+    ${header_path}/ProgramBinary.h
     ${header_path}/Query.h
     ${header_path}/ref_ptr.h
     ${header_path}/ref_ptr.hpp
@@ -70,8 +72,7 @@ set(api_includes
     ${header_path}/Sampler.h
     ${header_path}/Shader.h
     ${header_path}/State.h
-    ${header_path}/String.h
-    ${header_path}/StringSource.h
+    ${header_path}/StaticStringSource.h
     ${header_path}/Texture.h
     ${header_path}/TextureAttachment.h
     ${header_path}/TextureHandle.h
@@ -86,6 +87,7 @@ set(api_includes
 
 set(sources
     ${source_path}/AbstractUniform.cpp
+    ${source_path}/AbstractStringSource.cpp
     ${source_path}/Buffer.cpp
     ${source_path}/Capability.cpp
     ${source_path}/Changeable.cpp
@@ -118,6 +120,7 @@ set(sources
     ${source_path}/ObjectRegistry.cpp
     ${source_path}/ObjectVisitor.cpp
     ${source_path}/Program.cpp
+    ${source_path}/ProgramBinary.cpp
     ${source_path}/Query.cpp
     ${source_path}/Referenced.cpp
     ${source_path}/RenderBufferAttachment.cpp
@@ -125,8 +128,7 @@ set(sources
     ${source_path}/Sampler.cpp
     ${source_path}/Shader.cpp
     ${source_path}/State.cpp
-    ${source_path}/String.cpp
-    ${source_path}/StringSource.cpp
+    ${source_path}/StaticStringSource.cpp
     ${source_path}/Texture.cpp
     ${source_path}/TextureAttachment.cpp
     ${source_path}/TransformFeedback.cpp

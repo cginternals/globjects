@@ -9,6 +9,7 @@
 #include <glow/Object.h>
 #include <glow/ChangeListener.h>
 #include <glow/ref_ptr.h>
+#include <glow/ProgramBinary.h>
 
 namespace glow
 {
@@ -90,6 +91,7 @@ public:
 
 	const std::string infoLog() const;
 	GLint get(GLenum pname) const;
+    std::vector<unsigned char> getBinary(GLenum * binaryFormat) const;
 
 	GLint getAttributeLocation(const std::string& name);
 	GLint getUniformLocation(const std::string& name);

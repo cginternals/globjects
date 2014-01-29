@@ -215,7 +215,7 @@ void createNamedString(const std::string& name, const std::string& string, GLenu
     NamedStrings::createNamedString(name, string, type);
 }
 
-void createNamedString(const std::string& name, StringSource* source, GLenum type)
+void createNamedString(const std::string& name, AbstractStringSource* source, GLenum type)
 {
     NamedStrings::createNamedString(name, source, type);
 }
@@ -235,7 +235,7 @@ std::string getNamedString(const std::string& name, bool cached)
     return NamedStrings::namedString(name, cached);
 }
 
-StringSource* getNamedStringSource(const std::string& name)
+AbstractStringSource* getNamedStringSource(const std::string& name)
 {
     return NamedStrings::namedStringSource(name);
 }

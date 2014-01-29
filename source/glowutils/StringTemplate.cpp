@@ -25,7 +25,7 @@ void replaceAll(
 namespace glowutils 
 {
 
-StringTemplate::StringTemplate(StringSource * source)
+StringTemplate::StringTemplate(AbstractStringSource * source)
 : StringSourceDecorator(source)
 {
 }

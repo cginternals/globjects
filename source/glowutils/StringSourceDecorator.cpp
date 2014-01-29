@@ -5,7 +5,7 @@
 namespace glowutils 
 {
 
-StringSourceDecorator::StringSourceDecorator(StringSource * source)
+StringSourceDecorator::StringSourceDecorator(AbstractStringSource * source)
 : m_internal(source)
 {
     assert(source != nullptr);

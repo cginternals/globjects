@@ -4,7 +4,7 @@
 #include <glow/global.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
-#include <glow/StringSource.h>
+#include <glow/AbstractStringSource.h>
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>

@@ -15,7 +15,7 @@
 
 namespace glow 
 {
-class StringSource;
+class AbstractStringSource;
 class Program;
 
 /** \brief Encapsulates OpenGL shaders.
@@ -42,8 +42,8 @@ public:
 
 public:
 	Shader(const GLenum type);
-    Shader(const GLenum type, StringSource * source);
-    Shader(const GLenum type, StringSource * source, const std::vector<std::string> & includePaths);
+    Shader(const GLenum type, AbstractStringSource * source);
+    Shader(const GLenum type, AbstractStringSource * source, const std::vector<std::string> & includePaths);
 
 	virtual ~Shader();
 
@@ -51,9 +51,9 @@ public:
 
 	GLenum type() const;
 
-    void setSource(StringSource * source);
+    void setSource(AbstractStringSource * source);
 	void setSource(const std::string & source);
-    const StringSource* source() const;
+    const AbstractStringSource* source() const;
     void updateSource();
     void setIncludePaths(const std::vector<std::string> & includePaths);
 
@@ -80,7 +80,7 @@ protected:
 
 protected:
 	GLenum m_type;
-    ref_ptr<StringSource> m_source;
+    ref_ptr<AbstractStringSource> m_source;
     std::vector<std::string> m_includePaths;
 
     bool m_compiled;

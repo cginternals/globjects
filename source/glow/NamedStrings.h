@@ -12,7 +12,7 @@
 namespace glow 
 {
 
-class StringSource;
+class AbstractStringSource;
 
 /** \brief Encapsulates OpenGL named strings.
     
@@ -25,16 +25,16 @@ class GLOW_API NamedStrings : protected ChangeListener
         NamedString();
 
         std::string name;
-        ref_ptr<StringSource> source;
+        ref_ptr<AbstractStringSource> source;
         GLenum type;
     };
 public:
     static void createNamedString(const std::string& name, const std::string& string, GLenum type = GL_SHADER_INCLUDE_ARB);
-    static void createNamedString(const std::string& name, StringSource* source, GLenum type = GL_SHADER_INCLUDE_ARB);
+    static void createNamedString(const std::string& name, AbstractStringSource* source, GLenum type = GL_SHADER_INCLUDE_ARB);
     static void deleteNamedString(const std::string& name);
     static bool isNamedString(const std::string& name, bool cached = false);
     static std::string namedString(const std::string& name, bool cached = false);
-    static StringSource* namedStringSource(const std::string& name);
+    static AbstractStringSource* namedStringSource(const std::string& name);
     static GLenum namedStringType(const std::string& name, bool cached = false);
 
     virtual void notifyChanged(Changeable* changed) override;
@@ -48,7 +48,7 @@ protected:
     static GLint namedStringSize(const std::string& name, bool cached = false);
     static GLint namedStringParameter(const std::string& name, GLenum pname, bool cached = false);
 
-    unsigned occurenceCount(const StringSource* source);
+    unsigned occurenceCount(const AbstractStringSource* source);
 };
 
 } // namespace glow
