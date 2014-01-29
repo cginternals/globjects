@@ -33,6 +33,7 @@ if(DOXYGEN_FOUND)
         WORKING_DIRECTORY   ${path}
         COMMAND             ${CMAKE_COMMAND} -E copy_directory ${path} ${CMAKETOOLS_CURRENT_OUTPUT_DIR}/html
         COMMAND             ${DOXYGEN} \"${CMAKETOOLS_CURRENT_TARGET_DOXYFILE_CONF}\"
+	COMMAND             ${CMAKE_COMMAND} -E copy_directory ${path}/extra_files ${CMAKETOOLS_CURRENT_OUTPUT_DIR}/html
         COMMENT             "Creating doxygen documentation for ${target}"
     )
 
