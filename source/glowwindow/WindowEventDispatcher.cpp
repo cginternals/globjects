@@ -1,14 +1,15 @@
+#include "WindowEventDispatcher.h"
+
 #include <cassert>
 #include <cmath>
 
-#include <GLFW/glfw3.h>
+#include <GL/glew.h>
 
-#include <glow/logging.h>
+#include <GLFW/glfw3.h>
 
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
-
-#include "WindowEventDispatcher.h"
+#include <glowwindow/events.h>
 
 namespace glowwindow
 {

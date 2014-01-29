@@ -14,6 +14,7 @@
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
 #include <glowutils/StringTemplate.h>
+#include <glowwindow/events.h>
 
 using namespace glowwindow;
 

@@ -19,6 +19,7 @@
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
+#include <glowwindow/events.h>
 
 #include <glow/logging.h>
 

@@ -1,8 +1,5 @@
 #pragma once
 
-#include <set>
-#include <string>
-
 #include <glowwindow/glowwindow.h>
 
 namespace glowwindow

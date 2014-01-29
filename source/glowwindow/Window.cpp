@@ -1,6 +1,6 @@
+#include <glowwindow/Window.h>
 
 #include <cassert>
-#include <string>
 
 #include <GL/glew.h>
 
@@ -10,13 +10,9 @@
 
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/Window.h>
 #include <glowwindow/events.h>
 
 #include "WindowEventDispatcher.h"
-
-
-using namespace glow;
 
 namespace glowwindow
 {
@@ -140,7 +136,7 @@ bool Window::create(const ContextFormat & format, int width, int height)
 
     if (!createContext(format, width, height))
     {
-        fatal() << "Creating native window with OpenGL context failed.";
+        glow::fatal() << "Creating native window with OpenGL context failed.";
         return false;
     }
 

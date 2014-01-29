@@ -1,3 +1,5 @@
+#include <glowwindow/Context.h>
+
 #include <cassert>
 
 #include <GL/glew.h>
@@ -8,7 +10,6 @@
 
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
-#include <glowwindow/Context.h>
 
 
 using namespace glow;

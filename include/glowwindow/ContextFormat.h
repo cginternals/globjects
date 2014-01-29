@@ -1,12 +1,11 @@
 #pragma once
 
-#include <set>
 #include <vector>
 #include <string>
 
 #include <glow/Version.h>
-#include <glowwindow/glowwindow.h>
 
+#include <glowwindow/glowwindow.h>
 
 namespace glowwindow
 {

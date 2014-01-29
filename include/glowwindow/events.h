@@ -6,7 +6,6 @@
 
 #include <glowwindow/glowwindow.h>
 
-
 namespace glowwindow
 {
 

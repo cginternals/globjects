@@ -4,14 +4,15 @@
 #include <string>
 #include <queue>
 
+#include <glm/glm.hpp>
+
 #include <glow/ref_ptr.h>
 
 #include <glowwindow/glowwindow.h>
 #include <glowwindow/MainLoop.h>
-#include <glowwindow/events.h>  // forward?
-
 
 struct GLFWwindow;
+struct GLFWmonitor;
 
 namespace glowutils
 {
@@ -20,6 +21,8 @@ namespace glowutils
 
 namespace glowwindow 
 {
+
+class WindowEvent;
 class WindowEventHandler;
 class ContextFormat;
 class Context;

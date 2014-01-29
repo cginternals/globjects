@@ -10,6 +10,7 @@
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>
+#include <glowwindow/events.h>
 
 using namespace glowwindow;
 
