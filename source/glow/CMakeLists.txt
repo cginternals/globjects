@@ -34,6 +34,7 @@ set(api_includes
     ${header_path}/Array.h
     ${header_path}/Array.hpp
     ${header_path}/Buffer.h
+    ${header_path}/Buffer.hpp
     ${header_path}/Capability.h
     ${header_path}/Changeable.h
     ${header_path}/ChangeListener.h

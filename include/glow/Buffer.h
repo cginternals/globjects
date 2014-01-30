@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <array>
+
 #include <GL/glew.h>
 
 #include <glow/glow.h>
@@ -98,6 +101,16 @@ public:
      */
     void setData(const AbstractArray & data, GLenum usage = GL_STATIC_DRAW);
     /**
+     * Convenience method to simplify passing of data in form of an std::vector.
+     */
+    template <typename T>
+    void setData(const std::vector<T> & data, GLenum usage = GL_STATIC_DRAW);
+    /**
+     * Convenience method to simplify passing of data in form of an std::array.
+     */
+    template <typename T, int Count>
+    void setData(const std::array<T, Count> & data, GLenum usage = GL_STATIC_DRAW);
+    /**
      * Wraps the OpenGL function glBufferSubData.
      * Writes data only to a defined area of the memory.
      * @param size size of memory in bytes
@@ -110,6 +123,16 @@ public:
      * Convenience method to simplify passing of data in form of an AbstractArray object.
      */
     void setSubData(const AbstractArray& data, GLintptr offset = 0);
+    /**
+     * Convenience method to simplify passing of data in form of an std::vector.
+     */
+    template <typename T>
+    void setSubData(const std::vector<T> & data, GLintptr offset = 0);
+    /**
+     * Convenience method to simplify passing of data in form of an std::array.
+     */
+    template <typename T, int Count>
+    void setSubData(const std::array<T, Count> & data, GLintptr offset = 0);
 
     /**
      * Wraps the OpenGL function glGetBufferParameter.
@@ -236,3 +259,5 @@ protected:
 };
 
 } // namespace glow
+
+#include <glow/Buffer.hpp>
