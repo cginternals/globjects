@@ -9,28 +9,26 @@ namespace glow
 {
 
 /** \brief Wraps access to typed global GLSL variables.
-
-	The Uniform class wraps access to typed global GLSL variables (uniforms).
-	These are stored in the OpenGL program objects itself.
-
-	Supported OpenGL uniform setters are wrapped via specialized template set
-	implementations. Note that unsupported uniform types result in compile time
-	errors due to the default implementation of set.
-
-	Simple usage of an Uniform:
-	\code{.cpp}
-
-        Uniform<float> * u = new Uniform<float>("u_ratio");
-		u->set(1.618f);
-
-		program->addUniform(u);
-
-        \endcode
-
-	\see AbstractUniform
-	\see Program
-	\see http://www.opengl.org/wiki/Uniform
-*/
+ *
+ * The Uniform class wraps access to typed global GLSL variables (uniforms).
+ * These are stored in the OpenGL program objects itself.
+ *
+ * Supported OpenGL uniform setters are wrapped via specialized template set
+ * implementations. Note that unsupported uniform types result in compile time
+ * errors due to the default implementation of set.
+ *
+ * Simple usage of an Uniform:
+ * \code{.cpp}
+ * Uniform<float> * u = new Uniform<float>("u_ratio");
+ * u->set(1.618f);
+ *
+ * program->addUniform(u);
+ * \endcode
+ *
+ * \see AbstractUniform
+ * \see Program
+ * \see http://www.opengl.org/wiki/Uniform
+ */
 template<typename T>
 class Uniform : public AbstractUniform
 {
