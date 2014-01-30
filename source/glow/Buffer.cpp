@@ -102,12 +102,14 @@ void* Buffer::mapRange(GLintptr offset, GLsizeiptr length, GLbitfield access)
     return result;
 }
 
-void Buffer::unmap()
+bool Buffer::unmap()
 {
     bind();
 
-    glUnmapBuffer(m_target);
+    GLboolean success = glUnmapBuffer(m_target);
 	CheckGLError();
+
+    return success == GL_TRUE;
 }
 
 void Buffer::setData(const AbstractArray& data, GLenum usage)
