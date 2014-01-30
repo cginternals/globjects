@@ -44,7 +44,7 @@ class Uniform;
     automatically. When it goes out of scope, it creates a LogMessage from 
     all streamed objects and sends it to the log handler.
 
-	Typeical usage of the LogMessageBuilder:
+    Typical usage of the LogMessageBuilder:
 	\code{.cpp}
 
 		warning() << "This is warning number " << 3;
@@ -54,15 +54,16 @@ class Uniform;
 	\see logging.h
 	\see LogMessage
 	\see setLoggingHandler
-	\see log
+    \see setVerbosityLevel
+    \see info
 	\see debug
 	\see warning
+    \see critical
 */
 class GLOW_API LogMessageBuilder
 {
 public:
-    /* These types are unspecified by the C++ standard -> we need to query the compiler specific types
-    */
+    // These types are unspecified by the C++ standard -> we need to query the compiler specific types
     using PrecisionManipulator = decltype(std::setprecision(0));
     using FillManipulator = decltype(std::setfill('0'));
     using WidthManipulator = decltype(std::setw(0));
@@ -92,7 +93,7 @@ public:
     LogMessageBuilder& operator<<(PrecisionManipulator manipulator);
     LogMessageBuilder& operator<<(FillManipulator manipulator);
 #ifndef _MSC_VER
-	// in windows PrecisionManipulator = WidthManipulator
+    // in Windows PrecisionManipulator = WidthManipulator
     LogMessageBuilder& operator<<(WidthManipulator manipulator);
 #endif
 	

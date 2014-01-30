@@ -204,16 +204,17 @@ body.SRPage {
     outline: none;
 }
 
-a.SRScope {
-    display: block;
-    color: #00732F; 
+.SRScope {
+    /*display: block;
+    color: #00732F; */
     font-family: Arial, Verdana, sans-serif;
     text-decoration: none;
     outline: none;
+	padding-left: 5px;
 }
 
-a.SRSymbol:focus, a.SRSymbol:active,
-a.SRScope:focus, a.SRScope:active {
+a.SRSymbol:focus, a.SRSymbol:active, a.SRSymbol:hover
+{
     text-decoration: underline;
 }
 

@@ -7,6 +7,15 @@
 namespace glow
 {
 
+/**
+  * Creates a stream like object (LogMessageBuilder) to create a LogMessage from the objects
+  * passed to it and sends the LogMessage to the global LogMessageHandler when the builder goes out of scope.
+  * Similar to `qDebug()` from Qt.
+  *
+  * \code{.cpp}
+  * info() << "Message: " << 3.14;
+  * \endcode
+  */
 GLOW_API LogMessageBuilder info(LogMessage::Level level = LogMessage::Info);
 GLOW_API LogMessageBuilder debug();
 GLOW_API LogMessageBuilder warning();
@@ -30,7 +39,8 @@ GLOW_API LogMessage::Level verbosityLevel();
  *
  *   \see formatString
  */
-template <typename... Arguments> void info(const char* format, Arguments... arguments);
+template <typename... Arguments>
+GLOW_API void info(const char* format, Arguments... arguments);
 
 /**
  *  \see info
