@@ -34,7 +34,7 @@ class Camera;
 */
 class GLOWUTILS_API AbstractTransparencyAlgorithm : public glow::Referenced {
 public:
-    typedef std::function<void(glow::Program*)> DrawFunction;
+    using DrawFunction = std::function<void(glow::Program*)>;
 
     /**
         \brief initializes the transparency algorithm. Must only be called once.
