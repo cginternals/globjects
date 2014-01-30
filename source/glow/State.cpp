@@ -5,7 +5,20 @@
 
 namespace glow {
 
-State::State()
+void StateInterface::setEnabled(GLenum capability, bool enabled)
+{
+    enabled ? enable(capability) : disable(capability);
+}
+
+void StateInterface::setEnabled(GLenum capability, int index, bool enabled)
+{
+    enabled ? enable(capability) : disable(capability, index);
+}
+
+
+
+State::State(Mode mode)
+: m_mode(mode)
 {
 }
 
@@ -86,14 +99,21 @@ void State::setToCurrent(GLenum capability)
     setEnabled(capability, glow::isEnabled(capability));
 }
 
+
 void State::enable(GLenum capability)
 {
-    getCapability(capability)->enable();
+    Capability* cap = getCapability(capability);
+    cap->enable();
+    if (m_mode == ImmediateMode)
+        cap->apply();
 }
 
 void State::disable(GLenum capability)
 {
-   getCapability(capability)->disable();
+    Capability* cap = getCapability(capability);
+    cap->disable();
+    if (m_mode == ImmediateMode)
+        cap->apply();
 }
 
 bool State::isEnabled(GLenum capability) const
@@ -105,13 +125,19 @@ bool State::isEnabled(GLenum capability) const
 }
 
 void State::enable(GLenum capability, int index)
-{
-    getCapability(capability)->enable(index);
+{   
+    Capability* cap = getCapability(capability);
+    cap->enable(index);
+    if (m_mode == ImmediateMode)
+        cap->apply();
 }
 
 void State::disable(GLenum capability, int index)
 {
-    getCapability(capability)->disable(index);
+    Capability* cap = getCapability(capability);
+    cap->disable(index);
+    if (m_mode == ImmediateMode)
+        cap->apply();
 }
 
 bool State::isEnabled(GLenum capability, int index) const
@@ -122,14 +148,14 @@ bool State::isEnabled(GLenum capability, int index) const
     return m_capabilities.at(capability)->isEnabled(index);
 }
 
-void State::setEnabled(GLenum capability, bool enabled)
+void State::setMode(Mode mode)
 {
-    enabled ? enable(capability) : disable(capability);
+    m_mode = mode;
 }
 
-void State::setEnabled(GLenum capability, int index, bool enabled)
+State::Mode State::mode() const
 {
-    enabled ? enable(capability, index) : disable(capability, index);
+    return m_mode;
 }
 
 void State::apply()
@@ -162,6 +188,9 @@ void State::addCapabilitySetting(capability::AbstractCapabilitySetting * capabil
     }
 
     m_capabilitySettings[capabilitySetting->type()] = capabilitySetting;
+
+    if (m_mode == ImmediateMode)
+        capabilitySetting->apply();
 }
 
 Capability* State::getCapability(GLenum capability)
@@ -184,6 +213,20 @@ std::vector<Capability*> State::capabilities() const
     }
 
     return caps;
+}
+
+bool State::hasCapability(GLenum capability)
+{
+    return m_capabilities.find(capability) != m_capabilities.end();
+}
+
+Capability* State::capability(GLenum capability)
+{
+    auto it = m_capabilities.find(capability);
+    if (it == m_capabilities.end())
+        return nullptr;
+
+    return it->second;
 }
 
 // specific parameters
