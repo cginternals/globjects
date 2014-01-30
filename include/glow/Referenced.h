@@ -11,6 +11,8 @@ namespace glow
     If the ref counter decreases to zero, the referenced objects is deleted.
     
     Referenced objects should not be copy constructed or assigned.
+
+    \see ref_ptr
  */
 class GLOW_API Referenced
 {

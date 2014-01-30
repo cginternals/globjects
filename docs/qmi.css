@@ -513,9 +513,18 @@ table.memberdecls td.memSeparator {
 
 /* Styles for detailed member documentation */
 
+.memTemplParams {
+        font-size: 80%;
+        /*color: #4665A2;*/
+		color: #888;
+        font-weight: normal;
+        margin-left: 9px;
+}
+
 .memtemplate {
         font-size: 80%;
-        color: #4665A2;
+        /*color: #4665A2;*/
+		color: #888;
         font-weight: normal;
         margin-left: 9px;
 }
@@ -602,7 +611,8 @@ table.memberdecls td.memSeparator {
 .mlabels .mlabel {
 	color: #555;
 	font-style: italic;
-	margin-right: 0.5em;
+	margin-right: 0.25em;
+	margin-left: 0.25em;
 }
 
 dl.reflist dt {
