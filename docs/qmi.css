@@ -1038,3 +1038,8 @@ dl.citelist dd {
   }
 }
 
+
+
+td.entry {
+	white-space: nowrap;
+}
