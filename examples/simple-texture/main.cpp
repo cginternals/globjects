@@ -112,7 +112,7 @@ void EventHandler::createAndSetupTexture()
     for (int i = 0; i < w * h * 4; ++i)
         data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
 
-	m_texture = new glow::Texture(GL_TEXTURE_3D);
+	m_texture = new glow::Texture(GL_TEXTURE_2D);
 
 	m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
