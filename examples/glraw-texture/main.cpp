@@ -115,7 +115,7 @@ void EventHandler::createAndSetupTexture()
     for (int i = 0; i < 16 * 16; ++i)
         data[i] = 255;
  
-    m_texture->compressedImage2D(0, GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, raw.size(), raw.data());
+    m_texture->compressedImage2D(0, GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, static_cast<GLsizei>(raw.size()), raw.data());
 }
 
 void EventHandler::createAndSetupGeometry()

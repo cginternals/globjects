@@ -25,7 +25,7 @@ const char * RawFile::data() const
     return m_data.data();
 }
 
-const size_t RawFile::size() const
+size_t RawFile::size() const
 {
     return m_data.size();
 }
