@@ -126,6 +126,14 @@ void Texture::image1D(GLint level, GLenum internalFormat, GLsizei width, GLint b
     CheckGLError();
 }
 
+void Texture::compressedImage1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLsizei imageSize, const GLvoid * data)
+{
+    bind();
+
+    glCompressedTexImage1D(m_target, level, internalFormat, width, border, imageSize, data);
+    CheckGLError();
+}
+
 void Texture::image2D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data)
 {
 	bind();
@@ -152,6 +160,19 @@ void Texture::image2D(GLenum target, GLint level, GLenum internalFormat, const g
     image2D(target, level, internalFormat, size.x, size.y, border, format, type, data);
 }
 
+void Texture::compressedImage2D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid * data)
+{
+    bind();
+
+    glCompressedTexImage2D(m_target, level, internalFormat, width, height, border, imageSize, data);
+    CheckGLError();
+}
+
+void Texture::compressedImage2D(GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLsizei imageSize, const GLvoid * data)
+{
+    compressedImage2D(level, internalFormat, size.x, size.y, border, imageSize, data);
+}
+
 void Texture::image3D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid* data)
 {
     bind();
@@ -163,6 +184,19 @@ void Texture::image3D(GLint level, GLenum internalFormat, GLsizei width, GLsizei
 void Texture::image3D(GLint level, GLenum internalFormat, const glm::ivec3 & size, GLint border, GLenum format, GLenum type, const GLvoid* data)
 {
     image3D(level, internalFormat, size.x, size.y, size.z, border, format, type, data);
+}
+
+void Texture::compressedImage3D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const GLvoid * data)
+{
+    bind();
+
+    glCompressedTexImage3D(m_target, level, internalFormat, width, height, depth, border, imageSize, data);
+    CheckGLError();
+}
+
+void Texture::compressedImage3D(GLint level, GLenum internalFormat, const glm::ivec3 & size, GLint border, GLsizei imageSize, const GLvoid * data)
+{
+    compressedImage3D(level, internalFormat, size.x, size.y, size.z, border, imageSize, data);
 }
 
 void Texture::image2DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLboolean fixedSamplesLocations)
