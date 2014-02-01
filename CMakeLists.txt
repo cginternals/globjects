@@ -18,6 +18,7 @@ option(OPTION_LIMIT_CONFIGS  "Generate limited configs (Release; Debug)" ON)
 option(OPTION_LOCAL_INSTALL  "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
 option(OPTION_BUILD_EXAMPLES "Build examples" ON)
+option(OPTION_REQUIRE_TESTS  "Requires test projects to be configured (gmock and gtest required)" OFF)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
 option(OPTION_GENERATE_GL_INFO "Automatically generate OpenGL extension and enum information" OFF)
 
@@ -241,3 +242,9 @@ add_subdirectory(packages)
 # DOXYGEN
 
 add_subdirectory(docs)
+
+
+# TESTS
+
+add_subdirectory(tests)
+
