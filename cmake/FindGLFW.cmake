@@ -51,12 +51,5 @@ endif()
 
 # GLFW is required to link statically for now (no deploy specified)
 
-include(FindPackageHandleStandardArgs)
-
 find_package_handle_standard_args(GLFW REQUIRED_VARS GLFW_INCLUDE_DIR GLFW_LIBRARY)
-
-mark_as_advanced(
-  GLFW_INCLUDE_DIR
-  GLFW_LIBRARIES
-  GLFW_LIBRARY
-)
+mark_as_advanced(GLFW_INCLUDE_DIR GLFW_LIBRARY)

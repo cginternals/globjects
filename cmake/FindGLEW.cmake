@@ -40,11 +40,5 @@ if(WIN32)
 
 endif()
     
-if(GLEW_INCLUDE_DIR AND GLEW_LIBRARY)
-    set(GLEW_FOUND 1 CACHE STRING "Set to 1 if GLEW is found, 0 otherwise")
-else()
-    set(GLEW_FOUND 0 CACHE STRING "Set to 1 if GLEW is found, 0 otherwise")
-    message(WARNING "Note: an envvar like GLEW_HOME assists this script to locate glew.")
-endif()
-
-mark_as_advanced( GLEW_FOUND )
+find_package_handle_standard_args(GLEW REQUIRED_VARS GLEW_INCLUDE_DIR GLEW_LIBRARY)
+mark_as_advanced(GLEW_INCLUDE_DIR GLEW_LIBRARY)
