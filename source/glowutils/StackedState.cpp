@@ -1,24 +1,37 @@
-#include <glowutils/StateStack.h>
+#include <glowutils/StackedState.h>
 
 #include <glow/logging.h>
 #include <glow/constants.h>
-//#include <glow/State.h>
+#include <glow/State.h>
+#include <glow/Capability.h>
 
 namespace glowutils
 {
 
-StateStack::StateStack()
+StackedState * StackedState::s_instance = nullptr;
+
+StackedState * StackedState::instance()
 {
-    m_stack.push_back(glow::State::currentState());
+    if (!s_instance)
+    {
+        s_instance = new StackedState();
+    }
+
+    return s_instance;
+}
+
+StackedState::StackedState(glow::State * defaultState)
+{
+    m_stack.push_back(defaultState ? defaultState : glow::State::currentState());
     push();
 }
 
-void StateStack::push()
+void StackedState::push()
 {
     m_stack.push_back(m_currentState = new glow::State(glow::State::ImmediateMode));
 }
 
-void StateStack::pop()
+void StackedState::pop()
 {
     glow::ref_ptr<glow::State> oldState = m_stack.back();
     m_stack.pop_back();
@@ -30,7 +43,7 @@ void StateStack::pop()
         push();
 }
 
-void StateStack::undoState(glow::State * state)
+void StackedState::undoState(glow::State * state)
 {
     for (glow::Capability* oldCap : state->capabilities())
     {
@@ -59,7 +72,7 @@ void StateStack::undoState(glow::State * state)
     }
 }
 
-glow::Capability * StateStack::findCapability(GLenum capability)
+glow::Capability * StackedState::findCapability(GLenum capability)
 {
     for (int i = static_cast<int>(m_stack.size()-1); i>=0; --i)
     {
@@ -72,7 +85,7 @@ glow::Capability * StateStack::findCapability(GLenum capability)
     return nullptr;
 }
 
-glow::StateSetting * StateStack::findSetting(const glow::StateSettingType & type)
+glow::StateSetting * StackedState::findSetting(const glow::StateSettingType & type)
 {
     for (int i = static_cast<int>(m_stack.size()-1); i>=0; --i)
     {
@@ -86,37 +99,37 @@ glow::StateSetting * StateStack::findSetting(const glow::StateSettingType & type
 }
 
 
-void StateStack::enable(GLenum capability)
+void StackedState::enable(GLenum capability)
 {
     m_currentState->enable(capability);
 }
 
-void StateStack::disable(GLenum capability)
+void StackedState::disable(GLenum capability)
 {
     m_currentState->disable(capability);
 }
 
-bool StateStack::isEnabled(GLenum capability) const
+bool StackedState::isEnabled(GLenum capability) const
 {
     return m_currentState->isEnabled(capability);
 }
 
-void StateStack::enable(GLenum capability, int index)
+void StackedState::enable(GLenum capability, int index)
 {
     m_currentState->enable(capability, index);
 }
 
-void StateStack::disable(GLenum capability, int index)
+void StackedState::disable(GLenum capability, int index)
 {
     m_currentState->disable(capability, index);
 }
 
-bool StateStack::isEnabled(GLenum capability, int index) const
+bool StackedState::isEnabled(GLenum capability, int index) const
 {
     return m_currentState->isEnabled(capability, index);
 }
 
-void StateStack::set(glow::StateSetting * setting)
+void StackedState::set(glow::StateSetting * setting)
 {
     m_currentState->set(setting);
 }

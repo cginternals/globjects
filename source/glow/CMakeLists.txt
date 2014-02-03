@@ -30,6 +30,8 @@ set(api_includes
     ${header_path}/AbstractLogHandler.h
     ${header_path}/AbstractUniform.h
     ${header_path}/AbstractArray.h
+    ${header_path}/AbstractState.h
+    ${header_path}/AbstractState.hpp
     ${header_path}/AbstractStringSource.h
     ${header_path}/Array.h
     ${header_path}/Array.hpp
@@ -92,6 +94,7 @@ set(api_includes
 
 set(sources
     ${source_path}/AbstractUniform.cpp
+    ${source_path}/AbstractState.cpp
     ${source_path}/AbstractStringSource.cpp
     ${source_path}/Buffer.cpp
     ${source_path}/Capability.cpp

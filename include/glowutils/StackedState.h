@@ -6,23 +6,24 @@
 
 #include <glow/Referenced.h>
 #include <glow/ref_ptr.h>
+#include <glow/AbstractState.h>
+#include <glow/StateSetting.h>
 
 #include <glowutils/glowutils.h>
 
-#include <glow/State.h>
-#include <glow/Capability.h>
-#include <glow/StateSetting.h>
-/*namespace glow {
+namespace glow {
 class State;
 class Capability;
-}*/
+}
 
 namespace glowutils {
 
-class GLOWUTILS_API StateStack : public glow::StateInterface, public glow::Referenced
+class GLOWUTILS_API StackedState : public glow::AbstractState, public glow::Referenced
 {
 public:
-    StateStack();
+    StackedState(glow::State * defaultState = nullptr);
+
+    static StackedState * instance();
 
     void push();
     void pop();
@@ -41,6 +42,8 @@ protected:
     void undoState(glow::State * state);
     glow::Capability * findCapability(GLenum capability);
     glow::StateSetting * findSetting(const glow::StateSettingType & type);
+protected:
+    static StackedState * s_instance;
 };
 
 } // namespace glowutils
