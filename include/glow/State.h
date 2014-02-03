@@ -7,17 +7,12 @@
 
 #include <glow/glow.h>
 #include <glow/Referenced.h>
+#include <glow/StateSetting.h>
 
 namespace glow
 {
 
 class Capability;
-
-namespace capability {
-
-class AbstractCapabilitySetting;
-
-} // namespace capability
 
 class GLOW_API StateInterface
 {
@@ -32,20 +27,22 @@ public:
     void setEnabled(GLenum capability, bool enabled);
     void setEnabled(GLenum capability, int index, bool enabled);
 
-    virtual void blendFunc(GLenum sFactor, GLenum dFactor) = 0;
-    virtual void logicOp(GLenum opcode) = 0;
-    virtual void cullFace(GLenum mode) = 0;
-    virtual void depthFunc(GLenum func) = 0;
-    virtual void depthRange(GLdouble nearVal, GLdouble farVal) = 0;
-    virtual void depthRange(GLfloat nearVal, GLfloat farVal) = 0;
-    virtual void pointSize(GLfloat size) = 0;
-    virtual void polygonMode(GLenum face, GLenum mode) = 0;
-    virtual void polygonOffset(GLfloat factor, GLfloat units) = 0;
-    virtual void primitiveRestartIndex(GLuint index) = 0;
-    virtual void sampleCoverage(GLfloat value, GLboolean invert) = 0;
-    virtual void scissor(GLint x, GLint y, GLsizei width, GLsizei height) = 0;
-    virtual void stencilFunc(GLenum func, GLint ref, GLuint mask) = 0;
-    virtual void stencilOp(GLenum fail, GLenum zFail, GLenum zPass) = 0;
+    void blendFunc(GLenum sFactor, GLenum dFactor);
+    void logicOp(GLenum opcode);
+    void cullFace(GLenum mode);
+    void depthFunc(GLenum func);
+    void depthRange(GLdouble nearVal, GLdouble farVal);
+    void depthRange(GLfloat nearVal, GLfloat farVal);
+    void pointSize(GLfloat size);
+    void polygonMode(GLenum face, GLenum mode);
+    void polygonOffset(GLfloat factor, GLfloat units);
+    void primitiveRestartIndex(GLuint index);
+    void sampleCoverage(GLfloat value, GLboolean invert);
+    void scissor(GLint x, GLint y, GLsizei width, GLsizei height);
+    void stencilFunc(GLenum func, GLint ref, GLuint mask);
+    void stencilOp(GLenum fail, GLenum zFail, GLenum zPass);
+
+    virtual void set(StateSetting * setting) = 0;
 };
 
 class GLOW_API State : public StateInterface, public Referenced
@@ -75,36 +72,20 @@ public:
     virtual void disable(GLenum capability, int index) override;
     virtual bool isEnabled(GLenum capability, int index) const override;
 
-    virtual void blendFunc(GLenum sFactor, GLenum dFactor) override;
-    virtual void logicOp(GLenum opcode) override;
-    virtual void cullFace(GLenum mode) override;
-    virtual void depthFunc(GLenum func) override;
-    virtual void depthRange(GLdouble nearVal, GLdouble farVal) override;
-    virtual void depthRange(GLfloat nearVal, GLfloat farVal) override;
-    virtual void pointSize(GLfloat size) override;
-    virtual void polygonMode(GLenum face, GLenum mode) override;
-    virtual void polygonOffset(GLfloat factor, GLfloat units) override;
-    virtual void primitiveRestartIndex(GLuint index) override;
-    virtual void sampleCoverage(GLfloat value, GLboolean invert) override;
-    virtual void scissor(GLint x, GLint y, GLsizei width, GLsizei height) override;
-    virtual void stencilFunc(GLenum func, GLint ref, GLuint mask) override;
-    virtual void stencilOp(GLenum fail, GLenum zFail, GLenum zPass) override;
+    virtual void set(StateSetting * setting) override;
 
-    bool hasCapability(GLenum capability);
-    Capability* capability(GLenum capability);
-
+    Capability * capability(GLenum capability);
     std::vector<Capability*> capabilities() const;
 
-public:
-    void addCapability(Capability * capability);
-    void addCapabilitySetting(capability::AbstractCapabilitySetting * capabilitySetting);
-
+    StateSetting * setting(const StateSettingType & type);
+    std::vector<StateSetting*> settings() const;
 protected:
     Mode m_mode;
     std::unordered_map<GLenum, Capability*> m_capabilities;
-    std::unordered_map<unsigned, capability::AbstractCapabilitySetting*> m_capabilitySettings;
+    std::unordered_map<StateSettingType, StateSetting*> m_settings;
 
     void setToCurrent(GLenum capability);
+    void addCapability(Capability * capability);
     Capability* getCapability(GLenum capability);
 };
 

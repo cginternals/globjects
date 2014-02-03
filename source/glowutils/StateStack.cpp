@@ -20,12 +20,6 @@ void StateStack::push()
 
 void StateStack::pop()
 {
-    if (m_stack.size() <= 1) // should not happen, remove
-    {
-        glow::warning() << "Can't pop default state";
-        return;
-    }
-
     glow::ref_ptr<glow::State> oldState = m_stack.back();
     m_stack.pop_back();
     m_currentState = m_stack.back();
@@ -47,11 +41,22 @@ void StateStack::undoState(glow::State * state)
         }
         else
         {
-            glow::warning() << "Could not undo capability " << glow::enumName(oldCap->capability());
+            glow::warning() << "Could not undo capability " << glow::enumName(oldCap->capability()) << ".";
         }
     }
 
-    // TODO: same for CapabilitySettings
+    for (glow::StateSetting* oldSetting : state->settings())
+    {
+        glow::StateSetting* setting = findSetting(oldSetting->type());
+        if (setting)
+        {
+            setting->apply();
+        }
+        else
+        {
+            glow::warning() << "Could not undo setting.";
+        }
+    }
 }
 
 glow::Capability * StateStack::findCapability(GLenum capability)
@@ -62,6 +67,19 @@ glow::Capability * StateStack::findCapability(GLenum capability)
         glow::Capability* cap = state->capability(capability);
         if (cap)
             return cap;
+    }
+
+    return nullptr;
+}
+
+glow::StateSetting * StateStack::findSetting(const glow::StateSettingType & type)
+{
+    for (int i = static_cast<int>(m_stack.size()-1); i>=0; --i)
+    {
+        glow::State* state = m_stack[i];
+        glow::StateSetting* setting = state->setting(type);
+        if (setting)
+            return setting;
     }
 
     return nullptr;
@@ -98,74 +116,9 @@ bool StateStack::isEnabled(GLenum capability, int index) const
     return m_currentState->isEnabled(capability, index);
 }
 
-void StateStack::blendFunc(GLenum sFactor, GLenum dFactor)
+void StateStack::set(glow::StateSetting * setting)
 {
-    m_currentState->blendFunc(sFactor, dFactor);
-}
-
-void StateStack::logicOp(GLenum opcode)
-{
-    m_currentState->logicOp(opcode);
-}
-
-void StateStack::cullFace(GLenum mode)
-{
-    m_currentState->cullFace(mode);
-}
-
-void StateStack::depthFunc(GLenum func)
-{
-    m_currentState->depthFunc(func);
-}
-
-void StateStack::depthRange(GLdouble nearVal, GLdouble farVal)
-{
-    m_currentState->depthRange(nearVal, farVal);
-}
-
-void StateStack::depthRange(GLfloat nearVal, GLfloat farVal)
-{
-    m_currentState->depthRange(nearVal, farVal);
-}
-
-void StateStack::pointSize(GLfloat size)
-{
-    m_currentState->pointSize(size);
-}
-
-void StateStack::polygonMode(GLenum face, GLenum mode)
-{
-    m_currentState->polygonMode(face, mode);
-}
-
-void StateStack::polygonOffset(GLfloat factor, GLfloat units)
-{
-    m_currentState->polygonOffset(factor, units);
-}
-
-void StateStack::primitiveRestartIndex(GLuint index)
-{
-    m_currentState->primitiveRestartIndex(index);
-}
-
-void StateStack::sampleCoverage(GLfloat value, GLboolean invert)
-{
-    m_currentState->sampleCoverage(value, invert);
-}
-
-void StateStack::scissor(GLint x, GLint y, GLsizei width, GLsizei height)
-{
-    m_currentState->scissor(x, y, width, height);
-}
-
-void StateStack::stencilFunc(GLenum func, GLint ref, GLuint mask)
-{
-    m_currentState->stencilFunc(func, ref, mask);
-}
-
-void StateStack::stencilOp(GLenum fail, GLenum zFail, GLenum zPass)
-{
-    m_currentState->stencilOp(fail, zFail, zPass);
+    m_currentState->set(setting);
 }
 
 } // namespace glowutils
