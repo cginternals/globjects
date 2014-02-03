@@ -19,7 +19,7 @@ find_path(GLFW_INCLUDE_DIR GLFW/glfw3.h
 )
 
 find_library(GLFW_LIBRARY
-    NAMES glfw3
+    NAMES glfw3 glfw
     PATHS
     ${GLFW_LIBRARY_DIR}  # provided by glfw config
     $ENV{GLFWDIR}/lib
