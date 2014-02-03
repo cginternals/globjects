@@ -2,13 +2,11 @@
 # this must be explicitly set.. not quitly if available.
 
 if(OPTION_REQUIRE_TESTS)
-
-	find_package(GMOCK QUIET)
-	find_package(GTEST QUIET)
-
-else()
 	find_package(GMOCK REQUIRED)
 	find_package(GTEST REQUIRED)
+else()
+	find_package(GMOCK QUIET)
+	find_package(GTEST QUIET)
 endif()
 
 if(GMOCK_FOUND AND GTEST_FOUND)
