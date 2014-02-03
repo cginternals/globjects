@@ -1,3 +1,0 @@
-
-#include <gmock/gmock.h>
-

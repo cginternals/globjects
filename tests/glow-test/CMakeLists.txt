@@ -5,12 +5,13 @@ message(STATUS "test ${target}")
 add_executable(${target} 
     main.cpp
     ref_ptr_test.cpp
+    Referenced_test.cpp
 )
 
 target_link_libraries(${target} 
     ${GLEW_LIBRARIES}
-    ${GMOCK_LIBRARY}
-    ${GTEST_LIBRARY}
+    ${GMOCK_LIBRARIES}
+    ${GTEST_LIBRARIES}
     glow
 )
 
