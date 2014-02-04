@@ -122,6 +122,7 @@ void EventHandler::createAndSetupTexture()
 	m_texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	m_texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
 }
 
 void EventHandler::createAndSetupGeometry()

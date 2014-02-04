@@ -53,6 +53,14 @@ public:
     ,   GLenum type
     ,   const GLvoid * data);
 
+    void compressedImage1D(
+        GLint level
+    ,   GLenum internalFormat
+    ,   GLsizei width
+    ,   GLint border
+    ,   GLsizei imageSize
+    ,   const GLvoid * data);
+
 	void image2D(
         GLint level
     ,   GLenum internalFormat
@@ -93,6 +101,23 @@ public:
     ,   GLenum type
     ,   const GLvoid * data);
 
+    void compressedImage2D(
+        GLint level
+    ,   GLenum internalFormat
+    ,   GLsizei width
+    ,   GLsizei height
+    ,   GLint border
+    ,   GLsizei imageSize
+    ,   const GLvoid * data);
+
+    void compressedImage2D(
+        GLint level
+    ,   GLenum internalFormat
+    ,   const glm::ivec2 & size
+    ,   GLint border
+    ,   GLsizei imageSize
+    ,   const GLvoid * data);
+
     void image3D(
         GLint level
     ,   GLenum internalFormat
@@ -112,6 +137,24 @@ public:
     ,   GLenum format
     ,   GLenum type
     ,   const GLvoid * data);
+
+    void compressedImage3D(
+        GLint level
+   ,    GLenum internalFormat
+   ,    GLsizei width
+   ,    GLsizei height
+   ,    GLsizei depth
+   ,    GLint border
+   ,    GLsizei imageSize
+   ,    const GLvoid * data);
+
+    void compressedImage3D(
+        GLint level
+   ,    GLenum internalFormat
+   ,    const glm::ivec3 & size
+   ,    GLint border
+   ,    GLsizei imageSize
+   ,    const GLvoid * data);
 
     void image2DMultisample(
         GLsizei samples

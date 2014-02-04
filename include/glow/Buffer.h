@@ -241,7 +241,6 @@ public:
      * @param offset offset in bytes
      * @param size size in bytes
      * \see https://www.opengl.org/sdk/docs/man4/xhtml/glClearBufferSubData.xml
-     * \see copyData
      */
     void clearSubData(GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data = nullptr);
 protected:

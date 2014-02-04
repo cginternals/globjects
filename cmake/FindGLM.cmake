@@ -11,11 +11,5 @@ FIND_PATH(GLM_INCLUDE_DIR glm/glm.hpp
     /opt/local/include
     DOC "The directory where glm/glm.hpp resides.")
     
-IF(GLM_INCLUDE_DIR)
-  SET(GLM_FOUND 1 CACHE STRING "Set to 1 if GLM is found, 0 otherwise")
-ELSE()
-  SET(GLM_FOUND 0 CACHE STRING "Set to 1 if GLM is found, 0 otherwise")
-  MESSAGE(WARNING "Note: an envvar GLM_HOME assists this script to locate glm.")
-ENDIF()
-
-MARK_AS_ADVANCED(GLM_FOUND)
+find_package_handle_standard_args(GLM REQUIRED_VARS GLM_INCLUDE_DIR)
+mark_as_advanced(GLM_INCLUDE_DIR)

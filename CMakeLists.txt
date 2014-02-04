@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 
 set(META_PROJECT_NAME        "glow")
 set(META_VERSION_MAJOR       "0")
-set(META_VERSION_MINOR       "2")
-set(META_VERSION_PATCH       "1")
+set(META_VERSION_MINOR       "3")
+set(META_VERSION_PATCH       "0")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "hpicgs group")
 set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glow/")
@@ -18,6 +18,7 @@ option(OPTION_LIMIT_CONFIGS  "Generate limited configs (Release; Debug)" ON)
 option(OPTION_LOCAL_INSTALL  "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
 option(OPTION_BUILD_EXAMPLES "Build examples" ON)
+option(OPTION_REQUIRE_TESTS  "Requires test projects to be configured (gmock and gtest required)" OFF)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
 option(OPTION_GENERATE_GL_INFO "Automatically generate OpenGL extension and enum information" OFF)
 
@@ -241,3 +242,9 @@ add_subdirectory(packages)
 # DOXYGEN
 
 add_subdirectory(docs)
+
+
+# TESTS
+
+add_subdirectory(tests)
+
