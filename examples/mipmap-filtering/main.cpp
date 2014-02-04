@@ -67,7 +67,6 @@ public:
     {
         int width = event.width();
         int height = event.height();
-    	int side = std::min<int>(width, height);
 
         glViewport(0, 0, width, height);
         CheckGLError();
