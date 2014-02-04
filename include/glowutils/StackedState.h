@@ -34,7 +34,7 @@ public:
     virtual void enable(GLenum capability, int index) override;
     virtual void disable(GLenum capability, int index) override;
     virtual bool isEnabled(GLenum capability, int index) const override;
-    virtual void set(glow::StateSetting * setting) override;
+    virtual void add(glow::StateSetting * setting) override;
 protected:
     glow::State* m_currentState;
     std::vector<glow::ref_ptr<glow::State>> m_stack;

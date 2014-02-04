@@ -383,6 +383,7 @@ enum Extension
 	GLOW_MESA_window_pos,
 	GLOW_MESA_ycbcr_texture,
 	GLOW_NVX_conditional_render,
+	GLOW_NVX_gpu_memory_info,
 	GLOW_NV_bindless_multi_draw_indirect,
 	GLOW_NV_bindless_texture,
 	GLOW_NV_blend_equation_advanced,

@@ -1,7 +1,11 @@
 #include <glow/State.h>
 
 #include <glow/global.h>
+#include <glow/Extension.h>
 #include <glow/Capability.h>
+
+#include <glow/logging.h>
+#include <glow/constants.h>
 
 namespace glow {
 
@@ -25,64 +29,110 @@ State::~State()
 State* State::currentState()
 {
     State* state = new State(DeferredMode);
-    /*
-        not handled (yet):
-            GL_DEBUG_OUTPUT
-            GL_DEBUG_OUTPUT_SYNCHRONOUS
-            GL_CLIP_DISTANCEi
-    */
-    static std::vector<GLenum> capabilities = {
+
+    std::vector<GLenum> capabilities = {
         GL_BLEND,
-        GL_DEPTH_CLAMP,
-        GL_DITHER,
-        GL_FRAMEBUFFER_SRGB,
-        GL_TEXTURE_CUBE_MAP_SEAMLESS,
         GL_COLOR_LOGIC_OP,
         GL_CULL_FACE,
+        GL_DEBUG_OUTPUT,
+        GL_DEBUG_OUTPUT_SYNCHRONOUS,
+        GL_DEPTH_CLAMP,
         GL_DEPTH_TEST,
+        GL_DITHER,
+        GL_FRAMEBUFFER_SRGB,
         GL_LINE_SMOOTH,
-        GL_PROGRAM_POINT_SIZE,
-        GL_POLYGON_SMOOTH,
+        GL_MULTISAMPLE,
         GL_POLYGON_OFFSET_FILL,
         GL_POLYGON_OFFSET_LINE,
         GL_POLYGON_OFFSET_POINT,
-        GL_SAMPLE_COVERAGE,
-        GL_MULTISAMPLE,
+        GL_POLYGON_SMOOTH,
+        GL_PROGRAM_POINT_SIZE,
+        GL_RASTERIZER_DISCARD,
         GL_SAMPLE_ALPHA_TO_COVERAGE,
         GL_SAMPLE_ALPHA_TO_ONE,
+        GL_SAMPLE_COVERAGE,
         GL_SAMPLE_MASK,
-        GL_PRIMITIVE_RESTART,
         GL_SCISSOR_TEST,
-        GL_STENCIL_TEST,
+        GL_STENCIL_TEST
     };
+
+    if (Version::current() >= Version(3, 1))
+    {
+        capabilities.push_back(GL_PRIMITIVE_RESTART);
+        if (hasExtension(GLOW_ARB_ES3_compatibility))
+        {
+            capabilities.push_back(GL_PRIMITIVE_RESTART_FIXED_INDEX);
+        }
+        state->primitiveRestartIndex(getInteger(GL_PRIMITIVE_RESTART_INDEX));
+
+        if (hasExtension(GLOW_ARB_sample_shading))
+        {
+            capabilities.push_back(GL_SAMPLE_SHADING);
+        }
+        if (hasExtension(GLOW_ARB_seamless_cube_map))
+        {
+            capabilities.push_back(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+        }
+        if (hasExtension(GLOW_ARB_provoking_vertex))
+        {
+            state->provokingVertex(getEnum(GL_PROVOKING_VERTEX));
+        }
+    }
 
     for (GLenum capability : capabilities)
     {
-        state->setToCurrent(capability);
+        state->setEnabled(capability, glow::isEnabled(capability));
     }
 
-    state->logicOp(getInteger(GL_LOGIC_OP_MODE));
+    state->blendColor(getFloats<4>(GL_BLEND_COLOR));
+    state->blendFuncSeparate(getEnum(GL_BLEND_SRC_RGB), getEnum(GL_BLEND_DST_RGB), getEnum(GL_BLEND_SRC_ALPHA), getEnum(GL_BLEND_DST_ALPHA));
+    state->clearColor(getFloats<4>(GL_COLOR_CLEAR_VALUE));
+    state->clearDepth(getFloat(GL_DEPTH_CLEAR_VALUE));
+    state->clearStencil(getInteger(GL_STENCIL_CLEAR_VALUE));
+    state->colorMask(getBooleans<4>(GL_COLOR_WRITEMASK));
     state->cullFace(getInteger(GL_CULL_FACE_MODE));
     state->depthFunc(getInteger(GL_DEPTH_FUNC));
-    auto depthRangeF = getFloats<2>(GL_DEPTH_RANGE);
-    state->depthRange(depthRangeF[0], depthRangeF[1]);
+    state->depthRange(getFloats<2>(GL_DEPTH_RANGE));
+    state->logicOp(getInteger(GL_LOGIC_OP_MODE));
+    state->pointParameter(GL_POINT_FADE_THRESHOLD_SIZE, getEnum(GL_POINT_FADE_THRESHOLD_SIZE));
+    state->pointParameter(GL_POINT_SPRITE_COORD_ORIGIN, getEnum(GL_POINT_SPRITE_COORD_ORIGIN));
     state->pointSize(getFloat(GL_POINT_SIZE));
-    state->polygonMode(GL_FRONT_AND_BACK, getInteger(GL_POLYGON_MODE)); // documentation wrong?
+    state->polygonMode(GL_FRONT_AND_BACK, getInteger(GL_POLYGON_MODE)); // is it right to only set GL_FRONT_AND_BACK?
     state->polygonOffset(getFloat(GL_POLYGON_OFFSET_FACTOR), getFloat(GL_POLYGON_OFFSET_UNITS));
     state->sampleCoverage(getFloat(GL_SAMPLE_COVERAGE_VALUE), getBoolean(GL_SAMPLE_COVERAGE_INVERT));
-    state->primitiveRestartIndex(getInteger(GL_PRIMITIVE_RESTART_INDEX));
-    state->setToCurrent(GL_SCISSOR_TEST);
-    auto box = getIntegers<4>(GL_SCISSOR_BOX);
-    state->scissor(box[0], box[1], box[2], box[3]);
-    state->stencilFunc(getInteger(GL_STENCIL_FUNC), getInteger(GL_STENCIL_REF), getInteger(GL_STENCIL_VALUE_MASK));
-    state->stencilOp(getInteger(GL_STENCIL_FAIL), getInteger(GL_STENCIL_PASS_DEPTH_FAIL), getInteger(GL_STENCIL_PASS_DEPTH_PASS));
+    state->scissor(getIntegers<4>(GL_SCISSOR_BOX));
+    state->stencilFuncSeparate(GL_FRONT, getEnum(GL_STENCIL_FUNC), getEnum(GL_STENCIL_REF), getEnum(GL_STENCIL_VALUE_MASK));
+    state->stencilOpSeparate(GL_FRONT, getEnum(GL_STENCIL_FAIL), getEnum(GL_STENCIL_PASS_DEPTH_FAIL), getEnum(GL_STENCIL_PASS_DEPTH_PASS));
+    state->stencilMaskSeparate(GL_FRONT, getEnum(GL_STENCIL_WRITEMASK));
+    state->stencilFuncSeparate(GL_BACK, getEnum(GL_STENCIL_BACK_FUNC), getEnum(GL_STENCIL_BACK_REF), getEnum(GL_STENCIL_BACK_VALUE_MASK));
+    state->stencilOpSeparate(GL_BACK, getEnum(GL_STENCIL_BACK_FAIL), getEnum(GL_STENCIL_BACK_PASS_DEPTH_FAIL), getEnum(GL_STENCIL_BACK_PASS_DEPTH_PASS));
+    state->stencilMaskSeparate(GL_BACK, getEnum(GL_STENCIL_BACK_WRITEMASK));
+
+    // pixel store
+    std::vector<GLenum> pixelstoreParameters = {
+        GL_PACK_SWAP_BYTES,
+        GL_PACK_LSB_FIRST,
+        GL_PACK_ROW_LENGTH,
+        GL_PACK_IMAGE_HEIGHT,
+        GL_PACK_SKIP_PIXELS,
+        GL_PACK_SKIP_ROWS,
+        GL_PACK_SKIP_IMAGES,
+        GL_PACK_ALIGNMENT,
+        GL_UNPACK_SWAP_BYTES,
+        GL_UNPACK_LSB_FIRST,
+        GL_UNPACK_ROW_LENGTH,
+        GL_UNPACK_IMAGE_HEIGHT,
+        GL_UNPACK_SKIP_PIXELS,
+        GL_UNPACK_SKIP_ROWS,
+        GL_UNPACK_SKIP_IMAGES,
+        GL_UNPACK_ALIGNMENT
+    };
+    for (GLenum param : pixelstoreParameters)
+    {
+        state->pixelStore(param, getInteger(param));
+    }
 
     return state;
-}
-
-void State::setToCurrent(GLenum capability)
-{
-    setEnabled(capability, glow::isEnabled(capability));
 }
 
 void State::enable(GLenum capability)
@@ -217,7 +267,7 @@ StateSetting * State::setting(const StateSettingType & type)
     return it->second;
 }
 
-void State::set(StateSetting * setting)
+void State::add(StateSetting * setting)
 {
     auto type = setting->type();
     if (m_settings.find(type) != m_settings.end())

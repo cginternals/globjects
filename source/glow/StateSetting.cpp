@@ -1,5 +1,7 @@
 #include <glow/StateSetting.h>
 
+#include <glow/Error.h>
+
 namespace glow
 {
 
@@ -41,6 +43,7 @@ StateSetting::~StateSetting()
 void StateSetting::apply()
 {
     (*m_functionCall)();
+    CheckGLError();
 }
 
 const StateSettingType & StateSetting::type() const

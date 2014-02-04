@@ -42,7 +42,7 @@ public:
     virtual void disable(GLenum capability, int index) override;
     virtual bool isEnabled(GLenum capability, int index) const override;
 
-    virtual void set(StateSetting * setting) override;
+    virtual void add(StateSetting * setting) override;
 
     Capability * capability(GLenum capability);
     std::vector<Capability*> capabilities() const;
@@ -54,7 +54,6 @@ protected:
     std::unordered_map<GLenum, Capability*> m_capabilities;
     std::unordered_map<StateSettingType, StateSetting*> m_settings;
 
-    void setToCurrent(GLenum capability);
     void addCapability(Capability * capability);
     Capability* getCapability(GLenum capability);
 };

@@ -129,9 +129,9 @@ bool StackedState::isEnabled(GLenum capability, int index) const
     return m_currentState->isEnabled(capability, index);
 }
 
-void StackedState::set(glow::StateSetting * setting)
+void StackedState::add(glow::StateSetting * setting)
 {
-    m_currentState->set(setting);
+    m_currentState->add(setting);
 }
 
 } // namespace glowutils
