@@ -44,6 +44,8 @@ if (${CMAKE_BUILD_TYPE})
 endif()
 
 
+enable_testing() # it's important to state this before adding targets
+
 
 # Project
 project(${META_PROJECT_NAME} C CXX)

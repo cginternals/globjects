@@ -25,3 +25,5 @@ set_target_properties(${target}
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
+
+add_test(NAME ${target} COMMAND ${target} --config $<CONFIGURATION> --exe $<TARGET_FILE:${target}>)
