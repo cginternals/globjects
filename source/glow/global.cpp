@@ -83,6 +83,11 @@ GLint getInteger(GLenum pname)
 	return value;
 }
 
+GLenum getEnum(GLenum pname)
+{
+    return static_cast<GLenum>(getInteger(pname));
+}
+
 GLfloat getFloat(GLenum pname)
 {
 	GLfloat value;
@@ -121,6 +126,11 @@ GLint getInteger(GLenum pname, GLuint index)
 	CheckGLError();
 
 	return value;
+}
+
+GLenum getEnum(GLenum pname, GLuint index)
+{
+    return static_cast<GLenum>(getInteger(pname, index));
 }
 
 GLfloat getFloat(GLenum pname, GLuint index)

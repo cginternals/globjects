@@ -21,11 +21,13 @@ GLOW_API std::string getString(GLenum pname);
 GLOW_API std::string getString(GLenum pname, GLuint index);
 
 GLOW_API GLint getInteger(GLenum pname);
+GLOW_API GLenum getEnum(GLenum pname);
 GLOW_API GLfloat getFloat(GLenum pname);
 GLOW_API GLdouble getDouble(GLenum pname);
 GLOW_API GLboolean getBoolean(GLenum pname);
 
 GLOW_API GLint getInteger(GLenum pname, GLuint index);
+GLOW_API GLenum getEnum(GLenum pname, GLuint index);
 GLOW_API GLfloat getFloat(GLenum pname, GLuint index);
 GLOW_API GLdouble getDouble(GLenum pname, GLuint index);
 GLOW_API GLboolean getBoolean(GLenum pname, GLuint index);

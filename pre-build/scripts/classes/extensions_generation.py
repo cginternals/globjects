@@ -23,6 +23,9 @@ def findExtensionVersions(extensions, features):
 		deprecated = dict()
 		for r in e.requirements:
 			required[r] = featureMap.get(r, None)
+			if required[r] == None and r.endswith("ARB"):
+				required[r] = featureMap.get(r[:-3].rstrip("_"), None)
+				
 			if r in deprecatedMap:
 				deprecated[r] = deprecatedMap[r]
 			

@@ -1,99 +1,154 @@
 #include <glow/State.h>
 
 #include <glow/global.h>
+#include <glow/Extension.h>
 #include <glow/Capability.h>
+
+#include <glow/logging.h>
+#include <glow/constants.h>
 
 namespace glow {
 
-State::State()
+State::State(Mode mode)
+: m_mode(mode)
 {
 }
 
 State::~State()
 {
-    for (const std::pair<GLenum, Capability*>& capability : m_capabilities)
+    for (const auto& capability : m_capabilities)
     {
         delete capability.second;
     }
-    for (const std::pair<unsigned, capability::AbstractCapabilitySetting*>& capabilitySetting : m_capabilitySettings)
+    for (const auto& setting : m_settings)
     {
-        delete capabilitySetting.second;
+        delete setting.second;
     }
 }
 
 State* State::currentState()
 {
-    State* state = new State;
-    /*
-        not handled (yet):
-            GL_DEBUG_OUTPUT
-            GL_DEBUG_OUTPUT_SYNCHRONOUS
-            GL_CLIP_DISTANCEi
-    */
+    State* state = new State(DeferredMode);
 
-    state->setToCurrent(GL_BLEND);
-    state->setToCurrent(GL_DEPTH_CLAMP);
-    state->setToCurrent(GL_DITHER);
-    state->setToCurrent(GL_FRAMEBUFFER_SRGB);
-    state->setToCurrent(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+    std::vector<GLenum> capabilities = {
+        GL_BLEND,
+        GL_COLOR_LOGIC_OP,
+        GL_CULL_FACE,
+        GL_DEBUG_OUTPUT,
+        GL_DEBUG_OUTPUT_SYNCHRONOUS,
+        GL_DEPTH_CLAMP,
+        GL_DEPTH_TEST,
+        GL_DITHER,
+        GL_FRAMEBUFFER_SRGB,
+        GL_LINE_SMOOTH,
+        GL_MULTISAMPLE,
+        GL_POLYGON_OFFSET_FILL,
+        GL_POLYGON_OFFSET_LINE,
+        GL_POLYGON_OFFSET_POINT,
+        GL_POLYGON_SMOOTH,
+        GL_PROGRAM_POINT_SIZE,
+        GL_RASTERIZER_DISCARD,
+        GL_SAMPLE_ALPHA_TO_COVERAGE,
+        GL_SAMPLE_ALPHA_TO_ONE,
+        GL_SAMPLE_COVERAGE,
+        GL_SAMPLE_MASK,
+        GL_SCISSOR_TEST,
+        GL_STENCIL_TEST
+    };
 
-    state->setToCurrent(GL_COLOR_LOGIC_OP);
-    state->addCapabilitySetting(new capability::LogicOp(getInteger(GL_LOGIC_OP_MODE)));
+    if (Version::current() >= Version(3, 1))
+    {
+        capabilities.push_back(GL_PRIMITIVE_RESTART);
+        if (hasExtension(GLOW_ARB_ES3_compatibility))
+        {
+            capabilities.push_back(GL_PRIMITIVE_RESTART_FIXED_INDEX);
+        }
+        state->primitiveRestartIndex(getInteger(GL_PRIMITIVE_RESTART_INDEX));
 
-    state->setToCurrent(GL_CULL_FACE);
-    state->addCapabilitySetting(new capability::CullFace(getInteger(GL_CULL_FACE_MODE)));
+        if (hasExtension(GLOW_ARB_sample_shading))
+        {
+            capabilities.push_back(GL_SAMPLE_SHADING);
+        }
+        if (hasExtension(GLOW_ARB_seamless_cube_map))
+        {
+            capabilities.push_back(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+        }
+        if (hasExtension(GLOW_ARB_provoking_vertex))
+        {
+            state->provokingVertex(getEnum(GL_PROVOKING_VERTEX));
+        }
+    }
 
-    state->setToCurrent(GL_DEPTH_TEST);
-    state->addCapabilitySetting(new capability::DepthFunc(getInteger(GL_DEPTH_FUNC)));
-    auto depthRangeF = getFloats<2>(GL_DEPTH_RANGE);
-    state->addCapabilitySetting(new capability::DepthRange(depthRangeF[0], depthRangeF[1]));
+    for (GLenum capability : capabilities)
+    {
+        state->setEnabled(capability, glow::isEnabled(capability));
+    }
 
-    state->setToCurrent(GL_LINE_SMOOTH);
+    state->blendColor(getFloats<4>(GL_BLEND_COLOR));
+    state->blendFuncSeparate(getEnum(GL_BLEND_SRC_RGB), getEnum(GL_BLEND_DST_RGB), getEnum(GL_BLEND_SRC_ALPHA), getEnum(GL_BLEND_DST_ALPHA));
+    state->clearColor(getFloats<4>(GL_COLOR_CLEAR_VALUE));
+    state->clearDepth(getFloat(GL_DEPTH_CLEAR_VALUE));
+    state->clearStencil(getInteger(GL_STENCIL_CLEAR_VALUE));
+    state->colorMask(getBooleans<4>(GL_COLOR_WRITEMASK));
+    state->cullFace(getInteger(GL_CULL_FACE_MODE));
+    state->depthFunc(getInteger(GL_DEPTH_FUNC));
+    state->depthRange(getFloats<2>(GL_DEPTH_RANGE));
+    state->logicOp(getInteger(GL_LOGIC_OP_MODE));
+    state->pointParameter(GL_POINT_FADE_THRESHOLD_SIZE, getEnum(GL_POINT_FADE_THRESHOLD_SIZE));
+    state->pointParameter(GL_POINT_SPRITE_COORD_ORIGIN, getEnum(GL_POINT_SPRITE_COORD_ORIGIN));
+    state->pointSize(getFloat(GL_POINT_SIZE));
+    state->polygonMode(GL_FRONT_AND_BACK, getInteger(GL_POLYGON_MODE)); // is it right to only set GL_FRONT_AND_BACK?
+    state->polygonOffset(getFloat(GL_POLYGON_OFFSET_FACTOR), getFloat(GL_POLYGON_OFFSET_UNITS));
+    state->sampleCoverage(getFloat(GL_SAMPLE_COVERAGE_VALUE), getBoolean(GL_SAMPLE_COVERAGE_INVERT));
+    state->scissor(getIntegers<4>(GL_SCISSOR_BOX));
+    state->stencilFuncSeparate(GL_FRONT, getEnum(GL_STENCIL_FUNC), getEnum(GL_STENCIL_REF), getEnum(GL_STENCIL_VALUE_MASK));
+    state->stencilOpSeparate(GL_FRONT, getEnum(GL_STENCIL_FAIL), getEnum(GL_STENCIL_PASS_DEPTH_FAIL), getEnum(GL_STENCIL_PASS_DEPTH_PASS));
+    state->stencilMaskSeparate(GL_FRONT, getEnum(GL_STENCIL_WRITEMASK));
+    state->stencilFuncSeparate(GL_BACK, getEnum(GL_STENCIL_BACK_FUNC), getEnum(GL_STENCIL_BACK_REF), getEnum(GL_STENCIL_BACK_VALUE_MASK));
+    state->stencilOpSeparate(GL_BACK, getEnum(GL_STENCIL_BACK_FAIL), getEnum(GL_STENCIL_BACK_PASS_DEPTH_FAIL), getEnum(GL_STENCIL_BACK_PASS_DEPTH_PASS));
+    state->stencilMaskSeparate(GL_BACK, getEnum(GL_STENCIL_BACK_WRITEMASK));
 
-    state->setToCurrent(GL_PROGRAM_POINT_SIZE);
-    state->addCapabilitySetting(new capability::PointSize(getFloat(GL_POINT_SIZE)));
-
-    state->setToCurrent(GL_POLYGON_SMOOTH);
-    state->setToCurrent(GL_POLYGON_OFFSET_FILL);
-    state->setToCurrent(GL_POLYGON_OFFSET_LINE);
-    state->setToCurrent(GL_POLYGON_OFFSET_POINT);
-    state->addCapabilitySetting(new capability::PolygonMode(GL_FRONT_AND_BACK, getInteger(GL_POLYGON_MODE))); // documentation wrong?
-    state->addCapabilitySetting(new capability::PolygonOffset(getFloat(GL_POLYGON_OFFSET_FACTOR), getFloat(GL_POLYGON_OFFSET_UNITS)));
-
-    state->setToCurrent(GL_SAMPLE_COVERAGE);
-    state->setToCurrent(GL_MULTISAMPLE);
-    state->setToCurrent(GL_SAMPLE_ALPHA_TO_COVERAGE);
-    state->setToCurrent(GL_SAMPLE_ALPHA_TO_ONE);
-    state->setToCurrent(GL_SAMPLE_MASK);
-    state->addCapabilitySetting(new capability::SampleCoverage(getFloat(GL_SAMPLE_COVERAGE_VALUE), getBoolean(GL_SAMPLE_COVERAGE_INVERT)));
-
-    state->setToCurrent(GL_PRIMITIVE_RESTART);
-    state->addCapabilitySetting(new capability::PrimitiveRestartIndex(getInteger(GL_PRIMITIVE_RESTART_INDEX)));
-
-    state->setToCurrent(GL_SCISSOR_TEST);
-    auto box = getIntegers<4>(GL_SCISSOR_BOX);
-    state->addCapabilitySetting(new capability::Scissor(box[0], box[1], box[2], box[3]));
-
-    state->setToCurrent(GL_STENCIL_TEST);
-    state->addCapabilitySetting(new capability::StencilFunc(getInteger(GL_STENCIL_FUNC), getInteger(GL_STENCIL_REF), getInteger(GL_STENCIL_VALUE_MASK)));
-    state->addCapabilitySetting(new capability::StencilOp(getInteger(GL_STENCIL_FAIL), getInteger(GL_STENCIL_PASS_DEPTH_FAIL), getInteger(GL_STENCIL_PASS_DEPTH_PASS)));
+    // pixel store
+    std::vector<GLenum> pixelstoreParameters = {
+        GL_PACK_SWAP_BYTES,
+        GL_PACK_LSB_FIRST,
+        GL_PACK_ROW_LENGTH,
+        GL_PACK_IMAGE_HEIGHT,
+        GL_PACK_SKIP_PIXELS,
+        GL_PACK_SKIP_ROWS,
+        GL_PACK_SKIP_IMAGES,
+        GL_PACK_ALIGNMENT,
+        GL_UNPACK_SWAP_BYTES,
+        GL_UNPACK_LSB_FIRST,
+        GL_UNPACK_ROW_LENGTH,
+        GL_UNPACK_IMAGE_HEIGHT,
+        GL_UNPACK_SKIP_PIXELS,
+        GL_UNPACK_SKIP_ROWS,
+        GL_UNPACK_SKIP_IMAGES,
+        GL_UNPACK_ALIGNMENT
+    };
+    for (GLenum param : pixelstoreParameters)
+    {
+        state->pixelStore(param, getInteger(param));
+    }
 
     return state;
 }
 
-void State::setToCurrent(GLenum capability)
-{
-    setEnabled(capability, glow::isEnabled(capability));
-}
-
 void State::enable(GLenum capability)
 {
-    getCapability(capability)->enable();
+    Capability* cap = getCapability(capability);
+    cap->enable();
+    if (m_mode == ImmediateMode)
+        cap->apply();
 }
 
 void State::disable(GLenum capability)
 {
-   getCapability(capability)->disable();
+    Capability* cap = getCapability(capability);
+    cap->disable();
+    if (m_mode == ImmediateMode)
+        cap->apply();
 }
 
 bool State::isEnabled(GLenum capability) const
@@ -105,13 +160,19 @@ bool State::isEnabled(GLenum capability) const
 }
 
 void State::enable(GLenum capability, int index)
-{
-    getCapability(capability)->enable(index);
+{   
+    Capability* cap = getCapability(capability);
+    cap->enable(index);
+    if (m_mode == ImmediateMode)
+        cap->apply();
 }
 
 void State::disable(GLenum capability, int index)
 {
-    getCapability(capability)->disable(index);
+    Capability* cap = getCapability(capability);
+    cap->disable(index);
+    if (m_mode == ImmediateMode)
+        cap->apply();
 }
 
 bool State::isEnabled(GLenum capability, int index) const
@@ -122,25 +183,25 @@ bool State::isEnabled(GLenum capability, int index) const
     return m_capabilities.at(capability)->isEnabled(index);
 }
 
-void State::setEnabled(GLenum capability, bool enabled)
+void State::setMode(Mode mode)
 {
-    enabled ? enable(capability) : disable(capability);
+    m_mode = mode;
 }
 
-void State::setEnabled(GLenum capability, int index, bool enabled)
+State::Mode State::mode() const
 {
-    enabled ? enable(capability, index) : disable(capability, index);
+    return m_mode;
 }
 
 void State::apply()
 {
-    for (const std::pair<GLenum, Capability*>& capability : m_capabilities)
+    for (const auto& capability : m_capabilities)
     {
         capability.second->apply();
     }
-    for (const std::pair<unsigned, capability::AbstractCapabilitySetting*>& capabilitySetting : m_capabilitySettings)
+    for (const auto& setting : m_settings)
     {
-        capabilitySetting.second->apply();
+        setting.second->apply();
     }
 }
 
@@ -152,16 +213,6 @@ void State::addCapability(Capability * capability)
     }
 
     m_capabilities[capability->capability()] = capability;
-}
-
-void State::addCapabilitySetting(capability::AbstractCapabilitySetting * capabilitySetting)
-{
-    if (m_capabilitySettings.find(capabilitySetting->type()) != m_capabilitySettings.end())
-    {
-        delete m_capabilitySettings[capabilitySetting->type()];
-    }
-
-    m_capabilitySettings[capabilitySetting->type()] = capabilitySetting;
 }
 
 Capability* State::getCapability(GLenum capability)
@@ -178,7 +229,7 @@ std::vector<Capability*> State::capabilities() const
 {
     std::vector<Capability*> caps;
 
-    for (const std::pair<GLenum, Capability*>& capability : m_capabilities)
+    for (const auto& capability : m_capabilities)
     {
         caps.push_back(capability.second);
     }
@@ -186,76 +237,48 @@ std::vector<Capability*> State::capabilities() const
     return caps;
 }
 
-// specific parameters
-
-void State::blendFunc(GLenum sFactor, GLenum dFactor)
+Capability* State::capability(GLenum capability)
 {
-    addCapabilitySetting(new capability::BlendFunc(sFactor, dFactor));
+    auto it = m_capabilities.find(capability);
+    if (it == m_capabilities.end())
+        return nullptr;
+
+    return it->second;
 }
 
-void State::logicOp(GLenum opcode)
+std::vector<StateSetting*> State::settings() const
 {
-    addCapabilitySetting(new capability::LogicOp(opcode));
+    std::vector<StateSetting*> settings;
+
+    for (const auto& setting : m_settings)
+    {
+        settings.push_back(setting.second);
+    }
+
+    return settings;
 }
 
-void State::cullFace(GLenum mode)
+StateSetting * State::setting(const StateSettingType & type)
 {
-    addCapabilitySetting(new capability::CullFace(mode));
+    auto it = m_settings.find(type);
+    if (it == m_settings.end())
+        return nullptr;
+
+    return it->second;
 }
 
-void State::depthFunc(GLenum func)
+void State::add(StateSetting * setting)
 {
-    addCapabilitySetting(new capability::DepthFunc(func));
-}
+    auto type = setting->type();
+    if (m_settings.find(type) != m_settings.end())
+    {
+        delete m_settings[type];
+        m_settings.erase(type);
+    }
+    m_settings[type] = setting;
 
-void State::depthRange(GLdouble nearVal, GLdouble farVal)
-{
-    addCapabilitySetting(new capability::DepthRange(nearVal, farVal));
-}
-
-void State::depthRange(GLfloat nearVal, GLfloat farVal)
-{
-    addCapabilitySetting(new capability::DepthRange(nearVal, farVal));
-}
-
-void State::pointSize(GLfloat size)
-{
-    addCapabilitySetting(new capability::PointSize(size));
-}
-
-void State::polygonMode(GLenum face, GLenum mode)
-{
-    addCapabilitySetting(new capability::PolygonMode(face, mode));
-}
-
-void State::polygonOffset(GLfloat factor, GLfloat units)
-{
-    addCapabilitySetting(new capability::PolygonOffset(factor, units));
-}
-
-void State::primitiveRestartIndex(GLuint index)
-{
-    addCapabilitySetting(new capability::PrimitiveRestartIndex(index));
-}
-
-void State::sampleCoverage(GLfloat value, GLboolean invert)
-{
-    addCapabilitySetting(new capability::SampleCoverage(value, invert));
-}
-
-void State::scissor(GLint x, GLint y, GLsizei width, GLsizei height)
-{
-    addCapabilitySetting(new capability::Scissor(x, y, width, height));
-}
-
-void State::stencilFunc(GLenum func, GLint ref, GLuint mask)
-{
-    addCapabilitySetting(new capability::StencilFunc(func, ref, mask));
-}
-
-void State::stencilOp(GLenum fail, GLenum zFail, GLenum zPass)
-{
-    addCapabilitySetting(new capability::StencilOp(fail, zFail, zPass));
+    if (m_mode == ImmediateMode)
+        setting->apply();
 }
 
 } // namespace glow
