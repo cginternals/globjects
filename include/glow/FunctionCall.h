@@ -18,7 +18,7 @@ public:
 
 
 template <typename... Arguments>
-class GLOW_API FunctionCall : public AbstractFunctionCall
+class FunctionCall : public AbstractFunctionCall
 {
 public:
     using FunctionPointer = void (*)(Arguments...);
