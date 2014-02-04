@@ -4,7 +4,6 @@
 
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
-#include <glow/AbstractArray.h>
 
 namespace glow
 {
@@ -112,20 +111,11 @@ bool Buffer::unmap()
     return success == GL_TRUE;
 }
 
-void Buffer::setData(const AbstractArray& data, GLenum usage)
-{
-	setData(data.rawSize(), data.rawData(), usage);
-}
-
 void Buffer::setData(GLsizei size, const GLvoid* data, GLenum usage)
 {
 	bind();
     glBufferData(m_target, size, data, usage);
 	CheckGLError();
-}
-
-void Buffer::setSubData(const glow::AbstractArray &data, GLintptr offset) {
-    setSubData(data.rawSize(), offset, data.rawData());
 }
     
 void Buffer::setSubData (GLsizeiptr size, GLintptr offset, const GLvoid* data) {

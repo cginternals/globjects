@@ -29,12 +29,9 @@ set(api_includes
 
     ${header_path}/AbstractLogHandler.h
     ${header_path}/AbstractUniform.h
-    ${header_path}/AbstractArray.h
     ${header_path}/AbstractState.h
     ${header_path}/AbstractState.hpp
     ${header_path}/AbstractStringSource.h
-    ${header_path}/Array.h
-    ${header_path}/Array.hpp
     ${header_path}/Buffer.h
     ${header_path}/Buffer.hpp
     ${header_path}/Capability.h
@@ -84,6 +81,7 @@ set(api_includes
     ${header_path}/TextureAttachment.h
     ${header_path}/TextureHandle.h
     ${header_path}/TransformFeedback.h
+    ${header_path}/TransformFeedback.hpp
     ${header_path}/Uniform.h
     ${header_path}/Uniform.hpp
     ${header_path}/UniformSetter.h

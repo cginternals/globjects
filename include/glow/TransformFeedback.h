@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <array>
+
 #include <GL/glew.h>
 
 #include <glow/glow.h>
@@ -10,9 +13,6 @@ namespace glow
 
 class ObjectVisitor;
 class Program;
-
-template<typename T>
-class Array;
 
 /** \brief Interface to use transform feedback.
     
@@ -77,9 +77,13 @@ public:
     ,   const char ** varyingNames
     ,   GLenum bufferMode);
 
-	void setVaryings(
-        Program * program
-    ,   const Array<const char *> & varyingNames
+    void setVaryings(Program * program
+    ,   const std::vector<const char *> &varyingNames
+    ,   GLenum bufferMode);
+
+    template <std::size_t Count>
+    void setVaryings(Program * program
+    ,   const std::array<const char *, Count> &varyingNames
     ,   GLenum bufferMode);
 
 	bool isTransformFeedback() const;
@@ -89,3 +93,5 @@ protected:
 };
 
 } // namespace glow
+
+#include <glow/TransformFeedback.hpp>

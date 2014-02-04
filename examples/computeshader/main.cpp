@@ -11,7 +11,6 @@
 #include <glm/gtx/constants.hpp>
 
 #include <glow/Uniform.h>
-#include <glow/Array.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>

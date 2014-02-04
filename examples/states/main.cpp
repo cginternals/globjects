@@ -4,7 +4,6 @@
 #include <glow/Error.h>
 #include <glow/ref_ptr.h>
 #include <glow/Buffer.h>
-#include <glow/Array.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/VertexArrayObject.h>
@@ -75,16 +74,17 @@ public:
         m_shaderProgram->attach(new glow::Shader(GL_VERTEX_SHADER, vertexShaderSource),
                                 new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderSource));
         
-        m_buffer->setData(glow::Array<glm::vec2>()
-            << glm::vec2(-0.8, 0.8) << glm::vec2(-0.4, 0.8) << glm::vec2(0.0, 0.8) << glm::vec2(0.4, 0.8) << glm::vec2(0.8, 0.8)
-            << glm::vec2(-0.8, 0.6) << glm::vec2(-0.4, 0.6) << glm::vec2(0.0, 0.6) << glm::vec2(0.4, 0.6) << glm::vec2(0.8, 0.6)
-            << glm::vec2(-0.8, 0.4) << glm::vec2(-0.4, 0.4) << glm::vec2(0.0, 0.4) << glm::vec2(0.4, 0.4) << glm::vec2(0.8, 0.4)
-            << glm::vec2(-0.8, 0.2) << glm::vec2(-0.4, 0.2) << glm::vec2(0.0, 0.2) << glm::vec2(0.4, 0.2) << glm::vec2(0.8, 0.2)
-            << glm::vec2(-0.8, 0.0) << glm::vec2(-0.4, 0.0) << glm::vec2(0.0, 0.0) << glm::vec2(0.4, 0.0) << glm::vec2(0.8, 0.0)
-            << glm::vec2(-0.8, -0.2) << glm::vec2(-0.4, -0.2) << glm::vec2(0.0, -0.2) << glm::vec2(0.4, -0.2) << glm::vec2(0.8, -0.2)
-            << glm::vec2(-0.8, -0.4) << glm::vec2(-0.4, -0.4) << glm::vec2(0.0, -0.4) << glm::vec2(0.4, -0.4) << glm::vec2(0.8, -0.4)
-            << glm::vec2(-0.8, -0.6) << glm::vec2(-0.4, -0.6) << glm::vec2(0.0, -0.6) << glm::vec2(0.4, -0.6) << glm::vec2(0.8, -0.6)
-            << glm::vec2(-0.8, -0.8) << glm::vec2(-0.4, -0.8) << glm::vec2(0.0, -0.8) << glm::vec2(0.4, -0.8) << glm::vec2(0.8, -0.8)
+        m_buffer->setData(std::vector<glm::vec2>({
+              glm::vec2(-0.8, 0.8), glm::vec2(-0.4, 0.8), glm::vec2(0.0, 0.8), glm::vec2(0.4, 0.8), glm::vec2(0.8, 0.8)
+            , glm::vec2(-0.8, 0.6), glm::vec2(-0.4, 0.6), glm::vec2(0.0, 0.6), glm::vec2(0.4, 0.6), glm::vec2(0.8, 0.6)
+            , glm::vec2(-0.8, 0.4), glm::vec2(-0.4, 0.4), glm::vec2(0.0, 0.4), glm::vec2(0.4, 0.4), glm::vec2(0.8, 0.4)
+            , glm::vec2(-0.8, 0.2), glm::vec2(-0.4, 0.2), glm::vec2(0.0, 0.2), glm::vec2(0.4, 0.2), glm::vec2(0.8, 0.2)
+            , glm::vec2(-0.8, 0.0), glm::vec2(-0.4, 0.0), glm::vec2(0.0, 0.0), glm::vec2(0.4, 0.0), glm::vec2(0.8, 0.0)
+            , glm::vec2(-0.8, -0.2), glm::vec2(-0.4, -0.2), glm::vec2(0.0, -0.2), glm::vec2(0.4, -0.2), glm::vec2(0.8, -0.2)
+            , glm::vec2(-0.8, -0.4), glm::vec2(-0.4, -0.4), glm::vec2(0.0, -0.4), glm::vec2(0.4, -0.4), glm::vec2(0.8, -0.4)
+            , glm::vec2(-0.8, -0.6), glm::vec2(-0.4, -0.6), glm::vec2(0.0, -0.6), glm::vec2(0.4, -0.6), glm::vec2(0.8, -0.6)
+            , glm::vec2(-0.8, -0.8), glm::vec2(-0.4, -0.8), glm::vec2(0.0, -0.8), glm::vec2(0.4, -0.8), glm::vec2(0.8, -0.8)
+            })
             , GL_STATIC_DRAW
         );
 
