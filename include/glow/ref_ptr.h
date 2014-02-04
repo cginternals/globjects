@@ -42,9 +42,9 @@ public:
 	const T * get() const;
 
 	ref_ptr & operator=(const ref_ptr & reference);
-	T & operator*();
-	const T * operator*() const;
-	T * operator->();
+    T & operator*();
+    const T & operator*() const;
+    T * operator->();
 	const T * operator->() const;
 	operator T *();
 	operator const T *() const;

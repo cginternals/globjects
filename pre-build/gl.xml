@@ -5494,7 +5494,9 @@ typedef unsigned int GLhandleARB;
         <enum value="0x8834" name="GL_DRAW_BUFFER15_EXT"/>
         <enum value="0x8834" name="GL_DRAW_BUFFER15_NV"/>
         <enum value="0x8835" name="GL_COLOR_CLEAR_UNCLAMPED_VALUE_ATI"/>
-            <unused start="0x8836" end="0x883C"/>
+            <unused start="0x8836"/>
+        <enum value="0x8837" name="GL_COMPRESSED_LUMINANCE_ALPHA_3DC_ATI" comment="Defined by Mesa but not ATI"/>
+            <unused start="0x8838" end="0x883C"/>
         <enum value="0x883D" name="GL_BLEND_EQUATION_ALPHA"/>
         <enum value="0x883D" name="GL_BLEND_EQUATION_ALPHA_EXT"/>
         <enum value="0x883D" name="GL_BLEND_EQUATION_ALPHA_OES"/>
@@ -7234,7 +7236,11 @@ typedef unsigned int GLhandleARB;
             <unused start="0x903D" end="0x9044"/>
         <enum value="0x9045" name="GL_TEXTURE_COVERAGE_SAMPLES_NV"/>
         <enum value="0x9046" name="GL_TEXTURE_COLOR_SAMPLES_NV"/>
-            <unused start="0x9047" end="0x904B"/>
+        <enum value="0x9047" name="GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX"/>
+        <enum value="0x9048" name="GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX"/>
+        <enum value="0x9049" name="GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX"/>
+        <enum value="0x904A" name="GL_GPU_MEMORY_INFO_EVICTION_COUNT_NVX"/>
+        <enum value="0x904B" name="GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX"/>
         <enum value="0x904C" name="GL_IMAGE_1D"/>
         <enum value="0x904C" name="GL_IMAGE_1D_EXT"/>
         <enum value="0x904D" name="GL_IMAGE_2D"/>
@@ -7868,22 +7874,22 @@ typedef unsigned int GLhandleARB;
     </enums>
 
     <enums namespace="GL" start="0x94F0" end="0x950F" vendor="INTEL" comment="Khronos bug 11345">
-        <enum value="0x94F0" name="GL_PERFQUERY_COUNTER_EVENT_INTEL"/>           
-        <enum value="0x94F1" name="GL_PERFQUERY_COUNTER_DURATION_NORM_INTEL"/>   
-        <enum value="0x94F2" name="GL_PERFQUERY_COUNTER_DURATION_RAW_INTEL"/>    
-        <enum value="0x94F3" name="GL_PERFQUERY_COUNTER_THROUGHPUT_INTEL"/>      
-        <enum value="0x94F4" name="GL_PERFQUERY_COUNTER_RAW_INTEL"/>             
-        <enum value="0x94F5" name="GL_PERFQUERY_COUNTER_TIMESTAMP_INTEL"/>       
+        <enum value="0x94F0" name="GL_PERFQUERY_COUNTER_EVENT_INTEL"/>
+        <enum value="0x94F1" name="GL_PERFQUERY_COUNTER_DURATION_NORM_INTEL"/>
+        <enum value="0x94F2" name="GL_PERFQUERY_COUNTER_DURATION_RAW_INTEL"/>
+        <enum value="0x94F3" name="GL_PERFQUERY_COUNTER_THROUGHPUT_INTEL"/>
+        <enum value="0x94F4" name="GL_PERFQUERY_COUNTER_RAW_INTEL"/>
+        <enum value="0x94F5" name="GL_PERFQUERY_COUNTER_TIMESTAMP_INTEL"/>
             <unused start="0x94F6" end="0x94F7"/>
-        <enum value="0x94F8" name="GL_PERFQUERY_COUNTER_DATA_UINT32_INTEL"/>     
-        <enum value="0x94F9" name="GL_PERFQUERY_COUNTER_DATA_UINT64_INTEL"/>     
-        <enum value="0x94FA" name="GL_PERFQUERY_COUNTER_DATA_FLOAT_INTEL"/>      
-        <enum value="0x94FB" name="GL_PERFQUERY_COUNTER_DATA_DOUBLE_INTEL"/>     
-        <enum value="0x94FC" name="GL_PERFQUERY_COUNTER_DATA_BOOL32_INTEL"/>     
-        <enum value="0x94FD" name="GL_PERFQUERY_QUERY_NAME_LENGTH_MAX_INTEL"/>   
-        <enum value="0x94FE" name="GL_PERFQUERY_COUNTER_NAME_LENGTH_MAX_INTEL"/> 
-        <enum value="0x94FF" name="GL_PERFQUERY_COUNTER_DESC_LENGTH_MAX_INTEL"/> 
-        <enum value="0x9500" name="GL_PERFQUERY_GPA_EXTENDED_COUNTERS_INTEL"/>   
+        <enum value="0x94F8" name="GL_PERFQUERY_COUNTER_DATA_UINT32_INTEL"/>
+        <enum value="0x94F9" name="GL_PERFQUERY_COUNTER_DATA_UINT64_INTEL"/>
+        <enum value="0x94FA" name="GL_PERFQUERY_COUNTER_DATA_FLOAT_INTEL"/>
+        <enum value="0x94FB" name="GL_PERFQUERY_COUNTER_DATA_DOUBLE_INTEL"/>
+        <enum value="0x94FC" name="GL_PERFQUERY_COUNTER_DATA_BOOL32_INTEL"/>
+        <enum value="0x94FD" name="GL_PERFQUERY_QUERY_NAME_LENGTH_MAX_INTEL"/>
+        <enum value="0x94FE" name="GL_PERFQUERY_COUNTER_NAME_LENGTH_MAX_INTEL"/>
+        <enum value="0x94FF" name="GL_PERFQUERY_COUNTER_DESC_LENGTH_MAX_INTEL"/>
+        <enum value="0x9500" name="GL_PERFQUERY_GPA_EXTENDED_COUNTERS_INTEL"/>
             <unused start="0x9501" end="0x950F"/>
     </enums>
 
@@ -8489,7 +8495,6 @@ typedef unsigned int GLhandleARB;
         <command>
             <proto>void <name>glBindVertexArrayAPPLE</name></proto>
             <param><ptype>GLuint</ptype> <name>array</name></param>
-            <alias name="glBindVertexArray"/>
         </command>
         <command>
             <proto>void <name>glBindVertexArrayOES</name></proto>
@@ -12925,13 +12930,12 @@ typedef unsigned int GLhandleARB;
             <param group="ArrayObjectPNameATI"><ptype>GLenum</ptype> <name>pname</name></param>
             <param len="1"><ptype>GLint</ptype> *<name>params</name></param>
         </command>
-        <command>
+        <command comment="Could be an alias of glGetAttachedShaders except that GLhandleARB is different on MacOS X">
             <proto>void <name>glGetAttachedObjectsARB</name></proto>
             <param group="handleARB"><ptype>GLhandleARB</ptype> <name>containerObj</name></param>
             <param><ptype>GLsizei</ptype> <name>maxCount</name></param>
             <param len="1"><ptype>GLsizei</ptype> *<name>count</name></param>
             <param group="handleARB" len="count"><ptype>GLhandleARB</ptype> *<name>obj</name></param>
-            <alias name="glGetAttachedShaders"/>
         </command>
         <command>
             <proto>void <name>glGetAttachedShaders</name></proto>
@@ -13013,6 +13017,7 @@ typedef unsigned int GLhandleARB;
             <param><ptype>GLenum</ptype> <name>target</name></param>
             <param><ptype>GLenum</ptype> <name>pname</name></param>
             <param>void **<name>params</name></param>
+            <alias name="glGetBufferPointerv"/>
         </command>
         <command>
             <proto>void <name>glGetBufferSubData</name></proto>
@@ -16569,6 +16574,7 @@ typedef unsigned int GLhandleARB;
             <proto>void *<name>glMapBufferOES</name></proto>
             <param><ptype>GLenum</ptype> <name>target</name></param>
             <param><ptype>GLenum</ptype> <name>access</name></param>
+            <alias name="glMapBuffer"/>
         </command>
         <command>
             <proto>void *<name>glMapBufferRange</name></proto>
@@ -23992,7 +23998,7 @@ typedef unsigned int GLhandleARB;
             <param><ptype>GLsizei</ptype> <name>count</name></param>
             <param group="Boolean"><ptype>GLboolean</ptype> <name>transpose</name></param>
             <param len="6">const <ptype>GLfloat</ptype> *<name>value</name></param>
-            <alias name="glUniformMatrix3x2"/>
+            <alias name="glUniformMatrix3x2fv"/>
         </command>
         <command>
             <proto>void <name>glUniformMatrix3x4dv</name></proto>
@@ -24117,6 +24123,7 @@ typedef unsigned int GLhandleARB;
         <command>
             <proto><ptype>GLboolean</ptype> <name>glUnmapBufferOES</name></proto>
             <param><ptype>GLenum</ptype> <name>target</name></param>
+            <alias name="glUnmapBuffer"/>
         </command>
         <command>
             <proto group="Boolean"><ptype>GLboolean</ptype> <name>glUnmapNamedBufferEXT</name></proto>
@@ -24182,7 +24189,7 @@ typedef unsigned int GLhandleARB;
             <param>const void *<name>getProcAddress</name></param>
         </command>
         <command>
-            <proto>void <name>glVDPAUIsSurfaceNV</name></proto>
+            <proto><ptype>GLboolean</ptype> <name>glVDPAUIsSurfaceNV</name></proto>
             <param group="vdpauSurfaceNV"><ptype>GLvdpauSurfaceNV</ptype> <name>surface</name></param>
         </command>
         <command>
@@ -38281,6 +38288,15 @@ typedef unsigned int GLhandleARB;
             <require>
                 <command name="glBeginConditionalRenderNVX"/>
                 <command name="glEndConditionalRenderNVX"/>
+            </require>
+        </extension>
+        <extension name="GL_NVX_gpu_memory_info" supported="gl">
+            <require>
+                <enum name="GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX"/>
+                <enum name="GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX"/>
+                <enum name="GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX"/>
+                <enum name="GL_GPU_MEMORY_INFO_EVICTION_COUNT_NVX"/>
+                <enum name="GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX"/>
             </require>
         </extension>
         <extension name="GL_NV_bindless_multi_draw_indirect" supported="gl">

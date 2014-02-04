@@ -54,6 +54,7 @@ set(api_includes
     ${header_path}/RawFile.hpp
     ${header_path}/screen.h
     ${header_path}/ScreenAlignedQuad.h
+    ${header_path}/StackedState.h
     ${header_path}/StringSourceDecorator.h
     ${header_path}/StringTemplate.h
     ${header_path}/Timer.h
@@ -89,6 +90,7 @@ set(sources
     ${source_path}/Plane3.cpp
     ${source_path}/screen.cpp
     ${source_path}/ScreenAlignedQuad.cpp
+    ${source_path}/StackedState.cpp
     ${source_path}/StringSourceDecorator.cpp
     ${source_path}/StringTemplate.cpp
     ${source_path}/Timer.cpp

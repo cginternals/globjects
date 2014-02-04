@@ -67,7 +67,6 @@ public:
     {
         int width = event.width();
         int height = event.height();
-    	int side = std::min<int>(width, height);
 
         glViewport(0, 0, width, height);
         CheckGLError();
@@ -82,7 +81,8 @@ public:
 
         m_program->setUniform("modelViewProjection", m_camera.viewProjection());
 
-        mat4 R = glm::rotate(m_angle, 1.f, 0.f, 0.f);
+        mat4 R = glm::rotate(m_angle, glm::vec3(1.f,0.f,0.f));
+
         m_program->setUniform("R", R);
         m_program->setUniform("S", m_scale);
 

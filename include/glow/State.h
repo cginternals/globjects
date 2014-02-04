@@ -7,64 +7,54 @@
 
 #include <glow/glow.h>
 #include <glow/Referenced.h>
+#include <glow/AbstractState.h>
+#include <glow/StateSetting.h>
 
 namespace glow
 {
 
 class Capability;
 
-namespace capability {
-
-class AbstractCapabilitySetting;
-
-} // namespace capability
-
-class GLOW_API State : public Referenced
+class GLOW_API State : public AbstractState, public Referenced
 {
 public:
-    State();
+    enum Mode
+    {
+        DeferredMode,
+        ImmediateMode
+    };
+
+public:
+    State(Mode = ImmediateMode);
     ~State();
 
-    static State* currentState();
+    static State * currentState();
+
+    void setMode(Mode mode);
+    Mode mode() const;
 
     void apply();
 
-    void enable(GLenum capability);
-    void disable(GLenum capability);
-    bool isEnabled(GLenum capability) const;
-    void enable(GLenum capability, int index);
-    void disable(GLenum capability, int index);
-    bool isEnabled(GLenum capability, int index) const;
-    void setEnabled(GLenum capability, bool enabled);
-    void setEnabled(GLenum capability, int index, bool enabled);
+    virtual void enable(GLenum capability) override;
+    virtual void disable(GLenum capability) override;
+    virtual bool isEnabled(GLenum capability) const override;
+    virtual void enable(GLenum capability, int index) override;
+    virtual void disable(GLenum capability, int index) override;
+    virtual bool isEnabled(GLenum capability, int index) const override;
 
-    // specific capability settings
-    void blendFunc(GLenum sFactor, GLenum dFactor);
-    void logicOp(GLenum opcode);
-    void cullFace(GLenum mode);
-    void depthFunc(GLenum func);
-    void depthRange(GLdouble nearVal, GLdouble farVal);
-    void depthRange(GLfloat nearVal, GLfloat farVal);
-    void pointSize(GLfloat size);
-    void polygonMode(GLenum face, GLenum mode);
-    void polygonOffset(GLfloat factor, GLfloat units);
-    void primitiveRestartIndex(GLuint index);
-    void sampleCoverage(GLfloat value, GLboolean invert);
-    void scissor(GLint x, GLint y, GLsizei width, GLsizei height);
-    void stencilFunc(GLenum func, GLint ref, GLuint mask);
-    void stencilOp(GLenum fail, GLenum zFail, GLenum zPass);
+    virtual void add(StateSetting * setting) override;
 
+    Capability * capability(GLenum capability);
     std::vector<Capability*> capabilities() const;
 
-public:
-    void addCapability(Capability * capability);
-    void addCapabilitySetting(capability::AbstractCapabilitySetting * capabilitySetting);
-
+    StateSetting * setting(const StateSettingType & type);
+    std::vector<StateSetting*> settings() const;
 protected:
+    Mode m_mode;
     std::unordered_map<GLenum, Capability*> m_capabilities;
-    std::unordered_map<unsigned, capability::AbstractCapabilitySetting*> m_capabilitySettings;
+    std::unordered_map<StateSettingType, StateSetting*> m_settings;
 
-    void setToCurrent(GLenum capability);
+    void addCapability(Capability * capability);
     Capability* getCapability(GLenum capability);
 };
 
