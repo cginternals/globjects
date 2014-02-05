@@ -42,8 +42,13 @@ set(LINUX_COMPILE_FLAGS "-pthread -pipe -fPIC -Wreturn-type -Wall -pedantic -Wex
 # -Wreturn-type -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
 # -Wshadow -> e.g. when a parameter is named like a member, too many warnings, disabled for now
 
+set(LINUX_LINKER_FLAGS "-pthread")
+
 set(DEFAULT_COMPILE_FLAGS ${LINUX_COMPILE_FLAGS})
 
+set(DEFAULT_LINKER_FLAGS_RELEASE ${LINUX_LINKER_FLAGS})
+set(DEFAULT_LINKER_FLAGS_DEBUG ${LINUX_LINKER_FLAGS})
+set(DEFAULT_LINKER_FLAGS ${LINUX_LINKER_FLAGS})
 
 # Add platform specific libraries for linking
 set(EXTRA_LIBS "")
