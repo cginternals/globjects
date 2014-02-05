@@ -25,4 +25,21 @@ if(GMOCK_FOUND AND GTEST_FOUND)
 	add_subdirectory("glowutils-test")
 	add_subdirectory("glowwindow-test")
 
+	set(GLOW_TESTS "tests")
+	add_custom_target(${GLOW_TESTS})
+
+	add_dependencies(${GLOW_TESTS} glow-test glowutils-test glowwindow-test)
+	add_custom_command(TARGET ${GLOW_TESTS} POST_BUILD 
+		COMMAND cmake -E echo
+		COMMAND echo run glow-test:
+		COMMAND $<TARGET_FILE:glow-test>)
+	add_custom_command(TARGET ${GLOW_TESTS} POST_BUILD 
+		COMMAND cmake -E echo
+		COMMAND echo run glowutils-test:
+		COMMAND $<TARGET_FILE:glowutils-test>)
+	add_custom_command(TARGET ${GLOW_TESTS} POST_BUILD 
+		COMMAND cmake -E echo
+		COMMAND echo run glowwindow-test:
+		COMMAND $<TARGET_FILE:glowwindow-test>)
+
 endif()
