@@ -45,11 +45,9 @@ endif()
 
 
 #enable_testing() # it's important to state this before adding targets
-
 # f*** http://public.kitware.com/Bug/print_bug_page.php?bug_id=5977
- 
+
 #set(CMAKE_CTEST_COMMAND "${CMAKE_CTEST_COMMAND} -VV")
-#message(STATUS ${CMAKE_CTEST_COMMAND})
 
 # Project
 project(${META_PROJECT_NAME} C CXX)
