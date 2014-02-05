@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <iterator>
+#include <algorithm>
 
 #include <glm/glm.hpp>
 
@@ -16,7 +17,7 @@ using namespace glow;
 namespace glowutils 
 {
 
-const Array<vec3> Icosahedron::vertices()
+const std::array<vec3, 12> Icosahedron::vertices()
 {
     static const float t = (1.f + sqrtf(5.f)) * 0.5f; // 2.118
     static const float i = inversesqrt(t * t + 1.f);  // 0.427
@@ -25,8 +26,7 @@ const Array<vec3> Icosahedron::vertices()
     // icosahedron vertices (normalized) form three orthogonal golden rectangles
     // http://en.wikipedia.org/wiki/Icosahedron#Cartesian_coordinates
 
-    return Array<vec3>
-    {
+    return std::array<vec3, 12>{{
         vec3(-i, a, 0) 
     ,   vec3( i, a, 0)
     ,   vec3(-i,-a, 0)
@@ -39,13 +39,12 @@ const Array<vec3> Icosahedron::vertices()
     ,   vec3( a, 0, i)
     ,   vec3(-a, 0,-i)
     ,   vec3(-a, 0, i)
-    };
+    }};
 }
 
-const Array<lowp_uvec3> Icosahedron::indices()
+const std::array<lowp_uvec3, 20> Icosahedron::indices()
 {
-    return Array<lowp_uvec3> 
-    {
+    return std::array<lowp_uvec3, 20>{{
         lowp_uvec3(  0, 11,  5)
     ,   lowp_uvec3(  0,  5,  1)
     ,   lowp_uvec3(  0,  1,  7)
@@ -69,7 +68,7 @@ const Array<lowp_uvec3> Icosahedron::indices()
     ,   lowp_uvec3(  6,  2, 10)
     ,   lowp_uvec3(  8,  6,  7)
     ,   lowp_uvec3(  9,  8,  1)
-    };
+    }};
 }
 
 Icosahedron::Icosahedron(
@@ -82,12 +81,15 @@ Icosahedron::Icosahedron(
     auto v(vertices());
     auto i(indices());
 
-    refine(v, i, static_cast<char>(clamp(iterations, 0, 8)));
+    std::vector<vec3> vertices(&v[0], &v[11]);
+    std::vector<lowp_uvec3> indices(&i[0], &i[19]);
 
-    m_indices->setData(i, GL_STATIC_DRAW);
-    m_vertices->setData(v, GL_STATIC_DRAW);
+    refine(vertices, indices, static_cast<char>(clamp(iterations, 0, 8)));
 
-    m_size = static_cast<GLsizei>(i.size() * 3);
+    m_indices->setData(indices, GL_STATIC_DRAW);
+    m_vertices->setData(vertices, GL_STATIC_DRAW);
+
+    m_size = static_cast<GLsizei>(indices.size() * 3);
 
     m_vao->bind();
 
@@ -119,8 +121,8 @@ void Icosahedron::draw(const GLenum mode)
 }
 
 void Icosahedron::refine(
-    Array<vec3> & vertices
-,   Array<lowp_uvec3> & indices
+    std::vector<vec3> & vertices
+,   std::vector<lowp_uvec3> & indices
 ,   const unsigned char levels)
 {
     std::unordered_map<uint, lowp_uint> cache;
@@ -143,17 +145,17 @@ void Icosahedron::refine(
 
             face = glm::lowp_uvec3(ab, bc, ca);
 
-            indices << glm::lowp_uvec3(a, ab, ca)
-                    << glm::lowp_uvec3(b, bc, ab)
-                    << glm::lowp_uvec3(c, ca, bc);
+            indices.emplace_back(a, ab, ca);
+            indices.emplace_back(b, bc, ab);
+            indices.emplace_back(c, ca, bc);
         }
-    }    
+    }
 }
 
 lowp_uint Icosahedron::split(
     const lowp_uint a
 ,   const lowp_uint b
-,   Array<vec3> & points
+,   std::vector<vec3> & points
 ,   std::unordered_map<uint, lowp_uint> & cache)
 {
     const bool aSmaller(a < b);
@@ -166,7 +168,7 @@ lowp_uint Icosahedron::split(
     if(cache.end() != h)
         return h->second;
 
-    points << normalize((points[a] + points[b]) * .5f);
+    points.push_back(normalize((points[a] + points[b]) * .5f));
 
     const lowp_uint i = static_cast<lowp_uint>(points.size() - 1);
 

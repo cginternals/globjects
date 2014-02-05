@@ -22,8 +22,8 @@ using namespace glow;
 using namespace glm;
 
 TransformFeedbackParticles::TransformFeedbackParticles(
-    const Array<vec4> & positions
-,   const Array<vec4> & velocities
+    const std::vector<vec4> & positions
+,   const std::vector<vec4> & velocities
 ,   const Texture & forces
 ,   const glowutils::Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
@@ -49,7 +49,7 @@ void TransformFeedbackParticles::initialize()
     m_transformFeedbackProgram->link();
 
     m_transformFeedback = new glow::TransformFeedback();
-    m_transformFeedback->setVaryings(m_transformFeedbackProgram, glow::Array<const char*>{ "out_position", "out_velocity" }, GL_SEPARATE_ATTRIBS);
+    m_transformFeedback->setVaryings(m_transformFeedbackProgram, std::array<const char*, 2>{ { "out_position", "out_velocity" } }, GL_SEPARATE_ATTRIBS);
 
     m_drawProgram = new Program();
     m_drawProgram->attach(

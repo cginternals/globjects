@@ -1,8 +1,11 @@
 #pragma once
 
+#include <array>
+
+#include <GL/glew.h>
+
 #include <glm/glm.hpp>
 
-#include <glow/Array.h>
 #include <glow/ref_ptr.h>
 #include <glow/Referenced.h>
 
@@ -19,7 +22,7 @@ namespace glowutils
 
 class GLOWUTILS_API UnitCube : public glow::Referenced
 {
-    static const glow::Array<glm::vec3> strip();
+    static const std::array<glm::vec3, 28> strip();
 
 public:
     UnitCube(GLuint vertexAttribLocation = 0, GLuint normalAttribLocation = 1);

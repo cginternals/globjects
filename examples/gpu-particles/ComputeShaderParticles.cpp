@@ -27,8 +27,8 @@ using namespace glm;
 
 
 ComputeShaderParticles::ComputeShaderParticles(
-    const Array<vec4> & positions
-,   const Array<vec4> & velocities
+    const std::vector<vec4> & positions
+,   const std::vector<vec4> & velocities
 ,   const Texture & forces
 ,   const glowutils::Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)

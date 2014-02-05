@@ -15,10 +15,9 @@ using namespace glow;
 namespace glowutils 
 {
 
-const Array<vec3> UnitCube::strip()
+const std::array<glm::vec3, 28> UnitCube::strip()
 {
-    vec3 vertices [8]
-    { 
+    std::array<glm::vec3, 8> vertices{{
         vec3(-.5f,-.5f,-.5f)
     ,   vec3(-.5f,-.5f, .5f)
     ,   vec3(-.5f, .5f,-.5f)
@@ -27,10 +26,9 @@ const Array<vec3> UnitCube::strip()
     ,   vec3( .5f,-.5f, .5f)
     ,   vec3( .5f, .5f,-.5f)
     ,   vec3( .5f, .5f, .5f)
-    };
+    }};
 
-    vec3 normals [7]
-    { 
+    std::array<glm::vec3, 7> normals{{
         vec3(-1, 0, 0)  
     ,   vec3( 1, 0, 0)  
     ,   vec3( 0,-1, 0)  
@@ -38,11 +36,10 @@ const Array<vec3> UnitCube::strip()
     ,   vec3( 0, 0,-1)  
     ,   vec3( 0, 0, 1)  
     ,   vec3( 0, 0, 0)  // dummy
-    };
+    }};
 
     // use an interleaved array
-    return Array<vec3>
-    {
+    return std::array<glm::vec3, 28>{{
         vertices[7], normals[6]
     ,   vertices[3], normals[6]
     ,   vertices[5], normals[5]
@@ -57,7 +54,7 @@ const Array<vec3> UnitCube::strip()
     ,   vertices[0], normals[2]
     ,   vertices[6], normals[4] 
     ,   vertices[2], normals[4]
-    };
+    }};
 }
 
 UnitCube::UnitCube(const GLuint vertexAttribLocation, const GLuint normalAttribLocation)

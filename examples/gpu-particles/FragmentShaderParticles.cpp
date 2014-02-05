@@ -18,8 +18,8 @@ using namespace glm;
 
 
 FragmentShaderParticles::FragmentShaderParticles(
-    const Array<vec4> & positions
-,   const Array<vec4> & velocities
+    const std::vector<vec4> & positions
+,   const std::vector<vec4> & velocities
 ,   const Texture & forces
 ,   const Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
@@ -107,8 +107,8 @@ void FragmentShaderParticles::reset()
     m_height += remain / m_width + (remain % m_width == 0 ? 0 : 1);
 
     // Read positions and velocities into textures
-    m_texPositions ->image2D(0, GL_RGBA32F, m_width, m_height, 0, GL_RGBA, GL_FLOAT, m_positions .rawData());
-    m_texVelocities->image2D(0, GL_RGBA32F, m_width, m_height, 0, GL_RGBA, GL_FLOAT, m_velocities.rawData());
+    m_texPositions ->image2D(0, GL_RGBA32F, m_width, m_height, 0, GL_RGBA, GL_FLOAT, m_positions .data());
+    m_texVelocities->image2D(0, GL_RGBA32F, m_width, m_height, 0, GL_RGBA, GL_FLOAT, m_velocities.data());
 }
 
 void FragmentShaderParticles::step(const float elapsed)
