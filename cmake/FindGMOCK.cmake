@@ -18,6 +18,8 @@ find_library(GMOCK_LIBRARY
     PATHS
     $ENV{GMOCKDIR}/lib
     $ENV{GMOCK_HOME}/lib
+    $ENV{GMOCKDIR}
+    $ENV{GMOCK_HOME}
     /usr/lib64
     /usr/local/lib64
     /sw/lib64
@@ -33,6 +35,8 @@ find_library(GMOCK_LIBRARY_DEBUG
     PATHS
     $ENV{GMOCKDIR}/lib
     $ENV{GMOCK_HOME}/lib
+    $ENV{GMOCKDIR}
+    $ENV{GMOCK_HOME}
     /usr/lib64
     /usr/local/lib64
     /sw/lib64
@@ -42,8 +46,16 @@ find_library(GMOCK_LIBRARY_DEBUG
     /sw/lib
     /opt/local/lib
     DOC "The GMOCK debug library")
-   
-set(GMOCK_LIBRARIES "optimized" ${GMOCK_LIBRARY} "debug" ${GMOCK_LIBRARY_DEBUG})
+
+if (GMOCK_LIBRARY AND GMOCK_LIBRARY_DEBUG)
+	set(GMOCK_LIBRARIES "optimized" ${GMOCK_LIBRARY} "debug" ${GMOCK_LIBRARY_DEBUG})
+elseif (GMOCK_LIBRARY)
+	set(GMOCK_LIBRARIES ${GMOCK_LIBRARY})
+elseif (GMOCK_LIBRARY_DEBUG)
+	set(GMOCK_LIBRARIES ${GMOCK_LIBRARY_DEBUG})
+else ()
+	set(GMOCK_LIBRARIES "")
+endif ()
 
 find_package_handle_standard_args(GMOCK REQUIRED_VARS GMOCK_INCLUDE_DIR GMOCK_LIBRARIES)
 mark_as_advanced(GMOCK_INCLUDE_DIR GMOCK_LIBRARIES)
