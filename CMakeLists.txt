@@ -28,7 +28,7 @@ option(OPTION_GENERATE_GL_INFO "Automatically generate OpenGL extension and enum
 set(GLOW_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Include cmake modules from ./cmake
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/auxiliary/cmake)
 
 # Set output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -54,7 +54,7 @@ project(${META_PROJECT_NAME} C CXX)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Include custom cmake functions
-include(cmake/Custom.cmake)
+include(auxiliary/cmake/Custom.cmake)
 
 
 # PLATFORM AND ARCHITECTURE
@@ -109,7 +109,7 @@ elseif(APPLE)
 elseif(UNIX AND CMAKE_COMPILER_IS_GNUCXX)
 
     message(STATUS "Configuring for platform Linux/GCC.")
-    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformLinuxGCC.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/auxiliary/cmake/PlatformLinuxGCC.cmake)
 
 else()
 
@@ -179,16 +179,11 @@ get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 string(SUBSTRING ${GIT_SHA1} 0 12 GIT_REV)
 file(WRITE ${CMAKE_BINARY_DIR}/revision ${GIT_REV})
 
-# [TODO] Really?? Do we want this deployed?
-install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION .)
-
 # [TODO] Deal with GIT-NOTFOUND
 
 
 # Generate meta-header
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/source/glow-version.h.in ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h)
-# we do NOT want to deploy this header
-#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h DESTINATION ${INSTALL_INCLUDE}/glow)
 
 
 # GLOW DEPENDENCIES
@@ -215,9 +210,9 @@ include_directories(
 
 # PREBUILD
 
-set(PREBUILD_PATH "${CMAKE_CURRENT_SOURCE_DIR}/pre-build/generated")
+set(PREBUILD_PATH "${CMAKE_CURRENT_SOURCE_DIR}/auxiliary/pre-build/generated")
 if (OPTION_GENERATE_GL_INFO)
-	add_subdirectory("pre-build")
+	add_subdirectory(auxiliary/pre-build)
 endif()
 include_directories(${PREBUILD_PATH})
 install(FILES ${PREBUILD_PATH}/gl_extensions.h DESTINATION include/glow)
@@ -226,7 +221,7 @@ install(FILES ${PREBUILD_PATH}/gl_extensions.h DESTINATION include/glow)
 # LIBRARIES
 
 add_subdirectory(source)
-install(FILES glow-config.cmake DESTINATION ".")
+install(FILES auxiliary/glow-config.cmake DESTINATION ".")
 
 add_dependencies(glow prebuild)
 
@@ -238,15 +233,14 @@ endif()
 
 # PACKAGING
 
-add_subdirectory(packages)
+add_subdirectory(auxiliary/packages)
 
 
 # DOXYGEN
 
-add_subdirectory(docs)
+add_subdirectory(auxiliary/docs)
 
 
 # TESTS
 
 add_subdirectory(tests)
-
