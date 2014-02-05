@@ -13,7 +13,7 @@ class ReferencedMock : public glow::Referenced
 {
 public:
     MOCK_METHOD0(Die, void());
-    virtual ~ReferencedMock() { Die(); };
+    virtual ~ReferencedMock() { Die(); }
 };
 
 TEST_F(Referenced_test, CountsReferences)
