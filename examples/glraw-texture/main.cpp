@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 
 #include <glow/Error.h>
-#include <glow/Array.h>
 #include <glow/logging.h>
 #include <glow/Texture.h>
 #include <glow/debugmessageoutput.h>

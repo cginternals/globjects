@@ -5,7 +5,6 @@
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
 #include <glow/Program.h>
-#include <glow/Array.h>
 
 namespace glow
 {
@@ -103,7 +102,7 @@ void TransformFeedback::setVaryings(Program* program, GLsizei count, const char*
 	program->invalidate();
 }
 
-void TransformFeedback::setVaryings(Program* program, const Array<const char*>& varyingNames, GLenum bufferMode)
+void TransformFeedback::setVaryings(Program* program, const std::vector<const char*>& varyingNames, GLenum bufferMode)
 {
     setVaryings(program, static_cast<GLint>(varyingNames.size()), const_cast<const char**>(varyingNames.data()), bufferMode);
 }

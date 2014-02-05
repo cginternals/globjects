@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <functional>
 #include <limits>
+#include <vector>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -12,7 +13,6 @@
 #include <glow/Program.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
-#include <glow/Array.h>
 #include <glow/logging.h>
 #include <glow/StaticStringSource.h>
 
@@ -255,7 +255,7 @@ void CameraPathPlayer::createVao()
 
     m_buffer = new glow::Buffer(GL_ARRAY_BUFFER);
 
-    glow::Array<vec4> array;
+    std::vector<vec4> array;
 
     for (int i=0; i<m_bufferSize; ++i)
     {
@@ -265,7 +265,7 @@ void CameraPathPlayer::createVao()
         const CameraPathPoint& p1 = *section.start;
         const CameraPathPoint& p2 = *section.end;
         vec3 pos = bezier(p1.eye, section.c1, section.c2, p2.eye, sectionT);
-        array << vec4(pos, t);
+        array.emplace_back(pos, t);
     }
 
     m_buffer->setData(array);

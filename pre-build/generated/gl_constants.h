@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include <unordered_map>
 
-std::unordered_multimap<GLuint64, const char*> GLconstants = {
+const std::unordered_multimap<GLuint64, const char*> GLconstants = {
 #ifdef GL_1PASS_EXT
 	{ GL_1PASS_EXT, "GL_1PASS_EXT" },
 #endif

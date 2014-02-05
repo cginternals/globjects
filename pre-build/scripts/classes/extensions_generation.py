@@ -54,9 +54,9 @@ def generateExtensionFiles(inputfile, outputfile, outputfile2):
 	findExtensionVersions(extensions, features)
 	
 	enumDecl = "enum Extension\n{\n"
-	namesMap = "std::unordered_map<glow::Extension, std::string, std::hash<unsigned int>> extensionStrings = {\n"
-	extensionMap = "std::unordered_map<std::string, glow::Extension> extensions = {\n"
-	incoreMap = "std::unordered_map<glow::Extension, glow::Version, std::hash<unsigned int>> extensionVersions = {\n"
+	namesMap = "const std::unordered_map<glow::Extension, std::string, std::hash<unsigned int>> extensionStrings = {\n"
+	extensionMap = "const std::unordered_map<std::string, glow::Extension> extensions = {\n"
+	incoreMap = "const std::unordered_map<glow::Extension, glow::Version, std::hash<unsigned int>> extensionVersions = {\n"
 
 	for e in extensions:
 		enumDecl += "\t%s,\n" % e.enumName()

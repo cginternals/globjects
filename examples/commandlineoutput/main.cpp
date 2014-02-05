@@ -14,7 +14,6 @@
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/Query.h>
-#include <glow/Array.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Sampler.h>
@@ -121,7 +120,7 @@ int main(int /*argc*/, char* /*argv*/[])
     std::cout << std::endl;
 
     std::cout << "std::array<int, 2> = "; glow::info() << std::array<int, 2>{ { 0, 1 } };
-    std::cout << "glow::Array<float> = "; glow::info() << (glow::Array<float>() << 0.1f << 0.2f << 0.3f);
+    std::cout << "std::vector<float> = "; glow::info() << std::vector<float>({ 0.1f, 0.2f, 0.3f });
 
     std::cout << std::endl;
 

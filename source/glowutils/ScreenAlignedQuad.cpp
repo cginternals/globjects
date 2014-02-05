@@ -1,6 +1,7 @@
 #include <glowutils/ScreenAlignedQuad.h>
 
 #include <cassert>
+#include <array>
 
 #include <glow/Program.h>
 #include <glow/VertexArrayObject.h>
@@ -8,7 +9,6 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
 #include <glow/Shader.h>
-#include <glow/Array.h>
 #include <glow/StaticStringSource.h>
 
 #include <glowutils/StringTemplate.h>
@@ -104,13 +104,12 @@ void ScreenAlignedQuad::initialize()
 	// By default, counterclockwise polygons are taken to be front-facing.
 	// http://www.opengl.org/sdk/docs/man/xhtml/glFrontFace.xml
 
-	static const Array<glm::vec2> raw(
-	{
+    static const std::array<glm::vec2, 4> raw{{
 		glm::vec2( +1.f, -1.f )
 	,	glm::vec2( +1.f, +1.f )
 	,	glm::vec2( -1.f, -1.f )
 	,	glm::vec2( -1.f, +1.f )
-	});
+    }};
 
     m_vao = new VertexArrayObject;
     m_buffer = new Buffer(GL_ARRAY_BUFFER);

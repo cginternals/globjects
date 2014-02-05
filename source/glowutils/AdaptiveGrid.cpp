@@ -1,13 +1,13 @@
 #include <glowutils/AdaptiveGrid.h>
 
 #include <cmath>
+#include <vector>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
 #include <glow/Program.h>
-#include <glow/Array.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
@@ -140,7 +140,7 @@ AdaptiveGrid::~AdaptiveGrid()
 
 void AdaptiveGrid::setupGridLineBuffer(unsigned short segments)
 {
-    Array<vec4> points;
+    std::vector<vec4> points;
 
     float type;
     int  n = 1;
@@ -149,17 +149,31 @@ void AdaptiveGrid::setupGridLineBuffer(unsigned short segments)
 
     type = .2f; // sub gridlines, every 0.125, except every 0.5
     for (float f = -g + .125f; f < g; f += .125f)
+    {
         if (n++ % 4)
-            points  << vec4( g, 0.f, f, type) << vec4(-g, 0.f, f, type) 
-                    << vec4( f, 0.f, g, type) << vec4( f, 0.f,-g, type);
+        {
+            points.emplace_back(g, 0.f, f, type);
+            points.emplace_back(-g, 0.f, f, type);
+            points.emplace_back(f, 0.f, g, type);
+            points.emplace_back(f, 0.f,-g, type);
+        }
+    }
     type = .4f; // grid lines every 1.0 units, offseted by 0.5
     for (float f = -g + .5f; f < g; f += 1.f)
-        points  << vec4( g, 0.f, f, type) << vec4(-g, 0.f, f, type) 
-                << vec4( f, 0.f, g, type) << vec4( f, 0.f,-g, type);
+    {
+        points.emplace_back(g, 0.f, f, type);
+        points.emplace_back(-g, 0.f, f, type);
+        points.emplace_back(f, 0.f, g, type);
+        points.emplace_back(f, 0.f,-g, type);
+    }
     type = .8f; // grid lines every 1.0 units
     for (float f = -g + 1.f; f < g; f += 1.f) 
-        points  << vec4( g, 0.f, f, type) << vec4(-g, 0.f, f, type) 
-                << vec4( f, 0.f, g, type) << vec4( f, 0.f,-g, type);
+    {
+        points.emplace_back(g, 0.f, f, type);
+        points.emplace_back(-g, 0.f, f, type);
+        points.emplace_back(f, 0.f, g, type);
+        points.emplace_back(f, 0.f,-g, type);
+    }
 
     // use hesse normal form and transform each grid line onto the specified plane.
     mat4 T; // ToDo;

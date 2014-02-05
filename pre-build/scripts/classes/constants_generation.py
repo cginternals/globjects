@@ -5,7 +5,7 @@ pre = \
 """#include <GL/glew.h>
 #include <unordered_map>
 
-std::unordered_multimap<GLuint64, const char*> GLconstants = {
+const std::unordered_multimap<GLuint64, const char*> GLconstants = {
 """
 post = "};\n"
 
