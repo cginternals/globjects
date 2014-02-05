@@ -31,15 +31,15 @@ if(GMOCK_FOUND AND GTEST_FOUND)
 	add_dependencies(${GLOW_TESTS} glow-test glowutils-test glowwindow-test)
 	add_custom_command(TARGET ${GLOW_TESTS} POST_BUILD 
 		COMMAND cmake -E echo
-		COMMAND echo run glow-test:
+		COMMAND echo run $<TARGET_FILE:glow-test>:
 		COMMAND $<TARGET_FILE:glow-test>)
 	add_custom_command(TARGET ${GLOW_TESTS} POST_BUILD 
 		COMMAND cmake -E echo
-		COMMAND echo run glowutils-test:
+		COMMAND echo run $<TARGET_FILE:glowutils-test>:
 		COMMAND $<TARGET_FILE:glowutils-test>)
 	add_custom_command(TARGET ${GLOW_TESTS} POST_BUILD 
 		COMMAND cmake -E echo
-		COMMAND echo run glowwindow-test:
+		COMMAND echo run $<TARGET_FILE:glowwindow-test>:
 		COMMAND $<TARGET_FILE:glowwindow-test>)
 
 endif()
