@@ -14,7 +14,6 @@
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/Texture.h>
-#include <glow/Array.h>
 #include <glow/global.h>
 #include <glow/debugmessageoutput.h>
 
@@ -177,7 +176,7 @@ public:
 
         static const ivec3 fdim(5, 5, 5); // this has center axises and allows for random rings etc..
 
-        glow::Array<vec3> forces;
+        std::vector<vec3> forces;
         forces.resize(fdim.x * fdim.y * fdim.z);
 
         srand(static_cast<unsigned int>(time(0)));
@@ -340,8 +339,8 @@ protected:
     int m_numParticles;
     glowutils::Camera * m_camera;
 
-    glow::Array<vec4> m_positions;
-    glow::Array<vec4> m_velocities;
+    std::vector<vec4> m_positions;
+    std::vector<vec4> m_velocities;
 
     int m_steps;
 

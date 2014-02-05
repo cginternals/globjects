@@ -21,8 +21,8 @@ class FragmentShaderParticles : public AbstractParticleTechnique
 {
 public:
     FragmentShaderParticles(
-        const glow::Array<glm::vec4> & positions
-    ,   const glow::Array<glm::vec4> & velocities
+        const std::vector<glm::vec4> & positions
+    ,   const std::vector<glm::vec4> & velocities
     ,   const glow::Texture & forces
     ,   const glowutils::Camera & camera);
     virtual ~FragmentShaderParticles();

@@ -4,7 +4,6 @@
 #include <glow/Error.h>
 #include <glow/ref_ptr.h>
 #include <glow/Buffer.h>
-#include <glow/Array.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/VertexArrayObject.h>
@@ -95,9 +94,8 @@ public:
         
         m_shaderProgram->bindFragDataLocation(0, "fragColor");
 
-        m_buffer->setData(glow::Array<Element>()
-            << Element(glm::vec4(-0.3, -0.3, 0.0, 1.0))
-            << Element(glm::vec4(0.3, 0.3, 0.0, 1.0)),
+        m_buffer->setData(
+            std::array<Element, 2>{ { Element(glm::vec4(-0.3, -0.3, 0.0, 1.0)),  Element(glm::vec4(0.3, 0.3, 0.0, 1.0)) }},
             GL_STATIC_DRAW
         );
 

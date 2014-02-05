@@ -1,12 +1,15 @@
 #pragma once
 
 #include <unordered_map>
+#include <array>
+#include <vector>
+
+#include <GL/glew.h>
 
 #include <glm/glm.hpp>
 
 #include <glow/Referenced.h>
 #include <glow/ref_ptr.h>
-#include <glow/Array.h>
 
 #include <glowutils/glowutils.h>
 
@@ -24,15 +27,15 @@ namespace glowutils
 class GLOWUTILS_API Icosahedron : public glow::Referenced
 {
 public:
-    static const glow::Array<glm::vec3> vertices();
-    static const glow::Array<glm::lowp_uvec3> indices(); /// individual triangle indices (no strip, no fan)
+    static const std::array<glm::vec3, 12> vertices();
+    static const std::array<glm::lowp_uvec3, 20> indices(); /// individual triangle indices (no strip, no fan)
 
    /**  Iterative triangle refinement: split each triangle into 4 new ones and 
         create points and indices appropriately.
     */
     static void refine(
-        glow::Array<glm::vec3> & vertices
-    ,   glow::Array<glm::lowp_uvec3> & indices
+        std::vector<glm::vec3> & vertices
+    ,   std::vector<glm::lowp_uvec3> & indices
     ,   unsigned char levels);
 
 public:
@@ -55,7 +58,7 @@ private:
     static glm::lowp_uint split(
         glm::lowp_uint a
     ,   glm::lowp_uint b
-    ,   glow::Array<glm::vec3> & points
+    ,   std::vector<glm::vec3> & points
     ,   std::unordered_map<glm::uint, glm::lowp_uint> & cache);
 
 private:

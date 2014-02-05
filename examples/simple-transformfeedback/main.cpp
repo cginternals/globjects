@@ -11,7 +11,6 @@
 
 #include <glow/Error.h>
 #include <glow/Uniform.h>
-#include <glow/Array.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
@@ -184,23 +183,25 @@ void EventHandler::createAndSetupShaders()
 
 void EventHandler::createAndSetupGeometry()
 {
-    auto vertexArray = glow::Vec4Array()
-        << glm::vec4(0, 0, 0, 1)
-        << glm::vec4(1, 0, 0, 1)
-        << glm::vec4(0, 1, 0, 1)
+    auto vertexArray = std::vector<glm::vec4>({
+        glm::vec4(0, 0, 0, 1)
+      , glm::vec4(1, 0, 0, 1)
+      , glm::vec4(0, 1, 0, 1)
 
-        << glm::vec4(1, 0, 0, 1)
-        << glm::vec4(0, 1, 0, 1)
-        << glm::vec4(1, 1, 0, 1);
+      , glm::vec4(1, 0, 0, 1)
+      , glm::vec4(0, 1, 0, 1)
+      , glm::vec4(1, 1, 0, 1)
+    });
 
-    auto colorArray = glow::Vec4Array()
-        << glm::vec4(1, 0, 0, 1)
-        << glm::vec4(1, 1, 0, 1)
-        << glm::vec4(0, 0, 1, 1)
+    auto colorArray = std::vector<glm::vec4>({
+        glm::vec4(1, 0, 0, 1)
+        , glm::vec4(1, 1, 0, 1)
+        , glm::vec4(0, 0, 1, 1)
 
-        << glm::vec4(1, 1, 0, 1)
-        << glm::vec4(0, 0, 1, 1)
-        << glm::vec4(0, 1, 0, 1);
+        , glm::vec4(1, 1, 0, 1)
+        , glm::vec4(0, 0, 1, 1)
+        , glm::vec4(0, 1, 0, 1)
+    });
 
     m_vertexBuffer1 = new glow::Buffer(GL_ARRAY_BUFFER);
     m_vertexBuffer1->setData(vertexArray);
@@ -225,5 +226,5 @@ void EventHandler::createAndSetupGeometry()
 void EventHandler::createAndSetupTransformFeedback()
 {
     m_transformFeedback = new glow::TransformFeedback();
-    m_transformFeedback->setVaryings(m_transformFeedbackProgram, glow::Array<const char*>{ "next_position" }, GL_INTERLEAVED_ATTRIBS);
+    m_transformFeedback->setVaryings(m_transformFeedbackProgram, std::array<const char*, 1>{ { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
 }

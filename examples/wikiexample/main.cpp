@@ -7,7 +7,6 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/debugmessageoutput.h>
 #include <glow/StaticStringSource.h>
-#include <glow/Array.h>
 
 #include <glowwindow/Window.h>
 #include <glowwindow/ContextFormat.h>
@@ -89,12 +88,12 @@ public:
                         new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderSource)
                         );
 
-		cornerBuffer->setData(glow::Array<glm::vec2>({
+        cornerBuffer->setData(std::array<glm::vec2, 4>{ {
 			glm::vec2(0, 0),
 			glm::vec2(1, 0),
 			glm::vec2(0, 1),
 			glm::vec2(1, 1)
-		}));
+        } });
 
         vao->binding(0)->setAttribute(0);
 		vao->binding(0)->setBuffer(cornerBuffer, 0, sizeof(glm::vec2));

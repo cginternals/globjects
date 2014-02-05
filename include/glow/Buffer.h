@@ -11,8 +11,6 @@
 namespace glow
 {
 
-class AbstractArray;
-
 /** \brief Wrapper for OpenGL buffer objects.
  *
  * The Buffer class encapsulates OpenGL buffer objects.
@@ -97,10 +95,6 @@ public:
      */
     void setData(GLsizei size, const GLvoid * data = nullptr, GLenum usage = GL_STATIC_DRAW);
     /**
-     * Convenience method to simplify passing of data in form of an AbstractArray object.
-     */
-    void setData(const AbstractArray & data, GLenum usage = GL_STATIC_DRAW);
-    /**
      * Convenience method to simplify passing of data in form of an std::vector.
      */
     template <typename T>
@@ -108,7 +102,7 @@ public:
     /**
      * Convenience method to simplify passing of data in form of an std::array.
      */
-    template <typename T, int Count>
+    template <typename T, std::size_t Count>
     void setData(const std::array<T, Count> & data, GLenum usage = GL_STATIC_DRAW);
     /**
      * Wraps the OpenGL function glBufferSubData.
@@ -120,10 +114,6 @@ public:
      */
     void setSubData(GLsizeiptr size, GLintptr offset = 0, const GLvoid* data = nullptr);
     /**
-     * Convenience method to simplify passing of data in form of an AbstractArray object.
-     */
-    void setSubData(const AbstractArray& data, GLintptr offset = 0);
-    /**
      * Convenience method to simplify passing of data in form of an std::vector.
      */
     template <typename T>
@@ -131,7 +121,7 @@ public:
     /**
      * Convenience method to simplify passing of data in form of an std::array.
      */
-    template <typename T, int Count>
+    template <typename T, std::size_t Count>
     void setSubData(const std::array<T, Count> & data, GLintptr offset = 0);
 
     /**
