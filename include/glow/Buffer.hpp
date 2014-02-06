@@ -7,13 +7,13 @@ namespace glow {
 template <typename T>
 void Buffer::setData(const std::vector<T> & data, GLenum usage)
 {
-    setData(static_cast<GLsizei>(data.size() * sizeof(T)), data.data(), usage);
+    setData(static_cast<GLsizeiptr>(data.size() * sizeof(T)), data.data(), usage);
 }
 
 template <typename T, std::size_t Count>
 void Buffer::setData(const std::array<T, Count> & data, GLenum usage)
 {
-    setData(static_cast<GLsizei>(Count * sizeof(T)), data.data(), usage);
+    setData(static_cast<GLsizeiptr>(Count * sizeof(T)), data.data(), usage);
 }
 
 template <typename T>
