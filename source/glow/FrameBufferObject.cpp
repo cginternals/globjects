@@ -111,7 +111,8 @@ void FrameBufferObject::attachTexture(GLenum attachment, Texture* texture, GLint
 
 	glFramebufferTexture(m_target, attachment, texture->id(), level);
 	CheckGLError();
-	attach(new TextureAttachment(texture, attachment));
+
+    attach(new TextureAttachment(texture, attachment, level));
 }
 
 void FrameBufferObject::attachTexture1D(GLenum attachment, Texture* texture, GLint level)
@@ -123,7 +124,7 @@ void FrameBufferObject::attachTexture1D(GLenum attachment, Texture* texture, GLi
 	glFramebufferTexture1D(m_target, attachment, texture->target(), texture->id(), level);
 	CheckGLError();
 
-	attach(new TextureAttachment(texture, attachment));
+    attach(new TextureAttachment(texture, attachment, level));
 }
 
 void FrameBufferObject::attachTexture2D(GLenum attachment, Texture* texture, GLint level)
@@ -135,7 +136,19 @@ void FrameBufferObject::attachTexture2D(GLenum attachment, Texture* texture, GLi
 	glFramebufferTexture2D(m_target, attachment, texture->target(), texture->id(), level);
 	CheckGLError();
 
-	attach(new TextureAttachment(texture, attachment));
+    attach(new TextureAttachment(texture, attachment, level));
+}
+
+void FrameBufferObject::attachTexture3D(GLenum attachment, Texture * texture, GLint level, GLint layer)
+{
+    assert(texture != nullptr);
+
+    bind();
+
+    glFramebufferTexture3D(m_target, attachment, texture->target(), texture->id(), level, layer);
+    CheckGLError();
+
+    attach(new TextureAttachment(texture, attachment, level));
 }
 
 void FrameBufferObject::attachTextureLayer(GLenum attachment, Texture* texture, GLint level, GLint layer)
@@ -147,7 +160,7 @@ void FrameBufferObject::attachTextureLayer(GLenum attachment, Texture* texture, 
 	glFramebufferTextureLayer(m_target, attachment, texture->id(), level, layer);
 	CheckGLError();
 
-	attach(new TextureAttachment(texture, attachment));
+    attach(new TextureAttachment(texture, attachment, level, layer));
 }
 
 void FrameBufferObject::attachRenderBuffer(GLenum attachment, RenderBufferObject* renderBuffer)
@@ -161,6 +174,37 @@ void FrameBufferObject::attachRenderBuffer(GLenum attachment, RenderBufferObject
 	CheckGLError();
 
 	attach(new RenderBufferAttachment(renderBuffer, attachment));
+}
+
+void FrameBufferObject::detach(GLenum attachment)
+{
+    FrameBufferAttachment* fAttachment = this->attachment(attachment);
+    if (!fAttachment)
+        return;
+
+    m_attachments.erase(attachment);
+
+    bind();
+
+    if (fAttachment->isTextureAttachment())
+    {
+        TextureAttachment * tAttachment = fAttachment->asTextureAttachment();
+        if (tAttachment->hasLayer())
+        {
+            glFramebufferTextureLayer(m_target, attachment, 0, tAttachment->level(), tAttachment->layer());
+            CheckGLError();
+        }
+        else
+        {
+            glFramebufferTexture(m_target, attachment, 0, tAttachment->level());
+            CheckGLError();
+        }
+    }
+    else if (fAttachment->isRenderBufferAttachment())
+    {
+        glFramebufferRenderbuffer(m_target, attachment, GL_RENDERBUFFER, 0);
+        CheckGLError();
+    }
 }
 
 void FrameBufferObject::attach(FrameBufferAttachment* attachment)

@@ -46,4 +46,14 @@ std::string FrameBufferAttachment::attachmentString() const
 	return "Unknown attachment "+std::to_string(m_attachment);
 }
 
+TextureAttachment * FrameBufferAttachment::asTextureAttachment()
+{
+    return isTextureAttachment() ? reinterpret_cast<TextureAttachment*>(this) : nullptr;
+}
+
+RenderBufferAttachment * FrameBufferAttachment::asRenderBufferAttachment()
+{
+    return isRenderBufferAttachment() ? reinterpret_cast<RenderBufferAttachment*>(this) : nullptr;
+}
+
 } // namespace glow

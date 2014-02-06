@@ -10,6 +10,9 @@
 namespace glow 
 {
 
+class TextureAttachment;
+class RenderBufferAttachment;
+
 /** \brief Wraps attachments to a FrameBufferObject.
     
     Normally, FrameBufferAttachments are created using the API of FrameBufferObject.
@@ -21,12 +24,15 @@ namespace glow
 class GLOW_API FrameBufferAttachment : public Referenced
 {
 public:
-	FrameBufferAttachment(GLenum attachment);
+    FrameBufferAttachment(GLenum attachment);
 
 	GLenum attachment() const;
 
 	virtual bool isTextureAttachment() const;
 	virtual bool isRenderBufferAttachment() const;
+
+    TextureAttachment * asTextureAttachment();
+    RenderBufferAttachment * asRenderBufferAttachment();
 
 	std::string attachmentString() const;
 

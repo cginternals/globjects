@@ -21,13 +21,19 @@ class Texture;
 class GLOW_API TextureAttachment : public FrameBufferAttachment
 {
 public:
-	TextureAttachment(Texture * texture, GLenum attachment);
+    TextureAttachment(Texture * texture, GLenum attachment, GLint level, GLint layer = -1);
 
     virtual bool isTextureAttachment() const override;
 	Texture * texture();
 
+    GLint level() const;
+
+    bool hasLayer() const;
+    GLint layer() const;
 protected:
 	ref_ptr<Texture> m_texture;
+    GLint m_level;
+    GLint m_layer;
 };
 
 } // namespace glow

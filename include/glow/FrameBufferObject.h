@@ -60,8 +60,11 @@ public:
 	void attachTexture(GLenum attachment, Texture * texture, GLint level = 0);
 	void attachTexture1D(GLenum attachment, Texture * texture, GLint level = 0);
 	void attachTexture2D(GLenum attachment, Texture * texture, GLint level = 0);
+    void attachTexture3D(GLenum attachment, Texture * texture, GLint level = 0, GLint layer = 0);
 	void attachTextureLayer(GLenum attachment, Texture * texture, GLint level = 0, GLint layer = 0);
 	void attachRenderBuffer(GLenum attachment, RenderBufferObject * renderBuffer);
+
+    void detach(GLenum attachment);
 
 	void setReadBuffer(GLenum mode);
 	void setDrawBuffer(GLenum mode);
