@@ -81,8 +81,8 @@ Icosahedron::Icosahedron(
     auto v(vertices());
     auto i(indices());
 
-    std::vector<vec3> vertices(&v[0], &v[11]);
-    std::vector<lowp_uvec3> indices(&i[0], &i[19]);
+    std::vector<vec3> vertices(v.begin(), v.end());
+    std::vector<lowp_uvec3> indices(i.begin(), i.end());
 
     refine(vertices, indices, static_cast<char>(clamp(iterations, 0, 8)));
 
