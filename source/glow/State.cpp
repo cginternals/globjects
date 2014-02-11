@@ -34,8 +34,12 @@ State* State::currentState()
         GL_BLEND,
         GL_COLOR_LOGIC_OP,
         GL_CULL_FACE,
+        
+#ifndef MAC_OS
         GL_DEBUG_OUTPUT,
         GL_DEBUG_OUTPUT_SYNCHRONOUS,
+#endif
+        
         GL_DEPTH_CLAMP,
         GL_DEPTH_TEST,
         GL_DITHER,
