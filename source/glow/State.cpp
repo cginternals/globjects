@@ -34,12 +34,6 @@ State* State::currentState()
         GL_BLEND,
         GL_COLOR_LOGIC_OP,
         GL_CULL_FACE,
-        
-#ifndef MAC_OS
-        GL_DEBUG_OUTPUT,
-        GL_DEBUG_OUTPUT_SYNCHRONOUS,
-#endif
-        
         GL_DEPTH_CLAMP,
         GL_DEPTH_TEST,
         GL_DITHER,
@@ -80,6 +74,10 @@ State* State::currentState()
         if (hasExtension(GLOW_ARB_provoking_vertex))
         {
             state->provokingVertex(getEnum(GL_PROVOKING_VERTEX));
+        }
+        if (hasExtension(GLOW_KHR_debug)) {
+            capabilities.push_back(GL_DEBUG_OUTPUT);
+            capabilities.push_back(GL_DEBUG_OUTPUT_SYNCHRONOUS);
         }
     }
 
