@@ -93,6 +93,10 @@ void AbstractState::depthRange(const std::array<GLfloat, 2> & range)
 {
     depthRange(range[0], range[1]);
 }
+    
+    void AbstractState::frontFace(GLenum winding) {
+        add(new StateSetting(glFrontFace, winding));
+    }
 
 void AbstractState::logicOp(GLenum opcode)
 {

@@ -42,6 +42,7 @@ public:
     void depthRange(GLdouble nearVal, GLdouble farVal);
     void depthRange(GLfloat nearVal, GLfloat farVal);
     void depthRange(const std::array<GLfloat, 2> & range);
+    void frontFace(GLenum winding);
     void logicOp(GLenum opcode);
     void pixelStore(GLenum pname, GLint param);
     void pointParameter(GLenum pname, GLint param);
