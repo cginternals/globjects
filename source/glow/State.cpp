@@ -95,6 +95,7 @@ State* State::currentState()
     state->cullFace(getInteger(GL_CULL_FACE_MODE));
     state->depthFunc(getInteger(GL_DEPTH_FUNC));
     state->depthRange(getFloats<2>(GL_DEPTH_RANGE));
+    state->frontFace(getEnum(GL_FRONT_FACE));
     state->logicOp(getInteger(GL_LOGIC_OP_MODE));
     state->pointParameter(GL_POINT_FADE_THRESHOLD_SIZE, getEnum(GL_POINT_FADE_THRESHOLD_SIZE));
     state->pointParameter(GL_POINT_SPRITE_COORD_ORIGIN, getEnum(GL_POINT_SPRITE_COORD_ORIGIN));
