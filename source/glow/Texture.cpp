@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glow/Error.h>
+#include <glow/Buffer.h>
 #include <glow/ObjectVisitor.h>
 
 namespace glow
@@ -263,6 +264,20 @@ void Texture::textureView(GLuint originalTexture, GLenum internalFormat, GLuint 
 {
     glTextureView(m_id, m_target, originalTexture, internalFormat, minLevel, numLevels, minLayer, numLayers);
     CheckGLError();
+}
+
+void Texture::texBuffer(GLenum internalFormat, Buffer * buffer)
+{
+    bind();
+
+    glTexBuffer(m_target, internalFormat, buffer ? buffer->id() : 0);
+    CheckGLError();
+}
+
+void Texture::texBuffer(GLenum activeTexture, GLenum internalFormat, Buffer * buffer)
+{
+    bindActive(activeTexture);
+    texBuffer(internalFormat, buffer);
 }
 
 void Texture::clearImage(GLint level, GLenum format, GLenum type, const void * data)

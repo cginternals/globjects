@@ -11,6 +11,8 @@
 namespace glow 
 {
 
+class Buffer;
+
 /** \brief Wraps OpenGL texture objects.
     
     A Texture provides both interfaces to bind them for the OpenGL pipeline:
@@ -218,6 +220,9 @@ public:
     ,   GLuint numLevels
     ,   GLuint minLayer
     ,   GLuint numLayers);
+
+    void texBuffer(GLenum internalFormat, Buffer * buffer);
+    void texBuffer(GLenum activeTexture, GLenum internalFormat, Buffer * buffer);
 
     void clearImage(
         GLint level
