@@ -131,23 +131,19 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
             Delete \\\"$TEMP\\\\${MSVC_REDIST_NAME}\\\"
             ")
     endif()
-    
+
     # Install files
-    
-    if(APPLE)
-        set(CPACK_INSTALL_CMAKE_PROJECTS        "${CMAKE_BINARY_DIR};glow;/")
-    else()
-        set(CPACK_INSTALL_CMAKE_PROJECTS        "${CMAKE_BINARY_DIR};glow;ALL;/")
-    endif()
+
+    set(CPACK_INSTALL_CMAKE_PROJECTS        "${CMAKE_BINARY_DIR};glow;ALL;/")
     set(CPACK_PACKAGE_INSTALL_DIRECTORY     "${package_name}")
     set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY  "${package_name}")
     if(NOT WIN32)
         set(CPACK_INSTALL_PREFIX            "/usr/")
     endif()
 
-    
+
     # Set generator
-    
+
     set(CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/CPackConfig-${project_name}.cmake")
     set(CPACK_GENERATOR     "ZIP;TGZ;DEB;NSIS;")
 
