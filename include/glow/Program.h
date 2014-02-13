@@ -9,6 +9,7 @@
 #include <glow/Object.h>
 #include <glow/ChangeListener.h>
 #include <glow/ref_ptr.h>
+#include <glow/LocationIdentity.h>
 
 namespace glow
 {
@@ -107,11 +108,15 @@ public:
 
 	template<typename T>
 	void setUniform(const std::string & name, const T & value);
+    template<typename T>
+    void setUniform(GLint location, const T & value);
 
 	/** Retrieves the existing or creates a new typed uniform, named <name>.
 	*/
 	template<typename T>
 	Uniform<T> * getUniform(const std::string & name);
+    template<typename T>
+    Uniform<T> * getUniform(GLint location);
 
 	/** Adds the uniform to the internal list of named uniforms. If an equally
 		named uniform already exists, this program derigisters itself and the uniform
@@ -144,10 +149,15 @@ protected:
 protected:
 	static GLuint createProgram();
 
+    template<typename T>
+    void setUniformByIdentity(const LocationIdentity & identity, const T & value);
+    template<typename T>
+    Uniform<T> * getUniformByIdentity(const LocationIdentity & identity);
+
 protected:
 	std::set<ref_ptr<Shader>> m_shaders;
     ref_ptr<ProgramBinary> m_binary;
-	std::unordered_map<std::string, ref_ptr<AbstractUniform>> m_uniforms;
+    std::unordered_map<LocationIdentity, ref_ptr<AbstractUniform>> m_uniforms;
 
 	bool m_linked;
 	bool m_dirty;

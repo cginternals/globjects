@@ -20,7 +20,7 @@ public:
     bool isName() const;
 
     GLint location() const;
-    std::string name() const;
+    const std::string & name() const;
 
     bool operator==(const LocationIdentity & identity) const;
     bool operator!=(const LocationIdentity & identity) const;

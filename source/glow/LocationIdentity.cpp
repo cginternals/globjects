@@ -37,7 +37,7 @@ GLint LocationIdentity::location() const
     return m_location;
 }
 
-std::string LocationIdentity::name() const
+const std::string & LocationIdentity::name() const
 {
     return m_name;
 }

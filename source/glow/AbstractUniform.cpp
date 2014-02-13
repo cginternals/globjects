@@ -8,15 +8,12 @@ namespace glow
 {
 
 AbstractUniform::AbstractUniform(GLint location)
-: m_location(location)
-, m_identity(location)
+: m_identity(location)
 {
 }
 
 AbstractUniform::AbstractUniform(const std::string & name)
-: m_name(name)
-, m_location(-1)
-, m_identity(name)
+: m_identity(name)
 {
 }
 
@@ -26,12 +23,12 @@ AbstractUniform::~AbstractUniform()
 
 const std::string & AbstractUniform::name() const
 {
-	return m_name;
+    return m_identity.name();
 }
 
 GLint AbstractUniform::location() const
 {
-    return m_location;
+    return m_identity.location();
 }
 
 const LocationIdentity & AbstractUniform::identity() const
@@ -57,6 +54,11 @@ void AbstractUniform::changed()
 {
 	for (Program * program : m_programs)
 		update(program);
+}
+
+GLint AbstractUniform::uniformLocation()
+{
+    return m_identity.isName() ?
 }
 
 void AbstractUniform::update(Program * program)

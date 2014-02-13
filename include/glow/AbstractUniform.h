@@ -63,9 +63,8 @@ protected:
 	*/
     virtual void setValueAt(GLint location) = 0;
 
+    GLint uniformLocation();
 protected:
-    std::string m_name;
-    GLint m_location;
     LocationIdentity m_identity;
 	std::set<Program *> m_programs;
 };
