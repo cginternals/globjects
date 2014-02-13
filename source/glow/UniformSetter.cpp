@@ -229,7 +229,7 @@ void UniformSetter::set(const GLint location, const std::vector<glm::mat3> & val
 
 void UniformSetter::set(const GLint location, const std::vector<glm::mat4> & value)
 {
-    glUniformMatrix2fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
+    glUniformMatrix4fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
     CheckGLError();
 }
 
