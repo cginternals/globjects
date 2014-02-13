@@ -33,6 +33,8 @@ template<typename T>
 class Uniform : public AbstractUniform
 {
 public:
+    Uniform(GLint location);
+    Uniform(GLint location, const T & value);
     Uniform(const std::string & name);
     Uniform(const std::string & name, const T & value);
     virtual ~Uniform();
@@ -42,8 +44,8 @@ public:
     const T & value() const;
 
 protected:
-    virtual void setLocation(GLint location) override;
-    void set(GLint location, const T & value);
+    virtual void setValueAt(GLint location) override;
+    void setValue(GLint location, const T & value);
 
 protected:
     T m_value; ///< The uniforms value, explictly required when relinking programs.

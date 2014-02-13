@@ -53,6 +53,7 @@ set(api_includes
     ${header_path}/FunctionCall.hpp
     ${header_path}/global.h
     ${header_path}/global.hpp
+    ${header_path}/LocationIdentity.h
     ${header_path}/logging.h
     ${header_path}/logging.hpp
     ${header_path}/LogMessage.h
@@ -116,6 +117,7 @@ set(sources
     ${source_path}/global.cpp
     ${source_path}/IncludeProcessor.h
     ${source_path}/IncludeProcessor.cpp
+    ${source_path}/LocationIdentity.cpp
     ${source_path}/logging.cpp
     ${source_path}/LogMessage.cpp
     ${source_path}/LogMessageBuilder.cpp
