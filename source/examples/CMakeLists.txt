@@ -1,7 +1,7 @@
 
 if(OPTION_BUILD_EXAMPLES)
 	if(WIN32)
-		install(FILES ${GLEW_INCLUDE_DIR}/../bin/glew32.dll DESTINATION ${INSTALL_EXAMPLES})
+		install(FILES ${GLEW_INCLUDE_DIR}/../bin/glew32.dll DESTINATION ${INSTALL_BIN})
 	endif()
 
 	set(EXAMPLE_COMMON examplecommon)
