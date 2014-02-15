@@ -1,54 +1,48 @@
 #!/bin/bash
 
-# ./configure clean
-if [ "$1" = "clean" ]
+# Default options
+BUILD_DIR="build"
+CMAKE_GENERATOR="Unix Makefiles"
+BUILD_TYPE="Release"
+INSTALL_OPTIONS=""
+EXTRA_OPTIONS=""
+
+# Read local default options
+if [ -f "./localconfig/default" ]
 then
-    # Clean build
-    echo "cleaning build files..."
-    if [ -d "./build" ]
-    then
-        rm -rf ./build
-    fi
-else
-    # Default options
-    GENERATOR="Unix Makefiles"
-    BUILDTYPE="Release"
-    INSTALL=""
-    EXTRA=""
-
-    # Configure build
-    echo "configuring..."
-
-    # Create build directory
-    if [ ! -d "./build" ]
-    then
-        mkdir build
-    fi
-
-    # Parse command line arguments
-    for ARG in "$@"
-    do
-        # --codeblocks / --cb
-        if [ "$ARG" = "--cb" -o "$ARG" = "--codeblocks" ]
-        then
-            GENERATOR="CodeBlocks - Unix Makefiles"
-        fi
-
-        # --debug
-        if [ "$ARG" = "--debug" ]
-        then
-            BUILDTYPE="Debug"
-        fi
-
-        # --local
-        if [ "$ARG" = "--local" ]
-        then
-            INSTALL="-DCMAKE_INSTALL_PREFIX:PATH=./install -DOPTION_LOCAL_INSTALL=ON"
-        fi
-    done
-
-    # Configure project
-    cd build
-    cmake -G "$GENERATOR" "-DCMAKE_BUILD_TYPE=$BUILDTYPE" $INSTALL $EXTRA ..
-    cd ..
+    . ./localconfig/default
 fi
+
+# Parse command line arguments
+for ARG in "$@"
+do
+    # Read in configuration for that command-line argument
+    CONFIGFILE="./localconfig/$ARG"
+    if [ -f "$CONFIGFILE" ]
+    then
+        . "$CONFIGFILE"
+    fi
+done
+
+# Configure build
+echo "Configuring ..."
+
+# Create build directory
+if [ ! -d "./$BUILD_DIR" ]
+then
+    mkdir $BUILD_DIR
+fi
+
+# Configure project
+cd $BUILD_DIR
+cmake -G "$CMAKE_GENERATOR" "-DCMAKE_BUILD_TYPE=$BUILD_TYPE" $INSTALL_OPTIONS $EXTRA_OPTIONS ..
+if [ $? == 0 ]
+then
+    echo "Project configured. To build the project, use";
+    echo "  cd $BUILD_DIR"
+    echo "  make"
+else
+    echo "Configuration failed.";
+fi
+
+cd ..
