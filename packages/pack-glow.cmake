@@ -2,18 +2,18 @@
 # CPack configuration
 
 if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
-
+    
     # Options
-
+    
     if(WIN32)
         set(OPTION_PACK_GENERATOR "ZIP;NSIS" CACHE STRING "Package targets")
     else()
         set(OPTION_PACK_GENERATOR "ZIP;TGZ;DEB" CACHE STRING "Package targets")
     endif()
 
-
+    
     # Initialize
-
+    
     # Reset CPack configuration
     if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
         set(CPACK_IGNORE_FILES "")
@@ -29,28 +29,27 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     get_filename_component(CPACK_PATH ${CMAKE_COMMAND} PATH)
     set(CPACK_COMMAND "${CPACK_PATH}/cpack")
 
-
     # Package project
-
+    
     set(project_name ${META_PROJECT_NAME})   # Name of package project
     set(project_root ${META_PROJECT_NAME})   # Name of root project that is to be installed
 
-
+    
     # Package information
-
+    
     string(TOLOWER ${META_PROJECT_NAME} package_name)                       # Package name
-    set(package_description     "OpenGL Object Wrapper")                   # Package description
+    set(package_description     "OpenGL Objects Wrapper Library")           # Package description
     set(package_vendor          "hpicgs group")                             # Package vendor
-    set(package_maintainer      "daniel.limberger@hpi.uni-potsdam.de")      # Package maintainer
+    set(package_maintainer      "stefan.buschmann@hpi.uni-potsdam.de")      # Package maintainer
 
-
+    
     # Package specific options
-
+    
     set(CMAKE_MODULE_PATH                   ${CMAKE_SOURCE_DIR}/packages/${project_name})
 
-
+    
     # Package information
-
+    
     set(CPACK_PACKAGE_NAME                  "${package_name}")
     set(CPACK_PACKAGE_VENDOR                "${package_vendor}")
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY   "${package_description}")
@@ -74,9 +73,9 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     endif()
     #set(CPACK_NSIS_DISPLAY_NAME             "${package_name}-${META_VERSION}")
 
-
+    
     # Debian package information
-
+    
     set(CPACK_DEBIAN_PACKAGE_NAME           "${package_name}")
     set(CPACK_DEBIAN_PACKAGE_VERSION        "${CPACK_PACKAGE_VERSION}")
     set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE   "all")
@@ -89,9 +88,9 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
 #   set(CPACK_DEBIAN_PACKAGE_SUGGESTS       "")
     set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA  "")
 
-
+    
     # RPM package information
-
+    
     set(CPACK_RPM_PACKAGE_NAME                           "${package_name}")
     set(CPACK_RPM_PACKAGE_VERSION                        "${CPACK_PACKAGE_VERSION}")
     set(CPACK_RPM_PACKAGE_RELEASE                        1)
@@ -110,10 +109,10 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
 #   set(CPACK_RPM_<POST/PRE>_<UN>INSTALL_SCRIPT_FILE     "")
 #   set(CPACK_RPM_PACKAGE_DEBUG                          1)
     set(CPACK_RPM_PACKAGE_RELOCATABLE                    OFF)
-
+    
 
     # Package name
-
+    
     set(CPACK_PACKAGE_FILE_NAME "${package_name}-${CPACK_PACKAGE_VERSION}")
 
     # NOTE: for using MUI (UN)WELCOME images and installer icon we suggest to replace nsis defaults,
@@ -154,9 +153,9 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     set(CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/CPackConfig-${project_name}.cmake")
     set(CPACK_GENERATOR ${OPTION_PACK_GENERATOR})
 
-
+    
     # CPack
-
+    
     if(NOT WIN32)
         # Important: Must be set to install files to absolute path (e.g., /etc)
         # -> CPACK_[RPM_]PACKAGE_RELOCATABLE = OFF

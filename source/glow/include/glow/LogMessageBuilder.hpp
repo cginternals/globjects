@@ -24,9 +24,9 @@ LogMessageBuilder& LogMessageBuilder::operator<<(ref_ptr<T> ref_pointer)
 }
 
 template <typename T>
-LogMessageBuilder& LogMessageBuilder::operator<< (T * pointer)
+LogMessageBuilder& LogMessageBuilder::operator<< (const T * pointer)
 {
-    return *this << static_cast<void*>(pointer);
+    return *this << static_cast<const void*>(pointer);
 }
 
 template <typename T>
