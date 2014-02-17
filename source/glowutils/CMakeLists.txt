@@ -1,17 +1,45 @@
 
 # Target
 set(target glowutils)
-message(STATUS "lib ${target}")
+message(STATUS "Lib ${target}")
 
+#
+# External libraries
+#
+
+find_package(OpenGL REQUIRED)
+find_package(GLM REQUIRED)
+find_package(GLEW REQUIRED)
+
+#
+# Includes
+#
+
+include_directories(
+    ${OPENGL_INCLUDE_DIR}
+    ${GLM_INCLUDE_DIR}
+    ${GLEW_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/source/glow/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+#
 # Libraries
+#
+
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARY}
     glow
 )
 
-# Definitions
-if (NOT OPTION_BUILD_STATIC)
+#
+# Compiler definitions
+#
+
+if (OPTION_BUILD_STATIC)
+    add_definitions("-DGLOWUTILS_STATIC")
+else()
     add_definitions("-DGLOWUTILS_EXPORTS")
 endif()
 
@@ -21,49 +49,52 @@ else()
     add_definitions("-D_HAS_EXCEPTIONS=0")
 endif()
 
+#
 # Sources
-set(header_path "${GLOW_SOURCE_DIR}/include/glowutils")
-set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
+#
+
+set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
+set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
-    ${header_path}/glowutils.h
+    ${include_path}/glowutils.h
 
-    ${header_path}/AbstractCoordinateProvider.h
-    ${header_path}/AbstractTransparencyAlgorithm.h
-    ${header_path}/ABufferAlgorithm.h
-    ${header_path}/AxisAlignedBoundingBox.h
-    ${header_path}/AdaptiveGrid.h
-    ${header_path}/AutoTimer.h
-    ${header_path}/AxonometricLookAt.h
-    ${header_path}/CachedValue.h
-    ${header_path}/CachedValue.hpp
-    ${header_path}/Camera.h
-    ${header_path}/CameraPath.h
-    ${header_path}/CameraPathPlayer.h
-    ${header_path}/CameraPathRecorder.h
-    ${header_path}/File.h
-    ${header_path}/FlightNavigation.h
-    ${header_path}/GlBlendAlgorithm.h
-    ${header_path}/global.h
-    ${header_path}/HybridAlgorithm.h
-    ${header_path}/Icosahedron.h
-    ${header_path}/Interpolation.h
-    ${header_path}/navigationmath.h
-    ${header_path}/Plane3.h
-    ${header_path}/RawFile.h
-    ${header_path}/RawFile.hpp
-    ${header_path}/screen.h
-    ${header_path}/ScreenAlignedQuad.h
-    ${header_path}/StackedState.h
-    ${header_path}/StringSourceDecorator.h
-    ${header_path}/StringTemplate.h
-    ${header_path}/Timer.h
-    ${header_path}/TrackballNavigation.h
-    ${header_path}/UniformGroup.h
-    ${header_path}/UniformGroup.hpp
-    ${header_path}/UnitCube.h
-    ${header_path}/WeightedAverageAlgorithm.h
-    ${header_path}/WorldInHandNavigation.h
+    ${include_path}/AbstractCoordinateProvider.h
+    ${include_path}/AbstractTransparencyAlgorithm.h
+    ${include_path}/ABufferAlgorithm.h
+    ${include_path}/AxisAlignedBoundingBox.h
+    ${include_path}/AdaptiveGrid.h
+    ${include_path}/AutoTimer.h
+    ${include_path}/AxonometricLookAt.h
+    ${include_path}/CachedValue.h
+    ${include_path}/CachedValue.hpp
+    ${include_path}/Camera.h
+    ${include_path}/CameraPath.h
+    ${include_path}/CameraPathPlayer.h
+    ${include_path}/CameraPathRecorder.h
+    ${include_path}/File.h
+    ${include_path}/FlightNavigation.h
+    ${include_path}/GlBlendAlgorithm.h
+    ${include_path}/global.h
+    ${include_path}/HybridAlgorithm.h
+    ${include_path}/Icosahedron.h
+    ${include_path}/Interpolation.h
+    ${include_path}/navigationmath.h
+    ${include_path}/Plane3.h
+    ${include_path}/RawFile.h
+    ${include_path}/RawFile.hpp
+    ${include_path}/screen.h
+    ${include_path}/ScreenAlignedQuad.h
+    ${include_path}/StackedState.h
+    ${include_path}/StringSourceDecorator.h
+    ${include_path}/StringTemplate.h
+    ${include_path}/Timer.h
+    ${include_path}/TrackballNavigation.h
+    ${include_path}/UniformGroup.h
+    ${include_path}/UniformGroup.hpp
+    ${include_path}/UnitCube.h
+    ${include_path}/WeightedAverageAlgorithm.h
+    ${include_path}/WorldInHandNavigation.h
 )
 
 set(sources
@@ -102,34 +133,46 @@ set(sources
 )
 
 # Group source files
-set(glowutils_header_group "Header Files (API)")
-set(glowutils_source_group "Source Files")
-source_group_by_path(${header_path} "\\\\.h$|\\\\.hpp$" 
-    ${glowutils_header_group} ${api_includes})
+set(header_group "Header Files (API)")
+set(source_group "Source Files")
+source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
+    ${header_group} ${api_includes})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
-    ${glowutils_source_group} ${sources})
+    ${source_group} ${sources})
 
+#
 # Build library
+#
+
 if(OPTION_BUILD_STATIC)
     add_library(${target} ${api_includes} ${sources})
 else()
     add_library(${target} SHARED ${api_includes} ${sources})
 endif()
 target_link_libraries(${target} ${libs})
+
 set_target_properties(${target}
     PROPERTIES
-    LINKER_LANGUAGE CXX
+    LINKER_LANGUAGE              CXX
+    FOLDER                      "${IDE_FOLDER}"
     COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
     COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
     COMPILE_FLAGS               "${DEFAULT_COMPILE_FLAGS}"
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
-    INCLUDE_PATH	            "${GLOW_SOURCE_DIR}/include")
+    INCLUDE_PATH	            ${include_path})
 
+#
 # Deployment
+#
+
+# Library
 install(TARGETS ${target}
     RUNTIME DESTINATION ${INSTALL_BIN}
     LIBRARY DESTINATION ${INSTALL_SHARED}
     ARCHIVE DESTINATION ${INSTALL_LIB}
 )
+
+# Header files
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE})

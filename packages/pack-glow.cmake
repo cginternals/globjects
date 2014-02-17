@@ -29,11 +29,10 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     get_filename_component(CPACK_PATH ${CMAKE_COMMAND} PATH)
     set(CPACK_COMMAND "${CPACK_PATH}/cpack")
 
-    
     # Package project
     
-    set(project_name "glow")   # Name of package project
-    set(project_root "glow")   # Name of root project that is to be installed
+    set(project_name ${META_PROJECT_NAME})   # Name of package project
+    set(project_root ${META_PROJECT_NAME})   # Name of root project that is to be installed
 
     
     # Package information
@@ -46,7 +45,7 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     
     # Package specific options
     
-    set(CMAKE_MODULE_PATH                   ${GLOW_SOURCE_DIR}/packages/${project_name})
+    set(CMAKE_MODULE_PATH                   ${CMAKE_SOURCE_DIR}/packages/${project_name})
 
     
     # Package information
@@ -58,13 +57,20 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     set(CPACK_PACKAGE_VERSION_MAJOR         "${META_VERSION_MAJOR}")
     set(CPACK_PACKAGE_VERSION_MINOR         "${META_VERSION_MINOR}")
     set(CPACK_PACKAGE_VERSION_PATCH         "${META_VERSION_PATCH}")
-    set(CPACK_RESOURCE_FILE_LICENSE         "${GLOW_SOURCE_DIR}/LICENSE")
-    set(CPACK_RESOURCE_FILE_README          "${GLOW_SOURCE_DIR}/README.md")
-    set(CPACK_RESOURCE_FILE_WELCOME         "${GLOW_SOURCE_DIR}/README.md")
-    set(CPACK_PACKAGE_DESCRIPTION_FILE      "${GLOW_SOURCE_DIR}/README.md")
+    set(CPACK_RESOURCE_FILE_LICENSE         "${CMAKE_SOURCE_DIR}/LICENSE")
+    set(CPACK_RESOURCE_FILE_README          "${CMAKE_SOURCE_DIR}/README.md")
+    set(CPACK_RESOURCE_FILE_WELCOME         "${CMAKE_SOURCE_DIR}/README.md")
+    set(CPACK_PACKAGE_DESCRIPTION_FILE      "${CMAKE_SOURCE_DIR}/README.md")
     set(CPACK_PACKAGE_ICON                  "")
     set(CPACK_PACKAGE_RELOCATABLE           OFF)
 
+
+    # NSIS package information
+
+    if(X64)
+        # http://public.kitware.com/Bug/view.php?id=9094
+        set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64")
+    endif()
     #set(CPACK_NSIS_DISPLAY_NAME             "${package_name}-${META_VERSION}")
 
     
@@ -109,7 +115,7 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     
     set(CPACK_PACKAGE_FILE_NAME "${package_name}-${CPACK_PACKAGE_VERSION}")
 
-    # NOTE: for using MUI (UN)WELCOME images and isntaller icon we suggest to replace nsis defautls,
+    # NOTE: for using MUI (UN)WELCOME images and installer icon we suggest to replace nsis defaults,
     # since there is currently no way to do so without manipulating the installer template (which we won't).
 
     #string(REGEX REPLACE "/" "\\\\\\\\" CPACK_PACKAGE_ICON ${CPACK_PACKAGE_ICON})
@@ -134,7 +140,7 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
 
     # Install files
 
-    set(CPACK_INSTALL_CMAKE_PROJECTS        "${CMAKE_BINARY_DIR};glow;ALL;/")
+    set(CPACK_INSTALL_CMAKE_PROJECTS        "${CMAKE_BINARY_DIR};${project_root};ALL;/")
     set(CPACK_PACKAGE_INSTALL_DIRECTORY     "${package_name}")
     set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY  "${package_name}")
     if(NOT WIN32)
@@ -145,15 +151,15 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     # Set generator
 
     set(CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/CPackConfig-${project_name}.cmake")
-    set(CPACK_GENERATOR     "ZIP;TGZ;DEB;NSIS;")
-
     set(CPACK_GENERATOR ${OPTION_PACK_GENERATOR})
 
     
     # CPack
     
     if(NOT WIN32)
-        set(CPACK_SET_DESTDIR ON)   # Important: Must be set to install files to absolute path (e.g., /etc) -> CPACK_[RPM_]PACKAGE_RELOCATABLE = OFF
+        # Important: Must be set to install files to absolute path (e.g., /etc)
+        # -> CPACK_[RPM_]PACKAGE_RELOCATABLE = OFF
+        set(CPACK_SET_DESTDIR ON)
     endif()
     set(CPack_CMake_INCLUDED FALSE)
     include(CPack)
@@ -172,5 +178,7 @@ set_target_properties(pack-${project_name} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD
 
 # Dependencies
 
-add_dependencies(pack-${project_name}   ${project_root})
-add_dependencies(pack                   pack-${project_name})
+if(MSVC)
+    add_dependencies(pack-${project_name} ALL_BUILD)
+endif()
+add_dependencies(pack pack-${project_name})

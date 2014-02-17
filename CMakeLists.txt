@@ -15,17 +15,18 @@ set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glow/")
 # OPTIONS
 
 option(OPTION_LIMIT_CONFIGS  "Generate limited configs (Release; Debug)" ON)
-option(OPTION_LOCAL_INSTALL  "Install to a local directory instead of the system" OFF)
+option(OPTION_PORTABLE_INSTALL  "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
+option(OPTION_BUILD_TESTS      "Build tests (if gmock and gtest are found)" ON)
+
 option(OPTION_BUILD_EXAMPLES "Build examples" ON)
-option(OPTION_REQUIRE_TESTS  "Requires test projects to be configured (gmock and gtest required)" OFF)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
 option(OPTION_GENERATE_GL_INFO "Automatically generate OpenGL extension and enum information" OFF)
 
 
-# CMAKE CONFIGURATION
-
-set(GLOW_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+#
+# CMake configuration
+#
 
 # Include cmake modules from ./cmake
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -39,27 +40,24 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 if(OPTION_LIMIT_CONFIGS)
     set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Limited Configs" FORCE)
 endif()
-if (${CMAKE_BUILD_TYPE})
-    set (CMAKE_BUILD_TYPE "Debug" CACHE STRING "Use build type 'Debug' per default" FORCE)
-endif()
-
-
-#enable_testing() # it's important to state this before adding targets
-# f*** http://public.kitware.com/Bug/print_bug_page.php?bug_id=5977
-
-#set(CMAKE_CTEST_COMMAND "${CMAKE_CTEST_COMMAND} -VV")
+set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build, options are: ${CMAKE_CONFIGURATION_TYPES}")
 
 # Project
 project(${META_PROJECT_NAME} C CXX)
 
-# Generate folders
+
+# Generate folders for IDE targets (e.g., VisualStudio solutions)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set(IDE_FOLDER "")  # Put projects in root folder by default
 
 # Include custom cmake functions
 include(cmake/Custom.cmake)
+include(cmake/GitRevision.cmake)
 
 
-# PLATFORM AND ARCHITECTURE
+#
+# Platform and architecture
+#
 
 # Architecture (32/64 bit)
 set(X64 OFF)
@@ -67,95 +65,53 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(X64 ON)
 endif()
 
-
-# Check for linux
-#if(UNIX AND NOT APPLE)
-#    set(LINUX 1)
-#endif()
-
-
 # Setup platform specifics (compile flags, etc., ...)
 if(MSVC)
-
-    message(STATUS "Configuring for platform Windows/MSVC.")
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsMSVC.cmake)
-
 elseif(WIN32 AND CMAKE_COMPILER_IS_GNUCXX)
-
-    message(STATUS "Configuring for platform Windows/GCC.")
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsGCC.cmake)
-
 elseif(APPLE)
-
-    message(STATUS "XCODE VERSION :: ${XCODE_VERSION}")
-    
-    if ("${XCODE_VERSION}")
-	# check regex, it's just a quick-hack for now but should work if the
-	# version string format returned by ${XCODE_VERSION} does not change.
-	# required format is <MAJOR>.<MINOR>.<PATCH>
-	string(REGEX REPLACE "^([0-9]+).*" "\\1" XCODE_MAJOR "${XCODE_VERSION}")
-	string(LENGTH ${XCODE_MAJOR} XCODE_MAJOR_LENGTH)
-	string(REGEX MATCH "[0-4]" XCODE_MAJOR_TO_OLD ${XCODE_MAJOR})
-	
-	if (NOT (${XCODE_MAJOR_LENGTH} EQUAL 1 AND "${XCODE_MAJOR_TO_OLD}" GREATER ""))
-	    message(STATUS "Configuring for platform MacOS with XCode Version 5+.")
-	    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
-	else ()
-	    message (WARNING "Insufficient XCode Version (upgrade to XCode 5.x or higher)!")
-	endif()
-    else ()
-	    message (STATUS "Configuring for platform MacOS without XCode, using plain make.")
-	    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
-    endif()
-
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
 elseif(UNIX AND CMAKE_COMPILER_IS_GNUCXX)
-
-    message(STATUS "Configuring for platform Linux/GCC.")
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformLinuxGCC.cmake)
-
 else()
-
-    # Unsupported system/compiler
     message(WARNING "Unsupported platform/compiler combination")
-
 endif()
 
-
-# INSTALL
-if(X64)
-    # http://public.kitware.com/Bug/view.php?id=9094
-    set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64")
-endif()
-
+# Installation paths
 set(project ${META_PROJECT_NAME})
 if(WIN32)
-    set(INSTALL_BIN           ".")                      # C:\Programme\<project>
-    set(INSTALL_SHARED        ".")                      # C:\Programme\<project>
-    set(INSTALL_LIB           "lib")                    # C:\Programme\<project>\lib
-    set(INSTALL_INCLUDE       "include")                # C:\Programme\<project>\include
-    set(INSTALL_DOC           "doc")                    # C:\Programme\<project>\doc
-    set(INSTALL_APPLICATIONS  "")                       # Not available under Windows
-    set(INSTALL_ICONS         "")                       # Not available under Windows
-    set(INSTALL_INIT          "")                       # Not available under Windows
-    set(INSTALL_DATA          ".")                      # C:\Programme\<project>
-    set(INSTALL_EXAMPLES      ".")                      # C:\Programme\<project>
+    set(INSTALL_ROOT      ".")                         # C:\Programme\<project>
+    set(INSTALL_EXAMPLES  "bin")                       # C:\Programme\<project>
+    set(INSTALL_DATA      "bin")                       # C:\Programme\<project>
+    set(INSTALL_BIN       "bin")                       # C:\Programme\<project>
+    set(INSTALL_SHARED    ".")                         # C:\Programme\<project>
+    set(INSTALL_LIB       "lib")                       # C:\Programme\<project>\lib
+    set(INSTALL_INCLUDE   "include")                   # C:\Programme\<project>\include
+    set(INSTALL_DOC       "doc")                       # C:\Programme\<project>\doc
+    set(INSTALL_SHORTCUTS ".")                         # Not available under Windows
+    set(INSTALL_ICONS     ".")                         # Not available under Windows
+    set(INSTALL_INIT      ".")                         # Not available under Windows
 else()
-    set(INSTALL_BIN           "bin")                    # /usr/[local]/bin
-    set(INSTALL_SHARED        "lib")                    # /usr/[local]/lib
-    set(INSTALL_LIB           "lib")                    # /usr/[local]/lib
-    set(INSTALL_INCLUDE       "include")                # /usr/[local]/include
-    set(INSTALL_DOC           "share/doc/${project}")   # /usr/[local]/share/doc/<project>
-    set(INSTALL_APPLICATIONS  "share/applications")     # /usr/[local]/share/applications
-    set(INSTALL_ICONS         "share/pixmaps")          # /usr/[local]/share/pixmaps
-    set(INSTALL_INIT          "/etc/init")              # /etc/init (upstart init scripts)
-    set(INSTALL_DATA          "share/${project}")       # /usr/[local]/share/<project>
-    set(INSTALL_EXAMPLES      "share/${project}")       # /usr/[local]/share/<project>
+    set(INSTALL_ROOT      "share/${project}")          # /usr/[local]/share/<project>
+    set(INSTALL_EXAMPLES  "share/${project}/examples") # /usr/[local]/share/<project>/examples
+    set(INSTALL_DATA      "share/${project}/examples") # /usr/[local]/share/<project>
+    set(INSTALL_BIN       "bin")                       # /usr/[local]/bin
+    set(INSTALL_SHARED    "lib")                       # /usr/[local]/lib
+    set(INSTALL_LIB       "lib")                       # /usr/[local]/lib
+    set(INSTALL_INCLUDE   "include")                   # /usr/[local]/include
+    set(INSTALL_DOC       "share/doc/${project}")      # /usr/[local]/share/doc/<project>
+    set(INSTALL_SHORTCUTS "share/applications")        # /usr/[local]/share/applications
+    set(INSTALL_ICONS     "share/pixmaps")             # /usr/[local]/share/pixmaps
+    set(INSTALL_INIT      "/etc/init")                 # /etc/init (upstart init scripts)
 
-    # Adjust target paths for Local installs
-    if(OPTION_LOCAL_INSTALL)
+    # Adjust target paths for portable installs
+    if(OPTION_PORTABLE_INSTALL)
         # Put binaries in root directory and keep data directory name
-        set(INSTALL_BIN                       ".")           # /<INSTALL_PREFIX>
-        set(INSTALL_DATA                      ".")           # /<INSTALL_PREFIX>
+        set(INSTALL_ROOT     ".") # <INSTALL_PREFIX>/
+        set(INSTALL_EXAMPLES ".") # <INSTALL_PREFIX>/
+        set(INSTALL_DATA     ".") # <INSTALL_PREFIX>/
+        set(INSTALL_BIN      ".") # <INSTALL_PREFIX>/
 
         # We have to change the RPATH of binaries to achieve a usable local install.
         # [TODO] For binaries, "$ORIGIN/lib" is right, so that libraries are found in ./lib.
@@ -168,87 +124,27 @@ else()
     endif()
 endif()
 
-install(DIRECTORY ${GLOW_SOURCE_DIR}/include/ DESTINATION ${INSTALL_INCLUDE})
 
+#
+# Global deployment
+#
 
-# GET REPOSITORY VERSION
+# Project meta files
+install(FILES glow-config.cmake DESTINATION ${INSTALL_ROOT})
+install(FILES AUTHORS           DESTINATION ${INSTALL_ROOT})
+install(FILES LICENSE           DESTINATION ${INSTALL_ROOT})
 
 # Add a revision file containing the git-head tag for cpack and install
-include(GetGitRevisionDescription)
-get_git_head_revision(GIT_REFSPEC GIT_SHA1)
+create_revision_file(${CMAKE_BINARY_DIR}/revision ${INSTALL_ROOT})
 
-# Generate a shorter, googlelike variation for rev
-string(SUBSTRING ${GIT_SHA1} 0 12 GIT_REV)
-file(WRITE ${CMAKE_BINARY_DIR}/revision ${GIT_REV})
-
-# [TODO] Really?? Do we want this deployed?
-install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION .)
-
-# [TODO] Deal with GIT-NOTFOUND
+# Data files
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/data DESTINATION ${INSTALL_DATA})
 
 
-# Generate meta-header
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/source/glow-version.h.in ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h)
-# we do NOT want to deploy this header
-#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/glow/glow-version.h DESTINATION ${INSTALL_INCLUDE}/glow)
-
-
-# GLOW DEPENDENCIES
-
-if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOW_STATIC")
-endif()
-
-# Find externals
-find_package(OpenGL REQUIRED)
-find_package(GLM REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(GLFW REQUIRED glfw3)
-
-# Include directories
-include_directories(
-    ${GLOW_SOURCE_DIR}  # for Meta.h
-    ${GLOW_SOURCE_DIR}/include
-    ${OPENGL_INCLUDE_DIR}
-    ${GLM_INCLUDE_DIR}
-    ${GLEW_INCLUDE_DIR}
-    ${GLFW_INCLUDE_DIR}
-)
-
-# PREBUILD
-
-set(PREBUILD_PATH "${CMAKE_CURRENT_SOURCE_DIR}/pre-build/generated")
-if (OPTION_GENERATE_GL_INFO)
-	add_subdirectory("pre-build")
-endif()
-include_directories(${PREBUILD_PATH})
-install(FILES ${PREBUILD_PATH}/gl_extensions.h DESTINATION include/glow)
-	
-
-# LIBRARIES
+#
+# Include projects
+#
 
 add_subdirectory(source)
-install(FILES glow-config.cmake DESTINATION ".")
-
-add_dependencies(glow prebuild)
-
-# EXAMPLES
-
-if(OPTION_BUILD_EXAMPLES)
-    add_subdirectory(examples)
-endif()
-
-# PACKAGING
-
-add_subdirectory(packages)
-
-
-# DOXYGEN
-
 add_subdirectory(docs)
-
-
-# TESTS
-
-add_subdirectory(tests)
-
+add_subdirectory(packages)

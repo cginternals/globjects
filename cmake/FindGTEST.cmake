@@ -19,7 +19,9 @@ find_library(GTEST_LIBRARY
     NAMES gtest
     PATHS
     $ENV{GTESTDIR}/lib
+    $ENV{GTESTDIR}/lib/.libs
     $ENV{GTEST_HOME}/lib
+    $ENV{GTEST_HOME}/lib/.libs
     $ENV{GTESTDIR}
     $ENV{GTEST_HOME}
     $ENV{GMOCKDIR}/gtest
@@ -38,7 +40,9 @@ find_library(GTEST_LIBRARY_DEBUG
     NAMES gtestd
     PATHS
     $ENV{GTESTDIR}/lib
+    $ENV{GTESTDIR}/lib/.libs
     $ENV{GTEST_HOME}/lib
+    $ENV{GTEST_HOME}/lib/.libs
     $ENV{GTESTDIR}
     $ENV{GTEST_HOME}
     $ENV{GMOCKDIR}/gtest
@@ -63,5 +67,6 @@ else ()
 	set(GTEST_LIBRARIES "")
 endif ()
 
+include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(GTEST REQUIRED_VARS GTEST_INCLUDE_DIR GTEST_LIBRARIES)
 mark_as_advanced(GTEST_INCLUDE_DIR GTEST_LIBRARIES)
