@@ -1,16 +1,44 @@
 
 # Target
 set(target glow)
-message(STATUS "lib ${target}")
+message(STATUS "Lib ${target}")
 
+#
+# External libraries
+#
+
+find_package(OpenGL REQUIRED)
+find_package(GLM REQUIRED)
+find_package(GLEW REQUIRED)
+
+#
+# Includes
+#
+
+include_directories(
+    ${OPENGL_INCLUDE_DIR}
+    ${GLM_INCLUDE_DIR}
+    ${GLEW_INCLUDE_DIR}
+    ${CMAKE_BINARY_DIR}/source/pre-build/
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+#
 # Libraries
+#
+
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARY}
 )
 
-# Definitions
-if (NOT OPTION_BUILD_STATIC)
+#
+# Compiler definitions
+#
+
+if (OPTION_BUILD_STATIC)
+    add_definitions("-DGLOW_STATIC")
+else()
     add_definitions("-DGLOW_EXPORTS")
 endif()
 
@@ -20,74 +48,77 @@ else()
     add_definitions("-D_HAS_EXCEPTIONS=0")
 endif()
 
+#
 # Sources
-set(header_path "${GLOW_SOURCE_DIR}/include/glow")
-set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
+#
+
+set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
+set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
-    ${header_path}/glow.h
+    ${include_path}/glow.h
 
-    ${header_path}/AbstractLogHandler.h
-    ${header_path}/AbstractUniform.h
-    ${header_path}/AbstractState.h
-    ${header_path}/AbstractState.hpp
-    ${header_path}/AbstractStringSource.h
-    ${header_path}/Buffer.h
-    ${header_path}/Buffer.hpp
-    ${header_path}/Capability.h
-    ${header_path}/Changeable.h
-    ${header_path}/ChangeListener.h
-    ${header_path}/CompositeStringSource.h
-    ${header_path}/ConsoleLogger.h
-    ${header_path}/constants.h
-    ${header_path}/DebugInfo.h
-    ${header_path}/DebugMessage.h
-    ${header_path}/debugmessageoutput.h
-    ${header_path}/Error.h
-    ${header_path}/Extension.h
-    ${header_path}/FrameBufferAttachment.h
-    ${header_path}/FrameBufferObject.h
-    ${header_path}/formatString.h
-    ${header_path}/formatString.hpp
-    ${header_path}/FunctionCall.h
-    ${header_path}/FunctionCall.hpp
-    ${header_path}/global.h
-    ${header_path}/global.hpp
-    ${header_path}/logging.h
-    ${header_path}/logging.hpp
-    ${header_path}/LogMessage.h
-    ${header_path}/LogMessageBuilder.h
-    ${header_path}/LogMessageBuilder.hpp
-    ${header_path}/memory.h
-    ${header_path}/Object.h
-    ${header_path}/ObjectRegistry.h
-    ${header_path}/ObjectVisitor.h
-    ${header_path}/Program.h
-    ${header_path}/Program.hpp
-    ${header_path}/ProgramBinary.h
-    ${header_path}/Query.h
-    ${header_path}/ref_ptr.h
-    ${header_path}/ref_ptr.hpp
-    ${header_path}/Referenced.h
-    ${header_path}/RenderBufferAttachment.h
-    ${header_path}/RenderBufferObject.h
-    ${header_path}/Sampler.h
-    ${header_path}/Shader.h
-    ${header_path}/State.h
-    ${header_path}/StateSetting.h
-    ${header_path}/StateSetting.hpp
-    ${header_path}/StaticStringSource.h
-    ${header_path}/Texture.h
-    ${header_path}/TextureAttachment.h
-    ${header_path}/TextureHandle.h
-    ${header_path}/TransformFeedback.h
-    ${header_path}/TransformFeedback.hpp
-    ${header_path}/Uniform.h
-    ${header_path}/Uniform.hpp
-    ${header_path}/UniformSetter.h
-    ${header_path}/Version.h
-    ${header_path}/VertexArrayObject.h
-    ${header_path}/VertexAttributeBinding.h
+    ${include_path}/AbstractLogHandler.h
+    ${include_path}/AbstractUniform.h
+    ${include_path}/AbstractState.h
+    ${include_path}/AbstractState.hpp
+    ${include_path}/AbstractStringSource.h
+    ${include_path}/Buffer.h
+    ${include_path}/Buffer.hpp
+    ${include_path}/Capability.h
+    ${include_path}/Changeable.h
+    ${include_path}/ChangeListener.h
+    ${include_path}/CompositeStringSource.h
+    ${include_path}/ConsoleLogger.h
+    ${include_path}/constants.h
+    ${include_path}/DebugInfo.h
+    ${include_path}/DebugMessage.h
+    ${include_path}/debugmessageoutput.h
+    ${include_path}/Error.h
+    ${include_path}/Extension.h
+    ${include_path}/FrameBufferAttachment.h
+    ${include_path}/FrameBufferObject.h
+    ${include_path}/formatString.h
+    ${include_path}/formatString.hpp
+    ${include_path}/FunctionCall.h
+    ${include_path}/FunctionCall.hpp
+    ${include_path}/global.h
+    ${include_path}/global.hpp
+    ${include_path}/logging.h
+    ${include_path}/logging.hpp
+    ${include_path}/LogMessage.h
+    ${include_path}/LogMessageBuilder.h
+    ${include_path}/LogMessageBuilder.hpp
+    ${include_path}/memory.h
+    ${include_path}/Object.h
+    ${include_path}/ObjectRegistry.h
+    ${include_path}/ObjectVisitor.h
+    ${include_path}/Program.h
+    ${include_path}/Program.hpp
+    ${include_path}/ProgramBinary.h
+    ${include_path}/Query.h
+    ${include_path}/ref_ptr.h
+    ${include_path}/ref_ptr.hpp
+    ${include_path}/Referenced.h
+    ${include_path}/RenderBufferAttachment.h
+    ${include_path}/RenderBufferObject.h
+    ${include_path}/Sampler.h
+    ${include_path}/Shader.h
+    ${include_path}/State.h
+    ${include_path}/StateSetting.h
+    ${include_path}/StateSetting.hpp
+    ${include_path}/StaticStringSource.h
+    ${include_path}/Texture.h
+    ${include_path}/TextureAttachment.h
+    ${include_path}/TextureHandle.h
+    ${include_path}/TransformFeedback.h
+    ${include_path}/TransformFeedback.hpp
+    ${include_path}/Uniform.h
+    ${include_path}/Uniform.hpp
+    ${include_path}/UniformSetter.h
+    ${include_path}/Version.h
+    ${include_path}/VertexArrayObject.h
+    ${include_path}/VertexAttributeBinding.h
 )
 
 set(sources
@@ -148,34 +179,46 @@ set(sources
 )
 
 # Group source files
-set(glow_header_group "Header Files (API)")
-set(glow_source_group "Source Files")
-source_group_by_path(${header_path} "\\\\.h$|\\\\.hpp$" 
-    ${glow_header_group} ${api_includes})
+set(header_group "Header Files (API)")
+set(source_group "Source Files")
+source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
+    ${header_group} ${api_includes})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
-    ${glow_source_group} ${sources})
+    ${source_group} ${sources})
 
+#
 # Build library
+#
+
 if(OPTION_BUILD_STATIC)
     add_library(${target} ${api_includes} ${sources})
 else()
     add_library(${target} SHARED ${api_includes} ${sources})
 endif()
 target_link_libraries(${target} ${libs})
+
 set_target_properties(${target}
     PROPERTIES
-    LINKER_LANGUAGE CXX
+    LINKER_LANGUAGE              CXX
+    FOLDER                      "${IDE_FOLDER}"
     COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
     COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
     COMPILE_FLAGS               "${DEFAULT_COMPILE_FLAGS}"
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
-    INCLUDE_PATH	            "${GLOW_SOURCE_DIR}/include")
+    INCLUDE_PATH	            ${include_path})
 
+#
 # Deployment
+#
+
+# Library
 install(TARGETS ${target}
     RUNTIME DESTINATION ${INSTALL_BIN}
     LIBRARY DESTINATION ${INSTALL_SHARED}
     ARCHIVE DESTINATION ${INSTALL_LIB}
 )
+
+# Header files
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE})
