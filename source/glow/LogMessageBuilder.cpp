@@ -198,7 +198,7 @@ LogMessageBuilder& LogMessageBuilder::operator<<(unsigned char uc)
 	return *this;
 }
 
-LogMessageBuilder& LogMessageBuilder::operator<<(void * pointer)
+LogMessageBuilder& LogMessageBuilder::operator<<(const void * pointer)
 {
     *m_stream << pointer;
 	return *this;

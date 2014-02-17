@@ -86,7 +86,7 @@ public:
     LogMessageBuilder& operator<<(long long l);
 	LogMessageBuilder& operator<<(unsigned long ul);
 	LogMessageBuilder& operator<<(unsigned char uc);
-	LogMessageBuilder& operator<<(void* pointer);
+    LogMessageBuilder& operator<<(const void * pointer);
 
 	// manipulators
 	LogMessageBuilder& operator<<(std::ostream& (*manipulator)(std::ostream&));
@@ -118,7 +118,7 @@ public:
 	
 	// pointers
 	template <typename T>
-    LogMessageBuilder& operator<<(T* pointer);
+    LogMessageBuilder& operator<<(const T * pointer);
 
     // array types
     template <typename T>
