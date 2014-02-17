@@ -134,11 +134,11 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     
     # Install files
     
-    if(APPLE)
-        set(CPACK_INSTALL_CMAKE_PROJECTS        "${CMAKE_BINARY_DIR};glow;/")
-    else()
+#    if(APPLE)
+#        set(CPACK_INSTALL_CMAKE_PROJECTS        "${CMAKE_BINARY_DIR};glow;/")
+#    else()
         set(CPACK_INSTALL_CMAKE_PROJECTS        "${CMAKE_BINARY_DIR};glow;ALL;/")
-    endif()
+#    endif()
     set(CPACK_PACKAGE_INSTALL_DIRECTORY     "${package_name}")
     set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY  "${package_name}")
     if(NOT WIN32)
