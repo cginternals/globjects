@@ -20,7 +20,7 @@ void Program::setUniformByIdentity(const LocationIdentity & identity, const T & 
     {
         warning() << "Uniform type mismatch on set uniform. Uniform will be replaced.";
 
-        addUniform(new Uniform<T>(identity.isName() ? identity.name() : identity.location(), value));
+        addUniform(identity.isName() ? new Uniform<T>(identity.name(), value) : new Uniform<T>(identity.location(), value));
         return;
     }
     uniform->set(value);
@@ -34,7 +34,7 @@ Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identity)
 
     // create new uniform if none named <name> exists
 
-    Uniform<T> * uniform = new Uniform<T>(identity.isName() ? identity.name() : identity.location());
+    Uniform<T> * uniform = identity.isName() ? new Uniform<T>(identity.name()) : new Uniform<T>(identity.location());
 
     m_uniforms[uniform->identity()] = uniform;
     uniform->registerProgram(this);

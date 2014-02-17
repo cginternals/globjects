@@ -56,9 +56,12 @@ void AbstractUniform::changed()
 		update(program);
 }
 
-GLint AbstractUniform::uniformLocation()
+GLint AbstractUniform::locationFor(Program * program)
 {
-    return m_identity.isName() ?
+    if (m_identity.isLocation())
+        return m_identity.location();
+
+    return program->getUniformLocation(m_identity.name());
 }
 
 void AbstractUniform::update(Program * program)
@@ -69,7 +72,7 @@ void AbstractUniform::update(Program * program)
 
     if (program->isLinked())
     {
-        setValueAt(program->getUniformLocation(m_name));
+        setValueAt(locationFor(program));
     }
 }
 

@@ -125,7 +125,6 @@ public:
 	*/
 	void addUniform(AbstractUniform * uniform);
 
-
 	void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding);
 
 	void dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ);
