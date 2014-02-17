@@ -238,8 +238,8 @@ void AdaptiveGrid::update(
     const vec3 u(vec3(T * vec4(viewPlaneDistance, 0.f, 0.f, 1.f)) - m_location);
     const vec3 v(vec3(T * vec4(0.f, 0.f, viewPlaneDistance, 1.f)) - m_location);
 
-    const size_t j = (u[0] < 0.0f || u[0] > 0.0f) ? 0 : (u[1] < 0.0 || u[1] > 0.0) ? 1 : 2;
-    const size_t k = (v[0] < 0.0 || v[0] > 0.0) && j != 0 ? 0 : (v[1] < 0.0 || v[1] > 0.0) && j != 1 ? 1 : 2;
+    const int j = (u[0] < 0.0f || u[0] > 0.0f) ? 0 : (u[1] < 0.0 || u[1] > 0.0) ? 1 : 2;
+    const int k = (v[0] < 0.0 || v[0] > 0.0) && j != 0 ? 0 : (v[1] < 0.0 || v[1] > 0.0) && j != 1 ? 1 : 2;
 
     const vec3 a(i - m_location);
 
