@@ -20,5 +20,5 @@ if (PYTHON)
 	
 	set(PREBUILD_PATH "${CMAKE_CURRENT_BINARY_DIR}")
 else()
-	message("Could not find python")
+	message(SEND_ERROR "Could not find python")
 endif()
