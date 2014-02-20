@@ -156,6 +156,12 @@ void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr 
 	CheckGLError();
 }
 
+void Buffer::unbindIndex(GLenum target, GLuint index)
+{
+    glBindBufferBase(target, index, 0);
+    CheckGLError();
+}
+
 void Buffer::copySubData(GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)
 {
     glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);

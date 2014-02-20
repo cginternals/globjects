@@ -193,6 +193,12 @@ public:
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glBindBufferRange.xml
      */
     void bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size);
+    /**
+     * Unbinds the buffer bound to the target and index.
+     * @param target the target for unbinding
+     * @param index the index for unbinding
+     */
+    static void unbindIndex(GLenum target, GLuint index);
 
     /**
      * Wraps the OpenGL function glCopyBufferSubData.
