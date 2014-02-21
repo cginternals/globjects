@@ -14,9 +14,11 @@
 
 #include "RawFile.h"
 
+#include <ExampleWindowEventHandler.h>
+
 using namespace glowwindow;
 
-class EventHandler : public WindowEventHandler
+class EventHandler : public ExampleWindowEventHandler
 {
 public:
     EventHandler()

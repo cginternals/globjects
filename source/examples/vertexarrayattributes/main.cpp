@@ -22,6 +22,8 @@
 
 #include <glow/logging.h>
 
+#include <ExampleWindowEventHandler.h>
+
 using namespace glowwindow;
 
 struct Element
@@ -56,7 +58,7 @@ struct Element
     float random2;      // 11
 };
 
-class EventHandler : public WindowEventHandler
+class EventHandler : public ExampleWindowEventHandler
 {
 public:
     EventHandler()
