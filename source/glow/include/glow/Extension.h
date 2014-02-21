@@ -4,7 +4,7 @@
 
 #include <glow/glow.h>
 
-#include <gl_extensions.h>
+#include <glow/gl_extensions.h>
 
 namespace glow {
 

@@ -23,7 +23,8 @@ include_directories(
 
 include_directories(
     BEFORE
-    ${CMAKE_BINARY_DIR}/source/pre-build/
+    ${CMAKE_BINARY_DIR}/source/codegeneration
+    ${CMAKE_SOURCE_DIR}/source/codegeneration
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
