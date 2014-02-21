@@ -46,9 +46,6 @@ bool hasExtension(Extension extension)
     if (isInCoreProfile(extension))
         return true;
 
-    if (isCoreProfile())
-        return false;
-
     return availableExtensions.find(extension) != availableExtensions.end();
 }
 
