@@ -57,10 +57,13 @@ protected:
 	/** This function requires knowledge of the unifom's value.
 	*/
 	virtual void setLocation(GLint location) = 0;
+    virtual void setProgramLocation(Program* program, GLint location) = 0;
 
 protected:
 	std::string m_name;
 	std::set<Program *> m_programs;
+    bool m_directStateAccess;
+    bool m_cacheDSA;
 };
 
 } // namespace glow

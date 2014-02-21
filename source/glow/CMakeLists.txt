@@ -100,6 +100,7 @@ set(api_includes
     ${include_path}/Program.h
     ${include_path}/Program.hpp
     ${include_path}/ProgramBinary.h
+    ${include_path}/ProgramUniformSetter.h
     ${include_path}/Query.h
     ${include_path}/ref_ptr.h
     ${include_path}/ref_ptr.hpp
@@ -162,6 +163,7 @@ set(sources
     ${source_path}/ObjectVisitor.cpp
     ${source_path}/Program.cpp
     ${source_path}/ProgramBinary.cpp
+    ${source_path}/ProgramUniformSetter.cpp
     ${source_path}/Query.cpp
     ${source_path}/Referenced.cpp
     ${source_path}/RenderBufferAttachment.cpp
