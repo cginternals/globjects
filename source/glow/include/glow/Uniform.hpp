@@ -2,6 +2,8 @@
 
 #include <glow/Uniform.h>
 
+#include <glow/Program.h>
+#include <glow/ProgramUniformSetter.h>
 #include <glow/UniformSetter.h>
 
 namespace glow
@@ -51,6 +53,12 @@ void Uniform<T>::setValueAt(GLint location)
 }
 
 template<typename T>
+void Uniform<T>::setValueAt(Program* program, GLint location)
+{
+    setValue(program->id(), location, m_value);
+}
+
+template<typename T>
 void Uniform<T>::set(const T & value)
 {
 	m_value = value;
@@ -61,6 +69,12 @@ template<typename T>
 void Uniform<T>::setValue(GLint location, const T & value)
 {
     UniformSetter::set(location, value);
+}
+
+template<typename T>
+void Uniform<T>::setValue(GLuint program, GLint location, const T & value)
+{
+    ProgramUniformSetter::set(program, location, value);
 }
 
 } // namespace glow

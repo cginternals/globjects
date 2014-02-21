@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include <glow/Error.h>
+#include <glow/Extension.h>
 #include <glow/ObjectVisitor.h>
 
 namespace glow
@@ -11,18 +12,21 @@ namespace glow
 Buffer::Buffer()
 : Object(genBuffer())
 , m_target(0)
+, m_directStateAccess(hasExtension(GLOW_EXT_direct_state_access))
 {
 }
 
 Buffer::Buffer(GLenum target)
 : Object(genBuffer())
 , m_target(target)
+, m_directStateAccess(hasExtension(GLOW_EXT_direct_state_access))
 {
 }
 
 Buffer::Buffer(GLuint id, GLenum target)
 : Object(id, false)
 , m_target(target)
+, m_directStateAccess(hasExtension(GLOW_EXT_direct_state_access))
 {
 }
 
@@ -76,84 +80,145 @@ void Buffer::unbind(GLenum target)
 
 void* Buffer::map(GLenum access)
 {
-    bind();
+    if (m_directStateAccess)
+    {
+        void* result = glMapNamedBufferEXT(m_id, access);
+        CheckGLError();
+        return result;
+    }
+    else
+    {
+        bind();
 
-    void* result = glMapBuffer(m_target, access);
-	CheckGLError();
-	return result;
-}
+        void* result = glMapBuffer(m_target, access);
+        CheckGLError();
+        return result;
+    }
 
-void* Buffer::map(GLenum target, GLenum access)
-{
-    bind(target);
-
-    void* result = glMapBuffer(target, access);
-	CheckGLError();
-	return result;
 }
 
 void* Buffer::mapRange(GLintptr offset, GLsizeiptr length, GLbitfield access)
 {
-    bind();
+    if (m_directStateAccess)
+    {
+        void* result = glMapNamedBufferRangeEXT(m_id, offset, length, access);
+        CheckGLError();
+        return result;
+    }
+    else
+    {
+        bind();
 
-    void* result = glMapBufferRange(m_target, offset, length, access);
-    CheckGLError();
-    return result;
+        void* result = glMapBufferRange(m_target, offset, length, access);
+        CheckGLError();
+        return result;
+    }
 }
 
 bool Buffer::unmap()
 {
-    bind();
+    if (m_directStateAccess)
+    {
+        GLboolean success = glUnmapNamedBufferEXT(m_id);
+        CheckGLError();
 
-    GLboolean success = glUnmapBuffer(m_target);
-	CheckGLError();
+        return success == GL_TRUE;
+    }
+    else
+    {
+        bind();
 
-    return success == GL_TRUE;
+        GLboolean success = glUnmapBuffer(m_target);
+        CheckGLError();
+
+        return success == GL_TRUE;
+    }
 }
 
 void Buffer::setData(GLsizeiptr size, const GLvoid* data, GLenum usage)
 {
-	bind();
-    glBufferData(m_target, size, data, usage);
-	CheckGLError();
+    if (m_directStateAccess)
+    {
+        glNamedBufferDataEXT(m_id, size, data, usage);
+    }
+    else
+    {
+        bind();
+        glBufferData(m_target, size, data, usage);
+        CheckGLError();
+    }
 }
     
-void Buffer::setSubData (GLintptr offset, GLsizeiptr size, const GLvoid* data)
+void Buffer::setSubData(GLintptr offset, GLsizeiptr size, const GLvoid* data)
 {
-    bind();
-    glBufferSubData(m_target, offset, size, data);
-    CheckGLError();
+    if (m_directStateAccess)
+    {
+        glNamedBufferSubDataEXT(m_id, offset, size, data);
+        CheckGLError();
+    }
+    else
+    {
+        bind();
+        glBufferSubData(m_target, offset, size, data);
+        CheckGLError();
+    }
 }
 
 void Buffer::setStorage(GLsizeiptr size, const GLvoid * data, GLbitfield flags)
 {
-    bind();
-    glBufferStorage(m_target, size, data, flags);
-    CheckGLError();
+    if (m_directStateAccess)
+    {
+        glNamedBufferStorageEXT(m_id, size, data, flags);
+        CheckGLError();
+    }
+    else
+    {
+        bind();
+        glBufferStorage(m_target, size, data, flags);
+        CheckGLError();
+    }
 }
 
 GLint Buffer::getParameter(GLenum pname)
 {
-	bind();
+    if (m_directStateAccess)
+    {
+        GLint value = 0;
 
-	GLint value = 0;
+        glGetNamedBufferParameterivEXT(m_id, pname, &value);
+        CheckGLError();
 
-    glGetBufferParameteriv(m_target, pname, &value);
-	CheckGLError();
+        return value;
+    }
+    else
+    {
+        bind();
 
-	return value;
+        GLint value = 0;
+
+        glGetBufferParameteriv(m_target, pname, &value);
+        CheckGLError();
+
+        return value;
+    }
 }
 
 void Buffer::bindBase(GLenum target, GLuint index)
 {
-	glBindBufferBase(target, index, m_id);
-	CheckGLError();
+    glBindBufferBase(target, index, m_id);
+    CheckGLError();
 }
 
 void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size)
 {
-	glBindBufferRange(target, index, m_id, offset, size);
+    glBindBufferRange(target, index, m_id, offset, size);
 	CheckGLError();
+}
+
+void Buffer::unbindIndex(GLenum target, GLuint index)
+{
+    glBindBufferBase(target, index, 0);
+    CheckGLError();
 }
 
 void Buffer::copySubData(GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)
@@ -188,13 +253,21 @@ void Buffer::copySubData(glow::Buffer* buffer, GLintptr readOffset, GLintptr wri
 {
     assert(buffer != nullptr);
 
-    glBindBuffer(GL_COPY_WRITE_BUFFER, buffer->id());
-    CheckGLError();
+    if (m_directStateAccess)
+    {
+        glNamedCopyBufferSubDataEXT(m_id, buffer->id(), readOffset, writeOffset, size);
+        CheckGLError();
+    }
+    else
+    {
+        glBindBuffer(GL_COPY_WRITE_BUFFER, buffer->id());
+        CheckGLError();
 
-	copySubData(GL_COPY_WRITE_BUFFER, readOffset, writeOffset, size);
+        copySubData(GL_COPY_WRITE_BUFFER, readOffset, writeOffset, size);
 
-    glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
-    CheckGLError();
+        glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
+        CheckGLError();
+    }
 }
 
 void Buffer::copySubData(glow::Buffer* buffer, GLsizeiptr size)
@@ -214,18 +287,34 @@ void Buffer::copyData(glow::Buffer* buffer, GLsizeiptr size, GLenum usage)
 
 void Buffer::clearData(GLenum internalformat, GLenum format, GLenum type, const void* data)
 {
-    bind();
+    if (m_directStateAccess)
+    {
+        glClearNamedBufferDataEXT(m_id, internalformat, format, type, data);
+        CheckGLError();
+    }
+    else
+    {
+        bind();
 
-    glClearBufferData(m_target, internalformat, format, type, data);
-    CheckGLError();
+        glClearBufferData(m_target, internalformat, format, type, data);
+        CheckGLError();
+    }
 }
 
 void Buffer::clearSubData(GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void* data)
 {
-    bind();
+    if (m_directStateAccess)
+    {
+        glClearNamedBufferSubDataEXT(m_id, internalformat, offset, size, format, type, data);
+        CheckGLError();
+    }
+    else
+    {
+        bind();
 
-    glClearBufferSubData(m_target, internalformat, offset, size, format, type, data);
-    CheckGLError();
+        glClearBufferSubData(m_target, internalformat, offset, size, format, type, data);
+        CheckGLError();
+    }
 }
 
 } // namespace glow

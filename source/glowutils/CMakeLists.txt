@@ -19,6 +19,10 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLEW_INCLUDE_DIR}
+)
+
+include_directories(
+    BEFORE
     ${CMAKE_SOURCE_DIR}/source/glow/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )

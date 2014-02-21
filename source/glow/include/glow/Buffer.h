@@ -157,16 +157,7 @@ public:
      * @param access specifies reading/writing access
      * @return a pointer to the mapped memory
      */
-	void * map(GLenum access = GL_READ_ONLY);
-    /**
-     * Wraps the OpenGL function glMapBuffer.
-     * Binds the Buffer to target and then maps the buffer's video memory to application memory.
-     * @param target the target to which will be mapped
-     * @param access specifies reading/writing access
-     * @return pointer to the mapped memory
-     * \see http://www.opengl.org/sdk/docs/man/xhtml/glMapBuffer.xml
-     */
-	void * map(GLenum target, GLenum access);
+    void * map(GLenum access = GL_READ_ONLY);
     /**
      * Wraps the OpenGL function glMapBufferRange.
      * Maps only a range of the buffers memory.
@@ -193,6 +184,12 @@ public:
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glBindBufferRange.xml
      */
     void bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size);
+    /**
+     * Unbinds the buffer bound to the target and index.
+     * @param target the target for unbinding
+     * @param index the index for unbinding
+     */
+    static void unbindIndex(GLenum target, GLuint index);
 
     /**
      * Wraps the OpenGL function glCopyBufferSubData.
@@ -256,6 +253,11 @@ protected:
      * internal target used in bind().
      */
     GLenum m_target;
+
+    /**
+      * Cached boolean whether direct state access is available or not
+      */
+    bool m_directStateAccess; // TODO: move to per context cache
 
     /**
      * Wraps the OpenGL function glGenBuffers.

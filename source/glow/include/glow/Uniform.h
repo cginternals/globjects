@@ -45,7 +45,9 @@ public:
 
 protected:
     virtual void setValueAt(GLint location) override;
+    virtual void setValueAt(Program* program, GLint location) override;
     void setValue(GLint location, const T & value);
+    void setValue(GLuint program, GLint location, const T & value);
 
 protected:
     T m_value; ///< The uniforms value, explictly required when relinking programs.

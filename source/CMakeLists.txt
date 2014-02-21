@@ -5,8 +5,8 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-# Prebuild
-add_subdirectory(pre-build)
+# Code Generation
+add_subdirectory(codegeneration)
 
 # Libraries
 set(IDE_FOLDER "")

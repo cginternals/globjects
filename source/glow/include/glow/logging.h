@@ -40,31 +40,31 @@ GLOW_API LogMessage::Level verbosityLevel();
  *   \see formatString
  */
 template <typename... Arguments>
-GLOW_API void info(const char* format, Arguments... arguments);
+void info(const char* format, Arguments... arguments);
 
 /**
  *  \see info
  */
 template <typename... Arguments>
-GLOW_API void debug(const char* format, Arguments... arguments);
+void debug(const char* format, Arguments... arguments);
 
 /**
  *  \see info
  */
 template <typename... Arguments>
-GLOW_API void warning(const char* format, Arguments... arguments);
+void warning(const char* format, Arguments... arguments);
 
 /**
  *  \see info
  */
 template <typename... Arguments>
-GLOW_API void critical(const char* format, Arguments... arguments);
+void critical(const char* format, Arguments... arguments);
 
 /**
  *  \see info
  */
 template <typename... Arguments>
-GLOW_API void fatal(const char* format, Arguments... arguments);
+void fatal(const char* format, Arguments... arguments);
 
 
 } // namespace glow

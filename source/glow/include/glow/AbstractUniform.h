@@ -62,11 +62,14 @@ protected:
 	/** This function requires knowledge of the unifom's value.
 	*/
     virtual void setValueAt(GLint location) = 0;
+    virtual void setValueAt(Program* program, GLint location) = 0;
 
     GLint locationFor(Program * program);
 protected:
     LocationIdentity m_identity;
 	std::set<Program *> m_programs;
+    bool m_directStateAccess;
+    bool m_cacheDSA;
 };
 
 } // namespace glow

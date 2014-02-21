@@ -27,6 +27,8 @@
 #include <glowutils/HybridAlgorithm.h>
 #include <glowutils/global.h>
 
+#include <ExampleWindowEventHandler.h>
+
 namespace {
 
 struct CubeUniformAttributes {
@@ -37,7 +39,7 @@ struct CubeUniformAttributes {
 
 } // anonymous namespace
 
-class EventHandler : public glowwindow::WindowEventHandler, glowutils::AbstractCoordinateProvider {
+class EventHandler : public ExampleWindowEventHandler, glowutils::AbstractCoordinateProvider {
 private:
 	glowutils::Camera* m_camera;
 	glowutils::UnitCube* m_cube;

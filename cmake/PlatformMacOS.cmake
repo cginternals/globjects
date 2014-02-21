@@ -1,23 +1,20 @@
 
+#message(STATUS "XCODE VERSION :: ${XCODE_VERSION}")
+
 # Check compiler and version
-if ("${XCODE_VERSION}")
-	# check regex, it's just a quick-hack for now but should work if the
-	# version string format returned by ${XCODE_VERSION} does not change.
-	# required format is <MAJOR>.<MINOR>.<PATCH>
-	string(REGEX REPLACE "^([0-9]+).*" "\\1" XCODE_MAJOR "${XCODE_VERSION}")
-	string(LENGTH ${XCODE_MAJOR} XCODE_MAJOR_LENGTH)
-	string(REGEX MATCH "[0-4]" XCODE_MAJOR_TO_OLD ${XCODE_MAJOR})
+if ("${XCODE_VERSION}" VERSION_LESS "5")
 
-	# Reject XCode < Version 5
-	if (NOT (${XCODE_MAJOR_LENGTH} EQUAL 1 AND "${XCODE_MAJOR_TO_OLD}" GREATER ""))
-	    message(STATUS "Configuring for platform MacOS with XCode Version 5+.")
-	else ()
-	    message(FATAL_ERROR "Insufficient XCode Version (upgrade to XCode 5.x or higher)!")
-	endif()
+    if ("${XCODE_VERSION}" VERSION_GREATER "0") 
+	message(FATAL_ERROR "Insufficient XCode Version (upgrade to XCode 5.x or higher)!")
+    else ()
+	message (STATUS "Configuring for platform MacOS without XCode, using plain make.")
+    endif ()
+
 else ()
-    message (STATUS "Configuring for platform MacOS without XCode, using plain make.")
-endif()
 
+	message(STATUS "Configuring for platform MacOS with XCode Version 5+.")
+
+endif()
 
 # removed according to http://comments.gmane.org/gmane.editors.lyx.cvs/38306
 #set(CMAKE_XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")

@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include <glow/Program.h>
+#include <glow/Extension.h>
 
 namespace glow
 {
@@ -14,6 +15,8 @@ AbstractUniform::AbstractUniform(GLint location)
 
 AbstractUniform::AbstractUniform(const std::string & name)
 : m_identity(name)
+, m_directStateAccess(false)
+, m_cacheDSA(false)
 {
 }
 
@@ -68,10 +71,26 @@ void AbstractUniform::update(Program * program)
 {
     assert(program != nullptr);
 
-	program->use();
-
-    if (program->isLinked())
+    if (!program->isLinked())
     {
+        return;
+    }
+
+    if (!m_cacheDSA) // TODO: move caching to a per context caching
+    {
+        m_cacheDSA = true;
+
+        m_directStateAccess = hasExtension(GLOW_EXT_direct_state_access);
+    }
+
+    if (m_directStateAccess)
+    {
+		setValueAt(program, locationFor(program));
+    }
+    else
+    {
+        program->use();
+
         setValueAt(locationFor(program));
     }
 }
