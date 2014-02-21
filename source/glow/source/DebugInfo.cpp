@@ -281,33 +281,39 @@ void DebugInfo::visitTexture(Texture* texture)
     int maxTextureSize = getInteger(GL_MAX_TEXTURE_SIZE);
 	int maxLevels = (int)std::ceil(std::log(maxTextureSize)/std::log(2))+1;
 
-	int memory = 0;
-	for (int i = 0; i<=maxLevels; ++i)
-	{
-        if (texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED) == GL_TRUE)
-		{
-			memory += texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED_IMAGE_SIZE);
-		}
-		else
-		{
-			int w = texture->getLevelParameter(i, GL_TEXTURE_WIDTH);
-			int h = texture->getLevelParameter(i, GL_TEXTURE_HEIGHT);
-			int d = texture->getLevelParameter(i, GL_TEXTURE_DEPTH);
+    if (texture->target() == GL_TEXTURE_CUBE_MAP)
+    {
+        info.addProperty("size", "cubemap size computation not implemented yet");
+    }
+    else
+    {
+        int memory = 0;
+        for (int i = 0; i<=maxLevels; ++i)
+        {
+            if (texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED) == GL_TRUE)
+            {
+                memory += texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED_IMAGE_SIZE);
+            }
+            else
+            {
+                int w = texture->getLevelParameter(i, GL_TEXTURE_WIDTH);
+                int h = texture->getLevelParameter(i, GL_TEXTURE_HEIGHT);
+                int d = texture->getLevelParameter(i, GL_TEXTURE_DEPTH);
 
-			int r = texture->getLevelParameter(i, GL_TEXTURE_RED_SIZE);
-			int g = texture->getLevelParameter(i, GL_TEXTURE_GREEN_SIZE);
-			int b = texture->getLevelParameter(i, GL_TEXTURE_BLUE_SIZE);
-			int a = texture->getLevelParameter(i, GL_TEXTURE_ALPHA_SIZE);
-			int ds = texture->getLevelParameter(i, GL_TEXTURE_DEPTH_SIZE);
+                int r = texture->getLevelParameter(i, GL_TEXTURE_RED_SIZE);
+                int g = texture->getLevelParameter(i, GL_TEXTURE_GREEN_SIZE);
+                int b = texture->getLevelParameter(i, GL_TEXTURE_BLUE_SIZE);
+                int a = texture->getLevelParameter(i, GL_TEXTURE_ALPHA_SIZE);
+                int ds = texture->getLevelParameter(i, GL_TEXTURE_DEPTH_SIZE);
 
-			memory += (int)std::ceil((w*h*d*(r+g+b+a+ds))/8.0);
-		}
-	}
+                memory += (int)std::ceil((w*h*d*(r+g+b+a+ds))/8.0);
+            }
+        }
 
-
-	m_memoryUsage["Textures"] += memory;
-	info.addProperty("memory", humanReadableSize(memory));
-	info.addProperty("size", std::to_string(texture->getLevelParameter(0, GL_TEXTURE_WIDTH))+" x "+std::to_string(texture->getLevelParameter(0, GL_TEXTURE_HEIGHT)));
+        m_memoryUsage["Textures"] += memory;
+        info.addProperty("memory", humanReadableSize(memory));
+        info.addProperty("size", std::to_string(texture->getLevelParameter(0, GL_TEXTURE_WIDTH))+" x "+std::to_string(texture->getLevelParameter(0, GL_TEXTURE_HEIGHT)));
+    }
 
 	addInfo("Textures", info);
 }
