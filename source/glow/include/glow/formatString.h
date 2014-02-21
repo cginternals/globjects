@@ -19,7 +19,7 @@ GLOW_API void streamprintf(std::ostream& stream, const char* format);
  * \see formatString
  */
 template <typename T, typename... Args>
-GLOW_API void streamprintf(std::ostream& stream, const char* format, const T& value, Args... args);
+void streamprintf(std::ostream& stream, const char* format, const T& value, Args... args);
 
 /**
  * This function takes a format string and any number of arguments of different types.
@@ -78,7 +78,7 @@ GLOW_API void streamprintf(std::ostream& stream, const char* format, const T& va
  * \see http://www.cplusplus.com/reference/ios/ios_base/fmtflags/
  */
 template <typename... Args>
-GLOW_API std::string formatString(const char* format, Args... args);
+std::string formatString(const char* format, Args... args);
 
 } // namespace glow
 
