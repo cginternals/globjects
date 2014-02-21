@@ -10,6 +10,19 @@ namespace glow
 {
 
 template<typename T>
+Uniform<T>::Uniform(GLint location)
+: Uniform(location, T())
+{
+}
+
+template<typename T>
+Uniform<T>::Uniform(GLint location, const T & value)
+: AbstractUniform(location)
+, m_value(value)
+{
+}
+
+template<typename T>
 Uniform<T>::Uniform(const std::string & name)
 : Uniform(name, T())
 {
@@ -34,15 +47,15 @@ const T & Uniform<T>::value() const
 }
 
 template<typename T>
-void Uniform<T>::setLocation(GLint location)
+void Uniform<T>::setValueAt(GLint location)
 {
-	set(location, m_value);
+    setValue(location, m_value);
 }
 
 template<typename T>
-void Uniform<T>::setProgramLocation(Program* program, GLint location)
+void Uniform<T>::setValueAt(Program* program, GLint location)
 {
-    set(program->id(), location, m_value);
+    setValue(program->id(), location, m_value);
 }
 
 template<typename T>
@@ -53,13 +66,13 @@ void Uniform<T>::set(const T & value)
 }
 
 template<typename T>
-void Uniform<T>::set(GLint location, const T & value)
+void Uniform<T>::setValue(GLint location, const T & value)
 {
     UniformSetter::set(location, value);
 }
 
 template<typename T>
-void Uniform<T>::set(GLuint program, GLint location, const T & value)
+void Uniform<T>::setValue(GLuint program, GLint location, const T & value)
 {
     ProgramUniformSetter::set(program, location, value);
 }

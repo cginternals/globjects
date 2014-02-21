@@ -7,6 +7,7 @@
 
 #include <glow/glow.h>
 #include <glow/Referenced.h>
+#include <glow/LocationIdentity.h>
 
 namespace glow
 {
@@ -26,10 +27,14 @@ class GLOW_API AbstractUniform : public Referenced
 	friend class Program; ///< Programs (de)register themselves.
 
 public:
+    AbstractUniform(GLint location);
 	AbstractUniform(const std::string & name);
 	virtual ~AbstractUniform();
 
 	const std::string & name() const;
+    GLint location() const;
+
+    const LocationIdentity & identity() const;
 
     /** Simplifies the often required casting of AbstractUniforms.
      *
@@ -56,11 +61,12 @@ protected:
 
 	/** This function requires knowledge of the unifom's value.
 	*/
-	virtual void setLocation(GLint location) = 0;
-    virtual void setProgramLocation(Program* program, GLint location) = 0;
+    virtual void setValueAt(GLint location) = 0;
+    virtual void setValueAt(Program* program, GLint location) = 0;
 
+    GLint locationFor(Program * program);
 protected:
-	std::string m_name;
+    LocationIdentity m_identity;
 	std::set<Program *> m_programs;
     bool m_directStateAccess;
     bool m_cacheDSA;

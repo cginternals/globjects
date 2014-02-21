@@ -8,8 +8,13 @@
 namespace glow
 {
 
+AbstractUniform::AbstractUniform(GLint location)
+: m_identity(location)
+{
+}
+
 AbstractUniform::AbstractUniform(const std::string & name)
-: m_name(name)
+: m_identity(name)
 , m_directStateAccess(false)
 , m_cacheDSA(false)
 {
@@ -21,7 +26,17 @@ AbstractUniform::~AbstractUniform()
 
 const std::string & AbstractUniform::name() const
 {
-	return m_name;
+    return m_identity.name();
+}
+
+GLint AbstractUniform::location() const
+{
+    return m_identity.location();
+}
+
+const LocationIdentity & AbstractUniform::identity() const
+{
+    return m_identity;
 }
 
 void AbstractUniform::registerProgram(Program * program)
@@ -44,9 +59,22 @@ void AbstractUniform::changed()
 		update(program);
 }
 
+GLint AbstractUniform::locationFor(Program * program)
+{
+    if (m_identity.isLocation())
+        return m_identity.location();
+
+    return program->getUniformLocation(m_identity.name());
+}
+
 void AbstractUniform::update(Program * program)
 {
     assert(program != nullptr);
+
+    if (!program->isLinked())
+    {
+        return;
+    }
 
     if (!m_cacheDSA) // TODO: move caching to a per context caching
     {
@@ -57,17 +85,13 @@ void AbstractUniform::update(Program * program)
 
     if (m_directStateAccess)
     {
-        GLint location = program->getUniformLocation(m_name);
-
-        if (location >= 0)
-            setProgramLocation(program, location);
+		setValueAt(program, locationFor(program));
     }
     else
     {
         program->use();
 
-        if (program->isLinked())
-            setLocation(program->getUniformLocation(m_name));
+        setValueAt(locationFor(program));
     }
 }
 

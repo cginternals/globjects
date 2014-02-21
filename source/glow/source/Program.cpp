@@ -237,7 +237,7 @@ void Program::addUniform(AbstractUniform * uniform)
 {
     assert(uniform != nullptr);
 
-	ref_ptr<AbstractUniform>& uniformReference = m_uniforms[uniform->name()];
+    ref_ptr<AbstractUniform>& uniformReference = m_uniforms[uniform->identity()];
 
 	if (uniformReference)
 	{
@@ -257,7 +257,7 @@ void Program::addUniform(AbstractUniform * uniform)
 void Program::updateUniforms()
 {
 	// Note: uniform update will check if program is linked
-	for (std::pair < std::string, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
+    for (std::pair<LocationIdentity, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
 	{
 		uniformPair.second->update(this);
 	}
