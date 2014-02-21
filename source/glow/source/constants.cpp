@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include <gl_constants.h>
+#include <glow/gl_constants.h>
 
 namespace {
 

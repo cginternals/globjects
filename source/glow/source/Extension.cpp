@@ -3,7 +3,7 @@
 #include <set>
 
 #include <glow/global.h>
-#include <gl_extension_info.h>
+#include <glow/gl_extension_info.h>
 
 
 namespace {
