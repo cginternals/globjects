@@ -14,14 +14,13 @@ set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glow/")
 
 # OPTIONS
 
-option(OPTION_LIMIT_CONFIGS  "Generate limited configs (Release; Debug)" ON)
-option(OPTION_PORTABLE_INSTALL  "Install to a local directory instead of the system" OFF)
-option(OPTION_BUILD_STATIC   "Build static libraries" OFF)
-option(OPTION_BUILD_TESTS      "Build tests (if gmock and gtest are found)" ON)
-
-option(OPTION_BUILD_EXAMPLES "Build examples" ON)
+option(OPTION_LIMIT_CONFIGS       "Generate limited configs (Release; Debug)" ON)
+option(OPTION_PORTABLE_INSTALL    "Install to a local directory instead of the system" OFF)
+option(OPTION_BUILD_STATIC        "Build static libraries" OFF)
+option(OPTION_BUILD_TESTS         "Build tests (if gmock and gtest are found)" ON)
+option(OPTION_BUILD_EXAMPLES      "Build examples" ON)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
-option(OPTION_GENERATE_GL_INFO "Automatically generate OpenGL extension and enum information" OFF)
+option(OPTION_GENERATE_GL_INFO    "Automatically generate OpenGL extension and enum information" OFF)
 
 
 #
