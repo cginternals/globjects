@@ -46,6 +46,7 @@ public:
 
     void image1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid * data);
     void compressedImage1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLsizei imageSize, const GLvoid * data);
+    void subImage1D(GLint level, GLint xOffset, GLsizei width, GLenum format, GLenum type, const GLvoid * data);
 
     void image2D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid * data);
     void image2D(GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLenum format, GLenum type, const GLvoid * data);
@@ -53,11 +54,15 @@ public:
     void image2D(GLenum target, GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLenum format, GLenum type, const GLvoid * data);
     void compressedImage2D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid * data);
     void compressedImage2D(GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLsizei imageSize, const GLvoid * data);
+    void subImage2D(GLint level, GLint xOffset, GLint yOffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid * data);
+    void subImage2D(GLint level, const glm::ivec2& offset, const glm::ivec2& size, GLenum format, GLenum type, const GLvoid * data);
 
     void image3D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid * data);
     void image3D(GLint level, GLenum internalFormat, const glm::ivec3 & size, GLint border, GLenum format, GLenum type, const GLvoid * data);
     void compressedImage3D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const GLvoid * data);
     void compressedImage3D(GLint level, GLenum internalFormat, const glm::ivec3 & size, GLint border, GLsizei imageSize, const GLvoid * data);
+    void subImage3D(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid * data);
+    void subImage3D(GLint level, const glm::ivec3& offset, const glm::ivec3& size, GLenum format, GLenum type, const GLvoid * data);
 
     void image2DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLboolean fixedSamplesLocations);
     void image2DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec2 & size, GLboolean fixedSamplesLocations);
@@ -94,6 +99,9 @@ public:
     GLboolean isResident() const;
     TextureHandle makeResident();
     void makeNonResident();
+
+    void pageCommitment(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit);
+    void pageCommitment(GLint level, const glm::ivec3& offset, const glm::ivec3& size, GLboolean commit);
 
 protected:
     static GLuint genTexture();
