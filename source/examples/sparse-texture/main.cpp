@@ -123,21 +123,21 @@ void EventHandler::createAndSetupTexture()
     }
 
     std::vector<int> pageSizesX(numPageSizes);
-    glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_X_ARB, numPageSizes * sizeof(int), pageSizesX.data());
+    glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_X_ARB, GLsizei(numPageSizes * sizeof(int)), pageSizesX.data());
     for (int i = 0; i < numPageSizes; ++i) {
         glow::info("GL_VIRTUAL_PAGE_SIZE_X_ARB[%;] = %;", i, pageSizesX[i]);
     }
     CheckGLError();
 
     std::vector<int> pageSizesY(numPageSizes);
-    glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Y_ARB, numPageSizes * sizeof(int), pageSizesY.data());
+    glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Y_ARB, GLsizei(numPageSizes * sizeof(int)), pageSizesY.data());
     for (int i = 0; i < numPageSizes; ++i) {
         glow::info("GL_VIRTUAL_PAGE_SIZE_Y_ARB[%;] = %;", i, pageSizesY[i]);
     }
     CheckGLError();
 
     std::vector<int> pageSizesZ(numPageSizes);
-    glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Z_ARB, numPageSizes * sizeof(int), pageSizesZ.data());
+    glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Z_ARB, GLsizei(numPageSizes * sizeof(int)), pageSizesZ.data());
     for (int i = 0; i < numPageSizes; ++i) {
         glow::info("GL_VIRTUAL_PAGE_SIZE_Z_ARB[%;] = %;", i, pageSizesZ[i]);
     }
