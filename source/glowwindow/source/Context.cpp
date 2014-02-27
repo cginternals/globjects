@@ -33,6 +33,11 @@ GLFWwindow * Context::window()
     return m_window;
 }
 
+void Context::handleError(int errorCode, const char* errorMessage)
+{
+    glow::fatal("GLFW error 0x%x;: %;", errorCode, errorMessage);
+}
+
 bool Context::create(const ContextFormat & format, const int width, const int height, GLFWmonitor * monitor)
 {
     if (isValid())
@@ -46,6 +51,8 @@ bool Context::create(const ContextFormat & format, const int width, const int he
         fatal() << "Could not initialize GLFW.";
         return false;
     }
+
+    glfwSetErrorCallback(&Context::handleError);
 
     m_format = format;
     prepareFormat(m_format);
@@ -106,11 +113,21 @@ void Context::prepareFormat(const ContextFormat & format)
   
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.majorVersion);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.minorVersion);
+
+    if (version >= Version(3, 0))
+    {
+        if (format.forwardCompatible())
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        if (format.debugContext())
+            glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,  GL_TRUE);
+    }
   
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     if (version >= Version(3, 2))
     {
-        glfwWindowHint(GLFW_OPENGL_PROFILE, format.profile() == ContextFormat::CoreProfile ? GLFW_OPENGL_CORE_PROFILE : GLFW_OPENGL_COMPAT_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE,
+            format.profile() == ContextFormat::CoreProfile ? GLFW_OPENGL_CORE_PROFILE :
+                (format.profile() == ContextFormat::CompatibilityProfile ? GLFW_OPENGL_COMPAT_PROFILE
+                    : GLFW_OPENGL_ANY_PROFILE));
     }
   
 #endif

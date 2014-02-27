@@ -19,6 +19,7 @@ public:
 	{
 	    CoreProfile          ///< Functionality deprecated in OpenGL version 3.0 is not available.
 	,   CompatibilityProfile ///< Functionality from earlier OpenGL versions is available.
+    ,   AnyProfile
 	};
 
 	// This is based on QSurfaceFormat::SwapBehavior
@@ -73,6 +74,12 @@ public:
 	Profile profile() const;
     void setProfile(Profile profile);
 
+    bool debugContext() const;
+    void setDebugContext(bool on);
+
+    bool forwardCompatible() const;
+    void setForwardCompatible(bool on);
+
 	// disabled by default
 	int	stencilBufferSize() const;
     void setStencilBufferSize(int size);
@@ -114,6 +121,9 @@ protected:
     glow::Version m_version;
 
 	Profile m_profile;
+
+    bool m_debugContext;
+    bool m_forwardCompatibility;
 
 	unsigned int  m_redBufferSize;
 	unsigned int  m_greenBufferSize;

@@ -12,7 +12,9 @@ namespace glowwindow
 {
 
 ContextFormat::ContextFormat()
-: m_profile(CoreProfile)
+: m_profile(AnyProfile)
+, m_debugContext(false)
+, m_forwardCompatibility(false)
 , m_redBufferSize(0)
 , m_greenBufferSize(0)
 , m_blueBufferSize(0)
@@ -62,6 +64,26 @@ ContextFormat::Profile ContextFormat::profile() const
 void ContextFormat::setProfile(const ContextFormat::Profile profile)
 {
 	m_profile = profile;
+}
+
+bool ContextFormat::debugContext() const
+{
+    return m_debugContext;
+}
+
+void ContextFormat::setDebugContext(bool on)
+{
+    m_debugContext = on;
+}
+
+bool ContextFormat::forwardCompatible() const
+{
+    return m_forwardCompatibility;
+}
+
+void ContextFormat::setForwardCompatible(bool on)
+{
+    m_forwardCompatibility = on;
 }
 
 int ContextFormat::redBufferSize() const
@@ -162,6 +184,8 @@ const char* ContextFormat::profileString(const Profile profile)
             return "CoreProfile";
         case CompatibilityProfile:
             return "CompatibilityProfile";
+        case AnyProfile:
+            return "AnyProfile";
         default:
             return "";
     }

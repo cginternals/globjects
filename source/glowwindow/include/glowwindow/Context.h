@@ -70,6 +70,8 @@ private:
     static glow::Version maximumSupportedVersion();
     static glow::Version validateVersion(const glow::Version & version);
     void prepareFormat(const ContextFormat & format);
+
+    static void handleError(int errorCode, const char* errorMessage);
 };
 
 } // namespace glowwindow
