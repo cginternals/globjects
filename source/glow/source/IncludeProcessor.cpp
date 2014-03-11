@@ -187,6 +187,11 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                 destinationstream << line << '\n';
             }
         }
+	else
+	{
+		// empty line
+		destinationstream << '\n';
+	}
     }
     while (sourcestream.good());
 
