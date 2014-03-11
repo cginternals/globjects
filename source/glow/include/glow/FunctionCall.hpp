@@ -2,20 +2,69 @@
 
 #include <glow/FunctionCall.h>
 
+#include <cstddef>
+#include <type_traits>
+#include <utility>
+
 namespace {
-// http://stackoverflow.com/questions/7858817/unpacking-a-tuple-to-call-a-matching-function-pointer
-template<size_t ...S> struct seq {};
-template<int N, size_t ...S> struct gens : gens<N-1, N-1, S...> {};
-template<size_t ...S> struct gens<0, S...>{ typedef seq<S...> type; };
-// helper
-template<typename R, template<typename...> class Params, typename... Args, size_t... I>
-R call_helper(std::function<R(Args...)> const&func, Params<Args...> const&params, seq<I...>)
-{ return func(std::get<I>(params)...); }
-// "return func(params...)"
-template<typename R, template<typename...> class Params, typename... Args>
-R call(std::function<R(Args...)> const&func, Params<Args...> const&params)
-{ return call_helper(func,params, typename gens<sizeof...(Args)>::type()); }
+
+// http://stackoverflow.com/questions/687490/how-do-i-expand-a-tuple-into-variadic-template-functions-arguments
+
+template<size_t N>
+struct ApplyHelper
+{
+    template<typename F, typename T, typename... A>
+    static inline auto apply(F && f, T && t, A &&... a)
+        -> decltype(
+            ApplyHelper<N-1>::apply(
+                std::forward<F>(f),
+                std::forward<T>(t),
+                std::get<N-1>(std::forward<T>(t)),
+                std::forward<A>(a)...
+        )
+    )
+    {
+        return ApplyHelper<N-1>::apply(
+            std::forward<F>(f),
+            std::forward<T>(t),
+            std::get<N-1>(std::forward<T>(t)),
+            std::forward<A>(a)...
+        );
+    }
+};
+
+template<>
+struct ApplyHelper<0>
+{
+    template<typename F, typename T, typename... A>
+    static inline auto apply(F && f, T &&, A &&... a)
+        -> decltype(
+            std::forward<F>(f)(std::forward<A>(a)...)
+        )
+    {
+        return std::forward<F>(f)(
+            std::forward<A>(a)...
+        );
+    }
+};
+
+template<typename F, typename T>
+inline auto apply(F && f, T && t)
+    -> decltype(
+        ApplyHelper<std::tuple_size<typename std::decay<T>::type>::value>::apply(
+            std::forward<F>(f),
+            std::forward<T>(t)
+        )
+    )
+{
+    return ApplyHelper<std::tuple_size<typename std::decay<T>::type>::value>::apply(
+        std::forward<F>(f),
+        std::forward<T>(t)
+    );
 }
+
+}
+
 
 namespace glow {
 
@@ -33,8 +82,9 @@ FunctionCall<Arguments...>::FunctionCall()
 }
 
 template <typename... Arguments>
-void FunctionCall<Arguments...>::operator()() {
-    call(m_function, m_arguments);
+void FunctionCall<Arguments...>::operator()()
+{
+    apply(m_function, m_arguments);
 }
 
 template <typename... Arguments>
