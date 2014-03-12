@@ -1,5 +1,8 @@
 #include <GL/glew.h>
 
+#include <glm/gtc/random.hpp>
+#include <glm/gtc/noise.hpp>
+
 #include <array>
 #include <algorithm>
 #include <random>
@@ -61,8 +64,8 @@ public:
     {
     }
 
-    void createAndSetupTexture();
-	void createAndSetupGeometry();
+    void createTextures();
+    void createGeometry();
 
     virtual void initialize(Window & window) override
     {
@@ -72,14 +75,21 @@ public:
         state.enable(GL_CULL_FACE);
         state.clearColor(0.2f, 0.3f, 0.4f, 1.f);
 
+        createGeometry();
+        createTextures();
+
         m_program = new glow::Program;
         m_program->attach(
             glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/bindless-textures/shader.vert"),
             glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag")
         );
 
-        createAndSetupTexture();
-	    createAndSetupGeometry();
+        std::array<glow::TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
+        for (unsigned i = 0; i < m_textures.size(); ++i)
+        {
+            handles[i] = m_textures[i]->makeResident();
+        }
+        m_program->setUniform("textures", handles);
 
         window.addTimer(0, 0);
     }
@@ -88,7 +98,6 @@ public:
     {
         int width = event.width();
         int height = event.height();
-        //int side = std::min<int>(width, height);
 
         glViewport(0, 0, width, height);
         CheckGLError();
@@ -243,16 +252,14 @@ int main(int /*argc*/, char* /*argv*/[])
     }
 }
 
-void EventHandler::createAndSetupTexture()
+void EventHandler::createTextures()
 {
-    static const int w = 256;
-    static const int h = 256;
-	unsigned char data[w * h * 4];
-
-    std::random_device rd;
-    std::mt19937 generator(rd());
-
-    std::vector<glow::TextureHandle> handles(m_textures.size());
+    const std::array<glm::bvec3, 4> masks = {
+        glm::bvec3(true, false, false),
+        glm::bvec3(false, true, false),
+        glm::bvec3(false, false, true),
+        glm::bvec3(true, true, false)
+    };
 
     for (unsigned i = 0; i < m_textures.size(); ++i)
     {
@@ -265,27 +272,31 @@ void EventHandler::createAndSetupTexture()
         texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-        for (unsigned j = 0; j < w*h*4; ++j)
-        {
-            data[j] = static_cast<unsigned char>(255 - static_cast<unsigned char>(generator() * 255));
+        static const int w = 512;
+        static const int h = 512;
+        std::array<glm::detail::tvec4<unsigned char>, w*h> data;
 
-            if (j%4==i)
-                data[j] = 0;
+        for (unsigned j = 0; j < std::tuple_size<decltype(data)>::value; ++j)
+        {
+            int x = j%w;
+            int y = j/w;
+
+            glm::vec2 pos(float(x)/w, float(y)/h);
+
+            float h = glm::perlin(pos*16.f+glm::vec2(float(i)*3.f));
+
+            glm::vec3 color = glm::vec3(masks[i%std::tuple_size<decltype(masks)>::value]) * h;
+
+            data[j] = glm::detail::tvec4<unsigned char>(glm::detail::tvec3<unsigned char>(color*255.f), 255);
         }
 
-        texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
 
         m_textures[i] = texture;
-
-        glow::TextureHandle handle = texture->makeResident();
-
-        handles[i] = handle;
     }
-
-    m_program->setUniform("textures", handles);
 }
 
-void EventHandler::createAndSetupGeometry()
+void EventHandler::createGeometry()
 {
     std::array<glm::vec3, 8> points = {
         glm::vec3(glm::sin(glm::radians(0.f)), 0.0, glm::cos(glm::radians(0.f))),
