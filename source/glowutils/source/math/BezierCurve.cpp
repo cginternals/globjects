@@ -29,7 +29,6 @@ glm::vec3 BezierCurve::operator()(float t) const
     return bezier(m_controlPoints[0], m_controlPoints[1], m_controlPoints[2], m_controlPoints[3], t);
 }
 
-
 glm::vec3 BezierCurve::bezier(const glm::vec3& p0, const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, float t)
 {
     auto coefficients = s_bersteinMatrix * glm::vec4(1, t, t*t, t*t*t);

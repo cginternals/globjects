@@ -9,6 +9,7 @@ if(OPTION_BUILD_EXAMPLES)
 	add_subdirectory("common")
 	include_directories("common")
 
+	add_subdirectory("bindless-textures")
 	add_subdirectory("camerapath")
 	add_subdirectory("commandlineoutput")
 	add_subdirectory("computeshader")
