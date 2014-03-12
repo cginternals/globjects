@@ -27,6 +27,7 @@
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
+#include <glowutils/VertexDrawable.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -113,7 +114,7 @@ public:
         m_program->setUniform("projection", m_camera.viewProjection());
 
         m_program->use();
-        m_vao->drawArrays(GL_TRIANGLES, 0, (int)m_vertices.size());
+        m_drawable->draw();
         m_program->release();
     }
 
@@ -220,10 +221,8 @@ protected:
     glowutils::AxisAlignedBoundingBox m_aabb;
 
     std::array<glow::ref_ptr<glow::Texture>, 4> m_textures;
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
-    glow::ref_ptr<glow::Buffer> m_vbo;
     glow::ref_ptr<glow::Program> m_program;
-    std::vector<Vertex> m_vertices;
+    glow::ref_ptr<glowutils::VertexDrawable> m_drawable;
 };
 
 
@@ -302,45 +301,24 @@ void EventHandler::createGeometry()
         glm::vec3(glm::sin(glm::radians(0.f)), 0.0, glm::cos(glm::radians(0.f))),
         glm::vec3(glm::sin(glm::radians(120.f)), 0.0, glm::cos(glm::radians(120.f))),
         glm::vec3(glm::sin(glm::radians(240.f)), 0.0, glm::cos(glm::radians(240.f))),
-        glm::vec3(0.0, 1.f, 0.0)
+        glm::vec3(0.0, glm::sqrt(glm::pow(2.f/glm::cos(glm::radians(30.f))-1.f, 2.f)), 0.0)
     };
 
-    m_vertices = {
+    std::array<Vertex, 6> vertices = {
         Vertex{ points[0], glm::vec2(0.0, 0.0), 0 },
-        Vertex{ points[2], glm::vec2(1.0, 0.0), 0 },
-        Vertex{ points[1], glm::vec2(0.5, 1.0), 0 },
+        Vertex{ points[1], glm::vec2(1.0, 0.0), 0 },
+        Vertex{ points[3], glm::vec2(0.5, 1.0), 0 },
 
-        Vertex{ points[1], glm::vec2(0.0, 0.0), 1 },
-        Vertex{ points[2], glm::vec2(1.0, 0.0), 1 },
-        Vertex{ points[3], glm::vec2(0.5, 1.0), 1 },
-
-        Vertex{ points[0], glm::vec2(0.0, 0.0), 2 },
-        Vertex{ points[3], glm::vec2(1.0, 0.0), 2 },
-        Vertex{ points[2], glm::vec2(0.5, 1.0), 2 },
-
-        Vertex{ points[0], glm::vec2(0.0, 0.0), 3 },
-        Vertex{ points[1], glm::vec2(1.0, 0.0), 3 },
-        Vertex{ points[3], glm::vec2(0.5, 1.0), 3 }
+        Vertex{ points[2], glm::vec2(0.0, 0.0), 1 },
+        Vertex{ points[0], glm::vec2(1.0, 0.0), 2 },
+        Vertex{ points[1], glm::vec2(0.5, 1.0), 3 }
     };
 
-    m_vbo = new glow::Buffer(GL_ARRAY_BUFFER);
-    m_vbo->setData(m_vertices);
+    m_drawable = new glowutils::VertexDrawable(vertices, GL_TRIANGLE_STRIP);
 
-    m_vao = new glow::VertexArrayObject;
-
-    m_vao->binding(0)->setAttribute(0);
-    m_vao->binding(0)->setBuffer(m_vbo, 0, sizeof(Vertex));
-    m_vao->binding(0)->setFormat(3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
-
-    m_vao->binding(1)->setAttribute(1);
-    m_vao->binding(1)->setBuffer(m_vbo, 0, sizeof(Vertex));
-    m_vao->binding(1)->setFormat(2, GL_FLOAT, GL_FALSE, offsetof(Vertex, texCoord));
-
-    m_vao->binding(2)->setAttribute(2);
-    m_vao->binding(2)->setBuffer(m_vbo, 0, sizeof(Vertex));
-    m_vao->binding(2)->setIFormat(1, GL_INT, offsetof(Vertex, side));
-
-    m_vao->enable(0);
-    m_vao->enable(1);
-    m_vao->enable(2);
+    m_drawable->setFormats({
+        glowutils::Format(3, GL_FLOAT, offsetof(Vertex, position)),
+        glowutils::Format(2, GL_FLOAT, offsetof(Vertex, texCoord)),
+        glowutils::FormatI(1, GL_INT, offsetof(Vertex, side))
+    });
 }
