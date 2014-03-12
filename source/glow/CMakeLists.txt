@@ -48,10 +48,13 @@ else()
 endif()
 
 if (OPTION_ERRORS_AS_EXCEPTION)
-	add_definitions("-DGLOW_GL_ERROR_RAISE_EXCEPTION")
+    add_definitions("-DGLOW_GL_ERROR_RAISE_EXCEPTION")
 else()
     add_definitions("-D_HAS_EXCEPTIONS=0")
 endif()
+
+# for compatibility between glm 0.9.4 and 0.9.5
+add_definitions("-DGLM_FORCE_RADIANS")
 
 #
 # Sources
