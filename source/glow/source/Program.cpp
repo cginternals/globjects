@@ -253,24 +253,24 @@ std::string Program::getActiveUniformBlockName(GLuint uniformBlockIndex, GLsizei
     return std::string(name.data(), length);
 }
 
-UniformBlock & Program::uniformBlock(GLuint uniformBlockIndex)
+UniformBlock * Program::uniformBlock(GLuint uniformBlockIndex)
 {
     return getUniformBlockByIdentity(uniformBlockIndex);
 }
 
-UniformBlock & Program::uniformBlock(const std::string& name)
+UniformBlock * Program::uniformBlock(const std::string& name)
 {
     return getUniformBlockByIdentity(name);
 }
 
-UniformBlock & Program::getUniformBlockByIdentity(const LocationIdentity & identity)
+UniformBlock * Program::getUniformBlockByIdentity(const LocationIdentity & identity)
 {
     if (m_uniformBlocks.find(identity) == m_uniformBlocks.end())
     {
         m_uniformBlocks[identity] = UniformBlock(this, identity);
     }
 
-    return m_uniformBlocks[identity];
+    return &m_uniformBlocks[identity];
 }
 
 void Program::addUniform(AbstractUniform * uniform)

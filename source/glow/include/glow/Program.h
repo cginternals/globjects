@@ -107,8 +107,8 @@ public:
 	GLuint getResourceIndex(GLenum programInterface, const std::string& name);
 
     GLuint getUniformBlockIndex(const std::string& name);
-    UniformBlock & uniformBlock(GLuint uniformBlockIndex);
-    UniformBlock & uniformBlock(const std::string& name);
+    UniformBlock * uniformBlock(GLuint uniformBlockIndex);
+    UniformBlock * uniformBlock(const std::string& name);
     std::string getActiveUniformBlockName(GLuint uniformBlockIndex, GLsizei maxLength = 255);
 
 	template<typename T>
@@ -159,7 +159,7 @@ protected:
     template<typename T>
     Uniform<T> * getUniformByIdentity(const LocationIdentity & identity);
 
-    UniformBlock & getUniformBlockByIdentity(const LocationIdentity & identity);
+    UniformBlock * getUniformBlockByIdentity(const LocationIdentity & identity);
 
 protected:
 	std::set<ref_ptr<Shader>> m_shaders;
