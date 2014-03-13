@@ -22,9 +22,16 @@ ref_ptr<T>::ref_ptr(T * referenced)
 
 template<typename T>
 ref_ptr<T>::ref_ptr(const ref_ptr & reference)
+: m_referenced(reference.m_referenced)
 {
-	m_referenced = reference.m_referenced;
 	increaseRef();
+}
+
+template<typename T>
+ref_ptr<T>::ref_ptr(ref_ptr && reference)
+: m_referenced(reference.m_referenced)
+{
+    reference.m_referenced = nullptr;
 }
 
 template<typename T>

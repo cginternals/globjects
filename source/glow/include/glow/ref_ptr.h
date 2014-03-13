@@ -36,6 +36,7 @@ public:
 	ref_ptr();
 	ref_ptr(T * referenced);
 	ref_ptr(const ref_ptr & reference);
+    ref_ptr(ref_ptr && reference);
 	~ref_ptr();
 
 	T * get();
