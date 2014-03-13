@@ -143,6 +143,7 @@ void Program::link()
 	m_dirty = false;
 
     updateUniforms();
+    updateUniformBlocks();
 }
 
 bool Program::prepareForLinkage()
@@ -233,6 +234,45 @@ GLuint Program::getResourceIndex(GLenum programInterface, const std::string& nam
 	return result;
 }
 
+GLuint Program::getUniformBlockIndex(const std::string& name)
+{
+    checkDirty();
+
+    GLuint result = glGetUniformBlockIndex(m_id, name.c_str());
+    CheckGLError();
+    return result;
+}
+
+std::string Program::getActiveUniformBlockName(GLuint uniformBlockIndex, GLsizei maxLength)
+{
+    std::vector<char> name(maxLength);
+    GLsizei length = 0;
+    glGetActiveUniformBlockName(m_id, uniformBlockIndex, maxLength, &length, name.data());
+    CheckGLError();
+
+    return std::string(name.data(), length);
+}
+
+UniformBlock & Program::uniformBlock(GLuint uniformBlockIndex)
+{
+    return getUniformBlockByIdentity(uniformBlockIndex);
+}
+
+UniformBlock & Program::uniformBlock(const std::string& name)
+{
+    return getUniformBlockByIdentity(name);
+}
+
+UniformBlock & Program::getUniformBlockByIdentity(const LocationIdentity & identity)
+{
+    if (m_uniformBlocks.find(identity) == m_uniformBlocks.end())
+    {
+        m_uniformBlocks[identity] = UniformBlock(this, identity);
+    }
+
+    return m_uniformBlocks[identity];
+}
+
 void Program::addUniform(AbstractUniform * uniform)
 {
     assert(uniform != nullptr);
@@ -261,6 +301,14 @@ void Program::updateUniforms()
 	{
 		uniformPair.second->update(this);
 	}
+}
+
+void Program::updateUniformBlocks()
+{
+    for (std::pair<LocationIdentity, UniformBlock> pair : m_uniformBlocks)
+    {
+        pair.second.updateBinding();
+    }
 }
 
 void Program::setBinary(ProgramBinary * binary)

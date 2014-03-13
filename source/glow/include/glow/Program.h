@@ -10,6 +10,7 @@
 #include <glow/ChangeListener.h>
 #include <glow/ref_ptr.h>
 #include <glow/LocationIdentity.h>
+#include <glow/UniformBlock.h>
 
 namespace glow
 {
@@ -105,6 +106,10 @@ public:
 
 	GLuint getResourceIndex(GLenum programInterface, const std::string& name);
 
+    GLuint getUniformBlockIndex(const std::string& name);
+    UniformBlock & uniformBlock(GLuint uniformBlockIndex);
+    UniformBlock & uniformBlock(const std::string& name);
+    std::string getActiveUniformBlockName(GLuint uniformBlockIndex, GLsizei maxLength = 255);
 
 	template<typename T>
 	void setUniform(const std::string & name, const T & value);
@@ -140,6 +145,7 @@ protected:
     bool prepareForLinkage();
     bool compileAttachedShaders();
 	void updateUniforms();
+    void updateUniformBlocks();
 
 	// ChangeListener Interface
 
@@ -153,10 +159,13 @@ protected:
     template<typename T>
     Uniform<T> * getUniformByIdentity(const LocationIdentity & identity);
 
+    UniformBlock & getUniformBlockByIdentity(const LocationIdentity & identity);
+
 protected:
 	std::set<ref_ptr<Shader>> m_shaders;
     ref_ptr<ProgramBinary> m_binary;
     std::unordered_map<LocationIdentity, ref_ptr<AbstractUniform>> m_uniforms;
+    std::unordered_map<LocationIdentity, UniformBlock> m_uniformBlocks;
 
 	bool m_linked;
 	bool m_dirty;
