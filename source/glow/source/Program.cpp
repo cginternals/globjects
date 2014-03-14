@@ -256,6 +256,14 @@ std::vector<GLint> Program::getActiveUniforms(const std::vector<GLuint> & unifor
     return result;
 }
 
+std::vector<GLint> Program::getActiveUniforms(const std::vector<GLint> & uniformIndices, GLenum pname)
+{
+    std::vector<GLuint> indices(uniformIndices.size());
+    for (unsigned i=0; i<uniformIndices.size(); ++i)
+        indices[i] = static_cast<GLuint>(uniformIndices[i]);
+    return getActiveUniforms(indices, pname);
+}
+
 UniformBlock * Program::uniformBlock(GLuint uniformBlockIndex)
 {
     return getUniformBlockByIdentity(uniformBlockIndex);
