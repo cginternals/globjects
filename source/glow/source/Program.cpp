@@ -11,6 +11,7 @@
 #include <glow/Shader.h>
 #include <glow/ProgramBinary.h>
 #include <glow/Extension.h>
+#include <glow/Buffer.h>
 
 namespace glow
 {
@@ -143,7 +144,7 @@ void Program::link()
 	m_dirty = false;
 
     updateUniforms();
-    updateUniformBlocks();
+    updateUniformBlockBindings();
 }
 
 bool Program::prepareForLinkage()
@@ -245,6 +246,8 @@ GLuint Program::getUniformBlockIndex(const std::string& name)
 
 void Program::getActiveUniforms(GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params)
 {
+    checkDirty();
+
     glGetActiveUniformsiv(m_id, uniformCount, uniformIndices, pname, params);
     CheckGLError();
 }
@@ -264,6 +267,25 @@ std::vector<GLint> Program::getActiveUniforms(const std::vector<GLint> & uniform
     return getActiveUniforms(indices, pname);
 }
 
+GLint Program::getActiveUniform(GLuint uniformIndex, GLenum pname)
+{
+    GLint result = 0;
+    getActiveUniforms(1, &uniformIndex, pname, &result);
+    return result;
+}
+
+std::string Program::getActiveUniformName(GLuint uniformIndex)
+{
+    checkDirty();
+
+    GLint length = getActiveUniform(uniformIndex, GL_UNIFORM_NAME_LENGTH);
+    std::vector<char> name(length);
+    glGetActiveUniformName(m_id, uniformIndex, length, nullptr, name.data());
+    CheckGLError();
+
+    return std::string(name.data(), length);
+}
+
 UniformBlock * Program::uniformBlock(GLuint uniformBlockIndex)
 {
     return getUniformBlockByIdentity(uniformBlockIndex);
@@ -276,6 +298,8 @@ UniformBlock * Program::uniformBlock(const std::string& name)
 
 UniformBlock * Program::getUniformBlockByIdentity(const LocationIdentity & identity)
 {
+    checkDirty();
+
     if (m_uniformBlocks.find(identity) == m_uniformBlocks.end())
     {
         m_uniformBlocks[identity] = UniformBlock(this, identity);
@@ -314,7 +338,7 @@ void Program::updateUniforms()
 	}
 }
 
-void Program::updateUniformBlocks()
+void Program::updateUniformBlockBindings()
 {
     for (std::pair<LocationIdentity, UniformBlock> pair : m_uniformBlocks)
     {

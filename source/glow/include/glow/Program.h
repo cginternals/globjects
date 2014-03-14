@@ -68,6 +68,7 @@ template<typename T> class Uniform;
  */
 class GLOW_API Program : public Object, protected ChangeListener
 {
+    friend class UniformBlock;
 public:
 	Program();
     Program(ProgramBinary * binary);
@@ -112,6 +113,8 @@ public:
     void getActiveUniforms(GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params);
     std::vector<GLint> getActiveUniforms(const std::vector<GLuint> & uniformIndices, GLenum pname);
     std::vector<GLint> getActiveUniforms(const std::vector<GLint> & uniformIndices, GLenum pname);
+    GLint getActiveUniform(GLuint uniformIndex, GLenum pname);
+    std::string getActiveUniformName(GLuint uniformIndex);
 
 	template<typename T>
 	void setUniform(const std::string & name, const T & value);
@@ -147,7 +150,7 @@ protected:
     bool prepareForLinkage();
     bool compileAttachedShaders();
 	void updateUniforms();
-    void updateUniformBlocks();
+    void updateUniformBlockBindings();
 
 	// ChangeListener Interface
 

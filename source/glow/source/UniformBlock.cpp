@@ -1,5 +1,6 @@
 #include <glow/UniformBlock.h>
 #include <glow/Program.h>
+#include <glow/Buffer.h>
 
 namespace glow {
 
@@ -23,7 +24,10 @@ void UniformBlock::setBinding(GLuint bindingIndex)
 {
     m_bindingIndex = bindingIndex;
 
-    updateBinding();
+    m_program->checkDirty();
+
+    glUniformBlockBinding(m_program->id(), blockIndex(), m_bindingIndex);
+    CheckGLError();
 }
 
 GLuint UniformBlock::blockIndex()
@@ -39,15 +43,13 @@ GLuint UniformBlock::blockIndex()
 
 void UniformBlock::updateBinding()
 {
-    if (!m_program->isLinked())
-        return;
-
-    glUniformBlockBinding(m_program->id(), blockIndex(), m_bindingIndex);
-    CheckGLError();
+    setBinding(m_bindingIndex);
 }
 
 void UniformBlock::getActive(GLenum pname, GLint * params)
 {
+    m_program->checkDirty();
+
     glGetActiveUniformBlockiv(m_program->id(), blockIndex(), pname, params);
     CheckGLError();
 }

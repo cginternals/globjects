@@ -11,6 +11,7 @@
 namespace glow {
 
 class Program;
+class Buffer;
 
 class GLOW_API UniformBlock
 {
