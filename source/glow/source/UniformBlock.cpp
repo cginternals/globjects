@@ -52,17 +52,37 @@ void UniformBlock::getActive(GLenum pname, GLint * params)
     CheckGLError();
 }
 
-void UniformBlock::getActiveUniforms(GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params)
+GLint UniformBlock::getActive(GLenum pname)
 {
-    glGetActiveUniformsiv(m_program->id(), uniformCount, uniformIndices, pname, params);
-    CheckGLError();
+    GLint result = 0;
+    getActive(pname, &result);
+    return result;
 }
 
-std::vector<GLint> UniformBlock::getActiveUniforms(const std::vector<GLuint> & uniformIndices, GLenum pname)
+std::vector<GLint> UniformBlock::getActive(GLenum pname, GLint paramCount)
 {
-    std::vector<GLint> result(uniformIndices.size());
-    getActiveUniforms(static_cast<GLint>(uniformIndices.size()), uniformIndices.data(), pname, result.data());
+    std::vector<GLint> result(paramCount);
+    getActive(pname, result.data());
     return result;
+}
+
+std::vector<GLint> UniformBlock::getActiveUniformIndices()
+{
+    return getActive(GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, getActive(GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS));
+}
+
+std::string UniformBlock::getName()
+{
+    if (m_identity.isName())
+        return m_identity.name();
+
+    GLint length = getActive(GL_UNIFORM_BLOCK_NAME_LENGTH);
+    std::vector<char> name(length);
+
+    glGetActiveUniformBlockName(m_program->id(), blockIndex(), length, nullptr, name.data());
+    CheckGLError();
+
+    return std::string(name.data(), length);
 }
 
 } // namespace glow

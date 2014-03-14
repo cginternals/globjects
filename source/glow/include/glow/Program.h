@@ -109,7 +109,8 @@ public:
     GLuint getUniformBlockIndex(const std::string& name);
     UniformBlock * uniformBlock(GLuint uniformBlockIndex);
     UniformBlock * uniformBlock(const std::string& name);
-    std::string getActiveUniformBlockName(GLuint uniformBlockIndex, GLsizei maxLength = 255);
+    void getActiveUniforms(GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params);
+    std::vector<GLint> getActiveUniforms(const std::vector<GLuint> & uniformIndices, GLenum pname);
 
 	template<typename T>
 	void setUniform(const std::string & name, const T & value);

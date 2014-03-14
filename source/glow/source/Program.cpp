@@ -243,14 +243,17 @@ GLuint Program::getUniformBlockIndex(const std::string& name)
     return result;
 }
 
-std::string Program::getActiveUniformBlockName(GLuint uniformBlockIndex, GLsizei maxLength)
+void Program::getActiveUniforms(GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params)
 {
-    std::vector<char> name(maxLength);
-    GLsizei length = 0;
-    glGetActiveUniformBlockName(m_id, uniformBlockIndex, maxLength, &length, name.data());
+    glGetActiveUniformsiv(m_id, uniformCount, uniformIndices, pname, params);
     CheckGLError();
+}
 
-    return std::string(name.data(), length);
+std::vector<GLint> Program::getActiveUniforms(const std::vector<GLuint> & uniformIndices, GLenum pname)
+{
+    std::vector<GLint> result(uniformIndices.size());
+    getActiveUniforms(static_cast<GLint>(uniformIndices.size()), uniformIndices.data(), pname, result.data());
+    return result;
 }
 
 UniformBlock * Program::uniformBlock(GLuint uniformBlockIndex)

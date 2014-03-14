@@ -123,7 +123,6 @@ set(api_includes
     ${include_path}/Uniform.h
     ${include_path}/Uniform.hpp
     ${include_path}/UniformBlock.h
-    ${include_path}/UniformBlock.hpp
     ${include_path}/UniformSetter.h
     ${include_path}/Version.h
     ${include_path}/VertexArrayObject.h

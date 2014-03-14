@@ -21,16 +21,15 @@ public:
 
     const LocationIdentity & identity() const;
 
-    void getActive(GLenum pname, GLint * params);
-    template <std::size_t Count>
-    std::array<GLint, Count> getActive(GLenum pname);
-
-    void getActiveUniforms(GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params);
-    std::vector<GLint> getActiveUniforms(const std::vector<GLuint> & uniformIndices, GLenum pname);
-    template <std::size_t Count>
-    std::array<GLint, Count> getActiveUniforms(const std::array<GLuint, Count> & uniformIndices, GLenum pname);
-
     void setBinding(GLuint bindingIndex);
+
+    void getActive(GLenum pname, GLint * params);
+    GLint getActive(GLenum pname);
+    std::vector<GLint> getActive(GLenum pname, GLint paramCount);
+
+    std::vector<GLint> getActiveUniformIndices();
+
+    std::string getName();
 protected:
     Program * m_program;
     LocationIdentity m_identity;
@@ -41,5 +40,3 @@ protected:
 };
 
 } // namespace glow
-
-#include <glow/UniformBlock.hpp>
