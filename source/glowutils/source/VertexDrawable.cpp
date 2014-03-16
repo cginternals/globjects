@@ -75,4 +75,19 @@ void VertexDrawable::draw()
     m_vao->drawArrays(m_primitiveMode, 0, m_size);
 }
 
+VertexDrawable::AttributeFormat Format(GLint size, GLenum type, GLuint relativeOffset, GLboolean normalized)
+{
+    return VertexDrawable::AttributeFormat(size, type, normalized, relativeOffset, VertexDrawable::AttributeFormat::Float);
+}
+
+VertexDrawable::AttributeFormat FormatI(GLint size, GLenum type, GLuint relativeOffset)
+{
+    return VertexDrawable::AttributeFormat(size, type, GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Integer);
+}
+
+VertexDrawable::AttributeFormat FormatL(GLint size, GLenum type, GLuint relativeOffset)
+{
+    return VertexDrawable::AttributeFormat(size, type, GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Long);
+}
+
 } // namespace glowutils

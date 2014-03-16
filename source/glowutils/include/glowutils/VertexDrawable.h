@@ -60,20 +60,9 @@ protected:
     GLenum m_primitiveMode;
 };
 
-GLOWUTILS_API VertexDrawable::AttributeFormat Format(GLint size, GLenum type, GLuint relativeOffset, GLboolean normalized = GL_FALSE)
-{
-    return VertexDrawable::AttributeFormat(size, type, normalized, relativeOffset, VertexDrawable::AttributeFormat::Float);
-}
-
-GLOWUTILS_API VertexDrawable::AttributeFormat FormatI(GLint size, GLenum type, GLuint relativeOffset)
-{
-    return VertexDrawable::AttributeFormat(size, type, GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Integer);
-}
-
-GLOWUTILS_API VertexDrawable::AttributeFormat FormatL(GLint size, GLenum type, GLuint relativeOffset)
-{
-    return VertexDrawable::AttributeFormat(size, type, GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Long);
-}
+GLOWUTILS_API VertexDrawable::AttributeFormat Format(GLint size, GLenum type, GLuint relativeOffset, GLboolean normalized = GL_FALSE);
+GLOWUTILS_API VertexDrawable::AttributeFormat FormatI(GLint size, GLenum type, GLuint relativeOffset);
+GLOWUTILS_API VertexDrawable::AttributeFormat FormatL(GLint size, GLenum type, GLuint relativeOffset);
 
 template <typename T>
 VertexDrawable::VertexDrawable(const std::vector<T> & vertices, GLenum primitiveMode)
