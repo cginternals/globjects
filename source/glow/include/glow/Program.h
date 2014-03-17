@@ -2,6 +2,7 @@
 
 #include <set>
 #include <unordered_map>
+#include <vector>
 
 #include <glm/glm.hpp>
 
@@ -97,13 +98,16 @@ public:
 	const std::string infoLog() const;
 	GLint get(GLenum pname) const;
 
-	GLint getAttributeLocation(const std::string& name);
-	GLint getUniformLocation(const std::string& name);
+    GLint getAttributeLocation(const std::string & name);
+    GLint getUniformLocation(const std::string & name);
 
-	void bindAttributeLocation(GLuint index, const std::string& name);
-	void bindFragDataLocation(GLuint index, const std::string& name);
+    std::vector<GLint> getAttributeLocations(const std::vector<std::string> & names);
+    std::vector<GLint> getUniformLocations(const std::vector<std::string> & names);
 
-	GLuint getResourceIndex(GLenum programInterface, const std::string& name);
+    void bindAttributeLocation(GLuint index, const std::string & name);
+    void bindFragDataLocation(GLuint index, const std::string & name);
+
+    GLuint getResourceIndex(GLenum programInterface, const std::string & name);
 
 
 	template<typename T>

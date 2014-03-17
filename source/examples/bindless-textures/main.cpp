@@ -321,4 +321,5 @@ void EventHandler::createGeometry()
         glowutils::Format(2, GL_FLOAT, offsetof(Vertex, texCoord)),
         glowutils::FormatI(1, GL_INT, offsetof(Vertex, side))
     });
+    m_drawable->enableAll();
 }

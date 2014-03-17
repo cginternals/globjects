@@ -11,13 +11,11 @@ namespace glow
 
 VertexArrayObject::VertexArrayObject()
 : Object(genVertexArray())
-, m_nextBindingIndex(0)
 {
 }
 
 VertexArrayObject::VertexArrayObject(GLuint id, bool ownsGLObject)
 : Object(id, ownsGLObject)
-, m_nextBindingIndex(0)
 {
 }
 
@@ -60,7 +58,7 @@ VertexAttributeBinding* VertexArrayObject::binding(GLuint bindingIndex)
 {
 	if (!m_bindings[bindingIndex])
 	{
-		m_bindings[bindingIndex] = new VertexAttributeBinding(this, m_nextBindingIndex++);
+        m_bindings[bindingIndex] = new VertexAttributeBinding(this, bindingIndex);
 	}
 
 	return m_bindings[bindingIndex];
@@ -68,9 +66,6 @@ VertexAttributeBinding* VertexArrayObject::binding(GLuint bindingIndex)
 
 void VertexArrayObject::enable(GLint attributeIndex)
 {
-    if (-1 == attributeIndex)
-        return;
-
 	bind();
 
 	glEnableVertexAttribArray(attributeIndex);
@@ -79,9 +74,6 @@ void VertexArrayObject::enable(GLint attributeIndex)
 
 void VertexArrayObject::disable(GLint attributeIndex)
 {
-    if (-1 == attributeIndex)
-        return;
-
     bind();
 
 	glDisableVertexAttribArray(attributeIndex);

@@ -190,13 +190,13 @@ bool Program::checkLinkStatus()
     return true;
 }
 
-void Program::bindFragDataLocation(GLuint index, const std::string& name)
+void Program::bindFragDataLocation(GLuint index, const std::string & name)
 {
 	glBindFragDataLocation(m_id, index, name.c_str());
 	CheckGLError();
 }
 
-void Program::bindAttributeLocation(GLuint index, const std::string& name)
+void Program::bindAttributeLocation(GLuint index, const std::string & name)
 {
 	glBindAttribLocation(m_id, index, name.c_str());
 	CheckGLError();
@@ -213,7 +213,27 @@ GLint Program::getUniformLocation(const std::string& name)
 	return result;
 }
 
-GLint Program::getAttributeLocation(const std::string& name)
+std::vector<GLint> Program::getAttributeLocations(const std::vector<std::string> & names)
+{
+    std::vector<GLint> locations(names.size());
+    for (unsigned i = 0; i<names.size(); ++i)
+    {
+        locations[i] = getAttributeLocation(names[i]);
+    }
+    return locations;
+}
+
+std::vector<GLint> Program::getUniformLocations(const std::vector<std::string> & names)
+{
+    std::vector<GLint> locations(names.size());
+    for (unsigned i = 0; i<names.size(); ++i)
+    {
+        locations[i] = getUniformLocation(names[i]);
+    }
+    return locations;
+}
+
+GLint Program::getAttributeLocation(const std::string & name)
 {
 	checkDirty();
     if (!m_linked)
@@ -224,7 +244,7 @@ GLint Program::getAttributeLocation(const std::string& name)
 	return result;
 }
 
-GLuint Program::getResourceIndex(GLenum programInterface, const std::string& name)
+GLuint Program::getResourceIndex(GLenum programInterface, const std::string & name)
 {
 	checkDirty();
 

@@ -156,7 +156,6 @@ protected:
     static GLuint genVertexArray();
 
 protected:
-	GLuint m_nextBindingIndex;
 	std::map<GLuint, ref_ptr<VertexAttributeBinding>> m_bindings;
 
 };
