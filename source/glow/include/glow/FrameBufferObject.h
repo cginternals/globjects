@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <array>
 
 #include <glm/glm.hpp>
 
