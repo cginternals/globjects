@@ -351,10 +351,35 @@ void FrameBufferObject::readPixelsToBuffer(GLint x, GLint y, GLsizei width, GLsi
 	pbo->unbind();
 }
 
+void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter)
+{
+    blit(readBuffer, srcRect, destFbo, std::vector<GLenum>{ drawBuffer }, destRect, mask, filter);
+}
+
+void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter)
+{
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
+    CheckGLError();
+
+    setReadBuffer(readBuffer);
+
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, destFbo->id());
+    CheckGLError();
+
+    destFbo->setDrawBuffers(drawBuffers);
+
+    blit(srcRect, destRect, mask, filter);
+}
+
 void FrameBufferObject::blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter)
 {
-	glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, destX0, destY0, destX1, destY1, mask, filter);
-	CheckGLError();
+    glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, destX0, destY0, destX1, destY1, mask, filter);
+    CheckGLError();
+}
+
+void FrameBufferObject::blit(const std::array<GLint, 4> & srcRect, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter)
+{
+    blit(srcRect[0], srcRect[1], srcRect[2], srcRect[3], destRect[0], destRect[1], destRect[2], destRect[3], mask, filter);
 }
 
 GLenum FrameBufferObject::checkStatus()

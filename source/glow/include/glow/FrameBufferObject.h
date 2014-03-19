@@ -116,24 +116,15 @@ public:
     FrameBufferAttachment * attachment(GLenum attachment);
     std::vector<FrameBufferAttachment*> attachments();
 
-public:
-	static void blit(
-        GLint srcX0
-    ,   GLint srcY0
-    ,   GLint srcX1
-    ,   GLint srcY1
-    ,   GLint destX0
-    ,   GLint destY0
-    ,   GLint destX1
-    ,   GLint destY1
-    ,   GLbitfield mask
-    ,   GLenum filter);
-
+    void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
+    void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
 protected:
     void attach(FrameBufferAttachment * attachment);
 
     static GLuint genFrameBuffer();
 
+    static void blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter);
+    static void blit(const std::array<GLint, 4> & srcRect, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
 protected:
 	GLenum m_target;
 	std::map<GLenum, ref_ptr<FrameBufferAttachment>> m_attachments;
