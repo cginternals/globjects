@@ -73,6 +73,9 @@ protected:
 	Referenced * m_referenced;
 };
 
+template <typename T>
+ref_ptr<T> make_ref(T * object);
+
 } // namespace glow
 
 #include <glow/ref_ptr.hpp>

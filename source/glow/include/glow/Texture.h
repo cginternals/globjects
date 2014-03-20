@@ -42,6 +42,8 @@ public:
     GLint getParameter(GLenum pname);
     GLint getLevelParameter(GLint level, GLenum pname);
 
+    void getImage(GLint level, GLenum format, GLenum type, GLvoid * image);
+
     GLenum target() const;
 
     void image1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid * data);

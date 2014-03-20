@@ -29,7 +29,7 @@ FrameBufferObject::FrameBufferObject(GLuint id, bool ownsGLObject)
 {
 }
 
-FrameBufferObject* FrameBufferObject::defaultFBO()
+FrameBufferObject * FrameBufferObject::defaultFBO()
 {
     return &s_defaultFBO;
 }
@@ -334,20 +334,32 @@ void FrameBufferObject::clearDepth(GLclampd depth)
     CheckGLError();
 }
 
-void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* data)
+void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * data)
 {
-	bind(GL_FRAMEBUFFER);
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
+    CheckGLError();
 
 	glReadPixels(x, y, width, height, format, type, data);
 	CheckGLError();
 }
 
-void FrameBufferObject::readPixelsToBuffer(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, Buffer* pbo)
+void FrameBufferObject::readPixels(const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data)
+{
+    readPixels(rect[0], rect[1], rect[2], rect[3], format, type, data);
+}
+
+void FrameBufferObject::readPixels(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data)
+{
+    setReadBuffer(readBuffer);
+    readPixels(rect, format, type, data);
+}
+
+void FrameBufferObject::readPixelsToBuffer(const std::array<GLint, 4> & rect, GLenum format, GLenum type, Buffer * pbo)
 {
     assert(pbo != nullptr);
 
 	pbo->bind(GL_PIXEL_PACK_BUFFER);
-	readPixels(x, y, width, height, format, type, 0);
+    readPixels(rect, format, type, nullptr);
 	pbo->unbind();
 }
 

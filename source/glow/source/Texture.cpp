@@ -119,6 +119,14 @@ GLint Texture::getLevelParameter(GLint level, GLenum pname)
 	return value;
 }
 
+void Texture::getImage(GLint level, GLenum format, GLenum type, GLvoid * image)
+{
+    bind();
+
+    glGetTexImage(m_target, level, format, type, image);
+    CheckGLError();
+}
+
 void Texture::image1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid* data)
 {
     bind();

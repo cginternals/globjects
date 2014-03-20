@@ -45,7 +45,7 @@ public:
 	FrameBufferObject(GLuint id, bool ownsGLObject = true);
 	virtual ~FrameBufferObject();
 
-	static FrameBufferObject* defaultFBO();
+    static FrameBufferObject * defaultFBO();
 
     virtual void accept(ObjectVisitor& visitor) override;
 
@@ -90,23 +90,10 @@ public:
     static void clearColor(const glm::vec4 & color);
     static void clearDepth(GLclampd depth);
 
-	void readPixels(
-        GLint x
-    ,   GLint y
-    ,   GLsizei width
-    ,   GLsizei height
-    ,   GLenum format
-    ,   GLenum type
-    ,   GLvoid * data = nullptr);
-
-	void readPixelsToBuffer(
-        GLint x
-    ,   GLint y
-    ,   GLsizei width
-    ,   GLsizei height
-    ,   GLenum format
-    , GLenum type, Buffer* pbo);
-
+	void readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * data = nullptr);
+    void readPixels(const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data = nullptr);
+    void readPixels(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data = nullptr);
+    void readPixelsToBuffer(const std::array<GLint, 4> & rect, GLenum format, GLenum type, Buffer * pbo);
 
     GLenum checkStatus();
     std::string statusString();
@@ -129,7 +116,7 @@ protected:
 	GLenum m_target;
 	std::map<GLenum, ref_ptr<FrameBufferAttachment>> m_attachments;
 
-	static FrameBufferObject s_defaultFBO;
+    static FrameBufferObject s_defaultFBO;
 };
 
 } // namespace glow

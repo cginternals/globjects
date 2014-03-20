@@ -194,4 +194,10 @@ void ref_ptr<T>::decreaseRef()
 	}
 }
 
+template <typename T>
+ref_ptr<T> make_ref(T * object)
+{
+    return ref_ptr<T>(object);
+}
+
 } // namespace glow
