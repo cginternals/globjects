@@ -122,6 +122,7 @@ set(api_includes
     ${include_path}/TransformFeedback.hpp
     ${include_path}/Uniform.h
     ${include_path}/Uniform.hpp
+    ${include_path}/UniformBlock.h
     ${include_path}/UniformSetter.h
     ${include_path}/Version.h
     ${include_path}/VertexArrayObject.h
@@ -179,6 +180,7 @@ set(sources
     ${source_path}/Texture.cpp
     ${source_path}/TextureAttachment.cpp
     ${source_path}/TransformFeedback.cpp
+    ${source_path}/UniformBlock.cpp
     ${source_path}/UniformSetter.cpp
     ${source_path}/Version.cpp
     ${source_path}/VertexArrayObject.cpp

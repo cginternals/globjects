@@ -11,6 +11,7 @@
 #include <glow/ChangeListener.h>
 #include <glow/ref_ptr.h>
 #include <glow/LocationIdentity.h>
+#include <glow/UniformBlock.h>
 
 namespace glow
 {
@@ -68,6 +69,7 @@ template<typename T> class Uniform;
  */
 class GLOW_API Program : public Object, protected ChangeListener
 {
+    friend class UniformBlock;
 public:
 	Program();
     Program(ProgramBinary * binary);
@@ -109,6 +111,14 @@ public:
 
     GLuint getResourceIndex(GLenum programInterface, const std::string & name);
 
+    GLuint getUniformBlockIndex(const std::string& name);
+    UniformBlock * uniformBlock(GLuint uniformBlockIndex);
+    UniformBlock * uniformBlock(const std::string& name);
+    void getActiveUniforms(GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params);
+    std::vector<GLint> getActiveUniforms(const std::vector<GLuint> & uniformIndices, GLenum pname);
+    std::vector<GLint> getActiveUniforms(const std::vector<GLint> & uniformIndices, GLenum pname);
+    GLint getActiveUniform(GLuint uniformIndex, GLenum pname);
+    std::string getActiveUniformName(GLuint uniformIndex);
 
 	template<typename T>
 	void setUniform(const std::string & name, const T & value);
@@ -144,6 +154,7 @@ protected:
     bool prepareForLinkage();
     bool compileAttachedShaders();
 	void updateUniforms();
+    void updateUniformBlockBindings();
 
 	// ChangeListener Interface
 
@@ -157,10 +168,13 @@ protected:
     template<typename T>
     Uniform<T> * getUniformByIdentity(const LocationIdentity & identity);
 
+    UniformBlock * getUniformBlockByIdentity(const LocationIdentity & identity);
+
 protected:
 	std::set<ref_ptr<Shader>> m_shaders;
     ref_ptr<ProgramBinary> m_binary;
     std::unordered_map<LocationIdentity, ref_ptr<AbstractUniform>> m_uniforms;
+    std::unordered_map<LocationIdentity, UniformBlock> m_uniformBlocks;
 
 	bool m_linked;
 	bool m_dirty;
