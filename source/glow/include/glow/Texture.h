@@ -87,6 +87,8 @@ public:
 
     void texBuffer(GLenum internalFormat, Buffer * buffer);
     void texBuffer(GLenum activeTexture, GLenum internalFormat, Buffer * buffer);
+    void texBufferRange(GLenum internalFormat, Buffer * buffer, GLintptr offset, GLsizeiptr size);
+    void texBufferRange(GLenum activeTexture, GLenum internalFormat, Buffer * buffer, GLintptr offset, GLsizeiptr size);
 
     void clearImage(GLint level, GLenum format, GLenum type, const void * data);
     void clearImage(GLint level, GLenum format, GLenum type, const glm::vec4 & value);

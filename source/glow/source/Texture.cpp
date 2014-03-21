@@ -355,6 +355,20 @@ void Texture::texBuffer(GLenum activeTexture, GLenum internalFormat, Buffer * bu
     texBuffer(internalFormat, buffer);
 }
 
+void Texture::texBufferRange(GLenum internalFormat, Buffer * buffer, GLintptr offset, GLsizeiptr size)
+{
+    bind();
+
+    glTexBufferRange(m_target, internalFormat, buffer ? buffer->id() : 0, offset, size);
+    CheckGLError();
+}
+
+void Texture::texBufferRange(GLenum activeTexture, GLenum internalFormat, Buffer * buffer, GLintptr offset, GLsizeiptr size)
+{
+    bindActive(activeTexture);
+    texBufferRange(internalFormat, buffer, offset, size);
+}
+
 void Texture::clearImage(GLint level, GLenum format, GLenum type, const void * data)
 {
     glClearTexImage(m_id, level, format, type, data);
