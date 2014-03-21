@@ -8,8 +8,12 @@
 #	define __API_EXPORT_DECLARATION __declspec(dllexport)
 #	define __API_IMPORT_DECLARATION __declspec(dllimport)
 #elif __GNUC__
-#	define __API_EXPORT_DECLARATION
-#	define __API_IMPORT_DECLARATION
+#   ifndef __API_EXPORT_DECLARATION
+#	define __API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
+#   endif
+#   ifndef __API_IMPORT_DECLARATION
+#	define __API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
+#   endif
 #else
 #	define __API_EXPORT_DECLARATION
 #	define __API_IMPORT_DECLARATION
