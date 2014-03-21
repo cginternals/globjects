@@ -165,6 +165,8 @@ set(sources
     ${source_path}/Object.cpp
     ${source_path}/ObjectRegistry.cpp
     ${source_path}/ObjectVisitor.cpp
+    ${source_path}/pixelformat.cpp
+    ${source_path}/pixelformat.h
     ${source_path}/Program.cpp
     ${source_path}/ProgramBinary.cpp
     ${source_path}/ProgramUniformSetter.cpp

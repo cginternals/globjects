@@ -94,6 +94,8 @@ public:
 	void readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * data = nullptr);
     void readPixels(const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data = nullptr);
     void readPixels(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data = nullptr);
+    std::vector<unsigned char> readPixelsToByteArray(const std::array<GLint, 4> & rect, GLenum format, GLenum type);
+    std::vector<unsigned char> readPixelsToByteArray(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type);
     void readPixelsToBuffer(const std::array<GLint, 4> & rect, GLenum format, GLenum type, Buffer * pbo);
 
     GLenum checkStatus();

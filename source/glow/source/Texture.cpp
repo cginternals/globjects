@@ -8,6 +8,8 @@
 #include <glow/Buffer.h>
 #include <glow/ObjectVisitor.h>
 
+#include "pixelformat.h"
+
 namespace glow
 {
 
@@ -125,6 +127,37 @@ void Texture::getImage(GLint level, GLenum format, GLenum type, GLvoid * image)
 
     glGetTexImage(m_target, level, format, type, image);
     CheckGLError();
+}
+
+std::vector<unsigned char> Texture::getImage(GLint level, GLenum format, GLenum type)
+{
+    GLint width = getLevelParameter(level, GL_TEXTURE_WIDTH);
+    GLint height = getLevelParameter(level, GL_TEXTURE_HEIGHT);
+
+    int byteSize = imageSizeInBytes(width, height, format, type);
+
+    std::vector<unsigned char> data(byteSize);
+    getImage(level, format, type, data.data());
+
+    return data;
+}
+
+void Texture::getCompressedImage(GLint lod, GLvoid * image)
+{
+    bind();
+
+    glGetCompressedTexImage(m_target, lod, image);
+    CheckGLError();
+}
+
+std::vector<unsigned char> Texture::getCompressedImage(GLint lod)
+{
+    GLint size = getLevelParameter(lod, GL_TEXTURE_COMPRESSED_IMAGE_SIZE);
+
+    std::vector<unsigned char> data(size);
+    getCompressedImage(lod, data.data());
+
+    return data;
 }
 
 void Texture::image1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid* data)

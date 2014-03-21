@@ -11,6 +11,7 @@
 #include <glow/Buffer.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Texture.h>
+#include "pixelformat.h"
 
 namespace glow
 {
@@ -352,6 +353,22 @@ void FrameBufferObject::readPixels(GLenum readBuffer, const std::array<GLint, 4>
 {
     setReadBuffer(readBuffer);
     readPixels(rect, format, type, data);
+}
+
+std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(const std::array<GLint, 4> & rect, GLenum format, GLenum type)
+{
+    int size = imageSizeInBytes(rect[2], rect[3], format, type);
+    std::vector<unsigned char> data(size);
+
+    readPixels(rect, format, type, data.data());
+
+    return data;
+}
+
+std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type)
+{
+    setReadBuffer(readBuffer);
+    return readPixelsToByteArray(rect, format, type);
 }
 
 void FrameBufferObject::readPixelsToBuffer(const std::array<GLint, 4> & rect, GLenum format, GLenum type, Buffer * pbo)

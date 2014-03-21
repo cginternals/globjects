@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 
+#include <vector>
+
 #include <glm/glm.hpp>
 
 #include <glow/glow.h>
@@ -43,6 +45,10 @@ public:
     GLint getLevelParameter(GLint level, GLenum pname);
 
     void getImage(GLint level, GLenum format, GLenum type, GLvoid * image);
+    std::vector<unsigned char> getImage(GLint level, GLenum format, GLenum type);
+
+    void getCompressedImage(GLint lod, GLvoid * image);
+    std::vector<unsigned char> getCompressedImage(GLint lod = 0);
 
     GLenum target() const;
 
