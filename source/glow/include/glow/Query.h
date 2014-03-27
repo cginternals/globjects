@@ -79,8 +79,11 @@ public:
 	
 	bool isQuery() const;
 	
+    void get(GLenum pname, GLuint * param) const;
+    void get64(GLenum pname, GLuint64 * param) const;
+
 	GLuint get(GLenum pname = GL_QUERY_RESULT) const;
-	GLuint64 get64(GLenum pname = GL_QUERY_RESULT) const;
+    GLuint64 get64(GLenum pname = GL_QUERY_RESULT) const;
 	
 	bool resultAvailable() const;
     void wait() const;
