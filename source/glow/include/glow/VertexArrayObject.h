@@ -31,6 +31,8 @@ public:
 	void enable(GLint attributeIndex);
 	void disable(GLint attributeIndex);
 
+    void setAttributeDivisor(GLint attributeIndex, GLuint divisor);
+
 	std::vector<VertexAttributeBinding *> bindings();
 
     // drawing

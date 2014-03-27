@@ -80,6 +80,14 @@ void VertexArrayObject::disable(GLint attributeIndex)
 	CheckGLError();
 }
 
+void VertexArrayObject::setAttributeDivisor(GLint attributeIndex, GLuint divisor)
+{
+    bind();
+
+    glVertexAttribDivisor(attributeIndex, divisor);
+    CheckGLError();
+}
+
 std::vector<VertexAttributeBinding*> VertexArrayObject::bindings()
 {
 	std::vector<VertexAttributeBinding*> bindings;
