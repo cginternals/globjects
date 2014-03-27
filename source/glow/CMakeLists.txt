@@ -140,6 +140,7 @@ set(sources
     ${source_path}/CompositeStringSource.cpp
     ${source_path}/ConsoleLogger.cpp
     ${source_path}/constants.cpp
+    ${source_path}/container_helpers.hpp
     ${source_path}/contextid.h
     ${source_path}/contextid.cpp
     ${source_path}/DebugInfo.cpp
