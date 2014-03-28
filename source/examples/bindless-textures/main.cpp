@@ -273,7 +273,9 @@ void EventHandler::createTextures()
 
         static const int w = 512;
         static const int h = 512;
-        std::array<glm::detail::tvec4<unsigned char>, w*h> data;
+        using uchar = unsigned char;
+        struct RGBA { uchar r; uchar g; uchar b; uchar a; };
+        std::array<RGBA, w*h> data;
 
         for (unsigned j = 0; j < std::tuple_size<decltype(data)>::value; ++j)
         {
@@ -286,7 +288,9 @@ void EventHandler::createTextures()
 
             glm::vec3 color = glm::vec3(masks[i%std::tuple_size<decltype(masks)>::value]) * h;
 
-            data[j] = glm::detail::tvec4<unsigned char>(glm::detail::tvec3<unsigned char>(color*255.f), 255);
+            glm::ivec3 icolor = glm::ivec3(color*255.f);
+
+            data[j] = RGBA{ static_cast<uchar>(icolor.r), static_cast<uchar>(icolor.g), static_cast<uchar>(icolor.b), 255 };
         }
 
         texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
