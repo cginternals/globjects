@@ -35,6 +35,16 @@ VertexAttributeBinding::~VertexAttributeBinding()
     delete m_implementation;
 }
 
+const VertexArrayObject * VertexAttributeBinding::vao() const
+{
+    return m_vao;
+}
+
+VertexArrayObject * VertexAttributeBinding::vao()
+{
+    return m_vao;
+}
+
 void VertexAttributeBinding::setAttribute(GLint attributeIndex)
 {
     m_attributeIndex = attributeIndex;
