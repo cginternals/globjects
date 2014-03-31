@@ -122,6 +122,7 @@ set(api_includes
     ${include_path}/TransformFeedback.hpp
     ${include_path}/Uniform.h
     ${include_path}/Uniform.hpp
+    ${include_path}/UniformBlock.h
     ${include_path}/UniformSetter.h
     ${include_path}/Version.h
     ${include_path}/VertexArrayObject.h
@@ -139,6 +140,7 @@ set(sources
     ${source_path}/CompositeStringSource.cpp
     ${source_path}/ConsoleLogger.cpp
     ${source_path}/constants.cpp
+    ${source_path}/container_helpers.hpp
     ${source_path}/contextid.h
     ${source_path}/contextid.cpp
     ${source_path}/DebugInfo.cpp
@@ -164,6 +166,8 @@ set(sources
     ${source_path}/Object.cpp
     ${source_path}/ObjectRegistry.cpp
     ${source_path}/ObjectVisitor.cpp
+    ${source_path}/pixelformat.cpp
+    ${source_path}/pixelformat.h
     ${source_path}/Program.cpp
     ${source_path}/ProgramBinary.cpp
     ${source_path}/ProgramUniformSetter.cpp
@@ -179,6 +183,7 @@ set(sources
     ${source_path}/Texture.cpp
     ${source_path}/TextureAttachment.cpp
     ${source_path}/TransformFeedback.cpp
+    ${source_path}/UniformBlock.cpp
     ${source_path}/UniformSetter.cpp
     ${source_path}/Version.cpp
     ${source_path}/VertexArrayObject.cpp

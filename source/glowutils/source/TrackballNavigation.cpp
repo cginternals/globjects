@@ -63,7 +63,7 @@ float TrackballNavigation::depth(const vec2 & pos) const
 	float d = length2(pos);
 	float r2 = m_radius * m_radius;
 
-	return d <= r2 * .5f ? sqrt(r2 - d) : r2 * .5f / sqrt(d);
+	return d <= r2 * .5f ? std::sqrt(r2 - d) : r2 * .5f / std::sqrt(d);
 }
 
 quat TrackballNavigation::makeRotation(

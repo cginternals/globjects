@@ -101,7 +101,7 @@ void FragmentShaderParticles::reset()
 {
     // Choose appropriate width and height for the current number of particles
     int size = static_cast<int>(m_positions.size());
-    m_width  = static_cast<int>(sqrt(static_cast<float>(size)));
+    m_width  = static_cast<int>(std::sqrt(static_cast<float>(size)));
     m_height = m_width;
     int remain = size - (m_height * m_width);
     m_height += remain / m_width + (remain % m_width == 0 ? 0 : 1);

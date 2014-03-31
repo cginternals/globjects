@@ -112,7 +112,7 @@ vec2 rayCircleIntersection(
 		return vec2();
 	}
 
-	const float s = sqrt(delta);
+	const float s = std::sqrt(delta);
 
 	// the two intersections
 	const float t0 = (-b + s) / (2.f * a);

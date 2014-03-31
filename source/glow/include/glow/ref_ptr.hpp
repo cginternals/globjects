@@ -22,9 +22,16 @@ ref_ptr<T>::ref_ptr(T * referenced)
 
 template<typename T>
 ref_ptr<T>::ref_ptr(const ref_ptr & reference)
+: m_referenced(reference.m_referenced)
 {
-	m_referenced = reference.m_referenced;
 	increaseRef();
+}
+
+template<typename T>
+ref_ptr<T>::ref_ptr(ref_ptr && reference)
+: m_referenced(reference.m_referenced)
+{
+    reference.m_referenced = nullptr;
 }
 
 template<typename T>
@@ -185,6 +192,12 @@ void ref_ptr<T>::decreaseRef()
 	{
 		m_referenced->unref();
 	}
+}
+
+template <typename T>
+ref_ptr<T> make_ref(T * object)
+{
+    return ref_ptr<T>(object);
 }
 
 } // namespace glow

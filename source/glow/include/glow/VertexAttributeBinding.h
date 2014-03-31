@@ -39,6 +39,7 @@ public:
     ,   GLuint relativeoffset = 0);
 	void setLFormat(
         GLint size
+    ,   GLenum type
     ,   GLuint relativeoffset = 0);
 
     GLint attributeIndex() const;

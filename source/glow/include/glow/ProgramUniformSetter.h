@@ -76,6 +76,12 @@ public:
     static void set(GLuint program, GLint location, const std::vector<glm::mat4x3> & value);
 
     static void set(GLuint program, GLint location, const std::vector<TextureHandle> & value);
+
+    template <typename T, std::size_t Count>
+    static void set(GLuint program, GLint location, const std::array<T, Count> & value)
+    {
+        set(program, location, std::vector<T>(value.data(), value.data()+Count));
+    }
 };
 
 } // namespace glow

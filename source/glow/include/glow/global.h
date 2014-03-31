@@ -43,13 +43,13 @@ GLOW_API bool isCoreProfile();
 GLOW_API std::vector<std::string> getExtensions();
 
 template <int Count>
-GLOW_API std::array<GLint, Count> getIntegers(GLenum pname);
+std::array<GLint, Count> getIntegers(GLenum pname);
 template <int Count>
-GLOW_API std::array<GLfloat, Count> getFloats(GLenum pname);
+std::array<GLfloat, Count> getFloats(GLenum pname);
 template <int Count>
-GLOW_API std::array<GLdouble, Count> getDoubles(GLenum pname);
+std::array<GLdouble, Count> getDoubles(GLenum pname);
 template <int Count>
-GLOW_API std::array<GLboolean, Count> getBooleans(GLenum pname);
+std::array<GLboolean, Count> getBooleans(GLenum pname);
 
 GLOW_API void createNamedString(const std::string& name, const std::string& string, GLenum type = GL_SHADER_INCLUDE_ARB);
 GLOW_API void createNamedString(const std::string& name, AbstractStringSource* source, GLenum type = GL_SHADER_INCLUDE_ARB);

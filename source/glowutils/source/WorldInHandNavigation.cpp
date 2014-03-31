@@ -21,7 +21,7 @@ namespace
     static const vec3 DEFAULT_CENTER = vec3(0.f, 0.0f, 0.0f);
     static const vec3 DEFAULT_UP     = vec3(0.f, 1.0f, 0.0f);
 
-    static const float DEFAULT_SCALE_STEP = 0.1f;
+//  static const float DEFAULT_SCALE_STEP = 0.1f;
     static const float DEFAULT_DISTANCE   = 2.0f;
     static const float DEFAULT_DIST_MIN   = 0.1f;
     static const float DEFAULT_DIST_MAX   = 4.0f;
@@ -29,7 +29,7 @@ namespace
     static const float ROTATION_HOR_DOF   = 0.8f * glm::pi<float>();
     static const float ROTATION_VER_DOF   = 0.8f * glm::pi<float>();
 
-    static const float ROTATION_KEY_SCALE = 1.0f;
+//  static const float ROTATION_KEY_SCALE = 1.0f;
 
     //static const float NAV_CONSTRAINT_PAN_CIRCLE_R = 2.83;
     static const float CONSTRAINT_ROT_MAX_V_UP = 0.02f * glm::pi<float>();

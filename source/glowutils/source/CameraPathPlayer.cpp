@@ -18,6 +18,7 @@
 
 #include <glowutils/Camera.h>
 #include <glowutils/StringTemplate.h>
+#include <glowutils/math/BezierCurve.h>
 
 using namespace glm;
 
@@ -92,33 +93,6 @@ vec3 intersection(const vec3& a, const vec3& r, const vec3& p, const vec3& n)
 
     float t = dot(p - a, n) / rDotN;
     return a + r * t;
-}
-
-float bernstein(int n, float t)
-{
-    switch (n)
-    {
-        case 0:
-            return std::pow(1.0f-t, 3.0f);
-        case 1:
-            return 3*std::pow(1.0f-t, 2.0f)*t;
-        case 2:
-            return 3*(1.0f-t)*std::pow(t, 2.0f);
-        case 3:
-            return std::pow(t, 3.0f);
-        default:
-            assert(false);
-			return 0.0f;
-    }
-}
-
-vec3 bezier(const vec3& p0, const vec3& p1, const vec3& p2, const vec3& p3, float t)
-{
-    return
-        p0*bernstein(0, t)+
-        p1*bernstein(1, t)+
-        p2*bernstein(2, t)+
-        p3*bernstein(3, t);
 }
 
 const char* vertexSource = R"(
@@ -218,7 +192,7 @@ CameraPathPoint CameraPathPlayer::interpolate(const PathSection& section, const 
     const CameraPathPoint& p1 = *section.start;
     const CameraPathPoint& p2 = *section.end;
 
-    vec3 eye = bezier(p1.eye, section.c1, section.c2, p2.eye, t);
+    vec3 eye = math::BezierCurve(p1.eye, section.c1, section.c2, p2.eye)(t);
 
     //glow::debug() << eye << " (" << (p1.eye*(1.0f-t) + p2.eye*t) << ")";
 
@@ -264,7 +238,7 @@ void CameraPathPlayer::createVao()
         const float sectionT = (t - section.startT) / (section.endT - section.startT);
         const CameraPathPoint& p1 = *section.start;
         const CameraPathPoint& p2 = *section.end;
-        vec3 pos = bezier(p1.eye, section.c1, section.c2, p2.eye, sectionT);
+        vec3 pos = math::BezierCurve(p1.eye, section.c1, section.c2, p2.eye)(sectionT);
         array.emplace_back(pos, t);
     }
 

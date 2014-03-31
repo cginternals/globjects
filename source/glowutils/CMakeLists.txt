@@ -97,8 +97,11 @@ set(api_includes
     ${include_path}/UniformGroup.h
     ${include_path}/UniformGroup.hpp
     ${include_path}/UnitCube.h
+    ${include_path}/VertexDrawable.h
     ${include_path}/WeightedAverageAlgorithm.h
     ${include_path}/WorldInHandNavigation.h
+    
+    ${include_path}/math/BezierCurve.h
 )
 
 set(sources
@@ -132,8 +135,11 @@ set(sources
     ${source_path}/TrackballNavigation.cpp
     ${source_path}/UniformGroup.cpp
     ${source_path}/UnitCube.cpp
+    ${source_path}/VertexDrawable.cpp
     ${source_path}/WeightedAverageAlgorithm.cpp
     ${source_path}/WorldInHandNavigation.cpp
+    
+    ${source_path}/math/BezierCurve.cpp
 )
 
 # Group source files

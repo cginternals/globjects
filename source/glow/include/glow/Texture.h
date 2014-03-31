@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 
+#include <vector>
+
 #include <glm/glm.hpp>
 
 #include <glow/glow.h>
@@ -42,6 +44,12 @@ public:
     GLint getParameter(GLenum pname);
     GLint getLevelParameter(GLint level, GLenum pname);
 
+    void getImage(GLint level, GLenum format, GLenum type, GLvoid * image);
+    std::vector<unsigned char> getImage(GLint level, GLenum format, GLenum type);
+
+    void getCompressedImage(GLint lod, GLvoid * image);
+    std::vector<unsigned char> getCompressedImage(GLint lod = 0);
+
     GLenum target() const;
 
     void image1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid * data);
@@ -79,6 +87,8 @@ public:
 
     void texBuffer(GLenum internalFormat, Buffer * buffer);
     void texBuffer(GLenum activeTexture, GLenum internalFormat, Buffer * buffer);
+    void texBufferRange(GLenum internalFormat, Buffer * buffer, GLintptr offset, GLsizeiptr size);
+    void texBufferRange(GLenum activeTexture, GLenum internalFormat, Buffer * buffer, GLintptr offset, GLsizeiptr size);
 
     void clearImage(GLint level, GLenum format, GLenum type, const void * data);
     void clearImage(GLint level, GLenum format, GLenum type, const glm::vec4 & value);
