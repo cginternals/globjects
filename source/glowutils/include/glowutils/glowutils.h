@@ -5,21 +5,21 @@
 // don't do it: http://support.microsoft.com/kb/q168958/
 
 #ifdef _MSC_VER
-#	define __API_EXPORT_DECLARATION __declspec(dllexport)
-#	define __API_IMPORT_DECLARATION __declspec(dllimport)
+#	define GLOWUTILS_API_EXPORT_DECLARATION __declspec(dllexport)
+#	define GLOWUTILS_API_IMPORT_DECLARATION __declspec(dllimport)
 #elif __GNUC__
-#	define __API_EXPORT_DECLARATION
-#	define __API_IMPORT_DECLARATION
+#	define GLOWUTILS_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
+#	define GLOWUTILS_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #else
-#	define __API_EXPORT_DECLARATION
-#	define __API_IMPORT_DECLARATION
+#	define GLOWUTILS_API_EXPORT_DECLARATION
+#	define GLOWUTILS_API_IMPORT_DECLARATION
 #endif
 
 #ifndef GLOW_STATIC
 #ifdef GLOWUTILS_EXPORTS
-#	define GLOWUTILS_API __API_EXPORT_DECLARATION
+#	define GLOWUTILS_API GLOWUTILS_API_EXPORT_DECLARATION
 #else
-#	define GLOWUTILS_API __API_IMPORT_DECLARATION
+#	define GLOWUTILS_API GLOWUTILS_API_IMPORT_DECLARATION
 #endif
 #else
 #	define GLOWUTILS_API

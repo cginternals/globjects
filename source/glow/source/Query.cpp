@@ -43,7 +43,7 @@ Query::~Query()
 
 Query* Query::current(GLenum target)
 {
-	GLint value;
+    GLint value = 0;
 	
 	glGetQueryiv(target, GL_CURRENT_QUERY, &value);
 	CheckGLError();
@@ -53,7 +53,7 @@ Query* Query::current(GLenum target)
 
 int Query::counterBits(GLenum target)
 {
-	GLint value;
+    GLint value = 0;
 	
 	glGetQueryiv(target, GL_QUERY_COUNTER_BITS, &value);
 	CheckGLError();
@@ -94,22 +94,32 @@ void Query::end()
 	CheckGLError();
 }
 
+void Query::get(GLenum pname, GLuint * param) const
+{
+    glGetQueryObjectuiv(m_id, pname, param);
+    CheckGLError();
+}
+
+void Query::get64(GLenum pname, GLuint64 * param) const
+{
+    glGetQueryObjectui64v(m_id, pname, param);
+    CheckGLError();
+}
+
 GLuint Query::get(GLenum pname) const
 {
-	GLuint value;
+    GLuint value = 0;
 	
-	glGetQueryObjectuiv(m_id, pname, &value);
-	CheckGLError();
+    get(pname, &value);
 	
 	return value;
 }
 
 GLuint64 Query::get64(GLenum pname) const
 {
-	GLuint64 value;
+    GLuint64 value = 0;
 	
-	glGetQueryObjectui64v(m_id, pname, &value);
-	CheckGLError();
+    get64(pname, &value);
 	
 	return value;
 }

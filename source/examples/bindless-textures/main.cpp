@@ -253,12 +253,12 @@ int main(int /*argc*/, char* /*argv*/[])
 
 void EventHandler::createTextures()
 {
-    const std::array<glm::bvec3, 4> masks = {
+    const std::array<glm::bvec3, 4> masks = { {
         glm::bvec3(true, false, false),
         glm::bvec3(false, true, false),
         glm::bvec3(false, false, true),
         glm::bvec3(true, true, false)
-    };
+    } };
 
     for (unsigned i = 0; i < m_textures.size(); ++i)
     {
@@ -273,7 +273,9 @@ void EventHandler::createTextures()
 
         static const int w = 512;
         static const int h = 512;
-        std::array<glm::detail::tvec4<unsigned char>, w*h> data;
+        using uchar = unsigned char;
+        struct RGBA { uchar r; uchar g; uchar b; uchar a; };
+        std::array<RGBA, w*h> data;
 
         for (unsigned j = 0; j < std::tuple_size<decltype(data)>::value; ++j)
         {
@@ -286,7 +288,9 @@ void EventHandler::createTextures()
 
             glm::vec3 color = glm::vec3(masks[i%std::tuple_size<decltype(masks)>::value]) * h;
 
-            data[j] = glm::detail::tvec4<unsigned char>(glm::detail::tvec3<unsigned char>(color*255.f), 255);
+            glm::ivec3 icolor = glm::ivec3(color*255.f);
+
+            data[j] = RGBA{ static_cast<uchar>(icolor.r), static_cast<uchar>(icolor.g), static_cast<uchar>(icolor.b), 255 };
         }
 
         texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
@@ -297,14 +301,14 @@ void EventHandler::createTextures()
 
 void EventHandler::createGeometry()
 {
-    std::array<glm::vec3, 8> points = {
+    std::array<glm::vec3, 8> points = { {
         glm::vec3(glm::sin(glm::radians(0.f)), 0.0, glm::cos(glm::radians(0.f))),
         glm::vec3(glm::sin(glm::radians(120.f)), 0.0, glm::cos(glm::radians(120.f))),
         glm::vec3(glm::sin(glm::radians(240.f)), 0.0, glm::cos(glm::radians(240.f))),
         glm::vec3(0.0, glm::sqrt(glm::pow(2.f/glm::cos(glm::radians(30.f))-1.f, 2.f)), 0.0)
-    };
+    } };
 
-    std::array<Vertex, 6> vertices = {
+    std::array<Vertex, 6> vertices = { {
         Vertex{ points[0], glm::vec2(0.0, 0.0), 0 },
         Vertex{ points[1], glm::vec2(1.0, 0.0), 0 },
         Vertex{ points[3], glm::vec2(0.5, 1.0), 0 },
@@ -312,7 +316,7 @@ void EventHandler::createGeometry()
         Vertex{ points[2], glm::vec2(0.0, 0.0), 1 },
         Vertex{ points[0], glm::vec2(1.0, 0.0), 2 },
         Vertex{ points[1], glm::vec2(0.5, 1.0), 3 }
-    };
+    } };
 
     m_drawable = new glowutils::VertexDrawable(vertices, GL_TRIANGLE_STRIP);
 
@@ -321,4 +325,5 @@ void EventHandler::createGeometry()
         glowutils::Format(2, GL_FLOAT, offsetof(Vertex, texCoord)),
         glowutils::FormatI(1, GL_INT, offsetof(Vertex, side))
     });
+    m_drawable->enableAll();
 }

@@ -12,19 +12,31 @@
 *.la
 *.a
 
-# build dir
+# Build dir
 build
 build.release
 build.debug
+build-release
+build-debug
 debug_build
 release_build
-/_configure.bat
-/_open-project.bat
-/_start-cmake-gui.bat
 /bin
 /lib
 /install
 
-#qt cache
+# Qt cache
 CMakeLists.txt.user
 CMakeLists.txt.user.*
+
+# IDE project files
+*.sublime-project
+*.sublime-workspace
+
+# Local config windows
+_configure.bat
+_open-project.bat
+_start-cmake-gui.bat
+_start-cmd.bat
+
+# Local config unix
+.localconfig

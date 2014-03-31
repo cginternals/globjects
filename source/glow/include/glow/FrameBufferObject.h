@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <array>
 
 #include <glm/glm.hpp>
 
@@ -45,7 +46,7 @@ public:
 	FrameBufferObject(GLuint id, bool ownsGLObject = true);
 	virtual ~FrameBufferObject();
 
-	static FrameBufferObject* defaultFBO();
+    static FrameBufferObject * defaultFBO();
 
     virtual void accept(ObjectVisitor& visitor) override;
 
@@ -90,23 +91,12 @@ public:
     static void clearColor(const glm::vec4 & color);
     static void clearDepth(GLclampd depth);
 
-	void readPixels(
-        GLint x
-    ,   GLint y
-    ,   GLsizei width
-    ,   GLsizei height
-    ,   GLenum format
-    ,   GLenum type
-    ,   GLvoid * data = nullptr);
-
-	void readPixelsToBuffer(
-        GLint x
-    ,   GLint y
-    ,   GLsizei width
-    ,   GLsizei height
-    ,   GLenum format
-    , GLenum type, Buffer* pbo);
-
+	void readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * data = nullptr);
+    void readPixels(const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data = nullptr);
+    void readPixels(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data = nullptr);
+    std::vector<unsigned char> readPixelsToByteArray(const std::array<GLint, 4> & rect, GLenum format, GLenum type);
+    std::vector<unsigned char> readPixelsToByteArray(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type);
+    void readPixelsToBuffer(const std::array<GLint, 4> & rect, GLenum format, GLenum type, Buffer * pbo);
 
     GLenum checkStatus();
     std::string statusString();
@@ -116,29 +106,20 @@ public:
     FrameBufferAttachment * attachment(GLenum attachment);
     std::vector<FrameBufferAttachment*> attachments();
 
-public:
-	static void blit(
-        GLint srcX0
-    ,   GLint srcY0
-    ,   GLint srcX1
-    ,   GLint srcY1
-    ,   GLint destX0
-    ,   GLint destY0
-    ,   GLint destX1
-    ,   GLint destY1
-    ,   GLbitfield mask
-    ,   GLenum filter);
-
+    void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
+    void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
 protected:
     void attach(FrameBufferAttachment * attachment);
 
     static GLuint genFrameBuffer();
 
+    static void blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter);
+    static void blit(const std::array<GLint, 4> & srcRect, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
 protected:
 	GLenum m_target;
 	std::map<GLenum, ref_ptr<FrameBufferAttachment>> m_attachments;
 
-	static FrameBufferObject s_defaultFBO;
+    static FrameBufferObject s_defaultFBO;
 };
 
 } // namespace glow
