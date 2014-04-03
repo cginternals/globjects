@@ -20,7 +20,7 @@ Camera::Camera(
 , m_center(center)
 , m_up(up)
 
-, m_fovy(40.f)
+, m_fovy(radians(40.f))
 , m_aspect(1.f)
 , m_zNear(0.1f)
 , m_zFar(64.0f)

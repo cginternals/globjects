@@ -42,32 +42,32 @@ const std::array<vec3, 12> Icosahedron::vertices()
     }};
 }
 
-const std::array<lowp_uvec3, 20> Icosahedron::indices()
+const std::array<Icosahedron::Face, 20> Icosahedron::indices()
 {
-    return std::array<lowp_uvec3, 20>{{
-        lowp_uvec3(  0, 11,  5)
-    ,   lowp_uvec3(  0,  5,  1)
-    ,   lowp_uvec3(  0,  1,  7)
-    ,   lowp_uvec3(  0,  7, 10)
-    ,   lowp_uvec3(  0, 10, 11)
+    return std::array<Face, 20>{{
+        Face{{  0, 11,  5}}
+    ,   Face{{  0,  5,  1}}
+    ,   Face{{  0,  1,  7}}
+    ,   Face{{  0,  7, 10}}
+    ,   Face{{  0, 10, 11}}
 
-    ,   lowp_uvec3(  1,  5,  9)
-    ,   lowp_uvec3(  5, 11,  4)
-    ,   lowp_uvec3( 11, 10,  2)
-    ,   lowp_uvec3( 10,  7,  6)
-    ,   lowp_uvec3(  7,  1,  8)
+    ,   Face{{  1,  5,  9}}
+    ,   Face{{  5, 11,  4}}
+    ,   Face{{ 11, 10,  2}}
+    ,   Face{{ 10,  7,  6}}
+    ,   Face{{  7,  1,  8}}
 
-    ,   lowp_uvec3(  3,  9,  4)
-    ,   lowp_uvec3(  3,  4,  2)
-    ,   lowp_uvec3(  3,  2,  6)
-    ,   lowp_uvec3(  3,  6,  8)
-    ,   lowp_uvec3(  3,  8,  9)
+    ,   Face{{  3,  9,  4}}
+    ,   Face{{  3,  4,  2}}
+    ,   Face{{  3,  2,  6}}
+    ,   Face{{  3,  6,  8}}
+    ,   Face{{  3,  8,  9}}
 
-    ,   lowp_uvec3(  4,  9,  5)
-    ,   lowp_uvec3(  2,  4, 11)
-    ,   lowp_uvec3(  6,  2, 10)
-    ,   lowp_uvec3(  8,  6,  7)
-    ,   lowp_uvec3(  9,  8,  1)
+    ,   Face{{  4,  9,  5}}
+    ,   Face{{  2,  4, 11}}
+    ,   Face{{  6,  2, 10}}
+    ,   Face{{  8,  6,  7}}
+    ,   Face{{  9,  8,  1}}
     }};
 }
 
@@ -82,7 +82,7 @@ Icosahedron::Icosahedron(
     auto i(indices());
 
     std::vector<vec3> vertices(v.begin(), v.end());
-    std::vector<lowp_uvec3> indices(i.begin(), i.end());
+    std::vector<Face> indices(i.begin(), i.end());
 
     refine(vertices, indices, static_cast<char>(clamp(iterations, 0, 8)));
 
@@ -122,10 +122,10 @@ void Icosahedron::draw(const GLenum mode)
 
 void Icosahedron::refine(
     std::vector<vec3> & vertices
-,   std::vector<lowp_uvec3> & indices
+,   std::vector<Face> & indices
 ,   const unsigned char levels)
 {
-    std::unordered_map<uint, lowp_uint> cache;
+    std::unordered_map<uint, u_int16_t> cache;
 
     for(int i = 0; i < levels; ++i)
     {
@@ -133,30 +133,30 @@ void Icosahedron::refine(
 
         for(int f = 0; f < size; ++f)
         {
-            glm::lowp_uvec3 & face(indices[f]);
+            Face & face = indices[f];
 
-            const glm::lowp_uint a(face.x);
-            const glm::lowp_uint b(face.y);
-            const glm::lowp_uint c(face.z);
+            const u_int16_t a(face[0]);
+            const u_int16_t b(face[1]);
+            const u_int16_t c(face[2]);
 
-            const glm::lowp_uint ab(split(a, b, vertices, cache));
-            const glm::lowp_uint bc(split(b, c, vertices, cache));
-            const glm::lowp_uint ca(split(c, a, vertices, cache));
+            const u_int16_t ab(split(a, b, vertices, cache));
+            const u_int16_t bc(split(b, c, vertices, cache));
+            const u_int16_t ca(split(c, a, vertices, cache));
 
-            face = glm::lowp_uvec3(ab, bc, ca);
+            face = { ab, bc, ca };
 
-            indices.emplace_back(a, ab, ca);
-            indices.emplace_back(b, bc, ab);
-            indices.emplace_back(c, ca, bc);
+            indices.emplace_back(Face{ a, ab, ca });
+            indices.emplace_back(Face{ b, bc, ab });
+            indices.emplace_back(Face{ c, ca, bc });
         }
     }
 }
 
-lowp_uint Icosahedron::split(
-    const lowp_uint a
-,   const lowp_uint b
+u_int16_t Icosahedron::split(
+    const u_int16_t a
+,   const u_int16_t b
 ,   std::vector<vec3> & points
-,   std::unordered_map<uint, lowp_uint> & cache)
+,   std::unordered_map<uint, u_int16_t> & cache)
 {
     const bool aSmaller(a < b);
 
@@ -170,7 +170,7 @@ lowp_uint Icosahedron::split(
 
     points.push_back(normalize((points[a] + points[b]) * .5f));
 
-    const lowp_uint i = static_cast<lowp_uint>(points.size() - 1);
+    const u_int16_t i = static_cast<u_int16_t>(points.size() - 1);
 
     cache[hash] = i;
 

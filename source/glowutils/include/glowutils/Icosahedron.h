@@ -27,15 +27,17 @@ namespace glowutils
 class GLOWUTILS_API Icosahedron : public glow::Referenced
 {
 public:
+    using Face = std::array<u_int16_t, 3>;
+
     static const std::array<glm::vec3, 12> vertices();
-    static const std::array<glm::lowp_uvec3, 20> indices(); /// individual triangle indices (no strip, no fan)
+    static const std::array<Face, 20> indices(); /// individual triangle indices (no strip, no fan)
 
    /**  Iterative triangle refinement: split each triangle into 4 new ones and 
         create points and indices appropriately.
     */
     static void refine(
         std::vector<glm::vec3> & vertices
-    ,   std::vector<glm::lowp_uvec3> & indices
+    ,   std::vector<Face> & indices
     ,   unsigned char levels);
 
 public:
@@ -55,11 +57,11 @@ private:
         on sphere) to the points (if not already cached) and returns the index
         to this point.
     */
-    static glm::lowp_uint split(
-        glm::lowp_uint a
-    ,   glm::lowp_uint b
+    static u_int16_t split(
+        u_int16_t a
+    ,   u_int16_t b
     ,   std::vector<glm::vec3> & points
-    ,   std::unordered_map<glm::uint, glm::lowp_uint> & cache);
+    ,   std::unordered_map<glm::uint, u_int16_t> & cache);
 
 private:
     glow::ref_ptr<glow::VertexArrayObject> m_vao;
