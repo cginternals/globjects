@@ -22,6 +22,9 @@ public:
     ,   const GLint bindingIndex);
 	~VertexAttributeBinding();
 
+    const VertexArrayObject * vao() const;
+    VertexArrayObject * vao();
+
 	void setAttribute(GLint attributeIndex);
 	void setBuffer(
         Buffer * vbo
