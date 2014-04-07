@@ -67,7 +67,7 @@ public:
 
         vec3 up(0.0, 1.0, 0.0);
         vec3 center(0.0, 0.0, 0.0);
-        float fov = 60.0;
+        float fov = radians(60.0f);
         float height = 1.0;
         float d = 4.0;
 

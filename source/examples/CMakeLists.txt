@@ -5,6 +5,9 @@ if(OPTION_BUILD_EXAMPLES)
 	endif()
 
 	set(EXAMPLE_COMMON examplecommon)
+
+        # for compatibility between glm 0.9.4 and 0.9.5
+        add_definitions("-DGLM_FORCE_RADIANS")
 	
 	add_subdirectory("common")
 	include_directories("common")

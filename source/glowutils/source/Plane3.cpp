@@ -31,7 +31,7 @@ const mat4 rotate(
     const vec3 axis = cross(anorm, bnorm);
     const float angle = acos(dot(anorm, bnorm));
 
-    return mat4_cast(angleAxis(degrees(angle), axis));
+    return mat4_cast(angleAxis(angle, axis));
 }
 
 const mat4 transform(
