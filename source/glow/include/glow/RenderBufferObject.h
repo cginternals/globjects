@@ -22,8 +22,8 @@ public:
 
     virtual void accept(ObjectVisitor & visitor) override;
 
-	void bind();
-	void unbind();
+    void bind() const;
+    void unbind() const;
 
 	void storage(
         GLenum internalformat
@@ -35,7 +35,7 @@ public:
     ,   GLsizei width
     ,   GLsizei height);
 
-	GLint getParameter(GLenum pname);
+    GLint getParameter(GLenum pname) const;
 
 protected:
 	static GLuint genRenderBuffer();

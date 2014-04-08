@@ -26,8 +26,8 @@ public:
     void setParameter(GLenum name, GLint value);
     void setParameter(GLenum name, GLfloat value);
 
-    GLint getParameteri(GLenum pname);
-    GLfloat getParameterf(GLenum pname);
+    GLint getParameteri(GLenum pname) const;
+    GLfloat getParameterf(GLenum pname) const;
 
 protected:
     static GLuint genSampler();

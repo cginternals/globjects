@@ -59,20 +59,20 @@ void FrameBufferObject::accept(ObjectVisitor& visitor)
 	visitor.visitFrameBufferObject(this);
 }
 
-void FrameBufferObject::bind()
+void FrameBufferObject::bind() const
 {
 	glBindFramebuffer(m_target, m_id);
 	CheckGLError();
 }
 
-void FrameBufferObject::bind(GLenum target)
+void FrameBufferObject::bind(GLenum target) const
 {
 	m_target = target;
 	glBindFramebuffer(target, m_id);
 	CheckGLError();
 }
 
-void FrameBufferObject::unbind()
+void FrameBufferObject::unbind() const
 {
 	glBindFramebuffer(m_target, 0);
 	CheckGLError();
@@ -92,7 +92,7 @@ void FrameBufferObject::setParameter(GLenum pname, GLint param)
 	CheckGLError();
 }
 
-int FrameBufferObject::getAttachmentParameter(GLenum attachment, GLenum pname)
+int FrameBufferObject::getAttachmentParameter(GLenum attachment, GLenum pname) const
 {
     bind();
 
@@ -215,7 +215,7 @@ void FrameBufferObject::attach(FrameBufferAttachment* attachment)
 	m_attachments[attachment->attachment()] = attachment;
 }
 
-void FrameBufferObject::setReadBuffer(GLenum mode)
+void FrameBufferObject::setReadBuffer(GLenum mode) const
 {
 	bind(GL_READ_FRAMEBUFFER);
 
@@ -223,7 +223,7 @@ void FrameBufferObject::setReadBuffer(GLenum mode)
 	CheckGLError();
 }
 
-void FrameBufferObject::setDrawBuffer(GLenum mode)
+void FrameBufferObject::setDrawBuffer(GLenum mode) const
 {
 	bind(GL_DRAW_FRAMEBUFFER);
 
@@ -231,7 +231,7 @@ void FrameBufferObject::setDrawBuffer(GLenum mode)
 	CheckGLError();
 }
 
-void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum* modes)
+void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum* modes) const
 {
     assert(modes != nullptr || n == 0);
 
@@ -241,7 +241,7 @@ void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum* modes)
 	CheckGLError();
 }
 
-void FrameBufferObject::setDrawBuffers(const std::vector<GLenum>& modes)
+void FrameBufferObject::setDrawBuffers(const std::vector<GLenum>& modes) const
 {
     setDrawBuffers(static_cast<int>(modes.size()), modes.data());
 }
@@ -335,7 +335,7 @@ void FrameBufferObject::clearDepth(GLclampd depth)
     CheckGLError();
 }
 
-void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * data)
+void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * data) const
 {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
     CheckGLError();
@@ -344,18 +344,18 @@ void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei heig
 	CheckGLError();
 }
 
-void FrameBufferObject::readPixels(const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data)
+void FrameBufferObject::readPixels(const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data) const
 {
     readPixels(rect[0], rect[1], rect[2], rect[3], format, type, data);
 }
 
-void FrameBufferObject::readPixels(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data)
+void FrameBufferObject::readPixels(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data) const
 {
     setReadBuffer(readBuffer);
     readPixels(rect, format, type, data);
 }
 
-std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(const std::array<GLint, 4> & rect, GLenum format, GLenum type)
+std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(const std::array<GLint, 4> & rect, GLenum format, GLenum type) const
 {
     int size = imageSizeInBytes(rect[2], rect[3], format, type);
     std::vector<unsigned char> data(size);
@@ -365,13 +365,13 @@ std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(const std::a
     return data;
 }
 
-std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type)
+std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type) const
 {
     setReadBuffer(readBuffer);
     return readPixelsToByteArray(rect, format, type);
 }
 
-void FrameBufferObject::readPixelsToBuffer(const std::array<GLint, 4> & rect, GLenum format, GLenum type, Buffer * pbo)
+void FrameBufferObject::readPixelsToBuffer(const std::array<GLint, 4> & rect, GLenum format, GLenum type, Buffer * pbo) const
 {
     assert(pbo != nullptr);
 
@@ -380,12 +380,12 @@ void FrameBufferObject::readPixelsToBuffer(const std::array<GLint, 4> & rect, GL
 	pbo->unbind();
 }
 
-void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter)
+void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter) const
 {
     blit(readBuffer, srcRect, destFbo, std::vector<GLenum>{ drawBuffer }, destRect, mask, filter);
 }
 
-void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter)
+void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter) const
 {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
     CheckGLError();
@@ -411,7 +411,7 @@ void FrameBufferObject::blit(const std::array<GLint, 4> & srcRect, const std::ar
     blit(srcRect[0], srcRect[1], srcRect[2], srcRect[3], destRect[0], destRect[1], destRect[2], destRect[3], mask, filter);
 }
 
-GLenum FrameBufferObject::checkStatus()
+GLenum FrameBufferObject::checkStatus() const
 {
 	bind();
 
@@ -420,7 +420,7 @@ GLenum FrameBufferObject::checkStatus()
 	return result;
 }
 
-std::string FrameBufferObject::statusString()
+std::string FrameBufferObject::statusString() const
 {
 	return statusString(checkStatus());
 }
@@ -452,7 +452,7 @@ std::string FrameBufferObject::statusString(GLenum status)
 	}
 }
 
-void FrameBufferObject::printStatus(bool onlyErrors)
+void FrameBufferObject::printStatus(bool onlyErrors) const
 {
 	GLenum status = checkStatus();
 

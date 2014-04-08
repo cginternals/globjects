@@ -45,6 +45,7 @@ public:
      * \endcode
 	*/
 	template<typename T> Uniform<T> * as();
+    template<typename T> const Uniform<T> * as() const;
 
 protected:
 	void registerProgram(Program * program);
@@ -64,7 +65,7 @@ protected:
     virtual void setValueAt(GLint location) = 0;
     virtual void setValueAt(Program* program, GLint location) = 0;
 
-    GLint locationFor(Program * program);
+    GLint locationFor(Program * program) const;
 protected:
     LocationIdentity m_identity;
 	std::set<Program *> m_programs;

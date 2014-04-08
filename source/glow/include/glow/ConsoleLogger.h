@@ -20,7 +20,7 @@ public:
     virtual void handle(const LogMessage & message) override;
 
 protected:
-	std::string levelString(LogMessage::Level level);
+    static std::string levelString(LogMessage::Level level);
 };
 
 } // namespace glow

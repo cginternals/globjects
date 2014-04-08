@@ -59,7 +59,7 @@ void AbstractUniform::changed()
 		update(program);
 }
 
-GLint AbstractUniform::locationFor(Program * program)
+GLint AbstractUniform::locationFor(Program * program) const
 {
     if (m_identity.isLocation())
         return m_identity.location();

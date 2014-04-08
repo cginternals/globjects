@@ -67,18 +67,18 @@ public:
     /**
      * Binds the buffer to the internal target.
      */
-	void bind();
+    void bind() const;
     /**
      * Binds the buffer to target and resets the internal target member which will be used for automatic binds.
      * @param target the target for binding
      * \see https://www.opengl.org/sdk/docs/man4/xhtml/glBindBuffer.xml
      */
-	void bind(GLenum target);
+    void bind(GLenum target) const;
     /**
      * Unbinds the buffer, i.e. the internal target will be bound to 0.
      * @param target the target for binding
      */
-	void unbind();
+    void unbind() const;
     /**
      * Unbinds a specific target, i.e. binds a 0 id to the target.
      * @param target the target for unbinding
@@ -150,7 +150,13 @@ public:
      * @return integer value for the parameter
      * \see http://www.opengl.org/sdk/docs/man/xhtml/glGetBufferParameter.xml
      */
-	GLint getParameter(GLenum pname);
+    GLint getParameter(GLenum pname) const;
+
+    /**
+     * Maps the Buffer's memory read only.
+     * @return a pointer to the mapped memory
+     */
+    const void * map() const;
 
     /**
      * Maps the Buffer's memory using the internal target.
@@ -172,18 +178,18 @@ public:
      * Wraps the OpenGL function glUnmapBuffer.
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glMapBuffer.xml
      */
-    bool unmap();
+    bool unmap() const;
 
     /**
      * Wraps the OpenGL function glBindBufferBase.
      * \see http://www.opengl.org/sdk/docs/man/xhtml/glBindBufferBase.xml
      */
-    void bindBase(GLenum target, GLuint index);
+    void bindBase(GLenum target, GLuint index) const;
     /**
      * Wraps the OpenGL function glBindBufferRange.
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glBindBufferRange.xml
      */
-    void bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size);
+    void bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size) const;
     /**
      * Unbinds the buffer bound to the target and index.
      * @param target the target for unbinding
@@ -207,24 +213,24 @@ public:
      * Copies content of this buffer to whatever buffer is bound to writeTarget.
      * Uses GL_COPY_READ_BUFFER as readTarget.
      */
-	void copySubData(GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
+    void copySubData(GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const;
     /**
      * Convenience method.
      * Uses GL_COPY_READ_BUFFER as readTarget.
      * Both readOffset and writeOffset are 0.
      */
-    void copySubData(GLenum writeTarget, GLsizeiptr size);
+    void copySubData(GLenum writeTarget, GLsizeiptr size) const;
     /**
      * Convenience method.
      * Copies the contents of this Buffer to buffer.
      * Uses GL_COPY_WRITE_BUFFER as writeTarget, buffer will be bound to GL_COPY_WRITE_BUFFER.
      */
-    void copySubData(glow::Buffer * buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
+    void copySubData(glow::Buffer * buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const;
     /**
      * Convenience method.
      * Both readOffset and writeOffset are 0.
      */
-    void copySubData(glow::Buffer * buffer, GLsizeiptr size);
+    void copySubData(glow::Buffer * buffer, GLsizeiptr size) const;
     /**
      * Creates new uninitialized memory to fit size (using usage), then
      * copies the contents of buffer to this buffer's new memory.
@@ -232,7 +238,7 @@ public:
      * @param size size of the data to be copied
      * @param usage buffer usage
      */
-    void copyData(glow::Buffer * buffer, GLsizeiptr size, GLenum usage = GL_STATIC_DRAW);
+    void copyData(glow::Buffer * buffer, GLsizeiptr size, GLenum usage = GL_STATIC_DRAW) const;
 
     /**
      * Wraps the OpenGL function glClearBufferData.
@@ -252,7 +258,7 @@ protected:
     /**
      * internal target used in bind().
      */
-    GLenum m_target;
+    mutable GLenum m_target;
 
     /**
       * Cached boolean whether direct state access is available or not

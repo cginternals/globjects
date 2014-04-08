@@ -30,7 +30,23 @@ template<typename T>
 Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identity)
 {
     if (m_uniforms.count(identity))
-        return m_uniforms[identity]->as<T>();
+        return m_uniforms.at(identity)->as<T>();
+
+    // create new uniform if none named <name> exists
+
+    Uniform<T> * uniform = identity.isName() ? new Uniform<T>(identity.name()) : new Uniform<T>(identity.location());
+
+    m_uniforms[uniform->identity()] = uniform;
+    uniform->registerProgram(this);
+
+    return uniform;
+}
+
+template<typename T>
+const Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identity) const
+{
+    if (m_uniforms.count(identity))
+        return m_uniforms.at(identity)->as<T>();
 
     // create new uniform if none named <name> exists
 
@@ -62,7 +78,19 @@ Uniform<T> * Program::getUniform(const std::string & name)
 }
 
 template<typename T>
+const Uniform<T> * Program::getUniform(const std::string & name) const
+{
+    return getUniformByIdentity<T>(name);
+}
+
+template<typename T>
 Uniform<T> * Program::getUniform(GLint location)
+{
+    return getUniformByIdentity<T>(location);
+}
+
+template<typename T>
+const Uniform<T> * Program::getUniform(GLint location) const
 {
     return getUniformByIdentity<T>(location);
 }

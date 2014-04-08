@@ -50,13 +50,13 @@ public:
 
     virtual void accept(ObjectVisitor& visitor) override;
 
-	void bind();
-	void bind(GLenum target);
-	void unbind();
+    void bind() const;
+    void bind(GLenum target) const;
+    void unbind() const;
     static void unbind(GLenum target);
 
 	void setParameter(GLenum pname, GLint param);
-    int getAttachmentParameter(GLenum attachment, GLenum pname);
+    int getAttachmentParameter(GLenum attachment, GLenum pname) const;
 
 	void attachTexture(GLenum attachment, Texture * texture, GLint level = 0);
 	void attachTexture1D(GLenum attachment, Texture * texture, GLint level = 0);
@@ -67,10 +67,10 @@ public:
 
     void detach(GLenum attachment);
 
-	void setReadBuffer(GLenum mode);
-	void setDrawBuffer(GLenum mode);
-	void setDrawBuffers(GLsizei n, const GLenum * modes);
-	void setDrawBuffers(const std::vector<GLenum> & modes);
+    void setReadBuffer(GLenum mode) const;
+    void setDrawBuffer(GLenum mode) const;
+    void setDrawBuffers(GLsizei n, const GLenum * modes) const;
+    void setDrawBuffers(const std::vector<GLenum> & modes) const;
 
     void clear(GLbitfield mask);
 
@@ -91,23 +91,23 @@ public:
     static void clearColor(const glm::vec4 & color);
     static void clearDepth(GLclampd depth);
 
-	void readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * data = nullptr);
-    void readPixels(const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data = nullptr);
-    void readPixels(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data = nullptr);
-    std::vector<unsigned char> readPixelsToByteArray(const std::array<GLint, 4> & rect, GLenum format, GLenum type);
-    std::vector<unsigned char> readPixelsToByteArray(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type);
-    void readPixelsToBuffer(const std::array<GLint, 4> & rect, GLenum format, GLenum type, Buffer * pbo);
+    void readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * data = nullptr) const;
+    void readPixels(const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data = nullptr) const;
+    void readPixels(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data = nullptr) const;
+    std::vector<unsigned char> readPixelsToByteArray(const std::array<GLint, 4> & rect, GLenum format, GLenum type) const;
+    std::vector<unsigned char> readPixelsToByteArray(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type) const;
+    void readPixelsToBuffer(const std::array<GLint, 4> & rect, GLenum format, GLenum type, Buffer * pbo) const;
 
-    GLenum checkStatus();
-    std::string statusString();
-    std::string statusString(GLenum status);
-    void printStatus(bool onlyErrors = false);
+    GLenum checkStatus() const;
+    std::string statusString() const;
+    static std::string statusString(GLenum status);
+    void printStatus(bool onlyErrors = false) const;
 
     FrameBufferAttachment * attachment(GLenum attachment);
     std::vector<FrameBufferAttachment*> attachments();
 
-    void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
-    void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
+    void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter) const;
+    void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter) const;
 protected:
     void attach(FrameBufferAttachment * attachment);
 
@@ -116,7 +116,7 @@ protected:
     static void blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter);
     static void blit(const std::array<GLint, 4> & srcRect, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
 protected:
-	GLenum m_target;
+    mutable GLenum m_target;
 	std::map<GLenum, ref_ptr<FrameBufferAttachment>> m_attachments;
 
     static FrameBufferObject s_defaultFBO;

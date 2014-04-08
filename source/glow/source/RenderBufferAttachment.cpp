@@ -26,4 +26,9 @@ RenderBufferObject * RenderBufferAttachment::renderBuffer()
 	return m_renderBuffer;
 }
 
+const RenderBufferObject * RenderBufferAttachment::renderBuffer() const
+{
+    return m_renderBuffer;
+}
+
 } // namespace glow

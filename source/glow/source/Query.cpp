@@ -76,19 +76,19 @@ void Query::accept(ObjectVisitor& visitor)
 	visitor.visitQuery(this);
 }
 
-void Query::begin()
+void Query::begin() const
 {
 	glBeginQuery(m_target, m_id);
 	CheckGLError();
 }
 
-void Query::begin(GLenum target)
+void Query::begin(GLenum target) const
 {
 	m_target = target;
 	begin();
 }
 
-void Query::end()
+void Query::end() const
 {
 	glEndQuery(m_target);
 	CheckGLError();
@@ -183,7 +183,7 @@ GLuint64 Query::waitAndGet64(GLenum pname, const std::chrono::duration<int, std:
     return get64(pname);
 }
 
-void Query::counter(GLenum target)
+void Query::counter(GLenum target) const
 {
 	m_target = target;
 	

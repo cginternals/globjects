@@ -54,19 +54,19 @@ void Buffer::accept(ObjectVisitor& visitor)
 	visitor.visitBuffer(this);
 }
 
-void Buffer::bind()
+void Buffer::bind() const
 {
     glBindBuffer(m_target, m_id);
 	CheckGLError();
 }
 
-void Buffer::bind(GLenum target)
+void Buffer::bind(GLenum target) const
 {
     m_target = target;
 	bind();
 }
 
-void Buffer::unbind()
+void Buffer::unbind() const
 {
     glBindBuffer(m_target, 0);
 	CheckGLError();
@@ -76,6 +76,24 @@ void Buffer::unbind(GLenum target)
 {
     glBindBuffer(target, 0);
     CheckGLError();
+}
+
+const void * Buffer::map() const
+{
+    if (m_directStateAccess)
+    {
+        void* result = glMapNamedBufferEXT(m_id, GL_READ_ONLY);
+        CheckGLError();
+        return static_cast<const void*>(result);
+    }
+    else
+    {
+        bind();
+
+        void* result = glMapBuffer(m_target, GL_READ_ONLY);
+        CheckGLError();
+        return static_cast<const void*>(result);
+    }
 }
 
 void* Buffer::map(GLenum access)
@@ -94,7 +112,6 @@ void* Buffer::map(GLenum access)
         CheckGLError();
         return result;
     }
-
 }
 
 void* Buffer::mapRange(GLintptr offset, GLsizeiptr length, GLbitfield access)
@@ -115,7 +132,7 @@ void* Buffer::mapRange(GLintptr offset, GLsizeiptr length, GLbitfield access)
     }
 }
 
-bool Buffer::unmap()
+bool Buffer::unmap() const
 {
     if (m_directStateAccess)
     {
@@ -179,7 +196,7 @@ void Buffer::setStorage(GLsizeiptr size, const GLvoid * data, GLbitfield flags)
     }
 }
 
-GLint Buffer::getParameter(GLenum pname)
+GLint Buffer::getParameter(GLenum pname) const
 {
     if (m_directStateAccess)
     {
@@ -203,13 +220,13 @@ GLint Buffer::getParameter(GLenum pname)
     }
 }
 
-void Buffer::bindBase(GLenum target, GLuint index)
+void Buffer::bindBase(GLenum target, GLuint index) const
 {
     glBindBufferBase(target, index, m_id);
     CheckGLError();
 }
 
-void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size)
+void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size) const
 {
     glBindBufferRange(target, index, m_id, offset, size);
 	CheckGLError();
@@ -227,7 +244,7 @@ void Buffer::copySubData(GLenum readTarget, GLenum writeTarget, GLintptr readOff
     CheckGLError();
 }
 
-void Buffer::copySubData(GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)
+void Buffer::copySubData(GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
 {
     glBindBuffer(GL_COPY_READ_BUFFER, m_id);
     CheckGLError();
@@ -238,7 +255,7 @@ void Buffer::copySubData(GLenum writeTarget, GLintptr readOffset, GLintptr write
     CheckGLError();
 }
 
-void Buffer::copySubData(GLenum writeTarget, GLsizeiptr size)
+void Buffer::copySubData(GLenum writeTarget, GLsizeiptr size) const
 {
     glBindBuffer(GL_COPY_READ_BUFFER, m_id);
     CheckGLError();
@@ -249,7 +266,7 @@ void Buffer::copySubData(GLenum writeTarget, GLsizeiptr size)
     CheckGLError();
 }
 
-void Buffer::copySubData(glow::Buffer* buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)
+void Buffer::copySubData(glow::Buffer* buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
 {
     assert(buffer != nullptr);
 
@@ -270,14 +287,14 @@ void Buffer::copySubData(glow::Buffer* buffer, GLintptr readOffset, GLintptr wri
     }
 }
 
-void Buffer::copySubData(glow::Buffer* buffer, GLsizeiptr size)
+void Buffer::copySubData(glow::Buffer* buffer, GLsizeiptr size) const
 {
     assert(buffer != nullptr);
 
 	copySubData(buffer, 0, 0, size);
 }
 
-void Buffer::copyData(glow::Buffer* buffer, GLsizeiptr size, GLenum usage)
+void Buffer::copyData(glow::Buffer* buffer, GLsizeiptr size, GLenum usage) const
 {
     assert(buffer != nullptr);
 

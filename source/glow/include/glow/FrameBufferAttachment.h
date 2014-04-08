@@ -32,7 +32,9 @@ public:
 	virtual bool isRenderBufferAttachment() const;
 
     TextureAttachment * asTextureAttachment();
+    const TextureAttachment * asTextureAttachment() const;
     RenderBufferAttachment * asRenderBufferAttachment();
+    const RenderBufferAttachment * asRenderBufferAttachment() const;
 
 	std::string attachmentString() const;
 

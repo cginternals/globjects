@@ -51,9 +51,19 @@ TextureAttachment * FrameBufferAttachment::asTextureAttachment()
     return isTextureAttachment() ? reinterpret_cast<TextureAttachment*>(this) : nullptr;
 }
 
+const TextureAttachment * FrameBufferAttachment::asTextureAttachment() const
+{
+    return isTextureAttachment() ? reinterpret_cast<const TextureAttachment*>(this) : nullptr;
+}
+
 RenderBufferAttachment * FrameBufferAttachment::asRenderBufferAttachment()
 {
     return isRenderBufferAttachment() ? reinterpret_cast<RenderBufferAttachment*>(this) : nullptr;
+}
+
+const RenderBufferAttachment * FrameBufferAttachment::asRenderBufferAttachment() const
+{
+    return isRenderBufferAttachment() ? reinterpret_cast<const RenderBufferAttachment*>(this) : nullptr;
 }
 
 } // namespace glow
