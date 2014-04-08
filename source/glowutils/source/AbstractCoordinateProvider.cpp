@@ -93,7 +93,7 @@ const vec3 AbstractCoordinateProvider::unproject(
     return vec3(u) / u.w;
 }
 
-glm::vec3 AbstractCoordinateProvider::objAt(const glm::ivec2 & windowCoordinates)
+glm::vec3 AbstractCoordinateProvider::objAt(const glm::ivec2 & windowCoordinates) const
 {
     return objAt(windowCoordinates, depthAt(windowCoordinates));
 }

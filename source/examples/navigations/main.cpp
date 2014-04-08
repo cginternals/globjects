@@ -285,17 +285,17 @@ public:
         event.accept();
     }
 
-    virtual float depthAt(const ivec2 & windowCoordinates) override
+    virtual float depthAt(const ivec2 & windowCoordinates) const override
     {
         return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
     }
 
-    virtual vec3 objAt(const ivec2 & windowCoordinates) override
+    virtual vec3 objAt(const ivec2 & windowCoordinates) const override
     {
         return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
     }
 
-    virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
+    virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override
     {
         return unproject(m_camera, depth, windowCoordinates);
     }
@@ -303,7 +303,7 @@ public:
     virtual glm::vec3 objAt(
         const ivec2 & windowCoordinates
     ,   const float depth
-    ,   const mat4 & viewProjectionInverted) override
+    ,   const mat4 & viewProjectionInverted) const override
     {
         return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
     }

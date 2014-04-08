@@ -128,7 +128,7 @@ void VertexDrawable::enableAll()
     }
 }
 
-void VertexDrawable::draw()
+void VertexDrawable::draw() const
 {
     if (!m_vbo || m_size <= 0)
         return;

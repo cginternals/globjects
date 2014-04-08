@@ -304,20 +304,20 @@ public:
         event.accept();
     }
 
-    virtual float depthAt(const ivec2 & /*windowCoordinates*/) override
+    virtual float depthAt(const ivec2 & /*windowCoordinates*/) const override
     {
         return 2.0;
     }
 
-    virtual vec3 objAt(const ivec2 & /*windowCoordinates*/) override
+    virtual vec3 objAt(const ivec2 & /*windowCoordinates*/) const override
     {
         return vec3(0.f);
     }
-    virtual vec3 objAt(const ivec2 & /*windowCoordinates*/, const float /*depth*/) override
+    virtual vec3 objAt(const ivec2 & /*windowCoordinates*/, const float /*depth*/) const override
     {
         return vec3(0.f);
     }
-    virtual glm::vec3 objAt(const ivec2 & /*windowCoordinates*/, const float /*depth*/, const mat4 & /*viewProjectionInverted*/) override
+    virtual glm::vec3 objAt(const ivec2 & /*windowCoordinates*/, const float /*depth*/, const mat4 & /*viewProjectionInverted*/) const override
     {
         return vec3(0.f);
     }

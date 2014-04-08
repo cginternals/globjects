@@ -144,22 +144,22 @@ public:
         }		
 	}
 
-    virtual float depthAt(const glm::ivec2 & windowCoordinates) override
+    virtual float depthAt(const glm::ivec2 & windowCoordinates) const override
 	{
 		return glowutils::AbstractCoordinateProvider::depthAt(*m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
 	}
 
-    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) const override
 	{
 		return unproject(*m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
 	}
 
-    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) const override
 	{
 		return unproject(*m_camera, depth, windowCoordinates);
 	}
 
-    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth, const glm::mat4 & viewProjectionInverted) override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth, const glm::mat4 & viewProjectionInverted) const override
 	{
 		return unproject(*m_camera, viewProjectionInverted, depth, windowCoordinates);
 	}
