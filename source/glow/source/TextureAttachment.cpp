@@ -26,6 +26,11 @@ Texture * TextureAttachment::texture()
 	return m_texture;
 }
 
+const Texture * TextureAttachment::texture() const
+{
+    return m_texture;
+}
+
 GLint TextureAttachment::level() const
 {
     return m_level;

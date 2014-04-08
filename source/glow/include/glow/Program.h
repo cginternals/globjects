@@ -92,7 +92,7 @@ public:
 	std::set<Shader*> shaders() const;
 
     void link() const;
-	void invalidate();
+    void invalidate() const;
 
     void setBinary(ProgramBinary * binary);
     ProgramBinary * getBinary() const;
@@ -157,14 +157,14 @@ protected:
     bool checkLinkStatus() const;
     void checkDirty() const;
 
-    bool prepareForLinkage();
-    bool compileAttachedShaders();
-	void updateUniforms();
-    void updateUniformBlockBindings();
+    bool prepareForLinkage() const;
+    bool compileAttachedShaders() const;
+    void updateUniforms() const;
+    void updateUniformBlockBindings() const;
 
 	// ChangeListener Interface
 
-    virtual void notifyChanged(Changeable * sender) override;
+    virtual void notifyChanged(const Changeable * sender) override;
 
 protected:
 	static GLuint createProgram();

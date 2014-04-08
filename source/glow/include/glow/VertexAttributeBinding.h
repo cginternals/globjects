@@ -4,6 +4,7 @@
 
 #include <glow/glow.h>
 #include <glow/Referenced.h>
+#include <glow/ref_ptr.h>
 
 namespace glow 
 {
@@ -27,7 +28,7 @@ public:
 
 	void setAttribute(GLint attributeIndex);
 	void setBuffer(
-        Buffer * vbo
+        const Buffer * vbo
     ,   GLint baseoffset
     ,   GLint stride);
 
@@ -47,7 +48,7 @@ public:
 
     GLint attributeIndex() const;
     GLint bindingIndex() const;
-	Buffer * buffer() const;
+    const Buffer * buffer() const;
 
 protected:
     VertexArrayObject * m_vao; // TODO: weak_ptr?
@@ -55,7 +56,7 @@ protected:
     GLint m_bindingIndex;
     GLint m_attributeIndex;
     
-    Buffer * m_vbo; // TODO: weak_ptr?
+    const Buffer * m_vbo;
 
     VertexAttributeBindingImplementation * m_implementation;
 };

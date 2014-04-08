@@ -17,7 +17,7 @@ class Buffer;
 /** \brief Wraps OpenGL texture objects.
  * A Texture provides both interfaces to bind them for the OpenGL pipeline:
  * binding and bindless texture. Bindless textures are only available if the
- * graphics driver supports them (NV extension).
+ * graphics driver supports them.
  *
  * \see http://www.opengl.org/wiki/Texture
  * \see http://www.opengl.org/registry/specs/NV/bindless_texture.txt
@@ -41,14 +41,14 @@ public:
     void setParameter(GLenum name, GLint value);
     void setParameter(GLenum name, GLfloat value);
 
-    GLint getParameter(GLenum pname);
-    GLint getLevelParameter(GLint level, GLenum pname);
+    GLint getParameter(GLenum pname) const;
+    GLint getLevelParameter(GLint level, GLenum pname) const;
 
-    void getImage(GLint level, GLenum format, GLenum type, GLvoid * image);
-    std::vector<unsigned char> getImage(GLint level, GLenum format, GLenum type);
+    void getImage(GLint level, GLenum format, GLenum type, GLvoid * image) const;
+    std::vector<unsigned char> getImage(GLint level, GLenum format, GLenum type) const;
 
-    void getCompressedImage(GLint lod, GLvoid * image);
-    std::vector<unsigned char> getCompressedImage(GLint lod = 0);
+    void getCompressedImage(GLint lod, GLvoid * image) const;
+    std::vector<unsigned char> getCompressedImage(GLint lod = 0) const;
 
     GLenum target() const;
 
@@ -101,17 +101,17 @@ public:
     void clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::ivec4 & value);
     void clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::uvec4 & value);
 
-    void bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format);
+    void bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format) const;
 
     void generateMipmap();
 
     TextureHandle textureHandle() const;
     GLboolean isResident() const;
-    TextureHandle makeResident();
-    void makeNonResident();
+    TextureHandle makeResident() const;
+    void makeNonResident() const;
 
-    void pageCommitment(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit);
-    void pageCommitment(GLint level, const glm::ivec3& offset, const glm::ivec3& size, GLboolean commit);
+    void pageCommitment(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit) const;
+    void pageCommitment(GLint level, const glm::ivec3& offset, const glm::ivec3& size, GLboolean commit) const;
 
 protected:
     static GLuint genTexture();

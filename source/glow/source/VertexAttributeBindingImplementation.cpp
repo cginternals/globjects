@@ -9,7 +9,7 @@
 
 namespace glow {
 
-VertexAttributeBindingImplementation::VertexAttributeBindingImplementation(VertexAttributeBinding* binding)
+VertexAttributeBindingImplementation::VertexAttributeBindingImplementation(const VertexAttributeBinding* binding)
 : m_binding(binding)
 {
     assert(binding != nullptr);
@@ -29,18 +29,18 @@ GLint VertexAttributeBindingImplementation::bindingIndex() const
     return m_binding->m_bindingIndex;
 }
 
-VertexArrayObject* VertexAttributeBindingImplementation::vao() const
+const VertexArrayObject* VertexAttributeBindingImplementation::vao() const
 {
     return m_binding->m_vao;
 }
 
-Buffer* VertexAttributeBindingImplementation::vbo() const
+const Buffer* VertexAttributeBindingImplementation::vbo() const
 {
     return m_binding->m_vbo;
 }
 
 
-VertexAttributeBinding_GL_3_0::VertexAttributeBinding_GL_3_0(VertexAttributeBinding* binding)
+VertexAttributeBinding_GL_3_0::VertexAttributeBinding_GL_3_0(const VertexAttributeBinding* binding)
 : VertexAttributeBindingImplementation(binding)
 , m_baseoffset(0)
 , m_stride(0)
@@ -48,7 +48,6 @@ VertexAttributeBinding_GL_3_0::VertexAttributeBinding_GL_3_0(VertexAttributeBind
 , m_hasBuffer(false)
 , m_hasAttribute(false)
 {
-    assert(binding != nullptr);
 }
 
 void VertexAttributeBinding_GL_3_0::bindAttribute(GLint /*attributeIndex*/)
@@ -57,7 +56,7 @@ void VertexAttributeBinding_GL_3_0::bindAttribute(GLint /*attributeIndex*/)
     finishIfComplete();
 }
 
-void VertexAttributeBinding_GL_3_0::bindBuffer(Buffer* /*vbo*/, GLint baseoffset, GLint stride)
+void VertexAttributeBinding_GL_3_0::bindBuffer(const Buffer* /*vbo*/, GLint baseoffset, GLint stride)
 {
     //assert(vbo != nullptr);
 
@@ -151,10 +150,9 @@ VertexAttributeBinding_GL_3_0::Format::Format(Method method, GLint size, GLenum 
 }
 
 
-VertexAttributeBinding_GL_4_3::VertexAttributeBinding_GL_4_3(VertexAttributeBinding* binding)
+VertexAttributeBinding_GL_4_3::VertexAttributeBinding_GL_4_3(const VertexAttributeBinding* binding)
 : VertexAttributeBindingImplementation(binding)
 {
-    assert(binding != nullptr);
 }
 
 void VertexAttributeBinding_GL_4_3::bindAttribute(GLint attributeIndex)
@@ -165,10 +163,8 @@ void VertexAttributeBinding_GL_4_3::bindAttribute(GLint attributeIndex)
     CheckGLError();
 }
 
-void VertexAttributeBinding_GL_4_3::bindBuffer(Buffer* vbo, GLint baseoffset, GLint stride)
+void VertexAttributeBinding_GL_4_3::bindBuffer(const Buffer* vbo, GLint baseoffset, GLint stride)
 {
-    //assert(vbo != nullptr);
-
     vao()->bind();
 
     glBindVertexBuffer(bindingIndex(), vbo ? vbo->id() : 0, baseoffset, stride);

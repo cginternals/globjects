@@ -249,7 +249,16 @@ Capability* State::capability(GLenum capability)
     return it->second;
 }
 
-std::vector<StateSetting*> State::settings() const
+const Capability* State::capability(GLenum capability) const
+{
+    auto it = m_capabilities.find(capability);
+    if (it == m_capabilities.end())
+        return nullptr;
+
+    return it->second;
+}
+
+std::vector<StateSetting*> State::settings()
 {
     std::vector<StateSetting*> settings;
 
@@ -261,7 +270,28 @@ std::vector<StateSetting*> State::settings() const
     return settings;
 }
 
+std::vector<const StateSetting*> State::settings() const
+{
+    std::vector<const StateSetting*> settings;
+
+    for (const auto& setting : m_settings)
+    {
+        settings.push_back(setting.second);
+    }
+
+    return settings;
+}
+
 StateSetting * State::setting(const StateSettingType & type)
+{
+    auto it = m_settings.find(type);
+    if (it == m_settings.end())
+        return nullptr;
+
+    return it->second;
+}
+
+const StateSetting * State::setting(const StateSettingType & type) const
 {
     auto it = m_settings.find(type);
     if (it == m_settings.end())

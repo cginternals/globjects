@@ -20,7 +20,7 @@ StringSourceDecorator::~StringSourceDecorator()
 	m_internal->deregisterListener(this);
 }
 
-void StringSourceDecorator::notifyChanged(Changeable *)
+void StringSourceDecorator::notifyChanged(const glow::Changeable *)
 {
 	update();
     changed();

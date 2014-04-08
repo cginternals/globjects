@@ -49,7 +49,7 @@ GLsizei ProgramBinary::length() const
     return static_cast<GLsizei>(m_binaryData.size());
 }
 
-void ProgramBinary::notifyChanged(Changeable *)
+void ProgramBinary::notifyChanged(const glow::Changeable *)
 {
     m_valid = false;
     changed();

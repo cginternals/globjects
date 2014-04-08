@@ -19,7 +19,7 @@ class ChangeListener;
 class GLOW_API Changeable
 {
 public:
-	void changed();
+    void changed() const;
 
 	void registerListener(ChangeListener * listener);
 	void deregisterListener(ChangeListener * listener);

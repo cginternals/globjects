@@ -87,12 +87,12 @@ bool Program::isLinked() const
 	return m_linked;
 }
 
-void Program::invalidate()
+void Program::invalidate() const
 {
 	m_dirty = true;
 }
 
-void Program::notifyChanged(Changeable *)
+void Program::notifyChanged(const Changeable *)
 {
 	invalidate();
 }
@@ -134,7 +134,7 @@ void Program::link() const
 {
     m_linked = false;
 
-    if (!const_cast<Program*>(this)->prepareForLinkage())
+    if (!prepareForLinkage())
         return;
 
 	glLinkProgram(m_id);
@@ -143,11 +143,11 @@ void Program::link() const
     m_linked = checkLinkStatus();
 	m_dirty = false;
 
-    const_cast<Program*>(this)->updateUniforms();
-    const_cast<Program*>(this)->updateUniformBlockBindings();
+    updateUniforms();
+    updateUniformBlockBindings();
 }
 
-bool Program::prepareForLinkage()
+bool Program::prepareForLinkage() const
 {
     if (m_binary && glow::hasExtension(GLOW_ARB_get_program_binary))
     {
@@ -160,7 +160,7 @@ bool Program::prepareForLinkage()
     return compileAttachedShaders();
 }
 
-bool Program::compileAttachedShaders()
+bool Program::compileAttachedShaders() const
 {
     for (Shader* shader : shaders())
     {
@@ -349,7 +349,7 @@ void Program::addUniform(AbstractUniform * uniform)
 	}
 }
 
-void Program::updateUniforms()
+void Program::updateUniforms() const
 {
 	// Note: uniform update will check if program is linked
     for (std::pair<LocationIdentity, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
@@ -358,7 +358,7 @@ void Program::updateUniforms()
 	}
 }
 
-void Program::updateUniformBlockBindings()
+void Program::updateUniformBlockBindings() const
 {
     for (std::pair<LocationIdentity, UniformBlock> pair : m_uniformBlocks)
     {

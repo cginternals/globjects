@@ -18,7 +18,7 @@
 namespace
 {
 
-std::vector<const char*> collectCStrings(std::vector<std::string> & strings)
+std::vector<const char*> collectCStrings(const std::vector<std::string> & strings)
 {
     std::vector<const char*> cStrings;
 
@@ -122,7 +122,7 @@ const AbstractStringSource* Shader::source() const
 	return m_source;
 }
 
-void Shader::notifyChanged(Changeable *)
+void Shader::notifyChanged(const glow::Changeable *)
 {
 	updateSource();
 }
@@ -153,7 +153,7 @@ void Shader::updateSource()
     invalidate();
 }
 
-bool Shader::compile()
+bool Shader::compile() const
 {
     if (m_compilationFailed)
         return false;
@@ -250,7 +250,7 @@ std::string Shader::shaderString() const
 {
 	std::stringstream ss;
 
-	ss << "Shader(" << typeString();
+    ss << "Shader(" << typeString(m_type);
 
     std::string shortInfo = m_source->shortInfo();
     if (shortInfo.size() > 0)
@@ -263,7 +263,12 @@ std::string Shader::shaderString() const
 
 std::string Shader::typeString() const
 {
-	switch (m_type)
+    return typeString(m_type);
+}
+
+std::string Shader::typeString(GLenum type)
+{
+    switch (type)
 	{
 	case GL_GEOMETRY_SHADER:
 		return "GL_GEOMETRY_SHADER";

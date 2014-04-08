@@ -57,7 +57,7 @@ public:
     void updateSource();
     void setIncludePaths(const std::vector<std::string> & includePaths);
 
-    bool compile();
+    bool compile() const;
 	bool isCompiled() const;
     void invalidate();
 
@@ -68,8 +68,10 @@ public:
 
     std::string typeString() const;
 
+    static std::string typeString(GLenum type);
+
 protected:
-    virtual void notifyChanged(Changeable * changebale) override;
+    virtual void notifyChanged(const Changeable * changebale) override;
 
 
 protected:
@@ -83,8 +85,8 @@ protected:
     ref_ptr<AbstractStringSource> m_source;
     std::vector<std::string> m_includePaths;
 
-    bool m_compiled;
-    bool m_compilationFailed;
+    mutable bool m_compiled;
+    mutable bool m_compilationFailed;
 
 public:
     static bool forceFallbackIncludeProcessor;

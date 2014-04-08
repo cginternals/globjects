@@ -50,9 +50,14 @@ Window::~Window()
     }
 }
 
-WindowEventHandler * Window::eventHandler() const
+WindowEventHandler * Window::eventHandler()
 {
-    return const_cast<WindowEventHandler*>(m_eventHandler.get());
+    return m_eventHandler.get();
+}
+
+const WindowEventHandler * Window::eventHandler() const
+{
+    return m_eventHandler.get();
 }
 
 Context * Window::context() const

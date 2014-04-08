@@ -25,6 +25,7 @@ public:
 
     virtual bool isTextureAttachment() const override;
 	Texture * texture();
+    const Texture * texture() const;
 
     GLint level() const;
 

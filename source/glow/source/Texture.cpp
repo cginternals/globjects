@@ -97,7 +97,7 @@ void Texture::setParameter(GLenum name, GLfloat value)
 	CheckGLError();
 }
 
-GLint Texture::getParameter(GLenum pname)
+GLint Texture::getParameter(GLenum pname) const
 {
 	bind();
 
@@ -109,7 +109,7 @@ GLint Texture::getParameter(GLenum pname)
 	return value;
 }
 
-GLint Texture::getLevelParameter(GLint level, GLenum pname)
+GLint Texture::getLevelParameter(GLint level, GLenum pname) const
 {
 	bind();
 
@@ -121,7 +121,7 @@ GLint Texture::getLevelParameter(GLint level, GLenum pname)
 	return value;
 }
 
-void Texture::getImage(GLint level, GLenum format, GLenum type, GLvoid * image)
+void Texture::getImage(GLint level, GLenum format, GLenum type, GLvoid * image) const
 {
     bind();
 
@@ -129,7 +129,7 @@ void Texture::getImage(GLint level, GLenum format, GLenum type, GLvoid * image)
     CheckGLError();
 }
 
-std::vector<unsigned char> Texture::getImage(GLint level, GLenum format, GLenum type)
+std::vector<unsigned char> Texture::getImage(GLint level, GLenum format, GLenum type) const
 {
     GLint width = getLevelParameter(level, GL_TEXTURE_WIDTH);
     GLint height = getLevelParameter(level, GL_TEXTURE_HEIGHT);
@@ -142,7 +142,7 @@ std::vector<unsigned char> Texture::getImage(GLint level, GLenum format, GLenum 
     return data;
 }
 
-void Texture::getCompressedImage(GLint lod, GLvoid * image)
+void Texture::getCompressedImage(GLint lod, GLvoid * image) const
 {
     bind();
 
@@ -150,7 +150,7 @@ void Texture::getCompressedImage(GLint lod, GLvoid * image)
     CheckGLError();
 }
 
-std::vector<unsigned char> Texture::getCompressedImage(GLint lod)
+std::vector<unsigned char> Texture::getCompressedImage(GLint lod) const
 {
     GLint size = getLevelParameter(lod, GL_TEXTURE_COMPRESSED_IMAGE_SIZE);
 
@@ -416,7 +416,7 @@ void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::i
     clearSubImage(level, offset, size, format, type, glm::value_ptr(value));
 }
 
-void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)
+void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format) const
 {
 	bind();
 
@@ -452,7 +452,7 @@ GLboolean Texture::isResident() const
 	return result;
 }
 
-TextureHandle Texture::makeResident()
+TextureHandle Texture::makeResident() const
 {
     TextureHandle handle = textureHandle();
 
@@ -462,13 +462,13 @@ TextureHandle Texture::makeResident()
 	return handle;
 }
 
-void Texture::makeNonResident()
+void Texture::makeNonResident() const
 {
     glMakeTextureHandleNonResidentARB(textureHandle());
 	CheckGLError();
 }
 
-void Texture::pageCommitment(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit)
+void Texture::pageCommitment(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit) const
 {
     bind();
 
@@ -476,7 +476,7 @@ void Texture::pageCommitment(GLint level, GLint xOffset, GLint yOffset, GLint zO
     CheckGLError();
 }
 
-void Texture::pageCommitment(GLint level, const glm::ivec3& offset, const glm::ivec3& size, GLboolean commit)
+void Texture::pageCommitment(GLint level, const glm::ivec3& offset, const glm::ivec3& size, GLboolean commit) const
 {
     pageCommitment(level, offset.x, offset.y, offset.z, size.x, size.y, size.z, commit);
 }

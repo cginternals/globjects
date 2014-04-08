@@ -13,18 +13,18 @@ class VertexArrayObject;
 class VertexAttributeBindingImplementation
 {
 public:
-    VertexAttributeBindingImplementation(VertexAttributeBinding * binding);
+    VertexAttributeBindingImplementation(const VertexAttributeBinding * binding);
     virtual ~VertexAttributeBindingImplementation();
 
     GLint attributeIndex() const;
     GLint bindingIndex() const;
 
-    VertexArrayObject * vao() const;
-    Buffer * vbo() const;
+    const VertexArrayObject * vao() const;
+    const Buffer * vbo() const;
 
     virtual void bindAttribute(GLint attributeIndex) = 0;
     virtual void bindBuffer(
-        Buffer * vbo
+        const Buffer * vbo
     ,   GLint baseoffset
     ,   GLint stride) = 0;
 
@@ -38,17 +38,17 @@ public:
     virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset) = 0;
 
 protected:
-    VertexAttributeBinding * m_binding;
+    const VertexAttributeBinding * m_binding;
 };
 
 
 class VertexAttributeBinding_GL_3_0 : public VertexAttributeBindingImplementation
 {
 public:
-    VertexAttributeBinding_GL_3_0(VertexAttributeBinding * binding);
+    VertexAttributeBinding_GL_3_0(const VertexAttributeBinding * binding);
 
     virtual void bindAttribute(GLint attributeIndex);
-    virtual void bindBuffer(Buffer* vbo, GLint baseoffset, GLint stride);
+    virtual void bindBuffer(const Buffer* vbo, GLint baseoffset, GLint stride);
 
     virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
     virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
@@ -96,10 +96,10 @@ protected:
 class VertexAttributeBinding_GL_4_3 : public VertexAttributeBindingImplementation
 {
 public:
-    VertexAttributeBinding_GL_4_3(VertexAttributeBinding* binding);
+    VertexAttributeBinding_GL_4_3(const VertexAttributeBinding* binding);
 
     virtual void bindAttribute(GLint attributeIndex);
-    virtual void bindBuffer(Buffer * vbo, GLint baseoffset, GLint stride);
+    virtual void bindBuffer(const Buffer * vbo, GLint baseoffset, GLint stride);
 
     virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
     virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);

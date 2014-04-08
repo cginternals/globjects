@@ -10,9 +10,9 @@ std::vector<std::string> AbstractStringSource::strings() const
     return stringList;
 }
 
-std::vector<AbstractStringSource*> AbstractStringSource::flatten() const
+std::vector<const AbstractStringSource*> AbstractStringSource::flatten() const
 {
-    std::vector<AbstractStringSource*> list;
+    std::vector<const AbstractStringSource*> list;
 
     flattenInto(list);
 
@@ -24,9 +24,9 @@ std::string AbstractStringSource::shortInfo() const
     return "";
 }
 
-void AbstractStringSource::flattenInto(std::vector<AbstractStringSource*>& vector) const
+void AbstractStringSource::flattenInto(std::vector<const AbstractStringSource*>& vector) const
 {
-    vector.push_back(const_cast<AbstractStringSource*>(this));
+    vector.push_back(this);
 }
 
 } // namespace glow
