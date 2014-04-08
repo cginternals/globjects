@@ -13,7 +13,7 @@ ChangeListener::~ChangeListener()
     }
 }
 
-void ChangeListener::notifyChanged(Changeable *)
+void ChangeListener::notifyChanged(const Changeable *)
 {
 }
 

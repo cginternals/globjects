@@ -61,12 +61,12 @@ GLint VertexAttributeBinding::bindingIndex() const
     return m_bindingIndex;
 }
 
-Buffer* VertexAttributeBinding::buffer() const
+const Buffer* VertexAttributeBinding::buffer() const
 {
     return m_vbo;
 }
 
-void VertexAttributeBinding::setBuffer(Buffer* vbo, GLint baseoffset, GLint stride)
+void VertexAttributeBinding::setBuffer(const Buffer* vbo, GLint baseoffset, GLint stride)
 {
     //assert(vbo != nullptr);
 

@@ -16,7 +16,7 @@ AbstractUniform::AbstractUniform(GLint location)
 AbstractUniform::AbstractUniform(const std::string & name)
 : m_identity(name)
 , m_directStateAccess(false)
-, m_cacheDSA(false)
+, m_dsaCached(false)
 {
 }
 
@@ -59,7 +59,7 @@ void AbstractUniform::changed()
 		update(program);
 }
 
-GLint AbstractUniform::locationFor(Program * program)
+GLint AbstractUniform::locationFor(const Program *program) const
 {
     if (m_identity.isLocation())
         return m_identity.location();
@@ -67,7 +67,7 @@ GLint AbstractUniform::locationFor(Program * program)
     return program->getUniformLocation(m_identity.name());
 }
 
-void AbstractUniform::update(Program * program)
+void AbstractUniform::update(const Program * program) const
 {
     assert(program != nullptr);
 
@@ -76,9 +76,9 @@ void AbstractUniform::update(Program * program)
         return;
     }
 
-    if (!m_cacheDSA) // TODO: move caching to a per context caching
+    if (!m_dsaCached) // TODO: move caching to a per context caching
     {
-        m_cacheDSA = true;
+        m_dsaCached = true;
 
         m_directStateAccess = hasExtension(GLOW_EXT_direct_state_access);
     }

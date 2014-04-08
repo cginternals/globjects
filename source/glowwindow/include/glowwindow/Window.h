@@ -45,7 +45,8 @@ public:
      * reassigning a new, different handler.
      */
     void setEventHandler(WindowEventHandler * eventHandler);
-    WindowEventHandler * eventHandler() const;
+    const WindowEventHandler * eventHandler() const;
+    WindowEventHandler * eventHandler();
 
     void show();
     void hide();

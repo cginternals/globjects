@@ -73,9 +73,9 @@ public:
 
     virtual void accept(ObjectVisitor& visitor) override;
 
-	void begin();
-	void begin(GLenum target);
-	void end();
+    void begin() const;
+    void begin(GLenum target) const;
+    void end() const;
 	
 	bool isQuery() const;
 	
@@ -98,9 +98,9 @@ public:
     GLuint waitAndGet(GLenum pname, const std::chrono::duration<int, std::nano>& timeout) const;
     GLuint64 waitAndGet64(GLenum pname, const std::chrono::duration<int, std::nano>& timeout) const;
 	
-	void counter(GLenum target = GL_TIMESTAMP);
+    void counter(GLenum target = GL_TIMESTAMP) const;
 protected:
-	GLenum m_target;
+    mutable GLenum m_target;
 	
 	Query(GLuint id, GLenum target);
 

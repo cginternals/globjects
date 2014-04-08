@@ -77,8 +77,8 @@ public:
 
     virtual void accept(ObjectVisitor& visitor) override;
 
-	void use();
-	void release();
+    void use() const;
+    void release() const;
 
 	bool isUsed() const;
 	bool isLinked() const;
@@ -91,8 +91,8 @@ public:
 
 	std::set<Shader*> shaders() const;
 
-	void link();
-	void invalidate();
+    void link() const;
+    void invalidate() const;
 
     void setBinary(ProgramBinary * binary);
     ProgramBinary * getBinary() const;
@@ -100,25 +100,27 @@ public:
 	const std::string infoLog() const;
 	GLint get(GLenum pname) const;
 
-    GLint getAttributeLocation(const std::string & name);
-    GLint getUniformLocation(const std::string & name);
+    GLint getAttributeLocation(const std::string & name) const;
+    GLint getUniformLocation(const std::string & name) const;
 
-    std::vector<GLint> getAttributeLocations(const std::vector<std::string> & names);
-    std::vector<GLint> getUniformLocations(const std::vector<std::string> & names);
+    std::vector<GLint> getAttributeLocations(const std::vector<std::string> & names) const;
+    std::vector<GLint> getUniformLocations(const std::vector<std::string> & names) const;
 
-    void bindAttributeLocation(GLuint index, const std::string & name);
-    void bindFragDataLocation(GLuint index, const std::string & name);
+    void bindAttributeLocation(GLuint index, const std::string & name) const;
+    void bindFragDataLocation(GLuint index, const std::string & name) const;
 
-    GLuint getResourceIndex(GLenum programInterface, const std::string & name);
+    GLuint getResourceIndex(GLenum programInterface, const std::string & name) const;
 
-    GLuint getUniformBlockIndex(const std::string& name);
+    GLuint getUniformBlockIndex(const std::string& name) const;
     UniformBlock * uniformBlock(GLuint uniformBlockIndex);
+    const UniformBlock * uniformBlock(GLuint uniformBlockIndex) const;
     UniformBlock * uniformBlock(const std::string& name);
-    void getActiveUniforms(GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params);
-    std::vector<GLint> getActiveUniforms(const std::vector<GLuint> & uniformIndices, GLenum pname);
-    std::vector<GLint> getActiveUniforms(const std::vector<GLint> & uniformIndices, GLenum pname);
-    GLint getActiveUniform(GLuint uniformIndex, GLenum pname);
-    std::string getActiveUniformName(GLuint uniformIndex);
+    const UniformBlock * uniformBlock(const std::string& name) const;
+    void getActiveUniforms(GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params) const;
+    std::vector<GLint> getActiveUniforms(const std::vector<GLuint> & uniformIndices, GLenum pname) const;
+    std::vector<GLint> getActiveUniforms(const std::vector<GLint> & uniformIndices, GLenum pname) const;
+    GLint getActiveUniform(GLuint uniformIndex, GLenum pname) const;
+    std::string getActiveUniformName(GLuint uniformIndex) const;
 
 	template<typename T>
 	void setUniform(const std::string & name, const T & value);
@@ -130,7 +132,11 @@ public:
 	template<typename T>
 	Uniform<T> * getUniform(const std::string & name);
     template<typename T>
+    const Uniform<T> * getUniform(const std::string & name) const;
+    template<typename T>
     Uniform<T> * getUniform(GLint location);
+    template<typename T>
+    const Uniform<T> * getUniform(GLint location) const;
 
 	/** Adds the uniform to the internal list of named uniforms. If an equally
 		named uniform already exists, this program derigisters itself and the uniform
@@ -139,7 +145,7 @@ public:
 	*/
 	void addUniform(AbstractUniform * uniform);
 
-	void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding);
+    void setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding) const;
 
 	void dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ);
     void dispatchCompute(const glm::uvec3 & numGroups);
@@ -148,17 +154,17 @@ public:
 protected:
     void attach();
 
-	bool checkLinkStatus();
-	void checkDirty();
+    bool checkLinkStatus() const;
+    void checkDirty() const;
 
-    bool prepareForLinkage();
-    bool compileAttachedShaders();
-	void updateUniforms();
-    void updateUniformBlockBindings();
+    bool prepareForLinkage() const;
+    bool compileAttachedShaders() const;
+    void updateUniforms() const;
+    void updateUniformBlockBindings() const;
 
 	// ChangeListener Interface
 
-    virtual void notifyChanged(Changeable * sender) override;
+    virtual void notifyChanged(const Changeable * sender) override;
 
 protected:
 	static GLuint createProgram();
@@ -167,8 +173,11 @@ protected:
     void setUniformByIdentity(const LocationIdentity & identity, const T & value);
     template<typename T>
     Uniform<T> * getUniformByIdentity(const LocationIdentity & identity);
+    template<typename T>
+    const Uniform<T> * getUniformByIdentity(const LocationIdentity & identity) const;
 
     UniformBlock * getUniformBlockByIdentity(const LocationIdentity & identity);
+    const UniformBlock * getUniformBlockByIdentity(const LocationIdentity & identity) const;
 
 protected:
 	std::set<ref_ptr<Shader>> m_shaders;
@@ -176,8 +185,8 @@ protected:
     std::unordered_map<LocationIdentity, ref_ptr<AbstractUniform>> m_uniforms;
     std::unordered_map<LocationIdentity, UniformBlock> m_uniformBlocks;
 
-	bool m_linked;
-	bool m_dirty;
+    mutable bool m_linked;
+    mutable bool m_dirty;
 };
 
 } // namespace glow

@@ -35,7 +35,7 @@ void CompositeStringSource::appendSource(AbstractStringSource * source)
     changed();
 }
 
-void CompositeStringSource::notifyChanged(Changeable *)
+void CompositeStringSource::notifyChanged(const glow::Changeable *)
 {
     m_dirty = true;
     changed();
@@ -61,7 +61,7 @@ std::vector<std::string> CompositeStringSource::strings() const
     return m_strings;
 }
 
-void CompositeStringSource::flattenInto(std::vector<AbstractStringSource*>& vector) const
+void CompositeStringSource::flattenInto(std::vector<const AbstractStringSource*>& vector) const
 {
     for (const ref_ptr<AbstractStringSource>& source : m_sources)
     {

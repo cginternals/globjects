@@ -23,11 +23,11 @@ public:
 
     virtual std::string string() const override;
     virtual std::vector<std::string> strings() const override;
-    virtual void flattenInto(std::vector<AbstractStringSource*>& vector) const override;
+    virtual void flattenInto(std::vector<const AbstractStringSource*>& vector) const override;
 
     virtual std::string shortInfo() const override;
 protected:
-    virtual void notifyChanged(Changeable * changeable) override;
+    virtual void notifyChanged(const Changeable * changeable) override;
     void update() const;
 protected:
     std::vector<ref_ptr<AbstractStringSource>> m_sources;

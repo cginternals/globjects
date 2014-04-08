@@ -47,19 +47,19 @@ public:
     ,   const glm::ivec2 & windowCoordinates);
 
 public:
-    virtual float depthAt(const glm::ivec2 & windowCoordinates) = 0;
+    virtual float depthAt(const glm::ivec2 & windowCoordinates) const = 0;
 
     virtual glm::vec3 objAt(
-        const glm::ivec2 & windowCoordinates);
+        const glm::ivec2 & windowCoordinates) const;
 
     virtual glm::vec3 objAt(
         const glm::ivec2 & windowCoordinates
-    ,   const float depth) = 0;
+    ,   const float depth) const = 0;
 
     virtual glm::vec3 objAt(
         const glm::ivec2 & windowCoordinates
     ,   const float depth
-    ,   const glm::mat4 & viewProjectionInverted) = 0;
+    ,   const glm::mat4 & viewProjectionInverted) const = 0;
 };
 
 } // namespace glowutils

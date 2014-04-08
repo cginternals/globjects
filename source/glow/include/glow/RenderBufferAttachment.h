@@ -29,6 +29,7 @@ public:
 
     virtual bool isRenderBufferAttachment() const override;
 	RenderBufferObject * renderBuffer();
+    const RenderBufferObject * renderBuffer() const;
 protected:
 	ref_ptr<RenderBufferObject> m_renderBuffer;
 };

@@ -45,6 +45,7 @@ public:
      * \endcode
 	*/
 	template<typename T> Uniform<T> * as();
+    template<typename T> const Uniform<T> * as() const;
 
 protected:
 	void registerProgram(Program * program);
@@ -57,19 +58,19 @@ protected:
 
 	/** Sets the uniform's value on the program.
 	*/
-	void update(Program * program);
+    void update(const Program * program) const;
 
 	/** This function requires knowledge of the unifom's value.
 	*/
-    virtual void setValueAt(GLint location) = 0;
-    virtual void setValueAt(Program* program, GLint location) = 0;
+    virtual void setValueAt(GLint location) const = 0;
+    virtual void setValueAt(const Program* program, GLint location) const = 0;
 
-    GLint locationFor(Program * program);
+    GLint locationFor(const Program * program) const;
 protected:
     LocationIdentity m_identity;
 	std::set<Program *> m_programs;
-    bool m_directStateAccess;
-    bool m_cacheDSA;
+    mutable bool m_directStateAccess;
+    mutable bool m_dsaCached;
 };
 
 } // namespace glow

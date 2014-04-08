@@ -68,6 +68,7 @@ set(api_includes
 
     ${include_path}/AbstractLogHandler.h
     ${include_path}/AbstractUniform.h
+    ${include_path}/AbstractUniform.hpp
     ${include_path}/AbstractState.h
     ${include_path}/AbstractState.hpp
     ${include_path}/AbstractStringSource.h

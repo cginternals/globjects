@@ -7,7 +7,7 @@
 namespace glow
 {
 
-void Changeable::changed()
+void Changeable::changed() const
 {
 	for (ChangeListener * listener: m_listeners)
 	{

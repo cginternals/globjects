@@ -394,7 +394,7 @@ std::string DebugInfo::humanReadableSize(long long bytes)
 	return ss.str();
 }
 
-std::string DebugInfo::name(const std::string& typeName, Object* object)
+std::string DebugInfo::name(const std::string& typeName, const Object* object)
 {
     assert(object != nullptr);
 

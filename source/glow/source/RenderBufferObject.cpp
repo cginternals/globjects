@@ -37,13 +37,13 @@ void RenderBufferObject::accept(ObjectVisitor& visitor)
 	visitor.visitRenderBufferObject(this);
 }
 
-void RenderBufferObject::bind()
+void RenderBufferObject::bind() const
 {
 	glBindRenderbuffer(GL_RENDERBUFFER, m_id);
 	CheckGLError();
 }
 
-void RenderBufferObject::unbind()
+void RenderBufferObject::unbind() const
 {
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	CheckGLError();
@@ -65,9 +65,11 @@ void RenderBufferObject::storageMultisample(GLsizei samples, GLenum internalform
 	CheckGLError();
 }
 
-GLint RenderBufferObject::getParameter(GLenum pname)
+GLint RenderBufferObject::getParameter(GLenum pname) const
 {
 	GLint value = 0;
+
+    bind();
 
 	glGetRenderbufferParameteriv(GL_RENDERBUFFER, pname, &value);
 	CheckGLError();

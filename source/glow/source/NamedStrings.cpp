@@ -158,7 +158,7 @@ void NamedStrings::updateNamedString(const NamedString& namedString)
     CheckGLError();
 }
 
-void NamedStrings::notifyChanged(Changeable* changed)
+void NamedStrings::notifyChanged(const Changeable *changed)
 {
     for (const std::pair<std::string, NamedString>& pair : m_registeredStringSources)
     {

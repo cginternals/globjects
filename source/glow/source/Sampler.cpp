@@ -58,7 +58,7 @@ void Sampler::setParameter(GLenum name, GLfloat value)
     CheckGLError();
 }
 
-GLint Sampler::getParameteri(GLenum pname)
+GLint Sampler::getParameteri(GLenum pname) const
 {
     GLint value = 0;
     glGetSamplerParameteriv(m_id, pname, &value);
@@ -66,7 +66,7 @@ GLint Sampler::getParameteri(GLenum pname)
 	return value;
 }
 
-GLfloat Sampler::getParameterf(GLenum pname)
+GLfloat Sampler::getParameterf(GLenum pname) const
 {
     GLfloat value = 0;
     glGetSamplerParameterfv(m_id, pname, &value);

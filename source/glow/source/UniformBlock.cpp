@@ -9,7 +9,7 @@ UniformBlock::UniformBlock()
 {
 }
 
-UniformBlock::UniformBlock(Program * program, const LocationIdentity & identity)
+UniformBlock::UniformBlock(const Program * program, const LocationIdentity & identity)
 : m_program(program)
 , m_identity(identity)
 {
@@ -24,13 +24,10 @@ void UniformBlock::setBinding(GLuint bindingIndex)
 {
     m_bindingIndex = bindingIndex;
 
-    m_program->checkDirty();
-
-    glUniformBlockBinding(m_program->id(), blockIndex(), m_bindingIndex);
-    CheckGLError();
+    updateBinding();
 }
 
-GLuint UniformBlock::blockIndex()
+GLuint UniformBlock::blockIndex() const
 {
     if (m_identity.isLocation())
         return m_identity.location();
@@ -41,12 +38,15 @@ GLuint UniformBlock::blockIndex()
     return GL_INVALID_INDEX;
 }
 
-void UniformBlock::updateBinding()
+void UniformBlock::updateBinding() const
 {
-    setBinding(m_bindingIndex);
+    m_program->checkDirty();
+
+    glUniformBlockBinding(m_program->id(), blockIndex(), m_bindingIndex);
+    CheckGLError();
 }
 
-void UniformBlock::getActive(GLenum pname, GLint * params)
+void UniformBlock::getActive(GLenum pname, GLint * params) const
 {
     m_program->checkDirty();
 
@@ -54,26 +54,26 @@ void UniformBlock::getActive(GLenum pname, GLint * params)
     CheckGLError();
 }
 
-GLint UniformBlock::getActive(GLenum pname)
+GLint UniformBlock::getActive(GLenum pname) const
 {
     GLint result = 0;
     getActive(pname, &result);
     return result;
 }
 
-std::vector<GLint> UniformBlock::getActive(GLenum pname, GLint paramCount)
+std::vector<GLint> UniformBlock::getActive(GLenum pname, GLint paramCount) const
 {
     std::vector<GLint> result(paramCount);
     getActive(pname, result.data());
     return result;
 }
 
-std::vector<GLint> UniformBlock::getActiveUniformIndices()
+std::vector<GLint> UniformBlock::getActiveUniformIndices() const
 {
     return getActive(GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, getActive(GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS));
 }
 
-std::string UniformBlock::getName()
+std::string UniformBlock::getName() const
 {
     if (m_identity.isName())
         return m_identity.name();

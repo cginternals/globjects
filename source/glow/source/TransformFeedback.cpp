@@ -38,13 +38,13 @@ void TransformFeedback::accept(ObjectVisitor& visitor)
 	visitor.visitTransformFeedback(this);
 }
 
-void TransformFeedback::bind()
+void TransformFeedback::bind() const
 {
 	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_id);
 	CheckGLError();
 }
 
-void TransformFeedback::unbind()
+void TransformFeedback::unbind() const
 {
 	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, 0);
 	CheckGLError();
@@ -82,7 +82,7 @@ void TransformFeedback::end()
 	CheckGLError();
 }
 
-void TransformFeedback::draw(GLenum primitiveMode)
+void TransformFeedback::draw(GLenum primitiveMode) const
 {
 	bind();
 
@@ -90,7 +90,7 @@ void TransformFeedback::draw(GLenum primitiveMode)
 	CheckGLError();
 }
 
-void TransformFeedback::setVaryings(Program* program, GLsizei count, const char** varyingNames, GLenum bufferMode)
+void TransformFeedback::setVaryings(const Program *program, GLsizei count, const char** varyingNames, GLenum bufferMode) const
 {
     assert(varyingNames != nullptr || count == 0);
 
@@ -102,7 +102,7 @@ void TransformFeedback::setVaryings(Program* program, GLsizei count, const char*
 	program->invalidate();
 }
 
-void TransformFeedback::setVaryings(Program* program, const std::vector<const char*>& varyingNames, GLenum bufferMode)
+void TransformFeedback::setVaryings(const Program *program, const std::vector<const char*>& varyingNames, GLenum bufferMode) const
 {
     setVaryings(program, static_cast<GLint>(varyingNames.size()), const_cast<const char**>(varyingNames.data()), bufferMode);
 }

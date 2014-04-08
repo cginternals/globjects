@@ -59,7 +59,7 @@ CompositeStringSource* IncludeProcessor::processComposite(const AbstractStringSo
 {
     CompositeStringSource* composite = new CompositeStringSource();
 
-    for (AbstractStringSource* innerSource : source->flatten())
+    for (const AbstractStringSource* innerSource : source->flatten())
     {
         composite->appendSource(process(innerSource));
     }

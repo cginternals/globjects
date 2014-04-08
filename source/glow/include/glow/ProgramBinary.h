@@ -32,7 +32,7 @@ public:
     const void * data() const;
     GLsizei length() const;
 
-     virtual void notifyChanged(Changeable* sender) override;
+     virtual void notifyChanged(const Changeable* sender) override;
 protected:
     GLenum m_binaryFormat;
     ref_ptr<AbstractStringSource> m_dataSource;

@@ -47,13 +47,13 @@ const T & Uniform<T>::value() const
 }
 
 template<typename T>
-void Uniform<T>::setValueAt(GLint location)
+void Uniform<T>::setValueAt(GLint location) const
 {
     setValue(location, m_value);
 }
 
 template<typename T>
-void Uniform<T>::setValueAt(Program* program, GLint location)
+void Uniform<T>::setValueAt(const Program* program, GLint location) const
 {
     setValue(program->id(), location, m_value);
 }
@@ -66,13 +66,13 @@ void Uniform<T>::set(const T & value)
 }
 
 template<typename T>
-void Uniform<T>::setValue(GLint location, const T & value)
+void Uniform<T>::setValue(GLint location, const T & value) const
 {
     UniformSetter::set(location, value);
 }
 
 template<typename T>
-void Uniform<T>::setValue(GLuint program, GLint location, const T & value)
+void Uniform<T>::setValue(GLuint program, GLint location, const T & value) const
 {
     ProgramUniformSetter::set(program, location, value);
 }
