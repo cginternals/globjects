@@ -41,22 +41,3 @@
 #		define NOEXCEPT noexcept
 #	endif
 #endif
-
-#ifndef GL_VERSION_3_0
-#define GL_NUM_EXTENSIONS                       0x821D
-#define GL_CONTEXT_FLAGS                        0x821E
-#define GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT  0x0001
-#endif
-
-#ifndef GL_VERSION_3_2
-#define GL_CONTEXT_CORE_PROFILE_BIT             0x00000001
-#define GL_CONTEXT_COMPATIBILITY_PROFILE_BIT    0x00000002
-#define GL_CONTEXT_PROFILE_MASK                 0x9126
-#endif
-
-// http://developer.download.nvidia.com/opengl/specs/GL_NVX_gpu_memory_info.txt
-#define GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX            0x9047
-#define GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX      0x9048
-#define GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX    0x9049
-#define GPU_MEMORY_INFO_EVICTION_COUNT_NVX              0x904A
-#define GPU_MEMORY_INFO_EVICTED_MEMORY_NVX              0x904B
