@@ -64,7 +64,7 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
-    ${include_path}/glowutils.h
+    ${include_path}/glowutils_api.h
 
     ${include_path}/AbstractCoordinateProvider.h
     ${include_path}/AbstractTransparencyAlgorithm.h

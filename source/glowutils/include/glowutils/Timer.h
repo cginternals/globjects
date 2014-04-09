@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 namespace glowutils
 {

@@ -7,7 +7,7 @@
 #include <glow/AbstractUniform.h>
 #include <glow/Uniform.h>
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 namespace glow
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 #include <glowutils/CameraPath.h>
 

@@ -5,7 +5,7 @@
 
 #include <GL/glew.h>
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 namespace glow
 {

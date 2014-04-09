@@ -9,7 +9,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include <glow/glow.h>
+#include <glow/glow_api.h>
 #include <glow/LogMessage.h>
 #include <glow/ref_ptr.h>
 

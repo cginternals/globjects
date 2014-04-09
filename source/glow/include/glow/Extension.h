@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <glow/glow.h>
+#include <glow/glow_api.h>
 
 #include <glow/gl_extensions.h>
 

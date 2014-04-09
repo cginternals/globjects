@@ -5,7 +5,7 @@
 
 #include <glm/gtx/constants.hpp>
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 namespace glowutils
 {

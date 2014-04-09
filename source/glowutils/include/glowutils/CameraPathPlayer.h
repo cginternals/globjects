@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 
 #include <glow/ref_ptr.h>
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 #include <glowutils/CameraPath.h>
 

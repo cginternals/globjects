@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <glowwindow/glowwindow.h>
+#include <glowwindow/glowwindow_api.h>
 
 namespace glowwindow
 {

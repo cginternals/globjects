@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include <glow/glow.h>
+#include <glow/glow_api.h>
 #include <glow/Referenced.h>
 #include <glow/ChangeListener.h>
 #include <glow/Changeable.h>
