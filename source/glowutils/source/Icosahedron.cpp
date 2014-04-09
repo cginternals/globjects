@@ -125,7 +125,7 @@ void Icosahedron::refine(
 ,   std::vector<Face> & indices
 ,   const unsigned char levels)
 {
-    std::unordered_map<uint, u_int16_t> cache;
+    std::unordered_map<uint, GLushort> cache;
 
     for(int i = 0; i < levels; ++i)
     {
@@ -135,13 +135,13 @@ void Icosahedron::refine(
         {
             Face & face = indices[f];
 
-            const u_int16_t a(face[0]);
-            const u_int16_t b(face[1]);
-            const u_int16_t c(face[2]);
+            const GLushort a(face[0]);
+            const GLushort b(face[1]);
+            const GLushort c(face[2]);
 
-            const u_int16_t ab(split(a, b, vertices, cache));
-            const u_int16_t bc(split(b, c, vertices, cache));
-            const u_int16_t ca(split(c, a, vertices, cache));
+            const GLushort ab(split(a, b, vertices, cache));
+            const GLushort bc(split(b, c, vertices, cache));
+            const GLushort ca(split(c, a, vertices, cache));
 
             face = { ab, bc, ca };
 
@@ -152,11 +152,11 @@ void Icosahedron::refine(
     }
 }
 
-u_int16_t Icosahedron::split(
-    const u_int16_t a
-,   const u_int16_t b
+GLushort Icosahedron::split(
+    const GLushort a
+,   const GLushort b
 ,   std::vector<vec3> & points
-,   std::unordered_map<uint, u_int16_t> & cache)
+,   std::unordered_map<uint, GLushort> & cache)
 {
     const bool aSmaller(a < b);
 
@@ -170,7 +170,7 @@ u_int16_t Icosahedron::split(
 
     points.push_back(normalize((points[a] + points[b]) * .5f));
 
-    const u_int16_t i = static_cast<u_int16_t>(points.size() - 1);
+    const GLushort i = static_cast<GLushort>(points.size() - 1);
 
     cache[hash] = i;
 
