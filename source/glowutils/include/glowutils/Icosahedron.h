@@ -11,7 +11,7 @@
 #include <glow/Referenced.h>
 #include <glow/ref_ptr.h>
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 namespace glow
 {
@@ -27,7 +27,7 @@ namespace glowutils
 class GLOWUTILS_API Icosahedron : public glow::Referenced
 {
 public:
-    using Face = std::array<u_int16_t, 3>;
+    using Face = std::array<GLushort, 3>;
 
     static const std::array<glm::vec3, 12> vertices();
     static const std::array<Face, 20> indices(); /// individual triangle indices (no strip, no fan)
@@ -57,11 +57,11 @@ private:
         on sphere) to the points (if not already cached) and returns the index
         to this point.
     */
-    static u_int16_t split(
-        u_int16_t a
-    ,   u_int16_t b
+    static GLushort split(
+        GLushort a
+    ,   GLushort b
     ,   std::vector<glm::vec3> & points
-    ,   std::unordered_map<glm::uint, u_int16_t> & cache);
+    ,   std::unordered_map<glm::uint, GLushort> & cache);
 
 private:
     glow::ref_ptr<glow::VertexArrayObject> m_vao;

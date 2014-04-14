@@ -6,7 +6,7 @@
 #include <array>
 #include <string>
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 #include <glow/ref_ptr.h>
 #include <glow/Referenced.h>

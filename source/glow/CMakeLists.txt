@@ -64,7 +64,7 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
-    ${include_path}/glow.h
+    ${include_path}/glow_api.h
 
     ${include_path}/AbstractLogHandler.h
     ${include_path}/AbstractUniform.h

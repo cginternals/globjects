@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 namespace glowutils
 {

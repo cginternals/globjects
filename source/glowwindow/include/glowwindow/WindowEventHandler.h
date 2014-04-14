@@ -2,7 +2,7 @@
 
 #include <glow/Referenced.h>
 
-#include <glowwindow/glowwindow.h>
+#include <glowwindow/glowwindow_api.h>
 
 namespace glowwindow
 {

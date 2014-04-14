@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include <glow/glow.h>
+#include <glow/glow_api.h>
 
 namespace glow {
 

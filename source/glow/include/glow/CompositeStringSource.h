@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <glow/glow.h>
+#include <glow/glow_api.h>
 #include <glow/ref_ptr.h>
 #include <glow/AbstractStringSource.h>
 #include <glow/ChangeListener.h>

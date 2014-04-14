@@ -3,7 +3,7 @@
 #include <functional>
 #include <tuple>
 
-#include <glow/glow.h>
+#include <glow/glow_api.h>
 
 namespace glow {
 

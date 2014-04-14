@@ -69,9 +69,10 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
+    ${include_path}/glowwindow_api.h
+    
     ${include_path}/Context.h
     ${include_path}/ContextFormat.h
-    ${include_path}/glowwindow.h
     ${include_path}/events.h
     ${include_path}/MainLoop.h
     ${include_path}/Window.h

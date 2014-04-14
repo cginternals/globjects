@@ -8,7 +8,7 @@
 
 #include <glow/ref_ptr.h>
 
-#include <glowwindow/glowwindow.h>
+#include <glowwindow/glowwindow_api.h>
 #include <glowwindow/MainLoop.h>
 
 struct GLFWwindow;

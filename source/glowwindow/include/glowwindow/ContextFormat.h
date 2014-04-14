@@ -5,7 +5,7 @@
 
 #include <glow/Version.h>
 
-#include <glowwindow/glowwindow.h>
+#include <glowwindow/glowwindow_api.h>
 
 namespace glowwindow
 {

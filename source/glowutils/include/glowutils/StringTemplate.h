@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 #include <glowutils/StringSourceDecorator.h>
 #include <glowutils/CachedValue.h>
 

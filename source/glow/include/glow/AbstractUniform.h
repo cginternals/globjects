@@ -5,7 +5,7 @@
 
 #include <GL/glew.h>
 
-#include <glow/glow.h>
+#include <glow/glow_api.h>
 #include <glow/Referenced.h>
 #include <glow/LocationIdentity.h>
 

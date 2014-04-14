@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include <glow/glow.h>
+#include <glow/glow_api.h>
 #include <glow/ref_ptr.h>
 #include <glow/FrameBufferAttachment.h>
 

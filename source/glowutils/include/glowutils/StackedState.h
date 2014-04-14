@@ -9,7 +9,7 @@
 #include <glow/AbstractState.h>
 #include <glow/StateSetting.h>
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 namespace glow {
 class State;

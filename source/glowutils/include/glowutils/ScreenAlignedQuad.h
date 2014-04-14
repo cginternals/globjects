@@ -3,7 +3,7 @@
 #include <glow/Referenced.h>
 #include <glow/ref_ptr.h>
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 namespace glow {
 

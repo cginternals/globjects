@@ -3,7 +3,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/glm.hpp>
 
-#include <glowutils/glowutils.h>
+#include <glowutils/glowutils_api.h>
 
 namespace glowutils 
 {

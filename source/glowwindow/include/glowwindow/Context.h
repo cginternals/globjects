@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <glowwindow/glowwindow.h>
+#include <glowwindow/glowwindow_api.h>
 #include <glowwindow/ContextFormat.h>
 
 struct GLFWwindow;
