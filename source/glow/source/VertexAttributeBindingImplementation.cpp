@@ -102,13 +102,17 @@ void VertexAttributeBinding_GL_3_0::finishIfComplete()
 void VertexAttributeBinding_GL_3_0::finish()
 {
     vao()->bind();
+    void* offset = nullptr;
+    
     if (vbo())
     {
         vbo()->bind(GL_ARRAY_BUFFER);
+        offset = reinterpret_cast<void*>(m_baseoffset + m_format.relativeoffset);
     }
     else
     {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
         CheckGLError();
     }
 
@@ -118,15 +122,15 @@ void VertexAttributeBinding_GL_3_0::finish()
     switch (m_format.method)
     {
     case Format::I:
-        glVertexAttribIPointer(attribute, m_format.size, m_format.type, m_stride, reinterpret_cast<void*>(m_baseoffset + m_format.relativeoffset));
+        glVertexAttribIPointer(attribute, m_format.size, m_format.type, m_stride, offset);
         CheckGLError();
         break;
     case Format::L:
-        glVertexAttribLPointer(attribute, m_format.size, m_format.type, m_stride, reinterpret_cast<void*>(m_baseoffset + m_format.relativeoffset));
+        glVertexAttribLPointer(attribute, m_format.size, m_format.type, m_stride, offset);
         CheckGLError();
         break;
     default:
-        glVertexAttribPointer(attribute, m_format.size, m_format.type, m_format.normalized, m_stride, reinterpret_cast<void*>(m_baseoffset + m_format.relativeoffset));
+        glVertexAttribPointer(attribute, m_format.size, m_format.type, m_format.normalized, m_stride, offset);
         CheckGLError();
     }
 }
