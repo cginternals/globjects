@@ -98,9 +98,9 @@ macro (find LIB_NAME HEADER)
 
 endmacro()
 
-find(glow   glow/glow.h             ${LIB_PATHS})
-find(utils  glowutils/glowutils.h   ${LIB_PATHS})
-find(window glowwindow/glowwindow.h ${LIB_PATHS})
+find(glow   glow/glow_api.h             ${LIB_PATHS})
+find(utils  glowutils/glowutils_api.h   ${LIB_PATHS})
+find(window glowwindow/glowwindow_api.h ${LIB_PATHS})
 
 # DEBUG
 #message("GLOW_INCLUDES  = ${GLOW_INCLUDES}")
