@@ -55,7 +55,7 @@ bool RawFile<T>::read()
     const std::streampos tmpSize = ifs.tellg();
     if (tmpSize > std::numeric_limits<std::streamsize>::max()) 
     {
-        glow::warning() << "File \"" << m_filePath << "\" is too big to be read in one chunk.";
+        glow::warning() << "File \"" << m_filePath << "\" is too big to be read.";
         return false;
     }    
     const std::streamsize size = static_cast<const std::streamsize>(tmpSize);
