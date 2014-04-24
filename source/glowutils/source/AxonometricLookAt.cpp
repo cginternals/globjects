@@ -19,6 +19,7 @@ AxonometricLookAt::AxonometricLookAt(
 :   m_rotation(rotation)
 ,   m_position(position)
 ,   m_zoom(zoom)
+,   m_type(Custom)
 ,   m_rebuild(true)
 {
     setType(type);
