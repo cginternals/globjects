@@ -21,10 +21,11 @@ include_directories(
     ${GLEW_INCLUDE_DIR}
 )
 
+get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
+
 include_directories(
     BEFORE
-    ${CMAKE_BINARY_DIR}/source/codegeneration
-    ${CMAKE_SOURCE_DIR}/source/codegeneration
+    ${GENERATED_HEADER_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
