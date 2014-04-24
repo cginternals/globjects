@@ -7,6 +7,12 @@ glow is a cross-platform library licenced under the [MIT license](http://opensou
 The current pre-release is [glow-v0.3.0](https://github.com/hpicgs/glow/releases/tag/v0.3.0).
 To find out more about glow and how to use it, check out our [wiki](https://github.com/hpicgs/glow/wiki).
 
+#### Project Health
+<a href="https://scan.coverity.com/projects/2005">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/2005/badge.svg"/>
+</a>
+
 
 ### Documentation
 
@@ -23,7 +29,7 @@ The following dev-libraries and programs need to be provided for correct CMake c
 * Window and Context creation (GLFW >=3.0.3): http://www.glfw.org/ (needed for the now mandatory glowwindow module)
 
 
-## Development Notes
+### Development Notes
 
 If you are contributing to this project, please keep the following notes in mind:
 * Add your name and email to the AUTHORS file.
