@@ -27,6 +27,7 @@ namespace glowutils
 
 CameraPathPlayer::CameraPathPlayer(Camera & camera)
 : m_camera(camera)
+, m_bufferSize(0)
 {
 }
 
