@@ -29,6 +29,8 @@ public:
     Texture(GLuint id, GLenum target, bool ownsGLObject = true);
     virtual ~Texture();
 
+    static Texture * createDefault(GLenum target = GL_TEXTURE_2D);
+
     virtual void accept(ObjectVisitor & visitor) override;
 
     void bind() const;
