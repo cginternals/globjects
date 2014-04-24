@@ -18,12 +18,14 @@ WindowEventDispatcher::Timer::Timer()
 : interval(0)
 , singleShot(false)
 {
+    reset();
 }
 
 WindowEventDispatcher::Timer::Timer(int interval, bool singleShot)
 : interval(interval)
 , singleShot(singleShot)
 {
+    reset();
 }
 
 bool WindowEventDispatcher::Timer::ready() const
