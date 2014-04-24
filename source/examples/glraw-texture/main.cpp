@@ -112,10 +112,6 @@ void EventHandler::createAndSetupTexture()
 	m_texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	m_texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-    GLubyte * data = new GLubyte[16 * 16];
-    for (int i = 0; i < 16 * 16; ++i)
-        data[i] = 255;
- 
     m_texture->compressedImage2D(0, GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, static_cast<GLsizei>(raw.size()), raw.data());
 }
 
