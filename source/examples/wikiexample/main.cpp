@@ -55,11 +55,17 @@ class EventHandler : public ExampleWindowEventHandler
 {
 public:
 	EventHandler()
+    : vao(nullptr)
+    , cornerBuffer(nullptr)
+    , program(nullptr)
     {
     }
 
     virtual ~EventHandler()
     {
+        delete vao;
+        delete cornerBuffer;
+        delete program;
     }
 
     virtual void initialize(Window &) override
@@ -82,8 +88,11 @@ public:
         
         
 		cornerBuffer = new glow::Buffer(GL_ARRAY_BUFFER);
+        cornerBuffer->ref();
 		program = new glow::Program();
+        program->ref();
 		vao = new glow::VertexArrayObject();
+        vao->ref();
 
 		program->attach(
                         new glow::Shader(GL_VERTEX_SHADER, vertexShaderSource),
