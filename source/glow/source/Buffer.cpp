@@ -220,16 +220,28 @@ GLint Buffer::getParameter(GLenum pname) const
     }
 }
 
+void Buffer::bindBase(GLuint index) const
+{
+    glBindBufferBase(m_target, index, m_id);
+    CheckGLError();
+}
+
 void Buffer::bindBase(GLenum target, GLuint index) const
 {
-    glBindBufferBase(target, index, m_id);
+    m_target = target;
+    bindBase(index);
+}
+
+void Buffer::bindRange(GLuint index, GLintptr offset, GLsizeiptr size) const
+{
+    glBindBufferRange(m_target, index, m_id, offset, size);
     CheckGLError();
 }
 
 void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size) const
 {
-    glBindBufferRange(target, index, m_id, offset, size);
-	CheckGLError();
+    m_target = target;
+    bindRange(index, offset, size);
 }
 
 void Buffer::unbindIndex(GLenum target, GLuint index)
