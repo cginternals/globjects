@@ -26,7 +26,6 @@ class GLOW_API ProgramBinary : public Referenced, public Changeable, protected C
 public:
     ProgramBinary(GLenum binaryFormat, const std::vector<char> & binaryData);
     ProgramBinary(GLenum binaryFormat, AbstractStringSource * dataSource);
-    virtual ~ProgramBinary();
 
     GLenum format() const;
     const void * data() const;
@@ -39,6 +38,8 @@ protected:
 
     mutable bool m_valid;
     mutable std::vector<unsigned char> m_binaryData;
+
+    virtual ~ProgramBinary();
 
     void validate() const;
 };

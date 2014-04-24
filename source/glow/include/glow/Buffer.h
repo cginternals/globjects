@@ -50,13 +50,7 @@ public:
      * @param id an external OpenGL buffer id
      * @param target will be used when bind() is called without parameter
      */
-	Buffer(GLuint id, GLenum target);
-    /**
-     * @brief ~Buffer
-     * Automatically deletes the associated OpenGL buffer unless the object was created with an external id.
-     * \see https://www.opengl.org/sdk/docs/man4/xhtml/glDeleteBuffers.xml
-     */
-	virtual ~Buffer();
+    Buffer(GLuint id, GLenum target);
 
     /**
      * Implements the visitor pattern.
@@ -274,6 +268,13 @@ protected:
       * Cached boolean whether direct state access is available or not
       */
     bool m_directStateAccess; // TODO: move to per context cache
+
+    /**
+     * @brief ~Buffer
+     * Automatically deletes the associated OpenGL buffer unless the object was created with an external id.
+     * \see https://www.opengl.org/sdk/docs/man4/xhtml/glDeleteBuffers.xml
+     */
+    virtual ~Buffer();
 
     /**
      * Wraps the OpenGL function glGenBuffers.

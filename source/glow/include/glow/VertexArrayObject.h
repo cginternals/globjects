@@ -18,7 +18,6 @@ class GLOW_API VertexArrayObject : public Object
 public:
     VertexArrayObject();
     VertexArrayObject(GLuint id, bool ownsGLObject = true);
-    virtual ~VertexArrayObject();
 
     virtual void accept(ObjectVisitor & visitor) override;
 
@@ -68,6 +67,8 @@ public:
     void multiDrawElements(GLenum mode, GLenum type, const std::vector<MultiDrawElementsRange> & ranges) const;
     void multiDrawElementsBaseVertex(GLenum mode, GLenum type, const std::vector<MultiDrawElementsBaseVertexRange> & ranges) const;
 protected:
+    virtual ~VertexArrayObject();
+
     static GLuint genVertexArray();
 
 protected:

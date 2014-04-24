@@ -13,10 +13,11 @@ class GLOWUTILS_API StringSourceDecorator : public glow::AbstractStringSource, p
 {
 public:
     StringSourceDecorator(glow::AbstractStringSource * source);
-    virtual ~StringSourceDecorator();
 
     virtual void update();
 protected:
+    virtual ~StringSourceDecorator();
+
     virtual void notifyChanged(const Changeable * changeable) override;
 protected:
     glow::ref_ptr<glow::AbstractStringSource> m_internal;

@@ -37,13 +37,14 @@ public:
     Uniform(GLint location, const T & value);
     Uniform(const std::string & name);
     Uniform(const std::string & name, const T & value);
-    virtual ~Uniform();
 
     void set(const T & value);
 
     const T & value() const;
 
 protected:
+    virtual ~Uniform();
+
     virtual void setValueAt(GLint location) const override;
     virtual void setValueAt(const Program* program, GLint location) const override;
     void setValue(GLint location, const T & value) const;

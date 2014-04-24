@@ -11,7 +11,7 @@ namespace glow {
  *
  * \see http://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Requiring_or_Prohibiting_Heap-based_Objects
  */
-class HeapOnly
+class GLOW_API HeapOnly
 {
 public:
     HeapOnly();

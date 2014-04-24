@@ -26,7 +26,6 @@ class GLOWUTILS_API File : public glow::AbstractStringSource
 {
 public:
     File(const std::string & filePath);
-    virtual ~File();
 
     virtual std::string string() const override;
     virtual std::string shortInfo() const override;
@@ -40,6 +39,8 @@ protected:
     std::string m_filePath;
     mutable std::string m_source;
     mutable bool m_valid;
+
+    virtual ~File();
 
     void loadFileContent() const;
 };

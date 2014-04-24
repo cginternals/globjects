@@ -73,7 +73,6 @@ class GLOW_API Program : public Object, protected ChangeListener
 public:
 	Program();
     Program(ProgramBinary * binary);
-	virtual ~Program();
 
     virtual void accept(ObjectVisitor& visitor) override;
 
@@ -152,6 +151,8 @@ public:
     void dispatchComputeGroupSize(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ, GLuint groupSizeX, GLuint groupSizeY, GLuint groupSizeZ);
     void dispatchComputeGroupSize(const glm::uvec3 & numGroups, const glm::uvec3 & groupSizes);
 protected:
+    virtual ~Program();
+
     void attach();
 
     bool checkLinkStatus() const;
