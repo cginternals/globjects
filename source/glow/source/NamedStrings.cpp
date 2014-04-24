@@ -91,6 +91,11 @@ std::string NamedStrings::namedString(const std::string& name, bool cached)
     glGetNamedStringARB(static_cast<GLint>(name.size()), name.c_str(), size, &size, string);
     CheckGLError();
 
+    if (string == nullptr)
+    {
+        return std::string();
+    }
+
     return std::string(string, size);
 }
 
