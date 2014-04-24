@@ -24,6 +24,7 @@ class EventHandler : public ExampleWindowEventHandler
 public:
     EventHandler()
     : m_textureSize(4096)
+    , m_totalPages(0)
     , m_maxResidentPages(512)
     {
     }
