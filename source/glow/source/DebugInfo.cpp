@@ -185,11 +185,21 @@ void DebugInfo::visitFrameBufferObject(FrameBufferObject* fbo)
 		std::string objectName;
 		if (attachment->isTextureAttachment())
 		{
-			objectName = name("Texture", dynamic_cast<TextureAttachment*>(attachment)->texture());
+            TextureAttachment* textureAttachment = dynamic_cast<TextureAttachment*>(attachment);
+
+            if (textureAttachment != nullptr)
+            {
+                objectName = name("Texture", textureAttachment->texture());
+            }
 		}
 		else
 		{
-			objectName = name("RenderBufferObject", dynamic_cast<RenderBufferAttachment*>(attachment)->renderBuffer());
+            RenderBufferAttachment* renderBufferAttachment = dynamic_cast<RenderBufferAttachment*>(attachment);
+
+            if (renderBufferAttachment != nullptr)
+            {
+                objectName = name("RenderBufferObject", renderBufferAttachment->renderBuffer());
+            }
 		}
 
 		info.addProperty(attachment->attachmentString(), objectName);
