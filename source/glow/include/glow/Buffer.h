@@ -184,7 +184,17 @@ public:
      * Wraps the OpenGL function glBindBufferBase.
      * \see http://www.opengl.org/sdk/docs/man/xhtml/glBindBufferBase.xml
      */
+    void bindBase(GLuint index) const;
+    /**
+     * Wraps the OpenGL function glBindBufferBase.
+     * \see http://www.opengl.org/sdk/docs/man/xhtml/glBindBufferBase.xml
+     */
     void bindBase(GLenum target, GLuint index) const;
+    /**
+     * Wraps the OpenGL function glBindBufferRange.
+     * \see http://www.opengl.org/sdk/docs/man3/xhtml/glBindBufferRange.xml
+     */
+    void bindRange(GLuint index, GLintptr offset, GLsizeiptr size) const;
     /**
      * Wraps the OpenGL function glBindBufferRange.
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glBindBufferRange.xml
