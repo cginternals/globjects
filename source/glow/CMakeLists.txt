@@ -208,6 +208,12 @@ set(sources
     ${source_path}/strategies/BindfulUniformStrategy.cpp
     ${source_path}/strategies/BindlessUniformStrategy.h
     ${source_path}/strategies/BindlessUniformStrategy.cpp
+    ${source_path}/strategies/AbstractBufferStrategy.h
+    ${source_path}/strategies/AbstractBufferStrategy.cpp
+    ${source_path}/strategies/BindfulBufferStrategy.h
+    ${source_path}/strategies/BindfulBufferStrategy.cpp
+    ${source_path}/strategies/BindlessBufferStrategy.h
+    ${source_path}/strategies/BindlessBufferStrategy.cpp
 )
 
 # Group source files
