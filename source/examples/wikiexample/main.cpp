@@ -63,9 +63,9 @@ public:
 
     virtual ~EventHandler()
     {
-        delete vao;
-        delete cornerBuffer;
-        delete program;
+        vao->destroy();
+        cornerBuffer->destroy();
+        program->destroy();
     }
 
     virtual void initialize(Window &) override
