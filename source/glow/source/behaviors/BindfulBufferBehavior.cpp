@@ -1,10 +1,10 @@
-#include "BindfulBufferStrategy.h"
+#include "BindfulBufferBehavior.h"
 
 #include <glow/Error.h>
 
 namespace glow {
 
-void * BindfulBufferStrategy::map(const Buffer * buffer, GLenum access) const
+void * BindfulBufferBehavior::map(const Buffer * buffer, GLenum access) const
 {
     buffer->bind();
 
@@ -14,7 +14,7 @@ void * BindfulBufferStrategy::map(const Buffer * buffer, GLenum access) const
     return result;
 }
 
-void * BindfulBufferStrategy::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, GLbitfield access) const
+void * BindfulBufferBehavior::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, GLbitfield access) const
 {
     buffer->bind();
 
@@ -24,7 +24,7 @@ void * BindfulBufferStrategy::mapRange(const Buffer * buffer, GLintptr offset, G
     return result;
 }
 
-bool BindfulBufferStrategy::unmap(const Buffer * buffer) const
+bool BindfulBufferBehavior::unmap(const Buffer * buffer) const
 {
     buffer->bind();
 
@@ -34,7 +34,7 @@ bool BindfulBufferStrategy::unmap(const Buffer * buffer) const
     return success == GL_TRUE;
 }
 
-void BindfulBufferStrategy::setData(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLenum usage) const
+void BindfulBufferBehavior::setData(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLenum usage) const
 {
     buffer->bind();
 
@@ -42,7 +42,7 @@ void BindfulBufferStrategy::setData(const Buffer * buffer, GLsizeiptr size, cons
     CheckGLError();
 }
 
-void BindfulBufferStrategy::setSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, const GLvoid * data) const
+void BindfulBufferBehavior::setSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, const GLvoid * data) const
 {
     buffer->bind();
 
@@ -50,7 +50,7 @@ void BindfulBufferStrategy::setSubData(const Buffer * buffer, GLintptr offset, G
     CheckGLError();
 }
 
-void BindfulBufferStrategy::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLbitfield flags) const
+void BindfulBufferBehavior::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLbitfield flags) const
 {
     buffer->bind();
 
@@ -58,7 +58,7 @@ void BindfulBufferStrategy::setStorage(const Buffer * buffer, GLsizeiptr size, c
     CheckGLError();
 }
 
-void BindfulBufferStrategy::copySubData(const glow::Buffer * buffer, glow::Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
+void BindfulBufferBehavior::copySubData(const glow::Buffer * buffer, glow::Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
 {
     GLenum readTarget = GL_COPY_READ_BUFFER;
     GLenum writeTarget = GL_COPY_WRITE_BUFFER;
@@ -79,7 +79,7 @@ void BindfulBufferStrategy::copySubData(const glow::Buffer * buffer, glow::Buffe
     CheckGLError();
 }
 
-void BindfulBufferStrategy::getParameter(const Buffer * buffer, GLenum pname, GLint * data) const
+void BindfulBufferBehavior::getParameter(const Buffer * buffer, GLenum pname, GLint * data) const
 {
     buffer->bind();
 
@@ -87,7 +87,7 @@ void BindfulBufferStrategy::getParameter(const Buffer * buffer, GLenum pname, GL
     CheckGLError();
 }
 
-void BindfulBufferStrategy::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const
+void BindfulBufferBehavior::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const
 {
     buffer->bind();
 
@@ -95,7 +95,7 @@ void BindfulBufferStrategy::clearData(const Buffer * buffer, GLenum internalform
     CheckGLError();
 }
 
-void BindfulBufferStrategy::clearSubData(const Buffer * buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data) const
+void BindfulBufferBehavior::clearSubData(const Buffer * buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data) const
 {
     buffer->bind();
 

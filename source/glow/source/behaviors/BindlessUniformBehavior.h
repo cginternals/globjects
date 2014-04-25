@@ -1,11 +1,11 @@
 #pragma once
 
-#include "AbstractUniformStrategy.h"
+#include "AbstractUniformBehavior.h"
 
 namespace glow
 {
 
-class BindlessUniformStrategy : public AbstractUniformStrategy
+class BindlessUniformBehavior : public AbstractUniformBehavior
 {
 public:
     virtual void set(const Program * program, GLint location, const float & value) const override;

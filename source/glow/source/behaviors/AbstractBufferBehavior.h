@@ -7,13 +7,13 @@
 namespace glow
 {
 
-class AbstractBufferStrategy
+class AbstractBufferBehavior
 {
 public:
-    AbstractBufferStrategy();
-    virtual ~AbstractBufferStrategy();
+    AbstractBufferBehavior();
+    virtual ~AbstractBufferBehavior();
 
-    static AbstractBufferStrategy * create();
+    static AbstractBufferBehavior * create();
 
     virtual void * map(const Buffer * buffer, GLenum access) const = 0;
     virtual void * mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, GLbitfield access) const = 0;

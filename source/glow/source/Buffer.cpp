@@ -7,9 +7,9 @@
 #include <glow/ObjectVisitor.h>
 
 #include <glow/Registry.h>
-#include <glow/StrategyRegistry.h>
+#include <glow/BehaviorRegistry.h>
 
-#include "strategies/AbstractBufferStrategy.h"
+#include "behaviors/AbstractBufferBehavior.h"
 
 namespace glow
 {
@@ -51,9 +51,9 @@ Buffer::~Buffer()
 	}
 }
 
-const AbstractBufferStrategy & Buffer::strategy() const
+const AbstractBufferBehavior & Buffer::behavior() const
 {
-    return Registry::current().strategies().bufferStrategy();
+    return Registry::current().behaviors().bufferBehavior();
 }
 
 void Buffer::accept(ObjectVisitor& visitor)
@@ -92,44 +92,44 @@ GLenum Buffer::target() const
 
 const void * Buffer::map() const
 {
-    return static_cast<const void*>(strategy().map(this, GL_READ_ONLY));
+    return static_cast<const void*>(behavior().map(this, GL_READ_ONLY));
 }
 
 void* Buffer::map(GLenum access)
 {
-    return strategy().map(this, access);
+    return behavior().map(this, access);
 }
 
 void* Buffer::mapRange(GLintptr offset, GLsizeiptr length, GLbitfield access)
 {
-    return strategy().mapRange(this, offset, length, access);
+    return behavior().mapRange(this, offset, length, access);
 }
 
 bool Buffer::unmap() const
 {
-    return strategy().unmap(this);
+    return behavior().unmap(this);
 }
 
 void Buffer::setData(GLsizeiptr size, const GLvoid * data, GLenum usage)
 {
-    strategy().setData(this, size, data, usage);
+    behavior().setData(this, size, data, usage);
 }
     
 void Buffer::setSubData(GLintptr offset, GLsizeiptr size, const GLvoid * data)
 {
-    strategy().setSubData(this, offset, size, data);
+    behavior().setSubData(this, offset, size, data);
 }
 
 void Buffer::setStorage(GLsizeiptr size, const GLvoid * data, GLbitfield flags)
 {
-    strategy().setStorage(this, size, data, flags);
+    behavior().setStorage(this, size, data, flags);
 }
 
 GLint Buffer::getParameter(GLenum pname) const
 {
     GLint value = 0;
 
-    strategy().getParameter(this, pname, &value);
+    behavior().getParameter(this, pname, &value);
 
     return value;
 }
@@ -168,7 +168,7 @@ void Buffer::copySubData(glow::Buffer * buffer, GLintptr readOffset, GLintptr wr
 {
     assert(buffer != nullptr);
 
-    strategy().copySubData(this, buffer, readOffset, writeOffset, size);
+    behavior().copySubData(this, buffer, readOffset, writeOffset, size);
 }
 
 void Buffer::copySubData(glow::Buffer * buffer, GLsizeiptr size) const
@@ -186,12 +186,12 @@ void Buffer::copyData(glow::Buffer * buffer, GLsizeiptr size, GLenum usage) cons
 
 void Buffer::clearData(GLenum internalformat, GLenum format, GLenum type, const void * data)
 {
-    strategy().clearData(this, internalformat, format, type, data);
+    behavior().clearData(this, internalformat, format, type, data);
 }
 
 void Buffer::clearSubData(GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data)
 {
-    strategy().clearSubData(this, internalformat, offset, size, format, type, data);
+    behavior().clearSubData(this, internalformat, offset, size, format, type, data);
 }
 
 } // namespace glow

@@ -122,7 +122,7 @@ set(api_includes
     ${include_path}/StateSetting.h
     ${include_path}/StateSetting.hpp
     ${include_path}/StaticStringSource.h
-    ${include_path}/StrategyRegistry.h
+    ${include_path}/BehaviorRegistry.h
     ${include_path}/Sync.h
     ${include_path}/Texture.h
     ${include_path}/TextureAttachment.h
@@ -190,7 +190,7 @@ set(sources
     ${source_path}/State.cpp
     ${source_path}/StateSetting.cpp
     ${source_path}/StaticStringSource.cpp
-    ${source_path}/StrategyRegistry.cpp
+    ${source_path}/BehaviorRegistry.cpp
     ${source_path}/Sync.cpp
     ${source_path}/Texture.cpp
     ${source_path}/TextureAttachment.cpp
@@ -202,18 +202,18 @@ set(sources
     ${source_path}/VertexAttributeBindingImplementation.h
     ${source_path}/VertexAttributeBindingImplementation.cpp
     
-    ${source_path}/strategies/AbstractUniformStrategy.h
-    ${source_path}/strategies/AbstractUniformStrategy.cpp
-    ${source_path}/strategies/BindfulUniformStrategy.h
-    ${source_path}/strategies/BindfulUniformStrategy.cpp
-    ${source_path}/strategies/BindlessUniformStrategy.h
-    ${source_path}/strategies/BindlessUniformStrategy.cpp
-    ${source_path}/strategies/AbstractBufferStrategy.h
-    ${source_path}/strategies/AbstractBufferStrategy.cpp
-    ${source_path}/strategies/BindfulBufferStrategy.h
-    ${source_path}/strategies/BindfulBufferStrategy.cpp
-    ${source_path}/strategies/BindlessBufferStrategy.h
-    ${source_path}/strategies/BindlessBufferStrategy.cpp
+    ${source_path}/behaviors/AbstractUniformBehavior.h
+    ${source_path}/behaviors/AbstractUniformBehavior.cpp
+    ${source_path}/behaviors/BindfulUniformBehavior.h
+    ${source_path}/behaviors/BindfulUniformBehavior.cpp
+    ${source_path}/behaviors/BindlessUniformBehavior.h
+    ${source_path}/behaviors/BindlessUniformBehavior.cpp
+    ${source_path}/behaviors/AbstractBufferBehavior.h
+    ${source_path}/behaviors/AbstractBufferBehavior.cpp
+    ${source_path}/behaviors/BindfulBufferBehavior.h
+    ${source_path}/behaviors/BindfulBufferBehavior.cpp
+    ${source_path}/behaviors/BindlessBufferBehavior.h
+    ${source_path}/behaviors/BindlessBufferBehavior.cpp
 )
 
 # Group source files

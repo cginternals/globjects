@@ -4,12 +4,12 @@
 
 #include <glow/Buffer.h>
 
-#include "AbstractBufferStrategy.h"
+#include "AbstractBufferBehavior.h"
 
 namespace glow
 {
 
-class BindfulBufferStrategy : public AbstractBufferStrategy
+class BindlessBufferBehavior : public AbstractBufferBehavior
 {
 public:
     virtual void * map(const Buffer * buffer, GLenum access) const override;

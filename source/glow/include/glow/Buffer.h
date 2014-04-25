@@ -11,7 +11,7 @@
 namespace glow
 {
 
-class AbstractBufferStrategy;
+class AbstractBufferBehavior;
 
 /** \brief Wrapper for OpenGL buffer objects.
  *
@@ -264,7 +264,7 @@ protected:
      */
 	static GLuint genBuffer();
 
-    const AbstractBufferStrategy & strategy() const;
+    const AbstractBufferBehavior & behavior() const;
 };
 
 } // namespace glow

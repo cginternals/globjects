@@ -11,7 +11,7 @@ namespace glow
 
 class ObjectRegistry;
 class ExtensionRegistry;
-class StrategyRegistry;
+class BehaviorRegistry;
 
 class GLOW_API Registry
 {
@@ -20,7 +20,7 @@ public:
 
     ObjectRegistry & objects();
     ExtensionRegistry & extensions();
-    StrategyRegistry & strategies();
+    BehaviorRegistry & behaviors();
 private:
     Registry();
     ~Registry();
@@ -29,7 +29,7 @@ private:
 private:
     ObjectRegistry * m_objects;
     ExtensionRegistry * m_extensions;
-    StrategyRegistry * m_strategies;
+    BehaviorRegistry * m_behaviors;
 };
 
 } // namespace glow
