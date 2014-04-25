@@ -1,7 +1,7 @@
 #include <glowutils/global.h>
 
 #include <glow/logging.h>
-#include <glow/global.h>
+#include <glow/NamedString.h>
 #include <glow/Shader.h>
 
 #include <glowutils/File.h>
@@ -80,7 +80,7 @@ void scanDirectory(const std::string & directory, const std::string & fileExtens
 
         std::string fileName = directory+"/"+file;
 
-        createNamedString("/"+fileName, new File(fileName));
+        NamedString::create("/"+fileName, new File(fileName));
     }
 }
 

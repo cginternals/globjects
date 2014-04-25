@@ -103,6 +103,7 @@ set(api_includes
     ${include_path}/LogMessageBuilder.h
     ${include_path}/LogMessageBuilder.hpp
     ${include_path}/memory.h
+    ${include_path}/NamedString.h
     ${include_path}/Object.h
     ${include_path}/ObjectRegistry.h
     ${include_path}/ObjectVisitor.h
@@ -171,8 +172,9 @@ set(sources
     ${source_path}/LogMessage.cpp
     ${source_path}/LogMessageBuilder.cpp
     ${source_path}/memory.cpp
-    ${source_path}/NamedStrings.cpp
-    ${source_path}/NamedStrings.h
+    ${source_path}/NamedString.cpp
+    ${source_path}/NamedStringRegistry.h
+    ${source_path}/NamedStringRegistry.cpp
     ${source_path}/Object.cpp
     ${source_path}/ObjectRegistry.cpp
     ${source_path}/ObjectVisitor.cpp

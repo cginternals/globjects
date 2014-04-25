@@ -11,6 +11,7 @@
 #include <glow/AbstractStringSource.h>
 #include <glow/StaticStringSource.h>
 #include <glow/CompositeStringSource.h>
+#include <glow/NamedString.h>
 
 namespace {
     // From http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
@@ -134,13 +135,13 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                                 m_includes.insert(include);
                                 compositeSource->appendSource(new StaticStringSource(destinationstream.str()));
 
-                                bool found = false;
+                                NamedString * namedString = nullptr;
                                 std::string fullPath;
                                 if (startsWith(include, '/'))
                                 {
-                                    if (isNamedString(include, true))
+                                    namedString = NamedString::obtain(include);
+                                    if (namedString)
                                     {
-                                        found = true;
                                         fullPath = include;
                                     }
                                 }
@@ -149,17 +150,17 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                                     for (const std::string& prefix : m_includePaths)
                                     {
                                         fullPath = expandPath(include, prefix);
-                                        if (isNamedString(fullPath, true))
+                                        namedString = NamedString::obtain(include);
+                                        if (namedString)
                                         {
-                                            found = true;
                                             break;
                                         }
                                     }
                                 }
 
-                                if (found)
+                                if (namedString)
                                 {
-                                    compositeSource->appendSource(processComposite(getNamedStringSource(fullPath)));
+                                    compositeSource->appendSource(processComposite(namedString->stringSource()));
                                 }
                                 else
                                 {

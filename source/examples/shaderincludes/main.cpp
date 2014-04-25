@@ -1,7 +1,8 @@
 
 #include <GL/glew.h>
 
-#include <glow/global.h>
+#include <glow/Error.h>
+#include <glow/NamedString.h>
 #include <glow/Shader.h>
 #include <glow/debugmessageoutput.h>
 
@@ -41,7 +42,7 @@ public:
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
 
-        glow::createNamedString("/shaderincludes/color.glsl", new glowutils::File("data/shaderincludes/color.glsl"));
+        glow::NamedString::create("/shaderincludes/color.glsl", new glowutils::File("data/shaderincludes/color.glsl"));
 
       glowutils::StringTemplate* fragmentShaderString = new glowutils::StringTemplate(new glowutils::File("data/shaderincludes/test.frag"));
 #ifdef MAC_OS

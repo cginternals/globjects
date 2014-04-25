@@ -6,7 +6,7 @@
 #include <glow/Registry.h>
 #include <glow/ExtensionRegistry.h>
 
-#include "NamedStrings.h"
+#include <glow/NamedString.h>
 
 namespace glow
 {
@@ -238,41 +238,6 @@ bool isInCoreProfile(Extension extension, const Version & version)
 bool isInCoreProfile(Extension extension)
 {
     return Registry::current().extensions().isInCoreProfile(extension);
-}
-
-void createNamedString(const std::string& name, const std::string& string, GLenum type)
-{
-    NamedStrings::createNamedString(name, string, type);
-}
-
-void createNamedString(const std::string& name, AbstractStringSource* source, GLenum type)
-{
-    NamedStrings::createNamedString(name, source, type);
-}
-
-void deleteNamedString(const std::string& name)
-{
-    NamedStrings::deleteNamedString(name);
-}
-
-bool isNamedString(const std::string& name, bool cached)
-{
-    return NamedStrings::isNamedString(name, cached);
-}
-
-std::string getNamedString(const std::string& name, bool cached)
-{
-    return NamedStrings::namedString(name, cached);
-}
-
-AbstractStringSource* getNamedStringSource(const std::string& name)
-{
-    return NamedStrings::namedStringSource(name);
-}
-
-GLenum getNamedStringType(const std::string& name, bool cached)
-{
-    return NamedStrings::namedStringType(name, cached);
 }
 
 void enable(GLenum capability)

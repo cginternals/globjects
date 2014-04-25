@@ -5,6 +5,7 @@
 #include <glow/ObjectRegistry.h>
 #include <glow/ExtensionRegistry.h>
 #include <glow/BehaviorRegistry.h>
+#include "NamedStringRegistry.h"
 
 namespace glow
 {
@@ -33,6 +34,7 @@ Registry::Registry()
 : m_objects(new ObjectRegistry)
 , m_extensions(new ExtensionRegistry)
 , m_behaviors(new BehaviorRegistry)
+, m_namedStrings(new NamedStringRegistry)
 {
 }
 
@@ -55,6 +57,11 @@ ExtensionRegistry & Registry::extensions()
 BehaviorRegistry & Registry::behaviors()
 {
     return *m_behaviors;
+}
+
+NamedStringRegistry & Registry::namedStrings()
+{
+    return *m_namedStrings;
 }
 
 } // namespace glow

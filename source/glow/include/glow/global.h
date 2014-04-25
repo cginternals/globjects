@@ -57,14 +57,6 @@ GLOW_API bool hasExtension(const std::string & extensionName);
 GLOW_API bool isInCoreProfile(Extension extension, const Version & version);
 GLOW_API bool isInCoreProfile(Extension extension);
 
-GLOW_API void createNamedString(const std::string& name, const std::string& string, GLenum type = GL_SHADER_INCLUDE_ARB);
-GLOW_API void createNamedString(const std::string& name, AbstractStringSource* source, GLenum type = GL_SHADER_INCLUDE_ARB);
-GLOW_API void deleteNamedString(const std::string& name);
-GLOW_API bool isNamedString(const std::string& name, bool cached = false);
-GLOW_API std::string getNamedString(const std::string& name, bool cached = false);
-GLOW_API AbstractStringSource* getNamedStringSource(const std::string& name);
-GLOW_API GLenum getNamedStringType(const std::string& name, bool cached = false);
-
 GLOW_API void enable(GLenum capability);
 GLOW_API void disable(GLenum capability);
 GLOW_API bool isEnabled(GLenum capability);

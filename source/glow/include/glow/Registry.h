@@ -12,6 +12,7 @@ namespace glow
 class ObjectRegistry;
 class ExtensionRegistry;
 class BehaviorRegistry;
+class NamedStringRegistry;
 
 class GLOW_API Registry
 {
@@ -21,6 +22,7 @@ public:
     ObjectRegistry & objects();
     ExtensionRegistry & extensions();
     BehaviorRegistry & behaviors();
+    NamedStringRegistry & namedStrings();
 private:
     Registry();
     ~Registry();
@@ -30,6 +32,7 @@ private:
     ObjectRegistry * m_objects;
     ExtensionRegistry * m_extensions;
     BehaviorRegistry * m_behaviors;
+    NamedStringRegistry * m_namedStrings;
 };
 
 } // namespace glow

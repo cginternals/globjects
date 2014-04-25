@@ -14,7 +14,7 @@
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/Texture.h>
-#include <glow/global.h>
+#include <glow/NamedString.h>
 #include <glow/debugmessageoutput.h>
 
 #include <glowutils/Camera.h>
@@ -98,7 +98,7 @@ public:
 
         // Initialize shader includes
 
-        glow::createNamedString("/glow/data/gpu-particles/particleMovement.inc", new glowutils::File("data/gpu-particles/particleMovement.inc"));
+        glow::NamedString::create("/glow/data/gpu-particles/particleMovement.inc", new glowutils::File("data/gpu-particles/particleMovement.inc"));
         
         // initialize camera
 
