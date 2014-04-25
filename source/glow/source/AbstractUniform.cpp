@@ -3,7 +3,7 @@
 #include <cassert>
 
 #include <glow/Program.h>
-#include <glow/Extension.h>
+#include <glow/global.h>
 
 namespace glow
 {

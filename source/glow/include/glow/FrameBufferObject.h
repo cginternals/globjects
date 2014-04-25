@@ -119,8 +119,6 @@ protected:
 protected:
     mutable GLenum m_target;
 	std::map<GLenum, ref_ptr<FrameBufferAttachment>> m_attachments;
-
-    static FrameBufferObject s_defaultFBO;
 };
 
 } // namespace glow

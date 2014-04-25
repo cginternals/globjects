@@ -8,6 +8,7 @@
 
 #include <glow/glow_api.h>
 #include <glow/Version.h>
+#include <glow/Extension.h>
 
 namespace glow 
 {
@@ -50,6 +51,11 @@ template <int Count>
 std::array<GLdouble, Count> getDoubles(GLenum pname);
 template <int Count>
 std::array<GLboolean, Count> getBooleans(GLenum pname);
+
+GLOW_API bool hasExtension(Extension extension);
+GLOW_API bool hasExtension(const std::string & extensionName);
+GLOW_API bool isInCoreProfile(Extension extension, const Version & version);
+GLOW_API bool isInCoreProfile(Extension extension);
 
 GLOW_API void createNamedString(const std::string& name, const std::string& string, GLenum type = GL_SHADER_INCLUDE_ARB);
 GLOW_API void createNamedString(const std::string& name, AbstractStringSource* source, GLenum type = GL_SHADER_INCLUDE_ARB);

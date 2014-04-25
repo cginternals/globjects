@@ -21,6 +21,8 @@ public:
 
     const std::set<Object *> & objects();
 
+    std::set<Object *>::iterator begin();
+    std::set<Object *>::iterator end();
 protected:
     void registerObject(Object * object);
     void deregisterObject(Object * object);

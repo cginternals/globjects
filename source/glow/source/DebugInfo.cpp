@@ -129,7 +129,7 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::collectObjectInfo()
 	m_infoGroups.clear();
 	m_memoryUsage.clear();
 
-    for (Object* object: Registry::current().objects().objects())
+    for (Object* object: Registry::current().objects())
 	{
 		visit(object);
 	}

@@ -10,7 +10,7 @@
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
 #include <glow/Version.h>
-#include <glow/Extension.h>
+#include <glow/global.h>
 #include <glow/ref_ptr.h>
 
 #include "IncludeProcessor.h"

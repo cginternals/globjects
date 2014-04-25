@@ -3,6 +3,9 @@
 #include <glow/Error.h>
 #include <glow/logging.h>
 
+#include <glow/Registry.h>
+#include <glow/ExtensionRegistry.h>
+
 #include "NamedStrings.h"
 
 namespace glow
@@ -215,6 +218,26 @@ std::vector<std::string> getExtensions()
     }
 
     return extensions;
+}
+
+bool hasExtension(Extension extension)
+{
+    return Registry::current().extensions().hasExtension(extension);
+}
+
+bool hasExtension(const std::string & extensionName)
+{
+    return Registry::current().extensions().hasExtension(extensionName);
+}
+
+bool isInCoreProfile(Extension extension, const Version & version)
+{
+    return Registry::current().extensions().isInCoreProfile(extension, version);
+}
+
+bool isInCoreProfile(Extension extension)
+{
+    return Registry::current().extensions().isInCoreProfile(extension);
 }
 
 void createNamedString(const std::string& name, const std::string& string, GLenum type)

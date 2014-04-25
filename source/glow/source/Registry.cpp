@@ -3,6 +3,7 @@
 #include "contextid.h"
 
 #include <glow/ObjectRegistry.h>
+#include <glow/ExtensionRegistry.h>
 
 namespace glow
 {
@@ -28,17 +29,25 @@ Registry & Registry::current()
 std::unordered_map<long long, Registry *> Registry::s_registries;
 
 Registry::Registry()
-: m_objects(new ObjectRegistry())
+: m_objects(new ObjectRegistry)
+, m_extensions(new ExtensionRegistry)
 {
 }
 
 Registry::~Registry()
 {
+    delete m_objects;
+    delete m_extensions;
 }
 
 ObjectRegistry & Registry::objects()
 {
     return *m_objects;
+}
+
+ExtensionRegistry & Registry::extensions()
+{
+    return *m_extensions;
 }
 
 } // namespace glow

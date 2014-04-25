@@ -86,6 +86,7 @@ set(api_includes
     ${include_path}/debugmessageoutput.h
     ${include_path}/Error.h
     ${include_path}/Extension.h
+    ${include_path}/ExtensionRegistry.h
     ${include_path}/FrameBufferAttachment.h
     ${include_path}/FrameBufferObject.h
     ${include_path}/formatString.h
@@ -158,6 +159,7 @@ set(sources
     ${source_path}/debugmessageoutput.cpp
     ${source_path}/Error.cpp
     ${source_path}/Extension.cpp
+    ${source_path}/ExtensionRegistry.cpp
     ${source_path}/FrameBufferAttachment.cpp
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp

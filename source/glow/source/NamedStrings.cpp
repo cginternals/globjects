@@ -8,7 +8,7 @@
 #include <glow/StaticStringSource.h>
 #include <glow/logging.h>
 #include <glow/Version.h>
-#include <glow/Extension.h>
+#include <glow/global.h>
 
 namespace glow
 {

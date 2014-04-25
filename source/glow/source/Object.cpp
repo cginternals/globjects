@@ -6,13 +6,6 @@
 namespace glow
 {
 
-Object::Object()
-: m_id(0)
-, m_ownsGLObject(false)
-{
-	registerObject();
-}
-
 Object::Object(GLuint id, bool ownsGLObject)
 : m_id(id)
 , m_ownsGLObject(ownsGLObject)
@@ -26,11 +19,6 @@ Object::~Object()
 }
 
 GLuint Object::id() const
-{
-	return m_id;
-}
-
-Object::operator GLuint() const
 {
 	return m_id;
 }
