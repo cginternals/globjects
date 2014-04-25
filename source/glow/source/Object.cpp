@@ -1,5 +1,6 @@
 #include <glow/Object.h>
 
+#include <glow/Registry.h>
 #include <glow/ObjectRegistry.h>
 
 namespace glow
@@ -41,12 +42,12 @@ bool Object::ownsGLObject() const
 
 void Object::registerObject()
 {
-	IF_DEBUG(ObjectRegistry::registerObject(this);)
+    Registry::current().objects().registerObject(this);
 }
 
 void Object::deregisterObject()
 {
-	IF_DEBUG(ObjectRegistry::deregisterObject(this);)
+    Registry::current().objects().deregisterObject(this);
 }
 
 const std::string& Object::name() const

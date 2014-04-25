@@ -113,6 +113,7 @@ set(api_includes
     ${include_path}/ref_ptr.h
     ${include_path}/ref_ptr.hpp
     ${include_path}/Referenced.h
+    ${include_path}/Registry.h
     ${include_path}/RenderBufferAttachment.h
     ${include_path}/RenderBufferObject.h
     ${include_path}/Sampler.h
@@ -181,6 +182,7 @@ set(sources
     ${source_path}/ProgramUniformSetter.cpp
     ${source_path}/Query.cpp
     ${source_path}/Referenced.cpp
+    ${source_path}/Registry.cpp
     ${source_path}/RenderBufferAttachment.cpp
     ${source_path}/RenderBufferObject.cpp
     ${source_path}/Sampler.cpp
