@@ -10,6 +10,8 @@ namespace glow
 
 AbstractUniform::AbstractUniform(GLint location)
 : m_identity(location)
+, m_directStateAccess(false)
+, m_dsaCached(false)
 {
 }
 

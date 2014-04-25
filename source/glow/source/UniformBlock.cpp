@@ -6,12 +6,14 @@ namespace glow {
 
 UniformBlock::UniformBlock()
 : m_program(nullptr)
+, m_bindingIndex(0)
 {
 }
 
 UniformBlock::UniformBlock(const Program * program, const LocationIdentity & identity)
 : m_program(program)
 , m_identity(identity)
+, m_bindingIndex(0)
 {
 }
 

@@ -4,6 +4,8 @@ namespace glow {
 
 LocationIdentity::LocationIdentity()
 : m_invalid(true)
+, m_hasName(false)
+, m_location(-1)
 {
 }
 

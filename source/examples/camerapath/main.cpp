@@ -332,9 +332,16 @@ int main(int /*argc*/, char* /*argv*/[])
     Window window;
     window.setEventHandler(new EventHandler());
 
-    window.create(format, "Camera Path Example");
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
-    window.show();
+    if (window.create(format, "Camera Path Example"))
+    {
+        window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    return MainLoop::run();
+        window.show();
+
+        return MainLoop::run();
+    }
+    else
+    {
+        return 1;
+    }
 }
