@@ -109,7 +109,6 @@ set(api_includes
     ${include_path}/Program.h
     ${include_path}/Program.hpp
     ${include_path}/ProgramBinary.h
-    ${include_path}/ProgramUniformSetter.h
     ${include_path}/Query.h
     ${include_path}/ref_ptr.h
     ${include_path}/ref_ptr.hpp
@@ -132,7 +131,6 @@ set(api_includes
     ${include_path}/Uniform.h
     ${include_path}/Uniform.hpp
     ${include_path}/UniformBlock.h
-    ${include_path}/UniformSetter.h
     ${include_path}/Version.h
     ${include_path}/VertexArrayObject.h
     ${include_path}/VertexAttributeBinding.h
@@ -181,7 +179,6 @@ set(sources
     ${source_path}/pixelformat.h
     ${source_path}/Program.cpp
     ${source_path}/ProgramBinary.cpp
-    ${source_path}/ProgramUniformSetter.cpp
     ${source_path}/Query.cpp
     ${source_path}/Referenced.cpp
     ${source_path}/Registry.cpp
@@ -197,12 +194,17 @@ set(sources
     ${source_path}/TextureAttachment.cpp
     ${source_path}/TransformFeedback.cpp
     ${source_path}/UniformBlock.cpp
-    ${source_path}/UniformSetter.cpp
     ${source_path}/Version.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
     ${source_path}/VertexAttributeBindingImplementation.h
     ${source_path}/VertexAttributeBindingImplementation.cpp
+    
+    ${source_path}/strategies/AbstractUniformStrategy.h
+    ${source_path}/strategies/BindfulUniformStrategy.h
+    ${source_path}/strategies/BindfulUniformStrategy.cpp
+    ${source_path}/strategies/BindlessUniformStrategy.h
+    ${source_path}/strategies/BindlessUniformStrategy.cpp
 )
 
 # Group source files

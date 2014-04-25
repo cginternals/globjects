@@ -4,21 +4,34 @@
 
 #include <glow/Program.h>
 #include <glow/global.h>
+//#include <glow/Registry.h>
+
+#include "strategies/AbstractUniformStrategy.h"
+#include "strategies/BindlessUniformStrategy.h"
+#include "strategies/BindfulUniformStrategy.h"
+
+namespace {
+
+const glow::AbstractUniformStrategy & strategy()
+{
+    if (hasExtension(glow::GLOW_EXT_direct_state_access))
+        return glow::BindlessUniformStrategy();
+    else
+        return glow::BindfulUniformStrategy();
+}
+
+}
 
 namespace glow
 {
 
 AbstractUniform::AbstractUniform(GLint location)
 : m_identity(location)
-, m_directStateAccess(false)
-, m_dsaCached(false)
 {
 }
 
 AbstractUniform::AbstractUniform(const std::string & name)
 : m_identity(name)
-, m_directStateAccess(false)
-, m_dsaCached(false)
 {
 }
 
@@ -78,23 +91,237 @@ void AbstractUniform::update(const Program * program) const
         return;
     }
 
-    if (!m_dsaCached) // TODO: move caching to a per context caching
-    {
-        m_dsaCached = true;
+    updateAt(program, locationFor(program));
+}
 
-        m_directStateAccess = hasExtension(GLOW_EXT_direct_state_access);
-    }
+void AbstractUniform::setValue(const Program * program, GLint location, const float & value) const
+{
+    strategy().set(program, location, value);
+}
 
-    if (m_directStateAccess)
-    {
-		setValueAt(program, locationFor(program));
-    }
-    else
-    {
-        program->use();
+void AbstractUniform::setValue(const Program * program, GLint location, const int & value) const
+{
+    strategy().set(program, location, value);
+}
 
-        setValueAt(locationFor(program));
-    }
+void AbstractUniform::setValue(const Program * program, GLint location, const unsigned int & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const bool & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::vec2 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::vec3 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::vec4 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::ivec2 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::ivec3 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::ivec4 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::uvec2 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::uvec3 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::uvec4 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::mat2 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::mat3 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::mat4 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::mat2x3 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::mat3x2 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::mat2x4 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::mat4x2 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::mat3x4 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const glm::mat4x3 & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const TextureHandle & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<float> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<int> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<unsigned int> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<bool> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::vec2> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::vec3> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::vec4> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::ivec2> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::ivec3> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::ivec4> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::uvec2> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::uvec3> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::uvec4> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::mat2> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::mat3> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::mat4> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::mat2x3> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::mat3x2> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::mat2x4> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::mat4x2> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::mat3x4> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<glm::mat4x3> & value) const
+{
+    strategy().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program * program, GLint location, const std::vector<TextureHandle> & value) const
+{
+    strategy().set(program, location, value);
 }
 
 } // namespace glow
