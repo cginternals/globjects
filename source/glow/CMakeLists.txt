@@ -94,6 +94,7 @@ set(api_includes
     ${include_path}/FunctionCall.hpp
     ${include_path}/global.h
     ${include_path}/global.hpp
+    ${include_path}/HeapOnly.h
     ${include_path}/LocationIdentity.h
     ${include_path}/logging.h
     ${include_path}/logging.hpp
@@ -160,6 +161,7 @@ set(sources
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
     ${source_path}/global.cpp
+    ${source_path}/HeapOnly.cpp
     ${source_path}/IncludeProcessor.h
     ${source_path}/IncludeProcessor.cpp
     ${source_path}/LocationIdentity.cpp

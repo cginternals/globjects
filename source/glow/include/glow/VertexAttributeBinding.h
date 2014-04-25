@@ -21,7 +21,6 @@ public:
 	VertexAttributeBinding(
         VertexArrayObject * vao
     ,   const GLint bindingIndex);
-	~VertexAttributeBinding();
 
     const VertexArrayObject * vao() const;
     VertexArrayObject * vao();
@@ -51,6 +50,8 @@ public:
     const Buffer * buffer() const;
 
 protected:
+    ~VertexAttributeBinding();
+
     VertexArrayObject * m_vao; // TODO: weak_ptr?
    
     GLint m_bindingIndex;

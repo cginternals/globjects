@@ -45,7 +45,7 @@ public:
         GLsizei iterations = 0
     ,   GLuint vertexAttribLocation = 0);
 
-    virtual ~Icosahedron();
+
 
 
     /** draws the icosahedron as single triangles (TODO: generate set of triangle strips?)
@@ -70,6 +70,8 @@ private:
     glow::ref_ptr<glow::Buffer> m_indices;
 
     GLsizei m_size;
+protected:
+    virtual ~Icosahedron();
 };
 
 } // namespace glowutils

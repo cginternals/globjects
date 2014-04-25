@@ -23,9 +23,7 @@ class ObjectVisitor;
 class GLOW_API Object : public Referenced
 {
 public:
-	virtual ~Object();
-
-	virtual void accept(ObjectVisitor & visitor) = 0;
+    virtual void accept(ObjectVisitor & visitor) = 0;
 
 	GLuint id() const;
 	operator GLuint() const;
@@ -45,6 +43,7 @@ private:
 
 protected:
     Object(GLuint id, bool ownsGLObject = true);
+    virtual ~Object();
 
 protected:
 	GLuint m_id;

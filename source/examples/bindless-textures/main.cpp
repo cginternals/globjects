@@ -72,9 +72,9 @@ public:
     {
         glow::debugmessageoutput::enable();
 
-        glow::State state;
-        state.enable(GL_CULL_FACE);
-        state.clearColor(0.2f, 0.3f, 0.4f, 1.f);
+        glow::ref_ptr<glow::State> state = new glow::State;
+        state->enable(GL_CULL_FACE);
+        state->clearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         createGeometry();
         createTextures();

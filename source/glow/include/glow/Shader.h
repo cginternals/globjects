@@ -41,11 +41,9 @@ public:
     static Shader * fromString(const GLenum type, const std::string & sourceString);
 
 public:
-	Shader(const GLenum type);
+    Shader(const GLenum type);
     Shader(const GLenum type, AbstractStringSource * source);
     Shader(const GLenum type, AbstractStringSource * source, const std::vector<std::string> & includePaths);
-
-	virtual ~Shader();
 
     virtual void accept(ObjectVisitor& visitor) override;
 
@@ -71,9 +69,9 @@ public:
     static std::string typeString(GLenum type);
 
 protected:
+    virtual ~Shader();
+
     virtual void notifyChanged(const Changeable * changebale) override;
-
-
 protected:
     static GLuint create(GLenum type);
     static void setSource(const Shader & shader, const std::string & source);
