@@ -18,11 +18,13 @@ public:
 
 TEST_F(Referenced_test, CountsReferences)
 {
-    glow::Referenced ref;
+    glow::Referenced * ref = new glow::Referenced;
 
-    EXPECT_EQ(ref.refCounter(), 0);
-    ref.ref();
-    EXPECT_EQ(ref.refCounter(), 1);
+    EXPECT_EQ(ref->refCounter(), 0);
+    ref->ref();
+    EXPECT_EQ(ref->refCounter(), 1);
+
+    ref->destroy();
 }
 
 TEST_F(Referenced_test, DeletesItself)
