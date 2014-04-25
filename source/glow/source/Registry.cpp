@@ -4,6 +4,7 @@
 
 #include <glow/ObjectRegistry.h>
 #include <glow/ExtensionRegistry.h>
+#include <glow/StrategyRegistry.h>
 
 namespace glow
 {
@@ -31,6 +32,7 @@ std::unordered_map<long long, Registry *> Registry::s_registries;
 Registry::Registry()
 : m_objects(new ObjectRegistry)
 , m_extensions(new ExtensionRegistry)
+, m_strategies(new StrategyRegistry)
 {
 }
 
@@ -48,6 +50,11 @@ ObjectRegistry & Registry::objects()
 ExtensionRegistry & Registry::extensions()
 {
     return *m_extensions;
+}
+
+StrategyRegistry & Registry::strategies()
+{
+    return *m_strategies;
 }
 
 } // namespace glow

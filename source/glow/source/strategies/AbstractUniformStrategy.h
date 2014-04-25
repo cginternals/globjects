@@ -13,6 +13,11 @@ namespace glow
 class AbstractUniformStrategy
 {
 public:
+    AbstractUniformStrategy();
+    virtual ~AbstractUniformStrategy();
+
+    static AbstractUniformStrategy * create();
+
     virtual void set(const Program * program, GLint location, const float & value) const = 0;
     virtual void set(const Program * program, GLint location, const int & value) const = 0;
     virtual void set(const Program * program, GLint location, const unsigned int & value) const = 0;

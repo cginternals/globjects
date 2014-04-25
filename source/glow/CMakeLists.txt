@@ -122,6 +122,7 @@ set(api_includes
     ${include_path}/StateSetting.h
     ${include_path}/StateSetting.hpp
     ${include_path}/StaticStringSource.h
+    ${include_path}/StrategyRegistry.h
     ${include_path}/Sync.h
     ${include_path}/Texture.h
     ${include_path}/TextureAttachment.h
@@ -189,6 +190,7 @@ set(sources
     ${source_path}/State.cpp
     ${source_path}/StateSetting.cpp
     ${source_path}/StaticStringSource.cpp
+    ${source_path}/StrategyRegistry.cpp
     ${source_path}/Sync.cpp
     ${source_path}/Texture.cpp
     ${source_path}/TextureAttachment.cpp
@@ -201,6 +203,7 @@ set(sources
     ${source_path}/VertexAttributeBindingImplementation.cpp
     
     ${source_path}/strategies/AbstractUniformStrategy.h
+    ${source_path}/strategies/AbstractUniformStrategy.cpp
     ${source_path}/strategies/BindfulUniformStrategy.h
     ${source_path}/strategies/BindfulUniformStrategy.cpp
     ${source_path}/strategies/BindlessUniformStrategy.h

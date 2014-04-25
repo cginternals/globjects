@@ -4,20 +4,16 @@
 
 #include <glow/Program.h>
 #include <glow/global.h>
-//#include <glow/Registry.h>
+#include <glow/Registry.h>
+#include <glow/StrategyRegistry.h>
 
 #include "strategies/AbstractUniformStrategy.h"
-#include "strategies/BindlessUniformStrategy.h"
-#include "strategies/BindfulUniformStrategy.h"
 
 namespace {
 
 const glow::AbstractUniformStrategy & strategy()
 {
-    if (hasExtension(glow::GLOW_EXT_direct_state_access))
-        return glow::BindlessUniformStrategy();
-    else
-        return glow::BindfulUniformStrategy();
+    return glow::Registry::current().strategies().uniformStrategy();
 }
 
 }
