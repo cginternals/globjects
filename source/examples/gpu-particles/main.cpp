@@ -364,9 +364,24 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "Left Mouse" << "\t" << "Rotate scene";
+    glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    glow::info() << "\t" << "-" << "\t\t" << "Reduce steps per frame";
+    glow::info() << "\t" << "=" << "\t\t" << "Increase steps per frame";
+    glow::info() << "\t" << "R" << "\t\t" << "Compute new forces";
+    glow::info() << "\t" << "Shift + R" << "\t" << "Compute new forces and reset particles";
+    glow::info() << "\t" << "P" << "\t\t" << "Toggle pause";
+    glow::info() << "\t" << "F" << "\t\t" << "Particle computation using fragment shader";
+    glow::info() << "\t" << "T" << "\t\t" << "Particle computation using transform feedback";
+    glow::info() << "\t" << "C" << "\t\t" << "Particle computation using compute shader";
+
     ContextFormat format;
-    format.setVersion(3, 2); // minimum required version is 3.2 due to particle drawing using geometry shader.
-    //format.setProfile(ContextFormat::CoreProfile);
+    format.setVersion(3, 3); // minimum required version is 3.3 due to particle drawing using geometry shader.
+    format.setProfile(ContextFormat::CoreProfile);
 
     Window window;
 

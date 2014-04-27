@@ -90,17 +90,19 @@ void ExampleWindowEventHandler::handleDefaultKeys(glowwindow::KeyEvent & event)
 {
     switch (event.key())
     {
-        case GLFW_KEY_ESCAPE:
-            event.window()->close();
+    case GLFW_KEY_ESCAPE:
+        event.window()->close();
+        break;
+    case GLFW_KEY_ENTER:
+        if ((event.modifiers() & GLFW_MOD_ALT) == 0)
+        {
             break;
-        case GLFW_KEY_F11:
-        case GLFW_KEY_ENTER:
-            if ((event.modifiers() & GLFW_MOD_ALT) != 0)
-            {
-                event.window()->toggleMode();
-            }
-            break;
-        default:
-            break;
+        }
+        // fall through
+    case GLFW_KEY_F11:
+        event.window()->toggleMode();
+        break;
+    default:
+        break;
     }
 }

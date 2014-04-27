@@ -132,6 +132,16 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glow::info() << "\t" << "UP" << "\t\t" << "Tilt up";
+    glow::info() << "\t" << "DOWN" << "\t\t" << "Tilt down";
+    glow::info() << "\t" << "-" << "\t\t" << "Move forward";
+    glow::info() << "\t" << "=" << "\t\t" << "Move backward";
+
     ContextFormat format;
     format.setVersion(3, 2);
 

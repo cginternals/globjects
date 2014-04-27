@@ -325,6 +325,19 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    //glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    //glow::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    glow::info() << "\t" << "T" << "\t\t" << "Toggle camera path usage";
+    glow::info() << "\t" << "/" << "\t\t" << "Increase Icosahedron resolution";
+    glow::info() << "\t" << "]" << "\t\t" << "Decrease Icosahedron resolution";
+
     ContextFormat format;
     format.setVersion(3, 0);
     format.setDepthBufferSize(16);
