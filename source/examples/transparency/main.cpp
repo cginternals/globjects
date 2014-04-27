@@ -235,17 +235,24 @@ public:
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-	glowwindow::ContextFormat format;
-	format.setVersion(4, 3);
-	format.setDepthBufferSize(16);
-	//format.setSamples(4);
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
 
-	glowwindow::Window window;
+    glowwindow::ContextFormat format;
+    format.setVersion(4, 3);
+    format.setDepthBufferSize(16);
+    //format.setSamples(4);
 
-	if (!window.create(format, "Transparency")) return 1;
+    glowwindow::Window window;
+
+    if (!window.create(format, "Transparency")) return 1;
     window.context()->setSwapInterval(glowwindow::Context::NoVerticalSyncronization);
-	window.setEventHandler(new EventHandler());
-	window.show();
-	return glowwindow::MainLoop::run();
-	
+    window.setEventHandler(new EventHandler());
+    window.show();
+    return glowwindow::MainLoop::run();
 }

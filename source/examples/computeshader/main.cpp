@@ -20,6 +20,7 @@
 #include <glow/logging.h>
 #include <glow/debugmessageoutput.h>
 #include <glow/Texture.h>
+#include <glow/Extension.h>
 
 #include <glowutils/File.h>
 #include <glowutils/File.h>
@@ -53,9 +54,18 @@ public:
     void createAndSetupShaders();
 	void createAndSetupGeometry();
 
-    virtual void initialize(Window & ) override
+    virtual void initialize(Window & window) override
     {
         glow::debugmessageoutput::enable();
+
+        if (!glow::hasExtension(glow::Extension::GLOW_ARB_compute_shader))
+        {
+            glow::critical() << "Compute shaders are not supported";
+
+            window.close();
+
+            return;
+        }
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
@@ -117,6 +127,12 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+
     ContextFormat format;
     format.setVersion(4, 3);
     format.setProfile(ContextFormat::CoreProfile);

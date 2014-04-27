@@ -4,6 +4,7 @@
 #include <glow/global.h>
 #include <glow/Shader.h>
 #include <glow/debugmessageoutput.h>
+#include <glow/logging.h>
 
 #include <glowutils/File.h>
 #include <glowutils/File.h>
@@ -89,6 +90,12 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+
     ContextFormat format;
     format.setVersion(3, 0);
 
