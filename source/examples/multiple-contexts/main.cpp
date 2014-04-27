@@ -5,6 +5,7 @@
 
 #include <glow/Error.h>
 #include <glow/debugmessageoutput.h>
+#include <glow/logging.h>
 
 #include <glowwindow/Window.h>
 #include <glowwindow/ContextFormat.h>
@@ -66,6 +67,11 @@ public:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+
     ContextFormat format;
     format.setVersion(3, 0);
 
@@ -82,9 +88,6 @@ int main(int /*argc*/, char* /*argv*/[])
 
         windows[i].show();
         windows[i].context()->setSwapInterval(Context::NoVerticalSyncronization);
-
-        // make some random windows post quit on destroy ;)
-        windows[i].quitOnDestroy(0 != rand() % 2);
     }
 
     return MainLoop::run();

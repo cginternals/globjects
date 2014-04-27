@@ -2,6 +2,8 @@
 
 #include <glow/glow_api.h>
 
+#include <glow/HeapOnly.h>
+
 namespace glow 
 {
 
@@ -14,21 +16,20 @@ namespace glow
 
     \see ref_ptr
  */
-class GLOW_API Referenced
+class GLOW_API Referenced : public HeapOnly
 {
 public:
-	Referenced();
-	virtual ~Referenced();
+    Referenced();
 
-	void ref();
-	void unref();
+    void ref();
+    void unref();
 
-	int refCounter() const;
+    int refCounter() const;
 
 protected:
-	Referenced(const Referenced &);
-	Referenced & operator=(const Referenced &);
-
+    Referenced(const Referenced &);
+    Referenced & operator=(const Referenced &);
+    virtual ~Referenced();
 private:
     int m_refCounter;
 };

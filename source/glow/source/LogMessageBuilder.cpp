@@ -266,6 +266,24 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const glm::ivec4 & v)
 	return *this;
 }
 
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::uvec2& v)
+{
+    *this << "uvec2(" << v.x << "," << v.y << ")";
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::uvec3& v)
+{
+    *this << "uvec3(" << v.x << "," << v.y << "," << v.z << ")";
+    return *this;
+}
+
+LogMessageBuilder& LogMessageBuilder::operator<<(const glm::uvec4& v)
+{
+    *this << "uvec4(" << v.x << "," << v.y << "," << v.z << "," << v.w << ")";
+    return *this;
+}
+
 LogMessageBuilder& LogMessageBuilder::operator<<(const glm::mat2 & m)
 {
 	*this

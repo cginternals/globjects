@@ -11,6 +11,7 @@
 #include <glow/AbstractStringSource.h>
 #include <glow/StaticStringSource.h>
 #include <glow/CompositeStringSource.h>
+#include <glow/NamedString.h>
 
 namespace {
     // From http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
@@ -74,6 +75,8 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
     std::istringstream sourcestream(source->string());
     std::stringstream destinationstream;
 
+    bool inMultiLineComment = false;
+
     do
     {
         std::string line;
@@ -86,7 +89,17 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
         {
             if (trimmedLine[0] == '#')
             {
-                if (contains(trimmedLine, "extension"))
+                if (contains(trimmedLine, "/*"))
+                {
+                    inMultiLineComment = true;
+                }
+
+                if (contains(trimmedLine, "*/"))
+                {
+                    inMultiLineComment = false;
+                }
+
+                if (!inMultiLineComment && contains(trimmedLine, "extension"))
                 {
                     // #extension GL_ARB_shading_language_include : require
                     if (contains(trimmedLine, "GL_ARB_shading_language_include"))
@@ -98,7 +111,7 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                         destinationstream << line << '\n';
                     }
                 }
-                else if (contains(trimmedLine, "include"))
+                else if (!inMultiLineComment && contains(trimmedLine, "include"))
                 {
                     size_t leftBracketPosition = trimmedLine.find_first_of('<');
                     size_t rightBracketPosition = trimmedLine.find_last_of('>');
@@ -134,13 +147,13 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                                 m_includes.insert(include);
                                 compositeSource->appendSource(new StaticStringSource(destinationstream.str()));
 
-                                bool found = false;
+                                NamedString * namedString = nullptr;
                                 std::string fullPath;
                                 if (startsWith(include, '/'))
                                 {
-                                    if (isNamedString(include, true))
+                                    namedString = NamedString::obtain(include);
+                                    if (namedString)
                                     {
-                                        found = true;
                                         fullPath = include;
                                     }
                                 }
@@ -149,17 +162,17 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                                     for (const std::string& prefix : m_includePaths)
                                     {
                                         fullPath = expandPath(include, prefix);
-                                        if (isNamedString(fullPath, true))
+                                        namedString = NamedString::obtain(include);
+                                        if (namedString)
                                         {
-                                            found = true;
                                             break;
                                         }
                                     }
                                 }
 
-                                if (found)
+                                if (namedString)
                                 {
-                                    compositeSource->appendSource(processComposite(getNamedStringSource(fullPath)));
+                                    compositeSource->appendSource(processComposite(namedString->stringSource()));
                                 }
                                 else
                                 {
@@ -187,11 +200,11 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                 destinationstream << line << '\n';
             }
         }
-	else
-	{
-		// empty line
-		destinationstream << '\n';
-	}
+        else
+        {
+            // empty line
+            destinationstream << line << '\n';
+        }
     }
     while (sourcestream.good());
 

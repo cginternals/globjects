@@ -17,7 +17,6 @@ class GLOW_API Sampler : public Object
 public:
     Sampler();
     Sampler(GLuint id, bool ownsGLObject = true);
-    virtual ~Sampler();
 
     virtual void accept(ObjectVisitor & visitor) override;
 
@@ -30,6 +29,8 @@ public:
     GLfloat getParameterf(GLenum pname) const;
 
 protected:
+    virtual ~Sampler();
+
     static GLuint genSampler();
 
 };

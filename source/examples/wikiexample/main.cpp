@@ -55,11 +55,17 @@ class EventHandler : public ExampleWindowEventHandler
 {
 public:
 	EventHandler()
+    : vao(nullptr)
+    , cornerBuffer(nullptr)
+    , program(nullptr)
     {
     }
 
     virtual ~EventHandler()
     {
+        vao->destroy();
+        cornerBuffer->destroy();
+        program->destroy();
     }
 
     virtual void initialize(Window &) override
@@ -82,8 +88,11 @@ public:
         
         
 		cornerBuffer = new glow::Buffer(GL_ARRAY_BUFFER);
+        cornerBuffer->ref();
 		program = new glow::Program();
+        program->ref();
 		vao = new glow::VertexArrayObject();
+        vao->ref();
 
 		program->attach(
                         new glow::Shader(GL_VERTEX_SHADER, vertexShaderSource),
@@ -132,6 +141,11 @@ private:
 
 int main(int /*argc*/, char* /*argv*/[])
 {
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+
     ContextFormat format;
     format.setVersion(3, 0);
 

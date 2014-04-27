@@ -34,6 +34,19 @@ Texture::~Texture()
 	}
 }
 
+Texture * Texture::createDefault(GLenum target)
+{
+    Texture* tex = new Texture(target);
+
+    tex->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    tex->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    tex->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    tex->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    tex->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    return tex;
+}
+
 GLuint Texture::genTexture()
 {
     GLuint id = 0;

@@ -26,7 +26,6 @@ public:
 
 public:
     State(Mode = ImmediateMode);
-    ~State();
 
     static State * currentState();
 
@@ -53,6 +52,8 @@ public:
     std::vector<StateSetting*> settings();
     std::vector<const StateSetting*> settings() const;
 protected:
+    virtual ~State();
+
     Mode m_mode;
     std::unordered_map<GLenum, Capability*> m_capabilities;
     std::unordered_map<StateSettingType, StateSetting*> m_settings;

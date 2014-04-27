@@ -21,10 +21,11 @@ include_directories(
     ${GLEW_INCLUDE_DIR}
 )
 
+get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
+
 include_directories(
     BEFORE
-    ${CMAKE_BINARY_DIR}/source/codegeneration
-    ${CMAKE_SOURCE_DIR}/source/codegeneration
+    ${GENERATED_HEADER_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -85,6 +86,7 @@ set(api_includes
     ${include_path}/debugmessageoutput.h
     ${include_path}/Error.h
     ${include_path}/Extension.h
+    ${include_path}/ExtensionRegistry.h
     ${include_path}/FrameBufferAttachment.h
     ${include_path}/FrameBufferObject.h
     ${include_path}/formatString.h
@@ -93,6 +95,7 @@ set(api_includes
     ${include_path}/FunctionCall.hpp
     ${include_path}/global.h
     ${include_path}/global.hpp
+    ${include_path}/HeapOnly.h
     ${include_path}/LocationIdentity.h
     ${include_path}/logging.h
     ${include_path}/logging.hpp
@@ -100,17 +103,18 @@ set(api_includes
     ${include_path}/LogMessageBuilder.h
     ${include_path}/LogMessageBuilder.hpp
     ${include_path}/memory.h
+    ${include_path}/NamedString.h
     ${include_path}/Object.h
     ${include_path}/ObjectRegistry.h
     ${include_path}/ObjectVisitor.h
     ${include_path}/Program.h
     ${include_path}/Program.hpp
     ${include_path}/ProgramBinary.h
-    ${include_path}/ProgramUniformSetter.h
     ${include_path}/Query.h
     ${include_path}/ref_ptr.h
     ${include_path}/ref_ptr.hpp
     ${include_path}/Referenced.h
+    ${include_path}/Registry.h
     ${include_path}/RenderBufferAttachment.h
     ${include_path}/RenderBufferObject.h
     ${include_path}/Sampler.h
@@ -119,6 +123,8 @@ set(api_includes
     ${include_path}/StateSetting.h
     ${include_path}/StateSetting.hpp
     ${include_path}/StaticStringSource.h
+    ${include_path}/BehaviorRegistry.h
+    ${include_path}/Sync.h
     ${include_path}/Texture.h
     ${include_path}/TextureAttachment.h
     ${include_path}/TextureHandle.h
@@ -127,7 +133,6 @@ set(api_includes
     ${include_path}/Uniform.h
     ${include_path}/Uniform.hpp
     ${include_path}/UniformBlock.h
-    ${include_path}/UniformSetter.h
     ${include_path}/Version.h
     ${include_path}/VertexArrayObject.h
     ${include_path}/VertexAttributeBinding.h
@@ -154,10 +159,12 @@ set(sources
     ${source_path}/debugmessageoutput.cpp
     ${source_path}/Error.cpp
     ${source_path}/Extension.cpp
+    ${source_path}/ExtensionRegistry.cpp
     ${source_path}/FrameBufferAttachment.cpp
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
     ${source_path}/global.cpp
+    ${source_path}/HeapOnly.cpp
     ${source_path}/IncludeProcessor.h
     ${source_path}/IncludeProcessor.cpp
     ${source_path}/LocationIdentity.cpp
@@ -165,8 +172,9 @@ set(sources
     ${source_path}/LogMessage.cpp
     ${source_path}/LogMessageBuilder.cpp
     ${source_path}/memory.cpp
-    ${source_path}/NamedStrings.cpp
-    ${source_path}/NamedStrings.h
+    ${source_path}/NamedString.cpp
+    ${source_path}/NamedStringRegistry.h
+    ${source_path}/NamedStringRegistry.cpp
     ${source_path}/Object.cpp
     ${source_path}/ObjectRegistry.cpp
     ${source_path}/ObjectVisitor.cpp
@@ -174,9 +182,9 @@ set(sources
     ${source_path}/pixelformat.h
     ${source_path}/Program.cpp
     ${source_path}/ProgramBinary.cpp
-    ${source_path}/ProgramUniformSetter.cpp
     ${source_path}/Query.cpp
     ${source_path}/Referenced.cpp
+    ${source_path}/Registry.cpp
     ${source_path}/RenderBufferAttachment.cpp
     ${source_path}/RenderBufferObject.cpp
     ${source_path}/Sampler.cpp
@@ -184,16 +192,30 @@ set(sources
     ${source_path}/State.cpp
     ${source_path}/StateSetting.cpp
     ${source_path}/StaticStringSource.cpp
+    ${source_path}/BehaviorRegistry.cpp
+    ${source_path}/Sync.cpp
     ${source_path}/Texture.cpp
     ${source_path}/TextureAttachment.cpp
     ${source_path}/TransformFeedback.cpp
     ${source_path}/UniformBlock.cpp
-    ${source_path}/UniformSetter.cpp
     ${source_path}/Version.cpp
     ${source_path}/VertexArrayObject.cpp
     ${source_path}/VertexAttributeBinding.cpp
     ${source_path}/VertexAttributeBindingImplementation.h
     ${source_path}/VertexAttributeBindingImplementation.cpp
+    
+    ${source_path}/behaviors/AbstractUniformBehavior.h
+    ${source_path}/behaviors/AbstractUniformBehavior.cpp
+    ${source_path}/behaviors/BindfulUniformBehavior.h
+    ${source_path}/behaviors/BindfulUniformBehavior.cpp
+    ${source_path}/behaviors/BindlessUniformBehavior.h
+    ${source_path}/behaviors/BindlessUniformBehavior.cpp
+    ${source_path}/behaviors/AbstractBufferBehavior.h
+    ${source_path}/behaviors/AbstractBufferBehavior.cpp
+    ${source_path}/behaviors/BindfulBufferBehavior.h
+    ${source_path}/behaviors/BindfulBufferBehavior.cpp
+    ${source_path}/behaviors/BindlessBufferBehavior.h
+    ${source_path}/behaviors/BindlessBufferBehavior.cpp
 )
 
 # Group source files

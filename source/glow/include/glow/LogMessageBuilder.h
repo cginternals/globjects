@@ -137,6 +137,10 @@ public:
     LogMessageBuilder& operator<<(const glm::ivec3& v);
     LogMessageBuilder& operator<<(const glm::ivec4& v);
 
+    LogMessageBuilder& operator<<(const glm::uvec2& v);
+    LogMessageBuilder& operator<<(const glm::uvec3& v);
+    LogMessageBuilder& operator<<(const glm::uvec4& v);
+
 	LogMessageBuilder& operator<<(const glm::mat2& m);
 	LogMessageBuilder& operator<<(const glm::mat3& m);
 	LogMessageBuilder& operator<<(const glm::mat4& m);

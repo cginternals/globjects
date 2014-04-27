@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <cassert>
 
+#include <glow/Registry.h>
 #include <glow/ObjectRegistry.h>
 #include <glow/logging.h>
 #include <glow/global.h>
@@ -128,7 +129,7 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::collectObjectInfo()
 	m_infoGroups.clear();
 	m_memoryUsage.clear();
 
-	for (Object* object: ObjectRegistry::objects())
+    for (Object* object: Registry::current().objects())
 	{
 		visit(object);
 	}
@@ -185,11 +186,21 @@ void DebugInfo::visitFrameBufferObject(FrameBufferObject* fbo)
 		std::string objectName;
 		if (attachment->isTextureAttachment())
 		{
-			objectName = name("Texture", dynamic_cast<TextureAttachment*>(attachment)->texture());
+            TextureAttachment* textureAttachment = dynamic_cast<TextureAttachment*>(attachment);
+
+            if (textureAttachment != nullptr)
+            {
+                objectName = name("Texture", textureAttachment->texture());
+            }
 		}
 		else
 		{
-			objectName = name("RenderBufferObject", dynamic_cast<RenderBufferAttachment*>(attachment)->renderBuffer());
+            RenderBufferAttachment* renderBufferAttachment = dynamic_cast<RenderBufferAttachment*>(attachment);
+
+            if (renderBufferAttachment != nullptr)
+            {
+                objectName = name("RenderBufferObject", renderBufferAttachment->renderBuffer());
+            }
 		}
 
 		info.addProperty(attachment->attachmentString(), objectName);

@@ -47,15 +47,9 @@ const T & Uniform<T>::value() const
 }
 
 template<typename T>
-void Uniform<T>::setValueAt(GLint location) const
+void Uniform<T>::updateAt(const Program * program, GLint location) const
 {
-    setValue(location, m_value);
-}
-
-template<typename T>
-void Uniform<T>::setValueAt(const Program* program, GLint location) const
-{
-    setValue(program->id(), location, m_value);
+    setValue(program, location, m_value);
 }
 
 template<typename T>
@@ -63,18 +57,6 @@ void Uniform<T>::set(const T & value)
 {
 	m_value = value;
 	changed();
-}
-
-template<typename T>
-void Uniform<T>::setValue(GLint location, const T & value) const
-{
-    UniformSetter::set(location, value);
-}
-
-template<typename T>
-void Uniform<T>::setValue(GLuint program, GLint location, const T & value) const
-{
-    ProgramUniformSetter::set(program, location, value);
 }
 
 } // namespace glow

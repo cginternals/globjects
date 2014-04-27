@@ -11,6 +11,8 @@
 namespace glow
 {
 
+class AbstractBufferBehavior;
+
 /** \brief Wrapper for OpenGL buffer objects.
  *
  * The Buffer class encapsulates OpenGL buffer objects.
@@ -50,13 +52,7 @@ public:
      * @param id an external OpenGL buffer id
      * @param target will be used when bind() is called without parameter
      */
-	Buffer(GLuint id, GLenum target);
-    /**
-     * @brief ~Buffer
-     * Automatically deletes the associated OpenGL buffer unless the object was created with an external id.
-     * \see https://www.opengl.org/sdk/docs/man4/xhtml/glDeleteBuffers.xml
-     */
-	virtual ~Buffer();
+    Buffer(GLuint id, GLenum target);
 
     /**
      * Implements the visitor pattern.
@@ -84,6 +80,11 @@ public:
      * @param target the target for unbinding
      */
     static void unbind(GLenum target);
+
+    /**
+     * @return target used for bind() without parameter
+     */
+    GLenum target() const;
 
     /**
      * Wraps the OpenGL function glBufferData.
@@ -184,7 +185,17 @@ public:
      * Wraps the OpenGL function glBindBufferBase.
      * \see http://www.opengl.org/sdk/docs/man/xhtml/glBindBufferBase.xml
      */
+    void bindBase(GLuint index) const;
+    /**
+     * Wraps the OpenGL function glBindBufferBase.
+     * \see http://www.opengl.org/sdk/docs/man/xhtml/glBindBufferBase.xml
+     */
     void bindBase(GLenum target, GLuint index) const;
+    /**
+     * Wraps the OpenGL function glBindBufferRange.
+     * \see http://www.opengl.org/sdk/docs/man3/xhtml/glBindBufferRange.xml
+     */
+    void bindRange(GLuint index, GLintptr offset, GLsizeiptr size) const;
     /**
      * Wraps the OpenGL function glBindBufferRange.
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glBindBufferRange.xml
@@ -199,31 +210,10 @@ public:
 
     /**
      * Wraps the OpenGL function glCopyBufferSubData.
-     * Copies contents of buffer bound to readTarget to the buffer bound to writeTarget.
-     * @param readTarget target of buffer from which to read
-     * @param writeTarget target of buffer in which to write copied data
      * @param readOffset offset in bytes in read buffer
      * @param writeOffset offset in bytes in write buffer
      * @param size size of the data to be copies in bytes
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glCopyBufferSubData.xml
-     */
-    static void copySubData(GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
-    /**
-     * Convenience method.
-     * Copies content of this buffer to whatever buffer is bound to writeTarget.
-     * Uses GL_COPY_READ_BUFFER as readTarget.
-     */
-    void copySubData(GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const;
-    /**
-     * Convenience method.
-     * Uses GL_COPY_READ_BUFFER as readTarget.
-     * Both readOffset and writeOffset are 0.
-     */
-    void copySubData(GLenum writeTarget, GLsizeiptr size) const;
-    /**
-     * Convenience method.
-     * Copies the contents of this Buffer to buffer.
-     * Uses GL_COPY_WRITE_BUFFER as writeTarget, buffer will be bound to GL_COPY_WRITE_BUFFER.
      */
     void copySubData(glow::Buffer * buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const;
     /**
@@ -261,9 +251,11 @@ protected:
     mutable GLenum m_target;
 
     /**
-      * Cached boolean whether direct state access is available or not
-      */
-    bool m_directStateAccess; // TODO: move to per context cache
+     * @brief ~Buffer
+     * Automatically deletes the associated OpenGL buffer unless the object was created with an external id.
+     * \see https://www.opengl.org/sdk/docs/man4/xhtml/glDeleteBuffers.xml
+     */
+    virtual ~Buffer();
 
     /**
      * Wraps the OpenGL function glGenBuffers.
@@ -271,6 +263,8 @@ protected:
      * /see https://www.opengl.org/sdk/docs/man4/xhtml/glGenBuffers.xml
      */
 	static GLuint genBuffer();
+
+    const AbstractBufferBehavior & behavior() const;
 };
 
 } // namespace glow

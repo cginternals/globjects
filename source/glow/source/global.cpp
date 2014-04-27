@@ -3,7 +3,10 @@
 #include <glow/Error.h>
 #include <glow/logging.h>
 
-#include "NamedStrings.h"
+#include <glow/Registry.h>
+#include <glow/ExtensionRegistry.h>
+
+#include <glow/NamedString.h>
 
 namespace glow
 {
@@ -217,39 +220,24 @@ std::vector<std::string> getExtensions()
     return extensions;
 }
 
-void createNamedString(const std::string& name, const std::string& string, GLenum type)
+bool hasExtension(Extension extension)
 {
-    NamedStrings::createNamedString(name, string, type);
+    return Registry::current().extensions().hasExtension(extension);
 }
 
-void createNamedString(const std::string& name, AbstractStringSource* source, GLenum type)
+bool hasExtension(const std::string & extensionName)
 {
-    NamedStrings::createNamedString(name, source, type);
+    return Registry::current().extensions().hasExtension(extensionName);
 }
 
-void deleteNamedString(const std::string& name)
+bool isInCoreProfile(Extension extension, const Version & version)
 {
-    NamedStrings::deleteNamedString(name);
+    return Registry::current().extensions().isInCoreProfile(extension, version);
 }
 
-bool isNamedString(const std::string& name, bool cached)
+bool isInCoreProfile(Extension extension)
 {
-    return NamedStrings::isNamedString(name, cached);
-}
-
-std::string getNamedString(const std::string& name, bool cached)
-{
-    return NamedStrings::namedString(name, cached);
-}
-
-AbstractStringSource* getNamedStringSource(const std::string& name)
-{
-    return NamedStrings::namedStringSource(name);
-}
-
-GLenum getNamedStringType(const std::string& name, bool cached)
-{
-    return NamedStrings::namedStringType(name, cached);
+    return Registry::current().extensions().isInCoreProfile(extension);
 }
 
 void enable(GLenum capability)

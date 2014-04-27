@@ -17,8 +17,7 @@ class ObjectVisitor;
 class GLOW_API RenderBufferObject : public Object
 {
 public:
-	RenderBufferObject();
-	virtual ~RenderBufferObject();
+    RenderBufferObject();
 
     virtual void accept(ObjectVisitor & visitor) override;
 
@@ -38,6 +37,8 @@ public:
     GLint getParameter(GLenum pname) const;
 
 protected:
+    virtual ~RenderBufferObject();
+
 	static GLuint genRenderBuffer();
 };
 

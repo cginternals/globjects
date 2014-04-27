@@ -145,23 +145,20 @@ public:
     {
         switch (event.key())
         {
-            case GLFW_KEY_F5:
-                glowutils::File::reloadAll();
-                break;
-            case GLFW_KEY_1:
-                m_flightEnabled = !m_flightEnabled;
-                if (!m_flightEnabled)
-                    m_flightNav.stopMovement(glowutils::FlightNavigation::All);
-                event.window()->setInputMode(GLFW_CURSOR, m_flightEnabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
-                break;
-            case GLFW_KEY_SPACE:
-                m_camera.setCenter(vec3());
-                m_camera.setEye(vec3(0.f, 1.f, 4.0f));
-                m_camera.setUp(vec3(0,1,0));
-                break;
-            case GLFW_KEY_F11:
-                event.window()->toggleMode();
-                break;
+        case GLFW_KEY_F5:
+            glowutils::File::reloadAll();
+            break;
+        case GLFW_KEY_1:
+            m_flightEnabled = !m_flightEnabled;
+            if (!m_flightEnabled)
+                m_flightNav.stopMovement(glowutils::FlightNavigation::All);
+            event.window()->setInputMode(GLFW_CURSOR, m_flightEnabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+            break;
+        case GLFW_KEY_SPACE:
+            m_camera.setCenter(vec3());
+            m_camera.setEye(vec3(0.f, 1.f, 4.0f));
+            m_camera.setUp(vec3(0,1,0));
+            break;
         }
 
         if (!m_flightEnabled)
@@ -330,6 +327,32 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glow::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    glow::info() << "\t" << "1" << "\t" << "Toggle flight mode / world in hand navigation";
+
+    glow::info();
+    glow::info() << "\t" << "During world in hand navigation";
+    glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+
+    glow::info();
+    glow::info() << "\t" << "During flight mode";
+    glow::info() << "\t" << "Mouse Movement" << "\t" << "Look around";
+    glow::info() << "\t" << "W" << "\t\t" << "Move forward";
+    glow::info() << "\t" << "UP" << "\t\t" << "Move forward";
+    glow::info() << "\t" << "A" << "\t\t" << "Move left";
+    glow::info() << "\t" << "LEFT" << "\t\t" << "Move left";
+    glow::info() << "\t" << "S" << "\t\t" << "Move backward";
+    glow::info() << "\t" << "DOWN" << "\t\t" << "Move backward";
+    glow::info() << "\t" << "D" << "\t\t" << "Move right";
+    glow::info() << "\t" << "RIGHT" << "\t\t" << "Move right";
+
     ContextFormat format;
     format.setVersion(3, 0);
 

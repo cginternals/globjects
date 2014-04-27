@@ -35,7 +35,7 @@ void Referenced::unref()
 
 	if (m_refCounter <= 0)
 	{
-		delete this;
+        destroy();
 	}
 }
 

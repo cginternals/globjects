@@ -37,18 +37,15 @@ public:
     Uniform(GLint location, const T & value);
     Uniform(const std::string & name);
     Uniform(const std::string & name, const T & value);
-    virtual ~Uniform();
 
     void set(const T & value);
 
     const T & value() const;
 
 protected:
-    virtual void setValueAt(GLint location) const override;
-    virtual void setValueAt(const Program* program, GLint location) const override;
-    void setValue(GLint location, const T & value) const;
-    void setValue(GLuint program, GLint location, const T & value) const;
+    virtual ~Uniform();
 
+    virtual void updateAt(const Program * program, GLint location) const override;
 protected:
     T m_value; ///< The uniforms value, explictly required when relinking programs.
 };
