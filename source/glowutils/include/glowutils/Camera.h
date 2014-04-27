@@ -10,10 +10,10 @@ namespace glowutils
 
 /** \brief Represents matrices for a typical 3d look at camera with perspective.
 
-    A camera is specified via near, far, fovy, as well as an eye, a center, and an up 
+    A camera is specified via near, far, fovy, as well as an eye, a center, and an up
     vector. Furthermore the viewport should be specified. Camera itself does not use
     any OpenGL calls, but merely provides lazzy math to all common matrices required
-    for affine transformation of a scene, namely the view and projection matrices, their 
+    for affine transformation of a scene, namely the view and projection matrices, their
     their combination and all related inverses (as well as a normal matrix).
     The class relies on lazzy computation of all matrices, causing less recomputations
     of, e.g., matrices and inverse matrices requested on an irregular basis.
@@ -23,7 +23,7 @@ class GLOWUTILS_API Camera
 public:
     Camera(
         const glm::vec3 & eye    = glm::vec3(0.0, 0.0, 1.0)
-    ,   const glm::vec3 & center = glm::vec3(0.0, 0.0, 0.0) 
+    ,   const glm::vec3 & center = glm::vec3(0.0, 0.0, 0.0)
     ,   const glm::vec3 & up     = glm::vec3(0.0, 1.0, 0.0));
 
     virtual ~Camera();
@@ -42,6 +42,9 @@ public:
 
     float fovy() const;
     void setFovy(float fovy);
+
+    const glm::vec3 & projectionOffset() const;
+    void setProjectionOffset(const glm::vec3 & projectionCenterOffset);
 
     const glm::ivec2 & viewport() const;
     void setViewport(const glm::ivec2 & viewport);
@@ -79,6 +82,8 @@ protected:
     float m_aspect;
     float m_zNear;
     float m_zFar;
+
+    glm::vec3 m_projectionOffset;
 
     glm::ivec2 m_viewport;
 
