@@ -5,7 +5,7 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/Version.h>
 #include <glow/Error.h>
-#include <glow/Extension.h>
+#include <glow/global.h>
 
 #include "VertexAttributeBindingImplementation.h"
 

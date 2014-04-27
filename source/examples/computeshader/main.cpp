@@ -21,6 +21,7 @@
 #include <glow/debugmessageoutput.h>
 #include <glow/Texture.h>
 #include <glow/Extension.h>
+#include <glow/global.h>
 
 #include <glowutils/File.h>
 #include <glowutils/File.h>

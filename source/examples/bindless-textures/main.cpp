@@ -19,6 +19,7 @@
 #include <glow/Buffer.h>
 #include <glow/debugmessageoutput.h>
 #include <glow/Extension.h>
+#include <glow/global.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/global.h>

@@ -12,21 +12,23 @@ class Object;
 /** \brief Tracks all wrapped OpenGL objects in glow.
     
     To obtain all wrapped objects use objects().
-    The other methods are not meant to be called by the user.
 */
 class GLOW_API ObjectRegistry
 {
-private:
+    friend class Object;
+public:
 	ObjectRegistry();
 
-public:
-	static const std::set<Object *> & objects();
+    const std::set<Object *> & objects();
 
-	static void registerObject(Object * object);
-	static void deregisterObject(Object * object);
+    std::set<Object *>::iterator begin();
+    std::set<Object *>::iterator end();
+protected:
+    void registerObject(Object * object);
+    void deregisterObject(Object * object);
 
 protected:
-	static std::set<Object *> s_objects;
+    std::set<Object *> m_objects;
 };
 
 } // namespace glow
