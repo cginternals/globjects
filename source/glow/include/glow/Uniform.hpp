@@ -3,8 +3,6 @@
 #include <glow/Uniform.h>
 
 #include <glow/Program.h>
-#include <glow/ProgramUniformSetter.h>
-#include <glow/UniformSetter.h>
 
 namespace glow
 {

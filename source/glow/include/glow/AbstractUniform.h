@@ -3,6 +3,7 @@
 #include <string>
 #include <set>
 #include <vector>
+#include <array>
 
 #include <GL/glew.h>
 
