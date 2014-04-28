@@ -148,21 +148,16 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                                 compositeSource->appendSource(new StaticStringSource(destinationstream.str()));
 
                                 NamedString * namedString = nullptr;
-                                std::string fullPath;
                                 if (startsWith(include, '/'))
                                 {
                                     namedString = NamedString::obtain(include);
-                                    if (namedString)
-                                    {
-                                        fullPath = include;
-                                    }
                                 }
                                 else
                                 {
                                     for (const std::string& prefix : m_includePaths)
                                     {
-                                        fullPath = expandPath(include, prefix);
-                                        namedString = NamedString::obtain(include);
+                                        std::string fullPath = expandPath(include, prefix);
+                                        namedString = NamedString::obtain(fullPath);
                                         if (namedString)
                                         {
                                             break;
