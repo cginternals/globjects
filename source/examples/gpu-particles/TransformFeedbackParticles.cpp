@@ -13,7 +13,7 @@
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
-#include <glowutils/global.h>
+#include <glowutils/glowutils.h>
 
 #include "TransformFeedbackParticles.h"
 

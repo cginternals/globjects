@@ -1,6 +1,6 @@
 #include "AbstractUniformBehavior.h"
 
-#include <glow/global.h>
+#include <glow/glow.h>
 
 #include "BindlessUniformBehavior.h"
 #include "BindfulUniformBehavior.h"

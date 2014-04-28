@@ -93,8 +93,8 @@ set(api_includes
     ${include_path}/formatString.hpp
     ${include_path}/FunctionCall.h
     ${include_path}/FunctionCall.hpp
-    ${include_path}/global.h
-    ${include_path}/global.hpp
+    ${include_path}/glow.h
+    ${include_path}/glow.hpp
     ${include_path}/HeapOnly.h
     ${include_path}/LocationIdentity.h
     ${include_path}/logging.h
@@ -163,7 +163,7 @@ set(sources
     ${source_path}/FrameBufferAttachment.cpp
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
-    ${source_path}/global.cpp
+    ${source_path}/glow.cpp
     ${source_path}/HeapOnly.cpp
     ${source_path}/IncludeProcessor.h
     ${source_path}/IncludeProcessor.cpp

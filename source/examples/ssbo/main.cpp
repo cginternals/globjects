@@ -8,7 +8,7 @@
 #include <glowutils/File.h>
 #include <glowutils/File.h>
 #include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/global.h>
+#include <glowutils/glowutils.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>

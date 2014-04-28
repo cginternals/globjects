@@ -2,7 +2,7 @@
 
 #include <glow/State.h>
 #include <glow/Error.h>
-#include <glow/global.h>
+#include <glow/glow.h>
 
 namespace glow {
 

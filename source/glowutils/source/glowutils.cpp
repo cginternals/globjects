@@ -1,4 +1,4 @@
-#include <glowutils/global.h>
+#include <glowutils/glowutils.h>
 
 #include <glow/logging.h>
 #include <glow/NamedString.h>

@@ -1,6 +1,6 @@
 #include "AbstractBufferBehavior.h"
 
-#include <glow/global.h>
+#include <glow/glow.h>
 
 #include "BindfulBufferBehavior.h"
 #include "BindlessBufferBehavior.h"

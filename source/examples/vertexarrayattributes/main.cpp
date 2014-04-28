@@ -11,7 +11,7 @@
 #include <glow/debugmessageoutput.h>
 
 #include <glowutils/File.h>
-#include <glowutils/global.h>
+#include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 
 #include <glowwindow/Context.h>
