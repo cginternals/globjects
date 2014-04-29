@@ -42,6 +42,8 @@ Registry::~Registry()
 {
     delete m_objects;
     delete m_extensions;
+    delete m_behaviors;
+    delete m_namedStrings;
 }
 
 ObjectRegistry & Registry::objects()
