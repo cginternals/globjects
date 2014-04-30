@@ -4,11 +4,13 @@
 
 namespace glow {
 
+GLenum BindfulBufferBehavior::s_workingTarget = GL_COPY_WRITE_BUFFER;
+
 void * BindfulBufferBehavior::map(const Buffer * buffer, GLenum access) const
 {
-    buffer->bind();
+    buffer->bind(s_workingTarget);
 
-    void * result = glMapBuffer(buffer->target(), access);
+    void * result = glMapBuffer(s_workingTarget, access);
     CheckGLError();
 
     return result;
@@ -16,9 +18,9 @@ void * BindfulBufferBehavior::map(const Buffer * buffer, GLenum access) const
 
 void * BindfulBufferBehavior::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, GLbitfield access) const
 {
-    buffer->bind();
+    buffer->bind(s_workingTarget);
 
-    void * result = glMapBufferRange(buffer->target(), offset, length, access);
+    void * result = glMapBufferRange(s_workingTarget, offset, length, access);
     CheckGLError();
 
     return result;
@@ -26,9 +28,9 @@ void * BindfulBufferBehavior::mapRange(const Buffer * buffer, GLintptr offset, G
 
 bool BindfulBufferBehavior::unmap(const Buffer * buffer) const
 {
-    buffer->bind();
+    buffer->bind(s_workingTarget);
 
-    GLboolean success = glUnmapBuffer(buffer->target());
+    GLboolean success = glUnmapBuffer(s_workingTarget);
     CheckGLError();
 
     return success == GL_TRUE;
@@ -36,25 +38,25 @@ bool BindfulBufferBehavior::unmap(const Buffer * buffer) const
 
 void BindfulBufferBehavior::setData(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLenum usage) const
 {
-    buffer->bind();
+    buffer->bind(s_workingTarget);
 
-    glBufferData(buffer->target(), size, data, usage);
+    glBufferData(s_workingTarget, size, data, usage);
     CheckGLError();
 }
 
 void BindfulBufferBehavior::setSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, const GLvoid * data) const
 {
-    buffer->bind();
+    buffer->bind(s_workingTarget);
 
-    glBufferSubData(buffer->target(), offset, size, data);
+    glBufferSubData(s_workingTarget, offset, size, data);
     CheckGLError();
 }
 
 void BindfulBufferBehavior::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLbitfield flags) const
 {
-    buffer->bind();
+    buffer->bind(s_workingTarget);
 
-    glBufferStorage(buffer->target(), size, data, flags);
+    glBufferStorage(s_workingTarget, size, data, flags);
     CheckGLError();
 }
 
@@ -63,43 +65,34 @@ void BindfulBufferBehavior::copySubData(const glow::Buffer * buffer, glow::Buffe
     GLenum readTarget = GL_COPY_READ_BUFFER;
     GLenum writeTarget = GL_COPY_WRITE_BUFFER;
 
-    glBindBuffer(readTarget, buffer->id());
-    CheckGLError();
-
-    glBindBuffer(writeTarget, other->id());
-    CheckGLError();
+    buffer->bind(readTarget);
+    other->bind(writeTarget);
 
     glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
-    CheckGLError();
-
-    glBindBuffer(readTarget, 0);
-    CheckGLError();
-
-    glBindBuffer(writeTarget, 0);
     CheckGLError();
 }
 
 void BindfulBufferBehavior::getParameter(const Buffer * buffer, GLenum pname, GLint * data) const
 {
-    buffer->bind();
+    buffer->bind(s_workingTarget);
 
-    glGetBufferParameteriv(buffer->target(), pname, data);
+    glGetBufferParameteriv(s_workingTarget, pname, data);
     CheckGLError();
 }
 
 void BindfulBufferBehavior::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const
 {
-    buffer->bind();
+    buffer->bind(s_workingTarget);
 
-    glClearBufferData(buffer->target(), internalformat, format, type, data);
+    glClearBufferData(s_workingTarget, internalformat, format, type, data);
     CheckGLError();
 }
 
 void BindfulBufferBehavior::clearSubData(const Buffer * buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data) const
 {
-    buffer->bind();
+    buffer->bind(s_workingTarget);
 
-    glClearBufferSubData(buffer->target(), internalformat, offset, size, format, type, data);
+    glClearBufferSubData(s_workingTarget, internalformat, offset, size, format, type, data);
     CheckGLError();
 }
 

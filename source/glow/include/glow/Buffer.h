@@ -35,24 +35,24 @@ class GLOW_API Buffer : public Object
 {
 public:
     /**
-     * Creates a new OpenGL buffer object with an undefined target.
-     * You should not call bind() without a target parameter afterwards as the behavior will be undefined.
-     * Most other methods will break too if the buffer is not assigned a valid target before.
-     * \see bind
+     * Sets the target that is used for binding buffers to call state changing OpenGL functions.
+     * This has an effect only when GL_EXT_direct_state_access is not available.
+     * Usually this target never has to be changed unless you want to ensure that a certain binding target will not be used.
+     * @param target
      */
-	Buffer();
+    static void setWorkingTarget(GLenum target);
+
+public:
     /**
-     * Creates a buffer with a predefined target.
-     * @param target will be used when bind() is called without parameter
+     * Creates a new OpenGL buffer object.
      */
-	Buffer(GLenum target);
+    Buffer();
     /**
      * Creates a buffer with an external id. This object does not own the associated OpenGL object and
      * will not delete it in the destructor.
      * @param id an external OpenGL buffer id
-     * @param target will be used when bind() is called without parameter
      */
-    Buffer(GLuint id, GLenum target);
+    Buffer(GLuint id);
 
     /**
      * Implements the visitor pattern.
@@ -61,30 +61,23 @@ public:
     virtual void accept(ObjectVisitor & visitor) override;
 
     /**
-     * Binds the buffer to the internal target.
-     */
-    void bind() const;
-    /**
-     * Binds the buffer to target and resets the internal target member which will be used for automatic binds.
+     * Binds the buffer to target.
      * @param target the target for binding
      * \see https://www.opengl.org/sdk/docs/man4/xhtml/glBindBuffer.xml
      */
     void bind(GLenum target) const;
-    /**
-     * Unbinds the buffer, i.e. the internal target will be bound to 0.
-     * @param target the target for binding
-     */
-    void unbind() const;
+
     /**
      * Unbinds a specific target, i.e. binds a 0 id to the target.
      * @param target the target for unbinding
      */
     static void unbind(GLenum target);
-
     /**
-     * @return target used for bind() without parameter
+     * Unbinds the buffer bound to the target and index.
+     * @param target the target for unbinding
+     * @param index the index for unbinding
      */
-    GLenum target() const;
+    static void unbind(GLenum target, GLuint index);
 
     /**
      * Wraps the OpenGL function glBufferData.
@@ -180,12 +173,6 @@ public:
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glMapBuffer.xml
      */
     bool unmap() const;
-
-    /**
-     * Wraps the OpenGL function glBindBufferBase.
-     * \see http://www.opengl.org/sdk/docs/man/xhtml/glBindBufferBase.xml
-     */
-    void bindBase(GLuint index) const;
     /**
      * Wraps the OpenGL function glBindBufferBase.
      * \see http://www.opengl.org/sdk/docs/man/xhtml/glBindBufferBase.xml
@@ -195,18 +182,7 @@ public:
      * Wraps the OpenGL function glBindBufferRange.
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glBindBufferRange.xml
      */
-    void bindRange(GLuint index, GLintptr offset, GLsizeiptr size) const;
-    /**
-     * Wraps the OpenGL function glBindBufferRange.
-     * \see http://www.opengl.org/sdk/docs/man3/xhtml/glBindBufferRange.xml
-     */
     void bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size) const;
-    /**
-     * Unbinds the buffer bound to the target and index.
-     * @param target the target for unbinding
-     * @param index the index for unbinding
-     */
-    static void unbindIndex(GLenum target, GLuint index);
 
     /**
      * Wraps the OpenGL function glCopyBufferSubData.
@@ -244,12 +220,8 @@ public:
      * \see https://www.opengl.org/sdk/docs/man4/xhtml/glClearBufferSubData.xml
      */
     void clearSubData(GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data = nullptr);
-protected:
-    /**
-     * internal target used in bind().
-     */
-    mutable GLenum m_target;
 
+protected:
     /**
      * @brief ~Buffer
      * Automatically deletes the associated OpenGL buffer unless the object was created with an external id.

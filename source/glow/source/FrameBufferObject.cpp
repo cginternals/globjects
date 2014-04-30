@@ -375,7 +375,7 @@ void FrameBufferObject::readPixelsToBuffer(const std::array<GLint, 4> & rect, GL
 
 	pbo->bind(GL_PIXEL_PACK_BUFFER);
     readPixels(rect, format, type, nullptr);
-	pbo->unbind();
+    pbo->unbind(GL_PIXEL_PACK_BUFFER);
 }
 
 void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter) const

@@ -139,8 +139,8 @@ void ComputeShaderParticles::step(const float elapsed)
 
     m_forces.unbind();
 
-    m_positionsSSBO->unbind();
-    m_velocitiesSSBO->unbind();
+    m_positionsSSBO->unbind(GL_SHADER_STORAGE_BUFFER, 0);
+    m_velocitiesSSBO->unbind(GL_SHADER_STORAGE_BUFFER, 1);
 }
 
 void ComputeShaderParticles::draw(const float elapsed)

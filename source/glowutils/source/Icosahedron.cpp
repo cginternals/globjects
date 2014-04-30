@@ -71,12 +71,10 @@ const std::array<Icosahedron::Face, 20> Icosahedron::indices()
     }};
 }
 
-Icosahedron::Icosahedron(
-    const GLsizei iterations
-,   const GLuint vertexAttribLocation)
-:   m_vao(new VertexArrayObject)
-,   m_vertices(new Buffer(GL_ARRAY_BUFFER))
-,   m_indices(new Buffer(GL_ELEMENT_ARRAY_BUFFER))
+Icosahedron::Icosahedron(const GLsizei iterations, const GLuint vertexAttribLocation)
+: m_vao(new VertexArrayObject)
+, m_vertices(new Buffer)
+, m_indices(new Buffer)
 {
     auto v(vertices());
     auto i(indices());
@@ -99,8 +97,6 @@ Icosahedron::Icosahedron(
     vertexBinding->setFormat(3, GL_FLOAT, GL_TRUE);
     m_vao->enable(0);
 
-    m_indices->bind();
-
     m_vao->unbind();
 }
 
@@ -112,6 +108,8 @@ void Icosahedron::draw(const GLenum mode)
 {
     glEnable(GL_DEPTH_TEST);
     CheckGLError();
+
+    m_indices->bind(GL_ELEMENT_ARRAY_BUFFER);
 
     m_vao->bind();
     m_vao->drawElements(mode, m_size, GL_UNSIGNED_SHORT, nullptr);

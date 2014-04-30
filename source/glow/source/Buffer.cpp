@@ -10,25 +10,23 @@
 #include <glow/BehaviorRegistry.h>
 
 #include "behaviors/AbstractBufferBehavior.h"
+#include "behaviors/BindfulBufferBehavior.h"
 
 namespace glow
 {
 
+void Buffer::setWorkingTarget(GLenum target)
+{
+    BindfulBufferBehavior::s_workingTarget = target;
+}
+
 Buffer::Buffer()
 : Object(genBuffer())
-, m_target(0)
 {
 }
 
-Buffer::Buffer(GLenum target)
-: Object(genBuffer())
-, m_target(target)
-{
-}
-
-Buffer::Buffer(GLuint id, GLenum target)
+Buffer::Buffer(GLuint id)
 : Object(id, false)
-, m_target(target)
 {
 }
 
@@ -61,22 +59,10 @@ void Buffer::accept(ObjectVisitor& visitor)
 	visitor.visitBuffer(this);
 }
 
-void Buffer::bind() const
-{
-    glBindBuffer(m_target, m_id);
-	CheckGLError();
-}
-
 void Buffer::bind(GLenum target) const
 {
-    m_target = target;
-	bind();
-}
-
-void Buffer::unbind() const
-{
-    glBindBuffer(m_target, 0);
-	CheckGLError();
+    glBindBuffer(target, m_id);
+    CheckGLError();
 }
 
 void Buffer::unbind(GLenum target)
@@ -85,9 +71,10 @@ void Buffer::unbind(GLenum target)
     CheckGLError();
 }
 
-GLenum Buffer::target() const
+void Buffer::unbind(GLenum target, GLuint index)
 {
-    return m_target;
+    glBindBufferBase(target, index, 0);
+    CheckGLError();
 }
 
 const void * Buffer::map() const
@@ -134,33 +121,15 @@ GLint Buffer::getParameter(GLenum pname) const
     return value;
 }
 
-void Buffer::bindBase(GLuint index) const
-{
-    glBindBufferBase(m_target, index, m_id);
-    CheckGLError();
-}
-
 void Buffer::bindBase(GLenum target, GLuint index) const
 {
-    m_target = target;
-    bindBase(index);
-}
-
-void Buffer::bindRange(GLuint index, GLintptr offset, GLsizeiptr size) const
-{
-    glBindBufferRange(m_target, index, m_id, offset, size);
+    glBindBufferBase(target, index, m_id);
     CheckGLError();
 }
 
 void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size) const
 {
-    m_target = target;
-    bindRange(index, offset, size);
-}
-
-void Buffer::unbindIndex(GLenum target, GLuint index)
-{
-    glBindBufferBase(target, index, 0);
+    glBindBufferRange(target, index, m_id, offset, size);
     CheckGLError();
 }
 
