@@ -211,11 +211,11 @@ void EventHandler::createAndSetupGeometry()
         , glm::vec4(0, 1, 0, 1)
     });
 
-    m_vertexBuffer1 = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_vertexBuffer1 = new glow::Buffer();
     m_vertexBuffer1->setData(vertexArray);
-    m_vertexBuffer2 = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_vertexBuffer2 = new glow::Buffer();
     m_vertexBuffer2->setData(vertexArray);
-    m_colorBuffer = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_colorBuffer = new glow::Buffer();
     m_colorBuffer->setData(colorArray);
 
 	m_vao = new glow::VertexArrayObject();

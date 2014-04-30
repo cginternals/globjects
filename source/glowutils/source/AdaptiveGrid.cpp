@@ -180,7 +180,7 @@ void AdaptiveGrid::setupGridLineBuffer(unsigned short segments)
     for (vec4 & point : points)
         point = vec4(vec3(T * vec4(point.x, point.y, point.z, 1.f)), point.w);
 
-    m_buffer = new Buffer(GL_ARRAY_BUFFER);
+    m_buffer = new Buffer();
     m_buffer->setData(points, GL_STATIC_DRAW);
 
     m_size = static_cast<unsigned short>(segments * 64 - 4);

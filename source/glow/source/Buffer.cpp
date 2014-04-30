@@ -12,6 +12,15 @@
 #include "behaviors/AbstractBufferBehavior.h"
 #include "behaviors/BindfulBufferBehavior.h"
 
+namespace {
+
+const glow::AbstractBufferBehavior & behavior()
+{
+    return glow::Registry::current().behaviors().bufferBehavior();
+}
+
+}
+
 namespace glow
 {
 
@@ -28,6 +37,11 @@ Buffer::Buffer()
 Buffer::Buffer(GLuint id)
 : Object(id, false)
 {
+}
+
+Buffer * Buffer::fromId(GLuint id)
+{
+    return new Buffer(id);
 }
 
 GLuint Buffer::genBuffer()
@@ -47,11 +61,6 @@ Buffer::~Buffer()
 		glDeleteBuffers(1, &m_id);
 		CheckGLError();
 	}
-}
-
-const AbstractBufferBehavior & Buffer::behavior() const
-{
-    return Registry::current().behaviors().bufferBehavior();
 }
 
 void Buffer::accept(ObjectVisitor& visitor)

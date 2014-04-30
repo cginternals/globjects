@@ -9,6 +9,15 @@
 
 #include "behaviors/AbstractUniformBehavior.h"
 
+namespace {
+
+const glow::AbstractUniformBehavior & behavior()
+{
+    return glow::Registry::current().behaviors().uniformBehavior();
+}
+
+}
+
 namespace glow
 {
 
@@ -79,11 +88,6 @@ void AbstractUniform::update(const Program * program) const
     }
 
     updateAt(program, locationFor(program));
-}
-
-const AbstractUniformBehavior & AbstractUniform::behavior() const
-{
-    return glow::Registry::current().behaviors().uniformBehavior();
 }
 
 void AbstractUniform::setValue(const Program * program, GLint location, const float & value) const

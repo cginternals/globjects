@@ -8,6 +8,7 @@ namespace glow
 
 class AbstractUniformBehavior;
 class AbstractBufferBehavior;
+class AbstractFrameBufferBehavior;
 
 class GLOW_API BehaviorRegistry
 {
@@ -17,9 +18,11 @@ public:
 
     AbstractUniformBehavior & uniformBehavior();
     AbstractBufferBehavior & bufferBehavior();
+    AbstractFrameBufferBehavior & frameBufferBehavior();
 protected:
     AbstractUniformBehavior * m_uniformBehavior;
     AbstractBufferBehavior * m_bufferBehavior;
+    AbstractFrameBufferBehavior * m_frameBufferBehavior;
 };
 
 } // namespace glow

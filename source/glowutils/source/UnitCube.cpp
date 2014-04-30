@@ -58,7 +58,7 @@ const std::array<glm::vec3, 28> UnitCube::strip()
 }
 
 UnitCube::UnitCube(const GLuint vertexAttribLocation, const GLuint normalAttribLocation)
-: m_strip(new Buffer(GL_ARRAY_BUFFER))
+: m_strip(new Buffer())
 , m_vao(new VertexArrayObject)
 {
     m_strip->setData(strip(), GL_STATIC_DRAW);

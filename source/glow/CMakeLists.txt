@@ -216,6 +216,12 @@ set(sources
     ${source_path}/behaviors/BindfulBufferBehavior.cpp
     ${source_path}/behaviors/BindlessBufferBehavior.h
     ${source_path}/behaviors/BindlessBufferBehavior.cpp
+    ${source_path}/behaviors/AbstractFrameBufferBehavior.h
+    ${source_path}/behaviors/AbstractFrameBufferBehavior.cpp
+    ${source_path}/behaviors/BindfulFrameBufferBehavior.h
+    ${source_path}/behaviors/BindfulFrameBufferBehavior.cpp
+    ${source_path}/behaviors/BindlessFrameBufferBehavior.h
+    ${source_path}/behaviors/BindlessFrameBufferBehavior.cpp
 )
 
 # Group source files

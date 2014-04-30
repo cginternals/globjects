@@ -11,8 +11,6 @@
 namespace glow
 {
 
-class AbstractBufferBehavior;
-
 /** \brief Wrapper for OpenGL buffer objects.
  *
  * The Buffer class encapsulates OpenGL buffer objects.
@@ -52,7 +50,7 @@ public:
      * will not delete it in the destructor.
      * @param id an external OpenGL buffer id
      */
-    Buffer(GLuint id);
+    Buffer * fromId(GLuint id);
 
     /**
      * Implements the visitor pattern.
@@ -223,6 +221,12 @@ public:
 
 protected:
     /**
+     * Creates a buffer with an external id. This object does not own the associated OpenGL object and
+     * will not delete it in the destructor.
+     * @param id an external OpenGL buffer id
+     */
+    Buffer(GLuint id);
+    /**
      * @brief ~Buffer
      * Automatically deletes the associated OpenGL buffer unless the object was created with an external id.
      * \see https://www.opengl.org/sdk/docs/man4/xhtml/glDeleteBuffers.xml
@@ -235,8 +239,6 @@ protected:
      * /see https://www.opengl.org/sdk/docs/man4/xhtml/glGenBuffers.xml
      */
 	static GLuint genBuffer();
-
-    const AbstractBufferBehavior & behavior() const;
 };
 
 } // namespace glow

@@ -48,9 +48,9 @@ void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath,
     m_coreBuffer = createColorTex();
     m_accumulationBuffer = createColorTex();
     m_colorBuffer = createColorTex();
-	m_depthKTab = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
-	m_visibilityKTab = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
-	m_depthComplexityBuffer = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
+    m_depthKTab = new glow::Buffer();
+    m_visibilityKTab = new glow::Buffer();
+    m_depthComplexityBuffer = new glow::Buffer();
 
 	m_prepassFbo = new glow::FrameBufferObject;
     m_prepassFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());

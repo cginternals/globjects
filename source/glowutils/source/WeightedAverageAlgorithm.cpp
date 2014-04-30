@@ -29,7 +29,7 @@ void WeightedAverageAlgorithm::initialize(const std::string & transparencyShader
     m_accumulationBuffer = createColorTex();
     m_depthBuffer = new glow::RenderBufferObject();
 
-	m_depthComplexityBuffer = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
+    m_depthComplexityBuffer = new glow::Buffer();
 
     m_renderFbo = new glow::FrameBufferObject();
     m_renderFbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_opaqueBuffer);

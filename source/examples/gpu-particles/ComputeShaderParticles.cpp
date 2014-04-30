@@ -74,8 +74,8 @@ void ComputeShaderParticles::initialize()
         , glowutils::createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
         , glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 
-    m_positionsSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
-    m_velocitiesSSBO = new Buffer(GL_SHADER_STORAGE_BUFFER);
+    m_positionsSSBO = new Buffer();
+    m_velocitiesSSBO = new Buffer();
 
     reset();
 

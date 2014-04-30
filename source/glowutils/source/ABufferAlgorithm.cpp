@@ -54,13 +54,13 @@ void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath
     m_renderFbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
     m_renderFbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
 
-    m_linkedListBuffer = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
+    m_linkedListBuffer = new glow::Buffer();
     m_linkedListBuffer->setName("A Buffer Linked Lists");
 
-    m_headBuffer = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
+    m_headBuffer = new glow::Buffer();
     m_headBuffer->setName("A Buffer Heads");
 
-    m_counter = new glow::Buffer(GL_ATOMIC_COUNTER_BUFFER);
+    m_counter = new glow::Buffer();
     m_counter->setName("A Buffer Counter");
 
 	m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath +  "abuffer_post.frag"));

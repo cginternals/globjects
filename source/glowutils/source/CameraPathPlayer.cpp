@@ -228,7 +228,7 @@ void CameraPathPlayer::createVao()
 {
     m_bufferSize = 100;
 
-    m_buffer = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_buffer = new glow::Buffer();
 
     std::vector<vec4> array;
 
