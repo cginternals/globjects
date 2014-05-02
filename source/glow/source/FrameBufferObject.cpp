@@ -34,9 +34,14 @@ FrameBufferObject::FrameBufferObject()
 {
 }
 
-FrameBufferObject::FrameBufferObject(GLuint id, bool ownsGLObject)
-: Object(id, ownsGLObject)
+FrameBufferObject::FrameBufferObject(GLuint id, bool takeOwnership)
+: Object(id, takeOwnership)
 {
+}
+
+FrameBufferObject * FrameBufferObject::fromId(GLuint id, bool takeOwnership)
+{
+    return new FrameBufferObject(id, takeOwnership);
 }
 
 FrameBufferObject * FrameBufferObject::defaultFBO()

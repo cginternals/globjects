@@ -9,9 +9,7 @@ namespace glow {
 
 GLenum BindlessFrameBufferBehavior::checkStatus(const FrameBufferObject * fbo) const
 {
-     // TODO: Error in extension?  second parameter is target, should be removed by this extension (wtf???)
-
-    GLenum result = glCheckNamedFramebufferStatusEXT(fbo->id(), 0);
+    GLenum result = glCheckNamedFramebufferStatusEXT(fbo->id(), GL_FRAMEBUFFER);
     CheckGLError();
 
     return result;
@@ -66,8 +64,6 @@ void BindlessFrameBufferBehavior::attachTextureLayer(const FrameBufferObject * f
 void BindlessFrameBufferBehavior::attachRenderBuffer(const FrameBufferObject * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const
 {
     renderBuffer->bind(GL_RENDERBUFFER); // TODO: is this necessary?
-
-    // extension wrong? why do we need the renderbuffer target
 
     glNamedFramebufferRenderbufferEXT(fbo->id(), attachment, GL_RENDERBUFFER, renderBuffer->id());
     CheckGLError();

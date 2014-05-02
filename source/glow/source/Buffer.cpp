@@ -34,14 +34,14 @@ Buffer::Buffer()
 {
 }
 
-Buffer::Buffer(GLuint id)
-: Object(id, false)
+Buffer::Buffer(GLuint id, bool takeOwnership)
+: Object(id, takeOwnership)
 {
 }
 
-Buffer * Buffer::fromId(GLuint id)
+Buffer * Buffer::fromId(GLuint id, bool takeOwnership)
 {
-    return new Buffer(id);
+    return new Buffer(id, takeOwnership);
 }
 
 GLuint Buffer::genBuffer()

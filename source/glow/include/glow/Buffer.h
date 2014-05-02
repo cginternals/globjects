@@ -23,7 +23,7 @@ namespace glow
  * The current bound VertexArrayObject and Program will specify the render pipeline and data.
  *
  * \code{.cpp}
- * Buffer* buffer = new Buffer(GL_SHADER_STORAGE_BUFFER);
+ * Buffer * buffer = new Buffer(GL_SHADER_STORAGE_BUFFER);
  * buffer->setData(sizeof(glm::vec4) * 100, nullptr, GL_DYNAMIC_DRAW); // allocate 100 vec4
  * \endcode
  *
@@ -50,7 +50,7 @@ public:
      * will not delete it in the destructor.
      * @param id an external OpenGL buffer id
      */
-    Buffer * fromId(GLuint id);
+    static Buffer * fromId(GLuint id, bool takeOwnership = false);
 
     /**
      * Implements the visitor pattern.
@@ -221,11 +221,10 @@ public:
 
 protected:
     /**
-     * Creates a buffer with an external id. This object does not own the associated OpenGL object and
-     * will not delete it in the destructor.
+     * Creates a buffer with an external id.
      * @param id an external OpenGL buffer id
      */
-    Buffer(GLuint id);
+    Buffer(GLuint id, bool takeOwnership);
     /**
      * @brief ~Buffer
      * Automatically deletes the associated OpenGL buffer unless the object was created with an external id.

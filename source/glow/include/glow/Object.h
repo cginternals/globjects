@@ -29,6 +29,9 @@ public:
 
 	bool ownsGLObject() const;
 
+    void takeOwnership();
+    void releaseOwnership();
+
 	const std::string & name() const;
 	void setName(const std::string & name);
 
@@ -37,7 +40,7 @@ private:
     void deregisterObject();
 
 protected:
-    Object(GLuint id, bool ownsGLObject = true);
+    Object(GLuint id, bool takeOwnership = true);
     virtual ~Object();
 
 protected:

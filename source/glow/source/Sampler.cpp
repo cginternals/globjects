@@ -11,9 +11,14 @@ Sampler::Sampler()
 {
 }
 
-Sampler::Sampler(GLuint id, bool ownsGLObject)
-: Object(id, ownsGLObject)
+Sampler::Sampler(GLuint id, bool takeOwnership)
+: Object(id, takeOwnership)
 {
+}
+
+Sampler * Sampler::fromId(GLuint id, bool takeOwnership)
+{
+    return new Sampler(id, takeOwnership);
 }
 
 Sampler::~Sampler()

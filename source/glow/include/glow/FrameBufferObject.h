@@ -43,7 +43,7 @@ class GLOW_API FrameBufferObject : public Object
 {
 public:
 	FrameBufferObject();
-    FrameBufferObject(GLuint id, bool ownsGLObject = true);
+    static FrameBufferObject * fromId(GLuint id, bool takeOwnership = false);
 
     static FrameBufferObject * defaultFBO();
 
@@ -105,6 +105,7 @@ public:
     void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter) const;
     void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter) const;
 protected:
+    FrameBufferObject(GLuint id, bool takeOwnership);
     virtual ~FrameBufferObject();
 
     void addAttachment(FrameBufferAttachment * attachment);

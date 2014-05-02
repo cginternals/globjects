@@ -6,9 +6,9 @@
 namespace glow
 {
 
-Object::Object(GLuint id, bool ownsGLObject)
+Object::Object(GLuint id, bool takeOwnership)
 : m_id(id)
-, m_ownsGLObject(ownsGLObject)
+, m_ownsGLObject(takeOwnership)
 {
 	registerObject();
 }
@@ -26,6 +26,16 @@ GLuint Object::id() const
 bool Object::ownsGLObject() const
 {
     return m_ownsGLObject && m_id>0;
+}
+
+void Object::takeOwnership()
+{
+    m_ownsGLObject = true;
+}
+
+void Object::releaseOwnership()
+{
+    m_ownsGLObject = false;
 }
 
 void Object::registerObject()
