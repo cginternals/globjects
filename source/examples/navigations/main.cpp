@@ -134,7 +134,7 @@ public:
 
     virtual void timerEvent(TimerEvent & event) override
     {
-        float delta = static_cast<float>(m_timer.elapsed()/1000.0/1000.0/1000.0);
+        float delta = static_cast<float>(static_cast<float>(m_timer.elapsed().count())/1000.0/1000.0/1000.0);
         m_timer.reset();
         m_flightNav.move(delta);
 

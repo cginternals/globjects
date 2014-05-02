@@ -1,4 +1,4 @@
-#include <glowutils/ABufferAlgorithm.h>
+#include "ABufferAlgorithm.h"
 
 #include <glow/Program.h>
 #include <glow/FrameBufferObject.h>
@@ -12,8 +12,6 @@
 #include <glowutils/Camera.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/glowutils.h>
-
-namespace glowutils {
 
 namespace {
 
@@ -127,5 +125,3 @@ glow::Texture* ABufferAlgorithm::getOutput()
 {
     return m_colorBuffer;
 }
-
-} // namespace glow

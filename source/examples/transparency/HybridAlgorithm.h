@@ -1,7 +1,6 @@
 #pragma once
 
-#include <glowutils/glowutils_api.h>
-#include <glowutils/AbstractTransparencyAlgorithm.h>
+#include "AbstractTransparencyAlgorithm.h"
 
 namespace glow {
 
@@ -18,6 +17,8 @@ namespace glowutils {
 class Camera;
 class ScreenAlignedQuad;
 
+}
+
 /**
     Implements the hybrid transparency algorithm.
     Expected shader files:
@@ -28,10 +29,10 @@ class ScreenAlignedQuad;
     hybrid_color.frag			- renders the transcluent geometry
     hybrid_post.frag			- combines the transcluent and opaque geometry
 */
-class GLOWUTILS_API HybridAlgorithm : public AbstractTransparencyAlgorithm {
+class HybridAlgorithm : public AbstractTransparencyAlgorithm {
 public:
     virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) override;
-    virtual void draw(const DrawFunction& drawFunction, Camera* camera, int width, int height) override;
+    virtual void draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) override;
     virtual void resize(int width, int height) override;
     virtual glow::Texture* getOutput() override;
 
@@ -61,8 +62,6 @@ private:
 
     // composition pass
     glow::ref_ptr<glow::FrameBufferObject> m_compositionFbo;
-    glow::ref_ptr<ScreenAlignedQuad> m_compositionQuad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_compositionQuad;
     glow::ref_ptr<glow::Texture> m_colorBuffer;
 };
-
-} // namespace glow

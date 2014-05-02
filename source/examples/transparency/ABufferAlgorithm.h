@@ -1,7 +1,6 @@
 #pragma once
 
-#include <glowutils/glowutils_api.h>
-#include <glowutils/AbstractTransparencyAlgorithm.h>
+#include "AbstractTransparencyAlgorithm.h"
 
 namespace glow {
 
@@ -18,6 +17,8 @@ namespace glowutils {
 class Camera;
 class ScreenAlignedQuad;
 
+}
+
 /**
     Implements the A-Buffer transparency algorithm.
     Expected shader files:
@@ -25,7 +26,7 @@ class ScreenAlignedQuad;
     abuffer.frag			- stores the transcluent fragments per pixel in the A-Buffer
     abuffer_post.frag		- combines the opaque and transcluent geometry by sorting and blending the a A-Buffer
 */
-class GLOWUTILS_API ABufferAlgorithm : public AbstractTransparencyAlgorithm {
+class ABufferAlgorithm : public AbstractTransparencyAlgorithm {
 public:
     virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) override;
     virtual void draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) override;
@@ -45,10 +46,7 @@ private:
     glow::ref_ptr<glow::Buffer> m_counter;
 
     // post processing pass
-    glow::ref_ptr<ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
     glow::ref_ptr<glow::FrameBufferObject> m_postFbo;
     glow::ref_ptr<glow::Texture> m_colorBuffer;
 };
-
-} // namespace glow
-

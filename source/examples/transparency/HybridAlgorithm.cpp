@@ -1,4 +1,4 @@
-#include <glowutils/HybridAlgorithm.h>
+#include "HybridAlgorithm.h"
 
 #include <glow/Program.h>
 #include <glow/FrameBufferObject.h>
@@ -18,8 +18,6 @@ const int ABUFFER_SIZE = 4;
 const int VISIBILITY_KTAB_SIZE = ABUFFER_SIZE + 1;
 
 }
-
-namespace glowutils {
 
 void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
     glow::NamedString::create("/transparency/hybrid_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
@@ -206,5 +204,3 @@ glow::Texture* HybridAlgorithm::getOutput()
 {
     return m_colorBuffer;
 }
-
-} // namespace glow

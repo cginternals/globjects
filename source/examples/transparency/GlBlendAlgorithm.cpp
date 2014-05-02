@@ -1,4 +1,4 @@
-#include <glowutils/GlBlendAlgorithm.h>
+#include "GlBlendAlgorithm.h"
 
 #include <cassert>
 
@@ -10,8 +10,6 @@
 #include <glowutils/File.h>
 #include <glowutils/Camera.h>
 #include <glowutils/glowutils.h>
-
-namespace glowutils {
 
 void GlBlendAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
     assert(vertexShader != nullptr);
@@ -69,5 +67,3 @@ glow::Texture* GlBlendAlgorithm::getOutput()
 {
     return m_colorTex;
 }
-
-} // namespace glow
