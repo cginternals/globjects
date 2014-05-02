@@ -1,7 +1,7 @@
-#include <glow/ExtensionRegistry.h>
+#include "ExtensionRegistry.h"
+#include "Registry.h"
 
 #include <glow/global.h>
-
 #include <glow/gl_extension_info.h>
 
 namespace glow {
@@ -10,6 +10,12 @@ ExtensionRegistry::ExtensionRegistry()
 : m_initialized(false)
 {
 }
+
+ExtensionRegistry & ExtensionRegistry::current()
+{
+    return Registry::current().extensions();
+}
+
 
 std::set<glow::Extension>::iterator ExtensionRegistry::begin()
 {

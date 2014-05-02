@@ -4,8 +4,8 @@
 
 #include <glow/Program.h>
 #include <glow/global.h>
-#include <glow/Registry.h>
-#include <glow/BehaviorRegistry.h>
+
+#include "registry/BehaviorRegistry.h"
 
 #include "behaviors/AbstractUniformBehavior.h"
 
@@ -13,7 +13,7 @@ namespace {
 
 const glow::AbstractUniformBehavior & behavior()
 {
-    return glow::Registry::current().behaviors().uniformBehavior();
+    return glow::BehaviorRegistry::current().uniformBehavior();
 }
 
 }

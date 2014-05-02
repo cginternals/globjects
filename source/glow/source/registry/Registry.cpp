@@ -1,10 +1,10 @@
-#include <glow/Registry.h>
+#include "Registry.h"
 
 #include "contextid.h"
 
-#include <glow/ObjectRegistry.h>
-#include <glow/ExtensionRegistry.h>
-#include <glow/BehaviorRegistry.h>
+#include "ObjectRegistry.h"
+#include "ExtensionRegistry.h"
+#include "BehaviorRegistry.h"
 #include "NamedStringRegistry.h"
 
 namespace glow

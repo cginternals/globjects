@@ -1,8 +1,10 @@
-#include <glow/BehaviorRegistry.h>
+#include "BehaviorRegistry.h"
 
-#include "behaviors/AbstractUniformBehavior.h"
-#include "behaviors/AbstractBufferBehavior.h"
-#include "behaviors/AbstractFrameBufferBehavior.h"
+#include "Registry.h"
+
+#include "../behaviors/AbstractUniformBehavior.h"
+#include "../behaviors/AbstractBufferBehavior.h"
+#include "../behaviors/AbstractFrameBufferBehavior.h"
 
 namespace glow {
 
@@ -18,6 +20,11 @@ BehaviorRegistry::~BehaviorRegistry()
     delete m_uniformBehavior;
     delete m_bufferBehavior;
     delete m_frameBufferBehavior;
+}
+
+BehaviorRegistry & BehaviorRegistry::current()
+{
+    return Registry::current().behaviors();
 }
 
 AbstractUniformBehavior & BehaviorRegistry::uniformBehavior()

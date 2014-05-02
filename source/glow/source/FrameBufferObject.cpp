@@ -13,15 +13,15 @@
 #include <glow/Texture.h>
 #include <glow/constants.h>
 #include "pixelformat.h"
-#include <glow/Registry.h>
-#include <glow/BehaviorRegistry.h>
+
+#include "registry/BehaviorRegistry.h"
 #include "behaviors/AbstractFrameBufferBehavior.h"
 
 namespace {
 
 const glow::AbstractFrameBufferBehavior & behavior()
 {
-    return glow::Registry::current().behaviors().frameBufferBehavior();
+    return glow::BehaviorRegistry::current().frameBufferBehavior();
 }
 
 }

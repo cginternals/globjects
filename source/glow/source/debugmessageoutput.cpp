@@ -8,7 +8,7 @@
 #include <glow/global.h>
 #include <glow/Extension.h>
 
-#include "contextid.h"
+#include "registry/contextid.h"
 #include "DebugMessageCallback.h"
 
 #ifdef WIN32

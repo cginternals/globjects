@@ -21,6 +21,7 @@ public:
     virtual void accept(ObjectVisitor & visitor) override;
 
     void bind(GLuint unit) const;
+    static void unbind(GLuint unit);
 
     void setParameter(GLenum name, GLint value);
     void setParameter(GLenum name, GLfloat value);

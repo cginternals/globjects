@@ -35,10 +35,6 @@ public:
 	const std::string & name() const;
 	void setName(const std::string & name);
 
-private:
-    void registerObject();
-    void deregisterObject();
-
 protected:
     Object(GLuint id, bool takeOwnership = true);
     virtual ~Object();

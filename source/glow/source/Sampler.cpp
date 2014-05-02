@@ -51,6 +51,12 @@ void Sampler::bind(GLuint unit) const
     CheckGLError();
 }
 
+void Sampler::unbind(GLuint unit)
+{
+    glBindSampler(unit, 0);
+    CheckGLError();
+}
+
 void Sampler::setParameter(GLenum name, GLint value)
 {
     glSamplerParameteri(m_id, name, value);

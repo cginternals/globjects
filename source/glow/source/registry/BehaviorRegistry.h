@@ -16,6 +16,8 @@ public:
     BehaviorRegistry();
     ~BehaviorRegistry();
 
+    static BehaviorRegistry & current();
+
     AbstractUniformBehavior & uniformBehavior();
     AbstractBufferBehavior & bufferBehavior();
     AbstractFrameBufferBehavior & frameBufferBehavior();

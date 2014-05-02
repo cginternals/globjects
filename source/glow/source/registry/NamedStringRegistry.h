@@ -12,6 +12,7 @@ class NamedStringRegistry
 {
 public:
     NamedStringRegistry();
+    static NamedStringRegistry & current();
 
     void registerNamedString(NamedString * namedString);
     void deregisterNamedString(NamedString * namedString);

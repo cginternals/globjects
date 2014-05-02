@@ -3,8 +3,7 @@
 #include <glow/Error.h>
 #include <glow/logging.h>
 
-#include <glow/Registry.h>
-#include <glow/ExtensionRegistry.h>
+#include "registry/ExtensionRegistry.h"
 
 #include <glow/NamedString.h>
 
@@ -222,22 +221,22 @@ std::vector<std::string> getExtensions()
 
 bool hasExtension(Extension extension)
 {
-    return Registry::current().extensions().hasExtension(extension);
+    return ExtensionRegistry::current().hasExtension(extension);
 }
 
 bool hasExtension(const std::string & extensionName)
 {
-    return Registry::current().extensions().hasExtension(extensionName);
+    return ExtensionRegistry::current().hasExtension(extensionName);
 }
 
 bool isInCoreProfile(Extension extension, const Version & version)
 {
-    return Registry::current().extensions().isInCoreProfile(extension, version);
+    return ExtensionRegistry::current().isInCoreProfile(extension, version);
 }
 
 bool isInCoreProfile(Extension extension)
 {
-    return Registry::current().extensions().isInCoreProfile(extension);
+    return ExtensionRegistry::current().isInCoreProfile(extension);
 }
 
 void enable(GLenum capability)

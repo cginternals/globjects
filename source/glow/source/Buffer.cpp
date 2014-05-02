@@ -6,8 +6,7 @@
 #include <glow/global.h>
 #include <glow/ObjectVisitor.h>
 
-#include <glow/Registry.h>
-#include <glow/BehaviorRegistry.h>
+#include "registry/BehaviorRegistry.h"
 
 #include "behaviors/AbstractBufferBehavior.h"
 #include "behaviors/BindfulBufferBehavior.h"
@@ -16,7 +15,7 @@ namespace {
 
 const glow::AbstractBufferBehavior & behavior()
 {
-    return glow::Registry::current().behaviors().bufferBehavior();
+    return glow::BehaviorRegistry::current().bufferBehavior();
 }
 
 }

@@ -1,7 +1,6 @@
 #include <glow/Object.h>
 
-#include <glow/Registry.h>
-#include <glow/ObjectRegistry.h>
+#include "registry/ObjectRegistry.h"
 
 namespace glow
 {
@@ -10,12 +9,12 @@ Object::Object(GLuint id, bool takeOwnership)
 : m_id(id)
 , m_ownsGLObject(takeOwnership)
 {
-	registerObject();
+    ObjectRegistry::current().registerObject(this);
 }
 
 Object::~Object()
 {
-	deregisterObject();
+    ObjectRegistry::current().deregisterObject(this);
 }
 
 GLuint Object::id() const
@@ -36,16 +35,6 @@ void Object::takeOwnership()
 void Object::releaseOwnership()
 {
     m_ownsGLObject = false;
-}
-
-void Object::registerObject()
-{
-    Registry::current().objects().registerObject(this);
-}
-
-void Object::deregisterObject()
-{
-    Registry::current().objects().deregisterObject(this);
 }
 
 const std::string& Object::name() const
