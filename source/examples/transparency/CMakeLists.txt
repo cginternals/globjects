@@ -53,6 +53,16 @@ set(libs
 
 set(sources
     main.cpp
+    AbstractTransparencyAlgorithm.h
+    ABufferAlgorithm.h
+    GlBlendAlgorithm.h
+    HybridAlgorithm.h
+    WeightedAverageAlgorithm.h
+    AbstractTransparencyAlgorithm.cpp
+    ABufferAlgorithm.cpp
+    GlBlendAlgorithm.cpp
+    HybridAlgorithm.cpp
+    WeightedAverageAlgorithm.cpp
 )
 
 #

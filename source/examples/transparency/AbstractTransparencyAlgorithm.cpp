@@ -1,8 +1,6 @@
-#include <glowutils/AbstractTransparencyAlgorithm.h>
+#include "AbstractTransparencyAlgorithm.h"
 
 #include <glow/Texture.h>
-
-namespace glowutils {
 
 void AbstractTransparencyAlgorithm::initialize(const std::string & /*transparencyShaderFilePath*/, glow::Shader * /*vertexShader*/, glow::Shader * /*geometryShader*/)
 {
@@ -20,5 +18,3 @@ glow::Texture* AbstractTransparencyAlgorithm::createColorTex() {
     color->setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
     return color;
 }
-
-} // namespace glow

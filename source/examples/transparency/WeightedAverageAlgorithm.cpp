@@ -1,4 +1,4 @@
-#include <glowutils/WeightedAverageAlgorithm.h>
+#include "WeightedAverageAlgorithm.h"
 
 #include <glow/Program.h>
 #include <glow/FrameBufferObject.h>
@@ -10,8 +10,6 @@
 #include <glowutils/Camera.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/glowutils.h>
-
-namespace glowutils {
 
 void WeightedAverageAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
 
@@ -126,5 +124,3 @@ glow::Texture* WeightedAverageAlgorithm::getOutput()
 {
     return m_colorBuffer;
 }
-
-} // namespace glow

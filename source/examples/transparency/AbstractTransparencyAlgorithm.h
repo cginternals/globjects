@@ -5,8 +5,6 @@
 
 #include <glow/ref_ptr.h>
 
-#include <glowutils/glowutils_api.h>
-
 namespace glow {
 	class Program;
 	class Texture;
@@ -16,6 +14,8 @@ namespace glow {
 namespace glowutils {
 
 class Camera;
+
+}
 
 /**
     \brief AbstractTransparencyAlgorithm is the super class for different transparency rendering implementations.
@@ -32,7 +32,7 @@ class Camera;
             - pass the current width and height of the viewport
         4. Use AbstractTransparencyAlgorithm#getOutput to obtain the texture that contains the rendered scene
 */
-class GLOWUTILS_API AbstractTransparencyAlgorithm : public glow::Referenced {
+class AbstractTransparencyAlgorithm : public glow::Referenced {
 public:
     using DrawFunction = std::function<void(glow::Program*)>;
 
@@ -56,7 +56,7 @@ public:
         \param width the width of the viewport
         \param height the height of the viewport
     */
-    virtual void draw(const DrawFunction& drawFunction, Camera* camera, int width, int height) = 0;
+    virtual void draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) = 0;
 
     /**
         \brief resizes the structures used by the transparency algorithm to fit the given viewport
@@ -73,5 +73,3 @@ public:
 protected:
     glow::Texture* createColorTex();
 };
-
-} // namespace glow
