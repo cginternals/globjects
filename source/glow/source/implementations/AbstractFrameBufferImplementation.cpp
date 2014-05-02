@@ -1,6 +1,6 @@
 #include "AbstractFrameBufferImplementation.h"
 
-#include <glow/global.h>
+#include <glow/glow.h>
 
 #include "LegacyFrameBufferImplementation.h"
 #include "BindlessFrameBufferImplementation.h"

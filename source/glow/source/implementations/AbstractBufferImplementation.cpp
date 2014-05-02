@@ -1,6 +1,6 @@
 #include "AbstractBufferImplementation.h"
 
-#include <glow/global.h>
+#include <glow/glow.h>
 
 #include "LegacyBufferImplementation.h"
 #include "BindlessBufferImplementation.h"
