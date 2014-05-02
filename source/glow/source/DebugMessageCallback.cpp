@@ -24,7 +24,7 @@ void DebugMessageCallback::setRegistered(bool registered)
     m_registered = registered;
 }
 
-void DebugMessageCallback::operator()(const DebugMessage & message)
+void DebugMessageCallback::operator()(const DebugMessage & message) const
 {
     if (m_callbacks.empty())
     {
@@ -46,7 +46,7 @@ void DebugMessageCallback::clearCallbacks()
     m_callbacks.clear();
 }
 
-void DebugMessageCallback::callCallbacks(const DebugMessage & message)
+void DebugMessageCallback::callCallbacks(const DebugMessage & message) const
 {
     for (auto& callback: m_callbacks)
     {
@@ -54,7 +54,7 @@ void DebugMessageCallback::callCallbacks(const DebugMessage & message)
     }
 }
 
-void DebugMessageCallback::defaultAction(const DebugMessage & message)
+void DebugMessageCallback::defaultAction(const DebugMessage & message) const
 {
     if (message.type == GL_DEBUG_TYPE_ERROR_ARB)
     {
@@ -66,12 +66,12 @@ void DebugMessageCallback::defaultAction(const DebugMessage & message)
     }
 }
 
-void DebugMessageCallback::handleDebug(const DebugMessage & message)
+void DebugMessageCallback::handleDebug(const DebugMessage & message) const
 {
     debug() << message.toString();
 }
 
-void DebugMessageCallback::handleError(const DebugMessage & message)
+void DebugMessageCallback::handleError(const DebugMessage & message) const
 {
 #ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
     throw std::runtime_error(message.toString());

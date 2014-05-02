@@ -15,6 +15,7 @@ class GLOW_API ExtensionRegistry
 {
 public:
     ExtensionRegistry();
+    static ExtensionRegistry & current();
 
     std::set<glow::Extension>::iterator begin();
     std::set<glow::Extension>::iterator end();

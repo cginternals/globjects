@@ -1,4 +1,5 @@
-#include <glow/ObjectRegistry.h>
+#include "ObjectRegistry.h"
+#include "Registry.h"
 
 #include <cassert>
 
@@ -9,6 +10,11 @@ namespace glow
 
 ObjectRegistry::ObjectRegistry()
 {
+}
+
+ObjectRegistry & ObjectRegistry::current()
+{
+    return Registry::current().objects();
 }
 
 const std::set<Object*> & ObjectRegistry::objects()

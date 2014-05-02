@@ -91,6 +91,7 @@ public:
 		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_geom);
 		m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depth);
 
+        m_fbo->bind();
 		// ToDo: this could be done automatically by default..
 		m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
 

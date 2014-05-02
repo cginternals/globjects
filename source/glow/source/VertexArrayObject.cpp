@@ -16,9 +16,14 @@ VertexArrayObject::VertexArrayObject()
 {
 }
 
-VertexArrayObject::VertexArrayObject(GLuint id, bool ownsGLObject)
-: Object(id, ownsGLObject)
+VertexArrayObject::VertexArrayObject(GLuint id, bool takeOwnership)
+: Object(id, takeOwnership)
 {
+}
+
+VertexArrayObject * VertexArrayObject::fromId(GLuint id, bool takeOwnership)
+{
+    return new VertexArrayObject(id, takeOwnership);
 }
 
 VertexArrayObject::~VertexArrayObject()

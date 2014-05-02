@@ -7,13 +7,12 @@
 namespace glow
 {
 
-TextureAttachment::TextureAttachment(Texture * texture, GLenum attachment, GLint level, GLint layer)
-: FrameBufferAttachment(attachment)
+TextureAttachment::TextureAttachment(FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer)
+: FrameBufferAttachment(fbo, attachment)
 , m_texture(texture)
 , m_level(level)
 , m_layer(layer)
 {
-    assert(texture != nullptr);
 }
 
 bool TextureAttachment::isTextureAttachment() const

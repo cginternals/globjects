@@ -57,7 +57,7 @@ public:
             2,3,4,5,6,7,8,9,10,1
         };
 
-        m_buffer = new glow::Buffer(GL_SHADER_STORAGE_BUFFER);
+        m_buffer = new glow::Buffer();
         m_buffer->setData(sizeof(data), data, GL_STATIC_DRAW);
 
         m_buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);

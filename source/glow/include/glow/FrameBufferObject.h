@@ -44,19 +44,17 @@ class GLOW_API FrameBufferObject : public Object
 {
 public:
 	FrameBufferObject();
-    FrameBufferObject(GLuint id, bool ownsGLObject = true);
+    static FrameBufferObject * fromId(GLuint id, bool takeOwnership = false);
 
     static FrameBufferObject * defaultFBO();
 
     virtual void accept(ObjectVisitor& visitor) override;
 
-    void bind() const;
-    void bind(GLenum target) const;
-    void unbind() const;
-    static void unbind(GLenum target);
+    void bind(GLenum target = GL_FRAMEBUFFER) const;
+    static void unbind(GLenum target = GL_FRAMEBUFFER);
 
 	void setParameter(GLenum pname, GLint param);
-    int getAttachmentParameter(GLenum attachment, GLenum pname) const;
+    GLint getAttachmentParameter(GLenum attachment, GLenum pname) const;
 
 	void attachTexture(GLenum attachment, Texture * texture, GLint level = 0);
 	void attachTexture1D(GLenum attachment, Texture * texture, GLint level = 0);
@@ -65,12 +63,12 @@ public:
 	void attachTextureLayer(GLenum attachment, Texture * texture, GLint level = 0, GLint layer = 0);
 	void attachRenderBuffer(GLenum attachment, RenderBufferObject * renderBuffer);
 
-    void detach(GLenum attachment);
+    bool detach(GLenum attachment);
 
-    void setReadBuffer(GLenum mode) const;
-    void setDrawBuffer(GLenum mode) const;
-    void setDrawBuffers(GLsizei n, const GLenum * modes) const;
-    void setDrawBuffers(const std::vector<GLenum> & modes) const;
+    static void setReadBuffer(GLenum mode);
+    static void setDrawBuffer(GLenum mode);
+    static void setDrawBuffers(GLsizei n, const GLenum * modes);
+    static void setDrawBuffers(const std::vector<GLenum> & modes);
 
     void clear(GLbitfield mask);
 
@@ -100,26 +98,25 @@ public:
 
     GLenum checkStatus() const;
     std::string statusString() const;
-    static std::string statusString(GLenum status);
     void printStatus(bool onlyErrors = false) const;
 
-    FrameBufferAttachment * attachment(GLenum attachment);
+    FrameBufferAttachment * getAttachment(GLenum attachment);
     std::vector<FrameBufferAttachment*> attachments();
 
     void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter) const;
     void blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter) const;
 protected:
+    FrameBufferObject(GLuint id, bool takeOwnership);
     virtual ~FrameBufferObject();
 
-    void attach(FrameBufferAttachment * attachment);
+    void addAttachment(FrameBufferAttachment * attachment);
 
     static GLuint genFrameBuffer();
 
     static void blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter);
     static void blit(const std::array<GLint, 4> & srcRect, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
 protected:
-    mutable GLenum m_target;
-    std::map<GLenum, glowbase::ref_ptr<FrameBufferAttachment>> m_attachments;
+	std::map<GLenum, glowbase::ref_ptr<FrameBufferAttachment>> m_attachments;
 };
 
 } // namespace glow

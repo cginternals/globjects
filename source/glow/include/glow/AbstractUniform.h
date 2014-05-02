@@ -21,8 +21,6 @@ namespace glow
 class Program;
 template<typename T> class Uniform;
 
-class AbstractUniformBehavior;
-
 /** \brief Abstract base class for templated Uniforms.
  *
  * Unifies the specialized Uniforms in order to be able to store them in a list or a vector.
@@ -79,8 +77,6 @@ protected:
 	std::set<Program *> m_programs;
 
 protected:
-    const AbstractUniformBehavior & behavior() const;
-
     void setValue(const Program * program, GLint location, const float & value) const;
     void setValue(const Program * program, GLint location, const int & value) const;
     void setValue(const Program * program, GLint location, const unsigned int & value) const;
