@@ -19,7 +19,7 @@
 
 namespace {
 
-const glow::AbstractFrameBufferImplementation & behavior()
+const glow::AbstractFrameBufferImplementation & implementation()
 {
     return glow::ImplementationRegistry::current().frameBufferImplementation();
 }
@@ -89,52 +89,52 @@ void FrameBufferObject::unbind(GLenum target)
 
 void FrameBufferObject::setParameter(GLenum pname, GLint param)
 {
-    behavior().setParameter(this, pname, param);
+    implementation().setParameter(this, pname, param);
 }
 
 GLint FrameBufferObject::getAttachmentParameter(GLenum attachment, GLenum pname) const
 {
-    return behavior().getAttachmentParameter(this, attachment, pname);
+    return implementation().getAttachmentParameter(this, attachment, pname);
 }
 
 void FrameBufferObject::attachTexture(GLenum attachment, Texture * texture, GLint level)
 {
-    behavior().attachTexture(this, attachment, texture, level);
+    implementation().attachTexture(this, attachment, texture, level);
 
     addAttachment(new TextureAttachment(this, attachment, texture, level));
 }
 
 void FrameBufferObject::attachTexture1D(GLenum attachment, Texture * texture, GLint level)
 {
-    behavior().attachTexture1D(this, attachment, texture, level);
+    implementation().attachTexture1D(this, attachment, texture, level);
 
     addAttachment(new TextureAttachment(this, attachment, texture, level));
 }
 
 void FrameBufferObject::attachTexture2D(GLenum attachment, Texture* texture, GLint level)
 {
-    behavior().attachTexture2D(this, attachment, texture, level);
+    implementation().attachTexture2D(this, attachment, texture, level);
 
     addAttachment(new TextureAttachment(this, attachment, texture, level));
 }
 
 void FrameBufferObject::attachTexture3D(GLenum attachment, Texture * texture, GLint level, GLint layer)
 {
-    behavior().attachTexture3D(this, attachment, texture, level, layer);
+    implementation().attachTexture3D(this, attachment, texture, level, layer);
 
     addAttachment(new TextureAttachment(this, attachment, texture, level, layer));
 }
 
 void FrameBufferObject::attachTextureLayer(GLenum attachment, Texture * texture, GLint level, GLint layer)
 {
-    behavior().attachTextureLayer(this, attachment, texture, level, layer);
+    implementation().attachTextureLayer(this, attachment, texture, level, layer);
 
     addAttachment(new TextureAttachment(this, attachment, texture, level, layer));
 }
 
 void FrameBufferObject::attachRenderBuffer(GLenum attachment, RenderBufferObject * renderBuffer)
 {
-    behavior().attachRenderBuffer(this, attachment, renderBuffer);
+    implementation().attachRenderBuffer(this, attachment, renderBuffer);
 
     addAttachment(new RenderBufferAttachment(this, attachment, renderBuffer));
 }
@@ -152,16 +152,16 @@ bool FrameBufferObject::detach(GLenum attachment)
 
         if (textureAttachment->hasLayer())
         {
-            behavior().attachTextureLayer(this, attachment, nullptr, textureAttachment->level(), textureAttachment->layer());
+            implementation().attachTextureLayer(this, attachment, nullptr, textureAttachment->level(), textureAttachment->layer());
         }
         else
         {
-            behavior().attachTexture(this, attachment, nullptr, textureAttachment->level());
+            implementation().attachTexture(this, attachment, nullptr, textureAttachment->level());
         }
     }
     else if (attachmentObject->isRenderBufferAttachment())
     {
-        behavior().attachRenderBuffer(this, attachment, nullptr);
+        implementation().attachRenderBuffer(this, attachment, nullptr);
     }
 
     m_attachments.erase(attachment);
@@ -363,7 +363,7 @@ void FrameBufferObject::blit(const std::array<GLint, 4> & srcRect, const std::ar
 
 GLenum FrameBufferObject::checkStatus() const
 {
-    return behavior().checkStatus(this);
+    return implementation().checkStatus(this);
 }
 
 std::string FrameBufferObject::statusString() const

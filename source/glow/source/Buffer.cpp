@@ -13,7 +13,7 @@
 
 namespace {
 
-const glow::AbstractBufferImplementation & behavior()
+const glow::AbstractBufferImplementation & implementation()
 {
     return glow::ImplementationRegistry::current().bufferImplementation();
 }
@@ -87,44 +87,44 @@ void Buffer::unbind(GLenum target, GLuint index)
 
 const void * Buffer::map() const
 {
-    return static_cast<const void*>(behavior().map(this, GL_READ_ONLY));
+    return static_cast<const void*>(implementation().map(this, GL_READ_ONLY));
 }
 
 void* Buffer::map(GLenum access)
 {
-    return behavior().map(this, access);
+    return implementation().map(this, access);
 }
 
 void* Buffer::mapRange(GLintptr offset, GLsizeiptr length, GLbitfield access)
 {
-    return behavior().mapRange(this, offset, length, access);
+    return implementation().mapRange(this, offset, length, access);
 }
 
 bool Buffer::unmap() const
 {
-    return behavior().unmap(this);
+    return implementation().unmap(this);
 }
 
 void Buffer::setData(GLsizeiptr size, const GLvoid * data, GLenum usage)
 {
-    behavior().setData(this, size, data, usage);
+    implementation().setData(this, size, data, usage);
 }
     
 void Buffer::setSubData(GLintptr offset, GLsizeiptr size, const GLvoid * data)
 {
-    behavior().setSubData(this, offset, size, data);
+    implementation().setSubData(this, offset, size, data);
 }
 
 void Buffer::setStorage(GLsizeiptr size, const GLvoid * data, GLbitfield flags)
 {
-    behavior().setStorage(this, size, data, flags);
+    implementation().setStorage(this, size, data, flags);
 }
 
 GLint Buffer::getParameter(GLenum pname) const
 {
     GLint value = 0;
 
-    behavior().getParameter(this, pname, &value);
+    implementation().getParameter(this, pname, &value);
 
     return value;
 }
@@ -145,7 +145,7 @@ void Buffer::copySubData(glow::Buffer * buffer, GLintptr readOffset, GLintptr wr
 {
     assert(buffer != nullptr);
 
-    behavior().copySubData(this, buffer, readOffset, writeOffset, size);
+    implementation().copySubData(this, buffer, readOffset, writeOffset, size);
 }
 
 void Buffer::copySubData(glow::Buffer * buffer, GLsizeiptr size) const
@@ -163,12 +163,12 @@ void Buffer::copyData(glow::Buffer * buffer, GLsizeiptr size, GLenum usage) cons
 
 void Buffer::clearData(GLenum internalformat, GLenum format, GLenum type, const void * data)
 {
-    behavior().clearData(this, internalformat, format, type, data);
+    implementation().clearData(this, internalformat, format, type, data);
 }
 
 void Buffer::clearSubData(GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data)
 {
-    behavior().clearSubData(this, internalformat, offset, size, format, type, data);
+    implementation().clearSubData(this, internalformat, offset, size, format, type, data);
 }
 
 } // namespace glow
