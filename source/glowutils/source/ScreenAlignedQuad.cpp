@@ -112,7 +112,7 @@ void ScreenAlignedQuad::initialize()
     }};
 
     m_vao = new VertexArrayObject;
-    m_buffer = new Buffer(GL_ARRAY_BUFFER);
+    m_buffer = new Buffer();
     m_buffer->setData(raw, GL_STATIC_DRAW); //needed for some drivers
 
 	auto binding = m_vao->binding(0);

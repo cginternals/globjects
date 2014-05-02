@@ -3,17 +3,25 @@
 #include <sstream>
 #include <string>
 
+#include <glow/FrameBufferObject.h>
+
 namespace glow
 {
 
-FrameBufferAttachment::FrameBufferAttachment(GLenum attachment)
-: m_attachment(attachment)
+FrameBufferAttachment::FrameBufferAttachment(FrameBufferObject * fbo, GLenum attachment)
+: m_fbo(fbo)
+, m_attachment(attachment)
 {
 }
 
 GLenum FrameBufferAttachment::attachment() const
 {
 	return m_attachment;
+}
+
+GLint FrameBufferAttachment::getParameter(GLenum pname) const
+{
+    return m_fbo->getAttachmentParameter(m_attachment, pname);
 }
 
 bool FrameBufferAttachment::isTextureAttachment() const

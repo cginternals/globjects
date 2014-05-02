@@ -10,7 +10,7 @@ namespace glow
 {
 
 class RenderBufferObject;
-
+class FrameBufferObject;
 
 /** \brief Wrapper of render buffer attachments of a frame buffer object.
     
@@ -23,9 +23,7 @@ class RenderBufferObject;
 class GLOW_API RenderBufferAttachment : public FrameBufferAttachment
 {
 public:
-	RenderBufferAttachment(
-        RenderBufferObject * renderBuffer
-    ,   GLenum attachment);
+    RenderBufferAttachment(FrameBufferObject * fbo,  GLenum attachment, RenderBufferObject * renderBuffer);
 
     virtual bool isRenderBufferAttachment() const override;
 	RenderBufferObject * renderBuffer();

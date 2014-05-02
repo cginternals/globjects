@@ -19,11 +19,17 @@ Texture::Texture(GLenum  target)
 {
 }
 
-Texture::Texture(GLuint id, GLenum  target, bool ownsGLObject)
-: Object(id, ownsGLObject)
+Texture::Texture(GLuint id, GLenum  target, bool takeOwnership)
+: Object(id, takeOwnership)
 , m_target(target)
 {
 }
+
+Texture * Texture::fromId(GLuint id, GLenum  target, bool takeOwnership)
+{
+    return new Texture(id, target, takeOwnership);
+}
+
 
 Texture::~Texture()
 {

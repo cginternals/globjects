@@ -12,6 +12,7 @@ namespace glow
 
 class TextureAttachment;
 class RenderBufferAttachment;
+class FrameBufferObject;
 
 /** \brief Wraps attachments to a FrameBufferObject.
     
@@ -24,9 +25,11 @@ class RenderBufferAttachment;
 class GLOW_API FrameBufferAttachment : public Referenced
 {
 public:
-    FrameBufferAttachment(GLenum attachment);
+    FrameBufferAttachment(FrameBufferObject * fbo, GLenum attachment);
 
 	GLenum attachment() const;
+
+    GLint getParameter(GLenum pname) const;
 
 	virtual bool isTextureAttachment() const;
 	virtual bool isRenderBufferAttachment() const;
@@ -39,6 +42,7 @@ public:
 	std::string attachmentString() const;
 
 protected:
+    FrameBufferObject * m_fbo;
 	GLenum m_attachment;
 };
 

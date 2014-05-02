@@ -21,21 +21,13 @@ public:
 
     virtual void accept(ObjectVisitor & visitor) override;
 
-    void bind() const;
-    void unbind() const;
+    void bind(GLenum target = GL_RENDERBUFFER) const;
+    static void unbind(GLenum target = GL_RENDERBUFFER);
 
-	void storage(
-        GLenum internalformat
-    ,   GLsizei width
-    ,   GLsizei height);
-	void storageMultisample(
-        GLsizei samples
-    ,   GLenum internalformat
-    ,   GLsizei width
-    ,   GLsizei height);
+    void storage(GLenum internalformat, GLsizei width, GLsizei height);
+    void storageMultisample(GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
 
     GLint getParameter(GLenum pname) const;
-
 protected:
     virtual ~RenderBufferObject();
 

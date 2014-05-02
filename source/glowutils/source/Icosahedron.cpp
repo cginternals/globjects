@@ -45,38 +45,36 @@ const std::array<vec3, 12> Icosahedron::vertices()
 const std::array<Icosahedron::Face, 20> Icosahedron::indices()
 {
     return std::array<Face, 20>{{
-        Face{{  0, 11,  5}}
-    ,   Face{{  0,  5,  1}}
-    ,   Face{{  0,  1,  7}}
-    ,   Face{{  0,  7, 10}}
-    ,   Face{{  0, 10, 11}}
+        Face{{  0, 11,  5 }}
+    ,   Face{{  0,  5,  1 }}
+    ,   Face{{  0,  1,  7 }}
+    ,   Face{{  0,  7, 10 }}
+    ,   Face{{  0, 10, 11 }}
 
-    ,   Face{{  1,  5,  9}}
-    ,   Face{{  5, 11,  4}}
-    ,   Face{{ 11, 10,  2}}
-    ,   Face{{ 10,  7,  6}}
-    ,   Face{{  7,  1,  8}}
+    ,   Face{{  1,  5,  9 }}
+    ,   Face{{  5, 11,  4 }}
+    ,   Face{{ 11, 10,  2 }}
+    ,   Face{{ 10,  7,  6 }}
+    ,   Face{{  7,  1,  8 }}
 
-    ,   Face{{  3,  9,  4}}
-    ,   Face{{  3,  4,  2}}
-    ,   Face{{  3,  2,  6}}
-    ,   Face{{  3,  6,  8}}
-    ,   Face{{  3,  8,  9}}
+    ,   Face{{  3,  9,  4 }}
+    ,   Face{{  3,  4,  2 }}
+    ,   Face{{  3,  2,  6 }}
+    ,   Face{{  3,  6,  8 }}
+    ,   Face{{  3,  8,  9 }}
 
-    ,   Face{{  4,  9,  5}}
-    ,   Face{{  2,  4, 11}}
-    ,   Face{{  6,  2, 10}}
-    ,   Face{{  8,  6,  7}}
-    ,   Face{{  9,  8,  1}}
+    ,   Face{{  4,  9,  5 }}
+    ,   Face{{  2,  4, 11 }}
+    ,   Face{{  6,  2, 10 }}
+    ,   Face{{  8,  6,  7 }}
+    ,   Face{{  9,  8,  1 }}
     }};
 }
 
-Icosahedron::Icosahedron(
-    const GLsizei iterations
-,   const GLuint vertexAttribLocation)
-:   m_vao(new VertexArrayObject)
-,   m_vertices(new Buffer(GL_ARRAY_BUFFER))
-,   m_indices(new Buffer(GL_ELEMENT_ARRAY_BUFFER))
+Icosahedron::Icosahedron(const GLsizei iterations, const GLuint vertexAttribLocation)
+: m_vao(new VertexArrayObject)
+, m_vertices(new Buffer)
+, m_indices(new Buffer)
 {
     auto v(vertices());
     auto i(indices());
@@ -93,13 +91,13 @@ Icosahedron::Icosahedron(
 
     m_vao->bind();
 
+    m_indices->bind(GL_ELEMENT_ARRAY_BUFFER);
+
     auto vertexBinding = m_vao->binding(0);
     vertexBinding->setAttribute(vertexAttribLocation);
     vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
     vertexBinding->setFormat(3, GL_FLOAT, GL_TRUE);
     m_vao->enable(0);
-
-    m_indices->bind();
 
     m_vao->unbind();
 }
@@ -116,6 +114,8 @@ void Icosahedron::draw(const GLenum mode)
     m_vao->bind();
     m_vao->drawElements(mode, m_size, GL_UNSIGNED_SHORT, nullptr);
     m_vao->unbind();
+
+    m_indices->unbind(GL_ELEMENT_ARRAY_BUFFER);
 
     // glDisable(GL_DEPTH_TEST); // TODO: Use stackable states
 }

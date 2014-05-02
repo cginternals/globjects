@@ -18,6 +18,7 @@ class GLOW_API ObjectRegistry
     friend class Object;
 public:
 	ObjectRegistry();
+    static ObjectRegistry & current();
 
     const std::set<Object *> & objects();
 

@@ -62,45 +62,47 @@ namespace glow
 class GLOW_API Query : public Object
 {
 public:
-	Query();
-	Query(GLenum target);
-	static Query* timestamp();
-    static Query* current(GLenum target);
+    Query();
+    static Query * fromId(GLuint id, bool takeOwnership = false);
+
+    static Query * current(GLenum target);
+    static Query * timestamp();
 	
-	static int counterBits(GLenum target);
+    static GLint get(GLenum target, GLenum pname);
+    static GLint getIndexed(GLenum target, GLuint index, GLenum pname);
+
+    static GLint getCounterBits(GLenum target);
 
     virtual void accept(ObjectVisitor& visitor) override;
 
-    void begin() const;
     void begin(GLenum target) const;
-    void end() const;
+    void end(GLenum target) const;
+
+    void beginIndexed(GLenum target, GLuint index) const;
+    void endIndexed(GLenum target, GLuint index) const;
 	
-	bool isQuery() const;
-	
-    void get(GLenum pname, GLuint * param) const;
-    void get64(GLenum pname, GLuint64 * param) const;
+    static bool isQuery(GLuint id);
 
 	GLuint get(GLenum pname = GL_QUERY_RESULT) const;
     GLuint64 get64(GLenum pname = GL_QUERY_RESULT) const;
 	
 	bool resultAvailable() const;
     void wait() const;
-    void wait(const std::chrono::duration<int, std::nano>& timeout) const;
+    void wait(const std::chrono::duration<int, std::nano> & timeout) const;
 	
     GLuint waitAndGet(GLenum pname = GL_QUERY_RESULT) const;
     GLuint64 waitAndGet64(GLenum pname = GL_QUERY_RESULT) const;
 
-    GLuint waitAndGet(const std::chrono::duration<int, std::nano>& timeout, GLenum pname = GL_QUERY_RESULT) const;
-    GLuint64 waitAndGet64(const std::chrono::duration<int, std::nano>& timeout, GLenum pname = GL_QUERY_RESULT) const;
+    GLuint waitAndGet(const std::chrono::duration<int, std::nano> & timeout, GLenum pname = GL_QUERY_RESULT) const;
+    GLuint64 waitAndGet64(const std::chrono::duration<int, std::nano> & timeout, GLenum pname = GL_QUERY_RESULT) const;
 
-    GLuint waitAndGet(GLenum pname, const std::chrono::duration<int, std::nano>& timeout) const;
-    GLuint64 waitAndGet64(GLenum pname, const std::chrono::duration<int, std::nano>& timeout) const;
+    GLuint waitAndGet(GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const;
+    GLuint64 waitAndGet64(GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const;
 	
     void counter(GLenum target = GL_TIMESTAMP) const;
 protected:
-    mutable GLenum m_target;
 	
-	Query(GLuint id, GLenum target);
+    Query(GLuint id, bool takeOwnership);
     virtual ~Query();
 
 	static GLuint genQuery();

@@ -11,9 +11,14 @@ Sampler::Sampler()
 {
 }
 
-Sampler::Sampler(GLuint id, bool ownsGLObject)
-: Object(id, ownsGLObject)
+Sampler::Sampler(GLuint id, bool takeOwnership)
+: Object(id, takeOwnership)
 {
+}
+
+Sampler * Sampler::fromId(GLuint id, bool takeOwnership)
+{
+    return new Sampler(id, takeOwnership);
 }
 
 Sampler::~Sampler()
@@ -43,6 +48,12 @@ void Sampler::accept(ObjectVisitor & visitor)
 void Sampler::bind(GLuint unit) const
 {
     glBindSampler(unit, m_id);
+    CheckGLError();
+}
+
+void Sampler::unbind(GLuint unit)
+{
+    glBindSampler(unit, 0);
     CheckGLError();
 }
 

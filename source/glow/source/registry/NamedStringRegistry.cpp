@@ -1,4 +1,5 @@
 #include "NamedStringRegistry.h"
+#include "Registry.h"
 
 #include <glow/logging.h>
 
@@ -8,6 +9,11 @@ namespace glow {
 
 NamedStringRegistry::NamedStringRegistry()
 {
+}
+
+NamedStringRegistry & NamedStringRegistry::current()
+{
+    return Registry::current().namedStrings();
 }
 
 bool NamedStringRegistry::hasNamedString(const std::string & name)

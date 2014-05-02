@@ -8,7 +8,7 @@
 #include <glow/glow.h>
 #include <glow/Extension.h>
 
-#include "contextid.h"
+#include "registry/contextid.h"
 #include "DebugMessageCallback.h"
 
 #ifdef WIN32
@@ -41,7 +41,7 @@ void APIENTRY debugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum
     if (!param)
         return;
 
-    DebugMessageCallback & messageCallback = *reinterpret_cast<DebugMessageCallback*>(const_cast<void*>(param));
+    const DebugMessageCallback & messageCallback = *reinterpret_cast<const DebugMessageCallback*>(param);
     messageCallback(glow::DebugMessage(source, type, id, severity, std::string(message, length)));
 }
 
