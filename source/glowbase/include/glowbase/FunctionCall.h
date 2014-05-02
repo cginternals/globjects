@@ -3,11 +3,12 @@
 #include <functional>
 #include <tuple>
 
-#include <glow/glow_api.h>
+#include <glowbase/glowbase_api.h>
 
-namespace glow {
+namespace glowbase
+{
 
-class GLOW_API AbstractFunctionCall
+class GLOWBASE_API AbstractFunctionCall
 {
 public:
     virtual void operator()() = 0;
@@ -34,6 +35,6 @@ protected:
     std::tuple<Arguments...> m_arguments;
 };
 
-} // namespace glow
+} // namespace glowbase
 
-#include <glow/FunctionCall.hpp>
+#include <glowbase/FunctionCall.hpp>

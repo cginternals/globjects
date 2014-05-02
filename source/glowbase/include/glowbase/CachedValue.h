@@ -1,6 +1,6 @@
 #pragma once
 
-namespace glowutils
+namespace glowbase
 {
 
 /** \brief Extends a value of arbitrary type by an invalidation flag.
@@ -24,8 +24,6 @@ namespace glowutils
         return lazzyValue.value();
 
     \endcode
-
-    \see Camera
 */
 template <typename T>
 class CachedValue
@@ -48,6 +46,6 @@ protected:
 	mutable T m_value;
 };
 
-} // namespace glowutils
+} // namespace glowbase
 
-#include <glowutils/CachedValue.hpp>
+#include <glowbase/CachedValue.hpp>

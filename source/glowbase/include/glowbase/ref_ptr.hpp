@@ -1,10 +1,10 @@
 #pragma once
 
-#include <glow/ref_ptr.h>
+#include <glowbase/ref_ptr.h>
 
-#include <glow/Referenced.h>
+#include <glowbase/Referenced.h>
 
-namespace glow 
+namespace glowbase
 {
 
 template<typename T>
@@ -200,4 +200,4 @@ ref_ptr<T> make_ref(T * object)
     return ref_ptr<T>(object);
 }
 
-} // namespace glow
+} // namespace glowbase

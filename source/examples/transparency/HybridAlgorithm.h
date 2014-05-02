@@ -38,30 +38,30 @@ public:
 
 private:
     // shared
-    glow::ref_ptr<glow::FrameBufferObject> m_prepassFbo;
-    glow::ref_ptr<glow::RenderBufferObject> m_depthBuffer;
+    glowbase::ref_ptr<glow::FrameBufferObject> m_prepassFbo;
+    glowbase::ref_ptr<glow::RenderBufferObject> m_depthBuffer;
 
     // opaque geometry pass
-    glow::ref_ptr<glow::Program> m_opaqueProgram;
-    glow::ref_ptr<glow::Texture> m_opaqueBuffer;
+    glowbase::ref_ptr<glow::Program> m_opaqueProgram;
+    glowbase::ref_ptr<glow::Texture> m_opaqueBuffer;
 
     // depth k-TAB pass
-    glow::ref_ptr<glow::Program> m_depthKTabProgram;
-    glow::ref_ptr<glow::Buffer> m_depthKTab;
+    glowbase::ref_ptr<glow::Program> m_depthKTabProgram;
+    glowbase::ref_ptr<glow::Buffer> m_depthKTab;
 
     // visibility k-TAB pass
-    glow::ref_ptr<glow::Program> m_visibilityKTabProgram;
-    glow::ref_ptr<glow::Buffer> m_visibilityKTab;
+    glowbase::ref_ptr<glow::Program> m_visibilityKTabProgram;
+    glowbase::ref_ptr<glow::Buffer> m_visibilityKTab;
 
     // translucent color pass
-    glow::ref_ptr<glow::Program> m_colorProgram;
-    glow::ref_ptr<glow::FrameBufferObject> m_colorFbo;
-    glow::ref_ptr<glow::Texture> m_coreBuffer;
-    glow::ref_ptr<glow::Texture> m_accumulationBuffer;
-    glow::ref_ptr<glow::Buffer> m_depthComplexityBuffer;
+    glowbase::ref_ptr<glow::Program> m_colorProgram;
+    glowbase::ref_ptr<glow::FrameBufferObject> m_colorFbo;
+    glowbase::ref_ptr<glow::Texture> m_coreBuffer;
+    glowbase::ref_ptr<glow::Texture> m_accumulationBuffer;
+    glowbase::ref_ptr<glow::Buffer> m_depthComplexityBuffer;
 
     // composition pass
-    glow::ref_ptr<glow::FrameBufferObject> m_compositionFbo;
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_compositionQuad;
-    glow::ref_ptr<glow::Texture> m_colorBuffer;
+    glowbase::ref_ptr<glow::FrameBufferObject> m_compositionFbo;
+    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_compositionQuad;
+    glowbase::ref_ptr<glow::Texture> m_colorBuffer;
 };

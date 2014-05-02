@@ -7,9 +7,10 @@
 
 #include <glm/glm.hpp>
 
+#include <glowbase/ref_ptr.h>
+
 #include <glow/glow_api.h>
 #include <glow/Object.h>
-#include <glow/ref_ptr.h>
 
 namespace glow 
 {
@@ -118,7 +119,7 @@ protected:
     static void blit(const std::array<GLint, 4> & srcRect, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
 protected:
     mutable GLenum m_target;
-	std::map<GLenum, ref_ptr<FrameBufferAttachment>> m_attachments;
+    std::map<GLenum, glowbase::ref_ptr<FrameBufferAttachment>> m_attachments;
 };
 
 } // namespace glow

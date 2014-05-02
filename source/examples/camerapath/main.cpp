@@ -11,6 +11,8 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/constants.hpp>
 
+#include <glowbase/Timer.h>
+
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -29,8 +31,6 @@
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/CameraPathRecorder.h>
 #include <glowutils/CameraPathPlayer.h>
-#include <glowutils/AutoTimer.h>
-#include <glowutils/Timer.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 
@@ -302,12 +302,12 @@ public:
 
 protected:
 
-    ref_ptr<Program> m_sphere;
+    glowbase::ref_ptr<Program> m_sphere;
 
-    ref_ptr<Icosahedron> m_icosahedron;
-    ref_ptr<AdaptiveGrid> m_agrid;
+    glowbase::ref_ptr<Icosahedron> m_icosahedron;
+    glowbase::ref_ptr<AdaptiveGrid> m_agrid;
 
-    Timer timer;
+    glowbase::Timer timer;
     Camera m_camera;
     float angle;
     CameraPath path;

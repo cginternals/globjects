@@ -1,6 +1,6 @@
-#include <glow/Referenced.h>
+#include <glowbase/Referenced.h>
 
-namespace glow
+namespace glowbase
 {
 
 Referenced::Referenced()
@@ -44,4 +44,4 @@ int Referenced::refCounter() const
 	return m_refCounter;
 }
 
-} // namespace glow
+} // namespace glowbase

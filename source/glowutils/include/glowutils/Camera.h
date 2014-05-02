@@ -2,8 +2,9 @@
 
 #include <glm/glm.hpp>
 
+#include <glowbase/CachedValue.h>
+
 #include <glowutils/glowutils_api.h>
-#include <glowutils/CachedValue.h>
 
 namespace glowutils
 {
@@ -82,13 +83,13 @@ protected:
 
     glm::ivec2 m_viewport;
 
-    CachedValue<glm::mat4> m_view;
-    CachedValue<glm::mat4> m_viewInverted;
-    CachedValue<glm::mat4> m_projection;
-    CachedValue<glm::mat4> m_projectionInverted;
-    CachedValue<glm::mat4> m_viewProjection;
-    CachedValue<glm::mat4> m_viewProjectionInverted;
-    CachedValue<glm::mat3> m_normal;
+    glowbase::CachedValue<glm::mat4> m_view;
+    glowbase::CachedValue<glm::mat4> m_viewInverted;
+    glowbase::CachedValue<glm::mat4> m_projection;
+    glowbase::CachedValue<glm::mat4> m_projectionInverted;
+    glowbase::CachedValue<glm::mat4> m_viewProjection;
+    glowbase::CachedValue<glm::mat4> m_viewProjectionInverted;
+    glowbase::CachedValue<glm::mat3> m_normal;
 };
 
 } // namespace glowutils

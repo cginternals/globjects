@@ -3,6 +3,8 @@
 #include <vector>
 #include <sstream>
 
+#include <glowbase/ref_ptr.h>
+
 #include <glow/Program.h>
 #include <glow/logging.h>
 #include <glow/AbstractStringSource.h>
@@ -11,7 +13,6 @@
 #include <glow/ObjectVisitor.h>
 #include <glow/Version.h>
 #include <glow/glow.h>
-#include <glow/ref_ptr.h>
 
 #include "IncludeProcessor.h"
 
@@ -122,7 +123,7 @@ const AbstractStringSource* Shader::source() const
 	return m_source;
 }
 
-void Shader::notifyChanged(const glow::Changeable *)
+void Shader::notifyChanged(const glowbase::Changeable *)
 {
 	updateSource();
 }
@@ -139,7 +140,7 @@ void Shader::updateSource()
         }
         else
         {
-            ref_ptr<AbstractStringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source, m_includePaths);
+            glowbase::ref_ptr<AbstractStringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source, m_includePaths);
 
             sources = resolvedSource->strings();
         }

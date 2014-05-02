@@ -118,13 +118,13 @@ public:
     }
 
 protected:
-    glow::ref_ptr<glow::Texture> m_texture;
-    glow::ref_ptr<glow::Program> m_program;
+    glowbase::ref_ptr<glow::Texture> m_texture;
+    glowbase::ref_ptr<glow::Program> m_program;
 
     glowutils::Camera m_camera;
     float m_angle, m_scale;
 
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 };
 
 

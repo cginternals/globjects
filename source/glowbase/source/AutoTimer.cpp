@@ -1,20 +1,21 @@
-#include <glowutils/AutoTimer.h>
+#include <glowbase/AutoTimer.h>
 
 #include <cassert>
 #include <cmath>
 #include <cstring>
 #include <algorithm>
 #include <iomanip>
+#include <iostream>
 
-#include <glow/logging.h>
-#include <glowutils/Timer.h>
+//#include <glow/logging.h>
+#include <glowbase/Timer.h>
 
 namespace {
     // use number of digits to retrieve exp in 10^(3 exp)
     const char units[3] = { 'n', 'u', 'm' };
 }
 
-namespace glowutils
+namespace glowbase
 {
 
 int AutoTimer::s_numActiveInstances = 0;
@@ -45,11 +46,13 @@ AutoTimer::~AutoTimer()
     // shorten the time to nearest time unit
     double delta = static_cast<double>(nanoDelta.count()) / pow(1000.0, unitPrecision);
 
-    glow::debug() << m_info << " took "
-        << std::setprecision(4) << delta << unit
-        << " (timer_" << std::setfill('0') << std::setw(2) << m_index << ").";
+    std::cout << m_info << " took " << std::setprecision(4) << delta << unit << " (timer_" << std::setfill('0') << std::setw(2) << m_index << ").";
+    //glow::debug() << m_info << " took "
+    //    << std::setprecision(4) << delta << unit
+    //    << " (timer_" << std::setfill('0') << std::setw(2) << m_index << ").";
+    // TODO: reenable when moving logging to glowbase
 
     --s_numActiveInstances;
 }
 
-} // namespace glowutils
+} // namespace glowbase

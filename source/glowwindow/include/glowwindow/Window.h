@@ -6,7 +6,7 @@
 
 #include <glm/glm.hpp>
 
-#include <glow/ref_ptr.h>
+#include <glowbase/ref_ptr.h>
 
 #include <glowwindow/glowwindow_api.h>
 #include <glowwindow/MainLoop.h>
@@ -113,7 +113,7 @@ protected:
 protected:
     Context * m_context;
     GLFWwindow * m_window;
-    glow::ref_ptr<WindowEventHandler> m_eventHandler;
+    glowbase::ref_ptr<WindowEventHandler> m_eventHandler;
     std::queue<WindowEvent*> m_eventQueue;
     glm::ivec2 m_windowedModeSize;
     std::string m_title;

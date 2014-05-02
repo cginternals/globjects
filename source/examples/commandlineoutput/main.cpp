@@ -8,6 +8,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <glowbase/ref_ptr.h>
+#include <glowbase/formatString.h>
+
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -21,8 +24,6 @@
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/logging.h>
-#include <glow/ref_ptr.h>
-#include <glow/formatString.h>
 #include <glow/debugmessageoutput.h>
 
 #include <glowwindow/ContextFormat.h>
@@ -47,36 +48,36 @@ public:
 
         std::cout << "glow Objects tests" << std::endl;
 
-        glow::ref_ptr<glow::Buffer> buffer(new glow::Buffer());
+        glowbase::ref_ptr<glow::Buffer> buffer(new glow::Buffer());
         std::cout << "glow::Buffer = "; glow::info() << buffer.get();
 
         std::cout << "glow::FrameBufferObject = "; glow::info() << glow::FrameBufferObject::defaultFBO();
 
-        glow::ref_ptr<glow::Program> program(new glow::Program());
+        glowbase::ref_ptr<glow::Program> program(new glow::Program());
         std::cout << "glow::Program = "; glow::info() << program.get();
 
-        glow::ref_ptr<glow::Query> query(new glow::Query());
+        glowbase::ref_ptr<glow::Query> query(new glow::Query());
         std::cout << "glow::Query = "; glow::info() << query.get();
 
-        glow::ref_ptr<glow::RenderBufferObject> rbo(new glow::RenderBufferObject());
+        glowbase::ref_ptr<glow::RenderBufferObject> rbo(new glow::RenderBufferObject());
         std::cout << "glow::RenderBufferObject = "; glow::info() << rbo.get();
 
-        glow::ref_ptr<glow::Sampler> sampler(new glow::Sampler());
+        glowbase::ref_ptr<glow::Sampler> sampler(new glow::Sampler());
         std::cout << "glow::Sampler = "; glow::info() << sampler.get();
 
-        glow::ref_ptr<glow::Shader> shader(new glow::Shader(GL_VERTEX_SHADER));
+        glowbase::ref_ptr<glow::Shader> shader(new glow::Shader(GL_VERTEX_SHADER));
         std::cout << "glow::Shader = "; glow::info() << shader.get();
 
-        glow::ref_ptr<glow::Texture> texture(new glow::Texture());
+        glowbase::ref_ptr<glow::Texture> texture(new glow::Texture());
         std::cout << "glow::Texture = "; glow::info() << texture.get();
 
-        glow::ref_ptr<glow::TransformFeedback> tf(new glow::TransformFeedback());
+        glowbase::ref_ptr<glow::TransformFeedback> tf(new glow::TransformFeedback());
         std::cout << "glow::TransformFeedback = "; glow::info() << tf.get();
 
-        glow::ref_ptr<glow::VertexArrayObject> vao(new glow::VertexArrayObject());
+        glowbase::ref_ptr<glow::VertexArrayObject> vao(new glow::VertexArrayObject());
         std::cout << "glow::VertexArrayObject = "; glow::info() << vao.get();
 
-        glow::ref_ptr<glow::Uniform<float>> uniform(new glow::Uniform<float>("Pi", 3.14f));
+        glowbase::ref_ptr<glow::Uniform<float>> uniform(new glow::Uniform<float>("Pi", 3.14f));
         std::cout << "glow::Uniform = "; glow::info() << uniform.get();
         std::cout << "glow::AbstractUniform = "; glow::info() << static_cast<glow::AbstractUniform*>(uniform.get());
 

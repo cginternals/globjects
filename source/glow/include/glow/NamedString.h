@@ -4,16 +4,16 @@
 
 #include <GL/glew.h>
 
-#include <glow/glow_api.h>
+#include <glowbase/ChangeListener.h>
+#include <glowbase/ref_ptr.h>
+#include <glowbase/Referenced.h>
 
+#include <glow/glow_api.h>
 #include <glow/AbstractStringSource.h>
-#include <glow/ChangeListener.h>
-#include <glow/ref_ptr.h>
-#include <glow/Referenced.h>
 
 namespace glow {
 
-class GLOW_API NamedString : public Referenced, protected ChangeListener
+class GLOW_API NamedString : public glowbase::Referenced, protected glowbase::ChangeListener
 {
 public:
     static NamedString * create(const std::string & name, AbstractStringSource * string, GLenum type = GL_SHADER_INCLUDE_ARB);
@@ -30,10 +30,10 @@ public:
 
     GLint getParameter(GLenum pname);
 
-    virtual void notifyChanged(const Changeable * changeable) override;
+    virtual void notifyChanged(const glowbase::Changeable * changeable) override;
 protected:
     std::string m_name;
-    ref_ptr<AbstractStringSource> m_source;
+    glowbase::ref_ptr<AbstractStringSource> m_source;
     GLenum m_type;
 
     static bool hasNativeSupport();

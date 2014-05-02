@@ -1,8 +1,9 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/ref_ptr.h>
+
 #include <glow/Error.h>
-#include <glow/ref_ptr.h>
 #include <glow/Buffer.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
@@ -153,17 +154,17 @@ public:
         window.repaint();
     }
 protected:
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
-    glow::ref_ptr<glow::Buffer> m_buffer;
-    glow::ref_ptr<glow::Program> m_shaderProgram;
+    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
+    glowbase::ref_ptr<glow::Buffer> m_buffer;
+    glowbase::ref_ptr<glow::Program> m_shaderProgram;
 
-    glow::ref_ptr<glow::State> m_defaultPointSizeState;
-    glow::ref_ptr<glow::State> m_thinnestPointSizeState;
-    glow::ref_ptr<glow::State> m_thinPointSizeState;
-    glow::ref_ptr<glow::State> m_normalPointSizeState;
-    glow::ref_ptr<glow::State> m_thickPointSizeState;
-    glow::ref_ptr<glow::State> m_disableRasterizerState;
-    glow::ref_ptr<glow::State> m_enableRasterizerState;
+    glowbase::ref_ptr<glow::State> m_defaultPointSizeState;
+    glowbase::ref_ptr<glow::State> m_thinnestPointSizeState;
+    glowbase::ref_ptr<glow::State> m_thinPointSizeState;
+    glowbase::ref_ptr<glow::State> m_normalPointSizeState;
+    glowbase::ref_ptr<glow::State> m_thickPointSizeState;
+    glowbase::ref_ptr<glow::State> m_disableRasterizerState;
+    glowbase::ref_ptr<glow::State> m_enableRasterizerState;
 };
 
 int main(int /*argc*/, char* /*argv*/[])

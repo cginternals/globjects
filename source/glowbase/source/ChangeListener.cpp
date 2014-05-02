@@ -1,8 +1,8 @@
-#include <glow/ChangeListener.h>
+#include <glowbase/ChangeListener.h>
 
-#include <glow/Changeable.h>
+#include <glowbase/Changeable.h>
 
-namespace glow
+namespace glowbase
 {
 
 ChangeListener::~ChangeListener()
@@ -27,4 +27,4 @@ void ChangeListener::removeSubject(Changeable * subject)
     m_subjects.erase(subject);
 }
 
-} // namespace glow
+} // namespace glowbase

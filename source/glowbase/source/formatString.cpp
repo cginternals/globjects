@@ -1,4 +1,4 @@
-#include <glow/formatString.h>
+#include <glowbase/formatString.h>
 
 #include <string>
 #include <sstream>
@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-namespace glow
+namespace glowbase
 {
 
 int readInt(const char* str, int& number)
@@ -156,4 +156,4 @@ void streamprintf(std::ostream& stream, const char* format)
 	stream << format;
 }
 
-} // namespace glow
+} // namespace glowbase

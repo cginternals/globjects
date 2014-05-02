@@ -3,15 +3,16 @@
 #include <string>
 #include <vector>
 
+#include <glowbase/ref_ptr.h>
+#include <glowbase/ChangeListener.h>
+
 #include <glow/glow_api.h>
-#include <glow/ref_ptr.h>
 #include <glow/AbstractStringSource.h>
-#include <glow/ChangeListener.h>
 
 namespace glow
 {
 
-class GLOW_API CompositeStringSource : public AbstractStringSource, protected ChangeListener
+class GLOW_API CompositeStringSource : public AbstractStringSource, protected glowbase::ChangeListener
 {
 public:
     CompositeStringSource();
@@ -26,10 +27,10 @@ public:
     virtual std::string shortInfo() const override;
 protected:
     virtual ~CompositeStringSource();
-    virtual void notifyChanged(const Changeable * changeable) override;
+    virtual void notifyChanged(const glowbase::Changeable * changeable) override;
     void update() const;
 protected:
-    std::vector<ref_ptr<AbstractStringSource>> m_sources;
+    std::vector<glowbase::ref_ptr<AbstractStringSource>> m_sources;
     mutable bool m_dirty;
     mutable std::vector<std::string> m_strings;
 };

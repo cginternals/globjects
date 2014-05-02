@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glowwindow/WindowEventHandler.h>
-#include <glowutils/Timer.h>
+#include <glowbase/Timer.h>
 #include <glowwindow/events.h>
 
 #include <string>
@@ -14,7 +14,7 @@ public:
 
     virtual void handleEvent(glowwindow::WindowEvent & event) override;
 protected:
-    glowutils::Timer m_timer;
+    glowbase::Timer m_timer;
     long double m_swapElapsedTime;
     unsigned int m_swapCount;
     std::string m_baseTitle;

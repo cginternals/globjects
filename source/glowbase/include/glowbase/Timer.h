@@ -2,12 +2,12 @@
 
 #include <chrono>
 
-#include <glowutils/glowutils_api.h>
+#include <glowbase/glowbase_api.h>
 
-namespace glowutils
+namespace glowbase
 {
 
-class GLOWUTILS_API Timer
+class GLOWBASE_API Timer
 {
     using clock = std::chrono::high_resolution_clock;
     using time_point = clock::time_point;
@@ -43,4 +43,4 @@ protected:
     mutable Duration m_elapsed;
 };
 
-} // namespace glowutils
+} // namespace glowbase

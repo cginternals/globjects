@@ -3,9 +3,10 @@
 #include <map>
 #include <vector>
 
+#include <glowbase/ref_ptr.h>
+
 #include <glow/glow_api.h>
 #include <glow/Object.h>
-#include <glow/ref_ptr.h>
 
 namespace glow {
 class ObjectVisitor;
@@ -72,7 +73,7 @@ protected:
     static GLuint genVertexArray();
 
 protected:
-    std::map<GLuint, ref_ptr<VertexAttributeBinding >> m_bindings;
+    std::map<GLuint, glowbase::ref_ptr<VertexAttributeBinding >> m_bindings;
 
 };
 

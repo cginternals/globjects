@@ -5,8 +5,9 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/Referenced.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
 #include <glow/AbstractState.h>
 #include <glow/StateSetting.h>
 
@@ -15,7 +16,7 @@ namespace glow
 
 class Capability;
 
-class GLOW_API State : public AbstractState, public Referenced
+class GLOW_API State : public AbstractState, public glowbase::Referenced
 {
 public:
     enum Mode

@@ -1,6 +1,6 @@
-#include <glowutils/Timer.h>
+#include <glowbase/Timer.h>
 
-namespace glowutils
+namespace glowbase
 {
 
 Timer::Timer(bool start, bool autoUpdate)
@@ -87,4 +87,4 @@ bool Timer::autoUpdating() const
     return m_auto;
 }
 
-} // namespace glowutils
+} // namespace glowbase

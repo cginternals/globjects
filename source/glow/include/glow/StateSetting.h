@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 
 #include <glow/glow_api.h>
-#include <glow/FunctionCall.h>
+#include <glowbase/FunctionCall.h>
 
 namespace glow
 {
@@ -29,7 +29,7 @@ protected:
 class GLOW_API StateSetting
 {
 public:
-    StateSetting(AbstractFunctionCall * functionCall);
+    StateSetting(glowbase::AbstractFunctionCall * functionCall);
     template <typename... Arguments>
     StateSetting(void (*function)(Arguments...), Arguments... arguments);
 
@@ -40,7 +40,7 @@ public:
     StateSettingType & type();
     const StateSettingType & type() const;
 protected:
-    AbstractFunctionCall * m_functionCall;
+    glowbase::AbstractFunctionCall * m_functionCall;
     StateSettingType m_type;
 };
 

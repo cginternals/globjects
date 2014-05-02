@@ -74,8 +74,8 @@ public:
     }
 
 protected:
-    glow::ref_ptr<glow::Texture> m_texture;
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glowbase::ref_ptr<glow::Texture> m_texture;
+    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
     glm::ivec2 m_textureSize;
     glm::ivec2 m_pageSize;
     glm::ivec2 m_numPages;

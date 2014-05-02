@@ -9,8 +9,9 @@
 
 #include <glm/glm.hpp>
 
+#include <glowbase/Referenced.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
 #include <glow/LocationIdentity.h>
 #include <glow/TextureHandle.h>
 
@@ -29,7 +30,7 @@ class AbstractUniformBehavior;
  * \see Uniform
  * \see Program
  */
-class GLOW_API AbstractUniform : public Referenced
+class GLOW_API AbstractUniform : public glowbase::Referenced
 {
 	friend class Program; ///< Programs (de)register themselves.
 

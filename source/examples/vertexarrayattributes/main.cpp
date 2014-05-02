@@ -1,8 +1,9 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/ref_ptr.h>
+
 #include <glow/Error.h>
-#include <glow/ref_ptr.h>
 #include <glow/Buffer.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
@@ -183,9 +184,9 @@ public:
         window.repaint();
     }
 protected:
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
-    glow::ref_ptr<glow::Buffer> m_buffer;
-    glow::ref_ptr<glow::Program> m_shaderProgram;
+    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
+    glowbase::ref_ptr<glow::Buffer> m_buffer;
+    glowbase::ref_ptr<glow::Program> m_shaderProgram;
 };
 
 int main(int /*argc*/, char* /*argv*/[])

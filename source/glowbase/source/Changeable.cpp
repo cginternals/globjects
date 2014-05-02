@@ -1,10 +1,10 @@
-#include <glow/Changeable.h>
+#include <glowbase/Changeable.h>
 
 #include <cassert>
 
-#include <glow/ChangeListener.h>
+#include <glowbase/ChangeListener.h>
 
-namespace glow
+namespace glowbase
 {
 
 void Changeable::changed() const
@@ -34,4 +34,4 @@ void Changeable::deregisterListener(ChangeListener * listener)
     listener->removeSubject(this);
 }
 
-} // namespace glow
+} // namespace glowbase

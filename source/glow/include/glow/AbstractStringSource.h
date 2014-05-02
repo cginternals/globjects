@@ -3,9 +3,10 @@
 #include <string>
 #include <vector>
 
+#include <glowbase/Referenced.h>
+#include <glowbase/Changeable.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
-#include <glow/Changeable.h>
 
 namespace glow
 {
@@ -18,7 +19,7 @@ class CompositeStringSource;
  *
  * \see Shader
  */
-class GLOW_API AbstractStringSource : public Referenced, public Changeable
+class GLOW_API AbstractStringSource : public glowbase::Referenced, public glowbase::Changeable
 {
 public:
     virtual std::string string() const = 0;

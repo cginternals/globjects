@@ -6,8 +6,8 @@
 
 #include <glm/glm.hpp>
 
-#include <glow/ref_ptr.h>
-#include <glow/Referenced.h>
+#include <glowbase/ref_ptr.h>
+#include <glowbase/Referenced.h>
 
 #include <glowutils/glowutils_api.h>
 
@@ -20,7 +20,7 @@ namespace glow
 namespace glowutils 
 {
 
-class GLOWUTILS_API UnitCube : public glow::Referenced
+class GLOWUTILS_API UnitCube : public glowbase::Referenced
 {
     static const std::array<glm::vec3, 28> strip();
 
@@ -35,8 +35,8 @@ public:
     void draw();
 
 private:
-    glow::ref_ptr<glow::Buffer> m_strip;
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glowbase::ref_ptr<glow::Buffer> m_strip;
+    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
 };
 
 } // namespace glowutils

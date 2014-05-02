@@ -33,7 +33,7 @@ void StackedState::push()
 
 void StackedState::pop()
 {
-    glow::ref_ptr<glow::State> oldState = m_stack.back();
+    glowbase::ref_ptr<glow::State> oldState = m_stack.back();
     m_stack.pop_back();
     m_currentState = m_stack.back();
 

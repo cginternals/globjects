@@ -2,9 +2,10 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/Referenced.h>
+#include <glowbase/ref_ptr.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
-#include <glow/ref_ptr.h>
 
 namespace glow 
 {
@@ -13,7 +14,7 @@ class Buffer;
 class VertexArrayObject;
 class VertexAttributeBindingImplementation;
 
-class GLOW_API VertexAttributeBinding : public Referenced
+class GLOW_API VertexAttributeBinding : public glowbase::Referenced
 {
 	friend class VertexAttributeBindingImplementation;
 

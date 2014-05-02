@@ -11,6 +11,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/random.hpp>
 
+#include <glowbase/Timer.h>
+
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/Texture.h>
@@ -22,7 +24,6 @@
 #include <glowutils/File.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
-#include <glowutils/Timer.h>
 
 #include <glowwindow/Context.h>
 #include <glowwindow/ContextFormat.h>
@@ -336,7 +337,7 @@ protected:
     ParticleTechnique m_technique;
     std::map<ParticleTechnique, AbstractParticleTechnique *> m_techniques;
 
-    glowutils::Timer m_timer;
+    glowbase::Timer m_timer;
 
     int m_numParticles;
     glowutils::Camera * m_camera;
@@ -354,7 +355,7 @@ protected:
     };
     std::vector<Attribute> m_attributes;
 
-    glow::ref_ptr<glow::Texture> m_forces;
+    glowbase::ref_ptr<glow::Texture> m_forces;
 };
 
 

@@ -9,6 +9,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <glowbase/Timer.h>
+#include <glowbase/AutoTimer.h>
+
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -27,8 +30,6 @@
 #include <glowutils/FlightNavigation.h>
 #include <glowutils/File.h>
 #include <glowutils/File.h>
-#include <glowutils/Timer.h>
-#include <glowutils/AutoTimer.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 
@@ -307,17 +308,17 @@ public:
 
 protected:
 
-    glow::ref_ptr<glow::Program> m_sphere;
+    glowbase::ref_ptr<glow::Program> m_sphere;
     
-    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
-    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
+    glowbase::ref_ptr<glowutils::Icosahedron> m_icosahedron;
+    glowbase::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 
     glowutils::Camera m_camera;
     glowutils::WorldInHandNavigation m_nav;
     glowutils::FlightNavigation m_flightNav;
     glm::ivec2 m_lastMousePos;
     bool m_flightEnabled;
-    glowutils::Timer m_timer;
+    glowbase::Timer m_timer;
 
     glowutils::AxisAlignedBoundingBox m_aabb;
 };

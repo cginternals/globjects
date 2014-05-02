@@ -1,7 +1,7 @@
 #pragma once
 
-#include <glow/Referenced.h>
-#include <glow/ref_ptr.h>
+#include <glowbase/Referenced.h>
+#include <glowbase/ref_ptr.h>
 
 #include <glowutils/glowutils_api.h>
 
@@ -18,7 +18,7 @@ class VertexArrayObject;
 namespace glowutils
 {
 
-class GLOWUTILS_API ScreenAlignedQuad : public glow::Referenced
+class GLOWUTILS_API ScreenAlignedQuad : public glowbase::Referenced
 {
 public:
     ScreenAlignedQuad(glow::Shader * fragmentShader, glow::Texture * texture);
@@ -42,15 +42,15 @@ protected:
     void initialize();
 
 protected:
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
 
-    glow::ref_ptr<glow::Buffer> m_buffer;
+    glowbase::ref_ptr<glow::Buffer> m_buffer;
 
-    glow::ref_ptr<glow::Shader> m_vertexShader;
-    glow::ref_ptr<glow::Shader> m_fragmentShader;
+    glowbase::ref_ptr<glow::Shader> m_vertexShader;
+    glowbase::ref_ptr<glow::Shader> m_fragmentShader;
 
-    glow::ref_ptr<glow::Program> m_program;
-    glow::ref_ptr<glow::Texture> m_texture;
+    glowbase::ref_ptr<glow::Program> m_program;
+    glowbase::ref_ptr<glow::Texture> m_texture;
 
     int m_samplerIndex;
 

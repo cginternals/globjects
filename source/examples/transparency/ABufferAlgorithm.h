@@ -35,18 +35,18 @@ public:
 
 private:
     // geometry pass
-    glow::ref_ptr<glow::Program> m_program;
-    glow::ref_ptr<glow::FrameBufferObject> m_renderFbo;
-    glow::ref_ptr<glow::Texture> m_opaqueBuffer;
-    glow::ref_ptr<glow::RenderBufferObject> m_depthBuffer;
+    glowbase::ref_ptr<glow::Program> m_program;
+    glowbase::ref_ptr<glow::FrameBufferObject> m_renderFbo;
+    glowbase::ref_ptr<glow::Texture> m_opaqueBuffer;
+    glowbase::ref_ptr<glow::RenderBufferObject> m_depthBuffer;
 
     // A Buffer
-    glow::ref_ptr<glow::Buffer> m_linkedListBuffer;
-    glow::ref_ptr<glow::Buffer> m_headBuffer;
-    glow::ref_ptr<glow::Buffer> m_counter;
+    glowbase::ref_ptr<glow::Buffer> m_linkedListBuffer;
+    glowbase::ref_ptr<glow::Buffer> m_headBuffer;
+    glowbase::ref_ptr<glow::Buffer> m_counter;
 
     // post processing pass
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
-    glow::ref_ptr<glow::FrameBufferObject> m_postFbo;
-    glow::ref_ptr<glow::Texture> m_colorBuffer;
+    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glowbase::ref_ptr<glow::FrameBufferObject> m_postFbo;
+    glowbase::ref_ptr<glow::Texture> m_colorBuffer;
 };

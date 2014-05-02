@@ -36,7 +36,7 @@ void UniformGroup::addToProgram(Program * program)
 {
     assert(program != nullptr);
 
-    for (std::pair<std::string, ref_ptr<AbstractUniform>> pair : m_uniforms)
+    for (std::pair<std::string, glowbase::ref_ptr<AbstractUniform>> pair : m_uniforms)
         program->addUniform(pair.second);
 }
 

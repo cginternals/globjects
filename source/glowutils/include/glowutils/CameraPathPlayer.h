@@ -5,7 +5,8 @@
 
 #include <glm/glm.hpp>
 
-#include <glow/ref_ptr.h>
+#include <glowbase/ref_ptr.h>
+
 #include <glowutils/glowutils_api.h>
 
 #include <glowutils/CameraPath.h>
@@ -50,9 +51,9 @@ protected:
     Camera& m_camera;
     CameraPath m_path;
     std::vector<PathSection> m_sections;
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
-    glow::ref_ptr<glow::Program> m_program;
-    glow::ref_ptr<glow::Buffer> m_buffer;
+    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
+    glowbase::ref_ptr<glow::Program> m_program;
+    glowbase::ref_ptr<glow::Buffer> m_buffer;
     int m_bufferSize;
 
     void prepare();

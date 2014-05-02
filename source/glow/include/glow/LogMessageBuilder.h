@@ -9,9 +9,10 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include <glowbase/ref_ptr.h>
+
 #include <glow/glow_api.h>
 #include <glow/LogMessage.h>
-#include <glow/ref_ptr.h>
 
 namespace glow 
 {
@@ -114,7 +115,7 @@ public:
     LogMessageBuilder& operator<<(Uniform<T>* uniform);
     LogMessageBuilder& operator<<(const Version& version);
     template <typename T>
-    LogMessageBuilder& operator<<(ref_ptr<T> ref_pointer);
+    LogMessageBuilder& operator<<(glowbase::ref_ptr<T> ref_pointer);
 	
 	// pointers
 	template <typename T>

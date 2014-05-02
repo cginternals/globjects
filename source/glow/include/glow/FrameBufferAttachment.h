@@ -4,8 +4,9 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/Referenced.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
 
 namespace glow 
 {
@@ -21,7 +22,7 @@ class RenderBufferAttachment;
     \see TextureAttachment
     \see RenderBufferAttachment
 */
-class GLOW_API FrameBufferAttachment : public Referenced
+class GLOW_API FrameBufferAttachment : public glowbase::Referenced
 {
 public:
     FrameBufferAttachment(GLenum attachment);

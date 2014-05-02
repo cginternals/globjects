@@ -18,7 +18,7 @@ LogMessageBuilder& LogMessageBuilder::operator<<(Uniform<T>* uniform)
 }
 
 template <typename T>
-LogMessageBuilder& LogMessageBuilder::operator<<(ref_ptr<T> ref_pointer)
+LogMessageBuilder& LogMessageBuilder::operator<<(glowbase::ref_ptr<T> ref_pointer)
 {
     return *this << ref_pointer.get();
 }

@@ -2,13 +2,14 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/Referenced.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
 
 namespace glow
 {
 
-class GLOW_API Sync : public Referenced
+class GLOW_API Sync : public glowbase::Referenced
 {
 public:
     static Sync * fence(GLenum condition = GL_SYNC_GPU_COMMANDS_COMPLETE, GLbitfield flags = 0);

@@ -31,7 +31,7 @@ Program::Program(ProgramBinary * binary)
 
 Program::~Program()
 {
-	for (ref_ptr<Shader> shader: std::set<ref_ptr<Shader>>(m_shaders))
+    for (glowbase::ref_ptr<Shader> shader: std::set<glowbase::ref_ptr<Shader>>(m_shaders))
 	{
 		detach(shader);
 	}
@@ -92,7 +92,7 @@ void Program::invalidate() const
 	m_dirty = true;
 }
 
-void Program::notifyChanged(const Changeable *)
+void Program::notifyChanged(const glowbase::Changeable *)
 {
 	invalidate();
 }
@@ -125,7 +125,7 @@ void Program::detach(Shader * shader)
 std::set<Shader*> Program::shaders() const
 {
 	std::set<Shader*> shaders;
-    for (ref_ptr<Shader> shader: m_shaders)
+    for (glowbase::ref_ptr<Shader> shader: m_shaders)
 		shaders.insert(shader);
 	return shaders;
 }
@@ -348,7 +348,7 @@ void Program::addUniform(AbstractUniform * uniform)
 {
     assert(uniform != nullptr);
 
-    ref_ptr<AbstractUniform>& uniformReference = m_uniforms[uniform->identity()];
+    glowbase::ref_ptr<AbstractUniform>& uniformReference = m_uniforms[uniform->identity()];
 
 	if (uniformReference)
 	{
@@ -368,7 +368,7 @@ void Program::addUniform(AbstractUniform * uniform)
 void Program::updateUniforms() const
 {
 	// Note: uniform update will check if program is linked
-    for (std::pair<LocationIdentity, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
+    for (std::pair<LocationIdentity, glowbase::ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
 	{
 		uniformPair.second->update(this);
 	}

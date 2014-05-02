@@ -8,8 +8,8 @@
 
 #include <glm/glm.hpp>
 
-#include <glow/Referenced.h>
-#include <glow/ref_ptr.h>
+#include <glowbase/Referenced.h>
+#include <glowbase/ref_ptr.h>
 
 #include <glowutils/glowutils_api.h>
 
@@ -24,7 +24,7 @@ class Buffer;
 namespace glowutils 
 {
 
-class GLOWUTILS_API Icosahedron : public glow::Referenced
+class GLOWUTILS_API Icosahedron : public glowbase::Referenced
 {
 public:
     using Face = std::array<GLushort, 3>;
@@ -64,10 +64,10 @@ private:
     ,   std::unordered_map<glm::uint, GLushort> & cache);
 
 private:
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
 
-    glow::ref_ptr<glow::Buffer> m_vertices;
-    glow::ref_ptr<glow::Buffer> m_indices;
+    glowbase::ref_ptr<glow::Buffer> m_vertices;
+    glowbase::ref_ptr<glow::Buffer> m_indices;
 
     GLsizei m_size;
 protected:

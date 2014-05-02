@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glow/FunctionCall.h>
+#include <glowbase/FunctionCall.h>
 
 #include <cstddef>
 #include <type_traits>
@@ -66,7 +66,7 @@ inline auto apply(F && f, T && t)
 }
 
 
-namespace glow {
+namespace glowbase {
 
 template <typename... Arguments>
 FunctionCall<Arguments...>::FunctionCall(FunctionPointer function, Arguments... arguments)
@@ -93,4 +93,4 @@ void * FunctionCall<Arguments...>::identifier() const
     return *reinterpret_cast<void**>(&m_functionPointer);
 }
 
-} // namespace glow
+} // namespace glowbase

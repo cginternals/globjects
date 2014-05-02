@@ -9,6 +9,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <glowbase/Timer.h>
+
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -20,7 +22,6 @@
 #include <glow/TransformFeedback.h>
 #include <glow/debugmessageoutput.h>
 
-#include <glowutils/Timer.h>
 #include <glowutils/File.h>
 #include <glowutils/File.h>
 #include <glowutils/glowutils.h>
@@ -129,18 +130,18 @@ public:
     }
 
 protected:
-    glow::ref_ptr<glow::Program> m_shaderProgram;
-    glow::ref_ptr<glow::Program> m_transformFeedbackProgram;
+    glowbase::ref_ptr<glow::Program> m_shaderProgram;
+    glowbase::ref_ptr<glow::Program> m_transformFeedbackProgram;
 	
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
 
-    glow::ref_ptr<glow::TransformFeedback> m_transformFeedback;
+    glowbase::ref_ptr<glow::TransformFeedback> m_transformFeedback;
 	
-    glow::ref_ptr<glow::Buffer> m_vertexBuffer1;
-    glow::ref_ptr<glow::Buffer> m_vertexBuffer2;
-    glow::ref_ptr<glow::Buffer> m_colorBuffer;
+    glowbase::ref_ptr<glow::Buffer> m_vertexBuffer1;
+    glowbase::ref_ptr<glow::Buffer> m_vertexBuffer2;
+    glowbase::ref_ptr<glow::Buffer> m_colorBuffer;
 
-    glowutils::Timer m_timer;
+    glowbase::Timer m_timer;
 };
 
 

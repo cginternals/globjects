@@ -1,8 +1,6 @@
 #pragma once
 
-//#include <type_traits>
-
-namespace glow 
+namespace glowbase
 {
 
 class Referenced;
@@ -76,6 +74,6 @@ protected:
 template <typename T>
 ref_ptr<T> make_ref(T * object);
 
-} // namespace glow
+} // namespace glowbase
 
-#include <glow/ref_ptr.hpp>
+#include <glowbase/ref_ptr.hpp>

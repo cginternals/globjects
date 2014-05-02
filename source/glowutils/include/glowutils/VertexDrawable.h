@@ -6,18 +6,20 @@
 #include <array>
 #include <string>
 
-#include <glowutils/glowutils_api.h>
 
-#include <glow/ref_ptr.h>
-#include <glow/Referenced.h>
+#include <glowbase/ref_ptr.h>
+#include <glowbase/Referenced.h>
+
 #include <glow/VertexArrayObject.h>
 #include <glow/Buffer.h>
 #include <glow/Program.h>
 
+#include <glowutils/glowutils_api.h>
+
 namespace glowutils
 {
 
-class GLOWUTILS_API VertexDrawable : public glow::Referenced
+class GLOWUTILS_API VertexDrawable : public glowbase::Referenced
 {
 public:
     class AttributeFormat
@@ -65,8 +67,8 @@ public:
 
     void draw() const;
 protected:
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
-    glow::ref_ptr<glow::Buffer> m_vbo;
+    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
+    glowbase::ref_ptr<glow::Buffer> m_vbo;
     std::vector<GLint> m_attributeIndices;
     std::vector<AttributeFormat> m_formats;
     GLint m_baseOffset;

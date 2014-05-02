@@ -4,7 +4,7 @@
 
 #include <GL/glew.h>
 
-#include <glow/ref_ptr.h>
+#include <glowbase/ref_ptr.h>
 
 #include <glm/glm.hpp>
 

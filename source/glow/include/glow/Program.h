@@ -6,10 +6,11 @@
 
 #include <glm/glm.hpp>
 
+#include <glowbase/ChangeListener.h>
+#include <glowbase/ref_ptr.h>
+
 #include <glow/glow_api.h>
 #include <glow/Object.h>
-#include <glow/ChangeListener.h>
-#include <glow/ref_ptr.h>
 #include <glow/LocationIdentity.h>
 #include <glow/UniformBlock.h>
 
@@ -67,7 +68,7 @@ template<typename T> class Uniform;
     \see http://www.opengl.org/wiki/Program_Object
     \see Shader
  */
-class GLOW_API Program : public Object, protected ChangeListener
+class GLOW_API Program : public Object, protected glowbase::ChangeListener
 {
     friend class UniformBlock;
 public:
@@ -167,7 +168,7 @@ protected:
 
 	// ChangeListener Interface
 
-    virtual void notifyChanged(const Changeable * sender) override;
+    virtual void notifyChanged(const glowbase::Changeable * sender) override;
 
 protected:
 	static GLuint createProgram();
@@ -183,9 +184,9 @@ protected:
     const UniformBlock * getUniformBlockByIdentity(const LocationIdentity & identity) const;
 
 protected:
-	std::set<ref_ptr<Shader>> m_shaders;
-    ref_ptr<ProgramBinary> m_binary;
-    std::unordered_map<LocationIdentity, ref_ptr<AbstractUniform>> m_uniforms;
+    std::set<glowbase::ref_ptr<Shader>> m_shaders;
+    glowbase::ref_ptr<ProgramBinary> m_binary;
+    std::unordered_map<LocationIdentity, glowbase::ref_ptr<AbstractUniform>> m_uniforms;
     std::unordered_map<LocationIdentity, UniformBlock> m_uniformBlocks;
 
     mutable bool m_linked;

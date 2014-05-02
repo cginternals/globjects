@@ -1,10 +1,10 @@
 #pragma once
 
-#include <glow/glow_api.h>
+#include <glowbase/glowbase_api.h>
 
-#include <glow/HeapOnly.h>
+#include <glowbase/HeapOnly.h>
 
-namespace glow 
+namespace glowbase
 {
 
 /** \brief Superclass for all classes that use reference counting in glow.
@@ -16,7 +16,7 @@ namespace glow
 
     \see ref_ptr
  */
-class GLOW_API Referenced : public HeapOnly
+class GLOWBASE_API Referenced : public HeapOnly
 {
 public:
     Referenced();
@@ -34,4 +34,4 @@ private:
     int m_refCounter;
 };
 
-} // namespace glow
+} // namespace glowbase

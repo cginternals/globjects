@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 
-#include <glowutils/glowutils_api.h>
+#include <glowbase/glowbase_api.h>
 
-namespace glowutils
+namespace glowbase
 {
 
 /** \brief Fast binary file to memory dump.
@@ -46,6 +46,6 @@ protected:
     bool m_valid;
 };
 
-} // namespace glowutils
+} // namespace glowbase
 
-#include <glowutils/RawFile.hpp>
+#include <glowbase/RawFile.hpp>

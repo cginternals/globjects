@@ -2,9 +2,9 @@
 
 #include <set>
 
-#include <glow/glow_api.h>
+#include <glowbase/glowbase_api.h>
 
-namespace glow 
+namespace glowbase
 {
 
 class ChangeListener;
@@ -16,7 +16,7 @@ class ChangeListener;
     
     \see ChangeListener
  */
-class GLOW_API Changeable
+class GLOWBASE_API Changeable
 {
 public:
     void changed() const;
@@ -28,4 +28,4 @@ private:
     std::set<ChangeListener *> m_listeners;
 };
 
-} // namespace glow
+} // namespace glowbase

@@ -9,6 +9,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <glowbase/AutoTimer.h>
+#include <glowbase/Timer.h>
+
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -28,8 +31,6 @@
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
 #include <glowutils/File.h>
-#include <glowutils/AutoTimer.h>
-#include <glowutils/Timer.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 
@@ -214,21 +215,21 @@ public:
 	}
 
 protected:
-    glow::ref_ptr<glow::Program> m_sphere;
-    glow::ref_ptr<glow::Program> m_phong;
+    glowbase::ref_ptr<glow::Program> m_sphere;
+    glowbase::ref_ptr<glow::Program> m_phong;
 
-    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
-    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
+    glowbase::ref_ptr<glowutils::Icosahedron> m_icosahedron;
+    glowbase::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 
-    glow::ref_ptr<glow::FrameBufferObject> m_fbo;
-    glow::ref_ptr<glow::Texture> m_normal;
-    glow::ref_ptr<glow::Texture> m_geom;
-    glow::ref_ptr<glow::RenderBufferObject> m_depth;
+    glowbase::ref_ptr<glow::FrameBufferObject> m_fbo;
+    glowbase::ref_ptr<glow::Texture> m_normal;
+    glowbase::ref_ptr<glow::Texture> m_geom;
+    glowbase::ref_ptr<glow::RenderBufferObject> m_depth;
 
     glowutils::Camera m_camera;
-    glowutils::Timer m_time;
+    glowbase::Timer m_time;
 };
 
 

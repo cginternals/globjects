@@ -115,10 +115,10 @@ public:
     }
 
 protected:
-	glow::ref_ptr<glow::Texture> m_texture;
+	glowbase::ref_ptr<glow::Texture> m_texture;
 
-    glow::ref_ptr<glow::Program> m_computeProgram;
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glowbase::ref_ptr<glow::Program> m_computeProgram;
+    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 
     unsigned int m_frame;
 };

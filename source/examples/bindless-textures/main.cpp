@@ -83,7 +83,7 @@ public:
             return;
         }
 
-        glow::ref_ptr<glow::State> state = new glow::State;
+        glowbase::ref_ptr<glow::State> state = new glow::State;
         state->enable(GL_CULL_FACE);
         state->clearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -231,9 +231,9 @@ protected:
     glowutils::WorldInHandNavigation m_nav;
     glowutils::AxisAlignedBoundingBox m_aabb;
 
-    std::array<glow::ref_ptr<glow::Texture>, 4> m_textures;
-    glow::ref_ptr<glow::Program> m_program;
-    glow::ref_ptr<glowutils::VertexDrawable> m_drawable;
+    std::array<glowbase::ref_ptr<glow::Texture>, 4> m_textures;
+    glowbase::ref_ptr<glow::Program> m_program;
+    glowbase::ref_ptr<glowutils::VertexDrawable> m_drawable;
 };
 
 

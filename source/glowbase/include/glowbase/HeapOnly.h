@@ -1,8 +1,8 @@
 #pragma once
 
-#include <glow/glow_api.h>
+#include <glowbase/glowbase_api.h>
 
-namespace glow {
+namespace glowbase {
 
 /**
  * @brief The HeapOnly class
@@ -11,7 +11,7 @@ namespace glow {
  *
  * \see http://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Requiring_or_Prohibiting_Heap-based_Objects
  */
-class GLOW_API HeapOnly
+class GLOWBASE_API HeapOnly
 {
 public:
     HeapOnly();
@@ -21,4 +21,4 @@ protected:
     virtual ~HeapOnly();
 };
 
-} // namespace glow
+} // namespace glowbase

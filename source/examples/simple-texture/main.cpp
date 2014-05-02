@@ -68,8 +68,8 @@ public:
     }
 
 protected:
-    glow::ref_ptr<glow::Texture> m_texture;
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glowbase::ref_ptr<glow::Texture> m_texture;
+    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 };
 
 

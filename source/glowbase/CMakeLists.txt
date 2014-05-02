@@ -1,36 +1,21 @@
 
 # Target
-set(target glowwindow)
+set(target glowbase)
 message(STATUS "Lib ${target}")
 
 #
 # External libraries
 #
 
-find_package(OpenGL REQUIRED)
-find_package(GLM REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(GLFW REQUIRED)
-
 #
 # Includes
 #
 
 include_directories(
-    ${OPENGL_INCLUDE_DIR}
-    ${GLM_INCLUDE_DIR}
-    ${GLEW_INCLUDE_DIR}
-    ${GLFW_INCLUDE_DIR}
 )
-
-get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
 
 include_directories(
     BEFORE
-    ${GENERATED_HEADER_PATH}
-    ${CMAKE_SOURCE_DIR}/source/glowbase/include
-    ${CMAKE_SOURCE_DIR}/source/glow/include
-    ${CMAKE_SOURCE_DIR}/source/glowutils/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -39,12 +24,6 @@ include_directories(
 #
 
 set(libs
-    ${OPENGL_LIBRARIES}
-    ${GLEW_LIBRARY}
-    ${GLFW_LIBRARY}
-    glowbase
-    glow
-    glowutils
 )
 
 #
@@ -52,19 +31,10 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOWWINDOW_STATIC")
+    add_definitions("-DGLOWBASE_STATIC")
 else()
-    add_definitions("-DGLOWWINDOW_EXPORTS")
+    add_definitions("-DGLOWBASE_EXPORTS")
 endif()
-
-if (OPTION_ERRORS_AS_EXCEPTION)
-	add_definitions("-DGLOW_GL_ERROR_RAISE_EXCEPTION")
-else()
-    add_definitions("-D_HAS_EXCEPTIONS=0")
-endif()
-
-# for compatibility between glm 0.9.4 and 0.9.5
-add_definitions("-DGLM_FORCE_RADIANS")
 
 #
 # Sources
@@ -73,26 +43,35 @@ add_definitions("-DGLM_FORCE_RADIANS")
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
-set(api_includes
-    ${include_path}/glowwindow_api.h
-    
-    ${include_path}/Context.h
-    ${include_path}/ContextFormat.h
-    ${include_path}/events.h
-    ${include_path}/MainLoop.h
-    ${include_path}/Window.h
-    ${include_path}/WindowEventHandler.h
+set(sources
+	${source_path}/AutoTimer.cpp
+	${source_path}/Changeable.cpp
+	${source_path}/ChangeListener.cpp
+	${source_path}/formatString.cpp
+	${source_path}/HeapOnly.cpp
+	${source_path}/Referenced.cpp
+	${source_path}/Timer.cpp
 )
 
-set(sources
-    ${source_path}/Context.cpp
-    ${source_path}/ContextFormat.cpp
-    ${source_path}/events.cpp
-    ${source_path}/MainLoop.cpp
-    ${source_path}/Window.cpp
-    ${source_path}/WindowEventDispatcher.h
-    ${source_path}/WindowEventDispatcher.cpp
-    ${source_path}/WindowEventHandler.cpp
+set(api_includes
+	${include_path}/AutoTimer.h
+	${include_path}/CachedValue.h
+	${include_path}/CachedValue.hpp
+	${include_path}/Changeable.h
+	${include_path}/ChangeListener.h
+	${include_path}/container_helpers.hpp
+	${include_path}/formatString.h
+	${include_path}/formatString.hpp
+	${include_path}/FunctionCall.h
+	${include_path}/FunctionCall.hpp
+	${include_path}/glowbase_api.h
+	${include_path}/HeapOnly.h
+	${include_path}/RawFile.h
+	${include_path}/RawFile.hpp
+	${include_path}/Referenced.h
+	${include_path}/ref_ptr.h
+	${include_path}/ref_ptr.hpp
+	${include_path}/Timer.h
 )
 
 # Group source files

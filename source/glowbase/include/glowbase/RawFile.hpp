@@ -1,13 +1,13 @@
 #pragma once
 
-#include <glowutils/RawFile.h>
+#include <glowbase/RawFile.h>
 
 #include <algorithm>
 #include <fstream>
 
-#include <glow/logging.h>
+//#include <glow/logging.h>
 
-namespace glowutils 
+namespace glowbase
 {
 
 template<typename T>
@@ -48,7 +48,7 @@ bool RawFile<T>::read()
 
     if (!ifs)
     {
-        glow::warning() << "Reading from file \"" << m_filePath << "\" failed.";
+        //glow::warning() << "Reading from file \"" << m_filePath << "\" failed."; // TODO: reenable when moving logging from glow to glowbase
         return false;
     }
 
@@ -65,4 +65,4 @@ bool RawFile<T>::read()
     return true;
 }
 
-} // namespace glowutils
+} // namespace glowbase

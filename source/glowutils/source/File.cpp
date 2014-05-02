@@ -2,9 +2,10 @@
 
 #include <cassert>
 
+#include <glowbase/RawFile.h>
+
 #include <glow/Shader.h>
 
-#include <glowutils/RawFile.h>
 #include "FileRegistry.h"
 
 using namespace glow;
@@ -55,7 +56,7 @@ void File::reloadAll()
 
 void File::loadFileContent() const
 {
-    RawFile<char> raw(m_filePath);
+    glowbase::RawFile<char> raw(m_filePath);
     if (raw.valid())
     {
         m_source = std::string(raw.data(), raw.size());

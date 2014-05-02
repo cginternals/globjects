@@ -2,9 +2,9 @@
 
 #include <set>
 
-#include <glow/glow_api.h>
+#include <glowbase/glowbase_api.h>
 
-namespace glow 
+namespace glowbase
 {
 
 class Changeable;
@@ -16,7 +16,7 @@ class Changeable;
     
     \see Changeable
  */
-class GLOW_API ChangeListener
+class GLOWBASE_API ChangeListener
 {
     friend class Changeable;
 public:
@@ -31,4 +31,4 @@ private:
     void removeSubject(Changeable * subject);
 };
 
-} // namespace glow
+} // namespace glowbase

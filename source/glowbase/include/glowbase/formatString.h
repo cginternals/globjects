@@ -3,15 +3,15 @@
 #include <ostream>
 #include <string>
 
-#include <glow/glow_api.h>
+#include <glowbase/glowbase_api.h>
 
-namespace glow 
+namespace glowbase
 {
 
-GLOW_API int readInt(const char* str, int& number);
-GLOW_API void parseFormat(std::ostream& stream, const char*& format);
+GLOWBASE_API int readInt(const char* str, int& number);
+GLOWBASE_API void parseFormat(std::ostream& stream, const char*& format);
 
-GLOW_API void streamprintf(std::ostream& stream, const char* format);
+GLOWBASE_API void streamprintf(std::ostream& stream, const char* format);
 
 /**
  * Format a number of arguments and prints them to a stream.
@@ -80,6 +80,6 @@ void streamprintf(std::ostream& stream, const char* format, const T& value, Args
 template <typename... Args>
 std::string formatString(const char* format, Args... args);
 
-} // namespace glow
+} // namespace glowbase
 
-#include <glow/formatString.hpp>
+#include <glowbase/formatString.hpp>

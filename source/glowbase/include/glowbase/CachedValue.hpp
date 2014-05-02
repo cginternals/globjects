@@ -1,10 +1,10 @@
 #pragma once
 
-#include <glowutils/CachedValue.h>
+#include <glowbase/CachedValue.h>
 
 #include <cassert>
 
-namespace glowutils
+namespace glowbase
 {
 
 template <typename T>
@@ -59,4 +59,4 @@ void CachedValue<T>::invalidate() const
 	m_valid = false;
 }
 
-} // namespace glowutils
+} // namespace glowbase

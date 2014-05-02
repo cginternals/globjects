@@ -4,8 +4,9 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/Referenced.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
 
 
 namespace glow
@@ -20,7 +21,7 @@ class ObjectVisitor;
     The OpenGL name (id) that was provided in the constructor can be queried using id().
     Additionally, an Object can have meaningful name wich can be get and set using name() and setName().
  */
-class GLOW_API Object : public Referenced
+class GLOW_API Object : public glowbase::Referenced
 {
 public:
     virtual void accept(ObjectVisitor & visitor) = 0;

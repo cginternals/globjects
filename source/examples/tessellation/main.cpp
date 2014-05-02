@@ -9,6 +9,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <glowbase/AutoTimer.h>
+#include <glowbase/Timer.h>
+
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -22,8 +25,6 @@
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
 #include <glowutils/File.h>
-#include <glowutils/AutoTimer.h>
-#include <glowutils/Timer.h>
 #include <glowutils/glowutils.h>
 
 #include <glowwindow/ContextFormat.h>
@@ -129,13 +130,13 @@ public:
     }
 
 protected:
-    glow::ref_ptr<glow::Program> m_sphere;
+    glowbase::ref_ptr<glow::Program> m_sphere;
 
-    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
-    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
+    glowbase::ref_ptr<glowutils::Icosahedron> m_icosahedron;
+    glowbase::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 
     glowutils::Camera m_camera;
-    glowutils::Timer m_time;
+    glowbase::Timer m_time;
 
     vec3 m_rand;
 };

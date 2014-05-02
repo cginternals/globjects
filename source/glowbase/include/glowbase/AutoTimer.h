@@ -3,9 +3,9 @@
 #include <string>
 #include <memory>
 
-#include <glowutils/glowutils_api.h>
+#include <glowbase/glowbase_api.h>
 
-namespace glowutils
+namespace glowbase
 {
 
 class Timer;
@@ -28,7 +28,7 @@ class Timer;
     If more control over time measurement is required, condier 
     using Timer directly.
 */
-class GLOWUTILS_API AutoTimer
+class GLOWBASE_API AutoTimer
 {
 public:
     AutoTimer(const std::string & info);
@@ -43,4 +43,4 @@ protected:
     std::unique_ptr<Timer> m_timer;
 };
 
-} // namespace glowutils
+} // namespace glowbase

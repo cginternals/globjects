@@ -1,14 +1,15 @@
 #pragma once
 
-#include <GL/glew.h>
-
 #include <vector>
 
+#include <GL/glew.h>
+
+#include <glowbase/Referenced.h>
+#include <glowbase/ChangeListener.h>
+#include <glowbase/Changeable.h>
+#include <glowbase/ref_ptr.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
-#include <glow/ChangeListener.h>
-#include <glow/Changeable.h>
-#include <glow/ref_ptr.h>
 
 namespace glow
 {
@@ -21,7 +22,7 @@ class AbstractStringSource;
  * \see Program
  * \see http://www.opengl.org/registry/specs/ARB/get_program_binary.txt
  */
-class GLOW_API ProgramBinary : public Referenced, public Changeable, protected ChangeListener
+class GLOW_API ProgramBinary : public glowbase::Referenced, public glowbase::Changeable, protected glowbase::ChangeListener
 {
 public:
     ProgramBinary(GLenum binaryFormat, const std::vector<char> & binaryData);
@@ -31,10 +32,10 @@ public:
     const void * data() const;
     GLsizei length() const;
 
-     virtual void notifyChanged(const Changeable* sender) override;
+     virtual void notifyChanged(const glowbase::Changeable* sender) override;
 protected:
     GLenum m_binaryFormat;
-    ref_ptr<AbstractStringSource> m_dataSource;
+    glowbase::ref_ptr<AbstractStringSource> m_dataSource;
 
     mutable bool m_valid;
     mutable std::vector<unsigned char> m_binaryData;
