@@ -88,7 +88,7 @@ public:
 
         m_vao->bind();
 
-        m_transformFeedbackProgram->setUniform("deltaT", float(m_timer.elapsed() * float(std::nano::num) / float(std::nano::den)));
+        m_transformFeedbackProgram->setUniform("deltaT", static_cast<float>(m_timer.elapsed().count()) * float(std::nano::num) / float(std::nano::den));
         m_timer.reset();
 
         m_vao->binding(0)->setBuffer(drawBuffer, 0, sizeof(glm::vec4));

@@ -152,7 +152,7 @@ public:
         m_agrid->update();
 
         m_sphere->setUniform("transform", m_camera.viewProjection());
-		m_sphere->setUniform("timef", mod(static_cast<float>(m_time.elapsed() * 1e-10), 1.f));
+        m_sphere->setUniform("timef", mod(static_cast<float>(m_time.elapsed().count()) * 1e-10f, 1.f));
 
         m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
 
