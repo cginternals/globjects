@@ -4,7 +4,7 @@
 
 #include "ObjectRegistry.h"
 #include "ExtensionRegistry.h"
-#include "BehaviorRegistry.h"
+#include "ImplementationRegistry.h"
 #include "NamedStringRegistry.h"
 
 namespace glow
@@ -33,7 +33,7 @@ std::unordered_map<long long, Registry *> Registry::s_registries;
 Registry::Registry()
 : m_objects(new ObjectRegistry)
 , m_extensions(new ExtensionRegistry)
-, m_behaviors(new BehaviorRegistry)
+, m_implementations(new ImplementationRegistry)
 , m_namedStrings(new NamedStringRegistry)
 {
 }
@@ -54,9 +54,9 @@ ExtensionRegistry & Registry::extensions()
     return *m_extensions;
 }
 
-BehaviorRegistry & Registry::behaviors()
+ImplementationRegistry & Registry::implementations()
 {
-    return *m_behaviors;
+    return *m_implementations;
 }
 
 NamedStringRegistry & Registry::namedStrings()

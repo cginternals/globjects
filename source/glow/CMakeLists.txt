@@ -192,8 +192,8 @@ set(sources
     ${source_path}/VertexAttributeBindingImplementation.h
     ${source_path}/VertexAttributeBindingImplementation.cpp
         
-    ${source_path}/registry/BehaviorRegistry.h
-    ${source_path}/registry/BehaviorRegistry.cpp
+    ${source_path}/registry/ImplementationRegistry.h
+    ${source_path}/registry/ImplementationRegistry.cpp
     ${source_path}/registry/contextid.h
     ${source_path}/registry/contextid.cpp
     ${source_path}/registry/ExtensionRegistry.h
@@ -205,24 +205,24 @@ set(sources
     ${source_path}/registry/Registry.h
     ${source_path}/registry/Registry.cpp
     
-    ${source_path}/behaviors/AbstractUniformBehavior.h
-    ${source_path}/behaviors/AbstractUniformBehavior.cpp
-    ${source_path}/behaviors/BindfulUniformBehavior.h
-    ${source_path}/behaviors/BindfulUniformBehavior.cpp
-    ${source_path}/behaviors/BindlessUniformBehavior.h
-    ${source_path}/behaviors/BindlessUniformBehavior.cpp
-    ${source_path}/behaviors/AbstractBufferBehavior.h
-    ${source_path}/behaviors/AbstractBufferBehavior.cpp
-    ${source_path}/behaviors/BindfulBufferBehavior.h
-    ${source_path}/behaviors/BindfulBufferBehavior.cpp
-    ${source_path}/behaviors/BindlessBufferBehavior.h
-    ${source_path}/behaviors/BindlessBufferBehavior.cpp
-    ${source_path}/behaviors/AbstractFrameBufferBehavior.h
-    ${source_path}/behaviors/AbstractFrameBufferBehavior.cpp
-    ${source_path}/behaviors/BindfulFrameBufferBehavior.h
-    ${source_path}/behaviors/BindfulFrameBufferBehavior.cpp
-    ${source_path}/behaviors/BindlessFrameBufferBehavior.h
-    ${source_path}/behaviors/BindlessFrameBufferBehavior.cpp
+    ${source_path}/implementations/AbstractUniformImplementation.h
+    ${source_path}/implementations/AbstractUniformImplementation.cpp
+    ${source_path}/implementations/LegacyUniformImplementation.h
+    ${source_path}/implementations/LegacyUniformImplementation.cpp
+    ${source_path}/implementations/BindlessUniformImplementation.h
+    ${source_path}/implementations/BindlessUniformImplementation.cpp
+    ${source_path}/implementations/AbstractBufferImplementation.h
+    ${source_path}/implementations/AbstractBufferImplementation.cpp
+    ${source_path}/implementations/LegacyBufferImplementation.h
+    ${source_path}/implementations/LegacyBufferImplementation.cpp
+    ${source_path}/implementations/BindlessBufferImplementation.h
+    ${source_path}/implementations/BindlessBufferImplementation.cpp
+    ${source_path}/implementations/AbstractFrameBufferImplementation.h
+    ${source_path}/implementations/AbstractFrameBufferImplementation.cpp
+    ${source_path}/implementations/LegacyFrameBufferImplementation.h
+    ${source_path}/implementations/LegacyFrameBufferImplementation.cpp
+    ${source_path}/implementations/BindlessFrameBufferImplementation.h
+    ${source_path}/implementations/BindlessFrameBufferImplementation.cpp
 )
 
 # Group source files

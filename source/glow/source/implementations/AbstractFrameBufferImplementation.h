@@ -7,13 +7,13 @@
 namespace glow
 {
 
-class AbstractFrameBufferBehavior
+class AbstractFrameBufferImplementation
 {
 public:
-    AbstractFrameBufferBehavior();
-    virtual ~AbstractFrameBufferBehavior();
+    AbstractFrameBufferImplementation();
+    virtual ~AbstractFrameBufferImplementation();
 
-    static AbstractFrameBufferBehavior * create();
+    static AbstractFrameBufferImplementation * create();
 
     virtual GLenum checkStatus(const FrameBufferObject * fbo) const = 0;
     virtual void setParameter(const FrameBufferObject * fbo, GLenum pname, GLint param) const = 0;

@@ -1,4 +1,4 @@
-#include "BindfulFrameBufferBehavior.h"
+#include "LegacyFrameBufferImplementation.h"
 
 #include <glow/Texture.h>
 #include <glow/RenderBufferObject.h>
@@ -6,9 +6,9 @@
 
 namespace glow {
 
-GLenum BindfulFrameBufferBehavior::s_workingTarget = GL_FRAMEBUFFER;
+GLenum LegacyFrameBufferImplementation::s_workingTarget = GL_FRAMEBUFFER;
 
-GLenum BindfulFrameBufferBehavior::checkStatus(const FrameBufferObject * fbo) const
+GLenum LegacyFrameBufferImplementation::checkStatus(const FrameBufferObject * fbo) const
 {
     fbo->bind(s_workingTarget);
 
@@ -18,7 +18,7 @@ GLenum BindfulFrameBufferBehavior::checkStatus(const FrameBufferObject * fbo) co
     return result;
 }
 
-void BindfulFrameBufferBehavior::setParameter(const FrameBufferObject * fbo, GLenum pname, GLint param) const
+void LegacyFrameBufferImplementation::setParameter(const FrameBufferObject * fbo, GLenum pname, GLint param) const
 {
     fbo->bind(s_workingTarget);
 
@@ -26,7 +26,7 @@ void BindfulFrameBufferBehavior::setParameter(const FrameBufferObject * fbo, GLe
     CheckGLError();
 }
 
-GLint BindfulFrameBufferBehavior::getAttachmentParameter(const FrameBufferObject * fbo, GLenum attachment, GLenum pname) const
+GLint LegacyFrameBufferImplementation::getAttachmentParameter(const FrameBufferObject * fbo, GLenum attachment, GLenum pname) const
 {
     fbo->bind(s_workingTarget);
 
@@ -38,7 +38,7 @@ GLint BindfulFrameBufferBehavior::getAttachmentParameter(const FrameBufferObject
     return result;
 }
 
-void BindfulFrameBufferBehavior::attachTexture(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
+void LegacyFrameBufferImplementation::attachTexture(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
 {
     fbo->bind(s_workingTarget);
 
@@ -46,7 +46,7 @@ void BindfulFrameBufferBehavior::attachTexture(const FrameBufferObject * fbo, GL
     CheckGLError();
 }
 
-void BindfulFrameBufferBehavior::attachTexture1D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
+void LegacyFrameBufferImplementation::attachTexture1D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
 {
     fbo->bind(s_workingTarget);
 
@@ -54,7 +54,7 @@ void BindfulFrameBufferBehavior::attachTexture1D(const FrameBufferObject * fbo, 
     CheckGLError();
 }
 
-void BindfulFrameBufferBehavior::attachTexture2D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
+void LegacyFrameBufferImplementation::attachTexture2D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
 {
     fbo->bind(s_workingTarget);
 
@@ -62,7 +62,7 @@ void BindfulFrameBufferBehavior::attachTexture2D(const FrameBufferObject * fbo, 
     CheckGLError();
 }
 
-void BindfulFrameBufferBehavior::attachTexture3D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const
+void LegacyFrameBufferImplementation::attachTexture3D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const
 {
     fbo->bind(s_workingTarget);
 
@@ -70,7 +70,7 @@ void BindfulFrameBufferBehavior::attachTexture3D(const FrameBufferObject * fbo, 
     CheckGLError();
 }
 
-void BindfulFrameBufferBehavior::attachTextureLayer(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const
+void LegacyFrameBufferImplementation::attachTextureLayer(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const
 {
     fbo->bind(s_workingTarget);
 
@@ -78,7 +78,7 @@ void BindfulFrameBufferBehavior::attachTextureLayer(const FrameBufferObject * fb
     CheckGLError();
 }
 
-void BindfulFrameBufferBehavior::attachRenderBuffer(const FrameBufferObject * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const
+void LegacyFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const
 {
     fbo->bind(s_workingTarget);
     renderBuffer->bind(GL_RENDERBUFFER);

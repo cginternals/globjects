@@ -5,15 +5,15 @@
 #include <glow/Program.h>
 #include <glow/global.h>
 
-#include "registry/BehaviorRegistry.h"
+#include "registry/ImplementationRegistry.h"
 
-#include "behaviors/AbstractUniformBehavior.h"
+#include "implementations/AbstractUniformImplementation.h"
 
 namespace {
 
-const glow::AbstractUniformBehavior & behavior()
+const glow::AbstractUniformImplementation & behavior()
 {
-    return glow::BehaviorRegistry::current().uniformBehavior();
+    return glow::ImplementationRegistry::current().uniformImplementation();
 }
 
 }

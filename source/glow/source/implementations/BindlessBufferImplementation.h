@@ -4,12 +4,12 @@
 
 #include <glow/Buffer.h>
 
-#include "AbstractBufferBehavior.h"
+#include "AbstractBufferImplementation.h"
 
 namespace glow
 {
 
-class BindfulBufferBehavior : public AbstractBufferBehavior
+class BindlessBufferImplementation : public AbstractBufferImplementation
 {
 public:
     virtual void * map(const Buffer * buffer, GLenum access) const override;
@@ -26,8 +26,6 @@ public:
 
     virtual void clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const override;
     virtual void clearSubData(const Buffer * buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data) const override;
-
-    static GLenum s_workingTarget;
 };
 
 } // namespace glow

@@ -1,12 +1,12 @@
-#include "BindfulBufferBehavior.h"
+#include "LegacyBufferImplementation.h"
 
 #include <glow/Error.h>
 
 namespace glow {
 
-GLenum BindfulBufferBehavior::s_workingTarget = GL_COPY_WRITE_BUFFER;
+GLenum LegacyBufferImplementation::s_workingTarget = GL_COPY_WRITE_BUFFER;
 
-void * BindfulBufferBehavior::map(const Buffer * buffer, GLenum access) const
+void * LegacyBufferImplementation::map(const Buffer * buffer, GLenum access) const
 {
     buffer->bind(s_workingTarget);
 
@@ -16,7 +16,7 @@ void * BindfulBufferBehavior::map(const Buffer * buffer, GLenum access) const
     return result;
 }
 
-void * BindfulBufferBehavior::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, GLbitfield access) const
+void * LegacyBufferImplementation::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, GLbitfield access) const
 {
     buffer->bind(s_workingTarget);
 
@@ -26,7 +26,7 @@ void * BindfulBufferBehavior::mapRange(const Buffer * buffer, GLintptr offset, G
     return result;
 }
 
-bool BindfulBufferBehavior::unmap(const Buffer * buffer) const
+bool LegacyBufferImplementation::unmap(const Buffer * buffer) const
 {
     buffer->bind(s_workingTarget);
 
@@ -36,7 +36,7 @@ bool BindfulBufferBehavior::unmap(const Buffer * buffer) const
     return success == GL_TRUE;
 }
 
-void BindfulBufferBehavior::setData(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLenum usage) const
+void LegacyBufferImplementation::setData(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLenum usage) const
 {
     buffer->bind(s_workingTarget);
 
@@ -44,7 +44,7 @@ void BindfulBufferBehavior::setData(const Buffer * buffer, GLsizeiptr size, cons
     CheckGLError();
 }
 
-void BindfulBufferBehavior::setSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, const GLvoid * data) const
+void LegacyBufferImplementation::setSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, const GLvoid * data) const
 {
     buffer->bind(s_workingTarget);
 
@@ -52,7 +52,7 @@ void BindfulBufferBehavior::setSubData(const Buffer * buffer, GLintptr offset, G
     CheckGLError();
 }
 
-void BindfulBufferBehavior::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLbitfield flags) const
+void LegacyBufferImplementation::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLbitfield flags) const
 {
     buffer->bind(s_workingTarget);
 
@@ -60,7 +60,7 @@ void BindfulBufferBehavior::setStorage(const Buffer * buffer, GLsizeiptr size, c
     CheckGLError();
 }
 
-void BindfulBufferBehavior::copySubData(const glow::Buffer * buffer, glow::Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
+void LegacyBufferImplementation::copySubData(const glow::Buffer * buffer, glow::Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
 {
     GLenum readTarget = GL_COPY_READ_BUFFER;
     GLenum writeTarget = GL_COPY_WRITE_BUFFER;
@@ -72,7 +72,7 @@ void BindfulBufferBehavior::copySubData(const glow::Buffer * buffer, glow::Buffe
     CheckGLError();
 }
 
-void BindfulBufferBehavior::getParameter(const Buffer * buffer, GLenum pname, GLint * data) const
+void LegacyBufferImplementation::getParameter(const Buffer * buffer, GLenum pname, GLint * data) const
 {
     buffer->bind(s_workingTarget);
 
@@ -80,7 +80,7 @@ void BindfulBufferBehavior::getParameter(const Buffer * buffer, GLenum pname, GL
     CheckGLError();
 }
 
-void BindfulBufferBehavior::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const
+void LegacyBufferImplementation::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const
 {
     buffer->bind(s_workingTarget);
 
@@ -88,7 +88,7 @@ void BindfulBufferBehavior::clearData(const Buffer * buffer, GLenum internalform
     CheckGLError();
 }
 
-void BindfulBufferBehavior::clearSubData(const Buffer * buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data) const
+void LegacyBufferImplementation::clearSubData(const Buffer * buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data) const
 {
     buffer->bind(s_workingTarget);
 

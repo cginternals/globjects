@@ -2,12 +2,12 @@
 
 #include <GL/glew.h>
 
-#include "AbstractFrameBufferBehavior.h"
+#include "AbstractFrameBufferImplementation.h"
 
 namespace glow
 {
 
-class BindlessFrameBufferBehavior : public AbstractFrameBufferBehavior
+class BindlessFrameBufferImplementation : public AbstractFrameBufferImplementation
 {
 public:
     virtual GLenum checkStatus(const FrameBufferObject * fbo) const override;

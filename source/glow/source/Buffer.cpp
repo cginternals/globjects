@@ -6,16 +6,16 @@
 #include <glow/global.h>
 #include <glow/ObjectVisitor.h>
 
-#include "registry/BehaviorRegistry.h"
+#include "registry/ImplementationRegistry.h"
 
-#include "behaviors/AbstractBufferBehavior.h"
-#include "behaviors/BindfulBufferBehavior.h"
+#include "implementations/AbstractBufferImplementation.h"
+#include "implementations/LegacyBufferImplementation.h"
 
 namespace {
 
-const glow::AbstractBufferBehavior & behavior()
+const glow::AbstractBufferImplementation & behavior()
 {
-    return glow::BehaviorRegistry::current().bufferBehavior();
+    return glow::ImplementationRegistry::current().bufferImplementation();
 }
 
 }
@@ -25,7 +25,7 @@ namespace glow
 
 void Buffer::setWorkingTarget(GLenum target)
 {
-    BindfulBufferBehavior::s_workingTarget = target;
+    LegacyBufferImplementation::s_workingTarget = target;
 }
 
 Buffer::Buffer()

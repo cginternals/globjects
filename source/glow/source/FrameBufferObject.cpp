@@ -14,14 +14,14 @@
 #include <glow/constants.h>
 #include "pixelformat.h"
 
-#include "registry/BehaviorRegistry.h"
-#include "behaviors/AbstractFrameBufferBehavior.h"
+#include "registry/ImplementationRegistry.h"
+#include "implementations/AbstractFrameBufferImplementation.h"
 
 namespace {
 
-const glow::AbstractFrameBufferBehavior & behavior()
+const glow::AbstractFrameBufferImplementation & behavior()
 {
-    return glow::BehaviorRegistry::current().frameBufferBehavior();
+    return glow::ImplementationRegistry::current().frameBufferImplementation();
 }
 
 }

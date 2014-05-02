@@ -4,12 +4,12 @@
 
 #include <glow/Buffer.h>
 
-#include "AbstractFrameBufferBehavior.h"
+#include "AbstractFrameBufferImplementation.h"
 
 namespace glow
 {
 
-class BindfulFrameBufferBehavior : public AbstractFrameBufferBehavior
+class LegacyFrameBufferImplementation : public AbstractFrameBufferImplementation
 {
 public:
     static GLenum s_workingTarget;
