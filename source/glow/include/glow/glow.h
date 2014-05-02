@@ -68,4 +68,4 @@ GLOW_API void setEnabled(GLenum capability, int index, bool enabled);
 
 } // namespace glow
 
-#include <glow/global.hpp>
+#include <glow/glow.hpp>

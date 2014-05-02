@@ -8,7 +8,7 @@
 #include "registry/ObjectRegistry.h"
 
 #include <glow/logging.h>
-#include <glow/global.h>
+#include <glow/glow.h>
 #include <glow/memory.h>
 
 #include <glow/Object.h>

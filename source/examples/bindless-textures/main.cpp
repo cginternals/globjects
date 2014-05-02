@@ -19,10 +19,10 @@
 #include <glow/Buffer.h>
 #include <glow/debugmessageoutput.h>
 #include <glow/Extension.h>
-#include <glow/global.h>
+#include <glow/glow.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/global.h>
+#include <glowutils/glowutils.h>
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
 #include <glowutils/AxisAlignedBoundingBox.h>

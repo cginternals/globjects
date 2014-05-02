@@ -3,7 +3,7 @@
 
 #include <glow/logging.h>
 
-#include <glow/global.h>
+#include <glow/glow.h>
 
 namespace glow {
 

@@ -1,6 +1,6 @@
 #include <glow/State.h>
 
-#include <glow/global.h>
+#include <glow/glow.h>
 #include <glow/Extension.h>
 #include <glow/Capability.h>
 

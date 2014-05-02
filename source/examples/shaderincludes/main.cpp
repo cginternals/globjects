@@ -10,7 +10,7 @@
 #include <glowutils/File.h>
 #include <glowutils/File.h>
 #include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/global.h>
+#include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 
 #include <glowwindow/ContextFormat.h>

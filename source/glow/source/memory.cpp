@@ -1,6 +1,6 @@
 #include <glow/memory.h>
 
-#include <glow/global.h>
+#include <glow/glow.h>
 #include <glow/Extension.h>
 
 namespace {

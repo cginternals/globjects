@@ -5,7 +5,7 @@
 #include <glow/logging.h>
 #include <glow/Error.h>
 #include <glow/DebugMessage.h>
-#include <glow/global.h>
+#include <glow/glow.h>
 #include <glow/Extension.h>
 
 #include "registry/contextid.h"

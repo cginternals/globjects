@@ -6,7 +6,7 @@
 
 #include <glow/Error.h>
 #include <glow/logging.h>
-#include <glow/global.h>
+#include <glow/glow.h>
 #include <glow/Version.h>
 #include <glow/AbstractStringSource.h>
 #include <glow/StaticStringSource.h>

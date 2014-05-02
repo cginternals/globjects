@@ -85,7 +85,7 @@ set(api_includes
     ${include_path}/File.h
     ${include_path}/FlightNavigation.h
     ${include_path}/GlBlendAlgorithm.h
-    ${include_path}/global.h
+    ${include_path}/glowutils.h
     ${include_path}/HybridAlgorithm.h
     ${include_path}/Icosahedron.h
     ${include_path}/Interpolation.h
@@ -127,7 +127,7 @@ set(sources
     ${source_path}/FileRegistry.cpp
     ${source_path}/FlightNavigation.cpp
     ${source_path}/GlBlendAlgorithm.cpp
-    ${source_path}/global.cpp
+    ${source_path}/glowutils.cpp
     ${source_path}/HybridAlgorithm.cpp
     ${source_path}/Icosahedron.cpp
     ${source_path}/navigationmath.cpp

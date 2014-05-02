@@ -3,7 +3,7 @@
 #include <cassert>
 
 #include <glow/Program.h>
-#include <glow/global.h>
+#include <glow/glow.h>
 
 #include "registry/ImplementationRegistry.h"
 

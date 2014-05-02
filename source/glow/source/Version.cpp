@@ -3,7 +3,7 @@
 #include <sstream>
 #include <set>
 
-#include <glow/global.h>
+#include <glow/glow.h>
 
 namespace {
     static std::set<glow::Version> validVersions =

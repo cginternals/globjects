@@ -5,13 +5,13 @@
 #include <glow/Texture.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Buffer.h>
-#include <glow/global.h>
+#include <glow/glow.h>
 #include <glow/NamedString.h>
 
 #include <glowutils/File.h>
 #include <glowutils/Camera.h>
 #include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/global.h>
+#include <glowutils/glowutils.h>
 
 namespace glowutils {
 

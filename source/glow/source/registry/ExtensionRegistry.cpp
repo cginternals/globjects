@@ -1,7 +1,7 @@
 #include "ExtensionRegistry.h"
 #include "Registry.h"
 
-#include <glow/global.h>
+#include <glow/glow.h>
 #include <glow/gl_extension_info.h>
 
 namespace glow {

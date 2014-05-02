@@ -1,7 +1,7 @@
 
 #include <GL/glew.h>
 
-#include <glow/global.h>
+#include <glow/glow.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/AbstractStringSource.h>
@@ -17,7 +17,7 @@
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
 #include <glowutils/StringTemplate.h>
-#include <glowutils/global.h>
+#include <glowutils/glowutils.h>
 
 #include "ComputeShaderParticles.h"
 

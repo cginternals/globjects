@@ -3,7 +3,7 @@
 #include <cassert>
 
 #include <glow/Error.h>
-#include <glow/global.h>
+#include <glow/glow.h>
 #include <glow/ObjectVisitor.h>
 
 #include "registry/ImplementationRegistry.h"

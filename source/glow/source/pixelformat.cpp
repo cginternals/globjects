@@ -1,6 +1,6 @@
 #include "pixelformat.h"
 
-#include <glow/global.h>
+#include <glow/glow.h>
 #include <glow/logging.h>
 
 namespace {
