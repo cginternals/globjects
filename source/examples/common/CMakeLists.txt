@@ -1,5 +1,5 @@
 
-set(target examplecommon)
+set(target ${EXAMPLE_COMMON})
 message(STATUS "Helper ${target}")
 
 #
