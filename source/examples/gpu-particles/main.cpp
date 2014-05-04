@@ -164,7 +164,7 @@ public:
 
     void draw()
     {
-        const long double elapsed = m_timer.elapsed().count();
+        const long double elapsed = static_cast<long double>(m_timer.elapsed().count());
         m_timer.update();
 
         const float delta = static_cast<float>((m_timer.elapsed().count() - elapsed) * 1.0e-9L);
