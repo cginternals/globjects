@@ -29,7 +29,6 @@ include_directories(
     BEFORE
     ${GENERATED_HEADER_PATH}
     ${CMAKE_SOURCE_DIR}/source/glow/include
-    ${CMAKE_SOURCE_DIR}/source/glowutils/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -42,7 +41,6 @@ set(libs
     ${GLEW_LIBRARY}
     ${GLFW_LIBRARY}
     glow
-    glowutils
 )
 
 #
