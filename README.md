@@ -25,8 +25,8 @@ The following dev-libraries and programs need to be provided for correct CMake c
 * C++11 compatible compiler (e.g. gcc >=4.7, MSVC >=2013)
 * CMake (>=2.8.9, better 2.8.12): http://www.cmake.org/
 * OpenGL Extension Wrangler (GLEW >=1.10.0): http://glew.sourceforge.net/, https://github.com/nigels-com/glew
-* OpenGL Mathematics (GLM >=0.9.4): http://glm.g-truc.net/
-* Window and Context creation (GLFW >=3.0.3): http://www.glfw.org/ (needed for the now mandatory glowwindow module)
+* OpenGL Mathematics (GLM >=0.9.4): http://glm.g-truc.net/, https://github.com/g-truc/glm
+* Window and Context creation (GLFW 3.0): http://www.glfw.org/ (needed for the now mandatory glowwindow module)
 
 
 ### Development Notes
