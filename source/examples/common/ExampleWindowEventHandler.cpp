@@ -81,7 +81,7 @@ void ExampleWindowEventHandler::computeFps(glowwindow::PaintEvent & event)
 
            event.window()->setTitle(stream.str());
 
-           m_swapElapsedTime = m_timer.elapsed().count();
+           m_swapElapsedTime = static_cast<long double>(m_timer.elapsed().count());
            m_swapCount = 0;
        }
 }
