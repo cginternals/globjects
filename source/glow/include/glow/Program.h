@@ -108,6 +108,8 @@ public:
     void bindAttributeLocation(GLuint index, const std::string & name) const;
     void bindFragDataLocation(GLuint index, const std::string & name) const;
 
+    GLint getFragDataLocation(const std::string & name) const;
+    GLint getFragDataIndex(const std::string & name) const;
     GLuint getResourceIndex(GLenum programInterface, const std::string & name) const;
 
     GLuint getUniformBlockIndex(const std::string& name) const;

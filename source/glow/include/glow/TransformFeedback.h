@@ -60,8 +60,8 @@ public:
 
     virtual void accept(ObjectVisitor & visitor) override;
 
-    void bind() const;
-    void unbind() const;
+    void bind(GLenum target = GL_TRANSFORM_FEEDBACK) const;
+    static void unbind(GLenum target = GL_TRANSFORM_FEEDBACK);
 
 	void begin(GLenum primitiveMode);
 	void pause();
@@ -70,22 +70,13 @@ public:
 
     void draw(GLenum primitiveMode) const;
 
-	void setVaryings(
-        const Program * program
-    ,   GLsizei count
-    ,   const char ** varyingNames
-    ,   GLenum bufferMode) const;
-
-    void setVaryings(const Program * program
-    ,   const std::vector<const char *> &varyingNames
-    ,   GLenum bufferMode) const;
+	void setVaryings(const Program * program, GLsizei count, const char ** varyingNames, GLenum bufferMode) const;
+    void setVaryings(const Program * program, const std::vector<const char *> & varyingNames, GLenum bufferMode) const;
 
     template <std::size_t Count>
-    void setVaryings(const Program * program
-    ,   const std::array<const char *, Count> &varyingNames
-    ,   GLenum bufferMode) const;
+    void setVaryings(const Program * program, const std::array<const char *, Count> & varyingNames, GLenum bufferMode) const;
 
-	bool isTransformFeedback() const;
+    static bool isTransformFeedback(GLuint id);
 
 protected:
     virtual ~TransformFeedback();

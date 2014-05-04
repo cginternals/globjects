@@ -11,17 +11,17 @@
 
 namespace {
     // use number of digits to retrieve exp in 10^(3 exp)
-    static const char * units("num ");
+    const char units[3] = { 'n', 'u', 'm' };
 }
 
 namespace glowutils
 {
 
-int AutoTimer::m_numActiveInstances = 0;
+int AutoTimer::s_numActiveInstances = 0;
 
-AutoTimer::AutoTimer(const char * info)
+AutoTimer::AutoTimer(const std::string & info)
 :   m_info(info)
-,   m_index(++m_numActiveInstances)
+,   m_index(++s_numActiveInstances)
 ,   m_timer(new Timer(false))
 {
     m_timer->start();
@@ -31,26 +31,25 @@ AutoTimer::~AutoTimer()
 {
     m_timer->pause();
 
-    double delta(static_cast<double>(m_timer->elapsed()));
+    Timer::Duration elapsed = m_timer->elapsed();
+    //double delta(static_cast<double>(m_timer->elapsed()));
 
-    const unsigned char u(std::min<char>(3, static_cast<char>(ceil(log10(delta) / 3.0))));
+    std::chrono::nanoseconds nanoDelta = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed);
+    const unsigned int unitPrecision = std::min(3u, static_cast<unsigned int>(ceil(log10(static_cast<double>(nanoDelta.count())) / 3.0)));
 
     std::string unit = "s";
 
-    if (u < 3)
-        unit.insert(0, 1, units[u]);
+    if (unitPrecision < sizeof(units))
+        unit.insert(0, 1, units[unitPrecision]);
 
     // shorten the time to nearest time unit
-    delta /= pow(1000.0, u);
+    double delta = static_cast<double>(nanoDelta.count()) / pow(1000.0, unitPrecision);
 
     glow::debug() << m_info << " took "
         << std::setprecision(4) << delta << unit
         << " (timer_" << std::setfill('0') << std::setw(2) << m_index << ").";
 
-    delete m_timer;
-
-    assert(0 < m_numActiveInstances);
-    --m_numActiveInstances;
+    --s_numActiveInstances;
 }
 
 } // namespace glowutils

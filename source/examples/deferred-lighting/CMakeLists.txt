@@ -22,14 +22,9 @@ include_directories(
     ${GLFW_INCLUDE_DIR}
 )
 
-get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
-
 include_directories(
     BEFORE
-    ${GENERATED_HEADER_PATH}
-    ${CMAKE_SOURCE_DIR}/source/glow/include
-    ${CMAKE_SOURCE_DIR}/source/glowutils/include
-    ${CMAKE_SOURCE_DIR}/source/glowwindow/include
+    ${GLOW_EXAMPLE_INCLUDES}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -41,10 +36,7 @@ set(libs
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARY}
     ${GLFW_LIBRARY}
-    glow
-    glowutils
-    glowwindow
-    examplecommon
+    ${GLOW_EXAMPLES_LIBRARIES}
 )
 
 #

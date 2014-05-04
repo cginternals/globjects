@@ -90,6 +90,7 @@ public:
 		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_geom);
 		m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depth);
 
+        m_fbo->bind();
 		// ToDo: this could be done automatically by default..
 		m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
 
@@ -152,7 +153,7 @@ public:
         m_agrid->update();
 
         m_sphere->setUniform("transform", m_camera.viewProjection());
-		m_sphere->setUniform("timef", mod(static_cast<float>(m_time.elapsed() * 1e-10), 1.f));
+        m_sphere->setUniform("timef", mod(static_cast<float>(m_time.elapsed().count()) * 1e-10f, 1.f));
 
         m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
 

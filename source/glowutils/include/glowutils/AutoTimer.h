@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <memory>
+
 #include <glowutils/glowutils_api.h>
 
 namespace glowutils
@@ -28,16 +31,16 @@ class Timer;
 class GLOWUTILS_API AutoTimer
 {
 public:
-    explicit AutoTimer(const char * info);
+    AutoTimer(const std::string & info);
     virtual ~AutoTimer();
 
 protected:
-    static int m_numActiveInstances;
+    static int s_numActiveInstances;
 
-    const char * m_info;
-    const int m_index;
+    std::string m_info;
+    int m_index;
 
-    Timer * m_timer;
+    std::unique_ptr<Timer> m_timer;
 };
 
 } // namespace glowutils

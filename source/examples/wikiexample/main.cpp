@@ -87,7 +87,7 @@ public:
         
         
         
-		cornerBuffer = new glow::Buffer(GL_ARRAY_BUFFER);
+        cornerBuffer = new glow::Buffer();
         cornerBuffer->ref();
 		program = new glow::Program();
         program->ref();

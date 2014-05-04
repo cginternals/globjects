@@ -88,7 +88,7 @@ public:
 
         m_vao->bind();
 
-        m_transformFeedbackProgram->setUniform("deltaT", float(m_timer.elapsed() * float(std::nano::num) / float(std::nano::den)));
+        m_transformFeedbackProgram->setUniform("deltaT", static_cast<float>(m_timer.elapsed().count()) * float(std::nano::num) / float(std::nano::den));
         m_timer.reset();
 
         m_vao->binding(0)->setBuffer(drawBuffer, 0, sizeof(glm::vec4));
@@ -211,11 +211,11 @@ void EventHandler::createAndSetupGeometry()
         , glm::vec4(0, 1, 0, 1)
     });
 
-    m_vertexBuffer1 = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_vertexBuffer1 = new glow::Buffer();
     m_vertexBuffer1->setData(vertexArray);
-    m_vertexBuffer2 = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_vertexBuffer2 = new glow::Buffer();
     m_vertexBuffer2->setData(vertexArray);
-    m_colorBuffer = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_colorBuffer = new glow::Buffer();
     m_colorBuffer->setData(colorArray);
 
 	m_vao = new glow::VertexArrayObject();

@@ -86,7 +86,6 @@ set(api_includes
     ${include_path}/debugmessageoutput.h
     ${include_path}/Error.h
     ${include_path}/Extension.h
-    ${include_path}/ExtensionRegistry.h
     ${include_path}/FrameBufferAttachment.h
     ${include_path}/FrameBufferObject.h
     ${include_path}/formatString.h
@@ -105,7 +104,6 @@ set(api_includes
     ${include_path}/memory.h
     ${include_path}/NamedString.h
     ${include_path}/Object.h
-    ${include_path}/ObjectRegistry.h
     ${include_path}/ObjectVisitor.h
     ${include_path}/Program.h
     ${include_path}/Program.hpp
@@ -114,7 +112,6 @@ set(api_includes
     ${include_path}/ref_ptr.h
     ${include_path}/ref_ptr.hpp
     ${include_path}/Referenced.h
-    ${include_path}/Registry.h
     ${include_path}/RenderBufferAttachment.h
     ${include_path}/RenderBufferObject.h
     ${include_path}/Sampler.h
@@ -123,7 +120,6 @@ set(api_includes
     ${include_path}/StateSetting.h
     ${include_path}/StateSetting.hpp
     ${include_path}/StaticStringSource.h
-    ${include_path}/BehaviorRegistry.h
     ${include_path}/Sync.h
     ${include_path}/Texture.h
     ${include_path}/TextureAttachment.h
@@ -150,8 +146,6 @@ set(sources
     ${source_path}/ConsoleLogger.cpp
     ${source_path}/constants.cpp
     ${source_path}/container_helpers.hpp
-    ${source_path}/contextid.h
-    ${source_path}/contextid.cpp
     ${source_path}/DebugInfo.cpp
     ${source_path}/DebugMessage.cpp
     ${source_path}/DebugMessageCallback.h
@@ -159,7 +153,6 @@ set(sources
     ${source_path}/debugmessageoutput.cpp
     ${source_path}/Error.cpp
     ${source_path}/Extension.cpp
-    ${source_path}/ExtensionRegistry.cpp
     ${source_path}/FrameBufferAttachment.cpp
     ${source_path}/FrameBufferObject.cpp
     ${source_path}/formatString.cpp
@@ -173,10 +166,7 @@ set(sources
     ${source_path}/LogMessageBuilder.cpp
     ${source_path}/memory.cpp
     ${source_path}/NamedString.cpp
-    ${source_path}/NamedStringRegistry.h
-    ${source_path}/NamedStringRegistry.cpp
     ${source_path}/Object.cpp
-    ${source_path}/ObjectRegistry.cpp
     ${source_path}/ObjectVisitor.cpp
     ${source_path}/pixelformat.cpp
     ${source_path}/pixelformat.h
@@ -184,7 +174,6 @@ set(sources
     ${source_path}/ProgramBinary.cpp
     ${source_path}/Query.cpp
     ${source_path}/Referenced.cpp
-    ${source_path}/Registry.cpp
     ${source_path}/RenderBufferAttachment.cpp
     ${source_path}/RenderBufferObject.cpp
     ${source_path}/Sampler.cpp
@@ -192,7 +181,6 @@ set(sources
     ${source_path}/State.cpp
     ${source_path}/StateSetting.cpp
     ${source_path}/StaticStringSource.cpp
-    ${source_path}/BehaviorRegistry.cpp
     ${source_path}/Sync.cpp
     ${source_path}/Texture.cpp
     ${source_path}/TextureAttachment.cpp
@@ -203,19 +191,38 @@ set(sources
     ${source_path}/VertexAttributeBinding.cpp
     ${source_path}/VertexAttributeBindingImplementation.h
     ${source_path}/VertexAttributeBindingImplementation.cpp
+        
+    ${source_path}/registry/ImplementationRegistry.h
+    ${source_path}/registry/ImplementationRegistry.cpp
+    ${source_path}/registry/contextid.h
+    ${source_path}/registry/contextid.cpp
+    ${source_path}/registry/ExtensionRegistry.h
+    ${source_path}/registry/ExtensionRegistry.cpp
+    ${source_path}/registry/NamedStringRegistry.h
+    ${source_path}/registry/NamedStringRegistry.cpp
+    ${source_path}/registry/ObjectRegistry.h
+    ${source_path}/registry/ObjectRegistry.cpp
+    ${source_path}/registry/Registry.h
+    ${source_path}/registry/Registry.cpp
     
-    ${source_path}/behaviors/AbstractUniformBehavior.h
-    ${source_path}/behaviors/AbstractUniformBehavior.cpp
-    ${source_path}/behaviors/BindfulUniformBehavior.h
-    ${source_path}/behaviors/BindfulUniformBehavior.cpp
-    ${source_path}/behaviors/BindlessUniformBehavior.h
-    ${source_path}/behaviors/BindlessUniformBehavior.cpp
-    ${source_path}/behaviors/AbstractBufferBehavior.h
-    ${source_path}/behaviors/AbstractBufferBehavior.cpp
-    ${source_path}/behaviors/BindfulBufferBehavior.h
-    ${source_path}/behaviors/BindfulBufferBehavior.cpp
-    ${source_path}/behaviors/BindlessBufferBehavior.h
-    ${source_path}/behaviors/BindlessBufferBehavior.cpp
+    ${source_path}/implementations/AbstractUniformImplementation.h
+    ${source_path}/implementations/AbstractUniformImplementation.cpp
+    ${source_path}/implementations/LegacyUniformImplementation.h
+    ${source_path}/implementations/LegacyUniformImplementation.cpp
+    ${source_path}/implementations/BindlessUniformImplementation.h
+    ${source_path}/implementations/BindlessUniformImplementation.cpp
+    ${source_path}/implementations/AbstractBufferImplementation.h
+    ${source_path}/implementations/AbstractBufferImplementation.cpp
+    ${source_path}/implementations/LegacyBufferImplementation.h
+    ${source_path}/implementations/LegacyBufferImplementation.cpp
+    ${source_path}/implementations/BindlessBufferImplementation.h
+    ${source_path}/implementations/BindlessBufferImplementation.cpp
+    ${source_path}/implementations/AbstractFrameBufferImplementation.h
+    ${source_path}/implementations/AbstractFrameBufferImplementation.cpp
+    ${source_path}/implementations/LegacyFrameBufferImplementation.h
+    ${source_path}/implementations/LegacyFrameBufferImplementation.cpp
+    ${source_path}/implementations/BindlessFrameBufferImplementation.h
+    ${source_path}/implementations/BindlessFrameBufferImplementation.cpp
 )
 
 # Group source files

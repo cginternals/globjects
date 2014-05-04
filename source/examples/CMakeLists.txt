@@ -9,6 +9,22 @@ if(OPTION_BUILD_EXAMPLES)
         # for compatibility between glm 0.9.4 and 0.9.5
         add_definitions("-DGLM_FORCE_RADIANS")
 	
+	get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
+
+	set(GLOW_EXAMPLE_INCLUDES
+		${GENERATED_HEADER_PATH}
+		${CMAKE_SOURCE_DIR}/source/glow/include
+		${CMAKE_SOURCE_DIR}/source/glowutils/include
+		${CMAKE_SOURCE_DIR}/source/glowwindow/include
+	)
+	
+	set(GLOW_EXAMPLES_LIBRARIES
+		glow
+		glowutils
+		glowwindow
+		${EXAMPLE_COMMON}
+	)
+	
 	add_subdirectory("common")
 	include_directories("common")
 

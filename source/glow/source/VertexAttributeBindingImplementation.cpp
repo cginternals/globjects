@@ -102,7 +102,7 @@ void VertexAttributeBinding_GL_3_0::finishIfComplete()
 void VertexAttributeBinding_GL_3_0::finish()
 {
     vao()->bind();
-    void* offset = nullptr;
+    void * offset = nullptr;
     
     if (vbo())
     {
@@ -111,9 +111,7 @@ void VertexAttributeBinding_GL_3_0::finish()
     }
     else
     {
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
-        CheckGLError();
+        Buffer::unbind(GL_ARRAY_BUFFER);
     }
 
 

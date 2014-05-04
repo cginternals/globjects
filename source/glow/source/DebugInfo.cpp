@@ -5,8 +5,8 @@
 #include <iomanip>
 #include <cassert>
 
-#include <glow/Registry.h>
-#include <glow/ObjectRegistry.h>
+#include "registry/ObjectRegistry.h"
+
 #include <glow/logging.h>
 #include <glow/glow.h>
 #include <glow/memory.h>
@@ -129,7 +129,7 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::collectObjectInfo()
 	m_infoGroups.clear();
 	m_memoryUsage.clear();
 
-    for (Object* object: Registry::current().objects())
+    for (Object * object: ObjectRegistry::current().objects())
 	{
 		visit(object);
 	}

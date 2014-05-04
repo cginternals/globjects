@@ -204,6 +204,22 @@ void Program::bindAttributeLocation(GLuint index, const std::string & name) cons
 	CheckGLError();
 }
 
+GLint Program::getFragDataLocation(const std::string & name) const
+{
+    GLint location = glGetFragDataLocation(m_id, name.c_str());
+    CheckGLError();
+
+    return location;
+}
+
+GLint Program::getFragDataIndex(const std::string & name) const
+{
+    GLint location = glGetFragDataIndex(m_id, name.c_str());
+    CheckGLError();
+
+    return location;
+}
+
 GLint Program::getUniformLocation(const std::string& name) const
 {
 	checkDirty();

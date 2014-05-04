@@ -96,7 +96,7 @@ public:
 
         m_agrid->update();
 
-        float t = static_cast<float>(m_time.elapsed() * 4e-10f);
+        float t = static_cast<float>(m_time.elapsed().count()) * 4e-10f;
         mat4 R = glm::rotate(t * 10.f, vec3(sin(t * 0.321), cos(t * 0.234), sin(t * 0.123)));
 
         m_sphere->setUniform("transform", m_camera.viewProjection());

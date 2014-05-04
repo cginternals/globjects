@@ -14,7 +14,7 @@ public:
 
     DebugMessageCallback();
 
-    void operator()(const DebugMessage & message);
+    void operator()(const DebugMessage & message) const;
 
     bool isRegistered() const;
     void setRegistered(bool registered);
@@ -22,11 +22,11 @@ public:
     void addCallback(Callback callback);
     void clearCallbacks();
 protected:
-    void callCallbacks(const DebugMessage & message);
-    void defaultAction(const DebugMessage & message);
+    void callCallbacks(const DebugMessage & message) const;
+    void defaultAction(const DebugMessage & message) const;
 
-    void handleError(const DebugMessage & message);
-    void handleDebug(const DebugMessage & message);
+    void handleError(const DebugMessage & message) const;
+    void handleDebug(const DebugMessage & message) const;
 protected:
     std::vector<Callback> m_callbacks;
     bool m_registered;

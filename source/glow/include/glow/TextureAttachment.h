@@ -10,6 +10,7 @@ namespace glow
 {
 
 class Texture;
+class FrameBufferObject;
 
 /** \brief Encapsulates texture attachments of a frame buffer object.
     
@@ -21,7 +22,7 @@ class Texture;
 class GLOW_API TextureAttachment : public FrameBufferAttachment
 {
 public:
-    TextureAttachment(Texture * texture, GLenum attachment, GLint level, GLint layer = -1);
+    TextureAttachment(FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer = -1);
 
     virtual bool isTextureAttachment() const override;
 	Texture * texture();

@@ -3,8 +3,7 @@
 #include <glow/StaticStringSource.h>
 
 #include <glow/Error.h>
-#include <glow/Registry.h>
-#include "NamedStringRegistry.h"
+#include "registry/NamedStringRegistry.h"
 
 namespace glow {
 
@@ -69,17 +68,17 @@ void NamedString::deleteNamedString()
 
 void NamedString::registerNamedString()
 {
-    Registry::current().namedStrings().registerNamedString(this);
+    NamedStringRegistry::current().registerNamedString(this);
 }
 
 void NamedString::deregisterNamedString()
 {
-    Registry::current().namedStrings().deregisterNamedString(this);
+    NamedStringRegistry::current().deregisterNamedString(this);
 }
 
 bool NamedString::isNamedString(const std::string & name)
 {
-    if (Registry::current().namedStrings().hasNamedString(name))
+    if (NamedStringRegistry::current().hasNamedString(name))
     {
         return true;
     }
@@ -120,7 +119,7 @@ GLint NamedString::getParameter(GLenum pname)
 
 NamedString * NamedString::obtain(const std::string & name)
 {
-    NamedString * namedString = Registry::current().namedStrings().namedString(name);
+    NamedString * namedString = NamedStringRegistry::current().namedString(name);
 
     if (!namedString && hasNativeSupport() && isNamedString(name))
     {
@@ -166,7 +165,7 @@ AbstractStringSource * NamedString::stringSource()
 
 bool NamedString::hasNativeSupport()
 {
-    return Registry::current().namedStrings().hasNativeSupport();
+    return NamedStringRegistry::current().hasNativeSupport();
 }
 
 void NamedString::updateString()

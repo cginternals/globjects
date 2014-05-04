@@ -82,7 +82,7 @@ GLOWUTILS_API VertexDrawable::AttributeFormat FormatL(GLint size, GLenum type, G
 template <typename T>
 VertexDrawable::VertexDrawable(const std::vector<T> & vertices, GLenum primitiveMode)
 : m_vao(new glow::VertexArrayObject)
-, m_vbo(new glow::Buffer(GL_ARRAY_BUFFER))
+, m_vbo(new glow::Buffer)
 , m_baseOffset(0)
 , m_stride(sizeof(T))
 , m_size(static_cast<GLint>(vertices.size()))
@@ -94,7 +94,7 @@ VertexDrawable::VertexDrawable(const std::vector<T> & vertices, GLenum primitive
 template <typename T, std::size_t Count>
 VertexDrawable::VertexDrawable(const std::array<T, Count> & vertices, GLenum primitiveMode)
 : m_vao(new glow::VertexArrayObject)
-, m_vbo(new glow::Buffer(GL_ARRAY_BUFFER))
+, m_vbo(new glow::Buffer)
 , m_baseOffset(0)
 , m_stride(sizeof(T))
 , m_size(static_cast<GLint>(vertices.size()))
