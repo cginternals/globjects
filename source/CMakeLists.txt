@@ -11,8 +11,12 @@ add_subdirectory(codegeneration)
 # Libraries
 set(IDE_FOLDER "")
 add_subdirectory(glow)
-add_subdirectory(glowutils)
-add_subdirectory(glowwindow)
+if (OPTION_BUILD_GLOW_UTILS)
+	add_subdirectory(glowutils)
+endif()
+if (OPTION_BUILD_GLOW_WINDOW)
+	add_subdirectory(glowwindow)
+endif()
 
 # Examples
 set(IDE_FOLDER "Examples")
