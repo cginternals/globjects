@@ -17,6 +17,10 @@ class NamedStringRegistry;
 class GLOW_API Registry
 {
 public:
+    static long long registerCurrentContext();
+    static void setContext(long long contextId);
+    static void deregisterCurrentContext();
+
     static Registry & current();
 
     ObjectRegistry & objects();
@@ -27,6 +31,7 @@ private:
     Registry();
     ~Registry();
 
+    static Registry * s_currentRegistry;
     static std::unordered_map<long long, Registry *> s_registries;
 private:
     ObjectRegistry * m_objects;

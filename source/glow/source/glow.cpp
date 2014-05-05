@@ -3,6 +3,7 @@
 #include <glow/Error.h>
 #include <glow/logging.h>
 
+#include "registry/Registry.h"
 #include "registry/ExtensionRegistry.h"
 
 #include <glow/NamedString.h>
@@ -41,6 +42,8 @@ bool isInitialized()
 
 bool init(bool showWarnings)
 {
+    Registry::registerCurrentContext();
+
     if (glowIsInitialized)
     {
         if (showWarnings)
