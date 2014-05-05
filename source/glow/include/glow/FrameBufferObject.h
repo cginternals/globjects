@@ -7,9 +7,10 @@
 
 #include <glm/glm.hpp>
 
+#include <glowbase/ref_ptr.h>
+
 #include <glow/glow_api.h>
 #include <glow/Object.h>
-#include <glow/ref_ptr.h>
 
 namespace glow 
 {

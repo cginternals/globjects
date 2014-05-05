@@ -3,15 +3,16 @@
 #include <vector>
 #include <sstream>
 
+#include <glowbase/ref_ptr.h>
+#include <glowbase/Version.h>
+
 #include <glow/Program.h>
 #include <glow/logging.h>
 #include <glow/AbstractStringSource.h>
 #include <glow/StaticStringSource.h>
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
-#include <glow/Version.h>
 #include <glow/glow.h>
-#include <glow/ref_ptr.h>
 
 #include "IncludeProcessor.h"
 
@@ -122,7 +123,7 @@ const AbstractStringSource* Shader::source() const
 	return m_source;
 }
 
-void Shader::notifyChanged(const glow::Changeable *)
+void Shader::notifyChanged(const Changeable *)
 {
 	updateSource();
 }
@@ -133,7 +134,7 @@ void Shader::updateSource()
 
     if (m_source)
     {
-        if (glow::hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
+        if (hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
         {
             sources = m_source->strings();
         }
@@ -158,7 +159,7 @@ bool Shader::compile() const
     if (m_compilationFailed)
         return false;
 
-    if (glow::hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
+    if (hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
     {
         std::vector<const char*> cStrings = collectCStrings(m_includePaths);
         glCompileShaderIncludeARB(m_id, static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);

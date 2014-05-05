@@ -27,6 +27,11 @@ GLsync Sync::fenceSync(GLenum condition, GLbitfield flags)
     return sync;
 }
 
+GLsync Sync::sync() const
+{
+    return m_sync;
+}
+
 GLenum Sync::clientWait(GLbitfield flags, GLuint64 timeout)
 {
     GLenum result = glClientWaitSync(m_sync, flags, timeout);

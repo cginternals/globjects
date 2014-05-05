@@ -4,9 +4,8 @@
 
 #include <GL/glew.h>
 
-#include <glow/logging.h>
+#include <glowbase/baselogging.h>
 #include <glow/glow.h>
-#include <glow/Error.h>
 
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
@@ -42,13 +41,13 @@ bool Context::create(const ContextFormat & format, const int width, const int he
 {
     if (isValid())
     {
-        warning() << "Context is already valid. Create was probably called before.";
+        glow::warning() << "Context is already valid. Create was probably called before.";
         return true;
     }
 
     if (!glfwInit())
     {
-        fatal() << "Could not initialize GLFW.";
+        glow::fatal() << "Could not initialize GLFW.";
         return false;
     }
 
@@ -62,7 +61,7 @@ bool Context::create(const ContextFormat & format, const int width, const int he
 
     if (!m_window)
     {
-        fatal() << "Context creation failed (GLFW).";
+        glow::fatal() << "Context creation failed (GLFW).";
         release();
         return false;
     }
@@ -71,7 +70,7 @@ bool Context::create(const ContextFormat & format, const int width, const int he
 
     if (!glow::init())
     {
-        fatal() << "GLOW/GLEW initialization failed.";
+        glow::fatal() << "GLOW/GLEW initialization failed.";
         release();
         return false;
     }
@@ -247,7 +246,7 @@ Version Context::maximumSupportedVersion()
 
         if (glow::init())
         {
-            maxVersion = glow::Version::current();
+            maxVersion = glow::version();
         }
 
         glfwDestroyWindow(versionCheckWindow);

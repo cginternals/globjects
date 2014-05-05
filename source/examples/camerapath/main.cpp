@@ -20,6 +20,7 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/debugmessageoutput.h>
 
+#include <glowutils/Timer.h>
 #include <glowutils/File.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/Icosahedron.h>
@@ -29,8 +30,6 @@
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/CameraPathRecorder.h>
 #include <glowutils/CameraPathPlayer.h>
-#include <glowutils/AutoTimer.h>
-#include <glowutils/Timer.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 
@@ -302,12 +301,12 @@ public:
 
 protected:
 
-    ref_ptr<Program> m_sphere;
+    glow::ref_ptr<Program> m_sphere;
 
-    ref_ptr<Icosahedron> m_icosahedron;
-    ref_ptr<AdaptiveGrid> m_agrid;
+    glow::ref_ptr<Icosahedron> m_icosahedron;
+    glow::ref_ptr<AdaptiveGrid> m_agrid;
 
-    Timer timer;
+    glowutils::Timer timer;
     Camera m_camera;
     float angle;
     CameraPath path;
@@ -329,8 +328,8 @@ int main(int /*argc*/, char* /*argv*/[])
     glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
     glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
     glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    //glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    //glow::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    //glowbase::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    //glowbase::info() << "\t" << "Space" << "\t\t" << "Reset camera";
     glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
     glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
     glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";

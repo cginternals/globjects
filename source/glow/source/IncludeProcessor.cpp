@@ -4,10 +4,11 @@
 #include <algorithm>
 #include <cctype>
 
+#include <glowbase/Version.h>
+
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/glow.h>
-#include <glow/Version.h>
 #include <glow/AbstractStringSource.h>
 #include <glow/StaticStringSource.h>
 #include <glow/CompositeStringSource.h>
@@ -138,7 +139,7 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
 
                         if (include.size() == 0 || endsWith(include, '/'))
                         {
-                            glow::warning() << "Malformed #include " << include;
+                            warning() << "Malformed #include " << include;
                         }
                         else
                         {
@@ -171,7 +172,7 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                                 }
                                 else
                                 {
-                                    glow::warning() << "Did not find include " << include;
+                                    warning() << "Did not find include " << include;
                                 }
 
                                 destinationstream.str("");
@@ -180,7 +181,7 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                     }
                     else
                     {
-                        glow::warning() << "Malformed #include " << trimmedLine;
+                        warning() << "Malformed #include " << trimmedLine;
                     }
                 }
                 else

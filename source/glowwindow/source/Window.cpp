@@ -6,7 +6,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include <glow/logging.h>
+#include <glowbase/baselogging.h>
 
 #include <glowwindow/Context.h>
 #include <glowwindow/WindowEventHandler.h>

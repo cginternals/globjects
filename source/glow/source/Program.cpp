@@ -31,7 +31,7 @@ Program::Program(ProgramBinary * binary)
 
 Program::~Program()
 {
-	for (ref_ptr<Shader> shader: std::set<ref_ptr<Shader>>(m_shaders))
+    for (ref_ptr<Shader> shader: std::set<ref_ptr<Shader>>(m_shaders))
 	{
 		detach(shader);
 	}
@@ -149,7 +149,7 @@ void Program::link() const
 
 bool Program::prepareForLinkage() const
 {
-    if (m_binary && glow::hasExtension(GLOW_ARB_get_program_binary))
+    if (m_binary && hasExtension(GLOW_ARB_get_program_binary))
     {
         glProgramBinary(m_id, m_binary->format(), m_binary->data(), m_binary->length());
         CheckGLError();
@@ -398,7 +398,7 @@ void Program::setBinary(ProgramBinary * binary)
 
 ProgramBinary * Program::getBinary() const
 {
-    if (!glow::hasExtension(GLOW_ARB_get_program_binary))
+    if (!hasExtension(GLOW_ARB_get_program_binary))
     {
         return nullptr;
     }

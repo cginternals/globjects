@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 
 #include <glow/glow_api.h>
-#include <glow/FunctionCall.h>
+#include <glowbase/FunctionCall.h>
 
 namespace glow
 {

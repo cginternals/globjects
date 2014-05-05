@@ -46,7 +46,7 @@ void BindlessBufferImplementation::setStorage(const Buffer * buffer, GLsizeiptr 
     CheckGLError();
 }
 
-void BindlessBufferImplementation::copySubData(const glow::Buffer * buffer, glow::Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
+void BindlessBufferImplementation::copySubData(const Buffer * buffer, Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
 {
     glNamedCopyBufferSubDataEXT(buffer->id(), other->id(), readOffset, writeOffset, size);
     CheckGLError();

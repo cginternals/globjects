@@ -17,13 +17,12 @@
 #include <glow/logging.h>
 #include <glow/debugmessageoutput.h>
 
+#include <glowutils/Timer.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
 #include <glowutils/File.h>
-#include <glowutils/AutoTimer.h>
-#include <glowutils/Timer.h>
 #include <glowutils/glowutils.h>
 
 #include <glowwindow/ContextFormat.h>

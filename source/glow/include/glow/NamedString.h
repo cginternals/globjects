@@ -4,12 +4,12 @@
 
 #include <GL/glew.h>
 
-#include <glow/glow_api.h>
+#include <glowbase/ChangeListener.h>
+#include <glowbase/ref_ptr.h>
+#include <glowbase/Referenced.h>
 
+#include <glow/glow_api.h>
 #include <glow/AbstractStringSource.h>
-#include <glow/ChangeListener.h>
-#include <glow/ref_ptr.h>
-#include <glow/Referenced.h>
 
 namespace glow {
 

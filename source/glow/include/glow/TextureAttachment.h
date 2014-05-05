@@ -2,8 +2,9 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/ref_ptr.h>
+
 #include <glow/glow_api.h>
-#include <glow/ref_ptr.h>
 #include <glow/FrameBufferAttachment.h>
 
 namespace glow 
@@ -33,7 +34,7 @@ public:
     bool hasLayer() const;
     GLint layer() const;
 protected:
-	ref_ptr<Texture> m_texture;
+    ref_ptr<Texture> m_texture;
     GLint m_level;
     GLint m_layer;
 };
