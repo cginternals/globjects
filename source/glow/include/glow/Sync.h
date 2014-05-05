@@ -20,6 +20,8 @@ public:
 
     void get(GLenum pname, GLsizei bufsize, GLsizei * length, GLint * values);
     GLint get(GLenum pname);
+
+    GLsync sync() const;
 protected:
     GLsync m_sync;
 

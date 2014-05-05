@@ -17,6 +17,7 @@
 #include <glow/FrameBufferObject.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Sampler.h>
+#include <glow/Sync.h>
 #include <glow/Texture.h>
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>
@@ -64,6 +65,9 @@ public:
         glow::ref_ptr<glow::Sampler> sampler(new glow::Sampler());
         std::cout << "glow::Sampler = "; glow::info() << sampler.get();
 
+        glow::ref_ptr<glow::Sync> sync(glow::Sync::fence());
+        std::cout << "glow::Sync = "; glow::info() << sync.get();
+
         glow::ref_ptr<glow::Shader> shader(new glow::Shader(GL_VERTEX_SHADER));
         std::cout << "glow::Shader = "; glow::info() << shader.get();
 
@@ -76,7 +80,7 @@ public:
         glow::ref_ptr<glow::VertexArrayObject> vao(new glow::VertexArrayObject());
         std::cout << "glow::VertexArrayObject = "; glow::info() << vao.get();
 
-        glow::ref_ptr<glow::Uniform<float>> uniform(new glow::Uniform<float>("Pi", 3.14f));
+        glow::ref_ptr<glow::Uniform<glm::vec3>> uniform(new glow::Uniform<glm::vec3>("Pi", glm::vec3(3.14f)));
         std::cout << "glow::Uniform = "; glow::info() << uniform.get();
         std::cout << "glow::AbstractUniform = "; glow::info() << static_cast<glow::AbstractUniform*>(uniform.get());
 

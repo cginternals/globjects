@@ -7,8 +7,6 @@
 #include <memory>
 #include <iomanip>
 
-#include <glm/gtc/type_ptr.hpp>
-
 #include <glow/glow_api.h>
 #include <glow/LogMessage.h>
 #include <glow/ref_ptr.h>
@@ -16,25 +14,8 @@
 namespace glow 
 {
 
-template <typename T>
-class Array;
-
 class AbstractLogHandler;
-class Object;
-class Buffer;
-class FrameBufferObject;
-class Program;
-class Query;
-class RenderBufferObject;
-class Sampler;
-class Shader;
-class Texture;
-class TransformFeedback;
-class VertexArrayObject;
 class Version;
-class AbstractUniform;
-template <typename T>
-class Uniform;
 
 /** \brief Builds a LogMessage from different kinds of primitive types.
 
@@ -68,85 +49,51 @@ public:
     using FillManipulator = decltype(std::setfill('0'));
     using WidthManipulator = decltype(std::setw(0));
 public:
-	LogMessageBuilder(LogMessage::Level level, AbstractLogHandler* handler);
-    LogMessageBuilder(const LogMessageBuilder& builder);
+    LogMessageBuilder(LogMessage::Level level, AbstractLogHandler * handler);
+    LogMessageBuilder(const LogMessageBuilder & builder);
 	virtual ~LogMessageBuilder();
 
-	// primitive types
-	LogMessageBuilder& operator<<(const char* c);
-	LogMessageBuilder& operator<<(const std::string& str);
-	LogMessageBuilder& operator<<(bool b);
-	LogMessageBuilder& operator<<(char c);
-	LogMessageBuilder& operator<<(int i);
-	LogMessageBuilder& operator<<(float f);
-	LogMessageBuilder& operator<<(double d);
-	LogMessageBuilder& operator<<(long double d);
-	LogMessageBuilder& operator<<(unsigned u);
-	LogMessageBuilder& operator<<(long l);
-    LogMessageBuilder& operator<<(long long l);
-	LogMessageBuilder& operator<<(unsigned long ul);
-	LogMessageBuilder& operator<<(unsigned char uc);
-    LogMessageBuilder& operator<<(const void * pointer);
+    LogMessageBuilder & operator<<(const char * c);
+    LogMessageBuilder & operator<<(const std::string & str);
+    LogMessageBuilder & operator<<(bool b);
+    LogMessageBuilder & operator<<(char c);
+    LogMessageBuilder & operator<<(int i);
+    LogMessageBuilder & operator<<(float f);
+    LogMessageBuilder & operator<<(double d);
+    LogMessageBuilder & operator<<(long double d);
+    LogMessageBuilder & operator<<(unsigned u);
+    LogMessageBuilder & operator<<(long l);
+    LogMessageBuilder & operator<<(long long l);
+    LogMessageBuilder & operator<<(unsigned long ul);
+    LogMessageBuilder & operator<<(unsigned char uc);
+    LogMessageBuilder & operator<<(const void * pointer);
 
 	// manipulators
-	LogMessageBuilder& operator<<(std::ostream& (*manipulator)(std::ostream&));
-    LogMessageBuilder& operator<<(PrecisionManipulator manipulator);
-    LogMessageBuilder& operator<<(FillManipulator manipulator);
+    LogMessageBuilder & operator<<(std::ostream & (*manipulator)(std::ostream&));
+    LogMessageBuilder & operator<<(PrecisionManipulator manipulator);
+    LogMessageBuilder & operator<<(FillManipulator manipulator);
 #ifndef _MSC_VER
     // in Windows PrecisionManipulator = WidthManipulator
-    LogMessageBuilder& operator<<(WidthManipulator manipulator);
+    LogMessageBuilder & operator<<(WidthManipulator manipulator);
 #endif
 	
-	// glow objects
-    LogMessageBuilder& operator<<(Object* object);
-    LogMessageBuilder& operator<<(Buffer* object);
-    LogMessageBuilder& operator<<(FrameBufferObject* object);
-    LogMessageBuilder& operator<<(Program* object);
-    LogMessageBuilder& operator<<(Query* object);
-    LogMessageBuilder& operator<<(RenderBufferObject* object);
-    LogMessageBuilder& operator<<(Sampler* object);
-    LogMessageBuilder& operator<<(Shader* object);
-    LogMessageBuilder& operator<<(Texture* object);
-    LogMessageBuilder& operator<<(TransformFeedback* object);
-    LogMessageBuilder& operator<<(VertexArrayObject* object);
-    LogMessageBuilder& operator<<(AbstractUniform* uniform);
+    // glow base objects
+    LogMessageBuilder & operator<<(const Version & version);
     template <typename T>
-    LogMessageBuilder& operator<<(Uniform<T>* uniform);
-    LogMessageBuilder& operator<<(const Version& version);
-    template <typename T>
-    LogMessageBuilder& operator<<(ref_ptr<T> ref_pointer);
+    LogMessageBuilder & operator<<(const ref_ptr<T> & ref_pointer);
 	
 	// pointers
 	template <typename T>
-    LogMessageBuilder& operator<<(const T * pointer);
+    LogMessageBuilder & operator<<(const T * pointer);
 
     // array types
     template <typename T>
-    LogMessageBuilder& operator<<(const Array<T>& array);
-    template <typename T>
-    LogMessageBuilder& operator<<(const std::vector<T>& vector);
+    LogMessageBuilder & operator<<(const std::vector<T> & vector);
     template <typename T, std::size_t Count>
-    LogMessageBuilder& operator<<(const std::array<T, Count>& array);
-
-	// glm types
-	LogMessageBuilder& operator<<(const glm::vec2& v);
-	LogMessageBuilder& operator<<(const glm::vec3& v);
-	LogMessageBuilder& operator<<(const glm::vec4& v);
-
-    LogMessageBuilder& operator<<(const glm::ivec2& v);
-    LogMessageBuilder& operator<<(const glm::ivec3& v);
-    LogMessageBuilder& operator<<(const glm::ivec4& v);
-
-    LogMessageBuilder& operator<<(const glm::uvec2& v);
-    LogMessageBuilder& operator<<(const glm::uvec3& v);
-    LogMessageBuilder& operator<<(const glm::uvec4& v);
-
-	LogMessageBuilder& operator<<(const glm::mat2& m);
-	LogMessageBuilder& operator<<(const glm::mat3& m);
-	LogMessageBuilder& operator<<(const glm::mat4& m);
+    LogMessageBuilder & operator<<(const std::array<T, Count> & array);
 protected:
 	LogMessage::Level m_level;
-	AbstractLogHandler* m_handler;
+    AbstractLogHandler * m_handler;
     std::shared_ptr<std::stringstream> m_stream;
 };
 
