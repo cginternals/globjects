@@ -15,7 +15,7 @@ namespace {
     const char units[3] = { 'n', 'u', 'm' };
 }
 
-namespace glowbase
+namespace glow
 {
 
 int AutoTimer::s_numActiveInstances = 0;

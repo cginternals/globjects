@@ -26,8 +26,8 @@ public:
     virtual glow::Texture* getOutput() override;
 
 private:
-    glowbase::ref_ptr<glow::Program> m_program;
-    glowbase::ref_ptr<glow::FrameBufferObject> m_fbo;
-    glowbase::ref_ptr<glow::Texture> m_colorTex;
-    glowbase::ref_ptr<glow::RenderBufferObject> m_depthBuffer;
+    glow::ref_ptr<glow::Program> m_program;
+    glow::ref_ptr<glow::FrameBufferObject> m_fbo;
+    glow::ref_ptr<glow::Texture> m_colorTex;
+    glow::ref_ptr<glow::RenderBufferObject> m_depthBuffer;
 };

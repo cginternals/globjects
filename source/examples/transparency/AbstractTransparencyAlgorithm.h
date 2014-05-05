@@ -32,7 +32,7 @@ class Camera;
             - pass the current width and height of the viewport
         4. Use AbstractTransparencyAlgorithm#getOutput to obtain the texture that contains the rendered scene
 */
-class AbstractTransparencyAlgorithm : public glowbase::Referenced {
+class AbstractTransparencyAlgorithm : public glow::Referenced {
 public:
     using DrawFunction = std::function<void(glow::Program*)>;
 

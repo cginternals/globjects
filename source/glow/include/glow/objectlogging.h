@@ -24,25 +24,25 @@ template <typename T>
 class Uniform;
 class Version;
 
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Object * object);
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Buffer * object);
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const FrameBufferObject * object);
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Program * object);
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Query * object);
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const RenderBufferObject * object);
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Sampler * object);
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Shader * object);
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Texture * object);
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const TransformFeedback * object);
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const VertexArrayObject * object);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Object * object);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Buffer * object);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const FrameBufferObject * object);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Program * object);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Query * object);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const RenderBufferObject * object);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Sampler * object);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Shader * object);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Texture * object);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const TransformFeedback * object);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const VertexArrayObject * object);
 
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Sync * sync);
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const AbstractUniform * uniform);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Sync * sync);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const AbstractUniform * uniform);
 
-GLOW_API glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Version & version);
+GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Version & version);
 
 template <typename T>
-glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Uniform<T> * uniform);
+LogMessageBuilder operator<<(LogMessageBuilder builder, const Uniform<T> * uniform);
 
 } // namespace glow
 

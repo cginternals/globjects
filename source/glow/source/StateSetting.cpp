@@ -30,7 +30,7 @@ void StateSettingType::specializeType(GLenum subtype)
     m_subtypes.insert(subtype);
 }
 
-StateSetting::StateSetting(glowbase::AbstractFunctionCall * functionCall)
+StateSetting::StateSetting(AbstractFunctionCall * functionCall)
 : m_functionCall(functionCall)
 , m_type(m_functionCall->identifier())
 {

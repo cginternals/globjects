@@ -20,7 +20,7 @@ namespace glow
 namespace glowutils 
 {
 
-class GLOWUTILS_API UnitCube : public glowbase::Referenced
+class GLOWUTILS_API UnitCube : public glow::Referenced
 {
     static const std::array<glm::vec3, 28> strip();
 
@@ -35,8 +35,8 @@ public:
     void draw();
 
 private:
-    glowbase::ref_ptr<glow::Buffer> m_strip;
-    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Buffer> m_strip;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
 };
 
 } // namespace glowutils

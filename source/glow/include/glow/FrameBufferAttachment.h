@@ -23,7 +23,7 @@ class FrameBufferObject;
     \see TextureAttachment
     \see RenderBufferAttachment
 */
-class GLOW_API FrameBufferAttachment : public glowbase::Referenced
+class GLOW_API FrameBufferAttachment : public Referenced
 {
 public:
     FrameBufferAttachment(FrameBufferObject * fbo, GLenum attachment);

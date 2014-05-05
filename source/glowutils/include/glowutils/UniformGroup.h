@@ -33,7 +33,7 @@ public:
     void addToProgram(glow::Program * program);
 
 protected:
-    std::unordered_map<std::string, glowbase::ref_ptr<glow::AbstractUniform>> m_uniforms;
+    std::unordered_map<std::string, glow::ref_ptr<glow::AbstractUniform>> m_uniforms;
 };
 
 } // namespace glowutils

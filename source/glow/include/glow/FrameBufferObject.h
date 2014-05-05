@@ -116,7 +116,7 @@ protected:
     static void blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, GLbitfield mask, GLenum filter);
     static void blit(const std::array<GLint, 4> & srcRect, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter);
 protected:
-	std::map<GLenum, glowbase::ref_ptr<FrameBufferAttachment>> m_attachments;
+	std::map<GLenum, ref_ptr<FrameBufferAttachment>> m_attachments;
 };
 
 } // namespace glow

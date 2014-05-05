@@ -19,7 +19,7 @@
 namespace glowutils
 {
 
-class GLOWUTILS_API VertexDrawable : public glowbase::Referenced
+class GLOWUTILS_API VertexDrawable : public glow::Referenced
 {
 public:
     class AttributeFormat
@@ -67,8 +67,8 @@ public:
 
     void draw() const;
 protected:
-    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
-    glowbase::ref_ptr<glow::Buffer> m_vbo;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Buffer> m_vbo;
     std::vector<GLint> m_attributeIndices;
     std::vector<AttributeFormat> m_formats;
     GLint m_baseOffset;

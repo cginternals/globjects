@@ -5,7 +5,7 @@
 
 #include <glowbase/glowbase_api.h>
 
-namespace glowbase
+namespace glow
 {
 
 GLOWBASE_API int readInt(const char* str, int& number);

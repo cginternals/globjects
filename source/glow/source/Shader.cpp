@@ -123,7 +123,7 @@ const AbstractStringSource* Shader::source() const
 	return m_source;
 }
 
-void Shader::notifyChanged(const glowbase::Changeable *)
+void Shader::notifyChanged(const Changeable *)
 {
 	updateSource();
 }
@@ -134,13 +134,13 @@ void Shader::updateSource()
 
     if (m_source)
     {
-        if (glow::hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
+        if (hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
         {
             sources = m_source->strings();
         }
         else
         {
-            glowbase::ref_ptr<AbstractStringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source, m_includePaths);
+            ref_ptr<AbstractStringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source, m_includePaths);
 
             sources = resolvedSource->strings();
         }
@@ -159,7 +159,7 @@ bool Shader::compile() const
     if (m_compilationFailed)
         return false;
 
-    if (glow::hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
+    if (hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
     {
         std::vector<const char*> cStrings = collectCStrings(m_includePaths);
         glCompileShaderIncludeARB(m_id, static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
@@ -225,7 +225,7 @@ bool Shader::checkCompileStatus() const
 
     if (GL_FALSE == status)
     {
-        glowbase::critical()
+        critical()
             << "Compiler error:" << std::endl
             << shaderString() << std::endl
             << infoLog();

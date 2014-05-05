@@ -25,7 +25,7 @@ public:
     void clearReplacements();
 
 protected:
-    glowbase::CachedValue<std::string> m_modifiedSource;
+    glow::CachedValue<std::string> m_modifiedSource;
 	std::map<std::string, std::string> m_replacements;
 
     virtual ~StringTemplate();

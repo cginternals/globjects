@@ -1,6 +1,6 @@
 #include <glowbase/Timer.h>
 
-namespace glowbase
+namespace glow
 {
 
 Timer::Timer(bool start, bool autoUpdate)

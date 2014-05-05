@@ -19,7 +19,7 @@ class ObjectVisitor;
     The OpenGL name (id) that was provided in the constructor can be queried using id().
     Additionally, an Object can have meaningful name wich can be get and set using name() and setName().
  */
-class GLOW_API Object : public glowbase::Referenced
+class GLOW_API Object : public Referenced
 {
 public:
     virtual void accept(ObjectVisitor & visitor) = 0;

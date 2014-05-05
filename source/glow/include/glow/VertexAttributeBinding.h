@@ -14,7 +14,7 @@ class Buffer;
 class VertexArrayObject;
 class VertexAttributeBindingImplementation;
 
-class GLOW_API VertexAttributeBinding : public glowbase::Referenced
+class GLOW_API VertexAttributeBinding : public Referenced
 {
 	friend class VertexAttributeBindingImplementation;
 

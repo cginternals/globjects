@@ -4,7 +4,7 @@
 
 #include <glowbase/LogMessage.h>
 
-namespace glowbase
+namespace glow
 {
 
 void ConsoleLogger::handle(const LogMessage& message)

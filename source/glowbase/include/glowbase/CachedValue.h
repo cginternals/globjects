@@ -1,6 +1,6 @@
 #pragma once
 
-namespace glowbase
+namespace glow
 {
 
 /** \brief Extends a value of arbitrary type by an invalidation flag.

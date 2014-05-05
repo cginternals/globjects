@@ -10,7 +10,7 @@
 namespace glowutils 
 {
 
-class GLOWUTILS_API StringSourceDecorator : public glow::AbstractStringSource, protected glowbase::ChangeListener
+class GLOWUTILS_API StringSourceDecorator : public glow::AbstractStringSource, protected glow::ChangeListener
 {
 public:
     StringSourceDecorator(glow::AbstractStringSource * source);
@@ -21,7 +21,7 @@ protected:
 
     virtual void notifyChanged(const Changeable * changeable) override;
 protected:
-    glowbase::ref_ptr<glow::AbstractStringSource> m_internal;
+    glow::ref_ptr<glow::AbstractStringSource> m_internal;
 };
 
 } // namespace glowutils

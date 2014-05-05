@@ -4,7 +4,7 @@
 #include <glowbase/AbstractLogHandler.h>
 #include <glowbase/LogMessage.h>
 
-namespace glowbase
+namespace glow
 {
 
 /** \brief Writes LogMessages to stdout.

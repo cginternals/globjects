@@ -83,13 +83,13 @@ protected:
 
     glm::ivec2 m_viewport;
 
-    glowbase::CachedValue<glm::mat4> m_view;
-    glowbase::CachedValue<glm::mat4> m_viewInverted;
-    glowbase::CachedValue<glm::mat4> m_projection;
-    glowbase::CachedValue<glm::mat4> m_projectionInverted;
-    glowbase::CachedValue<glm::mat4> m_viewProjection;
-    glowbase::CachedValue<glm::mat4> m_viewProjectionInverted;
-    glowbase::CachedValue<glm::mat3> m_normal;
+    glow::CachedValue<glm::mat4> m_view;
+    glow::CachedValue<glm::mat4> m_viewInverted;
+    glow::CachedValue<glm::mat4> m_projection;
+    glow::CachedValue<glm::mat4> m_projectionInverted;
+    glow::CachedValue<glm::mat4> m_viewProjection;
+    glow::CachedValue<glm::mat4> m_viewProjectionInverted;
+    glow::CachedValue<glm::mat3> m_normal;
 };
 
 } // namespace glowutils

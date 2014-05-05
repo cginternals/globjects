@@ -5,7 +5,7 @@
 #include <cstring>
 #include <cassert>
 
-namespace glowbase
+namespace glow
 {
 
 LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, AbstractLogHandler * handler)

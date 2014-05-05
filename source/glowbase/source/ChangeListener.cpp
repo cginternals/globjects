@@ -2,7 +2,7 @@
 
 #include <glowbase/Changeable.h>
 
-namespace glowbase
+namespace glow
 {
 
 ChangeListener::~ChangeListener()

@@ -2,7 +2,7 @@
 
 #include <glowbase/glowbase_api.h>
 
-namespace glowbase {
+namespace glow {
 
 /**
  * @brief The HeapOnly class

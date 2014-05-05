@@ -34,7 +34,7 @@ public:
     bool hasLayer() const;
     GLint layer() const;
 protected:
-    glowbase::ref_ptr<Texture> m_texture;
+    ref_ptr<Texture> m_texture;
     GLint m_level;
     GLint m_layer;
 };

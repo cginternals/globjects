@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-namespace glowbase
+namespace glow
 {
 
 template <typename T>

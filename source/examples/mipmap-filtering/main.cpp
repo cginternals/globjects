@@ -118,13 +118,13 @@ public:
     }
 
 protected:
-    glowbase::ref_ptr<glow::Texture> m_texture;
-    glowbase::ref_ptr<glow::Program> m_program;
+    glow::ref_ptr<glow::Texture> m_texture;
+    glow::ref_ptr<glow::Program> m_program;
 
     glowutils::Camera m_camera;
     float m_angle, m_scale;
 
-    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 };
 
 
@@ -132,15 +132,15 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowbase::info() << "Usage:";
-    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    glowbase::info() << "\t" << "UP" << "\t\t" << "Tilt up";
-    glowbase::info() << "\t" << "DOWN" << "\t\t" << "Tilt down";
-    glowbase::info() << "\t" << "-" << "\t\t" << "Move forward";
-    glowbase::info() << "\t" << "=" << "\t\t" << "Move backward";
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glow::info() << "\t" << "UP" << "\t\t" << "Tilt up";
+    glow::info() << "\t" << "DOWN" << "\t\t" << "Tilt down";
+    glow::info() << "\t" << "-" << "\t\t" << "Move forward";
+    glow::info() << "\t" << "=" << "\t\t" << "Move backward";
 
     ContextFormat format;
     format.setVersion(3, 2);

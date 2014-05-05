@@ -3,7 +3,7 @@
 #include <functional>
 #include <type_traits>
 
-namespace glowbase {
+namespace glow {
 
 template <typename T, class InputIterator, class Function>
 std::vector<T> collect(InputIterator first, InputIterator last, Function mapper)

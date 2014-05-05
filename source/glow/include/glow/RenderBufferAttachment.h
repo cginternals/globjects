@@ -30,7 +30,7 @@ public:
 	RenderBufferObject * renderBuffer();
     const RenderBufferObject * renderBuffer() const;
 protected:
-    glowbase::ref_ptr<RenderBufferObject> m_renderBuffer;
+    ref_ptr<RenderBufferObject> m_renderBuffer;
 };
 
 } // namespace glow

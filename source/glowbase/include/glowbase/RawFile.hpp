@@ -7,7 +7,7 @@
 
 //#include <glow/logging.h>
 
-namespace glowbase
+namespace glow
 {
 
 template<typename T>
@@ -48,7 +48,7 @@ bool RawFile<T>::read()
 
     if (!ifs)
     {
-        //glow::warning() << "Reading from file \"" << m_filePath << "\" failed."; // TODO: reenable when moving logging from glow to glowbase
+        //warning() << "Reading from file \"" << m_filePath << "\" failed."; // TODO: reenable when moving logging from glow to glowbase
         return false;
     }
 

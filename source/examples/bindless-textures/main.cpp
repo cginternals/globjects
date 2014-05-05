@@ -76,14 +76,14 @@ public:
 
         if (!glow::hasExtension(glow::Extension::GLOW_NV_bindless_texture))
         {
-            glowbase::critical() << "Blindess textures are not supported";
+            glow::critical() << "Blindess textures are not supported";
 
             window.close();
 
             return;
         }
 
-        glowbase::ref_ptr<glow::State> state = new glow::State;
+        glow::ref_ptr<glow::State> state = new glow::State;
         state->enable(GL_CULL_FACE);
         state->clearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -231,9 +231,9 @@ protected:
     glowutils::WorldInHandNavigation m_nav;
     glowutils::AxisAlignedBoundingBox m_aabb;
 
-    std::array<glowbase::ref_ptr<glow::Texture>, 4> m_textures;
-    glowbase::ref_ptr<glow::Program> m_program;
-    glowbase::ref_ptr<glowutils::VertexDrawable> m_drawable;
+    std::array<glow::ref_ptr<glow::Texture>, 4> m_textures;
+    glow::ref_ptr<glow::Program> m_program;
+    glow::ref_ptr<glowutils::VertexDrawable> m_drawable;
 };
 
 
@@ -241,15 +241,15 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowbase::info() << "Usage:";
-    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    glowbase::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-    glowbase::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    glowbase::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-    glowbase::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glow::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
 
     ContextFormat format;
     format.setVersion(3, 0);

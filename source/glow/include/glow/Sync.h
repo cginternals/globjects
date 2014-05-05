@@ -9,7 +9,7 @@
 namespace glow
 {
 
-class GLOW_API Sync : public glowbase::Referenced
+class GLOW_API Sync : public Referenced
 {
 public:
     static Sync * fence(GLenum condition = GL_SYNC_GPU_COMMANDS_COMPLETE, GLbitfield flags = 0);

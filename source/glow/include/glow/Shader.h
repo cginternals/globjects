@@ -33,7 +33,7 @@ class Program;
     \see ChangeListener
     \see Changeable
  */
-class GLOW_API Shader : public Object, protected glowbase::ChangeListener, public glowbase::Changeable
+class GLOW_API Shader : public Object, protected ChangeListener, public Changeable
 {
 	friend class Program;
     friend class ShaderCompiler;
@@ -81,7 +81,7 @@ protected:
 
 protected:
 	GLenum m_type;
-    glowbase::ref_ptr<AbstractStringSource> m_source;
+    ref_ptr<AbstractStringSource> m_source;
     std::vector<std::string> m_includePaths;
 
     mutable bool m_compiled;

@@ -19,7 +19,7 @@ void Program::setUniformByIdentity(const LocationIdentity & identity, const T & 
     Uniform<T> * uniform = getUniformByIdentity<T>(identity);
     if (!uniform)
     {
-        glowbase::warning() << "Uniform type mismatch on set uniform. Uniform will be replaced.";
+        warning() << "Uniform type mismatch on set uniform. Uniform will be replaced.";
 
         addUniform(identity.isName() ? new Uniform<T>(identity.name(), value) : new Uniform<T>(identity.location(), value));
         return;

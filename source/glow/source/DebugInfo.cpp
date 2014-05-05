@@ -58,15 +58,15 @@ void DebugInfo::print(const std::vector<InfoGroup>& info)
 {
 	for (const InfoGroup& group: info)
 	{
-        glowbase::debug() << group.name;
+        debug() << group.name;
 
 		for (const InfoUnit& unit: group.units)
 		{
-            glowbase::debug() << "\t" << unit.name;
+            debug() << "\t" << unit.name;
 
 			for (const Property& property: unit.properties)
 			{
-                glowbase::debug() << "\t\t" << property.name << ": " << property.value;
+                debug() << "\t\t" << property.name << ": " << property.value;
 			}
 		}
 	}

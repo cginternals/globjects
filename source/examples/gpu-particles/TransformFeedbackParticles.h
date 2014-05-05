@@ -39,21 +39,21 @@ public:
     virtual void resize() override;
 
 protected:
-    glowbase::ref_ptr<glow::TransformFeedback> m_transformFeedback;
-    glowbase::ref_ptr<glow::Program> m_transformFeedbackProgram;
+    glow::ref_ptr<glow::TransformFeedback> m_transformFeedback;
+    glow::ref_ptr<glow::Program> m_transformFeedbackProgram;
 
-    glowbase::ref_ptr<glow::Buffer> m_sourcePositions;
-    glowbase::ref_ptr<glow::Buffer> m_sourceVelocities;
-    glowbase::ref_ptr<glow::Buffer> m_targetPositions;
-    glowbase::ref_ptr<glow::Buffer> m_targetVelocities;
+    glow::ref_ptr<glow::Buffer> m_sourcePositions;
+    glow::ref_ptr<glow::Buffer> m_sourceVelocities;
+    glow::ref_ptr<glow::Buffer> m_targetPositions;
+    glow::ref_ptr<glow::Buffer> m_targetVelocities;
 
-    glowbase::ref_ptr<glow::Program> m_drawProgram;
+    glow::ref_ptr<glow::Program> m_drawProgram;
 
-    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
 
-    glowbase::ref_ptr<glow::FrameBufferObject> m_fbo;
-    glowbase::ref_ptr<glow::Texture> m_color;
+    glow::ref_ptr<glow::FrameBufferObject> m_fbo;
+    glow::ref_ptr<glow::Texture> m_color;
 
-    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
-    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_clear;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_clear;
 };

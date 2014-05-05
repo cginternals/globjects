@@ -74,7 +74,7 @@ protected:
     static GLuint genVertexArray();
 
 protected:
-    std::map<GLuint, glowbase::ref_ptr<VertexAttributeBinding >> m_bindings;
+    std::map<GLuint, ref_ptr<VertexAttributeBinding >> m_bindings;
 
 };
 

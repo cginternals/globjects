@@ -1,6 +1,6 @@
 #include <glowbase/HeapOnly.h>
 
-namespace glowbase {
+namespace glow {
 
 HeapOnly::HeapOnly()
 {

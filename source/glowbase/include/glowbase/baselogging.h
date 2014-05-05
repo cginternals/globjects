@@ -4,7 +4,7 @@
 #include <glowbase/AbstractLogHandler.h>
 #include <glowbase/LogMessageBuilder.h>
 
-namespace glowbase
+namespace glow
 {
 
 /**

@@ -173,7 +173,7 @@ void NamedString::updateString()
     createNamedString();
 }
 
-void NamedString::notifyChanged(const glowbase::Changeable *)
+void NamedString::notifyChanged(const Changeable *)
 {
     updateString();
 }

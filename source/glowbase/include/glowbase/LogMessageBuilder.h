@@ -11,7 +11,7 @@
 #include <glowbase/LogMessage.h>
 #include <glowbase/ref_ptr.h>
 
-namespace glowbase
+namespace glow
 {
 
 class AbstractLogHandler;
@@ -80,7 +80,7 @@ public:
     // glow base objects
     //LogMessageBuilder & operator<<(const Version & version);
     template <typename T>
-    LogMessageBuilder & operator<<(const glowbase::ref_ptr<T> & ref_pointer);
+    LogMessageBuilder & operator<<(const ref_ptr<T> & ref_pointer);
 	
 	// pointers
 	template <typename T>

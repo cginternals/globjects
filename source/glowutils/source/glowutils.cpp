@@ -24,7 +24,7 @@ std::vector<std::string> getFiles(const std::string & dirName)
     dirent* entry;
     if (!dir)
     {
-        glowbase::warning() << "Could not open directory " << dirName << ".";
+        glow::warning() << "Could not open directory " << dirName << ".";
     }
     else
     {

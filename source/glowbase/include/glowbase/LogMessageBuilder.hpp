@@ -2,11 +2,11 @@
 
 #include <glowbase/LogMessageBuilder.h>
 
-namespace glowbase
+namespace glow
 {
 
 template <typename T>
-LogMessageBuilder& LogMessageBuilder::operator<<(const glowbase::ref_ptr<T> & ref_pointer)
+LogMessageBuilder& LogMessageBuilder::operator<<(const ref_ptr<T> & ref_pointer)
 {
     return *this << ref_pointer.get();
 }

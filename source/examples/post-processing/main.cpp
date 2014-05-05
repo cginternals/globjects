@@ -216,21 +216,21 @@ public:
 	}
 
 protected:
-    glowbase::ref_ptr<glow::Program> m_sphere;
-    glowbase::ref_ptr<glow::Program> m_phong;
+    glow::ref_ptr<glow::Program> m_sphere;
+    glow::ref_ptr<glow::Program> m_phong;
 
-    glowbase::ref_ptr<glowutils::Icosahedron> m_icosahedron;
-    glowbase::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
+    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
+    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 
-    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 
-    glowbase::ref_ptr<glow::FrameBufferObject> m_fbo;
-    glowbase::ref_ptr<glow::Texture> m_normal;
-    glowbase::ref_ptr<glow::Texture> m_geom;
-    glowbase::ref_ptr<glow::RenderBufferObject> m_depth;
+    glow::ref_ptr<glow::FrameBufferObject> m_fbo;
+    glow::ref_ptr<glow::Texture> m_normal;
+    glow::ref_ptr<glow::Texture> m_geom;
+    glow::ref_ptr<glow::RenderBufferObject> m_depth;
 
     glowutils::Camera m_camera;
-    glowbase::Timer m_time;
+    glow::Timer m_time;
 };
 
 
@@ -238,11 +238,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowbase::info() << "Usage:";
-    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
 	ContextFormat format;
     format.setVersion(3, 0);

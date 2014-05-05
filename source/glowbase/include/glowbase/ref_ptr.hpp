@@ -4,7 +4,7 @@
 
 #include <glowbase/Referenced.h>
 
-namespace glowbase
+namespace glow
 {
 
 template<typename T>

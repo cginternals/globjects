@@ -302,12 +302,12 @@ public:
 
 protected:
 
-    glowbase::ref_ptr<Program> m_sphere;
+    glow::ref_ptr<Program> m_sphere;
 
-    glowbase::ref_ptr<Icosahedron> m_icosahedron;
-    glowbase::ref_ptr<AdaptiveGrid> m_agrid;
+    glow::ref_ptr<Icosahedron> m_icosahedron;
+    glow::ref_ptr<AdaptiveGrid> m_agrid;
 
-    glowbase::Timer timer;
+    glow::Timer timer;
     Camera m_camera;
     float angle;
     CameraPath path;
@@ -325,18 +325,18 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowbase::info() << "Usage:";
-    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
     //glowbase::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
     //glowbase::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-    glowbase::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    glowbase::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-    glowbase::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
-    glowbase::info() << "\t" << "T" << "\t\t" << "Toggle camera path usage";
-    glowbase::info() << "\t" << "/" << "\t\t" << "Increase Icosahedron resolution";
-    glowbase::info() << "\t" << "]" << "\t\t" << "Decrease Icosahedron resolution";
+    glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    glow::info() << "\t" << "T" << "\t\t" << "Toggle camera path usage";
+    glow::info() << "\t" << "/" << "\t\t" << "Increase Icosahedron resolution";
+    glow::info() << "\t" << "]" << "\t\t" << "Decrease Icosahedron resolution";
 
     ContextFormat format;
     format.setVersion(3, 0);

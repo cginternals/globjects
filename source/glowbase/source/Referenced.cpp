@@ -1,6 +1,6 @@
 #include <glowbase/Referenced.h>
 
-namespace glowbase
+namespace glow
 {
 
 Referenced::Referenced()

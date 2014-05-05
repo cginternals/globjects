@@ -184,17 +184,17 @@ public:
         window.repaint();
     }
 protected:
-    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
-    glowbase::ref_ptr<glow::Buffer> m_buffer;
-    glowbase::ref_ptr<glow::Program> m_shaderProgram;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Buffer> m_buffer;
+    glow::ref_ptr<glow::Program> m_shaderProgram;
 };
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowbase::info() << "Usage:";
-    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);

@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-namespace glowbase
+namespace glow
 {
 
 int readInt(const char* str, int& number)

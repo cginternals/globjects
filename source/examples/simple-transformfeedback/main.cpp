@@ -130,18 +130,18 @@ public:
     }
 
 protected:
-    glowbase::ref_ptr<glow::Program> m_shaderProgram;
-    glowbase::ref_ptr<glow::Program> m_transformFeedbackProgram;
+    glow::ref_ptr<glow::Program> m_shaderProgram;
+    glow::ref_ptr<glow::Program> m_transformFeedbackProgram;
 	
-    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
 
-    glowbase::ref_ptr<glow::TransformFeedback> m_transformFeedback;
+    glow::ref_ptr<glow::TransformFeedback> m_transformFeedback;
 	
-    glowbase::ref_ptr<glow::Buffer> m_vertexBuffer1;
-    glowbase::ref_ptr<glow::Buffer> m_vertexBuffer2;
-    glowbase::ref_ptr<glow::Buffer> m_colorBuffer;
+    glow::ref_ptr<glow::Buffer> m_vertexBuffer1;
+    glow::ref_ptr<glow::Buffer> m_vertexBuffer2;
+    glow::ref_ptr<glow::Buffer> m_colorBuffer;
 
-    glowbase::Timer m_timer;
+    glow::Timer m_timer;
 };
 
 
@@ -149,11 +149,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowbase::info() << "Usage:";
-    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 0);

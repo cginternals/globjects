@@ -51,9 +51,9 @@ protected:
     Camera& m_camera;
     CameraPath m_path;
     std::vector<PathSection> m_sections;
-    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
-    glowbase::ref_ptr<glow::Program> m_program;
-    glowbase::ref_ptr<glow::Buffer> m_buffer;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Program> m_program;
+    glow::ref_ptr<glow::Buffer> m_buffer;
     int m_bufferSize;
 
     void prepare();

@@ -28,7 +28,7 @@ template<typename T> class Uniform;
  * \see Uniform
  * \see Program
  */
-class GLOW_API AbstractUniform : public glowbase::Referenced
+class GLOW_API AbstractUniform : public Referenced
 {
 	friend class Program; ///< Programs (de)register themselves.
 

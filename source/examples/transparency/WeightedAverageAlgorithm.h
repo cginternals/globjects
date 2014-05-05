@@ -36,16 +36,16 @@ public:
 
 private:
     // geometry pass
-    glowbase::ref_ptr<glow::Program> m_opaqueProgram;
-    glowbase::ref_ptr<glow::Program> m_accumulationProgram;
-    glowbase::ref_ptr<glow::Texture> m_opaqueBuffer;
-    glowbase::ref_ptr<glow::Texture> m_accumulationBuffer;
-    glowbase::ref_ptr<glow::RenderBufferObject> m_depthBuffer;
-    glowbase::ref_ptr<glow::FrameBufferObject> m_renderFbo;
-    glowbase::ref_ptr<glow::Buffer> m_depthComplexityBuffer;
+    glow::ref_ptr<glow::Program> m_opaqueProgram;
+    glow::ref_ptr<glow::Program> m_accumulationProgram;
+    glow::ref_ptr<glow::Texture> m_opaqueBuffer;
+    glow::ref_ptr<glow::Texture> m_accumulationBuffer;
+    glow::ref_ptr<glow::RenderBufferObject> m_depthBuffer;
+    glow::ref_ptr<glow::FrameBufferObject> m_renderFbo;
+    glow::ref_ptr<glow::Buffer> m_depthComplexityBuffer;
 
     // post processing pass
-    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
-    glowbase::ref_ptr<glow::FrameBufferObject> m_postFbo;
-    glowbase::ref_ptr<glow::Texture> m_colorBuffer;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glow::FrameBufferObject> m_postFbo;
+    glow::ref_ptr<glow::Texture> m_colorBuffer;
 };

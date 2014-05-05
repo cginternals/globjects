@@ -6,11 +6,11 @@
 
 namespace
 {
-    glowbase::LogMessage::Level l_verbosityLevel = glowbase::LogMessage::Info;
-    glowbase::AbstractLogHandler * l_logHandler = new glowbase::ConsoleLogger();
+    glow::LogMessage::Level l_verbosityLevel = glow::LogMessage::Info;
+    glow::AbstractLogHandler * l_logHandler = new glow::ConsoleLogger();
 }
 
-namespace glowbase
+namespace glow
 {
 
 LogMessageBuilder info(LogMessage::Level level)

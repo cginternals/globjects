@@ -13,7 +13,7 @@
 
 namespace glow {
 
-class GLOW_API NamedString : public glowbase::Referenced, protected glowbase::ChangeListener
+class GLOW_API NamedString : public Referenced, protected ChangeListener
 {
 public:
     static NamedString * create(const std::string & name, AbstractStringSource * string, GLenum type = GL_SHADER_INCLUDE_ARB);
@@ -30,10 +30,10 @@ public:
 
     GLint getParameter(GLenum pname);
 
-    virtual void notifyChanged(const glowbase::Changeable * changeable) override;
+    virtual void notifyChanged(const Changeable * changeable) override;
 protected:
     std::string m_name;
-    glowbase::ref_ptr<AbstractStringSource> m_source;
+    ref_ptr<AbstractStringSource> m_source;
     GLenum m_type;
 
     static bool hasNativeSupport();

@@ -4,7 +4,7 @@
 
 #include <glowbase/ChangeListener.h>
 
-namespace glowbase
+namespace glow
 {
 
 void Changeable::changed() const

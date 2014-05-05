@@ -5,7 +5,7 @@
 
 #include <glowbase/glowbase_api.h>
 
-namespace glowbase
+namespace glow
 {
 
 /** \brief Fast binary file to memory dump.

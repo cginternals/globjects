@@ -56,7 +56,7 @@ void File::reloadAll()
 
 void File::loadFileContent() const
 {
-    glowbase::RawFile<char> raw(m_filePath);
+    glow::RawFile<char> raw(m_filePath);
     if (raw.valid())
     {
         m_source = std::string(raw.data(), raw.size());

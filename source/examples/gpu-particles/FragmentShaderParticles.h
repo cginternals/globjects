@@ -37,20 +37,20 @@ public:
 
 protected:
     // Particle data
-    glowbase::ref_ptr<glow::Texture>                m_texPositions;
-    glowbase::ref_ptr<glow::Texture>                m_texVelocities;
+    glow::ref_ptr<glow::Texture>                m_texPositions;
+    glow::ref_ptr<glow::Texture>                m_texVelocities;
     int                                         m_width;
     int                                         m_height;
 
     // Update of particles
-    glowbase::ref_ptr<glow::FrameBufferObject>      m_fboUpdate;
-    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quadUpdate;
+    glow::ref_ptr<glow::FrameBufferObject>      m_fboUpdate;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quadUpdate;
 
     // Rendering
-    glowbase::ref_ptr<glow::VertexArrayObject>      m_vao;
-    glowbase::ref_ptr<glow::FrameBufferObject>      m_fbo;
-    glowbase::ref_ptr<glow::Texture>                m_colorBuffer;
-    glowbase::ref_ptr<glow::Program>                m_drawProgram;
-    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_clear;
-    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glow::VertexArrayObject>      m_vao;
+    glow::ref_ptr<glow::FrameBufferObject>      m_fbo;
+    glow::ref_ptr<glow::Texture>                m_colorBuffer;
+    glow::ref_ptr<glow::Program>                m_drawProgram;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_clear;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 };

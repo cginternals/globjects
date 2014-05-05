@@ -45,7 +45,7 @@ class Camera;
 
     \endcode
 */
-class GLOWUTILS_API AdaptiveGrid : public glowbase::Referenced
+class GLOWUTILS_API AdaptiveGrid : public glow::Referenced
 {
 public:
     AdaptiveGrid(
@@ -81,10 +81,10 @@ private:
     static const char * s_fsSource;
 
 private:
-    glowbase::ref_ptr<glow::Program> m_program;
+    glow::ref_ptr<glow::Program> m_program;
 
-    glowbase::ref_ptr<glow::VertexArrayObject> m_vao;
-    glowbase::ref_ptr<glow::Buffer> m_buffer;
+    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glow::ref_ptr<glow::Buffer> m_buffer;
 
     const Camera * m_camera;
 

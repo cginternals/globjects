@@ -68,7 +68,7 @@ void DebugMessageCallback::defaultAction(const DebugMessage & message) const
 
 void DebugMessageCallback::handleDebug(const DebugMessage & message) const
 {
-    glowbase::debug() << message.toString();
+    debug() << message.toString();
 }
 
 void DebugMessageCallback::handleError(const DebugMessage & message) const
@@ -76,7 +76,7 @@ void DebugMessageCallback::handleError(const DebugMessage & message) const
 #ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
     throw std::runtime_error(message.toString());
 #else
-    glowbase::fatal() << message.toString();
+    fatal() << message.toString();
 #endif
 }
 

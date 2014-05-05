@@ -25,7 +25,7 @@ class TimerEvent;
     The window's context is made current before calling any methods and done current afterwards.
 
 */
-class GLOWWINDOW_API WindowEventHandler : public glowbase::Referenced
+class GLOWWINDOW_API WindowEventHandler : public glow::Referenced
 {
 public:
     WindowEventHandler();

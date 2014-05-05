@@ -19,7 +19,7 @@ class Capability;
 
 namespace glowutils {
 
-class GLOWUTILS_API StackedState : public glow::AbstractState, public glowbase::Referenced
+class GLOWUTILS_API StackedState : public glow::AbstractState, public glow::Referenced
 {
 public:
     StackedState(glow::State * defaultState = nullptr);
@@ -38,7 +38,7 @@ public:
     virtual void add(glow::StateSetting * setting) override;
 protected:
     glow::State* m_currentState;
-    std::vector<glowbase::ref_ptr<glow::State>> m_stack;
+    std::vector<glow::ref_ptr<glow::State>> m_stack;
 
     void undoState(glow::State * state);
     glow::Capability * findCapability(GLenum capability);

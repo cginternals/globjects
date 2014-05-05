@@ -130,13 +130,13 @@ public:
     }
 
 protected:
-    glowbase::ref_ptr<glow::Program> m_sphere;
+    glow::ref_ptr<glow::Program> m_sphere;
 
-    glowbase::ref_ptr<glowutils::Icosahedron> m_icosahedron;
-    glowbase::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
+    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
+    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 
     glowutils::Camera m_camera;
-    glowbase::Timer m_time;
+    glow::Timer m_time;
 
     vec3 m_rand;
 };
@@ -146,11 +146,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowbase::info() << "Usage:";
-    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 0);

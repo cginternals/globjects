@@ -1,6 +1,6 @@
 #pragma once
 
-namespace glowbase
+namespace glow
 {
 
 class Referenced;

@@ -141,7 +141,7 @@ bool Window::create(const ContextFormat & format, int width, int height)
 
     if (!createContext(format, width, height))
     {
-        glowbase::fatal() << "Creating native window with OpenGL context failed.";
+        glow::fatal() << "Creating native window with OpenGL context failed.";
         return false;
     }
 

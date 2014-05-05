@@ -12,7 +12,7 @@
 namespace glow
 {
 
-class GLOW_API CompositeStringSource : public AbstractStringSource, protected glowbase::ChangeListener
+class GLOW_API CompositeStringSource : public AbstractStringSource, protected ChangeListener
 {
 public:
     CompositeStringSource();
@@ -27,10 +27,10 @@ public:
     virtual std::string shortInfo() const override;
 protected:
     virtual ~CompositeStringSource();
-    virtual void notifyChanged(const glowbase::Changeable * changeable) override;
+    virtual void notifyChanged(const Changeable * changeable) override;
     void update() const;
 protected:
-    std::vector<glowbase::ref_ptr<AbstractStringSource>> m_sources;
+    std::vector<ref_ptr<AbstractStringSource>> m_sources;
     mutable bool m_dirty;
     mutable std::vector<std::string> m_strings;
 };

@@ -29,7 +29,7 @@ protected:
 class GLOW_API StateSetting
 {
 public:
-    StateSetting(glowbase::AbstractFunctionCall * functionCall);
+    StateSetting(AbstractFunctionCall * functionCall);
     template <typename... Arguments>
     StateSetting(void (*function)(Arguments...), Arguments... arguments);
 
@@ -40,7 +40,7 @@ public:
     StateSettingType & type();
     const StateSettingType & type() const;
 protected:
-    glowbase::AbstractFunctionCall * m_functionCall;
+    AbstractFunctionCall * m_functionCall;
     StateSettingType m_type;
 };
 

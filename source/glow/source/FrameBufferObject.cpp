@@ -381,7 +381,7 @@ void FrameBufferObject::printStatus(bool onlyErrors) const
 
 	if (status == GL_FRAMEBUFFER_COMPLETE)
 	{
-        glowbase::info() << enumName(GL_FRAMEBUFFER_COMPLETE);
+        info() << enumName(GL_FRAMEBUFFER_COMPLETE);
 	}
 	else
 	{
@@ -389,7 +389,7 @@ void FrameBufferObject::printStatus(bool onlyErrors) const
 		ss.flags(std::ios::hex | std::ios::showbase);
 		ss << status;
 
-        glowbase::critical() << enumName(status) << " (" << ss.str() << ")";
+        critical() << enumName(status) << " (" << ss.str() << ")";
 	}
 }
 
@@ -409,7 +409,7 @@ std::vector<FrameBufferAttachment*> FrameBufferObject::attachments()
 {
 	std::vector<FrameBufferAttachment*> attachments;
 
-    for (std::pair<GLenum, glowbase::ref_ptr<FrameBufferAttachment>> pair: m_attachments)
+    for (std::pair<GLenum, ref_ptr<FrameBufferAttachment>> pair: m_attachments)
 	{
 		attachments.push_back(pair.second);
 	}

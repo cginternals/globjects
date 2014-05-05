@@ -33,7 +33,7 @@ void StackedState::push()
 
 void StackedState::pop()
 {
-    glowbase::ref_ptr<glow::State> oldState = m_stack.back();
+    glow::ref_ptr<glow::State> oldState = m_stack.back();
     m_stack.pop_back();
     m_currentState = m_stack.back();
 
@@ -54,7 +54,7 @@ void StackedState::undoState(glow::State * state)
         }
         else
         {
-            glowbase::warning() << "Could not undo capability " << glow::enumName(oldCap->capability()) << ".";
+            glow::warning() << "Could not undo capability " << glow::enumName(oldCap->capability()) << ".";
         }
     }
 
@@ -67,7 +67,7 @@ void StackedState::undoState(glow::State * state)
         }
         else
         {
-            glowbase::warning() << "Could not undo setting.";
+            glow::warning() << "Could not undo setting.";
         }
     }
 }

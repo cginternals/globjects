@@ -61,7 +61,7 @@ public:
 
         if (!glow::hasExtension(glow::Extension::GLOW_ARB_compute_shader))
         {
-            glowbase::critical() << "Compute shaders are not supported";
+            glow::critical() << "Compute shaders are not supported";
 
             window.close();
 
@@ -115,10 +115,10 @@ public:
     }
 
 protected:
-	glowbase::ref_ptr<glow::Texture> m_texture;
+	glow::ref_ptr<glow::Texture> m_texture;
 
-    glowbase::ref_ptr<glow::Program> m_computeProgram;
-    glowbase::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glow::ref_ptr<glow::Program> m_computeProgram;
+    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
 
     unsigned int m_frame;
 };
@@ -128,11 +128,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowbase::info() << "Usage:";
-    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 3);

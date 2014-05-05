@@ -20,7 +20,7 @@ public:
     virtual void setSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, const GLvoid * data) const override;
     virtual void setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLbitfield flags) const override;
 
-    virtual void copySubData(const glow::Buffer * buffer, glow::Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const override;
+    virtual void copySubData(const Buffer * buffer, Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const override;
 
     virtual void getParameter(const Buffer * buffer, GLenum pname, GLint * data) const override;
 

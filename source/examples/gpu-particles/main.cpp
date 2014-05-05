@@ -214,30 +214,30 @@ public:
         {
         case GLFW_KEY_C:
             if (m_techniques[ComputeShaderTechnique]) {
-                glowbase::debug() << "switch to compute shader technique";
+                glow::debug() << "switch to compute shader technique";
                 m_technique = ComputeShaderTechnique;
-            } else glowbase::debug() << "compute shader technique not available";
+            } else glow::debug() << "compute shader technique not available";
             break;
         case GLFW_KEY_T:
             if (m_techniques[TransformFeedbackTechnique]) {
-                glowbase::debug() << "switch to transform feedback technique";
+                glow::debug() << "switch to transform feedback technique";
                 m_technique = TransformFeedbackTechnique;
-            } else glowbase::debug() << "transform feedback technique not available";
+            } else glow::debug() << "transform feedback technique not available";
             break;
         case GLFW_KEY_F:
-            glowbase::debug() << "switch to fragment shader technique";
+            glow::debug() << "switch to fragment shader technique";
             m_technique = FragmentShaderTechnique;
             break;
 
         case GLFW_KEY_P:       
             if (m_timer.paused())
             {
-                glowbase::debug() << "timer continue";
+                glow::debug() << "timer continue";
                 m_timer.start();
             }
             else
             {
-                glowbase::debug() << "timer pause";
+                glow::debug() << "timer pause";
                 m_timer.pause();
             }
             break;
@@ -248,12 +248,12 @@ public:
 
         case GLFW_KEY_MINUS:
             m_steps = max(1, m_steps - 1);
-            glowbase::debug() << "steps = " << m_steps;
+            glow::debug() << "steps = " << m_steps;
             break;
 
         case GLFW_KEY_EQUAL: // bug? this is plus/add on my keyboard
             ++m_steps;
-            glowbase::debug() << "steps = " << m_steps;
+            glow::debug() << "steps = " << m_steps;
             break;
 
         case GLFW_KEY_F5:
@@ -337,7 +337,7 @@ protected:
     ParticleTechnique m_technique;
     std::map<ParticleTechnique, AbstractParticleTechnique *> m_techniques;
 
-    glowbase::Timer m_timer;
+    glow::Timer m_timer;
 
     int m_numParticles;
     glowutils::Camera * m_camera;
@@ -355,7 +355,7 @@ protected:
     };
     std::vector<Attribute> m_attributes;
 
-    glowbase::ref_ptr<glow::Texture> m_forces;
+    glow::ref_ptr<glow::Texture> m_forces;
 };
 
 
@@ -365,20 +365,20 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowbase::info() << "Usage:";
-    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "Left Mouse" << "\t" << "Rotate scene";
-    glowbase::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
-    glowbase::info() << "\t" << "-" << "\t\t" << "Reduce steps per frame";
-    glowbase::info() << "\t" << "=" << "\t\t" << "Increase steps per frame";
-    glowbase::info() << "\t" << "R" << "\t\t" << "Compute new forces";
-    glowbase::info() << "\t" << "Shift + R" << "\t" << "Compute new forces and reset particles";
-    glowbase::info() << "\t" << "P" << "\t\t" << "Toggle pause";
-    glowbase::info() << "\t" << "F" << "\t\t" << "Particle computation using fragment shader";
-    glowbase::info() << "\t" << "T" << "\t\t" << "Particle computation using transform feedback";
-    glowbase::info() << "\t" << "C" << "\t\t" << "Particle computation using compute shader";
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "Left Mouse" << "\t" << "Rotate scene";
+    glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    glow::info() << "\t" << "-" << "\t\t" << "Reduce steps per frame";
+    glow::info() << "\t" << "=" << "\t\t" << "Increase steps per frame";
+    glow::info() << "\t" << "R" << "\t\t" << "Compute new forces";
+    glow::info() << "\t" << "Shift + R" << "\t" << "Compute new forces and reset particles";
+    glow::info() << "\t" << "P" << "\t\t" << "Toggle pause";
+    glow::info() << "\t" << "F" << "\t\t" << "Particle computation using fragment shader";
+    glow::info() << "\t" << "T" << "\t\t" << "Particle computation using transform feedback";
+    glow::info() << "\t" << "C" << "\t\t" << "Particle computation using compute shader";
 
     ContextFormat format;
     format.setVersion(3, 3); // minimum required version is 3.3 due to particle drawing using geometry shader.

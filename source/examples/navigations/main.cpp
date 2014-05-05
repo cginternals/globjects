@@ -308,17 +308,17 @@ public:
 
 protected:
 
-    glowbase::ref_ptr<glow::Program> m_sphere;
+    glow::ref_ptr<glow::Program> m_sphere;
     
-    glowbase::ref_ptr<glowutils::Icosahedron> m_icosahedron;
-    glowbase::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
+    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
+    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 
     glowutils::Camera m_camera;
     glowutils::WorldInHandNavigation m_nav;
     glowutils::FlightNavigation m_flightNav;
     glm::ivec2 m_lastMousePos;
     bool m_flightEnabled;
-    glowbase::Timer m_timer;
+    glow::Timer m_timer;
 
     glowutils::AxisAlignedBoundingBox m_aabb;
 };
@@ -328,31 +328,31 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowbase::info() << "Usage:";
-    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glowbase::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    glowbase::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-    glowbase::info() << "\t" << "1" << "\t" << "Toggle flight mode / world in hand navigation";
+    glow::info() << "Usage:";
+    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glow::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    glow::info() << "\t" << "1" << "\t" << "Toggle flight mode / world in hand navigation";
 
-    glowbase::info();
-    glowbase::info() << "\t" << "During world in hand navigation";
-    glowbase::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    glowbase::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-    glowbase::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    glow::info();
+    glow::info() << "\t" << "During world in hand navigation";
+    glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
 
-    glowbase::info();
-    glowbase::info() << "\t" << "During flight mode";
-    glowbase::info() << "\t" << "Mouse Movement" << "\t" << "Look around";
-    glowbase::info() << "\t" << "W" << "\t\t" << "Move forward";
-    glowbase::info() << "\t" << "UP" << "\t\t" << "Move forward";
-    glowbase::info() << "\t" << "A" << "\t\t" << "Move left";
-    glowbase::info() << "\t" << "LEFT" << "\t\t" << "Move left";
-    glowbase::info() << "\t" << "S" << "\t\t" << "Move backward";
-    glowbase::info() << "\t" << "DOWN" << "\t\t" << "Move backward";
-    glowbase::info() << "\t" << "D" << "\t\t" << "Move right";
-    glowbase::info() << "\t" << "RIGHT" << "\t\t" << "Move right";
+    glow::info();
+    glow::info() << "\t" << "During flight mode";
+    glow::info() << "\t" << "Mouse Movement" << "\t" << "Look around";
+    glow::info() << "\t" << "W" << "\t\t" << "Move forward";
+    glow::info() << "\t" << "UP" << "\t\t" << "Move forward";
+    glow::info() << "\t" << "A" << "\t\t" << "Move left";
+    glow::info() << "\t" << "LEFT" << "\t\t" << "Move left";
+    glow::info() << "\t" << "S" << "\t\t" << "Move backward";
+    glow::info() << "\t" << "DOWN" << "\t\t" << "Move backward";
+    glow::info() << "\t" << "D" << "\t\t" << "Move right";
+    glow::info() << "\t" << "RIGHT" << "\t\t" << "Move right";
 
     ContextFormat format;
     format.setVersion(3, 0);

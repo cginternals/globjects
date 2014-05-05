@@ -109,7 +109,7 @@ std::vector<VertexAttributeBinding*> VertexArrayObject::bindings()
 {
 	std::vector<VertexAttributeBinding*> bindings;
 
-    for (std::pair<GLuint, glowbase::ref_ptr<VertexAttributeBinding>> pair: m_bindings)
+    for (std::pair<GLuint, ref_ptr<VertexAttributeBinding>> pair: m_bindings)
 	{
 		bindings.push_back(pair.second);
 	}
@@ -121,7 +121,7 @@ std::vector<const VertexAttributeBinding*> VertexArrayObject::bindings() const
 {
     std::vector<const VertexAttributeBinding*> bindings;
 
-    for (std::pair<GLuint, glowbase::ref_ptr<VertexAttributeBinding>> pair: m_bindings)
+    for (std::pair<GLuint, ref_ptr<VertexAttributeBinding>> pair: m_bindings)
     {
         bindings.push_back(pair.second);
     }

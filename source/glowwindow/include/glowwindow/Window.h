@@ -113,7 +113,7 @@ protected:
 protected:
     Context * m_context;
     GLFWwindow * m_window;
-    glowbase::ref_ptr<WindowEventHandler> m_eventHandler;
+    glow::ref_ptr<WindowEventHandler> m_eventHandler;
     std::queue<WindowEvent*> m_eventQueue;
     glm::ivec2 m_windowedModeSize;
     std::string m_title;

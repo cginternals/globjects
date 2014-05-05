@@ -16,7 +16,7 @@ namespace glow
 
 class Capability;
 
-class GLOW_API State : public AbstractState, public glowbase::Referenced
+class GLOW_API State : public AbstractState, public Referenced
 {
 public:
     enum Mode

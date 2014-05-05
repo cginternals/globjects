@@ -4,7 +4,7 @@
 
 #include <glowbase/HeapOnly.h>
 
-namespace glowbase
+namespace glow
 {
 
 /** \brief Superclass for all classes that use reference counting in glow.

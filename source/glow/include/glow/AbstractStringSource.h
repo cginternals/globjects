@@ -19,7 +19,7 @@ class CompositeStringSource;
  *
  * \see Shader
  */
-class GLOW_API AbstractStringSource : public glowbase::Referenced, public glowbase::Changeable
+class GLOW_API AbstractStringSource : public Referenced, public Changeable
 {
 public:
     virtual std::string string() const = 0;
