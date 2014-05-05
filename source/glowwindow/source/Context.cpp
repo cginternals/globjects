@@ -35,20 +35,20 @@ GLFWwindow * Context::window()
 
 void Context::handleError(int errorCode, const char* errorMessage)
 {
-    glow::fatal("GLFW error 0x%x;: %;", errorCode, errorMessage);
+    glowbase::fatal("GLFW error 0x%x;: %;", errorCode, errorMessage);
 }
 
 bool Context::create(const ContextFormat & format, const int width, const int height, GLFWmonitor * monitor)
 {
     if (isValid())
     {
-        warning() << "Context is already valid. Create was probably called before.";
+        glowbase::warning() << "Context is already valid. Create was probably called before.";
         return true;
     }
 
     if (!glfwInit())
     {
-        fatal() << "Could not initialize GLFW.";
+        glowbase::fatal() << "Could not initialize GLFW.";
         return false;
     }
 
@@ -62,7 +62,7 @@ bool Context::create(const ContextFormat & format, const int width, const int he
 
     if (!m_window)
     {
-        fatal() << "Context creation failed (GLFW).";
+        glowbase::fatal() << "Context creation failed (GLFW).";
         release();
         return false;
     }
@@ -71,7 +71,7 @@ bool Context::create(const ContextFormat & format, const int width, const int he
 
     if (!glow::init())
     {
-        fatal() << "GLOW/GLEW initialization failed.";
+        glowbase::fatal() << "GLOW/GLEW initialization failed.";
         release();
         return false;
     }
@@ -92,7 +92,7 @@ void Context::prepareFormat(const ContextFormat & format)
 
     if (!format.version().isNull() && format.version() != version)
     {
-        glow::warning() << "Changed unsupported OpenGL version from " << format.version() << " to " << version << ".";
+        glowbase::warning() << "Changed unsupported OpenGL version from " << format.version() << " to " << version << ".";
     }
     
     /*

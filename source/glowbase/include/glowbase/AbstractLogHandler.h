@@ -1,8 +1,8 @@
 #pragma once
 
-#include <glow/glow_api.h>
+#include <glowbase/glowbase_api.h>
 
-namespace glow 
+namespace glowbase
 {
 
 class LogMessage;
@@ -17,7 +17,7 @@ class LogMessage;
     \see setLoggingHandler
     \see logging.h
  */
-class GLOW_API AbstractLogHandler
+class GLOWBASE_API AbstractLogHandler
 {
 public:
 	virtual ~AbstractLogHandler() 

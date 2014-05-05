@@ -21,7 +21,7 @@ bool initializeGLEW(bool showWarnings)
     {
         if (showWarnings)
         {
-            glow::warning() << reinterpret_cast<const char*>(glewGetErrorString(result));
+            glowbase::warning() << reinterpret_cast<const char*>(glewGetErrorString(result));
         }
 
         return false;
@@ -45,7 +45,7 @@ bool init(bool showWarnings)
     {
         if (showWarnings)
         {
-            glow::warning() << "glow is already initialized";
+            glowbase::warning() << "glow is already initialized";
         }
 
         return true;

@@ -27,7 +27,7 @@ void UniformGroup::addUniform(AbstractUniform * uniform)
     const std::string name = uniform->name();
 
     if (m_uniforms.count(name) && m_uniforms.at(name).get() != uniform)
-        warning() << "Uniform with name " << name << " already exists on UniformGroup, overwrite it.";
+        glowbase::warning() << "Uniform with name " << name << " already exists on UniformGroup, overwrite it.";
 
     m_uniforms[name] = uniform;
 }

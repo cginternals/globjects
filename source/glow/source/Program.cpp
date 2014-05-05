@@ -184,7 +184,7 @@ bool Program::checkLinkStatus() const
 {
     if (GL_FALSE == get(GL_LINK_STATUS))
     {
-        critical()
+        glowbase::critical()
             << "Linker error:" << std::endl
             << infoLog();
         return false;

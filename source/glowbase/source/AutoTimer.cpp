@@ -47,7 +47,7 @@ AutoTimer::~AutoTimer()
     double delta = static_cast<double>(nanoDelta.count()) / pow(1000.0, unitPrecision);
 
     std::cout << m_info << " took " << std::setprecision(4) << delta << unit << " (timer_" << std::setfill('0') << std::setw(2) << m_index << ").";
-    //glow::debug() << m_info << " took "
+    //glowbase::debug() << m_info << " took "
     //    << std::setprecision(4) << delta << unit
     //    << " (timer_" << std::setfill('0') << std::setw(2) << m_index << ").";
     // TODO: reenable when moving logging to glowbase

@@ -76,7 +76,7 @@ public:
 
         if (!glow::hasExtension(glow::Extension::GLOW_NV_bindless_texture))
         {
-            glow::critical() << "Blindess textures are not supported";
+            glowbase::critical() << "Blindess textures are not supported";
 
             window.close();
 
@@ -241,15 +241,15 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    glow::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-    glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-    glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    glowbase::info() << "Usage:";
+    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glowbase::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glowbase::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    glowbase::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    glowbase::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    glowbase::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
 
     ContextFormat format;
     format.setVersion(3, 0);

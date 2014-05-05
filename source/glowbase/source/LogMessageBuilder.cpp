@@ -1,10 +1,11 @@
-#include <glow/LogMessageBuilder.h>
-#include <glow/AbstractLogHandler.h>
-#include <glow/Version.h>
+#include <glowbase/LogMessageBuilder.h>
+#include <glowbase/AbstractLogHandler.h>
+//#include <glowbase/Version.h>
 
 #include <cstring>
+#include <cassert>
 
-namespace glow 
+namespace glowbase
 {
 
 LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, AbstractLogHandler * handler)
@@ -143,11 +144,12 @@ LogMessageBuilder & LogMessageBuilder::operator<<(LogMessageBuilder::WidthManipu
 }
 #endif
 
+/*
 LogMessageBuilder & LogMessageBuilder::operator<<(const Version & version)
 {
     *this << "Version " << version.toString();
 
     return *this;
-}
+}*/
 
-} // namespace glow
+} // namespace glowbase

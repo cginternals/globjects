@@ -219,14 +219,14 @@ bool ContextFormat::verifyVersionAndProfile(const ContextFormat & requested, con
 
 	if (!sameProfiles)
 	{
-		warning() << "A context with a different profile as requested was created: "
+        glowbase::warning() << "A context with a different profile as requested was created: "
             << profileString(requested.profile()) << " requested, "
             << profileString(created.profile()) << " created.";
 	}
 
     if (requested.version() != created.version())
 	{
-		warning() << "A context with a different OpenGL Version as requested was created: "
+        glowbase::warning() << "A context with a different OpenGL Version as requested was created: "
             << requested.version() << " requested, "
             << created.version() << "  created.";
 
@@ -262,7 +262,7 @@ bool ContextFormat::verifyPixelFormat(
 
 	if (!sameSwapBehaviors)
 	{
-		warning() << "A context with a different swap behavior as requested was initialized: "
+        glowbase::warning() << "A context with a different swap behavior as requested was initialized: "
             << swapBehaviorString(requested.swapBehavior()) << " requested, "
             << swapBehaviorString(created.swapBehavior()) << " created.";
 	}
@@ -309,9 +309,9 @@ bool ContextFormat::verifyPixelFormat(
 	if (issues.empty())
 		return true;
 
-	warning() << "Initialized Pixelformat did not match the Requested One:";
+    glowbase::warning() << "Initialized Pixelformat did not match the Requested One:";
 	for(const std::string & issue : issues)
-		warning() << issue;
+        glowbase::warning() << issue;
 
 	return false;
 }

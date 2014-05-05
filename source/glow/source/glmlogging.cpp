@@ -2,70 +2,70 @@
 
 namespace glow {
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::vec2 & vector)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::vec2 & vector)
 {
     builder << "vec2(" << vector.x << ", " << vector.y << ")";
 
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::vec3 & vector)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::vec3 & vector)
 {
     builder << "vec3(" << vector.x << ", " << vector.y << ", " << vector.z << ")";
 
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::vec4 & vector)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::vec4 & vector)
 {
     builder << "vec4(" << vector.x << ", " << vector.y << ", " << vector.z << ", " << vector.w  << ")";
 
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::ivec2 & vector)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::ivec2 & vector)
 {
     builder << "ivec2(" << vector.x << ", " << vector.y << ")";
 
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::ivec3 & vector)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::ivec3 & vector)
 {
     builder << "ivec3(" << vector.x << ", " << vector.y << ", " << vector.z << ")";
 
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::ivec4 & vector)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::ivec4 & vector)
 {
     builder << "ivec4(" << vector.x << ", " << vector.y << ", " << vector.z << ", " << vector.w  << ")";
 
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::uvec2 & vector)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::uvec2 & vector)
 {
     builder << "uvec2(" << vector.x << ", " << vector.y << ")";
 
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::uvec3 & vector)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::uvec3 & vector)
 {
     builder << "uvec3(" << vector.x << ", " << vector.y << ", " << vector.z << ")";
 
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::uvec4 & vector)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::uvec4 & vector)
 {
     builder << "uvec4(" << vector.x << ", " << vector.y << ", " << vector.z << ", " << vector.w  << ")";
 
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::mat2 & matrix)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::mat2 & matrix)
 {
     builder
         << "mat2("
@@ -76,7 +76,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::mat2 & matrix
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::mat3 & matrix)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::mat3 & matrix)
 {
     builder
         << "mat3("
@@ -88,7 +88,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::mat3 & matrix
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::mat4 & matrix)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const glm::mat4 & matrix)
 {
     builder
         << "mat4("

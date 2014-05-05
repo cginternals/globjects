@@ -1,12 +1,12 @@
 #pragma once
 
-#include <glow/baselogging.h>
+#include <glowbase/baselogging.h>
 
 #include <cassert>
 
 #include <glowbase/formatString.h>
 
-namespace glow 
+namespace glowbase
 {
 
 template <typename... Arguments> void info(const char* format, Arguments... arguments)
@@ -44,4 +44,4 @@ template <typename... Arguments> void fatal(const char* format, Arguments... arg
     fatal() << glowbase::formatString(format, arguments...);
 }
 
-} // namespace glow
+} // namespace glowbase

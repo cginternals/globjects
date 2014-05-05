@@ -1,6 +1,6 @@
-#include <glow/LogMessage.h>
+#include <glowbase/LogMessage.h>
 
-namespace glow 
+namespace glowbase
 {
 
 LogMessage::LogMessage(Level level, const std::string& message)
@@ -19,4 +19,4 @@ const std::string& LogMessage::message() const
 	return m_message;
 }
 
-} // namespace glow
+} // namespace glowbase

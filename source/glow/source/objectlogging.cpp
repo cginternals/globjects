@@ -13,10 +13,11 @@
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/AbstractUniform.h>
+#include <glow/Version.h>
 
 namespace glow {
 
-void logObject(LogMessageBuilder & builder, const Object * object, const std::string & typeName)
+void logObject(glowbase::LogMessageBuilder & builder, const Object * object, const std::string & typeName)
 {
     builder << typeName << "(" << object->id();
     if (object->hasName())
@@ -25,80 +26,80 @@ void logObject(LogMessageBuilder & builder, const Object * object, const std::st
 }
 
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const Object * object)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Object * object)
 {
     logObject(builder, object, "Object");
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const Buffer * object)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Buffer * object)
 {
     logObject(builder, object, "Buffer");
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const FrameBufferObject * object)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const FrameBufferObject * object)
 {
     logObject(builder, object, "FrameBufferObject");
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const Program * object)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Program * object)
 {
     logObject(builder, object, "Program");
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const Query * object)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Query * object)
 {
     logObject(builder, object, "Query");
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const RenderBufferObject * object)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const RenderBufferObject * object)
 {
     logObject(builder, object, "RenderBufferObject");
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const Sampler * object)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Sampler * object)
 {
     logObject(builder, object, "Sampler");
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const Shader * object)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Shader * object)
 {
     logObject(builder, object, "Shader");
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const Texture * object)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Texture * object)
 {
     logObject(builder, object, "Texture");
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const TransformFeedback * object)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const TransformFeedback * object)
 {
     logObject(builder, object, "TransformFeedback");
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const VertexArrayObject * object)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const VertexArrayObject * object)
 {
     logObject(builder, object, "VertexArrayObject");
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const Sync * sync)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Sync * sync)
 {
     builder << "Sync(" << sync->sync() << ")";
 
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const AbstractUniform * uniform)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const AbstractUniform * uniform)
 {
     builder << "AbstractUniform" << "(";
     if (uniform->identity().isName())
@@ -106,6 +107,13 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const AbstractUniform * 
     else
         builder << uniform->identity().location();
     builder << ")";
+
+    return builder;
+}
+
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Version & version)
+{
+    builder << "Version " << version.toString();
 
     return builder;
 }

@@ -91,10 +91,10 @@ protected:
  */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glowbase::info() << "Usage:";
+    glowbase::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glowbase::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glowbase::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);
@@ -122,30 +122,30 @@ void EventHandler::createAndSetupTexture()
     // Get available page sizes
     int numPageSizes;
     glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_NUM_VIRTUAL_PAGE_SIZES_ARB, sizeof(int), &numPageSizes);
-    glow::info("GL_NUM_VIRTUAL_PAGE_SIZES_ARB = %d;", numPageSizes);
+    glowbase::info("GL_NUM_VIRTUAL_PAGE_SIZES_ARB = %d;", numPageSizes);
     if (numPageSizes == 0) {
-        glow::fatal("Sparse Texture not supported for GL_RGBA8");
+        glowbase::fatal("Sparse Texture not supported for GL_RGBA8");
         return;
     }
 
     std::vector<int> pageSizesX(numPageSizes);
     glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_X_ARB, static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesX.data());
     for (int i = 0; i < numPageSizes; ++i) {
-        glow::info("GL_VIRTUAL_PAGE_SIZE_X_ARB[%;] = %;", i, pageSizesX[i]);
+        glowbase::info("GL_VIRTUAL_PAGE_SIZE_X_ARB[%;] = %;", i, pageSizesX[i]);
     }
     CheckGLError();
 
     std::vector<int> pageSizesY(numPageSizes);
     glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Y_ARB, static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesY.data());
     for (int i = 0; i < numPageSizes; ++i) {
-        glow::info("GL_VIRTUAL_PAGE_SIZE_Y_ARB[%;] = %;", i, pageSizesY[i]);
+        glowbase::info("GL_VIRTUAL_PAGE_SIZE_Y_ARB[%;] = %;", i, pageSizesY[i]);
     }
     CheckGLError();
 
     std::vector<int> pageSizesZ(numPageSizes);
     glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Z_ARB, static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesZ.data());
     for (int i = 0; i < numPageSizes; ++i) {
-        glow::info("GL_VIRTUAL_PAGE_SIZE_Z_ARB[%;] = %;", i, pageSizesZ[i]);
+        glowbase::info("GL_VIRTUAL_PAGE_SIZE_Z_ARB[%;] = %;", i, pageSizesZ[i]);
     }
     CheckGLError();
 
@@ -156,7 +156,7 @@ void EventHandler::createAndSetupTexture()
     // Get maximum sparse texture size
     int maxSparseTextureSize;
     glGetIntegerv(GL_MAX_SPARSE_TEXTURE_SIZE_ARB, &maxSparseTextureSize);
-    glow::info("GL_MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
+    glowbase::info("GL_MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
     CheckGLError();
 
 	m_texture = new glow::Texture(GL_TEXTURE_2D);

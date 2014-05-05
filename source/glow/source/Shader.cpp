@@ -225,7 +225,7 @@ bool Shader::checkCompileStatus() const
 
     if (GL_FALSE == status)
     {
-        critical()
+        glowbase::critical()
             << "Compiler error:" << std::endl
             << shaderString() << std::endl
             << infoLog();

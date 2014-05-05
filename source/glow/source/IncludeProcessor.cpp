@@ -138,7 +138,7 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
 
                         if (include.size() == 0 || endsWith(include, '/'))
                         {
-                            glow::warning() << "Malformed #include " << include;
+                            glowbase::warning() << "Malformed #include " << include;
                         }
                         else
                         {
@@ -171,7 +171,7 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                                 }
                                 else
                                 {
-                                    glow::warning() << "Did not find include " << include;
+                                    glowbase::warning() << "Did not find include " << include;
                                 }
 
                                 destinationstream.str("");
@@ -180,7 +180,7 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                     }
                     else
                     {
-                        glow::warning() << "Malformed #include " << trimmedLine;
+                        glowbase::warning() << "Malformed #include " << trimmedLine;
                     }
                 }
                 else

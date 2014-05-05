@@ -135,7 +135,7 @@ void AxonometricLookAt::setZoom(float zoom)
 {
     if (zoom <= 0.f)
     {   
-        glow::warning() << "Axonometric Look At zoom was set to 0.f (" << zoom << ")";
+        glowbase::warning() << "Axonometric Look At zoom was set to 0.f (" << zoom << ")";
         zoom = 0.f;
     }
 

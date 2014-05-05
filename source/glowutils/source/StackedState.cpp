@@ -54,7 +54,7 @@ void StackedState::undoState(glow::State * state)
         }
         else
         {
-            glow::warning() << "Could not undo capability " << glow::enumName(oldCap->capability()) << ".";
+            glowbase::warning() << "Could not undo capability " << glow::enumName(oldCap->capability()) << ".";
         }
     }
 
@@ -67,7 +67,7 @@ void StackedState::undoState(glow::State * state)
         }
         else
         {
-            glow::warning() << "Could not undo setting.";
+            glowbase::warning() << "Could not undo setting.";
         }
     }
 }

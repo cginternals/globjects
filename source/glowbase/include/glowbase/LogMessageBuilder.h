@@ -7,11 +7,11 @@
 #include <memory>
 #include <iomanip>
 
-#include <glow/glow_api.h>
-#include <glow/LogMessage.h>
+#include <glowbase/glowbase_api.h>
+#include <glowbase/LogMessage.h>
 #include <glowbase/ref_ptr.h>
 
-namespace glow 
+namespace glowbase
 {
 
 class AbstractLogHandler;
@@ -41,7 +41,7 @@ class Version;
 	\see warning
     \see critical
 */
-class GLOW_API LogMessageBuilder
+class GLOWBASE_API LogMessageBuilder
 {
 public:
     // These types are unspecified by the C++ standard -> we need to query the compiler specific types
@@ -78,7 +78,7 @@ public:
 #endif
 	
     // glow base objects
-    LogMessageBuilder & operator<<(const Version & version);
+    //LogMessageBuilder & operator<<(const Version & version);
     template <typename T>
     LogMessageBuilder & operator<<(const glowbase::ref_ptr<T> & ref_pointer);
 	
@@ -99,4 +99,4 @@ protected:
 
 } // namespace glow
 
-#include <glow/LogMessageBuilder.hpp>
+#include <glowbase/LogMessageBuilder.hpp>

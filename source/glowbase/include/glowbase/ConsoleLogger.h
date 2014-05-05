@@ -1,10 +1,10 @@
 #pragma once
 
-#include <glow/glow_api.h>
-#include <glow/AbstractLogHandler.h>
-#include <glow/LogMessage.h>
+#include <glowbase/glowbase_api.h>
+#include <glowbase/AbstractLogHandler.h>
+#include <glowbase/LogMessage.h>
 
-namespace glow 
+namespace glowbase
 {
 
 /** \brief Writes LogMessages to stdout.
@@ -14,7 +14,7 @@ namespace glow
 	\see setLoggingHandler
 	\see logging.h
 */
-class GLOW_API ConsoleLogger : public AbstractLogHandler
+class GLOWBASE_API ConsoleLogger : public AbstractLogHandler
 {
 public:
     virtual void handle(const LogMessage & message) override;

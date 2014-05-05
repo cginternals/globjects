@@ -1,10 +1,10 @@
-#include <glow/ConsoleLogger.h>
+#include <glowbase/ConsoleLogger.h>
 
 #include <iostream>
 
-#include <glow/LogMessage.h>
+#include <glowbase/LogMessage.h>
 
-namespace glow 
+namespace glowbase
 {
 
 void ConsoleLogger::handle(const LogMessage& message)
@@ -30,4 +30,4 @@ std::string ConsoleLogger::levelString(LogMessage::Level level)
 	}
 }
 
-} // namespace glow
+} // namespace glowbase

@@ -4,7 +4,8 @@
 
 #include <cassert>
 
-#include <glow/baselogging.h>
+#include <glowbase/baselogging.h>
+
 #include <glow/Uniform.h>
 #include <glow/Error.h>
 #include <glow/Shader.h>
@@ -18,7 +19,7 @@ void Program::setUniformByIdentity(const LocationIdentity & identity, const T & 
     Uniform<T> * uniform = getUniformByIdentity<T>(identity);
     if (!uniform)
     {
-        warning() << "Uniform type mismatch on set uniform. Uniform will be replaced.";
+        glowbase::warning() << "Uniform type mismatch on set uniform. Uniform will be replaced.";
 
         addUniform(identity.isName() ? new Uniform<T>(identity.name(), value) : new Uniform<T>(identity.location(), value));
         return;

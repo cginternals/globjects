@@ -381,7 +381,7 @@ void FrameBufferObject::printStatus(bool onlyErrors) const
 
 	if (status == GL_FRAMEBUFFER_COMPLETE)
 	{
-        info() << enumName(GL_FRAMEBUFFER_COMPLETE);
+        glowbase::info() << enumName(GL_FRAMEBUFFER_COMPLETE);
 	}
 	else
 	{
@@ -389,7 +389,7 @@ void FrameBufferObject::printStatus(bool onlyErrors) const
 		ss.flags(std::ios::hex | std::ios::showbase);
 		ss << status;
 
-        critical() << enumName(status) << " (" << ss.str() << ")";
+        glowbase::critical() << enumName(status) << " (" << ss.str() << ")";
 	}
 }
 

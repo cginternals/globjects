@@ -1,10 +1,10 @@
 #pragma once
 
-#include <glow/glow_api.h>
-#include <glow/AbstractLogHandler.h>
-#include <glow/LogMessageBuilder.h>
+#include <glowbase/glowbase_api.h>
+#include <glowbase/AbstractLogHandler.h>
+#include <glowbase/LogMessageBuilder.h>
 
-namespace glow
+namespace glowbase
 {
 
 /**
@@ -16,17 +16,17 @@ namespace glow
   * info() << "Message: " << 3.14;
   * \endcode
   */
-GLOW_API LogMessageBuilder info(LogMessage::Level level = LogMessage::Info);
-GLOW_API LogMessageBuilder debug();
-GLOW_API LogMessageBuilder warning();
-GLOW_API LogMessageBuilder critical();
-GLOW_API LogMessageBuilder fatal();
+GLOWBASE_API LogMessageBuilder info(LogMessage::Level level = LogMessage::Info);
+GLOWBASE_API LogMessageBuilder debug();
+GLOWBASE_API LogMessageBuilder warning();
+GLOWBASE_API LogMessageBuilder critical();
+GLOWBASE_API LogMessageBuilder fatal();
 
-GLOW_API void setLoggingHandler(AbstractLogHandler * handler);
-GLOW_API AbstractLogHandler * loggingHandler();
+GLOWBASE_API void setLoggingHandler(AbstractLogHandler * handler);
+GLOWBASE_API AbstractLogHandler * loggingHandler();
 
-GLOW_API void setVerbosityLevel(LogMessage::Level verbosity);
-GLOW_API LogMessage::Level verbosityLevel();
+GLOWBASE_API void setVerbosityLevel(LogMessage::Level verbosity);
+GLOWBASE_API LogMessage::Level verbosityLevel();
 
 /**
  * Uses formatString to write on the usual logging streams.
@@ -68,4 +68,4 @@ void fatal(const char* format, Arguments... arguments);
 
 } // namespace glow
 
-#include <glow/baselogging.hpp>
+#include <glowbase/baselogging.hpp>

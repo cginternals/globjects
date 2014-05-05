@@ -70,11 +70,9 @@ set(sources
 	${source_path}/AbstractState.cpp
 	${source_path}/AbstractStringSource.cpp
 	${source_path}/AbstractUniform.cpp
-	${source_path}/baselogging.cpp
 	${source_path}/Buffer.cpp
 	${source_path}/Capability.cpp
 	${source_path}/CompositeStringSource.cpp
-	${source_path}/ConsoleLogger.cpp
 	${source_path}/constants.cpp
 	${source_path}/container_helpers.hpp
 	${source_path}/DebugInfo.cpp
@@ -109,8 +107,6 @@ set(sources
 	${source_path}/IncludeProcessor.cpp
 	${source_path}/IncludeProcessor.h
 	${source_path}/LocationIdentity.cpp
-	${source_path}/LogMessageBuilder.cpp
-	${source_path}/LogMessage.cpp
 	${source_path}/memory.cpp
 	${source_path}/NamedString.cpp
 	${source_path}/Object.cpp
@@ -153,19 +149,15 @@ set(sources
 )
 
 set(api_includes
-	${include_path}/AbstractLogHandler.h
 	${include_path}/AbstractState.h
 	${include_path}/AbstractState.hpp
 	${include_path}/AbstractStringSource.h
 	${include_path}/AbstractUniform.h
 	${include_path}/AbstractUniform.hpp
-	${include_path}/baselogging.h
-	${include_path}/baselogging.hpp
 	${include_path}/Buffer.h
 	${include_path}/Buffer.hpp
 	${include_path}/Capability.h
 	${include_path}/CompositeStringSource.h
-	${include_path}/ConsoleLogger.h
 	${include_path}/constants.h
 	${include_path}/DebugInfo.h
 	${include_path}/DebugMessage.h
@@ -180,9 +172,6 @@ set(api_includes
 	${include_path}/glow.hpp
 	${include_path}/LocationIdentity.h
 	${include_path}/logging.h
-	${include_path}/LogMessageBuilder.h
-	${include_path}/LogMessageBuilder.hpp
-	${include_path}/LogMessage.h
 	${include_path}/memory.h
 	${include_path}/NamedString.h
 	${include_path}/Object.h

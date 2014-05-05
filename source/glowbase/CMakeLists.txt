@@ -45,20 +45,28 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
 	${source_path}/AutoTimer.cpp
+	${source_path}/baselogging.cpp
 	${source_path}/Changeable.cpp
 	${source_path}/ChangeListener.cpp
+	${source_path}/ConsoleLogger.cpp
 	${source_path}/formatString.cpp
 	${source_path}/HeapOnly.cpp
+	${source_path}/LogMessageBuilder.cpp
+	${source_path}/LogMessage.cpp
 	${source_path}/Referenced.cpp
 	${source_path}/Timer.cpp
 )
 
 set(api_includes
+	${include_path}/AbstractLogHandler.h
 	${include_path}/AutoTimer.h
+	${include_path}/baselogging.h
+	${include_path}/baselogging.hpp
 	${include_path}/CachedValue.h
 	${include_path}/CachedValue.hpp
 	${include_path}/Changeable.h
 	${include_path}/ChangeListener.h
+	${include_path}/ConsoleLogger.h
 	${include_path}/container_helpers.hpp
 	${include_path}/formatString.h
 	${include_path}/formatString.hpp
@@ -66,6 +74,9 @@ set(api_includes
 	${include_path}/FunctionCall.hpp
 	${include_path}/glowbase_api.h
 	${include_path}/HeapOnly.h
+	${include_path}/LogMessageBuilder.h
+	${include_path}/LogMessageBuilder.hpp
+	${include_path}/LogMessage.h
 	${include_path}/RawFile.h
 	${include_path}/RawFile.hpp
 	${include_path}/Referenced.h

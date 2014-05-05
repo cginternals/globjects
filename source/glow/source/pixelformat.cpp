@@ -117,7 +117,7 @@ int imageSizeInBytes(int width, int height, GLenum format, GLenum type)
     if (type == GL_BITMAP)
     {
         // handle differently?
-        glow::warning() << "imageSizeInBytes: GL_BITMAP not implemented yet";
+        glowbase::warning() << "imageSizeInBytes: GL_BITMAP not implemented yet";
         return -1;
     }
 

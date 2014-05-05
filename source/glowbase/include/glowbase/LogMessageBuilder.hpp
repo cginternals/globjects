@@ -1,10 +1,8 @@
 #pragma once
 
-#include <glow/LogMessageBuilder.h>
+#include <glowbase/LogMessageBuilder.h>
 
-#include <cassert>
-
-namespace glow
+namespace glowbase
 {
 
 template <typename T>
@@ -49,4 +47,4 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const std::array<T, Count> & ar
     return *this;
 }
 
-} // namespace glow
+} // namespace glowbase

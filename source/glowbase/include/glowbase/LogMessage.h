@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include <glow/glow_api.h>
+#include <glowbase/glowbase_api.h>
 
-namespace glow 
+namespace glowbase
 {
 
 /** \brief Encapsulates a simple log message and its severity level.
@@ -15,7 +15,7 @@ namespace glow
 	\see logging.h
 	\see AbstractLogHandler
 */
-class GLOW_API LogMessage
+class GLOWBASE_API LogMessage
 {
 public:
 	enum Level
@@ -37,4 +37,4 @@ protected:
 	std::string m_message;
 };
 
-} // namespace glow
+} // namespace glowbase

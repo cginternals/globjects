@@ -7,7 +7,7 @@
 namespace glow {
 
 template <typename T>
-LogMessageBuilder operator<<(LogMessageBuilder builder, const Uniform<T> * uniform)
+glowbase::LogMessageBuilder operator<<(glowbase::LogMessageBuilder builder, const Uniform<T> * uniform)
 {
     builder << "Uniform" << "(";
     if (uniform->identity().isName())
