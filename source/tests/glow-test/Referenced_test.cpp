@@ -2,7 +2,7 @@
 #include <gmock/gmock.h>
 
 
-#include <glow/Referenced.h>
+#include <glowbase/Referenced.h>
 
 class Referenced_test : public testing::Test
 {

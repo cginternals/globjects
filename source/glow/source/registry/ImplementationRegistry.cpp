@@ -5,6 +5,7 @@
 #include "../implementations/AbstractUniformImplementation.h"
 #include "../implementations/AbstractBufferImplementation.h"
 #include "../implementations/AbstractFrameBufferImplementation.h"
+#include "../implementations/AbstractDebugImplementation.h"
 
 namespace glow {
 
@@ -12,6 +13,7 @@ ImplementationRegistry::ImplementationRegistry()
 : m_uniformImplementation(nullptr)
 , m_bufferImplementation(nullptr)
 , m_frameBufferImplementation(nullptr)
+, m_debugImplementation(nullptr)
 {
 }
 
@@ -55,6 +57,16 @@ AbstractFrameBufferImplementation & ImplementationRegistry::frameBufferImplement
     }
 
     return *m_frameBufferImplementation;
+}
+
+AbstractDebugImplementation & ImplementationRegistry::debugImplementation()
+{
+    if (!m_debugImplementation)
+    {
+        m_debugImplementation = AbstractDebugImplementation::create();
+    }
+
+    return *m_debugImplementation;
 }
 
 } // namespace glow

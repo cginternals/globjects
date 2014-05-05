@@ -30,8 +30,6 @@ public:
 	bool isError() const;
     operator bool() const;
 
-    static const char * errorString(GLenum errorCode);
-
     static void check(const char * file, int line);
 protected:
 	GLenum m_errorCode;
