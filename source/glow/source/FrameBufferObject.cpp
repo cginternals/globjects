@@ -171,27 +171,33 @@ bool FrameBufferObject::detach(GLenum attachment)
     return true;
 }
 
-void FrameBufferObject::setReadBuffer(GLenum mode)
+void FrameBufferObject::setReadBuffer(GLenum mode) const
 {
+    bind(GL_FRAMEBUFFER);
+
 	glReadBuffer(mode);
 	CheckGLError();
 }
 
-void FrameBufferObject::setDrawBuffer(GLenum mode)
+void FrameBufferObject::setDrawBuffer(GLenum mode) const
 {
+    bind(GL_FRAMEBUFFER);
+
 	glDrawBuffer(mode);
 	CheckGLError();
 }
 
-void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum * modes)
+void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum * modes) const
 {
     assert(modes != nullptr || n == 0);
+
+    bind(GL_FRAMEBUFFER);
 
 	glDrawBuffers(n, modes);
 	CheckGLError();
 }
 
-void FrameBufferObject::setDrawBuffers(const std::vector<GLenum> & modes)
+void FrameBufferObject::setDrawBuffers(const std::vector<GLenum> & modes) const
 {
     setDrawBuffers(static_cast<int>(modes.size()), modes.data());
 }

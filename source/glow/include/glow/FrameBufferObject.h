@@ -65,10 +65,10 @@ public:
 
     bool detach(GLenum attachment);
 
-    static void setReadBuffer(GLenum mode);
-    static void setDrawBuffer(GLenum mode);
-    static void setDrawBuffers(GLsizei n, const GLenum * modes);
-    static void setDrawBuffers(const std::vector<GLenum> & modes);
+    void setReadBuffer(GLenum mode) const;
+    void setDrawBuffer(GLenum mode) const;
+    void setDrawBuffers(GLsizei n, const GLenum * modes) const;
+    void setDrawBuffers(const std::vector<GLenum> & modes) const;
 
     void clear(GLbitfield mask);
 
