@@ -8,6 +8,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <glowbase/ref_ptr.h>
+#include <glowbase/formatString.h>
+
+#include <glow/glow.h>
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -17,12 +21,11 @@
 #include <glow/FrameBufferObject.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Sampler.h>
+#include <glow/Sync.h>
 #include <glow/Texture.h>
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/logging.h>
-#include <glow/ref_ptr.h>
-#include <glow/formatString.h>
 #include <glow/debugmessageoutput.h>
 
 #include <glowwindow/ContextFormat.h>
@@ -80,7 +83,7 @@ public:
         std::cout << "glow::Uniform = "; glow::info() << uniform.get();
         std::cout << "glow::AbstractUniform = "; glow::info() << static_cast<glow::AbstractUniform*>(uniform.get());
 
-        std::cout << "glow::Version = "; glow::info() << glow::Version::current();
+        std::cout << "glow::Version = "; glow::info() << glow::version();
 
         std::vector<glow::Buffer*> buffers{new glow::Buffer(), new glow::Buffer()};
         std::cout << "std::vector<glow::Buffer*> = "; glow::info() << buffers;

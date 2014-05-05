@@ -7,10 +7,11 @@
 
 #include <glow/glow_api.h>
 
+#include <glowbase/Changeable.h>
+#include <glowbase/ChangeListener.h>
+#include <glowbase/ref_ptr.h>
+
 #include <glow/Object.h>
-#include <glow/Changeable.h>
-#include <glow/ChangeListener.h>
-#include <glow/ref_ptr.h>
 
 // http://www.opengl.org/wiki/Shader
 

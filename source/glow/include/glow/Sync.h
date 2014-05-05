@@ -2,8 +2,9 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/Referenced.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
 
 namespace glow
 {
@@ -20,6 +21,8 @@ public:
 
     void get(GLenum pname, GLsizei bufsize, GLsizei * length, GLint * values);
     GLint get(GLenum pname);
+
+    GLsync sync() const;
 protected:
     GLsync m_sync;
 

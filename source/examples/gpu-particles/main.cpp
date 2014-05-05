@@ -11,18 +11,20 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/random.hpp>
 
+#include <glow/glow.h>
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/Texture.h>
 #include <glow/NamedString.h>
 #include <glow/debugmessageoutput.h>
+#include <glow/Extension.h>
 
+#include <glowutils/Timer.h>
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
 #include <glowutils/File.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
-#include <glowutils/Timer.h>
 
 #include <glowwindow/Context.h>
 #include <glowwindow/ContextFormat.h>
@@ -112,12 +114,11 @@ public:
         
         // initialize techniques
 
-        // TODO: Implement a better way to check if a feature is supported
-        if (GLEW_ARB_compute_shader) {
+        if (glow::hasExtension(glow::GLOW_ARB_compute_shader)) {
             m_techniques[ComputeShaderTechnique] = new ComputeShaderParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         }
-        if (GLEW_ARB_transform_feedback3) {
+        if (glow::hasExtension(glow::GLOW_ARB_transform_feedback3)) {
             m_techniques[TransformFeedbackTechnique] = new TransformFeedbackParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         }

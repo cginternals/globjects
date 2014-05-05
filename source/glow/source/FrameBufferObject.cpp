@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include <glow/logging.h>
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
@@ -407,7 +409,7 @@ std::vector<FrameBufferAttachment*> FrameBufferObject::attachments()
 {
 	std::vector<FrameBufferAttachment*> attachments;
 
-	for (std::pair<GLenum, ref_ptr<FrameBufferAttachment>> pair: m_attachments)
+    for (std::pair<GLenum, ref_ptr<FrameBufferAttachment>> pair: m_attachments)
 	{
 		attachments.push_back(pair.second);
 	}

@@ -4,7 +4,6 @@
 #include <unordered_map>
 
 #include <glow/NamedString.h>
-#include <glow/ref_ptr.h>
 
 namespace glow {
 

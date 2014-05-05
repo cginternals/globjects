@@ -3,9 +3,10 @@
 #include <string>
 #include <vector>
 
+#include <glowbase/Referenced.h>
+#include <glowbase/Changeable.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
-#include <glow/Changeable.h>
 
 namespace glow
 {

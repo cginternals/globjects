@@ -3,10 +3,11 @@
 #include <string>
 #include <vector>
 
+#include <glowbase/ref_ptr.h>
+#include <glowbase/ChangeListener.h>
+
 #include <glow/glow_api.h>
-#include <glow/ref_ptr.h>
 #include <glow/AbstractStringSource.h>
-#include <glow/ChangeListener.h>
 
 namespace glow
 {

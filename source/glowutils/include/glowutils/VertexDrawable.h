@@ -6,13 +6,15 @@
 #include <array>
 #include <string>
 
-#include <glowutils/glowutils_api.h>
 
-#include <glow/ref_ptr.h>
-#include <glow/Referenced.h>
+#include <glowbase/ref_ptr.h>
+#include <glowbase/Referenced.h>
+
 #include <glow/VertexArrayObject.h>
 #include <glow/Buffer.h>
 #include <glow/Program.h>
+
+#include <glowutils/glowutils_api.h>
 
 namespace glowutils
 {

@@ -1,8 +1,9 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/ref_ptr.h>
+
 #include <glow/Error.h>
-#include <glow/ref_ptr.h>
 #include <glow/Buffer.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>

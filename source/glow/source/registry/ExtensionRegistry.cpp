@@ -17,17 +17,17 @@ ExtensionRegistry & ExtensionRegistry::current()
 }
 
 
-std::set<glow::Extension>::iterator ExtensionRegistry::begin()
+std::set<Extension>::iterator ExtensionRegistry::begin()
 {
     return availableExtensions().begin();
 }
 
-std::set<glow::Extension>::iterator ExtensionRegistry::end()
+std::set<Extension>::iterator ExtensionRegistry::end()
 {
     return availableExtensions().end();
 }
 
-const std::set<glow::Extension> & ExtensionRegistry::availableExtensions()
+const std::set<Extension> & ExtensionRegistry::availableExtensions()
 {
     initialize();
     return m_availableExtensions;
@@ -77,7 +77,7 @@ bool ExtensionRegistry::hasExtension(const std::string & extensionName)
 
     Extension extension = extensionFromString(extensionName);
 
-    if (extension != glow::GLOW_Unknown_Extension)
+    if (extension != GLOW_Unknown_Extension)
     {
         return hasExtension(extension);
     }
@@ -99,7 +99,7 @@ bool ExtensionRegistry::isInCoreProfile(Extension extension, const Version & ver
 
 bool ExtensionRegistry::isInCoreProfile(Extension extension)
 {
-    return isInCoreProfile(extension, Version::current());
+    return isInCoreProfile(extension, glow::version());
 }
 
 } // namespace glow
