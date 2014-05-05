@@ -4,19 +4,10 @@
 #include <tuple>
 
 #include <glowbase/glowbase_api.h>
+#include <glowbase/AbstractFunctionCall.h>
 
 namespace glow
 {
-
-class GLOWBASE_API AbstractFunctionCall
-{
-public:
-    virtual void operator()() = 0;
-    virtual void * identifier() const = 0;
-
-    virtual ~AbstractFunctionCall() {}
-};
-
 
 template <typename... Arguments>
 class FunctionCall : public AbstractFunctionCall
@@ -29,6 +20,7 @@ public:
 
     virtual void operator()() override;
     virtual void * identifier() const override;
+
 protected:
     mutable FunctionPointer m_functionPointer;
     std::function<void(Arguments...)> m_function;

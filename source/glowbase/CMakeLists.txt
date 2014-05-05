@@ -44,6 +44,7 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
+	${source_path}/AbstractFunctionCall.cpp
 	${source_path}/baselogging.cpp
 	${source_path}/Changeable.cpp
 	${source_path}/ChangeListener.cpp
@@ -57,6 +58,7 @@ set(sources
 )
 
 set(api_includes
+	${include_path}/AbstractFunctionCall.h
 	${include_path}/AbstractLogHandler.h
 	${include_path}/baselogging.h
 	${include_path}/baselogging.hpp
