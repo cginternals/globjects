@@ -3,7 +3,7 @@
 #include <cassert>
 #include <sstream>
 
-#include <glow/logging.h>
+#include <glowbase/baselogging.h>
 
 using namespace glow;
 

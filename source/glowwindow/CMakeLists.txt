@@ -30,7 +30,6 @@ include_directories(
     ${GENERATED_HEADER_PATH}
     ${CMAKE_SOURCE_DIR}/source/glowbase/include
     ${CMAKE_SOURCE_DIR}/source/glow/include
-    ${CMAKE_SOURCE_DIR}/source/glowutils/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -44,7 +43,6 @@ set(libs
     ${GLFW_LIBRARY}
     glowbase
     glow
-    glowutils
 )
 
 #

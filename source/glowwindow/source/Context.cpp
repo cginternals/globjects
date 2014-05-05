@@ -4,9 +4,8 @@
 
 #include <GL/glew.h>
 
-#include <glow/logging.h>
+#include <glowbase/baselogging.h>
 #include <glow/glow.h>
-#include <glow/Error.h>
 
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
