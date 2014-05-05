@@ -105,6 +105,11 @@ bool Buffer::unmap() const
     return implementation().unmap(this);
 }
 
+void Buffer::flushMappedRange(GLintptr offset, GLsizeiptr length)
+{
+    implementation().flushMappedRange(this, offset, length);
+}
+
 void Buffer::setData(GLsizeiptr size, const GLvoid * data, GLenum usage)
 {
     implementation().setData(this, size, data, usage);

@@ -96,4 +96,12 @@ void LegacyBufferImplementation::clearSubData(const Buffer * buffer, GLenum inte
     CheckGLError();
 }
 
+void LegacyBufferImplementation::flushMappedRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length) const
+{
+    buffer->bind(s_workingTarget);
+
+    glFlushMappedBufferRange(s_workingTarget, offset, length);
+    CheckGLError();
+}
+
 } // namespace glow

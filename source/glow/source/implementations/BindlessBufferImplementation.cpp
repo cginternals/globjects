@@ -70,4 +70,10 @@ void BindlessBufferImplementation::clearSubData(const Buffer * buffer, GLenum in
     CheckGLError();
 }
 
+void BindlessBufferImplementation::flushMappedRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length) const
+{
+    glFlushMappedNamedBufferRangeEXT(buffer->id(), offset, length);
+    CheckGLError();
+}
+
 } // namespace glow
