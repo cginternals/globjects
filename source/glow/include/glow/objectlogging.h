@@ -41,6 +41,8 @@ GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const AbstractU
 
 template <typename T>
 LogMessageBuilder operator<<(LogMessageBuilder builder, const Uniform<T> * uniform);
+template <typename T>
+LogMessageBuilder operator<<(LogMessageBuilder builder, Uniform<T> * uniform);
 
 } // namespace glow
 
