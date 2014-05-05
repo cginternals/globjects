@@ -20,4 +20,10 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const Uniform<T> * unifo
     return builder;
 }
 
+template <typename T>
+LogMessageBuilder operator<<(LogMessageBuilder builder, Uniform<T> * uniform)
+{
+	return operator<<(builder, const_cast<const Uniform<T>*>(uniform));
+}
+
 } // namespace glow
