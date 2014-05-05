@@ -141,19 +141,19 @@ void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr 
     CheckGLError();
 }
 
-void Buffer::copySubData(glow::Buffer * buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
+void Buffer::copySubData(Buffer * buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
 {
     assert(buffer != nullptr);
 
     implementation().copySubData(this, buffer, readOffset, writeOffset, size);
 }
 
-void Buffer::copySubData(glow::Buffer * buffer, GLsizeiptr size) const
+void Buffer::copySubData(Buffer * buffer, GLsizeiptr size) const
 {
 	copySubData(buffer, 0, 0, size);
 }
 
-void Buffer::copyData(glow::Buffer * buffer, GLsizeiptr size, GLenum usage) const
+void Buffer::copyData(Buffer * buffer, GLsizeiptr size, GLenum usage) const
 {
     assert(buffer != nullptr);
 

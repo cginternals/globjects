@@ -11,6 +11,7 @@ add_subdirectory(codegeneration)
 # Libraries
 set(IDE_FOLDER "")
 add_subdirectory(glow)
+add_subdirectory(glowbase)
 add_subdirectory(glowutils)
 add_subdirectory(glowwindow)
 

@@ -32,7 +32,7 @@ void NamedStringRegistry::registerNamedString(NamedString * namedString)
 {
     if (hasNamedString(namedString->name()))
     {
-        glow::warning() << "Registering NamedString with existing name " << namedString->name();
+        warning() << "Registering NamedString with existing name " << namedString->name();
     }
 
     m_namedStrings[namedString->name()] = namedString;

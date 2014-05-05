@@ -17,10 +17,10 @@ public:
     ExtensionRegistry();
     static ExtensionRegistry & current();
 
-    std::set<glow::Extension>::iterator begin();
-    std::set<glow::Extension>::iterator end();
+    std::set<Extension>::iterator begin();
+    std::set<Extension>::iterator end();
 
-    const std::set<glow::Extension> & availableExtensions();
+    const std::set<Extension> & availableExtensions();
     const std::set<std::string> & unknownAvailableExtensions();
 
     bool hasExtension(Extension extension);
@@ -29,7 +29,7 @@ public:
     bool isInCoreProfile(Extension extension, const Version & version);
 protected:
     bool m_initialized;
-    std::set<glow::Extension> m_availableExtensions;
+    std::set<Extension> m_availableExtensions;
     std::set<std::string> m_unknownAvailableExtensions;
 
     void initialize();

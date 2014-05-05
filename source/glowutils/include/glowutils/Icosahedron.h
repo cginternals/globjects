@@ -8,8 +8,8 @@
 
 #include <glm/glm.hpp>
 
-#include <glow/Referenced.h>
-#include <glow/ref_ptr.h>
+#include <glowbase/Referenced.h>
+#include <glowbase/ref_ptr.h>
 
 #include <glowutils/glowutils_api.h>
 

@@ -6,10 +6,11 @@
 
 #include <glm/glm.hpp>
 
+#include <glowbase/ChangeListener.h>
+#include <glowbase/ref_ptr.h>
+
 #include <glow/glow_api.h>
 #include <glow/Object.h>
-#include <glow/ChangeListener.h>
-#include <glow/ref_ptr.h>
 #include <glow/LocationIdentity.h>
 #include <glow/UniformBlock.h>
 
@@ -183,7 +184,7 @@ protected:
     const UniformBlock * getUniformBlockByIdentity(const LocationIdentity & identity) const;
 
 protected:
-	std::set<ref_ptr<Shader>> m_shaders;
+    std::set<ref_ptr<Shader>> m_shaders;
     ref_ptr<ProgramBinary> m_binary;
     std::unordered_map<LocationIdentity, ref_ptr<AbstractUniform>> m_uniforms;
     std::unordered_map<LocationIdentity, UniformBlock> m_uniformBlocks;

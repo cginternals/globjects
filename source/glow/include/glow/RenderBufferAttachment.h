@@ -2,8 +2,9 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/ref_ptr.h>
+
 #include <glow/glow_api.h>
-#include <glow/ref_ptr.h>
 #include <glow/FrameBufferAttachment.h>
 
 namespace glow 
@@ -29,7 +30,7 @@ public:
 	RenderBufferObject * renderBuffer();
     const RenderBufferObject * renderBuffer() const;
 protected:
-	ref_ptr<RenderBufferObject> m_renderBuffer;
+    ref_ptr<RenderBufferObject> m_renderBuffer;
 };
 
 } // namespace glow

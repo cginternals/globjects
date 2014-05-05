@@ -4,8 +4,9 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/Referenced.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
 
 namespace glow 
 {

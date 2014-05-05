@@ -25,7 +25,7 @@ class Program;
 
         Program* program = createProgramIncludingShaders();
         TransformFeedback* transformFeedback = new TransformFeedback();
-        Buffer* buffer = new glow::Buffer(GL_ARRAY_BUFFER);
+        Buffer* buffer = new Buffer(GL_ARRAY_BUFFER);
     
         transformFeedback->setVaryings(program, Array<const char*>{ "vertex_out" }, GL_INTERLEAVED_ATTRIBS);
     
