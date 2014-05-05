@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glow/logging.h>
+#include <glow/baselogging.h>
 
 #include <cassert>
 

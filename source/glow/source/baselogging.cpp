@@ -1,4 +1,4 @@
-#include <glow/logging.h>
+#include <glow/baselogging.h>
 
 #include <cassert>
 
@@ -10,7 +10,7 @@ namespace
     glow::AbstractLogHandler * l_logHandler = new glow::ConsoleLogger();
 }
 
-namespace glow 
+namespace glow
 {
 
 LogMessageBuilder info(LogMessage::Level level)
@@ -20,25 +20,25 @@ LogMessageBuilder info(LogMessage::Level level)
 
 LogMessageBuilder debug()
 {
-	return info(LogMessage::Debug);
+    return info(LogMessage::Debug);
 }
 
 LogMessageBuilder warning()
 {
-	return info(LogMessage::Warning);
+    return info(LogMessage::Warning);
 }
 
 LogMessageBuilder critical()
 {
-	return info(LogMessage::Critical);
+    return info(LogMessage::Critical);
 }
 
 LogMessageBuilder fatal()
 {
-	return info(LogMessage::Fatal);
+    return info(LogMessage::Fatal);
 }
 
-AbstractLogHandler* loggingHandler()
+AbstractLogHandler * loggingHandler()
 {
     return l_logHandler;
 }

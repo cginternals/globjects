@@ -1,5 +1,7 @@
 #include "BindlessUniformImplementation.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include <glow/Error.h>
 
 namespace glow

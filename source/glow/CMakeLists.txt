@@ -70,6 +70,7 @@ set(sources
 	${source_path}/AbstractState.cpp
 	${source_path}/AbstractStringSource.cpp
 	${source_path}/AbstractUniform.cpp
+	${source_path}/baselogging.cpp
 	${source_path}/Buffer.cpp
 	${source_path}/Capability.cpp
 	${source_path}/CompositeStringSource.cpp
@@ -85,52 +86,53 @@ set(sources
 	${source_path}/Extension.cpp
 	${source_path}/FrameBufferAttachment.cpp
 	${source_path}/FrameBufferObject.cpp
+	${source_path}/glmlogging.cpp
 	${source_path}/glow.cpp
-	${source_path}/implementations/LegacyFrameBufferImplementation.h
-	${source_path}/implementations/AbstractBufferImplementation.h
-	${source_path}/implementations/AbstractBufferImplementation.cpp
-	${source_path}/implementations/AbstractUniformImplementation.h
-	${source_path}/implementations/LegacyUniformImplementation.h
-	${source_path}/implementations/AbstractUniformImplementation.cpp
-	${source_path}/implementations/LegacyBufferImplementation.h
+	${source_path}/implementations/LegacyUniformImplementation.cpp
 	${source_path}/implementations/LegacyBufferImplementation.cpp
 	${source_path}/implementations/BindlessFrameBufferImplementation.h
-	${source_path}/implementations/AbstractFrameBufferImplementation.cpp
-	${source_path}/implementations/BindlessUniformImplementation.h
-	${source_path}/implementations/BindlessBufferImplementation.cpp
-	${source_path}/implementations/LegacyUniformImplementation.cpp
-	${source_path}/implementations/LegacyFrameBufferImplementation.cpp
 	${source_path}/implementations/AbstractFrameBufferImplementation.h
+	${source_path}/implementations/LegacyFrameBufferImplementation.h
+	${source_path}/implementations/AbstractUniformImplementation.h
 	${source_path}/implementations/BindlessFrameBufferImplementation.cpp
+	${source_path}/implementations/BindlessBufferImplementation.cpp
 	${source_path}/implementations/BindlessBufferImplementation.h
 	${source_path}/implementations/BindlessUniformImplementation.cpp
+	${source_path}/implementations/AbstractUniformImplementation.cpp
+	${source_path}/implementations/LegacyBufferImplementation.h
+	${source_path}/implementations/AbstractBufferImplementation.h
+	${source_path}/implementations/AbstractFrameBufferImplementation.cpp
+	${source_path}/implementations/LegacyFrameBufferImplementation.cpp
+	${source_path}/implementations/LegacyUniformImplementation.h
+	${source_path}/implementations/BindlessUniformImplementation.h
+	${source_path}/implementations/AbstractBufferImplementation.cpp
 	${source_path}/IncludeProcessor.cpp
 	${source_path}/IncludeProcessor.h
 	${source_path}/LocationIdentity.cpp
-	${source_path}/logging.cpp
 	${source_path}/LogMessageBuilder.cpp
 	${source_path}/LogMessage.cpp
 	${source_path}/memory.cpp
 	${source_path}/NamedString.cpp
 	${source_path}/Object.cpp
+	${source_path}/objectlogging.cpp
 	${source_path}/ObjectVisitor.cpp
 	${source_path}/pixelformat.cpp
 	${source_path}/pixelformat.h
 	${source_path}/ProgramBinary.cpp
 	${source_path}/Program.cpp
 	${source_path}/Query.cpp
-	${source_path}/registry/Registry.cpp
-	${source_path}/registry/ImplementationRegistry.cpp
 	${source_path}/registry/contextid.h
-	${source_path}/registry/ObjectRegistry.h
-	${source_path}/registry/Registry.h
 	${source_path}/registry/ExtensionRegistry.cpp
+	${source_path}/registry/ImplementationRegistry.h
 	${source_path}/registry/ObjectRegistry.cpp
+	${source_path}/registry/ImplementationRegistry.cpp
+	${source_path}/registry/contextid.cpp
+	${source_path}/registry/ObjectRegistry.h
+	${source_path}/registry/Registry.cpp
 	${source_path}/registry/NamedStringRegistry.cpp
 	${source_path}/registry/ExtensionRegistry.h
-	${source_path}/registry/contextid.cpp
 	${source_path}/registry/NamedStringRegistry.h
-	${source_path}/registry/ImplementationRegistry.h
+	${source_path}/registry/Registry.h
 	${source_path}/RenderBufferAttachment.cpp
 	${source_path}/RenderBufferObject.cpp
 	${source_path}/Sampler.cpp
@@ -157,6 +159,8 @@ set(api_includes
 	${include_path}/AbstractStringSource.h
 	${include_path}/AbstractUniform.h
 	${include_path}/AbstractUniform.hpp
+	${include_path}/baselogging.h
+	${include_path}/baselogging.hpp
 	${include_path}/Buffer.h
 	${include_path}/Buffer.hpp
 	${include_path}/Capability.h
@@ -170,18 +174,20 @@ set(api_includes
 	${include_path}/Extension.h
 	${include_path}/FrameBufferAttachment.h
 	${include_path}/FrameBufferObject.h
+	${include_path}/glmlogging.h
 	${include_path}/glow_api.h
 	${include_path}/glow.h
 	${include_path}/glow.hpp
 	${include_path}/LocationIdentity.h
 	${include_path}/logging.h
-	${include_path}/logging.hpp
 	${include_path}/LogMessageBuilder.h
 	${include_path}/LogMessageBuilder.hpp
 	${include_path}/LogMessage.h
 	${include_path}/memory.h
 	${include_path}/NamedString.h
 	${include_path}/Object.h
+	${include_path}/objectlogging.h
+	${include_path}/objectlogging.hpp
 	${include_path}/ObjectVisitor.h
 	${include_path}/ProgramBinary.h
 	${include_path}/Program.h
@@ -208,6 +214,7 @@ set(api_includes
 	${include_path}/VertexArrayObject.h
 	${include_path}/VertexAttributeBinding.h
 )
+
 
 # Group source files
 set(header_group "Header Files (API)")

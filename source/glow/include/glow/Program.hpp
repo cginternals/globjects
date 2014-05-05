@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-#include <glow/logging.h>
+#include <glow/baselogging.h>
 #include <glow/Uniform.h>
 #include <glow/Error.h>
 #include <glow/Shader.h>

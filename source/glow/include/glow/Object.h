@@ -8,9 +8,7 @@
 
 #include <glow/glow_api.h>
 
-
-namespace glow
-{
+namespace glow {
 
 class ObjectVisitor;
 
@@ -35,6 +33,7 @@ public:
 
 	const std::string & name() const;
 	void setName(const std::string & name);
+    bool hasName() const;
 
 protected:
     Object(GLuint id, bool takeOwnership = true);
