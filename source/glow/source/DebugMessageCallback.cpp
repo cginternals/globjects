@@ -48,7 +48,7 @@ void DebugMessageCallback::clearCallbacks()
 
 void DebugMessageCallback::callCallbacks(const DebugMessage & message) const
 {
-    for (auto& callback: m_callbacks)
+    for (auto & callback: m_callbacks)
     {
         callback(message);
     }
@@ -56,7 +56,7 @@ void DebugMessageCallback::callCallbacks(const DebugMessage & message) const
 
 void DebugMessageCallback::defaultAction(const DebugMessage & message) const
 {
-    if (message.type == GL_DEBUG_TYPE_ERROR_ARB)
+    if (message.type() == GL_DEBUG_TYPE_ERROR_ARB)
     {
         handleError(message);
     }

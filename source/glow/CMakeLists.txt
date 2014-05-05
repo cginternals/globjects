@@ -229,6 +229,12 @@ set(sources
     ${source_path}/implementations/LegacyFrameBufferImplementation.cpp
     ${source_path}/implementations/BindlessFrameBufferImplementation.h
     ${source_path}/implementations/BindlessFrameBufferImplementation.cpp
+    ${source_path}/implementations/AbstractDebugImplementation.h
+    ${source_path}/implementations/AbstractDebugImplementation.cpp    
+    ${source_path}/implementations/DebugImplementation.h
+    ${source_path}/implementations/DebugImplementation.cpp    
+    ${source_path}/implementations/FallbackDebugImplementation.h
+    ${source_path}/implementations/FallbackDebugImplementation.cpp
 )
 
 # Group source files

@@ -10,7 +10,7 @@ namespace glow {
 class DebugMessageCallback
 {
 public:
-    using Callback = std::function<void(const DebugMessage&)>;
+    using Callback = std::function<void(const DebugMessage &)>;
 
     DebugMessageCallback();
 
