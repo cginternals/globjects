@@ -11,8 +11,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/random.hpp>
 
-#include <glowbase/Timer.h>
-
 #include <glow/glow.h>
 #include <glow/Error.h>
 #include <glow/logging.h>
@@ -21,6 +19,7 @@
 #include <glow/debugmessageoutput.h>
 #include <glow/Extension.h>
 
+#include <glowutils/Timer.h>
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
 #include <glowutils/File.h>
@@ -338,7 +337,7 @@ protected:
     ParticleTechnique m_technique;
     std::map<ParticleTechnique, AbstractParticleTechnique *> m_techniques;
 
-    glow::Timer m_timer;
+    glowutils::Timer m_timer;
 
     int m_numParticles;
     glowutils::Camera * m_camera;

@@ -1,4 +1,4 @@
-#include <glowbase/AutoTimer.h>
+#include <glowutils/AutoTimer.h>
 
 #include <cassert>
 #include <cmath>
@@ -8,14 +8,15 @@
 #include <iostream>
 
 #include <glowbase/baselogging.h>
-#include <glowbase/Timer.h>
+
+#include <glowutils/Timer.h>
 
 namespace {
     // use number of digits to retrieve exp in 10^(3 exp)
     const char units[3] = { 'n', 'u', 'm' };
 }
 
-namespace glow
+namespace glowutils
 {
 
 int AutoTimer::s_numActiveInstances = 0;
@@ -46,11 +47,11 @@ AutoTimer::~AutoTimer()
     // shorten the time to nearest time unit
     double delta = static_cast<double>(nanoDelta.count()) / pow(1000.0, unitPrecision);
 
-    debug() << m_info << " took "
+    glow::debug() << m_info << " took "
         << std::setprecision(4) << delta << unit
         << " (timer_" << std::setfill('0') << std::setw(2) << m_index << ").";
 
     --s_numActiveInstances;
 }
 
-} // namespace glowbase
+} // namespace glowutils

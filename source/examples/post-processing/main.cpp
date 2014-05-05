@@ -9,9 +9,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <glowbase/AutoTimer.h>
-#include <glowbase/Timer.h>
-
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -24,6 +21,7 @@
 #include <glow/Texture.h>
 #include <glow/debugmessageoutput.h>
 
+#include <glowutils/Timer.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/UnitCube.h>
@@ -230,7 +228,7 @@ protected:
     glow::ref_ptr<glow::RenderBufferObject> m_depth;
 
     glowutils::Camera m_camera;
-    glow::Timer m_time;
+    glowutils::Timer m_time;
 };
 
 

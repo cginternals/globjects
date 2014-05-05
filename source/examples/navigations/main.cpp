@@ -9,9 +9,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <glowbase/Timer.h>
-#include <glowbase/AutoTimer.h>
-
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -21,6 +18,7 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/debugmessageoutput.h>
 
+#include <glowutils/Timer.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/Camera.h>
@@ -318,7 +316,7 @@ protected:
     glowutils::FlightNavigation m_flightNav;
     glm::ivec2 m_lastMousePos;
     bool m_flightEnabled;
-    glow::Timer m_timer;
+    glowutils::Timer m_timer;
 
     glowutils::AxisAlignedBoundingBox m_aabb;
 };

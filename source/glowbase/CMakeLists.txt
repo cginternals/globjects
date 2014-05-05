@@ -44,7 +44,6 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
-	${source_path}/AutoTimer.cpp
 	${source_path}/baselogging.cpp
 	${source_path}/Changeable.cpp
 	${source_path}/ChangeListener.cpp
@@ -54,13 +53,11 @@ set(sources
 	${source_path}/LogMessageBuilder.cpp
 	${source_path}/LogMessage.cpp
 	${source_path}/Referenced.cpp
-	${source_path}/Timer.cpp
 	${source_path}/Version.cpp
 )
 
 set(api_includes
 	${include_path}/AbstractLogHandler.h
-	${include_path}/AutoTimer.h
 	${include_path}/baselogging.h
 	${include_path}/baselogging.hpp
 	${include_path}/CachedValue.h
@@ -78,12 +75,9 @@ set(api_includes
 	${include_path}/LogMessageBuilder.h
 	${include_path}/LogMessageBuilder.hpp
 	${include_path}/LogMessage.h
-	${include_path}/RawFile.h
-	${include_path}/RawFile.hpp
 	${include_path}/Referenced.h
 	${include_path}/ref_ptr.h
 	${include_path}/ref_ptr.hpp
-	${include_path}/Timer.h
 	${include_path}/Version.h
 )
 

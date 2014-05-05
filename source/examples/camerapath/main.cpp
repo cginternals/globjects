@@ -11,8 +11,6 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/constants.hpp>
 
-#include <glowbase/Timer.h>
-
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -22,6 +20,7 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/debugmessageoutput.h>
 
+#include <glowutils/Timer.h>
 #include <glowutils/File.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/Icosahedron.h>
@@ -307,7 +306,7 @@ protected:
     glow::ref_ptr<Icosahedron> m_icosahedron;
     glow::ref_ptr<AdaptiveGrid> m_agrid;
 
-    glow::Timer timer;
+    glowutils::Timer timer;
     Camera m_camera;
     float angle;
     CameraPath path;

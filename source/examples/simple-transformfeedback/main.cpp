@@ -9,8 +9,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <glowbase/Timer.h>
-
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -22,6 +20,7 @@
 #include <glow/TransformFeedback.h>
 #include <glow/debugmessageoutput.h>
 
+#include <glowutils/Timer.h>
 #include <glowutils/File.h>
 #include <glowutils/File.h>
 #include <glowutils/glowutils.h>
@@ -141,7 +140,7 @@ protected:
     glow::ref_ptr<glow::Buffer> m_vertexBuffer2;
     glow::ref_ptr<glow::Buffer> m_colorBuffer;
 
-    glow::Timer m_timer;
+    glowutils::Timer m_timer;
 };
 
 
