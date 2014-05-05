@@ -189,12 +189,12 @@ public:
      * @param size size of the data to be copies in bytes
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glCopyBufferSubData.xml
      */
-    void copySubData(glow::Buffer * buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const;
+    void copySubData(Buffer * buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const;
     /**
      * Convenience method.
      * Both readOffset and writeOffset are 0.
      */
-    void copySubData(glow::Buffer * buffer, GLsizeiptr size) const;
+    void copySubData(Buffer * buffer, GLsizeiptr size) const;
     /**
      * Creates new uninitialized memory to fit size (using usage), then
      * copies the contents of buffer to this buffer's new memory.
@@ -202,7 +202,7 @@ public:
      * @param size size of the data to be copied
      * @param usage buffer usage
      */
-    void copyData(glow::Buffer * buffer, GLsizeiptr size, GLenum usage = GL_STATIC_DRAW) const;
+    void copyData(Buffer * buffer, GLsizeiptr size, GLenum usage = GL_STATIC_DRAW) const;
 
     /**
      * Wraps the OpenGL function glClearBufferData.

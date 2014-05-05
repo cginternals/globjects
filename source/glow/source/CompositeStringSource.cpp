@@ -35,7 +35,7 @@ void CompositeStringSource::appendSource(AbstractStringSource * source)
     changed();
 }
 
-void CompositeStringSource::notifyChanged(const glow::Changeable *)
+void CompositeStringSource::notifyChanged(const Changeable *)
 {
     m_dirty = true;
     changed();

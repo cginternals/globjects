@@ -42,12 +42,12 @@ void APIENTRY debugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum
         return;
 
     const DebugMessageCallback & messageCallback = *reinterpret_cast<const DebugMessageCallback*>(param);
-    messageCallback(glow::DebugMessage(source, type, id, severity, std::string(message, length)));
+    messageCallback(DebugMessage(source, type, id, severity, std::string(message, length)));
 }
 
 void registerDebugMessageCallback(DebugMessageCallback * messageCallback)
 {
-    if (glow::hasExtension(GLOW_KHR_debug))
+    if (hasExtension(GLOW_KHR_debug))
     {
         if (!messageCallback->isRegistered())
         {
@@ -80,14 +80,14 @@ void addCallback(Callback callback)
 
 void enable(bool synchronous, bool registerDefaultCallback)
 {
-    if (!glow::hasExtension(GLOW_KHR_debug))
+    if (!hasExtension(GLOW_KHR_debug))
     {
         manualErrorCheckFallbackEnabled = true;
 
         return;
     }
 
-    glow::enable(GL_DEBUG_OUTPUT);
+    enable(GL_DEBUG_OUTPUT);
 
     setSynchronous(synchronous);
 
@@ -99,7 +99,7 @@ void enable(bool synchronous, bool registerDefaultCallback)
 
 void disable()
 {
-    if (!glow::hasExtension(GLOW_KHR_debug))
+    if (!hasExtension(GLOW_KHR_debug))
     {
         manualErrorCheckFallbackEnabled = false;
 
@@ -111,7 +111,7 @@ void disable()
 
 void setSynchronous(bool synchronous)
 {
-    if (!glow::hasExtension(GLOW_KHR_debug))
+    if (!hasExtension(GLOW_KHR_debug))
         return;
 
     setEnabled(GL_DEBUG_OUTPUT_SYNCHRONOUS, synchronous);
@@ -121,7 +121,7 @@ void insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsiz
 {
     assert(message != nullptr);
 
-    if (!glow::hasExtension(GLOW_KHR_debug))
+    if (!hasExtension(GLOW_KHR_debug))
         return;
 
     glDebugMessageInsert(source, type, id, severity, length, message);
@@ -170,7 +170,7 @@ void disableMessages(GLenum source, GLenum type, GLenum severity, const std::vec
 
 void controlMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids, GLboolean enabled)
 {
-    if (!glow::hasExtension(GLOW_KHR_debug))
+    if (!hasExtension(GLOW_KHR_debug))
         return;
 
     assert(ids != nullptr || count == 0);

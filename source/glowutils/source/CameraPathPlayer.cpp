@@ -195,7 +195,7 @@ CameraPathPoint CameraPathPlayer::interpolate(const PathSection& section, const 
 
     vec3 eye = math::BezierCurve(p1.eye, section.c1, section.c2, p2.eye)(t);
 
-    //glow::debug() << eye << " (" << (p1.eye*(1.0f-t) + p2.eye*t) << ")";
+    //glowbase::debug() << eye << " (" << (p1.eye*(1.0f-t) + p2.eye*t) << ")";
 
     //eye = p1.eye*(1.0f-t) + p2.eye*t;
 

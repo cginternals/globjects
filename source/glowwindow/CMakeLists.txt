@@ -28,6 +28,7 @@ get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERT
 include_directories(
     BEFORE
     ${GENERATED_HEADER_PATH}
+    ${CMAKE_SOURCE_DIR}/source/glowbase/include
     ${CMAKE_SOURCE_DIR}/source/glow/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -40,6 +41,7 @@ set(libs
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARY}
     ${GLFW_LIBRARY}
+    glowbase
     glow
 )
 

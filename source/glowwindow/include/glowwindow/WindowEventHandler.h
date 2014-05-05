@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glow/Referenced.h>
+#include <glowbase/Referenced.h>
 
 #include <glowwindow/glowwindow_api.h>
 

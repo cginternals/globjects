@@ -1,8 +1,9 @@
 #include <string>
 #include <unordered_map>
 
+#include <glowbase/Version.h>
+
 #include <glow/Extension.h>
-#include <glow/Version.h>
 
 const std::unordered_map<glow::Extension, std::string, std::hash<unsigned int>> extensionStrings = {
 	{ glow::GLOW_3DFX_multisample, "GL_3DFX_multisample" },

@@ -109,7 +109,7 @@ std::vector<VertexAttributeBinding*> VertexArrayObject::bindings()
 {
 	std::vector<VertexAttributeBinding*> bindings;
 
-	for (std::pair<GLuint, ref_ptr<VertexAttributeBinding>> pair: m_bindings)
+    for (std::pair<GLuint, ref_ptr<VertexAttributeBinding>> pair: m_bindings)
 	{
 		bindings.push_back(pair.second);
 	}

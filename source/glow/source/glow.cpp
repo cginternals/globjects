@@ -21,7 +21,7 @@ bool initializeGLEW(bool showWarnings)
     {
         if (showWarnings)
         {
-            glow::warning() << reinterpret_cast<const char*>(glewGetErrorString(result));
+            warning() << reinterpret_cast<const char*>(glewGetErrorString(result));
         }
 
         return false;
@@ -29,7 +29,7 @@ bool initializeGLEW(bool showWarnings)
 
     // NOTE: should be safe to ignore:
     // http://www.opengl.org/wiki/OpenGL_Loading_Library
-    glow::Error::clear(); // ignore GL_INVALID_ENUM
+    Error::clear(); // ignore GL_INVALID_ENUM
 
     return true;
 }
@@ -45,7 +45,7 @@ bool init(bool showWarnings)
     {
         if (showWarnings)
         {
-            glow::warning() << "glow is already initialized";
+            warning() << "glow is already initialized";
         }
 
         return true;

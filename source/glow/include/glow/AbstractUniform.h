@@ -9,8 +9,9 @@
 
 #include <glm/glm.hpp>
 
+#include <glowbase/Referenced.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
 #include <glow/LocationIdentity.h>
 #include <glow/TextureHandle.h>
 

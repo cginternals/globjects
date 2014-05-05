@@ -4,12 +4,11 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/Referenced.h>
+
 #include <glow/glow_api.h>
-#include <glow/Referenced.h>
 
-
-namespace glow
-{
+namespace glow {
 
 class ObjectVisitor;
 
@@ -34,6 +33,7 @@ public:
 
 	const std::string & name() const;
 	void setName(const std::string & name);
+    bool hasName() const;
 
 protected:
     Object(GLuint id, bool takeOwnership = true);

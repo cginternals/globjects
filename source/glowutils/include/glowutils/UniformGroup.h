@@ -3,7 +3,6 @@
 #include <unordered_map>
 #include <string>
 
-#include <glow/ref_ptr.h>
 #include <glow/AbstractUniform.h>
 #include <glow/Uniform.h>
 

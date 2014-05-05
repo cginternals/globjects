@@ -21,6 +21,7 @@
 #include <glow/Texture.h>
 #include <glow/debugmessageoutput.h>
 
+#include <glowutils/Timer.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/UnitCube.h>
@@ -28,8 +29,6 @@
 #include <glowutils/Camera.h>
 #include <glowutils/File.h>
 #include <glowutils/File.h>
-#include <glowutils/AutoTimer.h>
-#include <glowutils/Timer.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 

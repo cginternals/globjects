@@ -1,8 +1,9 @@
 #pragma once
 
+#include <glowbase/ChangeListener.h>
+#include <glowbase/ref_ptr.h>
+
 #include <glow/AbstractStringSource.h>
-#include <glow/ChangeListener.h>
-#include <glow/ref_ptr.h>
 
 #include <glowutils/glowutils_api.h>
 
