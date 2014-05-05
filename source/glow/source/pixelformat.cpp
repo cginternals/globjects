@@ -117,7 +117,7 @@ int imageSizeInBytes(int width, int height, GLenum format, GLenum type)
     if (type == GL_BITMAP)
     {
         // handle differently?
-        glow::warning() << "imageSizeInBytes: GL_BITMAP not implemented yet";
+        warning() << "imageSizeInBytes: GL_BITMAP not implemented yet";
         return -1;
     }
 
@@ -125,7 +125,7 @@ int imageSizeInBytes(int width, int height, GLenum format, GLenum type)
 
     int rowSize = pixelSize * width;
 
-    int alignment = glow::getInteger(GL_PACK_ALIGNMENT); // can be 1, 2, 4 or 8
+    int alignment = getInteger(GL_PACK_ALIGNMENT); // can be 1, 2, 4 or 8
 
     rowSize = nextMultiple(rowSize, alignment);
 

@@ -23,7 +23,7 @@ public:
     virtual void setSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, const GLvoid * data) const = 0;
     virtual void setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLbitfield flags) const = 0;
 
-    virtual void copySubData(const glow::Buffer * buffer, glow::Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const = 0;
+    virtual void copySubData(const Buffer * buffer, Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const = 0;
 
     virtual void getParameter(const Buffer * buffer, GLenum pname, GLint * data) const = 0;
 

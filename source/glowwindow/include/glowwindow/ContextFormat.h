@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-#include <glow/Version.h>
+#include <glowbase/Version.h>
 
 #include <glowwindow/glowwindow_api.h>
 

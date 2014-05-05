@@ -5,8 +5,10 @@
 #include <cstring>
 #include <algorithm>
 #include <iomanip>
+#include <iostream>
 
-#include <glow/logging.h>
+#include <glowbase/baselogging.h>
+
 #include <glowutils/Timer.h>
 
 namespace {

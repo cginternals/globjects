@@ -60,7 +60,7 @@ void LegacyBufferImplementation::setStorage(const Buffer * buffer, GLsizeiptr si
     CheckGLError();
 }
 
-void LegacyBufferImplementation::copySubData(const glow::Buffer * buffer, glow::Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
+void LegacyBufferImplementation::copySubData(const Buffer * buffer, Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
 {
     GLenum readTarget = GL_COPY_READ_BUFFER;
     GLenum writeTarget = GL_COPY_WRITE_BUFFER;

@@ -26,6 +26,7 @@ get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERT
 include_directories(
     BEFORE
     ${GENERATED_HEADER_PATH}
+    ${CMAKE_SOURCE_DIR}/source/glowbase/include
     ${CMAKE_SOURCE_DIR}/source/glow/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -37,6 +38,7 @@ include_directories(
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARY}
+    glowbase
     glow
 )
 
@@ -66,76 +68,70 @@ add_definitions("-DGLM_FORCE_RADIANS")
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
-set(api_includes
-    ${include_path}/glowutils_api.h
-
-    ${include_path}/AbstractCoordinateProvider.h
-    ${include_path}/AxisAlignedBoundingBox.h
-    ${include_path}/AdaptiveGrid.h
-    ${include_path}/AutoTimer.h
-    ${include_path}/AxonometricLookAt.h
-    ${include_path}/CachedValue.h
-    ${include_path}/CachedValue.hpp
-    ${include_path}/Camera.h
-    ${include_path}/CameraPath.h
-    ${include_path}/CameraPathPlayer.h
-    ${include_path}/CameraPathRecorder.h
-    ${include_path}/File.h
-    ${include_path}/FlightNavigation.h
-    ${include_path}/glowutils.h
-    ${include_path}/Icosahedron.h
-    ${include_path}/Interpolation.h
-    ${include_path}/navigationmath.h
-    ${include_path}/Plane3.h
-    ${include_path}/RawFile.h
-    ${include_path}/RawFile.hpp
-    ${include_path}/screen.h
-    ${include_path}/ScreenAlignedQuad.h
-    ${include_path}/StackedState.h
-    ${include_path}/StringSourceDecorator.h
-    ${include_path}/StringTemplate.h
-    ${include_path}/Timer.h
-    ${include_path}/TrackballNavigation.h
-    ${include_path}/UniformGroup.h
-    ${include_path}/UniformGroup.hpp
-    ${include_path}/UnitCube.h
-    ${include_path}/VertexDrawable.h
-    ${include_path}/WorldInHandNavigation.h
-    
-    ${include_path}/math/BezierCurve.h
+set(sources
+	${source_path}/AbstractCoordinateProvider.cpp
+	${source_path}/AdaptiveGrid.cpp
+	${source_path}/AutoTimer.cpp
+	${source_path}/AxisAlignedBoundingBox.cpp
+	${source_path}/AxonometricLookAt.cpp
+	${source_path}/Camera.cpp
+	${source_path}/CameraPath.cpp
+	${source_path}/CameraPathPlayer.cpp
+	${source_path}/CameraPathRecorder.cpp
+	${source_path}/dirent_msvc.h
+	${source_path}/File.cpp
+	${source_path}/FileRegistry.cpp
+	${source_path}/FileRegistry.h
+	${source_path}/FlightNavigation.cpp
+	${source_path}/glowutils.cpp
+	${source_path}/Icosahedron.cpp
+	${source_path}/math/BezierCurve.cpp
+	${source_path}/navigationmath.cpp
+	${source_path}/Plane3.cpp
+	${source_path}/ScreenAlignedQuad.cpp
+	${source_path}/screen.cpp
+	${source_path}/StackedState.cpp
+	${source_path}/StringSourceDecorator.cpp
+	${source_path}/StringTemplate.cpp
+	${source_path}/Timer.cpp
+	${source_path}/TrackballNavigation.cpp
+	${source_path}/UniformGroup.cpp
+	${source_path}/UnitCube.cpp
+	${source_path}/VertexDrawable.cpp
+	${source_path}/WorldInHandNavigation.cpp
 )
 
-set(sources
-    ${source_path}/AbstractCoordinateProvider.cpp
-    ${source_path}/AdaptiveGrid.cpp
-    ${source_path}/AutoTimer.cpp
-    ${source_path}/AxisAlignedBoundingBox.cpp
-    ${source_path}/AxonometricLookAt.cpp
-    ${source_path}/Camera.cpp
-    ${source_path}/CameraPath.cpp
-    ${source_path}/CameraPathPlayer.cpp
-    ${source_path}/CameraPathRecorder.cpp
-    ${source_path}/File.cpp
-    ${source_path}/FileRegistry.h
-    ${source_path}/FileRegistry.cpp
-    ${source_path}/FlightNavigation.cpp
-    ${source_path}/glowutils.cpp
-    ${source_path}/Icosahedron.cpp
-    ${source_path}/navigationmath.cpp
-    ${source_path}/Plane3.cpp
-    ${source_path}/screen.cpp
-    ${source_path}/ScreenAlignedQuad.cpp
-    ${source_path}/StackedState.cpp
-    ${source_path}/StringSourceDecorator.cpp
-    ${source_path}/StringTemplate.cpp
-    ${source_path}/Timer.cpp
-    ${source_path}/TrackballNavigation.cpp
-    ${source_path}/UniformGroup.cpp
-    ${source_path}/UnitCube.cpp
-    ${source_path}/VertexDrawable.cpp
-    ${source_path}/WorldInHandNavigation.cpp
-    
-    ${source_path}/math/BezierCurve.cpp
+set(api_includes
+	${include_path}/AbstractCoordinateProvider.h
+	${include_path}/AdaptiveGrid.h
+	${include_path}/AutoTimer.h
+	${include_path}/AxisAlignedBoundingBox.h
+	${include_path}/AxonometricLookAt.h
+	${include_path}/Camera.h
+	${include_path}/CameraPath.h
+	${include_path}/CameraPathPlayer.h
+	${include_path}/CameraPathRecorder.h
+	${include_path}/File.h
+	${include_path}/FlightNavigation.h
+	${include_path}/glowutils_api.h
+	${include_path}/glowutils.h
+	${include_path}/Icosahedron.h
+	${include_path}/Interpolation.h
+	${include_path}/math/BezierCurve.h
+	${include_path}/navigationmath.h
+	${include_path}/Plane3.h
+	${include_path}/ScreenAlignedQuad.h
+	${include_path}/screen.h
+	${include_path}/StackedState.h
+	${include_path}/StringSourceDecorator.h
+	${include_path}/StringTemplate.h
+	${include_path}/Timer.h
+	${include_path}/TrackballNavigation.h
+	${include_path}/UniformGroup.h
+	${include_path}/UniformGroup.hpp
+	${include_path}/UnitCube.h
+	${include_path}/VertexDrawable.h
+	${include_path}/WorldInHandNavigation.h
 )
 
 # Group source files

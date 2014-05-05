@@ -1,7 +1,8 @@
 #pragma once
 
 #include <glow/glow_api.h>
-#include <glow/LogMessageBuilder.h>
+
+#include <glowbase/LogMessageBuilder.h>
 
 namespace glow
 {
@@ -21,6 +22,7 @@ class VertexArrayObject;
 class AbstractUniform;
 template <typename T>
 class Uniform;
+class Version;
 
 GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Object * object);
 GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Buffer * object);

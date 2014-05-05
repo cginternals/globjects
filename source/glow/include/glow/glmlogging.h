@@ -2,7 +2,8 @@
 
 #include <glow/glow_api.h>
 
-#include <glow/LogMessageBuilder.h>
+#include <glowbase/LogMessageBuilder.h>
+
 #include <glm/glm.hpp>
 
 namespace glow {

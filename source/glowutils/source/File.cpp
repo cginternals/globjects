@@ -1,10 +1,12 @@
 #include <glowutils/File.h>
 
 #include <cassert>
+#include <fstream>
+
+#include <glowbase/baselogging.h>
 
 #include <glow/Shader.h>
 
-#include <glowutils/RawFile.h>
 #include "FileRegistry.h"
 
 using namespace glow;
@@ -55,17 +57,29 @@ void File::reloadAll()
 
 void File::loadFileContent() const
 {
-    RawFile<char> raw(m_filePath);
-    if (raw.valid())
+    std::ifstream ifs(m_filePath, std::ios::in | std::ios::binary | std::ios::ate);
+
+    if (ifs)
     {
-        m_source = std::string(raw.data(), raw.size());
+        const std::streamsize size = static_cast<const std::streamsize>(ifs.tellg());
+
+        ifs.seekg(0, std::ios::beg);
+
+        m_source.resize(size);
+
+        ifs.read(const_cast<char*>(m_source.data()), size);
+        ifs.close();
+
+        m_valid = true;
     }
     else
     {
-        m_source = "";
-    }
+        glow::warning() << "Reading from file \"" << m_filePath << "\" failed.";
 
-    m_valid = true;
+        m_source = "";
+
+        m_valid = false;
+    }
 }
 
 } // namespace glowutils

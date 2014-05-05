@@ -3,7 +3,7 @@
 #include <functional>
 #include <string>
 
-#include <glow/ref_ptr.h>
+#include <glowbase/ref_ptr.h>
 
 namespace glow {
 	class Program;

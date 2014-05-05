@@ -8,6 +8,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <glowbase/ref_ptr.h>
+#include <glowbase/formatString.h>
+
+#include <glow/glow.h>
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -22,8 +26,6 @@
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/logging.h>
-#include <glow/ref_ptr.h>
-#include <glow/formatString.h>
 #include <glow/debugmessageoutput.h>
 
 #include <glowwindow/ContextFormat.h>
@@ -65,9 +67,6 @@ public:
         glow::ref_ptr<glow::Sampler> sampler(new glow::Sampler());
         std::cout << "glow::Sampler = "; glow::info() << sampler.get();
 
-        glow::ref_ptr<glow::Sync> sync(glow::Sync::fence());
-        std::cout << "glow::Sync = "; glow::info() << sync.get();
-
         glow::ref_ptr<glow::Shader> shader(new glow::Shader(GL_VERTEX_SHADER));
         std::cout << "glow::Shader = "; glow::info() << shader.get();
 
@@ -80,11 +79,11 @@ public:
         glow::ref_ptr<glow::VertexArrayObject> vao(new glow::VertexArrayObject());
         std::cout << "glow::VertexArrayObject = "; glow::info() << vao.get();
 
-        glow::ref_ptr<glow::Uniform<glm::vec3>> uniform(new glow::Uniform<glm::vec3>("Pi", glm::vec3(3.14f)));
+        glow::ref_ptr<glow::Uniform<float>> uniform(new glow::Uniform<float>("Pi", 3.14f));
         std::cout << "glow::Uniform = "; glow::info() << uniform.get();
         std::cout << "glow::AbstractUniform = "; glow::info() << static_cast<glow::AbstractUniform*>(uniform.get());
 
-        std::cout << "glow::Version = "; glow::info() << glow::Version::current();
+        std::cout << "glow::Version = "; glow::info() << glow::version();
 
         std::vector<glow::Buffer*> buffers{new glow::Buffer(), new glow::Buffer()};
         std::cout << "std::vector<glow::Buffer*> = "; glow::info() << buffers;

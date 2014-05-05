@@ -2,8 +2,8 @@
 
 #include <glm/glm.hpp>
 
-#include <glow/ref_ptr.h>
-#include <glow/Referenced.h>
+#include <glowbase/ref_ptr.h>
+#include <glowbase/Referenced.h>
 
 #include <glowutils/glowutils_api.h>
 
@@ -45,7 +45,7 @@ class Camera;
 
     \endcode
 */
-class GLOWUTILS_API AdaptiveGrid : public glow::Referenced 
+class GLOWUTILS_API AdaptiveGrid : public glow::Referenced
 {
 public:
     AdaptiveGrid(
