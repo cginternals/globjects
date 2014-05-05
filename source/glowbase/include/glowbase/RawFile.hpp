@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <fstream>
 
-//#include <glow/logging.h>
+#include <glowbase/baselogging.h>
 
 namespace glow
 {
@@ -48,7 +48,7 @@ bool RawFile<T>::read()
 
     if (!ifs)
     {
-        //warning() << "Reading from file \"" << m_filePath << "\" failed."; // TODO: reenable when moving logging from glow to glowbase
+        warning() << "Reading from file \"" << m_filePath << "\" failed.";
         return false;
     }
 
