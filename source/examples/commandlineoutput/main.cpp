@@ -11,6 +11,7 @@
 #include <glowbase/ref_ptr.h>
 #include <glowbase/formatString.h>
 
+#include <glow/glow.h>
 #include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
@@ -82,7 +83,7 @@ public:
         std::cout << "glow::Uniform = "; glow::info() << uniform.get();
         std::cout << "glow::AbstractUniform = "; glow::info() << static_cast<glow::AbstractUniform*>(uniform.get());
 
-        std::cout << "glow::Version = "; glow::info() << glow::Version::current();
+        std::cout << "glow::Version = "; glow::info() << glow::version();
 
         std::vector<glow::Buffer*> buffers{new glow::Buffer(), new glow::Buffer()};
         std::cout << "std::vector<glow::Buffer*> = "; glow::info() << buffers;

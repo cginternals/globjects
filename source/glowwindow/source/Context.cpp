@@ -247,7 +247,7 @@ Version Context::maximumSupportedVersion()
 
         if (glow::init())
         {
-            maxVersion = glow::Version::current();
+            maxVersion = glow::version();
         }
 
         glfwDestroyWindow(versionCheckWindow);

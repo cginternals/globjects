@@ -2,23 +2,18 @@
 
 #include <string>
 
-#include <GL/glew.h>
-
-#include <glow/glow_api.h>
-
+#include <glowbase/glowbase_api.h>
 
 namespace glow
 {
 /** \brief Simplifies OpenGL version validity and comparision.
 
 */
-class GLOW_API Version
+class GLOWBASE_API Version
 {
 public:
     Version();
-    Version(GLint majorVersion, GLint minorversion);
-
-	static Version current();
+    Version(unsigned int majorVersion, unsigned int minorversion);
 
     bool operator< (const Version & version) const;
     bool operator> (const Version & version) const;
@@ -34,8 +29,8 @@ public:
 
     Version nearestValidVersion() const;
 public:
-    GLint majorVersion;
-    GLint minorVersion;
+    unsigned int majorVersion;
+    unsigned int minorVersion;
 };
 
 } // namespace glow

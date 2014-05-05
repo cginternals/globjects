@@ -1,9 +1,7 @@
-#include <glow/Version.h>
+#include <glowbase/Version.h>
 
 #include <sstream>
 #include <set>
-
-#include <glow/glow.h>
 
 namespace {
     static std::set<glow::Version> validVersions =
@@ -23,15 +21,10 @@ Version::Version()
 {
 }
 
-Version::Version(int majorVersion, int minorVersion)
+Version::Version(unsigned int majorVersion, unsigned int minorVersion)
 : majorVersion(majorVersion)
 , minorVersion(minorVersion)
 {
-}
-
-Version Version::current()
-{
-    return version();
 }
 
 bool Version::operator<(const Version & version) const

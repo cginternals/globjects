@@ -13,7 +13,6 @@
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/AbstractUniform.h>
-#include <glow/Version.h>
 
 namespace glow {
 
@@ -107,13 +106,6 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const AbstractUniform * 
     else
         builder << uniform->identity().location();
     builder << ")";
-
-    return builder;
-}
-
-LogMessageBuilder operator<<(LogMessageBuilder builder, const Version & version)
-{
-    builder << "Version " << version.toString();
 
     return builder;
 }

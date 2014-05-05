@@ -99,7 +99,7 @@ bool ExtensionRegistry::isInCoreProfile(Extension extension, const Version & ver
 
 bool ExtensionRegistry::isInCoreProfile(Extension extension)
 {
-    return isInCoreProfile(extension, Version::current());
+    return isInCoreProfile(extension, glow::version());
 }
 
 } // namespace glow

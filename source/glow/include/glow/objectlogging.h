@@ -39,8 +39,6 @@ GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const VertexArr
 GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Sync * sync);
 GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const AbstractUniform * uniform);
 
-GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Version & version);
-
 template <typename T>
 LogMessageBuilder operator<<(LogMessageBuilder builder, const Uniform<T> * uniform);
 

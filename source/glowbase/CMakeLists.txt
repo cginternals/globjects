@@ -55,6 +55,7 @@ set(sources
 	${source_path}/LogMessage.cpp
 	${source_path}/Referenced.cpp
 	${source_path}/Timer.cpp
+	${source_path}/Version.cpp
 )
 
 set(api_includes
@@ -83,6 +84,7 @@ set(api_includes
 	${include_path}/ref_ptr.h
 	${include_path}/ref_ptr.hpp
 	${include_path}/Timer.h
+	${include_path}/Version.h
 )
 
 # Group source files

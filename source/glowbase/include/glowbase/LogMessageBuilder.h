@@ -78,7 +78,7 @@ public:
 #endif
 	
     // glow base objects
-    //LogMessageBuilder & operator<<(const Version & version);
+    LogMessageBuilder & operator<<(const Version & version);
     template <typename T>
     LogMessageBuilder & operator<<(const ref_ptr<T> & ref_pointer);
 	

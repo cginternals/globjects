@@ -2,8 +2,9 @@
 
 #include <cassert>
 
+#include <glowbase/Version.h>
+
 #include <glow/VertexArrayObject.h>
-#include <glow/Version.h>
 #include <glow/Error.h>
 #include <glow/glow.h>
 

@@ -1,6 +1,6 @@
 #include <glowbase/LogMessageBuilder.h>
 #include <glowbase/AbstractLogHandler.h>
-//#include <glowbase/Version.h>
+#include <glowbase/Version.h>
 
 #include <cstring>
 #include <cassert>
@@ -144,12 +144,11 @@ LogMessageBuilder & LogMessageBuilder::operator<<(LogMessageBuilder::WidthManipu
 }
 #endif
 
-/*
 LogMessageBuilder & LogMessageBuilder::operator<<(const Version & version)
 {
     *this << "Version " << version.toString();
 
     return *this;
-}*/
+}
 
 } // namespace glowbase

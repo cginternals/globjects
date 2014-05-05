@@ -6,8 +6,9 @@
 
 #include <GL/glew.h>
 
+#include <glowbase/Version.h>
+
 #include <glow/glow_api.h>
-#include <glow/Version.h>
 #include <glow/Extension.h>
 
 namespace glow 

@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include <glowbase/ref_ptr.h>
+#include <glowbase/Version.h>
 
 #include <glow/Program.h>
 #include <glow/logging.h>
@@ -11,7 +12,6 @@
 #include <glow/StaticStringSource.h>
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
-#include <glow/Version.h>
 #include <glow/glow.h>
 
 #include "IncludeProcessor.h"
