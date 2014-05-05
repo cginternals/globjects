@@ -173,28 +173,19 @@ bool FrameBufferObject::detach(GLenum attachment)
 
 void FrameBufferObject::setReadBuffer(GLenum mode) const
 {
-    bind(GL_FRAMEBUFFER);
-
-	glReadBuffer(mode);
-	CheckGLError();
+    implementation().setReadBuffer(this, mode);
 }
 
 void FrameBufferObject::setDrawBuffer(GLenum mode) const
 {
-    bind(GL_FRAMEBUFFER);
-
-	glDrawBuffer(mode);
-	CheckGLError();
+    implementation().setDrawBuffer(this, mode);
 }
 
 void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum * modes) const
 {
     assert(modes != nullptr || n == 0);
 
-    bind(GL_FRAMEBUFFER);
-
-	glDrawBuffers(n, modes);
-	CheckGLError();
+    implementation().setDrawBuffers(this, n, modes);
 }
 
 void FrameBufferObject::setDrawBuffers(const std::vector<GLenum> & modes) const
@@ -347,13 +338,11 @@ void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & src
 
 void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter) const
 {
-    bind(GL_READ_FRAMEBUFFER);
-
     setReadBuffer(readBuffer);
-
-    destFbo->bind(GL_DRAW_FRAMEBUFFER);
-
     destFbo->setDrawBuffers(drawBuffers);
+
+    bind(GL_READ_FRAMEBUFFER);
+    destFbo->bind(GL_DRAW_FRAMEBUFFER);
 
     blit(srcRect, destRect, mask, filter);
 }
