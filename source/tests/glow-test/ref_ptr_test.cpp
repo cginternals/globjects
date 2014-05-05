@@ -47,3 +47,32 @@ TEST_F(ref_ptr_test, ReferencesSameInstanceWhenPassedOn)
     EXPECT_EQ(ref->refCounter(), 3);
     EXPECT_TRUE(a == b);
 }
+
+TEST_F(ref_ptr_test, ReferenceComparisonConstComparisonsCompile)
+{
+    ReferencedMock * t = new ReferencedMock;
+    const ReferencedMock * const_t = new ReferencedMock;
+
+    glow::ref_ptr<ReferencedMock> ref_t = new ReferencedMock;
+    const glow::ref_ptr<ReferencedMock> const_ref_t = new ReferencedMock;
+    glow::ref_ptr<const ReferencedMock> ref_const_t = new ReferencedMock;
+    const glow::ref_ptr<const ReferencedMock> const_ref_const_t = new ReferencedMock;
+
+    if (t == ref_t || t == const_ref_t || t == ref_const_t || t == const_ref_const_t)
+        if (const_t == ref_t || const_t == const_ref_t || const_t == ref_const_t || const_t == const_ref_const_t)
+            if (ref_t == const_ref_t || ref_t == ref_const_t || ref_t == const_ref_const_t)
+                if (const_ref_t == ref_const_t || const_ref_t == const_ref_const_t)
+                    if (ref_const_t == const_ref_const_t)
+                    {
+                        exit(0);
+                    }
+
+    if (ref_t == t || const_ref_t == t || ref_const_t == t || const_ref_const_t == t)
+        if (ref_t == const_t || const_ref_t == const_t || ref_const_t == const_t || const_ref_const_t == const_t)
+            if (const_ref_t == ref_t || ref_const_t == ref_t || const_ref_const_t == ref_t)
+                if (ref_const_t == const_ref_t || const_ref_const_t == const_ref_t)
+                    if (const_ref_const_t == ref_const_t)
+                    {
+                        exit(0);
+                    }
+}

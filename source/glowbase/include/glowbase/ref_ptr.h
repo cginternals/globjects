@@ -37,27 +37,24 @@ public:
     ref_ptr(ref_ptr && reference);
 	~ref_ptr();
 
+    ref_ptr & operator=(const ref_ptr & reference);
+
 	T * get();
 	const T * get() const;
 
-	ref_ptr & operator=(const ref_ptr & reference);
     T & operator*();
     const T & operator*() const;
+
     T * operator->();
 	const T * operator->() const;
+
 	operator T *();
 	operator const T *() const;
-    //operator bool() const;
 
 	bool operator<(const ref_ptr & reference) const;
 	bool operator>(const ref_ptr & reference) const;
 	bool operator==(const ref_ptr & reference) const;
     bool operator!=(const ref_ptr & reference) const;
-
-    bool operator<(const T * pointer) const;
-    bool operator>(const T * pointer) const;
-    bool operator==(const T * pointer) const;
-    bool operator!=(const T * pointer) const;
 
     bool operator<(T * pointer) const;
     bool operator>(T * pointer) const;
@@ -68,7 +65,7 @@ protected:
 	void decreaseRef();
 
 protected:
-	Referenced * m_referenced;
+    mutable Referenced * m_referenced;
 };
 
 template <typename T>
