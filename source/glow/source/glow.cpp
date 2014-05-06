@@ -42,8 +42,6 @@ bool isInitialized()
 
 bool init(bool showWarnings)
 {
-    Registry::registerCurrentContext();
-
     if (glowIsInitialized)
     {
         if (showWarnings)
@@ -58,6 +56,8 @@ bool init(bool showWarnings)
     {
         return false;
     }
+
+    Registry::registerCurrentContext();
 
     glowIsInitialized = true;
 

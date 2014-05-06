@@ -16,6 +16,8 @@ public:
     ImplementationRegistry();
     ~ImplementationRegistry();
 
+    void initialize();
+
     static ImplementationRegistry & current();
 
     AbstractUniformImplementation & uniformImplementation();

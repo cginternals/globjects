@@ -9,6 +9,8 @@ class FallbackDebugImplementation : public AbstractDebugImplementation
 public:
     FallbackDebugImplementation();
 
+    virtual bool isFallback() override;
+
     virtual void enable() override;
     virtual void disable() override;
     virtual void setSynchronous(bool synchronous) override;

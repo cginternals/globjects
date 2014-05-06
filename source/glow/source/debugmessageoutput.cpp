@@ -8,10 +8,12 @@
 #include <glow/glow.h>
 #include <glow/Extension.h>
 
+#include "registry/Registry.h"
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractDebugImplementation.h"
 
 #include <glow/debugmessageoutput.h>
+#include "debugmessageoutput_private.h"
 
 namespace glow {
 
@@ -102,6 +104,26 @@ void controlMessages(GLenum source, GLenum type, GLenum severity, GLsizei count,
     assert(ids != nullptr || count == 0);
 
     implementation().controlMessages(source, type, severity, count, ids, enabled);
+}
+
+void signalError(const Error & error, const char * file, int line)
+{
+    if (!error.isError())
+        return;
+
+    std::stringstream stream;
+    stream << error.name() << " generated. [" << file << ":" << line << "]";
+
+    if (!Registry::current().isInitialized())
+    {
+        glow::debug() << "Error during initialization: " << stream.str();
+        return;
+    }
+
+    if (!implementation().isFallback())
+        return;
+
+    insertMessage(DebugMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, error.code(), GL_DEBUG_SEVERITY_HIGH_ARB, stream.str()));
 }
 
 } // namespace debugmessageoutput

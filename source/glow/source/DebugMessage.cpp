@@ -115,37 +115,4 @@ std::string DebugMessage::typeString() const
     }
 }
 
-ManualErrorDebugMessage::ManualErrorDebugMessage(const Error & error, const char * file, int line)
-: DebugMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, error.code(), GL_DEBUG_SEVERITY_HIGH_ARB, error.name())
-, m_file(file)
-, m_line(line)
-{
-}
-
-const char * ManualErrorDebugMessage::file() const
-{
-    return m_file;
-}
-
-int ManualErrorDebugMessage::line() const
-{
-    return m_line;
-}
-
-bool ManualErrorDebugMessage::isManualErrorMessage() const
-{
-    return true;
-}
-
-std::string ManualErrorDebugMessage::toString() const
-{
-    std::stringstream stream;
-
-    stream << DebugMessage::toString();
-    stream << " [" << m_file << ":" << m_line << "]";
-
-    return stream.str();
-}
-
-
 } // namespace glow

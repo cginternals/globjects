@@ -80,6 +80,7 @@ set(sources
 	${source_path}/DebugMessageCallback.h
 	${source_path}/DebugMessage.cpp
 	${source_path}/debugmessageoutput.cpp
+	${source_path}/debugmessageoutput_private.h
 	${source_path}/Error.cpp
 	${source_path}/Extension.cpp
 	${source_path}/FrameBufferAttachment.cpp

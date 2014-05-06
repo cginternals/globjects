@@ -27,6 +27,11 @@ AbstractDebugImplementation * AbstractDebugImplementation::create()
     }
 }
 
+bool AbstractDebugImplementation::isFallback()
+{
+    return false;
+}
+
 void AbstractDebugImplementation::setCallback(DebugMessageCallback::Callback callback)
 {
     m_messageCallback.clearCallbacks();

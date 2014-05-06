@@ -1,7 +1,7 @@
 #include <glow/Error.h>
 
-#include <glow/debugmessageoutput.h>
 #include <glow/DebugMessage.h>
+#include "debugmessageoutput_private.h"
 
 namespace glow
 {
@@ -70,7 +70,7 @@ void Error::check(const char * file, int line)
     if (!error)
         return;
 
-    debugmessageoutput::insertMessage(ManualErrorDebugMessage(error, file, line));
+    debugmessageoutput::signalError(error, file, line);
 }
 
 } // namespace glow

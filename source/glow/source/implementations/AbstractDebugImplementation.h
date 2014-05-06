@@ -21,6 +21,8 @@ public:
     void setCallback(DebugMessageCallback::Callback callback);
     void addCallback(DebugMessageCallback::Callback callback);
 
+    virtual bool isFallback();
+
     virtual void enable() = 0;
     virtual void disable() = 0;
 

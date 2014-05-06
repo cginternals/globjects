@@ -8,6 +8,11 @@ FallbackDebugImplementation::FallbackDebugImplementation()
 {
 }
 
+bool FallbackDebugImplementation::isFallback()
+{
+    return true;
+}
+
 void FallbackDebugImplementation::enable()
 {
     m_enabled = true;

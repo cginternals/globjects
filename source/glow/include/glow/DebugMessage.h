@@ -37,19 +37,4 @@ protected:
     std::string m_message;
 };
 
-class GLOW_API ManualErrorDebugMessage : public DebugMessage
-{
-public:
-    ManualErrorDebugMessage(const Error & error, const char * file, int line);
-
-    const char * file() const;
-    int line() const;
-
-    virtual bool isManualErrorMessage() const override;
-    virtual std::string toString() const override;
-protected:
-    const char * m_file;
-    int m_line;
-};
-
 } // namespace glow
