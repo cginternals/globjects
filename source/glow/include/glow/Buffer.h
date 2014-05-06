@@ -171,6 +171,15 @@ public:
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glMapBuffer.xml
      */
     bool unmap() const;
+
+    /**
+     * @brief Wraps the OpenGL function  glFlushMappedBufferRange.
+     * @param offset offset from the beginning of the buffer data in bytes.
+     * @param length length of the range in bytes
+     * \see http://www.opengl.org/sdk/docs/man/html/glFlushMappedBufferRange.xhtml
+     */
+    void flushMappedRange(GLintptr offset, GLsizeiptr length);
+
     /**
      * Wraps the OpenGL function glBindBufferBase.
      * \see http://www.opengl.org/sdk/docs/man/xhtml/glBindBufferBase.xml

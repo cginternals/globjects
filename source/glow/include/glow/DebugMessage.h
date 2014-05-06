@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 
 #include <glow/glow_api.h>
+#include <glow/Error.h>
 
 namespace glow
 {
@@ -12,41 +13,28 @@ namespace glow
 class GLOW_API DebugMessage
 {
 public:
-	DebugMessage(
-        GLenum source
-    ,   GLenum type
-    ,   GLuint id
-    ,   GLenum severity
-    ,   const std::string & message);
+    DebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string & message);
 
-	DebugMessage(
-		GLenum source
-		, GLenum type
-		, GLuint id
-		, GLenum severity
-		, const std::string & message
-		, const char* file
-		, int line);
+    GLenum source() const;
+    GLenum type() const;
+    GLuint id() const;
+    GLenum severity() const;
+    const std::string & message() const;
 
-	const char * severityString() const;
-	const char * sourceString() const;
-	const char * typeString() const;
+    virtual bool isManualErrorMessage() const;
 
-	std::string toString() const;
+    std::string severityString() const;
+    std::string sourceString() const;
+    std::string typeString() const;
 
-public:
-	static const char * severityString(GLenum severity);
-	static const char * sourceString(GLenum source);
-	static const char * typeString(GLenum type);
+    virtual std::string toString() const;
 
-public:
-	GLenum source;
-	GLenum type;
-	GLuint id;
-	GLenum severity;
-	std::string message;
-    const char* file;
-    int line;
+protected:
+    GLenum m_source;
+    GLenum m_type;
+    GLuint m_id;
+    GLenum m_severity;
+    std::string m_message;
 };
 
 } // namespace glow

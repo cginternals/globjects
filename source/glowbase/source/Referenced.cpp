@@ -8,28 +8,16 @@ Referenced::Referenced()
 {
 }
 
-Referenced::Referenced(const Referenced&)
-: m_refCounter(0)
-{
-}
-
-
 Referenced::~Referenced()
 {
 }
 
-Referenced& Referenced::operator=(const Referenced&)
-{
-	m_refCounter = 0;
-	return *this;
-}
-
-void Referenced::ref()
+void Referenced::ref() const
 {
 	++m_refCounter;
 }
 
-void Referenced::unref()
+void Referenced::unref() const
 {
 	--m_refCounter;
 

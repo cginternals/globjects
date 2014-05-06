@@ -26,6 +26,8 @@ public:
 
     virtual void clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const override;
     virtual void clearSubData(const Buffer * buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data) const override;
+
+    virtual void flushMappedRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length) const override;
 };
 
 } // namespace glow

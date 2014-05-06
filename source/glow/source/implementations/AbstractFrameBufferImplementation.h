@@ -24,6 +24,9 @@ public:
     virtual void attachTexture3D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const = 0;
     virtual void attachTextureLayer(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const = 0;
     virtual void attachRenderBuffer(const FrameBufferObject * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const = 0;
+    virtual void setReadBuffer(const FrameBufferObject * fbo, GLenum mode) const = 0;
+    virtual void setDrawBuffer(const FrameBufferObject * fbo, GLenum mode) const = 0;
+    virtual void setDrawBuffers(const FrameBufferObject * fbo, GLsizei n, const GLenum * modes) const = 0;
 };
 
 } // namespace glow

@@ -3,6 +3,7 @@
 #include <glow/Error.h>
 #include <glow/logging.h>
 
+#include "registry/Registry.h"
 #include "registry/ExtensionRegistry.h"
 
 #include <glow/NamedString.h>
@@ -55,6 +56,8 @@ bool init(bool showWarnings)
     {
         return false;
     }
+
+    Registry::registerCurrentContext();
 
     glowIsInitialized = true;
 

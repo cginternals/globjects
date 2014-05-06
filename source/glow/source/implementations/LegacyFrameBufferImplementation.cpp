@@ -87,4 +87,28 @@ void LegacyFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject
     CheckGLError();
 }
 
+void LegacyFrameBufferImplementation::setReadBuffer(const FrameBufferObject * fbo, GLenum mode) const
+{
+    fbo->bind(GL_READ_FRAMEBUFFER);
+
+    glReadBuffer(mode);
+    CheckGLError();
+}
+
+void LegacyFrameBufferImplementation::setDrawBuffer(const FrameBufferObject * fbo, GLenum mode) const
+{
+    fbo->bind(GL_DRAW_FRAMEBUFFER);
+
+    glDrawBuffer(mode);
+    CheckGLError();
+}
+
+void LegacyFrameBufferImplementation::setDrawBuffers(const FrameBufferObject * fbo, GLsizei n, const GLenum * modes) const
+{
+    fbo->bind(GL_DRAW_FRAMEBUFFER);
+
+    glDrawBuffers(n, modes);
+    CheckGLError();
+}
+
 } // namespace glow

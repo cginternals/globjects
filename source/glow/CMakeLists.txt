@@ -80,30 +80,37 @@ set(sources
 	${source_path}/DebugMessageCallback.h
 	${source_path}/DebugMessage.cpp
 	${source_path}/debugmessageoutput.cpp
+	${source_path}/debugmessageoutput_private.h
 	${source_path}/Error.cpp
 	${source_path}/Extension.cpp
 	${source_path}/FrameBufferAttachment.cpp
 	${source_path}/FrameBufferObject.cpp
 	${source_path}/glmlogging.cpp
 	${source_path}/glow.cpp
+	${source_path}/implementations/AbstractUniformImplementation.cpp
 	${source_path}/implementations/LegacyUniformImplementation.cpp
 	${source_path}/implementations/LegacyBufferImplementation.cpp
-	${source_path}/implementations/BindlessFrameBufferImplementation.h
-	${source_path}/implementations/AbstractFrameBufferImplementation.h
-	${source_path}/implementations/LegacyFrameBufferImplementation.h
-	${source_path}/implementations/AbstractUniformImplementation.h
-	${source_path}/implementations/BindlessFrameBufferImplementation.cpp
-	${source_path}/implementations/BindlessBufferImplementation.cpp
-	${source_path}/implementations/BindlessBufferImplementation.h
-	${source_path}/implementations/BindlessUniformImplementation.cpp
-	${source_path}/implementations/AbstractUniformImplementation.cpp
-	${source_path}/implementations/LegacyBufferImplementation.h
-	${source_path}/implementations/AbstractBufferImplementation.h
-	${source_path}/implementations/AbstractFrameBufferImplementation.cpp
 	${source_path}/implementations/LegacyFrameBufferImplementation.cpp
-	${source_path}/implementations/LegacyUniformImplementation.h
+	${source_path}/implementations/BindlessBufferImplementation.cpp
+	${source_path}/implementations/DebugImplementation.cpp
+	${source_path}/implementations/AbstractBufferImplementation.h
+	${source_path}/implementations/LegacyFrameBufferImplementation.h
+	${source_path}/implementations/BindlessUniformImplementation.cpp
+	${source_path}/implementations/AbstractUniformImplementation.h
+	${source_path}/implementations/BindlessFrameBufferImplementation.h
+	${source_path}/implementations/FallbackDebugImplementation.cpp
+	${source_path}/implementations/BindlessBufferImplementation.h
+	${source_path}/implementations/AbstractDebugImplementation.h
 	${source_path}/implementations/BindlessUniformImplementation.h
+	${source_path}/implementations/AbstractDebugImplementation.cpp
+	${source_path}/implementations/LegacyUniformImplementation.h
+	${source_path}/implementations/AbstractFrameBufferImplementation.cpp
 	${source_path}/implementations/AbstractBufferImplementation.cpp
+	${source_path}/implementations/AbstractFrameBufferImplementation.h
+	${source_path}/implementations/BindlessFrameBufferImplementation.cpp
+	${source_path}/implementations/FallbackDebugImplementation.h
+	${source_path}/implementations/DebugImplementation.h
+	${source_path}/implementations/LegacyBufferImplementation.h
 	${source_path}/IncludeProcessor.cpp
 	${source_path}/IncludeProcessor.h
 	${source_path}/LocationIdentity.cpp
@@ -118,17 +125,17 @@ set(sources
 	${source_path}/Program.cpp
 	${source_path}/Query.cpp
 	${source_path}/registry/contextid.h
-	${source_path}/registry/ExtensionRegistry.cpp
-	${source_path}/registry/ImplementationRegistry.h
-	${source_path}/registry/ObjectRegistry.cpp
 	${source_path}/registry/ImplementationRegistry.cpp
-	${source_path}/registry/contextid.cpp
-	${source_path}/registry/ObjectRegistry.h
 	${source_path}/registry/Registry.cpp
-	${source_path}/registry/NamedStringRegistry.cpp
-	${source_path}/registry/ExtensionRegistry.h
-	${source_path}/registry/NamedStringRegistry.h
 	${source_path}/registry/Registry.h
+	${source_path}/registry/contextid.cpp
+	${source_path}/registry/NamedStringRegistry.h
+	${source_path}/registry/ObjectRegistry.cpp
+	${source_path}/registry/ExtensionRegistry.h
+	${source_path}/registry/ImplementationRegistry.h
+	${source_path}/registry/ObjectRegistry.h
+	${source_path}/registry/ExtensionRegistry.cpp
+	${source_path}/registry/NamedStringRegistry.cpp
 	${source_path}/RenderBufferAttachment.cpp
 	${source_path}/RenderBufferObject.cpp
 	${source_path}/Sampler.cpp
@@ -201,7 +208,6 @@ set(api_includes
 	${include_path}/VertexArrayObject.h
 	${include_path}/VertexAttributeBinding.h
 )
-
 
 # Group source files
 set(header_group "Header Files (API)")

@@ -4,77 +4,63 @@
 
 namespace glow {
 
-DebugMessage::DebugMessage(
-    GLenum source,
-    GLenum type,
-    GLuint id,
-    GLenum severity,
-    const std::string& message
-)
-: source(source)
-, type(type)
-, id(id)
-, severity(severity)
-, message(message)
-, file(nullptr)
-, line(0)
+DebugMessage::DebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string & message)
+: m_source(source)
+, m_type(type)
+, m_id(id)
+, m_severity(severity)
+, m_message(message)
 {
 }
 
-DebugMessage::DebugMessage(
-    GLenum source,
-    GLenum type,
-    GLuint id,
-    GLenum severity,
-    const std::string& message,
-    const char* file, int line
-)
-: source(source)
-, type(type)
-, id(id)
-, severity(severity)
-, message(message)
-, file(file)
-, line(line)
+bool DebugMessage::isManualErrorMessage() const
 {
+    return false;
 }
 
-const char* DebugMessage::severityString() const
+GLenum DebugMessage::source() const
 {
-    return severityString(severity);
+    return m_source;
 }
 
-const char* DebugMessage::sourceString() const
+GLenum DebugMessage::type() const
 {
-    return sourceString(source);
+    return m_type;
 }
 
-const char* DebugMessage::typeString() const
+GLuint DebugMessage::id() const
 {
-    return typeString(type);
+    return m_id;
+}
+
+GLenum DebugMessage::severity() const
+{
+    return m_severity;
+}
+
+const std::string & DebugMessage::message() const
+{
+    return m_message;
 }
 
 std::string DebugMessage::toString() const
 {
     std::stringstream stream;
 
-    stream << typeString(type);
-    if (file) {
-        stream << " [" << file << ":" << line << "]";
-    }
     stream
-    << ": " << std::hex << "0x" << id << std::dec
-    << ", " << severityString(severity) << " severity"
-    << " (" << sourceString(source) << ")"
-    << std::endl
-    << "\t" << message;
+        << typeString()
+        << ": " << std::hex << "0x" << m_id << std::dec
+        << ", " << severityString() << " severity"
+        << " (" << sourceString() << ")"
+        << std::endl
+        << "\t" << m_message;
 
     return stream.str();
 }
 
-const char* DebugMessage::severityString(GLenum severity)
+std::string DebugMessage::severityString() const
 {
-    switch (severity)
+    switch (m_severity)
     {
         case GL_DEBUG_SEVERITY_HIGH_ARB:
             return "high";
@@ -87,9 +73,9 @@ const char* DebugMessage::severityString(GLenum severity)
     }
 }
 
-const char* DebugMessage::sourceString(GLenum source)
+std::string DebugMessage::sourceString() const
 {
-    switch (source)
+    switch (m_source)
     {
         case GL_DEBUG_SOURCE_API_ARB:
             return "API";
@@ -108,9 +94,9 @@ const char* DebugMessage::sourceString(GLenum source)
     }
 }
 
-const char* DebugMessage::typeString(GLenum type)
+std::string DebugMessage::typeString() const
 {
-    switch (type)
+    switch (m_type)
     {
         case GL_DEBUG_TYPE_OTHER_ARB:
             return "other";

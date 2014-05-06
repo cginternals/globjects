@@ -8,53 +8,18 @@
 #include <glow/glow.h>
 #include <glow/Extension.h>
 
-#include "registry/contextid.h"
-#include "DebugMessageCallback.h"
-
-#ifdef WIN32
-#include <Windows.h>
-#else
-#define APIENTRY
-#endif
+#include "registry/Registry.h"
+#include "registry/ImplementationRegistry.h"
+#include "implementations/AbstractDebugImplementation.h"
 
 #include <glow/debugmessageoutput.h>
+#include "debugmessageoutput_private.h"
 
-namespace {
+namespace glow {
 
-bool manualErrorCheckFallbackEnabled = false;
-std::unordered_map<long long, glow::DebugMessageCallback> callbackStates;
-
-}
-
-namespace glow
+glow::AbstractDebugImplementation & implementation()
 {
-
-DebugMessageCallback * currentDebugMessageCallback()
-{
-    long long id = getContextId();
-
-    return &callbackStates[id];
-}
-
-void APIENTRY debugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, const void * param)
-{
-    if (!param)
-        return;
-
-    const DebugMessageCallback & messageCallback = *reinterpret_cast<const DebugMessageCallback*>(param);
-    messageCallback(DebugMessage(source, type, id, severity, std::string(message, length)));
-}
-
-void registerDebugMessageCallback(DebugMessageCallback * messageCallback)
-{
-    if (hasExtension(GLOW_KHR_debug))
-    {
-        if (!messageCallback->isRegistered())
-        {
-            glDebugMessageCallback(reinterpret_cast<GLDEBUGPROC>(debugMessageCallback), reinterpret_cast<const void*>(messageCallback));
-            messageCallback->setRegistered(true);
-        }
-    }
+    return glow::ImplementationRegistry::current().debugImplementation();
 }
 
 namespace debugmessageoutput
@@ -62,80 +27,46 @@ namespace debugmessageoutput
 
 void setCallback(Callback callback)
 {
-    DebugMessageCallback* messageCallback = currentDebugMessageCallback();
-    messageCallback->clearCallbacks();
-    messageCallback->addCallback(callback);
-
-    registerDebugMessageCallback(messageCallback);
+    implementation().setCallback(callback);
 }
 
 void addCallback(Callback callback)
 {
-    DebugMessageCallback* messageCallback = currentDebugMessageCallback();
-    messageCallback->addCallback(callback);
-
-    registerDebugMessageCallback(messageCallback);
+    implementation().addCallback(callback);
 }
 
-
-void enable(bool synchronous, bool registerDefaultCallback)
+void enable(bool synchronous)
 {
-    if (!hasExtension(GLOW_KHR_debug))
-    {
-        manualErrorCheckFallbackEnabled = true;
-
-        return;
-    }
-
-    enable(GL_DEBUG_OUTPUT);
+    implementation().enable();
 
     setSynchronous(synchronous);
-
-    if (registerDefaultCallback)
-    {
-        registerDebugMessageCallback(currentDebugMessageCallback());
-    }
 }
 
 void disable()
 {
-    if (!hasExtension(GLOW_KHR_debug))
-    {
-        manualErrorCheckFallbackEnabled = false;
-
-        return;
-    }
-
-    glow::disable(GL_DEBUG_OUTPUT);
+    implementation().disable();
 }
 
 void setSynchronous(bool synchronous)
 {
-    if (!hasExtension(GLOW_KHR_debug))
-        return;
-
-    setEnabled(GL_DEBUG_OUTPUT_SYNCHRONOUS, synchronous);
+    implementation().setSynchronous(synchronous);
 }
 
-void insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char* message)
+void insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message)
 {
     assert(message != nullptr);
 
-    if (!hasExtension(GLOW_KHR_debug))
-        return;
-
-    glDebugMessageInsert(source, type, id, severity, length, message);
-    CheckGLError();
+    insertMessage(DebugMessage(source, type, id, severity, std::string(message, length)));
 }
 
-void insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string& message)
+void insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string & message)
 {
-    insertMessage(source, type, id, severity, static_cast<int>(message.length()), message.c_str());
+    insertMessage(DebugMessage(source, type, id, severity, message));
 }
 
-void insertMessage(const DebugMessage& message)
+void insertMessage(const DebugMessage & message)
 {
-    insertMessage(message.source, message.type, message.id, message.severity, message.message);
+    implementation().insertMessage(message);
 }
 
 void enableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
@@ -143,12 +74,12 @@ void enableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
     enableMessages(source, type, severity, 1, &id);
 }
 
-void enableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids)
+void enableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids)
 {
     controlMessages(source, type, severity, count, ids, GL_TRUE);
 }
 
-void enableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint>& ids)
+void enableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint> & ids)
 {
     enableMessages(source, type, severity, static_cast<int>(ids.size()), ids.data());
 }
@@ -158,41 +89,43 @@ void disableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
     disableMessages(source, type, severity, 1, &id);
 }
 
-void disableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids)
+void disableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids)
 {
     controlMessages(source, type, severity, count, ids, GL_FALSE);
 }
 
-void disableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint>& ids)
+void disableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint> & ids)
 {
     disableMessages(source, type, severity, static_cast<int>(ids.size()), ids.data());
 }
 
 void controlMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids, GLboolean enabled)
 {
-    if (!hasExtension(GLOW_KHR_debug))
-        return;
-
     assert(ids != nullptr || count == 0);
 
-    glDebugMessageControl(source, type, severity, count, ids, enabled);
-    CheckGLError();
+    implementation().controlMessages(source, type, severity, count, ids, enabled);
 }
 
-
-void manualErrorCheck(const char* file, int line)
+void signalError(const Error & error, const char * file, int line)
 {
-    if (!manualErrorCheckFallbackEnabled)
+    if (!error.isError())
         return;
 
-    Error error = Error::get();
+    std::stringstream stream;
+    stream << error.name() << " generated. [" << file << ":" << line << "]";
 
-    if (!error)
+    if (!Registry::current().isInitialized())
+    {
+        glow::debug() << "Error during initialization: " << stream.str();
+        return;
+    }
+
+    if (!implementation().isFallback())
         return;
 
-    DebugMessageCallback & messageCallback = *currentDebugMessageCallback();
-    messageCallback(DebugMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, error.code(), GL_DEBUG_SEVERITY_HIGH_ARB, error.name(), file, line));
+    insertMessage(DebugMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, error.code(), GL_DEBUG_SEVERITY_HIGH_ARB, stream.str()));
 }
 
 } // namespace debugmessageoutput
+
 } // namespace glow

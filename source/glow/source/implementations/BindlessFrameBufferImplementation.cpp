@@ -69,4 +69,22 @@ void BindlessFrameBufferImplementation::attachRenderBuffer(const FrameBufferObje
     CheckGLError();
 }
 
+void BindlessFrameBufferImplementation::setReadBuffer(const FrameBufferObject * fbo, GLenum mode) const
+{
+    glFramebufferReadBufferEXT(fbo->id(), mode);
+    CheckGLError();
+}
+
+void BindlessFrameBufferImplementation::setDrawBuffer(const FrameBufferObject * fbo, GLenum mode) const
+{
+    glFramebufferDrawBufferEXT(fbo->id(), mode);
+    CheckGLError();
+}
+
+void BindlessFrameBufferImplementation::setDrawBuffers(const FrameBufferObject * fbo, GLsizei n, const GLenum * modes) const
+{
+    glFramebufferDrawBuffersEXT(fbo->id(), n, modes);
+    CheckGLError();
+}
+
 } // namespace glow

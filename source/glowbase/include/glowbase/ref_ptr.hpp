@@ -4,6 +4,18 @@
 
 #include <glowbase/Referenced.h>
 
+#include <type_traits>
+
+namespace {
+
+template <typename T>
+struct non_const_pointer
+{
+    using type = typename std::add_pointer<typename std::decay<T>::type>::type;
+};
+
+}
+
 namespace glow
 {
 
@@ -15,7 +27,7 @@ ref_ptr<T>::ref_ptr()
 
 template<typename T>
 ref_ptr<T>::ref_ptr(T * referenced)
-: m_referenced(referenced)
+: m_referenced(static_cast<Referenced*>(const_cast<typename non_const_pointer<T>::type>(referenced)))
 {
 	increaseRef();
 }
@@ -65,44 +77,38 @@ const T & ref_ptr<T>::operator*() const
 template<typename T>
 T * ref_ptr<T>::operator->()
 {
-	return static_cast<T*>(m_referenced);
+    return static_cast<T*>(m_referenced);
 }
 
 template<typename T>
 const T * ref_ptr<T>::operator->() const
 {
-	return static_cast<const T*>(m_referenced);
+    return static_cast<const T*>(m_referenced);
 }
 
 template<typename T>
 T * ref_ptr<T>::get()
 {
-	return static_cast<T*>(m_referenced);
+    return static_cast<T*>(m_referenced);
 }
 
 template<typename T>
 const T * ref_ptr<T>::get() const
 {
-	return static_cast<const T*>(m_referenced);
+    return static_cast<const T*>(m_referenced);
 }
 
 template<typename T>
 ref_ptr<T>::operator T *()
 {
-	return static_cast<T*>(m_referenced);
+    return static_cast<T*>(m_referenced);
 }
 
 template<typename T>
 ref_ptr<T>::operator const T *() const
 {
-	return static_cast<const T *>(m_referenced);
+    return static_cast<const T *>(m_referenced);
 }
-
-/*template<typename T>
-ref_ptr<T>::operator bool() const
-{
-	return m_referenced ? true : false;
-}*/
 
 template<typename T>
 bool ref_ptr<T>::operator<(const ref_ptr & reference) const
@@ -126,30 +132,6 @@ template<typename T>
 bool ref_ptr<T>::operator!=(const ref_ptr & reference) const
 {
     return m_referenced != reference.m_referenced;
-}
-
-template<typename T>
-bool ref_ptr<T>::operator<(const T * pointer) const
-{
-    return m_referenced < pointer;
-}
-
-template<typename T>
-bool ref_ptr<T>::operator>(const T * pointer) const
-{
-    return m_referenced > pointer;
-}
-
-template<typename T>
-bool ref_ptr<T>::operator==(const T * pointer) const
-{
-    return m_referenced == pointer;
-}
-
-template<typename T>
-bool ref_ptr<T>::operator!=(const T * pointer) const
-{
-    return m_referenced != pointer;
 }
 
 template<typename T>

@@ -21,17 +21,20 @@ class GLOWBASE_API Referenced : public HeapOnly
 public:
     Referenced();
 
-    void ref();
-    void unref();
+    void ref() const;
+    void unref() const;
 
     int refCounter() const;
 
-protected:
-    Referenced(const Referenced &);
-    Referenced & operator=(const Referenced &);
-    virtual ~Referenced();
 private:
-    int m_refCounter;
+    Referenced(const Referenced &) = delete;
+    Referenced & operator=(const Referenced &) = delete;
+
+protected:
+    virtual ~Referenced();
+
+private:
+    mutable int m_refCounter;
 };
 
 } // namespace glowbase
