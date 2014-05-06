@@ -39,17 +39,11 @@ public:
 
     ref_ptr & operator=(const ref_ptr & reference);
 
-	T * get();
-	const T * get() const;
+    T * get() const;
+    T & operator*() const;
+    T * operator->() const;
 
-    T & operator*();
-    const T & operator*() const;
-
-    T * operator->();
-	const T * operator->() const;
-
-	operator T *();
-	operator const T *() const;
+    operator T *() const;
 
 	bool operator<(const ref_ptr & reference) const;
 	bool operator>(const ref_ptr & reference) const;
