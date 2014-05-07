@@ -10,6 +10,7 @@ message(STATUS "Lib ${target}")
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(GLEW REQUIRED)
+find_package(GLBinding REQUIRED)
 
 #
 # Includes
@@ -19,6 +20,7 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLEW_INCLUDE_DIR}
+    ${GLBINDING_INCLUDE_DIR}
 )
 
 get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
@@ -37,6 +39,7 @@ include_directories(
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARY}
+    ${GLBINDING_LIBRARY}
     glowbase
 )
 
