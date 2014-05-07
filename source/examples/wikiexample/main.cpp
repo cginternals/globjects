@@ -99,8 +99,8 @@ public:
         vao->ref();
 
 		program->attach(
-                        new glow::Shader(GL_VERTEX_SHADER, vertexShaderSource),
-                        new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderSource)
+                        new glow::Shader(gl::VERTEX_SHADER, vertexShaderSource),
+                        new glow::Shader(gl::FRAGMENT_SHADER, fragmentShaderSource)
                         );
 
         cornerBuffer->setData(std::array<glm::vec2, 4>{ {
@@ -112,7 +112,7 @@ public:
 
         vao->binding(0)->setAttribute(0);
 		vao->binding(0)->setBuffer(cornerBuffer, 0, sizeof(glm::vec2));
-		vao->binding(0)->setFormat(2, GL_FLOAT);
+        vao->binding(0)->setFormat(2, gl::FLOAT);
         vao->enable(0);
     }
     
@@ -124,11 +124,11 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
 		program->use();
-		vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        vao->drawArrays(gl::TRIANGLE_STRIP, 0, 4);
     }
 
     virtual void idle(Window & window) override

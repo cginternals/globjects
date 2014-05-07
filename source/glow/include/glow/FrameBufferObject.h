@@ -5,6 +5,8 @@
 #include <vector>
 #include <array>
 
+#include <glbinding/constants.h>
+
 #include <glm/glm.hpp>
 
 #include <glowbase/ref_ptr.h>
@@ -52,8 +54,8 @@ public:
 
     virtual void accept(ObjectVisitor& visitor) override;
 
-    void bind(GLenum target = GL_FRAMEBUFFER) const;
-    static void unbind(GLenum target = GL_FRAMEBUFFER);
+    void bind(GLenum target = gl::FRAMEBUFFER) const;
+    static void unbind(GLenum target = gl::FRAMEBUFFER);
 
 	void setParameter(GLenum pname, GLint param);
     GLint getAttachmentParameter(GLenum attachment, GLenum pname) const;

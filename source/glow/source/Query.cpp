@@ -32,7 +32,7 @@ Query::~Query()
 
 Query * Query::current(GLenum target)
 {
-    GLint id = get(target, GL_CURRENT_QUERY);
+    GLint id = get(target, gl::CURRENT_QUERY);
 
     if (id <= 0)
     {
@@ -46,14 +46,14 @@ Query * Query::current(GLenum target)
 Query * Query::timestamp()
 {
     Query * query = new Query();
-    query->counter(GL_TIMESTAMP);
+    query->counter(gl::TIMESTAMP);
 
     return query;
 }
 
 int Query::getCounterBits(GLenum target)
 {	
-    return get(target, GL_QUERY_COUNTER_BITS);
+    return get(target, gl::QUERY_COUNTER_BITS);
 }
 
 GLuint Query::genQuery()
@@ -137,7 +137,7 @@ GLuint64 Query::get64(GLenum pname) const
 
 bool Query::resultAvailable() const
 {
-	return get(GL_QUERY_RESULT_AVAILABLE) == GL_TRUE;
+	return get(gl::QUERY_RESULT_AVAILABLE) == gl::TRUE;
 }
 
 void Query::wait() const
@@ -202,7 +202,7 @@ void Query::counter(GLenum target) const
 
 bool Query::isQuery(GLuint id)
 {
-    bool result = glIsQuery(id) == GL_TRUE;
+    bool result = glIsQuery(id) == gl::TRUE;
 	CheckGLError();
 
 	return result;

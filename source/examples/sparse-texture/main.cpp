@@ -60,7 +60,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         mapNextPage();
@@ -121,31 +121,31 @@ void EventHandler::createAndSetupTexture()
 {
     // Get available page sizes
     int numPageSizes;
-    glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_NUM_VIRTUAL_PAGE_SIZES_ARB, sizeof(int), &numPageSizes);
-    glow::info("GL_NUM_VIRTUAL_PAGE_SIZES_ARB = %d;", numPageSizes);
+    glGetInternalformativ(gl::TEXTURE_2D, gl::RGBA8, gl::NUM_VIRTUAL_PAGE_SIZES_ARB, sizeof(int), &numPageSizes);
+    glow::info("gl::NUM_VIRTUAL_PAGE_SIZES_ARB = %d;", numPageSizes);
     if (numPageSizes == 0) {
-        glow::fatal("Sparse Texture not supported for GL_RGBA8");
+        glow::fatal("Sparse Texture not supported for gl::RGBA8");
         return;
     }
 
     std::vector<int> pageSizesX(numPageSizes);
-    glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_X_ARB, static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesX.data());
+    glGetInternalformativ(gl::TEXTURE_2D, gl::RGBA8, gl::VIRTUAL_PAGE_SIZE_X_ARB, static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesX.data());
     for (int i = 0; i < numPageSizes; ++i) {
-        glow::info("GL_VIRTUAL_PAGE_SIZE_X_ARB[%;] = %;", i, pageSizesX[i]);
+        glow::info("gl::VIRTUAL_PAGE_SIZE_X_ARB[%;] = %;", i, pageSizesX[i]);
     }
     CheckGLError();
 
     std::vector<int> pageSizesY(numPageSizes);
-    glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Y_ARB, static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesY.data());
+    glGetInternalformativ(gl::TEXTURE_2D, gl::RGBA8, gl::VIRTUAL_PAGE_SIZE_Y_ARB, static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesY.data());
     for (int i = 0; i < numPageSizes; ++i) {
-        glow::info("GL_VIRTUAL_PAGE_SIZE_Y_ARB[%;] = %;", i, pageSizesY[i]);
+        glow::info("gl::VIRTUAL_PAGE_SIZE_Y_ARB[%;] = %;", i, pageSizesY[i]);
     }
     CheckGLError();
 
     std::vector<int> pageSizesZ(numPageSizes);
-    glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Z_ARB, static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesZ.data());
+    glGetInternalformativ(gl::TEXTURE_2D, gl::RGBA8, gl::VIRTUAL_PAGE_SIZE_Z_ARB, static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesZ.data());
     for (int i = 0; i < numPageSizes; ++i) {
-        glow::info("GL_VIRTUAL_PAGE_SIZE_Z_ARB[%;] = %;", i, pageSizesZ[i]);
+        glow::info("gl::VIRTUAL_PAGE_SIZE_Z_ARB[%;] = %;", i, pageSizesZ[i]);
     }
     CheckGLError();
 
@@ -155,26 +155,26 @@ void EventHandler::createAndSetupTexture()
 
     // Get maximum sparse texture size
     int maxSparseTextureSize;
-    glGetIntegerv(GL_MAX_SPARSE_TEXTURE_SIZE_ARB, &maxSparseTextureSize);
-    glow::info("GL_MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
+    glGetIntegerv(gl::MAX_SPARSE_TEXTURE_SIZE_ARB, &maxSparseTextureSize);
+    glow::info("gl::MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
     CheckGLError();
 
-	m_texture = new glow::Texture(GL_TEXTURE_2D);
+	m_texture = new glow::Texture(gl::TEXTURE_2D);
 
     // make texture sparse
-    m_texture->setParameter(GL_TEXTURE_SPARSE_ARB, GL_TRUE);
+    m_texture->setParameter(gl::TEXTURE_SPARSE_ARB, static_cast<GLint>(gl::TRUE));
     // specify the page size via its index in the array retrieved above (we simply use the first here)
-    m_texture->setParameter(GL_VIRTUAL_PAGE_SIZE_INDEX_ARB, 0);
+    m_texture->setParameter(gl::VIRTUAL_PAGE_SIZE_INDEX_ARB, 0);
 
-	m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    m_texture->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<GLint>(gl::LINEAR));
+    m_texture->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<GLint>(gl::LINEAR));
 
-	m_texture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	m_texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	m_texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    m_texture->setParameter(gl::TEXTURE_WRAP_S, static_cast<GLint>(gl::CLAMP_TO_EDGE));
+    m_texture->setParameter(gl::TEXTURE_WRAP_T, static_cast<GLint>(gl::CLAMP_TO_EDGE));
+    m_texture->setParameter(gl::TEXTURE_WRAP_R, static_cast<GLint>(gl::CLAMP_TO_EDGE));
 
     // allocate virtual(!) storage for texture
-    m_texture->storage2D(1, GL_RGBA8, m_textureSize);
+    m_texture->storage2D(1, gl::RGBA8, m_textureSize);
 }
 
 void EventHandler::createAndSetupGeometry()
@@ -201,11 +201,11 @@ void EventHandler::mapNextPage()
     // unmap oldest page
     int oldestPage = (currentPage + m_totalPages - m_maxResidentPages) % m_totalPages;
     glm::ivec2 oldOffset = glm::ivec2(oldestPage % m_numPages.x, oldestPage / m_numPages.x) * m_pageSize;
-    m_texture->pageCommitment(0, glm::ivec3(oldOffset, 0), glm::ivec3(m_pageSize, 1), GL_FALSE);
+    m_texture->pageCommitment(0, glm::ivec3(oldOffset, 0), glm::ivec3(m_pageSize, 1), gl::FALSE);
 
     // map next page
     glm::ivec2 newOffset = glm::ivec2(currentPage % m_numPages.x, currentPage / m_numPages.x) * m_pageSize;
-    m_texture->pageCommitment(0, glm::ivec3(newOffset, 0), glm::ivec3(m_pageSize, 1), GL_TRUE);
-    m_texture->subImage2D(0, newOffset, m_pageSize, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
+    m_texture->pageCommitment(0, glm::ivec3(newOffset, 0), glm::ivec3(m_pageSize, 1), gl::TRUE);
+    m_texture->subImage2D(0, newOffset, m_pageSize, gl::RGBA, gl::UNSIGNED_BYTE, data.data());
     currentPage = (currentPage + 1) % m_totalPages;
 }

@@ -195,7 +195,7 @@ void FrameBufferObject::setDrawBuffers(const std::vector<GLenum> & modes) const
 
 void FrameBufferObject::clear(GLbitfield mask)
 {
-    bind(GL_FRAMEBUFFER);
+    bind(gl::FRAMEBUFFER);
 
     glClear(mask);
     CheckGLError();
@@ -203,7 +203,7 @@ void FrameBufferObject::clear(GLbitfield mask)
 
 void FrameBufferObject::clearBufferiv(GLenum buffer, GLint drawBuffer, const GLint * value)
 {
-    bind(GL_FRAMEBUFFER);
+    bind(gl::FRAMEBUFFER);
 
     glClearBufferiv(buffer, drawBuffer, value);
     CheckGLError();
@@ -211,7 +211,7 @@ void FrameBufferObject::clearBufferiv(GLenum buffer, GLint drawBuffer, const GLi
 
 void FrameBufferObject::clearBufferuiv(GLenum buffer, GLint drawBuffer, const GLuint * value)
 {
-    bind(GL_FRAMEBUFFER);
+    bind(gl::FRAMEBUFFER);
 
     glClearBufferuiv(buffer, drawBuffer, value);
     CheckGLError();
@@ -219,7 +219,7 @@ void FrameBufferObject::clearBufferuiv(GLenum buffer, GLint drawBuffer, const GL
 
 void FrameBufferObject::clearBufferfv(GLenum buffer, GLint drawBuffer, const GLfloat * value)
 {
-    bind(GL_FRAMEBUFFER);
+    bind(gl::FRAMEBUFFER);
 
     glClearBufferfv(buffer, drawBuffer, value);
     CheckGLError();
@@ -227,7 +227,7 @@ void FrameBufferObject::clearBufferfv(GLenum buffer, GLint drawBuffer, const GLf
 
 void FrameBufferObject::clearBufferfi(GLenum buffer, GLint drawBuffer, GLfloat depth, GLint stencil)
 {
-    bind(GL_FRAMEBUFFER);
+    bind(gl::FRAMEBUFFER);
 
     glClearBufferfi(buffer, drawBuffer, depth, stencil);
     CheckGLError();
@@ -289,7 +289,7 @@ void FrameBufferObject::clearDepth(GLclampd depth)
 
 void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * data) const
 {
-    bind(GL_READ_FRAMEBUFFER);
+    bind(gl::READ_FRAMEBUFFER);
 
 	glReadPixels(x, y, width, height, format, type, data);
 	CheckGLError();
@@ -326,9 +326,9 @@ void FrameBufferObject::readPixelsToBuffer(const std::array<GLint, 4> & rect, GL
 {
     assert(pbo != nullptr);
 
-	pbo->bind(GL_PIXEL_PACK_BUFFER);
+	pbo->bind(gl::PIXEL_PACK_BUFFER);
     readPixels(rect, format, type, nullptr);
-    pbo->unbind(GL_PIXEL_PACK_BUFFER);
+    pbo->unbind(gl::PIXEL_PACK_BUFFER);
 }
 
 void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, GLbitfield mask, GLenum filter) const
@@ -341,8 +341,8 @@ void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & src
     setReadBuffer(readBuffer);
     destFbo->setDrawBuffers(drawBuffers);
 
-    bind(GL_READ_FRAMEBUFFER);
-    destFbo->bind(GL_DRAW_FRAMEBUFFER);
+    bind(gl::READ_FRAMEBUFFER);
+    destFbo->bind(gl::DRAW_FRAMEBUFFER);
 
     blit(srcRect, destRect, mask, filter);
 }
@@ -372,11 +372,11 @@ void FrameBufferObject::printStatus(bool onlyErrors) const
 {
 	GLenum status = checkStatus();
 
-	if (onlyErrors && status == GL_FRAMEBUFFER_COMPLETE) return;
+	if (onlyErrors && status == gl::FRAMEBUFFER_COMPLETE) return;
 
-	if (status == GL_FRAMEBUFFER_COMPLETE)
+	if (status == gl::FRAMEBUFFER_COMPLETE)
 	{
-        info() << enumName(GL_FRAMEBUFFER_COMPLETE);
+        info() << enumName(gl::FRAMEBUFFER_COMPLETE);
 	}
 	else
 	{

@@ -84,7 +84,7 @@ public:
         }
 
         glow::ref_ptr<glow::State> state = new glow::State;
-        state->enable(GL_CULL_FACE);
+        state->enable(gl::CULL_FACE);
         state->clearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         createGeometry();
@@ -92,8 +92,8 @@ public:
 
         m_program = new glow::Program;
         m_program->attach(
-            glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/bindless-textures/shader.vert"),
-            glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag")
+            glowutils::createShaderFromFile(gl::VERTEX_SHADER, "data/bindless-textures/shader.vert"),
+            glowutils::createShaderFromFile(gl::FRAGMENT_SHADER, "data/bindless-textures/shader.frag")
         );
 
         std::array<glow::TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
@@ -119,7 +119,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         m_program->setUniform("projection", m_camera.viewProjection());
@@ -204,12 +204,12 @@ public:
 
     virtual float depthAt(const glm::ivec2 & windowCoordinates) const override
     {
-        return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
+        return AbstractCoordinateProvider::depthAt(m_camera, gl::DEPTH_COMPONENT, windowCoordinates);
     }
 
     virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) const override
     {
-        return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
+        return unproject(m_camera, static_cast<GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
     }
 
     virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) const override
@@ -283,14 +283,7 @@ void EventHandler::createTextures()
 
     for (unsigned i = 0; i < m_textures.size(); ++i)
     {
-        glow::Texture* texture = new glow::Texture(GL_TEXTURE_2D);
-
-        texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        texture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        glow::Texture* texture = glow::Texture::createDefault(gl::TEXTURE_2D);
 
         static const int w = 512;
         static const int h = 512;
@@ -314,7 +307,7 @@ void EventHandler::createTextures()
             data[j] = RGBA{ static_cast<uchar>(icolor.r), static_cast<uchar>(icolor.g), static_cast<uchar>(icolor.b), 255 };
         }
 
-        texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
+        texture->image2D(0, gl::RGBA8, w, h, 0, gl::RGBA, gl::UNSIGNED_BYTE, data.data());
 
         m_textures[i] = texture;
     }
@@ -339,12 +332,12 @@ void EventHandler::createGeometry()
         Vertex{ points[1], glm::vec2(0.5, 1.0), 3 }
     } };
 
-    m_drawable = new glowutils::VertexDrawable(vertices, GL_TRIANGLE_STRIP);
+    m_drawable = new glowutils::VertexDrawable(vertices, gl::TRIANGLE_STRIP);
 
     m_drawable->setFormats({
-        glowutils::Format(3, GL_FLOAT, offsetof(Vertex, position)),
-        glowutils::Format(2, GL_FLOAT, offsetof(Vertex, texCoord)),
-        glowutils::FormatI(1, GL_INT, offsetof(Vertex, side))
+        glowutils::Format(3, gl::FLOAT, offsetof(Vertex, position)),
+        glowutils::Format(2, gl::FLOAT, offsetof(Vertex, texCoord)),
+        glowutils::FormatI(1, gl::INT, offsetof(Vertex, side))
     });
     m_drawable->enableAll();
 }

@@ -50,7 +50,7 @@ public:
       fragmentShaderString->replace("#version 140", "#version 150");
 #endif
 
-      m_quad = new glowutils::ScreenAlignedQuad(new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderString));
+      m_quad = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::FRAGMENT_SHADER, fragmentShaderString));
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -65,7 +65,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         m_quad->draw();

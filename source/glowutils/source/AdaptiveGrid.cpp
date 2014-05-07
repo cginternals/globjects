@@ -27,7 +27,7 @@ namespace glowutils
 const char * AdaptiveGrid::s_vsSource = R"(
 
 #version 140
-#extension GL_ARB_explicit_attrib_location : require
+#extension gl::ARB_explicit_attrib_location : require
 
 uniform mat4 transform;
 uniform vec2 viewPlaneDistance;
@@ -48,7 +48,7 @@ void main()
     // interpolate minor grid lines alpha based on viewPlaneDistance
     v_type =  mix(1.0 - t, 1.0 - 2.0 * m * t, step(a_vertex.w, 0.7998));
 
-    gl_Position = vertex;
+    gl::Position = vertex;
 }
 
 )";
@@ -56,7 +56,7 @@ void main()
 const char * AdaptiveGrid::s_fsSource = R"(
 
 #version 140
-#extension GL_ARB_explicit_attrib_location : require
+#extension gl::ARB_explicit_attrib_location : require
 
 uniform vec2 viewPlaneDistance;
 
@@ -73,7 +73,7 @@ void main()
 {
     float t = v_type;
 
-    float z = gl_FragCoord.z; 
+    float z = gl::FragCoord.z; 
 
     // complete function
     // z = (2.0 * zfar * znear / (zfar + znear - (zfar - znear) * (2.0 * z - 1.0)));
@@ -117,8 +117,8 @@ AdaptiveGrid::AdaptiveGrid(
 #endif
   
   
-    m_program->attach(new Shader(GL_VERTEX_SHADER, vertexShaderString),
-                      new Shader(GL_FRAGMENT_SHADER, fragmentShaderString));
+    m_program->attach(new Shader(gl::VERTEX_SHADER, vertexShaderString),
+                      new Shader(gl::FRAGMENT_SHADER, fragmentShaderString));
 
     setColor(vec3(.8f));
 
@@ -129,7 +129,7 @@ AdaptiveGrid::AdaptiveGrid(
 
     binding->setAttribute(0);
     binding->setBuffer(m_buffer, 0, sizeof(vec4));
-    binding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
+    binding->setFormat(4, gl::FLOAT, gl::FALSE, 0);
 
     m_vao->enable(0);
 }
@@ -181,7 +181,7 @@ void AdaptiveGrid::setupGridLineBuffer(unsigned short segments)
         point = vec4(vec3(T * vec4(point.x, point.y, point.z, 1.f)), point.w);
 
     m_buffer = new Buffer();
-    m_buffer->setData(points, GL_STATIC_DRAW);
+    m_buffer->setData(points, gl::STATIC_DRAW);
 
     m_size = static_cast<unsigned short>(segments * 64 - 4);
 }
@@ -256,22 +256,22 @@ void AdaptiveGrid::update(
 
 void AdaptiveGrid::draw()
 {
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
     CheckGLError();
-    glEnable(GL_BLEND);
+    glEnable(gl::BLEND);
     CheckGLError();
-    glEnable(GL_DEPTH_TEST);
+    glEnable(gl::DEPTH_TEST);
     CheckGLError();
 
     m_program->use();
 
     m_vao->bind();
-    m_vao->drawArrays(GL_LINES, 0, m_size);
+    m_vao->drawArrays(gl::LINES, 0, m_size);
     m_vao->unbind();
 
     m_program->release();
 
-    glDisable(GL_BLEND);
+    glDisable(gl::BLEND);
     CheckGLError();
 }
 

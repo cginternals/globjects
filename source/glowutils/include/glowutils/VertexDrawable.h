@@ -45,13 +45,13 @@ public:
         FormatType formatType;
     };
 
-    VertexDrawable(GLenum primitiveMode = GL_TRIANGLES);
-    VertexDrawable(GLint baseOffset, GLint stride, GLenum primitiveMode = GL_TRIANGLES);
-    VertexDrawable(glow::Buffer* vbo, GLint baseOffset, GLint stride, GLint size, GLenum primitiveMode = GL_TRIANGLES);
+    VertexDrawable(GLenum primitiveMode = gl::TRIANGLES);
+    VertexDrawable(GLint baseOffset, GLint stride, GLenum primitiveMode = gl::TRIANGLES);
+    VertexDrawable(glow::Buffer* vbo, GLint baseOffset, GLint stride, GLint size, GLenum primitiveMode = gl::TRIANGLES);
     template <typename T>
-    VertexDrawable(const std::vector<T> & vertices, GLenum primitiveMode = GL_TRIANGLES);
+    VertexDrawable(const std::vector<T> & vertices, GLenum primitiveMode = gl::TRIANGLES);
     template <typename T, std::size_t Count>
-    VertexDrawable(const std::array<T, Count> & vertices, GLenum primitiveMode = GL_TRIANGLES);
+    VertexDrawable(const std::array<T, Count> & vertices, GLenum primitiveMode = gl::TRIANGLES);
 
     void setBuffer(glow::Buffer* vbo, GLint size);
     void setBuffer(glow::Buffer* vbo, GLint baseOffset, GLint stride, GLint size);
@@ -77,7 +77,7 @@ protected:
     GLenum m_primitiveMode;
 };
 
-GLOWUTILS_API VertexDrawable::AttributeFormat Format(GLint size, GLenum type, GLuint relativeOffset, GLboolean normalized = GL_FALSE);
+GLOWUTILS_API VertexDrawable::AttributeFormat Format(GLint size, GLenum type, GLuint relativeOffset, GLboolean normalized = gl::FALSE);
 GLOWUTILS_API VertexDrawable::AttributeFormat FormatI(GLint size, GLenum type, GLuint relativeOffset);
 GLOWUTILS_API VertexDrawable::AttributeFormat FormatL(GLint size, GLenum type, GLuint relativeOffset);
 

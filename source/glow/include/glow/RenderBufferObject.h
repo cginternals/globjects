@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 
+#include <glbinding/constants.h>
+
 #include <glow/glow_api.h>
 #include <glow/Object.h>
 
@@ -21,8 +23,8 @@ public:
 
     virtual void accept(ObjectVisitor & visitor) override;
 
-    void bind(GLenum target = GL_RENDERBUFFER) const;
-    static void unbind(GLenum target = GL_RENDERBUFFER);
+    void bind(GLenum target = gl::RENDERBUFFER) const;
+    static void unbind(GLenum target = gl::RENDERBUFFER);
 
     void storage(GLenum internalformat, GLsizei width, GLsizei height);
     void storageMultisample(GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);

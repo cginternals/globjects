@@ -88,7 +88,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         ++m_frame %= static_cast<int>(200 * glm::pi<double>());
@@ -158,19 +158,16 @@ int main(int /*argc*/, char* /*argv*/[])
 
 void EventHandler::createAndSetupTexture()
 {
-	m_texture = new glow::Texture(GL_TEXTURE_2D);
+    m_texture = glow::Texture::createDefault(gl::TEXTURE_2D);
 
-    m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	m_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
-	m_texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
+	m_texture->image2D(0, gl::R32F, 512, 512, 0, gl::RED, gl::FLOAT, nullptr);
+	m_texture->bindImageTexture(0, 0, gl::FALSE, 0, gl::WRITE_ONLY, gl::R32F);
 }
 
 void EventHandler::createAndSetupShaders()
 {
     m_computeProgram = new glow::Program();
-    m_computeProgram->attach(glowutils::createShaderFromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+    m_computeProgram->attach(glowutils::createShaderFromFile(gl::COMPUTE_SHADER, "data/computeshader/cstest.comp"));
 
     m_computeProgram->setUniform("destTex", 0);
 }

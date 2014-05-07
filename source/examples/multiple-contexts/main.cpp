@@ -3,6 +3,8 @@
 
 #include <GL/glew.h>
 
+#include <glbinding/constants.h>
+
 #include <glow/Error.h>
 #include <glow/debugmessageoutput.h>
 #include <glow/logging.h>
@@ -50,7 +52,7 @@ public:
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             1.f);
         CheckGLError();
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
     }
 

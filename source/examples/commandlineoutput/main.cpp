@@ -67,7 +67,7 @@ public:
         glow::ref_ptr<glow::Sampler> sampler(new glow::Sampler());
         std::cout << "glow::Sampler = "; glow::info() << sampler.get();
 
-        glow::ref_ptr<glow::Shader> shader(new glow::Shader(GL_VERTEX_SHADER));
+        glow::ref_ptr<glow::Shader> shader(new glow::Shader(gl::VERTEX_SHADER));
         std::cout << "glow::Shader = "; glow::info() << shader.get();
 
         glow::ref_ptr<glow::Texture> texture(new glow::Texture());

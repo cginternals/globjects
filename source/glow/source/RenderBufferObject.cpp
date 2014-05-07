@@ -51,17 +51,17 @@ void RenderBufferObject::unbind(GLenum target)
 
 void RenderBufferObject::storage(GLenum internalformat, GLsizei width, GLsizei height)
 {
-    bind(GL_RENDERBUFFER);
+    bind(gl::RENDERBUFFER);
 
-	glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
+	glRenderbufferStorage(gl::RENDERBUFFER, internalformat, width, height);
 	CheckGLError();
 }
 
 void RenderBufferObject::storageMultisample(GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
 {
-    bind(GL_RENDERBUFFER);
+    bind(gl::RENDERBUFFER);
 
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, internalformat, width, height);
+	glRenderbufferStorageMultisample(gl::RENDERBUFFER, samples, internalformat, width, height);
 	CheckGLError();
 }
 
@@ -69,9 +69,9 @@ GLint RenderBufferObject::getParameter(GLenum pname) const
 {
 	GLint value = 0;
 
-    bind(GL_RENDERBUFFER);
+    bind(gl::RENDERBUFFER);
 
-	glGetRenderbufferParameteriv(GL_RENDERBUFFER, pname, &value);
+	glGetRenderbufferParameteriv(gl::RENDERBUFFER, pname, &value);
 	CheckGLError();
 
 	return value;

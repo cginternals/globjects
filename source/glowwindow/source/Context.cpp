@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include <glbinding/constants.h>
+
 #include <GL/glew.h>
 
 #include <glowbase/baselogging.h>
@@ -105,7 +107,7 @@ void Context::prepareFormat(const ContextFormat & format)
   
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, gl::TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   
 #else
@@ -116,9 +118,9 @@ void Context::prepareFormat(const ContextFormat & format)
     if (version >= Version(3, 0))
     {
         if (format.forwardCompatible())
-            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, gl::TRUE);
         if (format.debugContext())
-            glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,  GL_TRUE);
+            glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,  gl::TRUE);
     }
   
     if (version >= Version(3, 2))
@@ -235,7 +237,7 @@ Version Context::maximumSupportedVersion()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, gl::TRUE);
 #endif
     
     GLFWwindow * versionCheckWindow = glfwCreateWindow(1, 1, "VersionCheck", nullptr, nullptr);

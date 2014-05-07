@@ -2,6 +2,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include <glbinding/constants.h>
+
 #include <glow/Error.h>
 
 namespace glow
@@ -87,55 +89,55 @@ void BindlessUniformImplementation::set(const Program * program, const GLint loc
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const glm::mat2 & value) const
 {
-    glProgramUniformMatrix2fv(program->id(), location, 1, GL_FALSE, glm::value_ptr(value));
+    glProgramUniformMatrix2fv(program->id(), location, 1, gl::FALSE, glm::value_ptr(value));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const glm::mat3 & value) const
 {
-    glProgramUniformMatrix3fv(program->id(), location, 1, GL_FALSE, glm::value_ptr(value));
+    glProgramUniformMatrix3fv(program->id(), location, 1, gl::FALSE, glm::value_ptr(value));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const glm::mat4 & value) const
 {
-    glProgramUniformMatrix4fv(program->id(), location, 1, GL_FALSE, glm::value_ptr(value));
+    glProgramUniformMatrix4fv(program->id(), location, 1, gl::FALSE, glm::value_ptr(value));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const glm::mat2x3 & value) const
 {
-    glProgramUniformMatrix2x3fv(program->id(), location, 1, GL_FALSE, glm::value_ptr(value));
+    glProgramUniformMatrix2x3fv(program->id(), location, 1, gl::FALSE, glm::value_ptr(value));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const glm::mat3x2 & value) const
 {
-    glProgramUniformMatrix3x2fv(program->id(), location, 1, GL_FALSE, glm::value_ptr(value));
+    glProgramUniformMatrix3x2fv(program->id(), location, 1, gl::FALSE, glm::value_ptr(value));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const glm::mat2x4 & value) const
 {
-    glProgramUniformMatrix2x4fv(program->id(), location, 1, GL_FALSE, glm::value_ptr(value));
+    glProgramUniformMatrix2x4fv(program->id(), location, 1, gl::FALSE, glm::value_ptr(value));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const glm::mat4x2 & value) const
 {
-    glProgramUniformMatrix4x2fv(program->id(), location, 1, GL_FALSE, glm::value_ptr(value));
+    glProgramUniformMatrix4x2fv(program->id(), location, 1, gl::FALSE, glm::value_ptr(value));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const glm::mat3x4 & value) const
 {
-    glProgramUniformMatrix3x4fv(program->id(), location, 1, GL_FALSE, glm::value_ptr(value));
+    glProgramUniformMatrix3x4fv(program->id(), location, 1, gl::FALSE, glm::value_ptr(value));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const glm::mat4x3 & value) const
 {
-    glProgramUniformMatrix4x3fv(program->id(), location, 1, GL_FALSE, glm::value_ptr(value));
+    glProgramUniformMatrix4x3fv(program->id(), location, 1, gl::FALSE, glm::value_ptr(value));
     CheckGLError();
 }
 
@@ -231,55 +233,55 @@ void BindlessUniformImplementation::set(const Program * program, const GLint loc
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const std::vector<glm::mat2> & value) const
 {
-    glProgramUniformMatrix2fv(program->id(), location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
+    glProgramUniformMatrix2fv(program->id(), location, static_cast<GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const std::vector<glm::mat3> & value) const
 {
-    glProgramUniformMatrix3fv(program->id(), location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
+    glProgramUniformMatrix3fv(program->id(), location, static_cast<GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const std::vector<glm::mat4> & value) const
 {
-    glProgramUniformMatrix4fv(program->id(), location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
+    glProgramUniformMatrix4fv(program->id(), location, static_cast<GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const std::vector<glm::mat2x3> & value) const
 {
-    glProgramUniformMatrix2x3fv(program->id(), location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
+    glProgramUniformMatrix2x3fv(program->id(), location, static_cast<GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const std::vector<glm::mat3x2> & value) const
 {
-    glProgramUniformMatrix3x2fv(program->id(), location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
+    glProgramUniformMatrix3x2fv(program->id(), location, static_cast<GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const std::vector<glm::mat2x4> & value) const
 {
-    glProgramUniformMatrix2x4fv(program->id(), location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
+    glProgramUniformMatrix2x4fv(program->id(), location, static_cast<GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const std::vector<glm::mat4x2> & value) const
 {
-    glProgramUniformMatrix4x2fv(program->id(), location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
+    glProgramUniformMatrix4x2fv(program->id(), location, static_cast<GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const std::vector<glm::mat3x4> & value) const
 {
-    glProgramUniformMatrix3x4fv(program->id(), location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
+    glProgramUniformMatrix3x4fv(program->id(), location, static_cast<GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
     CheckGLError();
 }
 
 void BindlessUniformImplementation::set(const Program * program, const GLint location, const std::vector<glm::mat4x3> & value) const
 {
-    glProgramUniformMatrix4x3fv(program->id(), location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
+    glProgramUniformMatrix4x3fv(program->id(), location, static_cast<GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
     CheckGLError();
 }
 

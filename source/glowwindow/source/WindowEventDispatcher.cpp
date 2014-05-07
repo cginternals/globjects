@@ -3,6 +3,8 @@
 #include <cassert>
 #include <cmath>
 
+#include <glbinding/constants.h>
+
 #include <GL/glew.h>
 
 #include <GLFW/glfw3.h>
@@ -243,12 +245,12 @@ void WindowEventDispatcher::handleMove(GLFWwindow* glfwWindow, int x, int y)
 
 void WindowEventDispatcher::handleFocus(GLFWwindow* glfwWindow, int focused)
 {
-    dispatchEvent(glfwWindow, new FocusEvent(focused == GL_TRUE));
+    dispatchEvent(glfwWindow, new FocusEvent(focused == gl::TRUE));
 }
 
 void WindowEventDispatcher::handleIconify(GLFWwindow* glfwWindow, int iconified)
 {
-    dispatchEvent(glfwWindow, new IconifyEvent(iconified == GL_TRUE));
+    dispatchEvent(glfwWindow, new IconifyEvent(iconified == gl::TRUE));
 }
 
 void WindowEventDispatcher::handleClose(GLFWwindow* glfwWindow)

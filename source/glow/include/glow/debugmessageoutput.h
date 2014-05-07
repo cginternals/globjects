@@ -28,7 +28,7 @@ class DebugMessage;
     callback can be set which gets called for every occuring OpenGL error using
     addCallback().
 
-    Debug messages can only be obtained using the GL_ARB_debug_output extension,
+    Debug messages can only be obtained using the gl::ARB_debug_output extension,
     which is in the OpenGL 4.3 Core Profile. Occuring OpenGL debug messages can
     be filtered using enableMessage(), enableMessages(), disableMessage() and
     disableMessages().
@@ -49,9 +49,9 @@ using Callback = std::function<void(const DebugMessage &)>;
     manually for every context required. Further, in DEBUG, the default
     global gl error checking needs to be disabled manually.
 
-    Note: this requires the GL_ARB_debug_output extension. Or at least a
+    Note: this requires the gl::ARB_debug_output extension. Or at least a
     4.3 core profile. The output can be locally disabled via glEnable and
-    glDisable(GL_DEBUG_OUTPUT) - this sets DEBUG_OUTPUT_SYNCHRONOUS_ARB.
+    glDisable(gl::DEBUG_OUTPUT) - this sets DEBUG_OUTPUT_SYNCHRONOUS_ARB.
  */
 GLOW_API void enable(bool synchronous = true);
 GLOW_API void disable();

@@ -87,8 +87,8 @@ public:
 #endif
         
         m_sphere->attach(
-            new glow::Shader(GL_VERTEX_SHADER, vertexShaderSource)
-        ,   new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderSource));
+            new glow::Shader(gl::VERTEX_SHADER, vertexShaderSource)
+        ,   new glow::Shader(gl::FRAGMENT_SHADER, fragmentShaderSource));
         
 
         m_icosahedron = new glowutils::Icosahedron(2);
@@ -118,7 +118,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         m_agrid->update();
@@ -283,12 +283,12 @@ public:
 
     virtual float depthAt(const ivec2 & windowCoordinates) const override
     {
-        return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
+        return AbstractCoordinateProvider::depthAt(m_camera, gl::DEPTH_COMPONENT, windowCoordinates);
     }
 
     virtual vec3 objAt(const ivec2 & windowCoordinates) const override
     {
-        return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
+        return unproject(m_camera, static_cast<GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
     }
 
     virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override

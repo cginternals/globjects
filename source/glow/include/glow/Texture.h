@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 
+#include <glbinding/constants.h>
+
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -25,10 +27,10 @@ class Buffer;
 class GLOW_API Texture : public Object
 {
 public:
-    Texture(GLenum target = GL_TEXTURE_2D);
+    Texture(GLenum target = gl::TEXTURE_2D);
     static Texture * fromId(GLuint id, GLenum  target, bool takeOwnership = false);
 
-    static Texture * createDefault(GLenum target = GL_TEXTURE_2D);
+    static Texture * createDefault(GLenum target = gl::TEXTURE_2D);
 
     virtual void accept(ObjectVisitor & visitor) override;
 
@@ -39,8 +41,8 @@ public:
     void bindActive(GLenum texture) const;
     void unbindActive(GLenum texture) const;
 
-    void setParameter(GLenum name, GLint value);
-    void setParameter(GLenum name, GLfloat value);
+    void setParameter(gl::GLenum name, gl::GLint value);
+    void setParameter(gl::GLenum name, gl::GLfloat value);
 
     GLint getParameter(GLenum pname) const;
     GLint getLevelParameter(GLint level, GLenum pname) const;

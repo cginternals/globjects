@@ -56,7 +56,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         m_quad->draw();
@@ -117,16 +117,9 @@ void EventHandler::createAndSetupTexture()
     for (int i = 0; i < w * h * 4; ++i)
         data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
 
-	m_texture = new glow::Texture(GL_TEXTURE_2D);
+    m_texture = glow::Texture::createDefault(gl::TEXTURE_2D);
 
-	m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	m_texture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	m_texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	m_texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-	m_texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	m_texture->image2D(0, gl::RGBA8, w, h, 0, gl::RGBA, gl::UNSIGNED_BYTE, data);
 
 }
 

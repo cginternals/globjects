@@ -1,5 +1,7 @@
 #include <glowutils/AbstractCoordinateProvider.h>
 
+#include <glbinding/constants.h>
+
 #include <cfloat>
 
 #include <GL/glew.h>
@@ -30,7 +32,7 @@ float AbstractCoordinateProvider::depthAt(
         return 1.f;
 
     GLfloat z;
-    glReadPixels(x, h - y - 1, 1, 1, format, GL_FLOAT, reinterpret_cast<void*>(&z));
+    glReadPixels(x, h - y - 1, 1, 1, format, gl::FLOAT, reinterpret_cast<void*>(&z));
     CheckGLError();
 
     return z;

@@ -89,7 +89,7 @@ void Buffer::unbind(gl::GLenum target, gl::GLuint index)
 
 const void * Buffer::map() const
 {
-    return static_cast<const void*>(implementation().map(this, GL_READ_ONLY));
+    return static_cast<const void*>(implementation().map(this, gl::READ_ONLY));
 }
 
 void* Buffer::map(gl::GLenum access)

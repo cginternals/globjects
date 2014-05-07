@@ -78,7 +78,7 @@ std::string enumName(GLenum param)
     std::vector<std::string> names = enumNames(param);
     if (names.empty())
     {
-        return "UNKNOWN_GL_ENUM";
+        return "UNKNOWN_gl::ENUM";
     }
 
     return names[0];

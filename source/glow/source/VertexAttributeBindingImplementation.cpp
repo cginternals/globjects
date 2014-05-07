@@ -77,7 +77,7 @@ void VertexAttributeBinding_GL_3_0::setFormat(GLint size, GLenum type, GLboolean
 
 void VertexAttributeBinding_GL_3_0::setIFormat(GLint size, GLenum type, GLuint relativeoffset)
 {
-    m_format = Format(Format::I, size, type, GL_FALSE, relativeoffset);
+    m_format = Format(Format::I, size, type, gl::FALSE, relativeoffset);
 
     m_hasFormat = true;
     finishIfComplete();
@@ -85,7 +85,7 @@ void VertexAttributeBinding_GL_3_0::setIFormat(GLint size, GLenum type, GLuint r
 
 void VertexAttributeBinding_GL_3_0::setLFormat(GLint size, GLenum type, GLuint relativeoffset)
 {
-    m_format = Format(Format::L, size, type, GL_FALSE, relativeoffset);
+    m_format = Format(Format::L, size, type, gl::FALSE, relativeoffset);
 
     m_hasFormat = true;
     finishIfComplete();
@@ -106,12 +106,12 @@ void VertexAttributeBinding_GL_3_0::finish()
     
     if (vbo())
     {
-        vbo()->bind(GL_ARRAY_BUFFER);
+        vbo()->bind(gl::ARRAY_BUFFER);
         offset = reinterpret_cast<void*>(m_baseoffset + m_format.relativeoffset);
     }
     else
     {
-        Buffer::unbind(GL_ARRAY_BUFFER);
+        Buffer::unbind(gl::ARRAY_BUFFER);
     }
 
 
@@ -137,7 +137,7 @@ VertexAttributeBinding_GL_3_0::Format::Format()
 : method(O)
 , size(0)
 , type(0)
-, normalized(GL_FALSE)
+, normalized(gl::FALSE)
 , relativeoffset(0)
 {
 }

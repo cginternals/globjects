@@ -76,7 +76,7 @@ void TransformFeedback::end()
 
 void TransformFeedback::draw(GLenum primitiveMode) const
 {
-    bind(GL_TRANSFORM_FEEDBACK); // TODO: is this necessary
+    bind(gl::TRANSFORM_FEEDBACK); // TODO: is this necessary
 
     glDrawTransformFeedback(primitiveMode, m_id);
 	CheckGLError();
@@ -86,7 +86,7 @@ void TransformFeedback::setVaryings(const Program * program, GLsizei count, cons
 {
     assert(varyingNames != nullptr || count == 0);
 
-    bind(GL_TRANSFORM_FEEDBACK);
+    bind(gl::TRANSFORM_FEEDBACK);
 
 	glTransformFeedbackVaryings(program->id(), count, varyingNames, bufferMode);
 	CheckGLError();
@@ -101,7 +101,7 @@ void TransformFeedback::setVaryings(const Program *program, const std::vector<co
 
 bool TransformFeedback::isTransformFeedback(GLuint id)
 {
-    bool result = glIsTransformFeedback(id) == GL_TRUE;
+    bool result = glIsTransformFeedback(id) == gl::TRUE;
 	CheckGLError();
 
 	return result;

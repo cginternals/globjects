@@ -15,7 +15,7 @@ bool glowIsInitialized = false;
 
 bool initializeGLEW(bool showWarnings)
 {
-    glewExperimental = GL_TRUE;
+    glewExperimental = gl::TRUE;
 
     GLenum result = glewInit();
     if (result != GLEW_OK)
@@ -29,8 +29,8 @@ bool initializeGLEW(bool showWarnings)
     }
 
     // NOTE: should be safe to ignore:
-    // http://www.opengl.org/wiki/OpenGL_Loading_Library
-    Error::clear(); // ignore GL_INVALID_ENUM
+    // http://www.opengl.org/wiki/Opengl::Loading_Library
+    Error::clear(); // ignore gl::INVALID_ENUM
 
     return true;
 }
@@ -170,27 +170,27 @@ GLboolean getBoolean(GLenum pname, GLuint index)
 
 std::string vendor()
 {
-    return getString(GL_VENDOR);
+    return getString(gl::VENDOR);
 }
 
 std::string renderer()
 {
-    return getString(GL_RENDERER);
+    return getString(gl::RENDERER);
 }
 
 std::string versionString()
 {
-    return getString(GL_VERSION);
+    return getString(gl::VERSION);
 }
 
 GLint majorVersion()
 {
-    return getInteger(GL_MAJOR_VERSION);
+    return getInteger(gl::MAJOR_VERSION);
 }
 
 GLint minorVersion()
 {
-    return getInteger(GL_MINOR_VERSION);
+    return getInteger(gl::MINOR_VERSION);
 }
 
 Version version()
@@ -205,18 +205,18 @@ bool isCoreProfile()
         return false;
     }
 
-    return (getInteger(GL_CONTEXT_PROFILE_MASK) & GL_CONTEXT_CORE_PROFILE_BIT) > 0;
+    return (getInteger(gl::CONTEXT_PROFILE_MASK) & gl::CONTEXT_CORE_PROFILE_BIT) > 0;
 }
 
 std::vector<std::string> getExtensions()
 {
-    int count = getInteger(GL_NUM_EXTENSIONS);
+    int count = getInteger(gl::NUM_EXTENSIONS);
 
     std::vector<std::string> extensions(count);
 
     for (int i=0; i<count; ++i)
     {
-        extensions[i] = getString(GL_EXTENSIONS, i);
+        extensions[i] = getString(gl::EXTENSIONS, i);
     }
 
     return extensions;
@@ -258,7 +258,7 @@ bool isEnabled(GLenum capability)
 {
     GLboolean value = glIsEnabled(capability);
     CheckGLError();
-    return value == GL_TRUE;
+    return value == gl::TRUE;
 }
 
 void setEnabled(GLenum capability, bool enabled)
@@ -282,7 +282,7 @@ bool isEnabled(GLenum capability, int index)
 {
     GLboolean value = glIsEnabledi(capability, index);
     CheckGLError();
-    return value == GL_TRUE;
+    return value == gl::TRUE;
 }
 
 void setEnabled(GLenum capability, int index, bool enabled)

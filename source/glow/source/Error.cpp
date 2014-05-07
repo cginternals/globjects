@@ -1,5 +1,7 @@
 #include <glow/Error.h>
 
+#include <glbinding/constants.h>
+
 #include <glow/DebugMessage.h>
 #include "debugmessageoutput_private.h"
 
@@ -13,7 +15,7 @@ Error::Error(GLenum errorCode)
 }
 
 Error::Error()
-: Error(GL_NO_ERROR)
+: Error(gl::NO_ERROR)
 {
 }
 
@@ -26,18 +28,18 @@ std::string Error::name() const
 {
     switch(m_errorCode)
     {
-        case GL_NO_ERROR:
-            return "GL_NO_ERROR";
-        case GL_INVALID_ENUM:
-            return "GL_INVALID_ENUM";
-        case GL_INVALID_VALUE:
-            return "GL_INVALID_VALUE";
-        case GL_INVALID_OPERATION:
-            return "GL_INVALID_OPERATION";
-        case GL_INVALID_FRAMEBUFFER_OPERATION:
-            return "GL_INVALID_FRAMEBUFFER_OPERATION";
-        case GL_OUT_OF_MEMORY:
-            return "GL_OUT_OF_MEMORY";
+        case gl::NO_ERROR:
+            return "gl::NO_ERROR";
+        case gl::INVALID_ENUM:
+            return "gl::INVALID_ENUM";
+        case gl::INVALID_VALUE:
+            return "gl::INVALID_VALUE";
+        case gl::INVALID_OPERATION:
+            return "gl::INVALID_OPERATION";
+        case gl::INVALID_FRAMEBUFFER_OPERATION:
+            return "gl::INVALID_FRAMEBUFFER_OPERATION";
+        case gl::OUT_OF_MEMORY:
+            return "gl::OUT_OF_MEMORY";
         default:
             return "Unknown GLenum.";
     }
@@ -55,7 +57,7 @@ void Error::clear()
 
 bool Error::isError() const
 {
-	return m_errorCode != GL_NO_ERROR;
+	return m_errorCode != gl::NO_ERROR;
 }
 
 Error::operator bool() const

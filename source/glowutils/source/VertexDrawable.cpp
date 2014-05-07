@@ -7,8 +7,8 @@ namespace glowutils
 
 VertexDrawable::AttributeFormat::AttributeFormat()
 : size(0)
-, type(GL_FLOAT)
-, normalized(GL_FALSE)
+, type(gl::FLOAT)
+, normalized(gl::FALSE)
 , relativeOffset(0)
 , formatType(Float)
 {
@@ -143,12 +143,12 @@ VertexDrawable::AttributeFormat Format(GLint size, GLenum type, GLuint relativeO
 
 VertexDrawable::AttributeFormat FormatI(GLint size, GLenum type, GLuint relativeOffset)
 {
-    return VertexDrawable::AttributeFormat(size, type, GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Integer);
+    return VertexDrawable::AttributeFormat(size, type, gl::FALSE, relativeOffset, VertexDrawable::AttributeFormat::Integer);
 }
 
 VertexDrawable::AttributeFormat FormatL(GLint size, GLenum type, GLuint relativeOffset)
 {
-    return VertexDrawable::AttributeFormat(size, type, GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Long);
+    return VertexDrawable::AttributeFormat(size, type, gl::FALSE, relativeOffset, VertexDrawable::AttributeFormat::Long);
 }
 
 } // namespace glowutils

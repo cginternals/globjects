@@ -58,12 +58,12 @@ public:
 
         m_sphere = new glow::Program();
         m_sphere->attach(
-            glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/tessellation/sphere.vert")
-        ,   glowutils::createShaderFromFile(GL_TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
-        ,   glowutils::createShaderFromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
-        ,   glowutils::createShaderFromFile(GL_GEOMETRY_SHADER, "data/tessellation/sphere.geom")
-        ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
-        ,   glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/common/phong.frag"));
+            glowutils::createShaderFromFile(gl::VERTEX_SHADER, "data/tessellation/sphere.vert")
+        ,   glowutils::createShaderFromFile(gl::TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
+        ,   glowutils::createShaderFromFile(gl::TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
+        ,   glowutils::createShaderFromFile(gl::GEOMETRY_SHADER, "data/tessellation/sphere.geom")
+        ,   glowutils::createShaderFromFile(gl::FRAGMENT_SHADER, "data/tessellation/sphere.frag")
+        ,   glowutils::createShaderFromFile(gl::FRAGMENT_SHADER, "data/common/phong.frag"));
 
         m_icosahedron = new glowutils::Icosahedron();
         m_agrid = new glowutils::AdaptiveGrid(16U);
@@ -90,7 +90,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         m_agrid->update();
@@ -105,8 +105,8 @@ public:
         m_sphere->setUniform("level", level);
 
         m_sphere->use();
-        glPatchParameteri(GL_PATCH_VERTICES, 3);
-        m_icosahedron->draw(GL_PATCHES);
+        glPatchParameteri(gl::PATCH_VERTICES, 3);
+        m_icosahedron->draw(gl::PATCHES);
         m_sphere->release();
 
         m_agrid->draw();

@@ -24,8 +24,8 @@ namespace glow
  * The current bound VertexArrayObject and Program will specify the render pipeline and data.
  *
  * \code{.cpp}
- * Buffer * buffer = new Buffer(GL_SHADER_STORAGE_BUFFER);
- * buffer->setData(sizeof(glm::vec4) * 100, nullptr, GL_DYNAMIC_DRAW); // allocate 100 vec4
+ * Buffer * buffer = new Buffer(gl::SHADER_STORAGE_BUFFER);
+ * buffer->setData(sizeof(glm::vec4) * 100, nullptr, gl::DYNAMIC_DRAW); // allocate 100 vec4
  * \endcode
  *
  * \see http://www.opengl.org/wiki/Buffer_Object
@@ -35,7 +35,7 @@ class GLOW_API Buffer : public Object
 public:
     /**
      * Sets the target that is used for binding buffers to call state changing OpenGL functions.
-     * This has an effect only when GL_EXT_direct_state_access is not available.
+     * This has an effect only when gl::EXT_direct_state_access is not available.
      * Usually this target never has to be changed unless you want to ensure that a certain binding target will not be used.
      * @param target
      */
@@ -139,7 +139,7 @@ public:
     /**
      * Wraps the OpenGL function glGetBufferParameter.
      * Queries OpenGL for internal state of the buffer.
-     * @param pname name of the parameter, e.g. GL_BUFFER_SIZE
+     * @param pname name of the parameter, e.g. gl::BUFFER_SIZE
      * @return integer value for the parameter
      * \see http://www.opengl.org/sdk/docs/man/xhtml/glGetBufferParameter.xml
      */

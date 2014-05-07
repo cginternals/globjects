@@ -6,7 +6,7 @@
 
 namespace glow {
 
-GLenum LegacyBufferImplementation::s_workingTarget = GL_COPY_WRITE_BUFFER;
+GLenum LegacyBufferImplementation::s_workingTarget = gl::COPY_WRITE_BUFFER;
 
 void * LegacyBufferImplementation::map(const Buffer * buffer, gl::GLenum access) const
 {
@@ -35,7 +35,7 @@ bool LegacyBufferImplementation::unmap(const Buffer * buffer) const
     GLboolean success = glUnmapBuffer(s_workingTarget);
     CheckGLError();
 
-    return success == GL_TRUE;
+    return success == gl::TRUE;
 }
 
 void LegacyBufferImplementation::setData(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLenum usage) const

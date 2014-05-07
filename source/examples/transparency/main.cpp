@@ -58,7 +58,7 @@ public:
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         CheckGLError();
 
-		glow::Shader* vertexShader = glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/transparency.vert");
+		glow::Shader* vertexShader = glowutils::createShaderFromFile(gl::VERTEX_SHADER, "data/transparency/transparency.vert");
 
         m_algos.push_back(new GlBlendAlgorithm);
         m_algos.push_back(new ABufferAlgorithm);
@@ -74,8 +74,8 @@ public:
 
 		// Setup the screen aligned quad stuff
 		glow::Program* quadProgram = new glow::Program();
-        quadProgram->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/transparency/quad.frag"));
-        quadProgram->attach(glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/transparency/quad.vert"));
+        quadProgram->attach(glowutils::createShaderFromFile(gl::FRAGMENT_SHADER, "data/transparency/quad.frag"));
+        quadProgram->attach(glowutils::createShaderFromFile(gl::VERTEX_SHADER, "data/transparency/quad.vert"));
         m_quad = new glowutils::ScreenAlignedQuad(quadProgram);
 
 		m_aabb.extend(glm::vec3(-1.f, -0.5f, -10.5f));
@@ -108,10 +108,10 @@ public:
         }
 
         // STAGE2 - Draw the texture of each algorithm& onto the screen aligned quad
-		glDisable(GL_DEPTH_TEST);
+		glDisable(gl::DEPTH_TEST);
 		CheckGLError();
 
-		glDepthMask(GL_FALSE);
+		glDepthMask(gl::FALSE);
 		CheckGLError();
 
 		m_quad->program()->setUniform("topLeft", 0);
@@ -120,15 +120,15 @@ public:
         m_quad->program()->setUniform("bottomRight", 3);
 
         for (unsigned int i = 0; i < std::min(size_t(4), m_algos.size()); ++i) {
-            m_algos[i]->getOutput()->bindActive(GL_TEXTURE0 + i);
+            m_algos[i]->getOutput()->bindActive(gl::TEXTURE0 + i);
         }
 
 		m_quad->draw();
 
-		glEnable(GL_DEPTH_TEST);
+		glEnable(gl::DEPTH_TEST);
 		CheckGLError();
 
-		glDepthMask(GL_TRUE);
+		glDepthMask(gl::TRUE);
 		CheckGLError();
 	}
 
@@ -146,12 +146,12 @@ public:
 
     virtual float depthAt(const glm::ivec2 & windowCoordinates) const override
 	{
-		return glowutils::AbstractCoordinateProvider::depthAt(*m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
+		return glowutils::AbstractCoordinateProvider::depthAt(*m_camera, gl::DEPTH_COMPONENT, windowCoordinates);
 	}
 
     virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) const override
 	{
-		return unproject(*m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
+		return unproject(*m_camera, static_cast<GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
 	}
 
     virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) const override

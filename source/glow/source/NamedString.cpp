@@ -85,7 +85,7 @@ bool NamedString::isNamedString(const std::string & name)
 
     if (hasNativeSupport())
     {
-        bool result = glIsNamedStringARB(static_cast<GLint>(name.size()), name.c_str()) == GL_TRUE;
+        bool result = glIsNamedStringARB(static_cast<GLint>(name.size()), name.c_str()) == gl::TRUE;
         CheckGLError();
 
         return result;
@@ -108,9 +108,9 @@ GLint NamedString::getParameter(GLenum pname)
 
     switch (pname)
     {
-        case GL_NAMED_STRING_LENGTH_ARB:
+        case gl::NAMED_STRING_LENGTH_ARB:
             return static_cast<GLint>(string().size());
-        case GL_NAMED_STRING_TYPE_ARB:
+        case gl::NAMED_STRING_TYPE_ARB:
             return m_type;
         default:
             return -1;
@@ -126,10 +126,10 @@ NamedString * NamedString::obtain(const std::string & name)
         GLint type;
         GLint length;
 
-        glGetNamedStringivARB(static_cast<GLint>(name.size()), name.c_str(), GL_NAMED_STRING_TYPE_ARB, &type);
+        glGetNamedStringivARB(static_cast<GLint>(name.size()), name.c_str(), gl::NAMED_STRING_TYPE_ARB, &type);
         CheckGLError();
 
-        glGetNamedStringivARB(static_cast<GLint>(name.size()), name.c_str(), GL_NAMED_STRING_LENGTH_ARB, &length);
+        glGetNamedStringivARB(static_cast<GLint>(name.size()), name.c_str(), gl::NAMED_STRING_LENGTH_ARB, &length);
         CheckGLError();
 
         std::vector<char> string(length);

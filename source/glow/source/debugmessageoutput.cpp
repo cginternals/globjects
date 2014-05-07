@@ -2,6 +2,8 @@
 #include <cassert>
 #include <unordered_map>
 
+#include <glbinding/constants.h>
+
 #include <glow/logging.h>
 #include <glow/Error.h>
 #include <glow/DebugMessage.h>
@@ -76,7 +78,7 @@ void enableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
 
 void enableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids)
 {
-    controlMessages(source, type, severity, count, ids, GL_TRUE);
+    controlMessages(source, type, severity, count, ids, gl::TRUE);
 }
 
 void enableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint> & ids)
@@ -91,7 +93,7 @@ void disableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
 
 void disableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids)
 {
-    controlMessages(source, type, severity, count, ids, GL_FALSE);
+    controlMessages(source, type, severity, count, ids, gl::FALSE);
 }
 
 void disableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint> & ids)
@@ -123,7 +125,7 @@ void signalError(const Error & error, const char * file, int line)
     if (!implementation().isFallback())
         return;
 
-    insertMessage(DebugMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, error.code(), GL_DEBUG_SEVERITY_HIGH_ARB, stream.str()));
+    insertMessage(DebugMessage(gl::DEBUG_SOURCE_API_ARB, gl::DEBUG_TYPE_ERROR_ARB, error.code(), gl::DEBUG_SEVERITY_HIGH_ARB, stream.str()));
 }
 
 } // namespace debugmessageoutput

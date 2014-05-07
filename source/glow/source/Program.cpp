@@ -77,7 +77,7 @@ void Program::release() const
 
 bool Program::isUsed() const
 {
-    GLuint currentProgram = static_cast<GLuint>(getInteger(GL_CURRENT_PROGRAM));
+    GLuint currentProgram = static_cast<GLuint>(getInteger(gl::CURRENT_PROGRAM));
 
     return currentProgram > 0 && currentProgram == m_id;
 }
@@ -182,7 +182,7 @@ bool Program::compileAttachedShaders() const
 
 bool Program::checkLinkStatus() const
 {
-    if (GL_FALSE == get(GL_LINK_STATUS))
+    if (gl::FALSE == get(gl::LINK_STATUS))
     {
         critical()
             << "Linker error:" << std::endl
@@ -314,7 +314,7 @@ std::string Program::getActiveUniformName(GLuint uniformIndex) const
 {
     checkDirty();
 
-    GLint length = getActiveUniform(uniformIndex, GL_UNIFORM_NAME_LENGTH);
+    GLint length = getActiveUniform(uniformIndex, gl::UNIFORM_NAME_LENGTH);
     std::vector<char> name(length);
     glGetActiveUniformName(m_id, uniformIndex, length, nullptr, name.data());
     CheckGLError();
@@ -403,7 +403,7 @@ ProgramBinary * Program::getBinary() const
         return nullptr;
     }
 
-    int length = get(GL_PROGRAM_BINARY_LENGTH);
+    int length = get(gl::PROGRAM_BINARY_LENGTH);
 
     if (length == 0)
     {
@@ -430,7 +430,7 @@ GLint Program::get(GLenum pname) const
 
 const std::string Program::infoLog() const
 {
-	GLint length = get(GL_INFO_LOG_LENGTH);
+	GLint length = get(gl::INFO_LOG_LENGTH);
 
     if (length == 0)
     {

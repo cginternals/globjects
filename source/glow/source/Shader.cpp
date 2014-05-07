@@ -3,6 +3,8 @@
 #include <vector>
 #include <sstream>
 
+#include <glbinding/constants.h>
+
 #include <glowbase/ref_ptr.h>
 #include <glowbase/Version.h>
 
@@ -210,7 +212,7 @@ GLint Shader::get(GLenum pname) const
 
 std::string Shader::getSource() const
 {
-    GLint sourceLength = get(GL_SHADER_SOURCE_LENGTH);
+    GLint sourceLength = get(gl::SHADER_SOURCE_LENGTH);
     std::vector<char> source(sourceLength);
 
     glGetShaderSource(m_id, sourceLength, nullptr, source.data());
@@ -221,9 +223,9 @@ std::string Shader::getSource() const
 
 bool Shader::checkCompileStatus() const
 {
-    GLint status = get(GL_COMPILE_STATUS);
+    GLint status = get(gl::COMPILE_STATUS);
 
-    if (GL_FALSE == status)
+    if (gl::FALSE == status)
     {
         critical()
             << "Compiler error:" << std::endl
@@ -238,7 +240,7 @@ bool Shader::checkCompileStatus() const
 
 std::string Shader::infoLog() const
 {
-    GLsizei length = get(GL_INFO_LOG_LENGTH);
+    GLsizei length = get(gl::INFO_LOG_LENGTH);
 	std::vector<char> log(length);
 
 	glGetShaderInfoLog(m_id, length, &length, log.data());
@@ -271,18 +273,18 @@ std::string Shader::typeString(GLenum type)
 {
     switch (type)
 	{
-	case GL_GEOMETRY_SHADER:
-		return "GL_GEOMETRY_SHADER";
-	case GL_FRAGMENT_SHADER:
-		return "GL_FRAGMENT_SHADER";
-	case GL_VERTEX_SHADER:
-		return "GL_VERTEX_SHADER";
-	case GL_TESS_EVALUATION_SHADER:
-		return "GL_TESS_EVALUATION_SHADER";
-	case GL_TESS_CONTROL_SHADER:
-		return "GL_TESS_CONTROL_SHADER";
-	case GL_COMPUTE_SHADER:
-		return "GL_COMPUTE_SHADER";
+	case gl::GEOMETRY_SHADER:
+		return "gl::GEOMETRY_SHADER";
+	case gl::FRAGMENT_SHADER:
+		return "gl::FRAGMENT_SHADER";
+	case gl::VERTEX_SHADER:
+		return "gl::VERTEX_SHADER";
+	case gl::TESS_EVALUATION_SHADER:
+		return "gl::TESS_EVALUATION_SHADER";
+	case gl::TESS_CONTROL_SHADER:
+		return "gl::TESS_CONTROL_SHADER";
+	case gl::COMPUTE_SHADER:
+		return "gl::COMPUTE_SHADER";
 	default:
 		return "Unknown Shader Type";
 	}

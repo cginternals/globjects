@@ -84,19 +84,19 @@ Icosahedron::Icosahedron(const GLsizei iterations, const GLuint vertexAttribLoca
 
     refine(vertices, indices, static_cast<char>(clamp(iterations, 0, 8)));
 
-    m_indices->setData(indices, GL_STATIC_DRAW);
-    m_vertices->setData(vertices, GL_STATIC_DRAW);
+    m_indices->setData(indices, gl::STATIC_DRAW);
+    m_vertices->setData(vertices, gl::STATIC_DRAW);
 
     m_size = static_cast<GLsizei>(indices.size() * 3);
 
     m_vao->bind();
 
-    m_indices->bind(GL_ELEMENT_ARRAY_BUFFER);
+    m_indices->bind(gl::ELEMENT_ARRAY_BUFFER);
 
     auto vertexBinding = m_vao->binding(0);
     vertexBinding->setAttribute(vertexAttribLocation);
     vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
-    vertexBinding->setFormat(3, GL_FLOAT, GL_TRUE);
+    vertexBinding->setFormat(3, gl::FLOAT, gl::TRUE);
     m_vao->enable(0);
 
     m_vao->unbind();
@@ -108,16 +108,16 @@ Icosahedron::~Icosahedron()
 
 void Icosahedron::draw(const GLenum mode)
 {
-    glEnable(GL_DEPTH_TEST);
+    glEnable(gl::DEPTH_TEST);
     CheckGLError();
 
     m_vao->bind();
-    m_vao->drawElements(mode, m_size, GL_UNSIGNED_SHORT, nullptr);
+    m_vao->drawElements(mode, m_size, gl::UNSIGNED_SHORT, nullptr);
     m_vao->unbind();
 
-    m_indices->unbind(GL_ELEMENT_ARRAY_BUFFER);
+    m_indices->unbind(gl::ELEMENT_ARRAY_BUFFER);
 
-    // glDisable(GL_DEPTH_TEST); // TODO: Use stackable states
+    // glDisable(gl::DEPTH_TEST); // TODO: Use stackable states
 }
 
 void Icosahedron::refine(

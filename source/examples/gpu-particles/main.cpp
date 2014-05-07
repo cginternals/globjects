@@ -89,14 +89,7 @@ public:
     {
         glow::debugmessageoutput::enable();
 
-        m_forces = new glow::Texture(GL_TEXTURE_3D);
-
-        m_forces->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        m_forces->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        
-        m_forces->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        m_forces->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        m_forces->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        m_forces = glow::Texture::createDefault(gl::TEXTURE_3D);
 
         // Initialize shader includes
 
@@ -194,7 +187,7 @@ public:
             forces[i] = f * (1.f - length(vec3(x, y, z)) / std::sqrt(3.f));
         }
 
-        m_forces->image3D(0, GL_RGB32F, fdim.x, fdim.y, fdim.z, 0, GL_RGB, GL_FLOAT, forces.data());
+        m_forces->image3D(0, gl::RGB32F, fdim.x, fdim.y, fdim.z, 0, gl::RGB, gl::FLOAT, forces.data());
 
         if (!particles)
             return;

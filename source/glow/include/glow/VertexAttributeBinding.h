@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 
+#include <glbinding/constants.h>
+
 #include <glowbase/Referenced.h>
 #include <glowbase/ref_ptr.h>
 
@@ -35,7 +37,7 @@ public:
 	void setFormat(
         GLint size
     ,   GLenum type
-    ,   GLboolean normalized = GL_FALSE
+    ,   GLboolean normalized = static_cast<GLboolean>(gl::FALSE)
     ,   GLuint relativeoffset = 0);
 	void setIFormat(
         GLint size

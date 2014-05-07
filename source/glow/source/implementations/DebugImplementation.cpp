@@ -2,6 +2,8 @@
 
 #include <glow/glow.h>
 
+#include <glbinding/constants.h>
+
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -32,19 +34,19 @@ void DebugImplementation::registerCallback()
 
 void DebugImplementation::enable()
 {
-    glow::enable(GL_DEBUG_OUTPUT);
+    glow::enable(gl::DEBUG_OUTPUT);
 
     registerCallback();
 }
 
 void DebugImplementation::disable()
 {
-    glow::disable(GL_DEBUG_OUTPUT);
+    glow::disable(gl::DEBUG_OUTPUT);
 }
 
 void DebugImplementation::setSynchronous(bool synchronous)
 {
-    setEnabled(GL_DEBUG_OUTPUT_SYNCHRONOUS, synchronous);
+    setEnabled(gl::DEBUG_OUTPUT_SYNCHRONOUS, synchronous);
 }
 
 void DebugImplementation::insertMessage(const DebugMessage & message)

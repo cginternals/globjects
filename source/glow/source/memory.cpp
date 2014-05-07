@@ -1,5 +1,7 @@
 #include <glow/memory.h>
 
+#include <glbinding/constants.h>
+
 #include <glow/glow.h>
 #include <glow/Extension.h>
 
@@ -23,27 +25,27 @@ namespace memory
 
 GLint total()
 {
-    return getMemoryInformation(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX);
+    return getMemoryInformation(gl::GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX);
 }
 
 GLint dedicated()
 {
-    return getMemoryInformation(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX);
+    return getMemoryInformation(gl::GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX);
 }
 
 GLint available()
 {
-    return getMemoryInformation(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX);
+    return getMemoryInformation(gl::GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX);
 }
 
 GLint evicted()
 {
-    return getMemoryInformation(GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX);
+    return getMemoryInformation(gl::GPU_MEMORY_INFO_EVICTED_MEMORY_NVX);
 }
 
 GLint evictionCount()
 {
-    return getMemoryInformation(GL_GPU_MEMORY_INFO_EVICTION_COUNT_NVX);
+    return getMemoryInformation(gl::GPU_MEMORY_INFO_EVICTION_COUNT_NVX);
 }
 
 }

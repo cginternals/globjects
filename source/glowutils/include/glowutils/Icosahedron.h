@@ -4,6 +4,8 @@
 #include <array>
 #include <vector>
 
+#include <glbinding/constants.h>
+
 #include <GL/glew.h>
 
 #include <glm/glm.hpp>
@@ -50,7 +52,7 @@ public:
 
     /** draws the icosahedron as single triangles (TODO: generate set of triangle strips?)
     */
-    void draw(GLenum mode = GL_TRIANGLES);
+    void draw(GLenum mode = gl::TRIANGLES);
 
 private:
     /** Splits a triangle edge by adding an appropriate new point (normalized

@@ -9,7 +9,7 @@ namespace glow {
 
 GLenum BindlessFrameBufferImplementation::checkStatus(const FrameBufferObject * fbo) const
 {
-    GLenum result = glCheckNamedFramebufferStatusEXT(fbo->id(), GL_FRAMEBUFFER);
+    GLenum result = glCheckNamedFramebufferStatusEXT(fbo->id(), gl::FRAMEBUFFER);
     CheckGLError();
 
     return result;
@@ -39,19 +39,19 @@ void BindlessFrameBufferImplementation::attachTexture(const FrameBufferObject * 
 
 void BindlessFrameBufferImplementation::attachTexture1D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
 {
-    glNamedFramebufferTexture1DEXT(fbo->id(), attachment, texture ? texture->target() : GL_TEXTURE_1D, texture ? texture->id() : 0, level);
+    glNamedFramebufferTexture1DEXT(fbo->id(), attachment, texture ? texture->target() : gl::TEXTURE_1D, texture ? texture->id() : 0, level);
     CheckGLError();
 }
 
 void BindlessFrameBufferImplementation::attachTexture2D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
 {
-    glNamedFramebufferTexture2DEXT(fbo->id(), attachment, texture ? texture->target() : GL_TEXTURE_2D, texture ? texture->id() : 0, level);
+    glNamedFramebufferTexture2DEXT(fbo->id(), attachment, texture ? texture->target() : gl::TEXTURE_2D, texture ? texture->id() : 0, level);
     CheckGLError();
 }
 
 void BindlessFrameBufferImplementation::attachTexture3D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const
 {
-    glNamedFramebufferTexture3DEXT(fbo->id(), attachment, texture ? texture->target() : GL_TEXTURE_3D, texture ? texture->id() : 0, level, layer);
+    glNamedFramebufferTexture3DEXT(fbo->id(), attachment, texture ? texture->target() : gl::TEXTURE_3D, texture ? texture->id() : 0, level, layer);
     CheckGLError();
 }
 
@@ -63,9 +63,9 @@ void BindlessFrameBufferImplementation::attachTextureLayer(const FrameBufferObje
 
 void BindlessFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const
 {
-    renderBuffer->bind(GL_RENDERBUFFER); // TODO: is this necessary?
+    renderBuffer->bind(gl::RENDERBUFFER); // TODO: is this necessary?
 
-    glNamedFramebufferRenderbufferEXT(fbo->id(), attachment, GL_RENDERBUFFER, renderBuffer->id());
+    glNamedFramebufferRenderbufferEXT(fbo->id(), attachment, gl::RENDERBUFFER, renderBuffer->id());
     CheckGLError();
 }
 

@@ -17,7 +17,7 @@ class Referenced;
         
         ref_ptr<VertexArrayObject> vao = new VertexArrayObject(); 
         ...
-        vao->drawElements(GL_TRIANGLE_STRIP, 0, 4);
+        vao->drawElements(gl::TRIANGLE_STRIP, 0, 4);
     
         // vao will be deleted automatically as the ref_ptr goes out of scope
 

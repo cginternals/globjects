@@ -37,7 +37,7 @@ GLuint UniformBlock::blockIndex() const
     if (m_identity.isName())
         return m_program->getUniformBlockIndex(m_identity.name());
 
-    return GL_INVALID_INDEX;
+    return gl::INVALID_INDEX;
 }
 
 void UniformBlock::updateBinding() const
@@ -72,7 +72,7 @@ std::vector<GLint> UniformBlock::getActive(GLenum pname, GLint paramCount) const
 
 std::vector<GLint> UniformBlock::getActiveUniformIndices() const
 {
-    return getActive(GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, getActive(GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS));
+    return getActive(gl::UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, getActive(gl::UNIFORM_BLOCK_ACTIVE_UNIFORMS));
 }
 
 std::string UniformBlock::getName() const
@@ -80,7 +80,7 @@ std::string UniformBlock::getName() const
     if (m_identity.isName())
         return m_identity.name();
 
-    GLint length = getActive(GL_UNIFORM_BLOCK_NAME_LENGTH);
+    GLint length = getActive(gl::UNIFORM_BLOCK_NAME_LENGTH);
     std::vector<char> name(length);
 
     glGetActiveUniformBlockName(m_program->id(), blockIndex(), length, nullptr, name.data());

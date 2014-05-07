@@ -2,6 +2,9 @@
 
 #include <algorithm>
 
+#include <glbinding/constants.h>
+#include <glbinding/functions.h>
+
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glow/Error.h>
@@ -44,11 +47,11 @@ Texture * Texture::createDefault(GLenum target)
 {
     Texture* tex = new Texture(target);
 
-    tex->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    tex->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    tex->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    tex->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    tex->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    tex->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::LINEAR));
+    tex->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::LINEAR));
+    tex->setParameter(gl::TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    tex->setParameter(gl::TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    tex->setParameter(gl::TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
 
     return tex;
 }
@@ -100,19 +103,19 @@ GLenum Texture::target() const
     return m_target;
 }
 
-void Texture::setParameter(GLenum name, GLint value)
+void Texture::setParameter(gl::GLenum name, gl::GLint value)
 {
 	bind();
 
-    glTexParameteri(m_target, name, value);
+    gl::TexParameteri(m_target, name, value);
 	CheckGLError();
 }
 
-void Texture::setParameter(GLenum name, GLfloat value)
+void Texture::setParameter(gl::GLenum name, gl::GLfloat value)
 {
 	bind();
 
-    glTexParameterf(m_target, name, value);
+    gl::TexParameterf(m_target, name, value);
 	CheckGLError();
 }
 
@@ -150,8 +153,8 @@ void Texture::getImage(GLint level, GLenum format, GLenum type, GLvoid * image) 
 
 std::vector<unsigned char> Texture::getImage(GLint level, GLenum format, GLenum type) const
 {
-    GLint width = getLevelParameter(level, GL_TEXTURE_WIDTH);
-    GLint height = getLevelParameter(level, GL_TEXTURE_HEIGHT);
+    GLint width = getLevelParameter(level, gl::TEXTURE_WIDTH);
+    GLint height = getLevelParameter(level, gl::TEXTURE_HEIGHT);
 
     int byteSize = imageSizeInBytes(width, height, format, type);
 
@@ -171,7 +174,7 @@ void Texture::getCompressedImage(GLint lod, GLvoid * image) const
 
 std::vector<unsigned char> Texture::getCompressedImage(GLint lod) const
 {
-    GLint size = getLevelParameter(lod, GL_TEXTURE_COMPRESSED_IMAGE_SIZE);
+    GLint size = getLevelParameter(lod, gl::TEXTURE_COMPRESSED_IMAGE_SIZE);
 
     std::vector<unsigned char> data(size);
     getCompressedImage(lod, data.data());
@@ -465,7 +468,7 @@ TextureHandle Texture::textureHandle() const
 
 GLboolean Texture::isResident() const
 {
-    bool result = glIsTextureHandleResidentARB(textureHandle()) == GL_TRUE;
+    bool result = glIsTextureHandleResidentARB(textureHandle()) == gl::TRUE;
 	CheckGLError();
 
 	return result;
