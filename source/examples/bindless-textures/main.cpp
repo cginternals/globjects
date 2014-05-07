@@ -72,6 +72,8 @@ public:
 
     virtual void initialize(Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
         if (!glow::hasExtension(glow::Extension::GLOW_NV_bindless_texture))

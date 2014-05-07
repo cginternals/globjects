@@ -53,7 +53,9 @@ public:
 
 		window.addTimer(0, 0);
 
-		glow::debugmessageoutput::enable();
+        ExampleWindowEventHandler::initialize(window);
+
+        glow::debugmessageoutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         CheckGLError();

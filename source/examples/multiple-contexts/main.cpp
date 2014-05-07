@@ -30,8 +30,10 @@ public:
     {
     }
 
-    virtual void initialize(Window & ) override
+    virtual void initialize(Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
         glClearColor(1.f, 1.f, 1.f, 1.f);

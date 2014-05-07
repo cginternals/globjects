@@ -33,7 +33,9 @@
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
-class EventHandler : public glowwindow::WindowEventHandler
+#include <ExampleWindowEventHandler.h>
+
+class EventHandler : public ExampleWindowEventHandler
 {
 public:
     EventHandler()
@@ -46,6 +48,8 @@ public:
 
     virtual void initialize(glowwindow::Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
         std::cout << "glow Objects tests" << std::endl;

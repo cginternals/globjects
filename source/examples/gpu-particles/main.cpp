@@ -85,8 +85,10 @@ public:
         delete m_camera;
     }
 
-    virtual void initialize(Window & ) override
+    virtual void initialize(Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
         m_forces = glow::Texture::createDefault(gl::TEXTURE_3D);

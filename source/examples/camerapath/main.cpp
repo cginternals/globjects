@@ -110,6 +110,8 @@ public:
 
     virtual void initialize(Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         debugmessageoutput::enable();
 
         glClearColor(1.0f, 1.0f, 1.0f, 0.f);

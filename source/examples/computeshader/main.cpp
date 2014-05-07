@@ -57,6 +57,8 @@ public:
 
     virtual void initialize(Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
         if (!glow::hasExtension(glow::Extension::GLOW_ARB_compute_shader))

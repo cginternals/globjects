@@ -17,8 +17,6 @@
 
 #include <ExampleWindowEventHandler.h>
 
-#include <glbinding/glbinding.h>
-
 using namespace glowwindow;
 
 namespace {
@@ -70,9 +68,9 @@ public:
         program->destroy();
     }
 
-    virtual void initialize(Window &) override
+    virtual void initialize(Window & window) override
     {
-        gl::initialize();
+        ExampleWindowEventHandler::initialize(window);
 
         glow::debugmessageoutput::enable();
 

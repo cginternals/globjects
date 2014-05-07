@@ -12,6 +12,8 @@ public:
     ExampleWindowEventHandler();
     virtual ~ExampleWindowEventHandler();
 
+    virtual void initialize(glowwindow::Window & window) override;
+
     virtual void handleEvent(glowwindow::WindowEvent & event) override;
 protected:
     glowutils::Timer m_timer;
