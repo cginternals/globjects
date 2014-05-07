@@ -12,6 +12,8 @@
 #include <glow/glow_api.h>
 #include <glow/Object.h>
 
+#include <GL/glew.h>
+
 namespace glow 
 {
 

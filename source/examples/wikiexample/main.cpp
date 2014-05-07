@@ -17,6 +17,8 @@
 
 #include <ExampleWindowEventHandler.h>
 
+#include <glbinding/glbinding.h>
+
 using namespace glowwindow;
 
 namespace {
@@ -70,6 +72,8 @@ public:
 
     virtual void initialize(Window &) override
     {
+        gl::initialize();
+
         glow::debugmessageoutput::enable();
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
