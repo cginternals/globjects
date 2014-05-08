@@ -9,7 +9,7 @@ namespace {
 
 gl::GLint getMemoryInformation(gl::GLenum pname)
 {
-    if (!glow::hasExtension("NVX_gpu_memory_info"))
+    if (!glow::hasExtension(gl::Extension::NVX_gpu_memory_info))
         return -1;
 
     return glow::getInteger(pname);
