@@ -4,7 +4,7 @@
 
 #include <glbinding/constants.h>
 
-#include <GL/glew.h>
+
 
 #include <glowbase/ChangeListener.h>
 #include <glowbase/ref_ptr.h>
@@ -18,25 +18,25 @@ namespace glow {
 class GLOW_API NamedString : public Referenced, protected ChangeListener
 {
 public:
-    static NamedString * create(const std::string & name, AbstractStringSource * string, GLenum type = gl::SHADER_INCLUDE_ARB);
-    static NamedString * create(const std::string & name, const std::string & string, GLenum type = gl::SHADER_INCLUDE_ARB);
+    static NamedString * create(const std::string & name, AbstractStringSource * string, gl::GLenum type = gl::SHADER_INCLUDE_ARB);
+    static NamedString * create(const std::string & name, const std::string & string, gl::GLenum type = gl::SHADER_INCLUDE_ARB);
 
     static bool isNamedString(const std::string & name);
     static NamedString * obtain(const std::string & name);
 
     const std::string & name() const;
     std::string string() const;
-    GLenum type() const;
+    gl::GLenum type() const;
 
     AbstractStringSource * stringSource();
 
-    GLint getParameter(GLenum pname);
+    gl::GLint getParameter(gl::GLenum pname);
 
     virtual void notifyChanged(const Changeable * changeable) override;
 protected:
     std::string m_name;
     ref_ptr<AbstractStringSource> m_source;
-    GLenum m_type;
+    gl::GLenum m_type;
 
     static bool hasNativeSupport();
 
@@ -45,7 +45,7 @@ protected:
     void createNamedString();
     void deleteNamedString();
 
-    NamedString(const std::string & name, AbstractStringSource * source, GLenum type = gl::SHADER_INCLUDE_ARB);
+    NamedString(const std::string & name, AbstractStringSource * source, gl::GLenum type = gl::SHADER_INCLUDE_ARB);
 
     virtual ~NamedString();
 

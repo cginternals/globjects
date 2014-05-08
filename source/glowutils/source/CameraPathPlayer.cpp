@@ -98,7 +98,7 @@ vec3 intersection(const vec3& a, const vec3& r, const vec3& p, const vec3& n)
 
 const char* vertexSource = R"(
 #version 140
-#extension gl::ARB_explicit_attrib_location : require
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform mat4 transform;
 
@@ -108,7 +108,7 @@ out float t;
 
 void main()
 {
-    gl::Position = transform * vec4(vertex.xyz, 1.0);
+    gl_Position = transform * vec4(vertex.xyz, 1.0);
     t = vertex.w;
 
 }
@@ -116,7 +116,7 @@ void main()
 
 const char* fragmentSource = R"(
 #version 140
-#extension gl::ARB_explicit_attrib_location : require
+#extension GL_ARB_explicit_attrib_location : require
 
 layout(location=0) out vec4 fragColor;
 

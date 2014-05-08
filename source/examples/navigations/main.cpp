@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+
 
 #include <algorithm>
 #include <random>
@@ -76,7 +76,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        glClearColor(1.0f, 1.0f, 1.0f, 0.f);
+        gl::ClearColor(1.0f, 1.0f, 1.0f, 0.f);
         CheckGLError();
 
         m_sphere = new glow::Program();
@@ -112,7 +112,7 @@ public:
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        glViewport(0, 0, event.width(), event.height());
+        gl::Viewport(0, 0, event.width(), event.height());
         CheckGLError();
 
         m_camera.setViewport(event.width(), event.height());
@@ -120,7 +120,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         m_agrid->update();
@@ -290,7 +290,7 @@ public:
 
     virtual vec3 objAt(const ivec2 & windowCoordinates) const override
     {
-        return unproject(m_camera, static_cast<GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
+        return unproject(m_camera, static_cast<gl::GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
     }
 
     virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override

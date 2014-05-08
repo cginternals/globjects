@@ -1,7 +1,5 @@
 #pragma once
 
-#include <GL/glew.h>
-
 #include <glbinding/constants.h>
 
 #include <glowbase/Referenced.h>
@@ -14,23 +12,23 @@ namespace glow
 class GLOW_API Sync : public Referenced
 {
 public:
-    static Sync * fence(GLenum condition = gl::SYNC_GPU_COMMANDS_COMPLETE, GLbitfield flags = 0);
+    static Sync * fence(gl::GLenum condition = gl::SYNC_GPU_COMMANDS_COMPLETE, gl::GLbitfield flags = 0);
 
     virtual ~Sync();
 
-    GLenum clientWait(GLbitfield flags = gl::SYNC_FLUSH_COMMANDS_BIT, GLuint64 timeout = gl::TIMEOUT_IGNORED);
-    void wait(GLbitfield flags = 0, GLuint64 timeout = gl::TIMEOUT_IGNORED);
+    gl::GLenum clientWait(gl::GLbitfield flags = gl::SYNC_FLUSH_COMMANDS_BIT, gl::GLuint64 timeout = gl::TIMEOUT_IGNORED);
+    void wait(gl::GLbitfield flags = 0, gl::GLuint64 timeout = gl::TIMEOUT_IGNORED);
 
-    void get(GLenum pname, GLsizei bufsize, GLsizei * length, GLint * values);
-    GLint get(GLenum pname);
+    void get(gl::GLenum pname, gl::GLsizei bufsize, gl::GLsizei * length, gl::GLint * values);
+    gl::GLint get(gl::GLenum pname);
 
-    GLsync sync() const;
+    gl::GLsync sync() const;
 protected:
-    GLsync m_sync;
+    gl::GLsync m_sync;
 
-    Sync(GLsync sync);
+    Sync(gl::GLsync sync);
 
-    static GLsync fenceSync(GLenum condition, GLbitfield flags);
+    static gl::GLsync fenceSync(gl::GLenum condition, gl::GLbitfield flags);
 };
 
 } // namespace glow

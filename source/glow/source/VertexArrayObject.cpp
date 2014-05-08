@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include <glbinding/functions.h>
+
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
 #include <glow/VertexAttributeBinding.h>
@@ -16,12 +18,12 @@ VertexArrayObject::VertexArrayObject()
 {
 }
 
-VertexArrayObject::VertexArrayObject(GLuint id, bool takeOwnership)
+VertexArrayObject::VertexArrayObject(gl::GLuint id, bool takeOwnership)
 : Object(id, takeOwnership)
 {
 }
 
-VertexArrayObject * VertexArrayObject::fromId(GLuint id, bool takeOwnership)
+VertexArrayObject * VertexArrayObject::fromId(gl::GLuint id, bool takeOwnership)
 {
     return new VertexArrayObject(id, takeOwnership);
 }
@@ -30,16 +32,16 @@ VertexArrayObject::~VertexArrayObject()
 {
 	if (ownsGLObject())
 	{
-		glDeleteVertexArrays(1, &m_id);
+		gl::DeleteVertexArrays(1, &m_id);
 		CheckGLError();
 	}
 }
 
-GLuint VertexArrayObject::genVertexArray()
+gl::GLuint VertexArrayObject::genVertexArray()
 {
-	GLuint id = 0;
+	gl::GLuint id = 0;
 
-	glGenVertexArrays(1, &id);
+	gl::GenVertexArrays(1, &id);
 	CheckGLError();
 	return id;
 }
@@ -51,17 +53,17 @@ void VertexArrayObject::accept(ObjectVisitor & visitor)
 
 void VertexArrayObject::bind() const
 {
-	glBindVertexArray(m_id);
+	gl::BindVertexArray(m_id);
 	CheckGLError();
 }
 
 void VertexArrayObject::unbind()
 {
-	glBindVertexArray(0);
+	gl::BindVertexArray(0);
 	CheckGLError();
 }
 
-VertexAttributeBinding* VertexArrayObject::binding(GLuint bindingIndex)
+VertexAttributeBinding* VertexArrayObject::binding(gl::GLuint bindingIndex)
 {
 	if (!m_bindings[bindingIndex])
 	{
@@ -71,7 +73,7 @@ VertexAttributeBinding* VertexArrayObject::binding(GLuint bindingIndex)
 	return m_bindings[bindingIndex];
 }
 
-const VertexAttributeBinding* VertexArrayObject::binding(GLuint bindingIndex) const
+const VertexAttributeBinding* VertexArrayObject::binding(gl::GLuint bindingIndex) const
 {
     if (!m_bindings.count(bindingIndex))
     {
@@ -81,27 +83,27 @@ const VertexAttributeBinding* VertexArrayObject::binding(GLuint bindingIndex) co
     return m_bindings.at(bindingIndex);
 }
 
-void VertexArrayObject::enable(GLint attributeIndex)
+void VertexArrayObject::enable(gl::GLint attributeIndex)
 {
 	bind();
 
-	glEnableVertexAttribArray(attributeIndex);
+    gl::EnableVertexAttribArray(attributeIndex);
 	CheckGLError();
 }
 
-void VertexArrayObject::disable(GLint attributeIndex)
+void VertexArrayObject::disable(gl::GLint attributeIndex)
 {
     bind();
 
-	glDisableVertexAttribArray(attributeIndex);
+    gl::DisableVertexAttribArray(attributeIndex);
 	CheckGLError();
 }
 
-void VertexArrayObject::setAttributeDivisor(GLint attributeIndex, GLuint divisor)
+void VertexArrayObject::setAttributeDivisor(gl::GLint attributeIndex, gl::GLuint divisor)
 {
     bind();
 
-    glVertexAttribDivisor(attributeIndex, divisor);
+    gl::VertexAttribDivisor(attributeIndex, divisor);
     CheckGLError();
 }
 
@@ -109,7 +111,7 @@ std::vector<VertexAttributeBinding*> VertexArrayObject::bindings()
 {
 	std::vector<VertexAttributeBinding*> bindings;
 
-    for (std::pair<GLuint, ref_ptr<VertexAttributeBinding>> pair: m_bindings)
+    for (std::pair<gl::GLuint, ref_ptr<VertexAttributeBinding>> pair: m_bindings)
 	{
 		bindings.push_back(pair.second);
 	}
@@ -121,7 +123,7 @@ std::vector<const VertexAttributeBinding*> VertexArrayObject::bindings() const
 {
     std::vector<const VertexAttributeBinding*> bindings;
 
-    for (std::pair<GLuint, ref_ptr<VertexAttributeBinding>> pair: m_bindings)
+    for (std::pair<gl::GLuint, ref_ptr<VertexAttributeBinding>> pair: m_bindings)
     {
         bindings.push_back(pair.second);
     }
@@ -129,150 +131,150 @@ std::vector<const VertexAttributeBinding*> VertexArrayObject::bindings() const
     return bindings;
 }
 
-void VertexArrayObject::drawArrays(GLenum mode, GLint first, GLsizei count) const
+void VertexArrayObject::drawArrays(gl::GLenum mode, gl::GLint first, gl::GLsizei count) const
 {
     bind();
-    glDrawArrays(mode, first, count);
+    gl::DrawArrays(mode, first, count);
     CheckGLError();
 }
 
-void VertexArrayObject::drawArraysInstanced(GLenum mode, GLint first, GLsizei count, GLsizei instanceCount) const
+void VertexArrayObject::drawArraysInstanced(gl::GLenum mode, gl::GLint first, gl::GLsizei count, gl::GLsizei instanceCount) const
 {
     bind();
-    glDrawArraysInstanced(mode, first, count, instanceCount);
+    gl::DrawArraysInstanced(mode, first, count, instanceCount);
     CheckGLError();
 }
 
-void VertexArrayObject::drawArraysInstancedBaseInstance(GLenum mode, GLint first, GLsizei count, GLsizei instanceCount, GLuint baseInstance) const
+void VertexArrayObject::drawArraysInstancedBaseInstance(gl::GLenum mode, gl::GLint first, gl::GLsizei count, gl::GLsizei instanceCount, gl::GLuint baseInstance) const
 {
     bind();
-    glDrawArraysInstancedBaseInstance(mode, first, count, instanceCount, baseInstance);
+    gl::DrawArraysInstancedBaseInstance(mode, first, count, instanceCount, baseInstance);
     CheckGLError();
 }
 
-void VertexArrayObject::drawArraysIndirect(GLenum mode, const void* indirect) const
+void VertexArrayObject::drawArraysIndirect(gl::GLenum mode, const void* indirect) const
 {
     assert(indirect != nullptr);
 
     bind();
-    glDrawArraysIndirect(mode, indirect);
+    gl::DrawArraysIndirect(mode, indirect);
     CheckGLError();
 }
 
-void VertexArrayObject::multiDrawArrays(GLenum mode, GLint* first, const GLsizei* count, GLsizei drawCount) const
+void VertexArrayObject::multiDrawArrays(gl::GLenum mode, gl::GLint* first, const gl::GLsizei* count, gl::GLsizei drawCount) const
 {
     bind();
-    glMultiDrawArrays(mode, first, count, drawCount);
+    gl::MultiDrawArrays(mode, first, count, drawCount);
     CheckGLError();
 }
 
-void VertexArrayObject::multiDrawArraysIndirect(GLenum mode, const void* indirect, GLsizei drawCount, GLsizei stride) const
+void VertexArrayObject::multiDrawArraysIndirect(gl::GLenum mode, const void* indirect, gl::GLsizei drawCount, gl::GLsizei stride) const
 {
     bind();
-    glMultiDrawArraysIndirect(mode, indirect, drawCount, stride);
+    gl::MultiDrawArraysIndirect(mode, indirect, drawCount, stride);
     CheckGLError();
 }
 
-void VertexArrayObject::drawElements(GLenum mode, GLsizei count, GLenum type, const void * indices) const
+void VertexArrayObject::drawElements(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void * indices) const
 {
     bind();
-    glDrawElements(mode, count, type, indices);
+    gl::DrawElements(mode, count, type, indices);
     CheckGLError();
 }
 
-void VertexArrayObject::drawElementsBaseVertex(GLenum mode, GLsizei count, GLenum type, const void* indices, GLint baseVertex) const
+void VertexArrayObject::drawElementsBaseVertex(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void* indices, gl::GLint baseVertex) const
 {
     bind();
-    glDrawElementsBaseVertex(mode, count, type, const_cast<void*>(indices), baseVertex);
+    gl::DrawElementsBaseVertex(mode, count, type, const_cast<void*>(indices), baseVertex);
     CheckGLError();
 }
 
-void VertexArrayObject::drawElementsInstanced(GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei primitiveCount) const
+void VertexArrayObject::drawElementsInstanced(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void* indices, gl::GLsizei primitiveCount) const
 {
     bind();
-    glDrawElementsInstanced(mode, count, type, indices, primitiveCount);
+    gl::DrawElementsInstanced(mode, count, type, indices, primitiveCount);
     CheckGLError();
 }
 
-void VertexArrayObject::drawElementsInstancedBaseInstance(GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei instanceCount, GLuint baseInstance) const
+void VertexArrayObject::drawElementsInstancedBaseInstance(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void* indices, gl::GLsizei instanceCount, gl::GLuint baseInstance) const
 {
     bind();
-    glDrawElementsInstancedBaseInstance(mode, count, type, indices, instanceCount, baseInstance);
+    gl::DrawElementsInstancedBaseInstance(mode, count, type, indices, instanceCount, baseInstance);
     CheckGLError();
 }
 
-void VertexArrayObject::drawElementsInstancedBaseVertex(GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei instanceCount, GLint baseVertex) const
+void VertexArrayObject::drawElementsInstancedBaseVertex(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void* indices, gl::GLsizei instanceCount, gl::GLint baseVertex) const
 {
     bind();
-    glDrawElementsInstancedBaseVertex(mode, count, type, indices, instanceCount, baseVertex);
+    gl::DrawElementsInstancedBaseVertex(mode, count, type, indices, instanceCount, baseVertex);
     CheckGLError();
 }
 
-void VertexArrayObject::drawElementsInstancedBaseVertexBaseInstance(GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei instanceCount, GLint baseVertex, GLuint baseInstance) const
+void VertexArrayObject::drawElementsInstancedBaseVertexBaseInstance(gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void* indices, gl::GLsizei instanceCount, gl::GLint baseVertex, gl::GLuint baseInstance) const
 {
     bind();
-    glDrawElementsInstancedBaseVertexBaseInstance(mode, count, type, indices, instanceCount, baseVertex, baseInstance);
+    gl::DrawElementsInstancedBaseVertexBaseInstance(mode, count, type, indices, instanceCount, baseVertex, baseInstance);
     CheckGLError();
 }
 
-void VertexArrayObject::multiDrawElements(GLenum mode, const GLsizei* count, GLenum type, const void** indices, GLsizei drawCount) const
+void VertexArrayObject::multiDrawElements(gl::GLenum mode, const gl::GLsizei* count, gl::GLenum type, const void** indices, gl::GLsizei drawCount) const
 {
     bind();
-    glMultiDrawElements(mode, count, type, indices, drawCount);
+    gl::MultiDrawElements(mode, count, type, indices, drawCount);
     CheckGLError();
 }
 
-void VertexArrayObject::multiDrawElementsBaseVertex(GLenum mode, const GLsizei* count, GLenum type, const void** indices, GLsizei drawCount, GLint* baseVertex) const
+void VertexArrayObject::multiDrawElementsBaseVertex(gl::GLenum mode, const gl::GLsizei* count, gl::GLenum type, const void** indices, gl::GLsizei drawCount, gl::GLint* baseVertex) const
 {
     bind();
-    glMultiDrawElementsBaseVertex(mode, const_cast<GLsizei*>(count), type, const_cast<void**>(indices), drawCount, baseVertex);
+    gl::MultiDrawElementsBaseVertex(mode, const_cast<gl::GLsizei*>(count), type, const_cast<void**>(indices), drawCount, baseVertex);
     CheckGLError();
 }
 
-void VertexArrayObject::multiDrawElementsIndirect(GLenum mode, GLenum type, const void* indirect, GLsizei drawCount, GLsizei stride) const
+void VertexArrayObject::multiDrawElementsIndirect(gl::GLenum mode, gl::GLenum type, const void* indirect, gl::GLsizei drawCount, gl::GLsizei stride) const
 {
     bind();
-    glMultiDrawElementsIndirect(mode, type, indirect, drawCount, stride);
+    gl::MultiDrawElementsIndirect(mode, type, indirect, drawCount, stride);
     CheckGLError();
 }
 
-void VertexArrayObject::drawRangeElements(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void* indices) const
+void VertexArrayObject::drawRangeElements(gl::GLenum mode, gl::GLuint start, gl::GLuint end, gl::GLsizei count, gl::GLenum type, const void* indices) const
 {
     bind();
-    glDrawRangeElements(mode, start, end, count, type, indices);
+    gl::DrawRangeElements(mode, start, end, count, type, indices);
     CheckGLError();
 }
 
-void VertexArrayObject::drawRangeElementsBaseVertex(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void* indices, GLint baseVertex) const
+void VertexArrayObject::drawRangeElementsBaseVertex(gl::GLenum mode, gl::GLuint start, gl::GLuint end, gl::GLsizei count, gl::GLenum type, const void* indices, gl::GLint baseVertex) const
 {
     bind();
-    glDrawRangeElementsBaseVertex(mode, start, end, count, type, const_cast<void*>(indices), baseVertex);
+    gl::DrawRangeElementsBaseVertex(mode, start, end, count, type, const_cast<void*>(indices), baseVertex);
     CheckGLError();
 }
 
-void VertexArrayObject::multiDrawArrays(GLenum mode, const std::vector<VertexArrayObject::MultiDrawArraysRange> & ranges) const
+void VertexArrayObject::multiDrawArrays(gl::GLenum mode, const std::vector<VertexArrayObject::MultiDrawArraysRange> & ranges) const
 {
-    std::vector<GLint> firsts = collect_member(ranges, MultiDrawArraysRange, first);
-    std::vector<GLsizei> counts = collect_member(ranges, MultiDrawArraysRange, count);
+    std::vector<gl::GLint> firsts = collect_member(ranges, MultiDrawArraysRange, first);
+    std::vector<gl::GLsizei> counts = collect_member(ranges, MultiDrawArraysRange, count);
 
-    multiDrawArrays(mode, firsts.data(), counts.data(), static_cast<GLsizei>(ranges.size()));
+    multiDrawArrays(mode, firsts.data(), counts.data(), static_cast<gl::GLsizei>(ranges.size()));
 }
 
-void VertexArrayObject::multiDrawElements(GLenum mode, GLenum type, const std::vector<VertexArrayObject::MultiDrawElementsRange> & ranges) const
+void VertexArrayObject::multiDrawElements(gl::GLenum mode, gl::GLenum type, const std::vector<VertexArrayObject::MultiDrawElementsRange> & ranges) const
 {
-    std::vector<GLsizei> counts = collect_member(ranges, MultiDrawElementsRange, count);
+    std::vector<gl::GLsizei> counts = collect_member(ranges, MultiDrawElementsRange, count);
     std::vector<const void*> indices = collect_type_member(const void*, ranges, MultiDrawElementsRange, indices);
 
-    multiDrawElements(mode, counts.data(), type, indices.data(), static_cast<GLsizei>(ranges.size()));
+    multiDrawElements(mode, counts.data(), type, indices.data(), static_cast<gl::GLsizei>(ranges.size()));
 }
 
-void VertexArrayObject::multiDrawElementsBaseVertex(GLenum mode, GLenum type, const std::vector<VertexArrayObject::MultiDrawElementsBaseVertexRange> & ranges) const
+void VertexArrayObject::multiDrawElementsBaseVertex(gl::GLenum mode, gl::GLenum type, const std::vector<VertexArrayObject::MultiDrawElementsBaseVertexRange> & ranges) const
 {
-    std::vector<GLsizei> counts = collect_member(ranges, MultiDrawElementsBaseVertexRange, count);
+    std::vector<gl::GLsizei> counts = collect_member(ranges, MultiDrawElementsBaseVertexRange, count);
     std::vector<const void*> indices = collect_type_member(const void*, ranges, MultiDrawElementsBaseVertexRange, indices);
-    std::vector<GLint> baseVertices = collect_member(ranges, MultiDrawElementsBaseVertexRange, baseVertex);
+    std::vector<gl::GLint> baseVertices = collect_member(ranges, MultiDrawElementsBaseVertexRange, baseVertex);
 
-    multiDrawElementsBaseVertex(mode, counts.data(), type, indices.data(), static_cast<GLsizei>(ranges.size()), baseVertices.data());
+    multiDrawElementsBaseVertex(mode, counts.data(), type, indices.data(), static_cast<gl::GLsizei>(ranges.size()), baseVertices.data());
 }
 
 } // namespace glow

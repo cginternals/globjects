@@ -1,5 +1,7 @@
 #include "HybridAlgorithm.h"
 
+#include <glbinding/functions.h>
+
 #include <glow/Program.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/Texture.h>
@@ -76,9 +78,9 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_prepassFbo->clear(gl::DEPTH_BUFFER_BIT);
     m_prepassFbo->clearBuffer(gl::COLOR, 0, glm::vec4(1.0f));
 
-    glEnable(gl::DEPTH_TEST);
+    gl::Enable(gl::DEPTH_TEST);
     CheckGLError();
-    glDisable(gl::BLEND);
+    gl::Disable(gl::BLEND);
     CheckGLError();
 
     m_opaqueProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
@@ -91,7 +93,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     // render translucent geometry into depth k-TAB (store depth and alpha for the first (minimum depth) k fragments)
     //
     m_prepassFbo->setDrawBuffer(gl::NONE);
-    glDepthMask(gl::FALSE);
+    gl::DepthMask(gl::FALSE);
     CheckGLError();
 
     static unsigned int initialDepthKTab = std::numeric_limits<unsigned int>::max();
@@ -105,12 +107,12 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
 
     drawFunction(m_depthKTabProgram.get());
 
-    glDepthMask(gl::TRUE);
+    gl::DepthMask(gl::TRUE);
     CheckGLError();
 
     m_prepassFbo->unbind();
 
-    glMemoryBarrier(gl::SHADER_STORAGE_BARRIER_BIT);
+    gl::MemoryBarrier(gl::SHADER_STORAGE_BARRIER_BIT);
     CheckGLError();
 
     //
@@ -129,7 +131,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_visibilityKTabProgram->setUniform("dimension", width * height);
     m_visibilityKTabProgram->dispatchCompute(width * height / 32 + 1, 1, 1);
 
-    glMemoryBarrier(gl::SHADER_STORAGE_BARRIER_BIT);
+    gl::MemoryBarrier(gl::SHADER_STORAGE_BARRIER_BIT);
     CheckGLError();
 
     //
@@ -139,11 +141,11 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_colorFbo->clearBuffer(gl::COLOR, 0, glm::vec4(0.0f));
     m_colorFbo->clearBuffer(gl::COLOR, 1, glm::vec4(0.0f));
 
-    glEnable(gl::BLEND);
+    gl::Enable(gl::BLEND);
     CheckGLError();
-    glBlendFunc(gl::ONE, gl::ONE);
+    gl::BlendFunc(gl::ONE, gl::ONE);
     CheckGLError();
-    glDepthMask(gl::FALSE);
+    gl::DepthMask(gl::FALSE);
     CheckGLError();
 
     static unsigned int initialDepthComplexity = 0;
@@ -157,11 +159,11 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
 
     drawFunction(m_colorProgram);
 
-    glDepthMask(gl::TRUE);
+    gl::DepthMask(gl::TRUE);
     CheckGLError();
-    glBlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
+    gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
     CheckGLError();
-    glDisable(gl::BLEND);
+    gl::Disable(gl::BLEND);
     CheckGLError();
 
     m_colorFbo->unbind();
@@ -195,9 +197,9 @@ void HybridAlgorithm::resize(int width, int height) {
     m_colorBuffer->image2D(0, gl::RGBA, width, height, 0, gl::RGBA, gl::UNSIGNED_BYTE, nullptr);
     m_accumulationBuffer->image2D(0, gl::RGBA32F, width, height, 0, gl::RGBA, gl::FLOAT, nullptr);
     m_coreBuffer->image2D(0, gl::RGBA, width, height, 0, gl::RGBA, gl::UNSIGNED_BYTE, nullptr);
-    m_depthKTab->setData(static_cast<GLsizei>(width * height * ABUFFER_SIZE * sizeof(unsigned int)), nullptr, gl::DYNAMIC_DRAW);
-    m_visibilityKTab->setData(static_cast<GLsizei>(width * height * VISIBILITY_KTAB_SIZE * sizeof(float)), nullptr, gl::DYNAMIC_DRAW);
-    m_depthComplexityBuffer->setData(static_cast<GLsizei>(width * height * sizeof(unsigned int)), nullptr, gl::DYNAMIC_DRAW);
+    m_depthKTab->setData(static_cast<gl::GLsizei>(width * height * ABUFFER_SIZE * sizeof(unsigned int)), nullptr, gl::DYNAMIC_DRAW);
+    m_visibilityKTab->setData(static_cast<gl::GLsizei>(width * height * VISIBILITY_KTAB_SIZE * sizeof(float)), nullptr, gl::DYNAMIC_DRAW);
+    m_depthComplexityBuffer->setData(static_cast<gl::GLsizei>(width * height * sizeof(unsigned int)), nullptr, gl::DYNAMIC_DRAW);
 }
 
 glow::Texture* HybridAlgorithm::getOutput()

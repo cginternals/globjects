@@ -6,31 +6,17 @@ message(STATUS "Helper ${target}")
 # External libraries
 #
 
-find_package(OpenGL REQUIRED)
-find_package(GLM REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(GLFW REQUIRED)
-
 #
 # Includes
 #
 
 include_directories(
-    ${OPENGL_INCLUDE_DIR}
-    ${GLM_INCLUDE_DIR}
-    ${GLEW_INCLUDE_DIR}
-    ${GLFW_INCLUDE_DIR}
+    ${GLOW_EXAMPLE_DEPENDENCY_INCLUDES}
 )
-
-get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
 
 include_directories(
     BEFORE
-    ${GENERATED_HEADER_PATH}
-    ${CMAKE_SOURCE_DIR}/source/glowbase/include
-    ${CMAKE_SOURCE_DIR}/source/glow/include
-    ${CMAKE_SOURCE_DIR}/source/glowutils/include
-    ${CMAKE_SOURCE_DIR}/source/glowwindow/include
+    ${GLOW_EXAMPLE_INCLUDES}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -39,13 +25,7 @@ include_directories(
 #
 
 set(libs
-    ${OPENGL_LIBRARIES}
-    ${GLEW_LIBRARY}
-    ${GLFW_LIBRARY}
-    glowbase
-    glow
-    glowutils
-    glowwindow
+    ${GLOW_EXAMPLES_LIBRARIES}
 )
 
 #

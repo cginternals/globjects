@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+
 
 #ifdef WIN32
 #include <GL/wglew.h>
@@ -17,7 +17,7 @@ long long getContextId()
     long long handle = 0;
 
 #ifdef WIN32
-    const int contextID = reinterpret_cast<int>(wglGetCurrentContext());
+    const int contextID = reinterpret_cast<int>(wgl::GetCurrentContext());
     handle = static_cast<long long>(contextID);
 #elif __APPLE__
     //const GLXContext context = glXGetCurrentContext();

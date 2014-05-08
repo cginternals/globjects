@@ -31,12 +31,12 @@ void GlBlendAlgorithm::initialize(const std::string & transparencyShaderFilePath
 void GlBlendAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) {
     m_fbo->bind();
 
-    glViewport(0, 0, width, height);
+    gl::Viewport(0, 0, width, height);
     CheckGLError();
 
     camera->setViewport(width, height);
 
-    glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+    gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
     CheckGLError();
 
     m_program->setUniform("viewprojectionmatrix", camera->viewProjection());
@@ -44,14 +44,14 @@ void GlBlendAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
     m_program->setUniform("screenSize", glm::vec2(width, height));
     m_program->use();
 
-    glEnable(gl::BLEND);
+    gl::Enable(gl::BLEND);
     CheckGLError();
-    glBlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
+    gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
     CheckGLError();
 
     drawFunction(m_program);
 
-    glDisable(gl::BLEND);
+    gl::Disable(gl::BLEND);
     CheckGLError();
 
     m_fbo->unbind();

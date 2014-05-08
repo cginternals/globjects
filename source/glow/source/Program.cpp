@@ -3,6 +3,8 @@
 #include <cassert>
 #include <vector>
 
+#include <glbinding/functions.h>
+
 #include <glow/logging.h>
 #include <glow/glow.h>
 #include <glow/Error.h>
@@ -38,14 +40,14 @@ Program::~Program()
 
 	if (ownsGLObject())
 	{
-		glDeleteProgram(m_id);
+        gl::DeleteProgram(m_id);
 		CheckGLError();
 	}
 }
 
-GLuint Program::createProgram()
+gl::GLuint Program::createProgram()
 {
-	GLuint result = glCreateProgram();
+    gl::GLuint result = gl::CreateProgram();
 	CheckGLError();
 	return result;
 }
@@ -62,7 +64,7 @@ void Program::use() const
     if (!isLinked())
         return;
 
-	glUseProgram(m_id);
+    gl::UseProgram(m_id);
 	CheckGLError();
 }
 
@@ -71,13 +73,13 @@ void Program::release() const
     if (!isLinked())
         return;
 
-    glUseProgram(0);
+    gl::UseProgram(0);
 	CheckGLError();
 }
 
 bool Program::isUsed() const
 {
-    GLuint currentProgram = static_cast<GLuint>(getInteger(gl::CURRENT_PROGRAM));
+    gl::GLuint currentProgram = static_cast<gl::GLuint>(getInteger(gl::CURRENT_PROGRAM));
 
     return currentProgram > 0 && currentProgram == m_id;
 }
@@ -113,7 +115,7 @@ void Program::detach(Shader * shader)
 {
     assert(shader != nullptr);
 
-	glDetachShader(m_id, shader->id());
+    gl::DetachShader(m_id, shader->id());
 	CheckGLError();
 
 	shader->deregisterListener(this);
@@ -137,7 +139,7 @@ void Program::link() const
     if (!prepareForLinkage())
         return;
 
-	glLinkProgram(m_id);
+    gl::LinkProgram(m_id);
 	CheckGLError();
 
     m_linked = checkLinkStatus();
@@ -151,7 +153,7 @@ bool Program::prepareForLinkage() const
 {
     if (m_binary && hasExtension(GLOW_ARB_get_program_binary))
     {
-        glProgramBinary(m_id, m_binary->format(), m_binary->data(), m_binary->length());
+        gl::ProgramBinary(m_id, m_binary->format(), m_binary->data(), m_binary->length());
         CheckGLError();
 
         return true;
@@ -192,48 +194,48 @@ bool Program::checkLinkStatus() const
     return true;
 }
 
-void Program::bindFragDataLocation(GLuint index, const std::string & name) const
+void Program::bindFragDataLocation(gl::GLuint index, const std::string & name) const
 {
-	glBindFragDataLocation(m_id, index, name.c_str());
+    gl::BindFragDataLocation(m_id, index, name.c_str());
 	CheckGLError();
 }
 
-void Program::bindAttributeLocation(GLuint index, const std::string & name) const
+void Program::bindAttributeLocation(gl::GLuint index, const std::string & name) const
 {
-	glBindAttribLocation(m_id, index, name.c_str());
+    gl::BindAttribLocation(m_id, index, name.c_str());
 	CheckGLError();
 }
 
-GLint Program::getFragDataLocation(const std::string & name) const
+gl::GLint Program::getFragDataLocation(const std::string & name) const
 {
-    GLint location = glGetFragDataLocation(m_id, name.c_str());
+    gl::GLint location = gl::GetFragDataLocation(m_id, name.c_str());
     CheckGLError();
 
     return location;
 }
 
-GLint Program::getFragDataIndex(const std::string & name) const
+gl::GLint Program::getFragDataIndex(const std::string & name) const
 {
-    GLint location = glGetFragDataIndex(m_id, name.c_str());
+    gl::GLint location = gl::GetFragDataIndex(m_id, name.c_str());
     CheckGLError();
 
     return location;
 }
 
-GLint Program::getUniformLocation(const std::string& name) const
+gl::GLint Program::getUniformLocation(const std::string& name) const
 {
 	checkDirty();
     if (!m_linked)
         return -1;
 
-	GLint result = glGetUniformLocation(m_id, name.c_str());
+    gl::GLint result = gl::GetUniformLocation(m_id, name.c_str());
 	CheckGLError();
 	return result;
 }
 
-std::vector<GLint> Program::getAttributeLocations(const std::vector<std::string> & names) const
+std::vector<gl::GLint> Program::getAttributeLocations(const std::vector<std::string> & names) const
 {
-    std::vector<GLint> locations(names.size());
+    std::vector<gl::GLint> locations(names.size());
     for (unsigned i = 0; i<names.size(); ++i)
     {
         locations[i] = getAttributeLocation(names[i]);
@@ -241,9 +243,9 @@ std::vector<GLint> Program::getAttributeLocations(const std::vector<std::string>
     return locations;
 }
 
-std::vector<GLint> Program::getUniformLocations(const std::vector<std::string> & names) const
+std::vector<gl::GLint> Program::getUniformLocations(const std::vector<std::string> & names) const
 {
-    std::vector<GLint> locations(names.size());
+    std::vector<gl::GLint> locations(names.size());
     for (unsigned i = 0; i<names.size(); ++i)
     {
         locations[i] = getUniformLocation(names[i]);
@@ -251,78 +253,78 @@ std::vector<GLint> Program::getUniformLocations(const std::vector<std::string> &
     return locations;
 }
 
-GLint Program::getAttributeLocation(const std::string & name) const
+gl::GLint Program::getAttributeLocation(const std::string & name) const
 {
 	checkDirty();
     if (!m_linked)
         return -1;
 
-	GLint result = glGetAttribLocation(m_id, name.c_str());
+    gl::GLint result = gl::GetAttribLocation(m_id, name.c_str());
 	CheckGLError();
 	return result;
 }
 
-GLuint Program::getResourceIndex(GLenum programInterface, const std::string & name) const
+gl::GLuint Program::getResourceIndex(gl::GLenum programInterface, const std::string & name) const
 {
 	checkDirty();
 
-	GLuint result = glGetProgramResourceIndex(m_id, programInterface, name.c_str());
+    gl::GLuint result = gl::GetProgramResourceIndex(m_id, programInterface, name.c_str());
 	CheckGLError();
 	return result;
 }
 
-GLuint Program::getUniformBlockIndex(const std::string& name) const
+gl::GLuint Program::getUniformBlockIndex(const std::string& name) const
 {
     checkDirty();
 
-    GLuint result = glGetUniformBlockIndex(m_id, name.c_str());
+    gl::GLuint result = gl::GetUniformBlockIndex(m_id, name.c_str());
     CheckGLError();
     return result;
 }
 
-void Program::getActiveUniforms(GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params) const
+void Program::getActiveUniforms(gl::GLsizei uniformCount, const gl::GLuint * uniformIndices, gl::GLenum pname, gl::GLint * params) const
 {
     checkDirty();
 
-    glGetActiveUniformsiv(m_id, uniformCount, uniformIndices, pname, params);
+    gl::GetActiveUniformsiv(m_id, uniformCount, uniformIndices, pname, params);
     CheckGLError();
 }
 
-std::vector<GLint> Program::getActiveUniforms(const std::vector<GLuint> & uniformIndices, GLenum pname) const
+std::vector<gl::GLint> Program::getActiveUniforms(const std::vector<gl::GLuint> & uniformIndices, gl::GLenum pname) const
 {
-    std::vector<GLint> result(uniformIndices.size());
-    getActiveUniforms(static_cast<GLint>(uniformIndices.size()), uniformIndices.data(), pname, result.data());
+    std::vector<gl::GLint> result(uniformIndices.size());
+    getActiveUniforms(static_cast<gl::GLint>(uniformIndices.size()), uniformIndices.data(), pname, result.data());
     return result;
 }
 
-std::vector<GLint> Program::getActiveUniforms(const std::vector<GLint> & uniformIndices, GLenum pname) const
+std::vector<gl::GLint> Program::getActiveUniforms(const std::vector<gl::GLint> & uniformIndices, gl::GLenum pname) const
 {
-    std::vector<GLuint> indices(uniformIndices.size());
+    std::vector<gl::GLuint> indices(uniformIndices.size());
     for (unsigned i=0; i<uniformIndices.size(); ++i)
-        indices[i] = static_cast<GLuint>(uniformIndices[i]);
+        indices[i] = static_cast<gl::GLuint>(uniformIndices[i]);
     return getActiveUniforms(indices, pname);
 }
 
-GLint Program::getActiveUniform(GLuint uniformIndex, GLenum pname) const
+gl::GLint Program::getActiveUniform(gl::GLuint uniformIndex, gl::GLenum pname) const
 {
-    GLint result = 0;
+    gl::GLint result = 0;
     getActiveUniforms(1, &uniformIndex, pname, &result);
     return result;
 }
 
-std::string Program::getActiveUniformName(GLuint uniformIndex) const
+std::string Program::getActiveUniformName(gl::GLuint uniformIndex) const
 {
     checkDirty();
 
-    GLint length = getActiveUniform(uniformIndex, gl::UNIFORM_NAME_LENGTH);
+    gl::GLint length = getActiveUniform(uniformIndex, gl::UNIFORM_NAME_LENGTH);
     std::vector<char> name(length);
-    glGetActiveUniformName(m_id, uniformIndex, length, nullptr, name.data());
+    gl::GetActiveUniformName(m_id, uniformIndex, length, nullptr, name.data());
     CheckGLError();
 
     return std::string(name.data(), length);
 }
 
-UniformBlock * Program::uniformBlock(GLuint uniformBlockIndex)
+UniformBlock * Program::uniformBlock(gl::GLuint uniformBlockIndex)
 {
     return getUniformBlockByIdentity(uniformBlockIndex);
 }
@@ -410,19 +412,19 @@ ProgramBinary * Program::getBinary() const
         return nullptr;
     }
 
-    GLenum format;
+    gl::GLenum format;
     std::vector<char> binary(length);
 
-    glGetProgramBinary(m_id, length, nullptr, &format, binary.data());
+    gl::GetProgramBinary(m_id, length, nullptr, &format, binary.data());
     CheckGLError();
 
     return new ProgramBinary(format, binary);
 }
 
-GLint Program::get(GLenum pname) const
+gl::GLint Program::get(gl::GLenum pname) const
 {
-    GLint value = 0;
-	glGetProgramiv(m_id, pname, &value);
+    gl::GLint value = 0;
+    gl::GetProgramiv(m_id, pname, &value);
 	CheckGLError();
 
 	return value;
@@ -430,7 +432,7 @@ GLint Program::get(GLenum pname) const
 
 const std::string Program::infoLog() const
 {
-	GLint length = get(gl::INFO_LOG_LENGTH);
+	gl::GLint length = get(gl::INFO_LOG_LENGTH);
 
     if (length == 0)
     {
@@ -439,7 +441,7 @@ const std::string Program::infoLog() const
 
     std::vector<char> log(length);
 
-	glGetProgramInfoLog(m_id, length, &length, log.data());
+    gl::GetProgramInfoLog(m_id, length, &length, log.data());
 	CheckGLError();
 
 	return std::string(log.data(), length);
@@ -450,25 +452,25 @@ void Program::dispatchCompute(const glm::uvec3 & numGroups)
     dispatchCompute(numGroups.x, numGroups.y, numGroups.z);
 }
 
-void Program::dispatchCompute(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ)
+void Program::dispatchCompute(gl::GLuint numGroupsX, gl::GLuint numGroupsY, gl::GLuint numGroupsZ)
 {
     use();
 
     if (!m_linked)
         return;
 
-    glDispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
+    gl::DispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
     CheckGLError();
 }
 
-void Program::dispatchComputeGroupSize(GLuint numGroupsX, GLuint numGroupsY, GLuint numGroupsZ, GLuint groupSizeX, GLuint groupSizeY, GLuint groupSizeZ)
+void Program::dispatchComputeGroupSize(gl::GLuint numGroupsX, gl::GLuint numGroupsY, gl::GLuint numGroupsZ, gl::GLuint groupSizeX, gl::GLuint groupSizeY, gl::GLuint groupSizeZ)
 {
     use();
 
     if (!m_linked)
         return;
 
-    glDispatchComputeGroupSizeARB(numGroupsX, numGroupsY, numGroupsZ, groupSizeX, groupSizeY, groupSizeZ);
+    gl::DispatchComputeGroupSizeARB(numGroupsX, numGroupsY, numGroupsZ, groupSizeX, groupSizeY, groupSizeZ);
     CheckGLError();
 }
 
@@ -477,13 +479,13 @@ void Program::dispatchComputeGroupSize(const glm::uvec3 & numGroups, const glm::
     dispatchComputeGroupSize(numGroups.x, numGroups.y, numGroups.z, groupSizes.x, groupSizes.y, groupSizes.z);
 }
 
-void Program::setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint storageBlockBinding) const
+void Program::setShaderStorageBlockBinding(gl::GLuint storageBlockIndex, gl::GLuint storageBlockBinding) const
 {
 	checkDirty();
     if (!m_linked)
         return;
 
-	glShaderStorageBlockBinding(m_id, storageBlockIndex, storageBlockBinding);
+    gl::ShaderStorageBlockBinding(m_id, storageBlockIndex, storageBlockBinding);
 	CheckGLError();
 }
 

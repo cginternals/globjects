@@ -9,7 +9,6 @@ message(STATUS "Lib ${target}")
 
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
-find_package(GLEW REQUIRED)
 find_package(GLBinding REQUIRED)
 
 #
@@ -17,9 +16,7 @@ find_package(GLBinding REQUIRED)
 #
 
 include_directories(
-    ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
-    ${GLEW_INCLUDE_DIR}
     ${GLBINDING_INCLUDE_DIR}
 )
 
@@ -38,7 +35,6 @@ include_directories(
 
 set(libs
     ${OPENGL_LIBRARIES}
-    ${GLEW_LIBRARY}
     ${GLBINDING_LIBRARY}
     glowbase
 )

@@ -7,7 +7,7 @@
 namespace glow
 {
 
-RenderBufferAttachment::RenderBufferAttachment(FrameBufferObject * fbo,  GLenum attachment, RenderBufferObject * renderBuffer)
+RenderBufferAttachment::RenderBufferAttachment(FrameBufferObject * fbo,  gl::GLenum attachment, RenderBufferObject * renderBuffer)
 : FrameBufferAttachment(fbo, attachment)
 , m_renderBuffer(renderBuffer)
 {

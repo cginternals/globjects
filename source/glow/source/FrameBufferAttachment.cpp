@@ -8,18 +8,18 @@
 namespace glow
 {
 
-FrameBufferAttachment::FrameBufferAttachment(FrameBufferObject * fbo, GLenum attachment)
+FrameBufferAttachment::FrameBufferAttachment(FrameBufferObject * fbo, gl::GLenum attachment)
 : m_fbo(fbo)
 , m_attachment(attachment)
 {
 }
 
-GLenum FrameBufferAttachment::attachment() const
+gl::GLenum FrameBufferAttachment::attachment() const
 {
 	return m_attachment;
 }
 
-GLint FrameBufferAttachment::getParameter(GLenum pname) const
+gl::GLint FrameBufferAttachment::getParameter(gl::GLenum pname) const
 {
     return m_fbo->getAttachmentParameter(m_attachment, pname);
 }

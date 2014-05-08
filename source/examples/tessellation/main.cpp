@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+#include <glbinding/functions.h>
 
 #include <algorithm>
 #include <random>
@@ -55,7 +55,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        glClearColor(1.0f, 1.0f, 1.0f, 0.f);
+        gl::ClearColor(1.0f, 1.0f, 1.0f, 0.f);
         CheckGLError();
 
         m_sphere = new glow::Program();
@@ -84,7 +84,7 @@ public:
         int width = event.width();
         int height = event.height();
 
-        glViewport(0, 0, width, height);
+        gl::Viewport(0, 0, width, height);
         CheckGLError();
 
         m_camera.setViewport(width, height);
@@ -92,7 +92,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         m_agrid->update();
@@ -107,7 +107,7 @@ public:
         m_sphere->setUniform("level", level);
 
         m_sphere->use();
-        glPatchParameteri(gl::PATCH_VERTICES, 3);
+        gl::PatchParameteri(gl::PATCH_VERTICES, 3);
         m_icosahedron->draw(gl::PATCHES);
         m_sphere->release();
 

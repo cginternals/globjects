@@ -12,7 +12,7 @@ int nextMultiple(int n, int k)
     return n + (k-n%k)%k;
 }
 
-int byteSize(GLenum type)
+int byteSize(gl::GLenum type)
 {
     switch (type)
     {
@@ -39,7 +39,7 @@ int byteSize(GLenum type)
     }
 }
 
-int numberOfComponents(GLenum format)
+int numberOfComponents(gl::GLenum format)
 {
     switch (format)
     {
@@ -80,7 +80,7 @@ int numberOfComponents(GLenum format)
     }
 }
 
-int bytesPerPixel(GLenum format, GLenum type)
+int bytesPerPixel(gl::GLenum format, gl::GLenum type)
 {
     switch (type) // several components encoded in type, disregard component count
     {
@@ -114,7 +114,7 @@ int bytesPerPixel(GLenum format, GLenum type)
 
 namespace glow {
 
-int imageSizeInBytes(int width, int height, GLenum format, GLenum type)
+int imageSizeInBytes(int width, int height, gl::GLenum format, gl::GLenum type)
 {
     if (type == gl::BITMAP)
     {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 #include <glow/glow_api.h>
 
@@ -14,11 +14,11 @@ namespace glow
  */
 namespace memory
 {
-    GLOW_API GLint total();
-    GLOW_API GLint dedicated();
-    GLOW_API GLint available();
-    GLOW_API GLint evicted();
-    GLOW_API GLint evictionCount();
+    GLOW_API gl::GLint total();
+    GLOW_API gl::GLint dedicated();
+    GLOW_API gl::GLint available();
+    GLOW_API gl::GLint evicted();
+    GLOW_API gl::GLint evictionCount();
 }
 
 } // namespace glow

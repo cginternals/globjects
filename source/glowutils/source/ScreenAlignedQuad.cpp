@@ -20,7 +20,7 @@ namespace glowutils
 
 const char * ScreenAlignedQuad::s_defaultVertexShaderSource = R"(
 #version 140
-#extension gl::ARB_explicit_attrib_location : require
+#extension GL_ARB_explicit_attrib_location : require
 
 layout (location = 0) in vec2 a_vertex;
 out vec2 v_uv;
@@ -28,13 +28,13 @@ out vec2 v_uv;
 void main()
 {
 	v_uv = a_vertex * 0.5 + 0.5;
-	gl::Position = vec4(a_vertex, 0.0, 1.0);
+    gl_Position = vec4(a_vertex, 0.0, 1.0);
 }
 )";
 
 const char* ScreenAlignedQuad::s_defaultFagmentShaderSource = R"(
 #version 140
-#extension gl::ARB_explicit_attrib_location : require
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform sampler2D source;
 
@@ -128,7 +128,7 @@ void ScreenAlignedQuad::draw()
 {
     if (m_texture)
 	{
-        glActiveTexture(gl::TEXTURE0 + m_samplerIndex);
+        gl::ActiveTexture(gl::TEXTURE0 + m_samplerIndex);
         CheckGLError();
 
         m_texture->bind();

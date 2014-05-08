@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+#include <glbinding/functions.h>
 
 #include <glow/Program.h>
 #include <glow/Shader.h>
@@ -77,11 +77,11 @@ void TransformFeedbackParticles::initialize()
     m_fbo = new FrameBufferObject();
 
     m_color = new Texture(gl::TEXTURE_2D);
-    m_color->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<GLint>(gl::NEAREST));
-    m_color->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<GLint>(gl::NEAREST));
-    m_color->setParameter(gl::TEXTURE_WRAP_S, static_cast<GLint>(gl::CLAMP_TO_EDGE));
-    m_color->setParameter(gl::TEXTURE_WRAP_T, static_cast<GLint>(gl::CLAMP_TO_EDGE));
-    m_color->setParameter(gl::TEXTURE_WRAP_R, static_cast<GLint>(gl::CLAMP_TO_EDGE));
+    m_color->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_color->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_color->setParameter(gl::TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_color->setParameter(gl::TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_color->setParameter(gl::TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
 
     m_fbo->attachTexture2D(gl::COLOR_ATTACHMENT0, m_color);
 
@@ -97,8 +97,8 @@ void TransformFeedbackParticles::reset()
 {
     m_sourcePositions->setData(m_positions, gl::DYNAMIC_DRAW);
     m_sourceVelocities->setData(m_velocities, gl::DYNAMIC_DRAW);
-    m_targetPositions->setData(static_cast<GLsizei>(m_numParticles*sizeof(glm::vec4)), nullptr, gl::DYNAMIC_DRAW);
-    m_targetVelocities->setData(static_cast<GLsizei>(m_numParticles*sizeof(glm::vec4)), nullptr, gl::DYNAMIC_DRAW);
+    m_targetPositions->setData(static_cast<gl::GLsizei>(m_numParticles*sizeof(glm::vec4)), nullptr, gl::DYNAMIC_DRAW);
+    m_targetVelocities->setData(static_cast<gl::GLsizei>(m_numParticles*sizeof(glm::vec4)), nullptr, gl::DYNAMIC_DRAW);
 }
 
 void TransformFeedbackParticles::step(const float elapsed)
@@ -115,7 +115,7 @@ void TransformFeedbackParticles::step(const float elapsed)
     m_transformFeedbackProgram->setUniform("forces", 0);
     m_transformFeedbackProgram->setUniform("elapsed", elapsed);
 
-    glEnable(gl::RASTERIZER_DISCARD);
+    gl::Enable(gl::RASTERIZER_DISCARD);
     m_transformFeedbackProgram->use();
     m_transformFeedback->bind();
     m_transformFeedback->begin(gl::POINTS);
@@ -123,7 +123,7 @@ void TransformFeedbackParticles::step(const float elapsed)
     m_transformFeedback->end();
     m_transformFeedback->unbind();
     m_transformFeedbackProgram->release();
-    glDisable(gl::RASTERIZER_DISCARD);
+    gl::Disable(gl::RASTERIZER_DISCARD);
 
     m_vao->unbind();
 
@@ -138,16 +138,16 @@ void TransformFeedbackParticles::draw(const float elapsed)
     m_vao->binding(0)->setBuffer(m_sourcePositions, 0, sizeof(glm::vec4));
     m_vao->binding(1)->setBuffer(m_sourceVelocities, 0, sizeof(glm::vec4));
 
-    glDisable(gl::DEPTH_TEST);
+    gl::Disable(gl::DEPTH_TEST);
 
     m_fbo->bind();
 
-    glEnable(gl::BLEND);
-    glBlendFunc(gl::ZERO, gl::ONE_MINUS_SRC_COLOR);
+    gl::Enable(gl::BLEND);
+    gl::BlendFunc(gl::ZERO, gl::ONE_MINUS_SRC_COLOR);
     m_clear->program()->setUniform("elapsed", elapsed);
     m_clear->draw();
 
-    glBlendFunc(gl::SRC_ALPHA, gl::ONE);
+    gl::BlendFunc(gl::SRC_ALPHA, gl::ONE);
 
     m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
     m_drawProgram->use();
@@ -159,13 +159,13 @@ void TransformFeedbackParticles::draw(const float elapsed)
 
     m_drawProgram->release();
 
-    glDisable(gl::BLEND);
+    gl::Disable(gl::BLEND);
 
     m_fbo->unbind();
 
     m_quad->draw();
 
-    glEnable(gl::DEPTH_TEST);
+    gl::Enable(gl::DEPTH_TEST);
 }
 
 void TransformFeedbackParticles::resize()
@@ -176,7 +176,7 @@ void TransformFeedbackParticles::resize()
 
     m_fbo->bind();
 
-    glClear(gl::COLOR_BUFFER_BIT);
+    gl::Clear(gl::COLOR_BUFFER_BIT);
 
     m_fbo->unbind();
 }

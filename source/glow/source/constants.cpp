@@ -58,9 +58,9 @@ void sortByExtension(std::vector<std::string> & names)
 
 namespace glow {
 
-std::vector<std::string> enumNames(GLenum param)
+std::vector<std::string> enumNames(gl::GLenum param)
 {
-    auto range = GLconstants.equal_range(static_cast<GLuint64>(param));
+    auto range = GLconstants.equal_range(static_cast<gl::GLuint64>(param));
 
     std::vector<std::string> names;
     for (auto it = range.first; it != range.second; ++it)
@@ -73,7 +73,7 @@ std::vector<std::string> enumNames(GLenum param)
     return names;
 }
 
-std::string enumName(GLenum param)
+std::string enumName(gl::GLenum param)
 {
     std::vector<std::string> names = enumNames(param);
     if (names.empty())

@@ -7,7 +7,7 @@
 
 namespace {
 
-GLint getMemoryInformation(GLenum pname)
+gl::GLint getMemoryInformation(gl::GLenum pname)
 {
     if (!glow::hasExtension("NVX_gpu_memory_info"))
         return -1;
@@ -23,27 +23,27 @@ namespace glow
 namespace memory
 {
 
-GLint total()
+gl::GLint total()
 {
     return getMemoryInformation(gl::GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX);
 }
 
-GLint dedicated()
+gl::GLint dedicated()
 {
     return getMemoryInformation(gl::GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX);
 }
 
-GLint available()
+gl::GLint available()
 {
     return getMemoryInformation(gl::GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX);
 }
 
-GLint evicted()
+gl::GLint evicted()
 {
     return getMemoryInformation(gl::GPU_MEMORY_INFO_EVICTED_MEMORY_NVX);
 }
 
-GLint evictionCount()
+gl::GLint evictionCount()
 {
     return getMemoryInformation(gl::GPU_MEMORY_INFO_EVICTION_COUNT_NVX);
 }

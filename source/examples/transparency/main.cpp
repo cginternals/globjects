@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
@@ -57,7 +57,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        gl::ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         CheckGLError();
 
 		glow::Shader* vertexShader = glowutils::createShaderFromFile(gl::VERTEX_SHADER, "data/transparency/transparency.vert");
@@ -110,10 +110,10 @@ public:
         }
 
         // STAGE2 - Draw the texture of each algorithm& onto the screen aligned quad
-		glDisable(gl::DEPTH_TEST);
+		gl::Disable(gl::DEPTH_TEST);
 		CheckGLError();
 
-		glDepthMask(gl::FALSE);
+		gl::DepthMask(gl::FALSE);
 		CheckGLError();
 
 		m_quad->program()->setUniform("topLeft", 0);
@@ -127,10 +127,10 @@ public:
 
 		m_quad->draw();
 
-		glEnable(gl::DEPTH_TEST);
+		gl::Enable(gl::DEPTH_TEST);
 		CheckGLError();
 
-		glDepthMask(gl::TRUE);
+		gl::DepthMask(gl::TRUE);
 		CheckGLError();
 	}
 
@@ -138,7 +138,7 @@ public:
 		int width = event.width();
 		int height = event.height();
 
-        glViewport(0, 0, width, height);
+        gl::Viewport(0, 0, width, height);
         CheckGLError();
 
         for (auto& algo : m_algos) {
@@ -153,7 +153,7 @@ public:
 
     virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) const override
 	{
-		return unproject(*m_camera, static_cast<GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
+		return unproject(*m_camera, static_cast<gl::GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
 	}
 
     virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) const override

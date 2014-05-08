@@ -4,7 +4,7 @@
 #include <vector>
 #include <array>
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 #include <glowbase/Version.h>
 
@@ -19,53 +19,53 @@ class AbstractStringSource;
 GLOW_API bool isInitialized();
 GLOW_API bool init(bool showWarnings = false);
 
-GLOW_API std::string getString(GLenum pname);
-GLOW_API std::string getString(GLenum pname, GLuint index);
+GLOW_API std::string getString(gl::GLenum pname);
+GLOW_API std::string getString(gl::GLenum pname, gl::GLuint index);
 
-GLOW_API GLint getInteger(GLenum pname);
-GLOW_API GLenum getEnum(GLenum pname);
-GLOW_API GLfloat getFloat(GLenum pname);
-GLOW_API GLdouble getDouble(GLenum pname);
-GLOW_API GLboolean getBoolean(GLenum pname);
+GLOW_API gl::GLint getInteger(gl::GLenum pname);
+GLOW_API gl::GLenum getEnum(gl::GLenum pname);
+GLOW_API gl::GLfloat getFloat(gl::GLenum pname);
+GLOW_API gl::GLdouble getDouble(gl::GLenum pname);
+GLOW_API gl::GLboolean getBoolean(gl::GLenum pname);
 
-GLOW_API GLint getInteger(GLenum pname, GLuint index);
-GLOW_API GLenum getEnum(GLenum pname, GLuint index);
-GLOW_API GLfloat getFloat(GLenum pname, GLuint index);
-GLOW_API GLdouble getDouble(GLenum pname, GLuint index);
-GLOW_API GLboolean getBoolean(GLenum pname, GLuint index);
+GLOW_API gl::GLint getInteger(gl::GLenum pname, gl::GLuint index);
+GLOW_API gl::GLenum getEnum(gl::GLenum pname, gl::GLuint index);
+GLOW_API gl::GLfloat getFloat(gl::GLenum pname, gl::GLuint index);
+GLOW_API gl::GLdouble getDouble(gl::GLenum pname, gl::GLuint index);
+GLOW_API gl::GLboolean getBoolean(gl::GLenum pname, gl::GLuint index);
 
 GLOW_API std::string vendor();
 GLOW_API std::string renderer();
 GLOW_API std::string versionString();
-GLOW_API GLint majorVersion();
-GLOW_API GLint minorVersion();
+GLOW_API gl::GLint majorVersion();
+GLOW_API gl::GLint minorVersion();
 GLOW_API Version version();
 GLOW_API bool isCoreProfile();
 
 GLOW_API std::vector<std::string> getExtensions();
 
 template <int Count>
-std::array<GLint, Count> getIntegers(GLenum pname);
+std::array<gl::GLint, Count> getIntegers(gl::GLenum pname);
 template <int Count>
-std::array<GLfloat, Count> getFloats(GLenum pname);
+std::array<gl::GLfloat, Count> getFloats(gl::GLenum pname);
 template <int Count>
-std::array<GLdouble, Count> getDoubles(GLenum pname);
+std::array<gl::GLdouble, Count> getDoubles(gl::GLenum pname);
 template <int Count>
-std::array<GLboolean, Count> getBooleans(GLenum pname);
+std::array<gl::GLboolean, Count> getBooleans(gl::GLenum pname);
 
 GLOW_API bool hasExtension(Extension extension);
 GLOW_API bool hasExtension(const std::string & extensionName);
 GLOW_API bool isInCoreProfile(Extension extension, const Version & version);
 GLOW_API bool isInCoreProfile(Extension extension);
 
-GLOW_API void enable(GLenum capability);
-GLOW_API void disable(GLenum capability);
-GLOW_API bool isEnabled(GLenum capability);
-GLOW_API void setEnabled(GLenum capability, bool enabled);
-GLOW_API void enable(GLenum capability, int index);
-GLOW_API void disable(GLenum capability, int index);
-GLOW_API bool isEnabled(GLenum capability, int index);
-GLOW_API void setEnabled(GLenum capability, int index, bool enabled);
+GLOW_API void enable(gl::GLenum capability);
+GLOW_API void disable(gl::GLenum capability);
+GLOW_API bool isEnabled(gl::GLenum capability);
+GLOW_API void setEnabled(gl::GLenum capability, bool enabled);
+GLOW_API void enable(gl::GLenum capability, int index);
+GLOW_API void disable(gl::GLenum capability, int index);
+GLOW_API bool isEnabled(gl::GLenum capability, int index);
+GLOW_API void setEnabled(gl::GLenum capability, int index, bool enabled);
 
 } // namespace glow
 

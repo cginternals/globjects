@@ -2,12 +2,8 @@
 
 #include <cassert>
 
-#include <glbinding/constants.h>
-
-#include <GL/glew.h>
-
 #include <glowbase/baselogging.h>
-#include <glow/glow.h>
+#include <glowbase/Version.h>
 
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
@@ -70,13 +66,6 @@ bool Context::create(const ContextFormat & format, const int width, const int he
 
     makeCurrent();
 
-    if (!glow::init())
-    {
-        glow::fatal() << "GLOW/GLEW initialization failed.";
-        release();
-        return false;
-    }
-
     glfwSwapInterval(m_swapInterval);
 
     doneCurrent();
@@ -107,7 +96,7 @@ void Context::prepareFormat(const ContextFormat & format)
   
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, gl::TRUE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   
 #else
@@ -118,9 +107,9 @@ void Context::prepareFormat(const ContextFormat & format)
     if (version >= Version(3, 0))
     {
         if (format.forwardCompatible())
-            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, gl::TRUE);
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
         if (format.debugContext())
-            glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,  gl::TRUE);
+            glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,  true);
     }
   
     if (version >= Version(3, 2))
@@ -246,9 +235,17 @@ Version Context::maximumSupportedVersion()
     {
         glfwMakeContextCurrent(versionCheckWindow);
 
-        if (glow::init())
+        int majorVersion;
+        int minorVersion;
+
+        void (*getInteger)(unsigned int, int*) = reinterpret_cast<void (*)(unsigned int, int*)>(glfwGetProcAddress("glGetIntegerv"));
+
+        if (getInteger != nullptr)
         {
-            maxVersion = glow::version();
+            getInteger(0x821B, &majorVersion); // major version
+            getInteger(0x821C, &minorVersion); // minor version
+
+            maxVersion = glow::Version(majorVersion, minorVersion);
         }
 
         glfwDestroyWindow(versionCheckWindow);

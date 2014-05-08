@@ -6,7 +6,7 @@
 
 namespace glow {
 
-GLenum LegacyBufferImplementation::s_workingTarget = gl::COPY_WRITE_BUFFER;
+gl::GLenum LegacyBufferImplementation::s_workingTarget = gl::COPY_WRITE_BUFFER;
 
 void * LegacyBufferImplementation::map(const Buffer * buffer, gl::GLenum access) const
 {
@@ -32,7 +32,7 @@ bool LegacyBufferImplementation::unmap(const Buffer * buffer) const
 {
     buffer->bind(s_workingTarget);
 
-    GLboolean success = glUnmapBuffer(s_workingTarget);
+    gl::GLboolean success = gl::UnmapBuffer(s_workingTarget);
     CheckGLError();
 
     return success == gl::TRUE;
@@ -64,8 +64,8 @@ void LegacyBufferImplementation::setStorage(const Buffer * buffer, gl::GLsizeipt
 
 void LegacyBufferImplementation::copySubData(const Buffer * buffer, Buffer * other, gl::GLintptr readOffset, gl::GLintptr writeOffset, gl::GLsizeiptr size) const
 {
-    GLenum readTarget = gl::COPY_READ_BUFFER;
-    GLenum writeTarget = gl::COPY_WRITE_BUFFER;
+    gl::GLenum readTarget = gl::COPY_READ_BUFFER;
+    gl::GLenum writeTarget = gl::COPY_WRITE_BUFFER;
 
     buffer->bind(readTarget);
     other->bind(writeTarget);

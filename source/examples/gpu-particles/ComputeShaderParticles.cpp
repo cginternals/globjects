@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+#include <glbinding/functions.h>
 
 #include <glow/glow.h>
 #include <glow/Program.h>
@@ -101,11 +101,11 @@ void ComputeShaderParticles::initialize()
     m_fbo = new FrameBufferObject();
 
     m_color = new Texture(gl::TEXTURE_2D);
-    m_color->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<GLint>(gl::NEAREST));
-    m_color->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<GLint>(gl::NEAREST));
-    m_color->setParameter(gl::TEXTURE_WRAP_S, static_cast<GLint>(gl::CLAMP_TO_EDGE));
-    m_color->setParameter(gl::TEXTURE_WRAP_T, static_cast<GLint>(gl::CLAMP_TO_EDGE));
-    m_color->setParameter(gl::TEXTURE_WRAP_R, static_cast<GLint>(gl::CLAMP_TO_EDGE));
+    m_color->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_color->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_color->setParameter(gl::TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_color->setParameter(gl::TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_color->setParameter(gl::TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
 
     m_fbo->attachTexture2D(gl::COLOR_ATTACHMENT0, m_color);
     m_fbo->setDrawBuffers({ gl::COLOR_ATTACHMENT0 });
@@ -145,17 +145,17 @@ void ComputeShaderParticles::step(const float elapsed)
 
 void ComputeShaderParticles::draw(const float elapsed)
 {
-    glDisable(gl::DEPTH_TEST);
+    gl::Disable(gl::DEPTH_TEST);
 
     m_fbo->bind();
 
-    glEnable(gl::BLEND);
-    glBlendFunc(gl::ZERO, gl::ONE_MINUS_SRC_COLOR);
+    gl::Enable(gl::BLEND);
+    gl::BlendFunc(gl::ZERO, gl::ONE_MINUS_SRC_COLOR);
     m_clear->program()->setUniform("elapsed", elapsed);
     m_clear->draw();
 
 
-    glBlendFunc(gl::SRC_ALPHA, gl::ONE);
+    gl::BlendFunc(gl::SRC_ALPHA, gl::ONE);
 
     m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
     m_drawProgram->use();
@@ -166,13 +166,13 @@ void ComputeShaderParticles::draw(const float elapsed)
 
     m_drawProgram->release();
 
-    glDisable(gl::BLEND);
+    gl::Disable(gl::BLEND);
 
     m_fbo->unbind();
 
     m_quad->draw();
 
-    glEnable(gl::DEPTH_TEST);
+    gl::Enable(gl::DEPTH_TEST);
 }
 
 void ComputeShaderParticles::resize()
@@ -183,7 +183,7 @@ void ComputeShaderParticles::resize()
 
     m_fbo->bind();
 
-    glClear(gl::COLOR_BUFFER_BIT);
+    gl::Clear(gl::COLOR_BUFFER_BIT);
 
     m_fbo->unbind();
 }

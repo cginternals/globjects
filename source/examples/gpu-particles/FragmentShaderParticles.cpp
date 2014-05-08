@@ -1,4 +1,6 @@
 
+#include <glbinding/functions.h>
+
 #include <glow/Program.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/FrameBufferObject.h>
@@ -36,18 +38,18 @@ void FragmentShaderParticles::initialize()
 {
     // Create textures to store the particle data
     m_texPositions = new glow::Texture(gl::TEXTURE_2D);
-    m_texPositions->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<GLint>(gl::NEAREST));
-    m_texPositions->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<GLint>(gl::NEAREST));
-    m_texPositions->setParameter(gl::TEXTURE_WRAP_S, static_cast<GLint>(gl::CLAMP_TO_EDGE));
-    m_texPositions->setParameter(gl::TEXTURE_WRAP_T, static_cast<GLint>(gl::CLAMP_TO_EDGE));
-    m_texPositions->setParameter(gl::TEXTURE_WRAP_R, static_cast<GLint>(gl::CLAMP_TO_EDGE));
+    m_texPositions->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_texPositions->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_texPositions->setParameter(gl::TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_texPositions->setParameter(gl::TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_texPositions->setParameter(gl::TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
 
     m_texVelocities = new glow::Texture(gl::TEXTURE_2D);
-    m_texVelocities->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<GLint>(gl::NEAREST));
-    m_texVelocities->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<GLint>(gl::NEAREST));
-    m_texVelocities->setParameter(gl::TEXTURE_WRAP_S, static_cast<GLint>(gl::CLAMP_TO_EDGE));
-    m_texVelocities->setParameter(gl::TEXTURE_WRAP_T, static_cast<GLint>(gl::CLAMP_TO_EDGE));
-    m_texVelocities->setParameter(gl::TEXTURE_WRAP_R, static_cast<GLint>(gl::CLAMP_TO_EDGE));
+    m_texVelocities->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_texVelocities->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_texVelocities->setParameter(gl::TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_texVelocities->setParameter(gl::TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_texVelocities->setParameter(gl::TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
 
     // Fill buffers with data
     reset();
@@ -74,11 +76,11 @@ void FragmentShaderParticles::initialize()
     m_fbo = new FrameBufferObject();
 
     m_colorBuffer = new Texture(gl::TEXTURE_2D);
-    m_colorBuffer->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<GLint>(gl::NEAREST));
-    m_colorBuffer->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<GLint>(gl::NEAREST));
-    m_colorBuffer->setParameter(gl::TEXTURE_WRAP_S, static_cast<GLint>(gl::CLAMP_TO_EDGE));
-    m_colorBuffer->setParameter(gl::TEXTURE_WRAP_T, static_cast<GLint>(gl::CLAMP_TO_EDGE));
-    m_colorBuffer->setParameter(gl::TEXTURE_WRAP_R, static_cast<GLint>(gl::CLAMP_TO_EDGE));
+    m_colorBuffer->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_colorBuffer->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_colorBuffer->setParameter(gl::TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_colorBuffer->setParameter(gl::TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_colorBuffer->setParameter(gl::TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
 
     m_fbo->attachTexture2D(gl::COLOR_ATTACHMENT0, m_colorBuffer);
     m_fbo->setDrawBuffers({ gl::COLOR_ATTACHMENT0 });
@@ -122,9 +124,9 @@ void FragmentShaderParticles::step(const float elapsed)
     m_forces.bindActive(gl::TEXTURE2);
     m_quadUpdate->program()->setUniform("elapsed", elapsed);
 
-    glViewport(0, 0, m_width, m_height);
+    gl::Viewport(0, 0, m_width, m_height);
     m_quadUpdate->draw();
-    glViewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
+    gl::Viewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
 
     m_fboUpdate->unbind();
 }
@@ -132,19 +134,19 @@ void FragmentShaderParticles::step(const float elapsed)
 void FragmentShaderParticles::draw(const float elapsed)
 {
     // Disable depth buffer
-    glDisable(gl::DEPTH_TEST);
+    gl::Disable(gl::DEPTH_TEST);
 
     // Activate FBO
     m_fbo->bind();
 
     // Clear color buffer
-    glEnable(gl::BLEND);
-    glBlendFunc(gl::ZERO, gl::ONE_MINUS_SRC_COLOR);
+    gl::Enable(gl::BLEND);
+    gl::BlendFunc(gl::ZERO, gl::ONE_MINUS_SRC_COLOR);
     m_clear->program()->setUniform("elapsed", elapsed);
     m_clear->draw();
 
     // Draw particles
-    glBlendFunc(gl::SRC_ALPHA, gl::ONE);
+    gl::BlendFunc(gl::SRC_ALPHA, gl::ONE);
 
     m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
     m_texPositions->bindActive(gl::TEXTURE0);
@@ -162,14 +164,14 @@ void FragmentShaderParticles::draw(const float elapsed)
 
     m_drawProgram->release();
 
-    glDisable(gl::BLEND);
+    gl::Disable(gl::BLEND);
 
     m_fbo->unbind();
 
     m_quad->draw();
 
     // Re-enable depth buffer
-    glEnable(gl::DEPTH_TEST);
+    gl::Enable(gl::DEPTH_TEST);
 }
 
 void FragmentShaderParticles::resize()
@@ -181,6 +183,6 @@ void FragmentShaderParticles::resize()
     m_colorBuffer->image2D(0, gl::RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, gl::RGB, gl::FLOAT, nullptr);
 
     m_fbo->bind();
-    glClear(gl::COLOR_BUFFER_BIT);
+    gl::Clear(gl::COLOR_BUFFER_BIT);
     m_fbo->unbind();
 }

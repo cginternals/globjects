@@ -1,6 +1,6 @@
 #include <glowutils/UnitCube.h>
 
-#include <cmath>
+#include <glbinding/functions.h>
 
 #include <glm/glm.hpp>
 
@@ -57,7 +57,7 @@ const std::array<glm::vec3, 28> UnitCube::strip()
     }};
 }
 
-UnitCube::UnitCube(const GLuint vertexAttribLocation, const GLuint normalAttribLocation)
+UnitCube::UnitCube(const gl::GLuint vertexAttribLocation, const gl::GLuint normalAttribLocation)
 : m_strip(new Buffer())
 , m_vao(new VertexArrayObject)
 {
@@ -67,13 +67,13 @@ UnitCube::UnitCube(const GLuint vertexAttribLocation, const GLuint normalAttribL
 
     auto vertexBinding = m_vao->binding(0);
     vertexBinding->setAttribute(vertexAttribLocation);
-    vertexBinding->setBuffer(m_strip.get(), 0, static_cast<GLint>(sizeof(vec3) * 2));
+    vertexBinding->setBuffer(m_strip.get(), 0, static_cast<gl::GLint>(sizeof(vec3) * 2));
     vertexBinding->setFormat(3, gl::FLOAT, gl::FALSE, 0);
     m_vao->enable(0);
 
     auto normalBinding = m_vao->binding(1);
     normalBinding->setAttribute(normalAttribLocation);
-    normalBinding->setBuffer(m_strip.get(), 0, static_cast<GLint>(sizeof(vec3) * 2));
+    normalBinding->setBuffer(m_strip.get(), 0, static_cast<gl::GLint>(sizeof(vec3) * 2));
     normalBinding->setFormat(3, gl::FLOAT, gl::TRUE, sizeof(vec3));
     m_vao->enable(1);
 
@@ -82,7 +82,7 @@ UnitCube::UnitCube(const GLuint vertexAttribLocation, const GLuint normalAttribL
 
 void UnitCube::draw()
 {
-    glEnable(gl::DEPTH_TEST);
+    gl::Enable(gl::DEPTH_TEST);
     CheckGLError();
 
     m_vao->bind();

@@ -1,5 +1,7 @@
 #include <glow/Sampler.h>
 
+#include <glbinding/functions.h>
+
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
 
@@ -11,12 +13,12 @@ Sampler::Sampler()
 {
 }
 
-Sampler::Sampler(GLuint id, bool takeOwnership)
+Sampler::Sampler(gl::GLuint id, bool takeOwnership)
 : Object(id, takeOwnership)
 {
 }
 
-Sampler * Sampler::fromId(GLuint id, bool takeOwnership)
+Sampler * Sampler::fromId(gl::GLuint id, bool takeOwnership)
 {
     return new Sampler(id, takeOwnership);
 }
@@ -25,16 +27,16 @@ Sampler::~Sampler()
 {
     if (ownsGLObject())
     {
-        glDeleteSamplers(1, &m_id);
+        gl::DeleteSamplers(1, &m_id);
         CheckGLError();
     }
 }
 
-GLuint Sampler::genSampler()
+gl::GLuint Sampler::genSampler()
 {
-    GLuint id = 0;
+    gl::GLuint id = 0;
 
-    glGenSamplers(1, &id);
+    gl::GenSamplers(1, &id);
     CheckGLError();
 
     return id;
@@ -45,42 +47,42 @@ void Sampler::accept(ObjectVisitor & visitor)
     visitor.visitSampler(this);
 }
 
-void Sampler::bind(GLuint unit) const
+void Sampler::bind(gl::GLuint unit) const
 {
-    glBindSampler(unit, m_id);
+    gl::BindSampler(unit, m_id);
     CheckGLError();
 }
 
-void Sampler::unbind(GLuint unit)
+void Sampler::unbind(gl::GLuint unit)
 {
-    glBindSampler(unit, 0);
+    gl::BindSampler(unit, 0);
     CheckGLError();
 }
 
-void Sampler::setParameter(GLenum name, GLint value)
+void Sampler::setParameter(gl::GLenum name, gl::GLint value)
 {
-    glSamplerParameteri(m_id, name, value);
+    gl::SamplerParameteri(m_id, name, value);
     CheckGLError();
 }
 
-void Sampler::setParameter(GLenum name, GLfloat value)
+void Sampler::setParameter(gl::GLenum name, gl::GLfloat value)
 {
-    glSamplerParameterf(m_id, name, value);
+    gl::SamplerParameterf(m_id, name, value);
     CheckGLError();
 }
 
-GLint Sampler::getParameteri(GLenum pname) const
+gl::GLint Sampler::getParameteri(gl::GLenum pname) const
 {
-    GLint value = 0;
-    glGetSamplerParameteriv(m_id, pname, &value);
+    gl::GLint value = 0;
+    gl::GetSamplerParameteriv(m_id, pname, &value);
     CheckGLError();
 	return value;
 }
 
-GLfloat Sampler::getParameterf(GLenum pname) const
+gl::GLfloat Sampler::getParameterf(gl::GLenum pname) const
 {
-    GLfloat value = 0;
-    glGetSamplerParameterfv(m_id, pname, &value);
+    gl::GLfloat value = 0;
+    gl::GetSamplerParameterfv(m_id, pname, &value);
     CheckGLError();
 	return value;
 }

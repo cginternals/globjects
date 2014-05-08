@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+
 
 #include <algorithm>
 #include <random>
@@ -55,7 +55,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
 
         m_camera.setZNear(0.1f);
@@ -71,7 +71,7 @@ public:
         int width = event.width();
         int height = event.height();
 
-        glViewport(0, 0, width, height);
+        gl::Viewport(0, 0, width, height);
         CheckGLError();
 
         m_camera.setViewport(width, height);
@@ -79,7 +79,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         m_program->setUniform("modelViewProjection", m_camera.viewProjection());
@@ -169,18 +169,18 @@ void EventHandler::createAndSetupTexture()
 {
 	m_texture = new glow::Texture(gl::TEXTURE_2D);
 
-    m_texture->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<GLint>(gl::LINEAR_MIPMAP_LINEAR));
-    m_texture->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<GLint>(gl::LINEAR));
+    m_texture->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::LINEAR_MIPMAP_LINEAR));
+    m_texture->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::LINEAR));
 
-    m_texture->setParameter(gl::TEXTURE_WRAP_S, static_cast<GLint>(gl::REPEAT));
-    m_texture->setParameter(gl::TEXTURE_WRAP_T, static_cast<GLint>(gl::REPEAT));
+    m_texture->setParameter(gl::TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::REPEAT));
+    m_texture->setParameter(gl::TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::REPEAT));
 
     RawFile raw("data/mipmap-filtering/grass.256.256.dxt1-rgb.raw");
     if (!raw.isValid())
         return;
 
-    m_texture->compressedImage2D(0, gl::COMPRESSED_RGB_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, static_cast<GLsizei>(raw.size()), raw.data());   
-    glGenerateMipmap(gl::TEXTURE_2D);
+    m_texture->compressedImage2D(0, gl::COMPRESSED_RGB_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, static_cast<gl::GLsizei>(raw.size()), raw.data());   
+    gl::GenerateMipmap(gl::TEXTURE_2D);
 }
 
 void EventHandler::createAndSetupGeometry()

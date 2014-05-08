@@ -59,12 +59,12 @@ using namespace glow;
 namespace glowutils
 {
 
-Shader * createShaderFromFile(const GLenum type, const std::string& fileName)
+Shader * createShaderFromFile(const gl::GLenum type, const std::string& fileName)
 {
     return new Shader(type, new File(fileName));
 }
 
-Shader * createShaderFromFile(GLenum type, const std::string & fileName, const std::vector<std::string> & includePaths)
+Shader * createShaderFromFile(gl::GLenum type, const std::string & fileName, const std::vector<std::string> & includePaths)
 {
     return new Shader(type, new File(fileName), includePaths);
 }

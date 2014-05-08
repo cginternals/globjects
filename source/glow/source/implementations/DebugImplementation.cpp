@@ -1,8 +1,9 @@
 #include "DebugImplementation.h"
 
-#include <glow/glow.h>
-
 #include <glbinding/constants.h>
+#include <glbinding/functions.h>
+
+#include <glow/glow.h>
 
 #ifdef WIN32
 #include <Windows.h>
@@ -12,7 +13,7 @@
 
 namespace glow {
 
-void APIENTRY DebugImplementation::debugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, const void * param)
+void APIENTRY DebugImplementation::debugMessageCallback(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message, const void * param)
 {
     if (!param)
         return;
@@ -27,7 +28,7 @@ void DebugImplementation::registerCallback()
     if (m_messageCallback.isRegistered())
         return;
 
-    glDebugMessageCallback(reinterpret_cast<GLDEBUGPROC>(debugMessageCallback), reinterpret_cast<const void*>(&m_messageCallback));
+    gl::DebugMessageCallback(reinterpret_cast<gl::GLDEBUGPROC>(debugMessageCallback), reinterpret_cast<const void*>(&m_messageCallback));
 
     m_messageCallback.setRegistered(true);
 }
@@ -54,12 +55,12 @@ void DebugImplementation::insertMessage(const DebugMessage & message)
     if (message.isManualErrorMessage())
         return;
 
-    glDebugMessageInsert(message.source(), message.type(), message.id(), message.severity(), static_cast<GLsizei>(message.message().length()), message.message().c_str());
+    gl::DebugMessageInsert(message.source(), message.type(), message.id(), message.severity(), static_cast<gl::GLsizei>(message.message().length()), message.message().c_str());
 }
 
-void DebugImplementation::controlMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids, GLboolean enabled)
+void DebugImplementation::controlMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids, gl::GLboolean enabled)
 {
-    glDebugMessageControl(source, type, severity, count, ids, enabled);
+    gl::DebugMessageControl(source, type, severity, count, ids, enabled);
 }
 
 } // namespace glow

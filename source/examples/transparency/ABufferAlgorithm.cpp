@@ -1,5 +1,7 @@
 #include "ABufferAlgorithm.h"
 
+#include <glbinding/functions.h>
+
 #include <glow/Program.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/Texture.h>
@@ -77,9 +79,9 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
     // reset head buffer & counter
     static glm::ivec2 initialHead(-1, 0);
     static int initialCounter = 0;
-    m_headBuffer->setData(static_cast<GLsizei>(width * height * sizeof(Head)), nullptr, gl::DYNAMIC_DRAW);
+    m_headBuffer->setData(static_cast<gl::GLsizei>(width * height * sizeof(Head)), nullptr, gl::DYNAMIC_DRAW);
     m_headBuffer->clearData(gl::RG32I, gl::RG, gl::INT, &initialHead);
-    m_counter->setData(static_cast<GLsizei>(sizeof(int)), nullptr, gl::DYNAMIC_DRAW);
+    m_counter->setData(static_cast<gl::GLsizei>(sizeof(int)), nullptr, gl::DYNAMIC_DRAW);
     m_counter->clearData(gl::R32I, gl::RED, gl::UNSIGNED_INT, &initialCounter);
 
     // bind buffers
@@ -96,7 +98,7 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
 
     m_renderFbo->unbind();
 
-    glMemoryBarrier(gl::SHADER_STORAGE_BARRIER_BIT);
+    gl::MemoryBarrier(gl::SHADER_STORAGE_BARRIER_BIT);
     CheckGLError();
 
     m_postFbo->bind();
@@ -117,7 +119,7 @@ void ABufferAlgorithm::resize(int width, int height) {
     int depthBits = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(gl::DEPTH, gl::FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
     m_opaqueBuffer->image2D(0, gl::RGBA32F, width, height, 0, gl::RGBA, gl::FLOAT, nullptr);
     m_depthBuffer->storage(depthBits == 16 ? gl::DEPTH_COMPONENT16 : gl::DEPTH_COMPONENT, width, height);
-    m_linkedListBuffer->setData(static_cast<GLsizei>(width * height * ABUFFER_SIZE * sizeof(ABufferEntry)), nullptr, gl::DYNAMIC_DRAW);
+    m_linkedListBuffer->setData(static_cast<gl::GLsizei>(width * height * ABUFFER_SIZE * sizeof(ABufferEntry)), nullptr, gl::DYNAMIC_DRAW);
     m_colorBuffer->image2D(0, gl::RGBA32F, width, height, 0, gl::RGBA, gl::FLOAT, nullptr);
 }
 

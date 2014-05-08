@@ -3,7 +3,7 @@
 #include <string>
 #include <functional>
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 #include <glow/glow_api.h>
 
@@ -13,13 +13,13 @@ class GLOW_API LocationIdentity
 {
 public:
     LocationIdentity();
-    LocationIdentity(GLint location);
+    LocationIdentity(gl::GLint location);
     LocationIdentity(const std::string & name);
 
     bool isLocation() const;
     bool isName() const;
 
-    GLint location() const;
+    gl::GLint location() const;
     const std::string & name() const;
 
     bool operator==(const LocationIdentity & identity) const;
@@ -31,7 +31,7 @@ public:
 protected:
     bool m_invalid;
     bool m_hasName;
-    GLint m_location;
+    gl::GLint m_location;
     std::string m_name;
 };
 

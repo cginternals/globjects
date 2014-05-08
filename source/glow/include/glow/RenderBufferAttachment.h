@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
+
 
 #include <glowbase/ref_ptr.h>
 
@@ -24,7 +24,7 @@ class FrameBufferObject;
 class GLOW_API RenderBufferAttachment : public FrameBufferAttachment
 {
 public:
-    RenderBufferAttachment(FrameBufferObject * fbo,  GLenum attachment, RenderBufferObject * renderBuffer);
+    RenderBufferAttachment(FrameBufferObject * fbo,  gl::GLenum attachment, RenderBufferObject * renderBuffer);
 
     virtual bool isRenderBufferAttachment() const override;
 	RenderBufferObject * renderBuffer();

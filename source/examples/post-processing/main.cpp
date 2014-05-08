@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+#include <glbinding/functions.h>
 
 #include <algorithm>
 #include <random>
@@ -66,7 +66,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
+		gl::ClearColor(1.0f, 1.0f, 1.0f, 0.f);
         CheckGLError();
 
 		m_fbo = new glow::FrameBufferObject();
@@ -126,7 +126,7 @@ public:
         int width = event.width();
         int height = event.height();
 
-        glViewport(0, 0, width, height);
+        gl::Viewport(0, 0, width, height);
         CheckGLError();
 
         m_camera.setViewport(width, height);
@@ -149,7 +149,7 @@ public:
 
 
 		m_fbo->bind();
-		glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+		gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
 		m_sphere->use();
@@ -158,9 +158,9 @@ public:
 
 		m_fbo->unbind();
 
-		glDisable(gl::DEPTH_TEST);
+		gl::Disable(gl::DEPTH_TEST);
         CheckGLError();
-		glDepthMask(gl::FALSE);
+        gl::DepthMask(gl::FALSE);
         CheckGLError();
 
 		m_phong->setUniform("normal", 0);
@@ -173,17 +173,17 @@ public:
         m_geom->unbindActive(gl::TEXTURE1);
         m_normal->unbindActive(gl::TEXTURE0);
 
-		glEnable(gl::DEPTH_TEST);
+		gl::Enable(gl::DEPTH_TEST);
         CheckGLError();
-		glDepthMask(gl::TRUE);
+        gl::DepthMask(gl::TRUE);
         CheckGLError();
 
 		// use the fbo's depth buffer as default depth buffer ;)
 		// Note: this requires the depth formats to match exactly.
 
-		glBindFramebuffer(gl::READ_FRAMEBUFFER, m_fbo->id());
-		glBindFramebuffer(gl::DRAW_FRAMEBUFFER, 0);
-        glBlitFramebuffer(0, 0, m_camera.viewport().x, m_camera.viewport().y, 0, 0, m_camera.viewport().x, m_camera.viewport().y,
+		gl::BindFramebuffer(gl::READ_FRAMEBUFFER, m_fbo->id());
+		gl::BindFramebuffer(gl::DRAW_FRAMEBUFFER, 0);
+        gl::BlitFramebuffer(0, 0, m_camera.viewport().x, m_camera.viewport().y, 0, 0, m_camera.viewport().x, m_camera.viewport().y,
 			gl::DEPTH_BUFFER_BIT, gl::NEAREST);
 
 		m_agrid->draw();

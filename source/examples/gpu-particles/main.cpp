@@ -1,6 +1,6 @@
 #include <map>
 
-#include <GL/glew.h>
+#include <glbinding/functions.h>
 
 #include <algorithm>
 #include <vector>
@@ -130,7 +130,7 @@ public:
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        glViewport(0, 0, event.width(), event.height());
+        gl::Viewport(0, 0, event.width(), event.height());
         CheckGLError();
 
         m_camera->setViewport(event.size());

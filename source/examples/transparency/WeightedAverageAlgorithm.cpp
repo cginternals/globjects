@@ -55,11 +55,11 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
     m_depthComplexityBuffer->clearData(gl::R32UI, gl::RED, gl::UNSIGNED_INT, &initialDepthComplexity);
     m_depthComplexityBuffer->bindBase(gl::SHADER_STORAGE_BUFFER, 0);
 
-    glEnable(gl::DEPTH_TEST);
+    gl::Enable(gl::DEPTH_TEST);
     CheckGLError();
-    glDepthMask(gl::TRUE);
+    gl::DepthMask(gl::TRUE);
     CheckGLError();
-    glDisable(gl::BLEND);
+    gl::Disable(gl::BLEND);
     CheckGLError();
 
     m_opaqueProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
@@ -68,11 +68,11 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
 
     drawFunction(m_opaqueProgram.get());
 
-    glDepthMask(gl::FALSE);
+    gl::DepthMask(gl::FALSE);
     CheckGLError();
-    glEnable(gl::BLEND);
+    gl::Enable(gl::BLEND);
     CheckGLError();
-    glBlendFunc(gl::ONE, gl::ONE);
+    gl::BlendFunc(gl::ONE, gl::ONE);
     CheckGLError();
 
     m_accumulationProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
@@ -87,11 +87,11 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
     m_postFbo->bind();
     m_postFbo->clear(gl::COLOR_BUFFER_BIT);
 
-    glDepthMask(gl::TRUE);
+    gl::DepthMask(gl::TRUE);
     CheckGLError();
-    glDisable(gl::BLEND);
+    gl::Disable(gl::BLEND);
     CheckGLError();
-    glDisable(gl::DEPTH_TEST);
+    gl::Disable(gl::DEPTH_TEST);
     CheckGLError();
 
     m_opaqueBuffer->bindActive(gl::TEXTURE0);
@@ -106,7 +106,7 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
     m_opaqueBuffer->unbindActive(gl::TEXTURE0);
     m_accumulationBuffer->unbindActive(gl::TEXTURE1);
 
-    glEnable(gl::DEPTH_TEST);
+    gl::Enable(gl::DEPTH_TEST);
     CheckGLError();
 
     m_postFbo->unbind();
@@ -117,7 +117,7 @@ void WeightedAverageAlgorithm::resize(int width, int height) {
     m_accumulationBuffer->image2D(0, gl::RGBA32F, width, height, 0, gl::RGBA, gl::FLOAT, nullptr);
     m_colorBuffer->image2D(0, gl::RGBA, width, height, 0, gl::RGBA, gl::UNSIGNED_BYTE, nullptr);
     m_depthBuffer->storage(gl::DEPTH_COMPONENT, width, height);
-    m_depthComplexityBuffer->setData(static_cast<GLint>(width * height * sizeof(unsigned int)), nullptr, gl::DYNAMIC_DRAW);
+    m_depthComplexityBuffer->setData(static_cast<gl::GLint>(width * height * sizeof(unsigned int)), nullptr, gl::DYNAMIC_DRAW);
 }
 
 glow::Texture* WeightedAverageAlgorithm::getOutput()

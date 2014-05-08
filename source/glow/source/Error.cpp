@@ -1,6 +1,7 @@
 #include <glow/Error.h>
 
 #include <glbinding/constants.h>
+#include <glbinding/functions.h>
 
 #include <glow/DebugMessage.h>
 #include "debugmessageoutput_private.h"
@@ -9,7 +10,7 @@ namespace glow
 {
 
 
-Error::Error(GLenum errorCode)
+Error::Error(gl::GLenum errorCode)
 : m_errorCode(errorCode)
 {
 }
@@ -19,7 +20,7 @@ Error::Error()
 {
 }
 
-GLenum Error::code() const
+gl::GLenum Error::code() const
 {
 	return m_errorCode;
 }
@@ -41,13 +42,13 @@ std::string Error::name() const
         case gl::OUT_OF_MEMORY:
             return "gl::OUT_OF_MEMORY";
         default:
-            return "Unknown GLenum.";
+            return "Unknown gl::GLenum.";
     }
 }
 
 Error Error::get()
 {
-	return Error(glGetError());
+    return Error(gl::GetError());
 }
 
 void Error::clear()

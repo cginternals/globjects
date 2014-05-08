@@ -6,7 +6,7 @@
 
 namespace glow {
 
-DebugMessage::DebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string & message)
+DebugMessage::DebugMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, const std::string & message)
 : m_source(source)
 , m_type(type)
 , m_id(id)
@@ -20,22 +20,22 @@ bool DebugMessage::isManualErrorMessage() const
     return false;
 }
 
-GLenum DebugMessage::source() const
+gl::GLenum DebugMessage::source() const
 {
     return m_source;
 }
 
-GLenum DebugMessage::type() const
+gl::GLenum DebugMessage::type() const
 {
     return m_type;
 }
 
-GLuint DebugMessage::id() const
+gl::GLuint DebugMessage::id() const
 {
     return m_id;
 }
 
-GLenum DebugMessage::severity() const
+gl::GLenum DebugMessage::severity() const
 {
     return m_severity;
 }

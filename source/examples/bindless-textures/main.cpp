@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+
 
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/noise.hpp>
@@ -113,7 +113,7 @@ public:
         int width = event.width();
         int height = event.height();
 
-        glViewport(0, 0, width, height);
+        gl::Viewport(0, 0, width, height);
         CheckGLError();
 
         m_camera.setViewport(width, height);
@@ -121,7 +121,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         m_program->setUniform("projection", m_camera.viewProjection());
@@ -211,7 +211,7 @@ public:
 
     virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) const override
     {
-        return unproject(m_camera, static_cast<GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
+        return unproject(m_camera, static_cast<gl::GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
     }
 
     virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) const override

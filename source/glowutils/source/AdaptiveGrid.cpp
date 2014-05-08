@@ -1,7 +1,8 @@
 #include <glowutils/AdaptiveGrid.h>
 
-#include <cmath>
 #include <vector>
+
+#include <glbinding/functions.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -27,7 +28,7 @@ namespace glowutils
 const char * AdaptiveGrid::s_vsSource = R"(
 
 #version 140
-#extension gl::ARB_explicit_attrib_location : require
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform mat4 transform;
 uniform vec2 viewPlaneDistance;
@@ -48,7 +49,7 @@ void main()
     // interpolate minor grid lines alpha based on viewPlaneDistance
     v_type =  mix(1.0 - t, 1.0 - 2.0 * m * t, step(a_vertex.w, 0.7998));
 
-    gl::Position = vertex;
+    gl_Position = vertex;
 }
 
 )";
@@ -56,7 +57,7 @@ void main()
 const char * AdaptiveGrid::s_fsSource = R"(
 
 #version 140
-#extension gl::ARB_explicit_attrib_location : require
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform vec2 viewPlaneDistance;
 
@@ -73,7 +74,7 @@ void main()
 {
     float t = v_type;
 
-    float z = gl::FragCoord.z; 
+    float z = gl_FragCoord.z;
 
     // complete function
     // z = (2.0 * zfar * znear / (zfar + znear - (zfar - znear) * (2.0 * z - 1.0)));
@@ -256,11 +257,11 @@ void AdaptiveGrid::update(
 
 void AdaptiveGrid::draw()
 {
-    glBlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
+    gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
     CheckGLError();
-    glEnable(gl::BLEND);
+    gl::Enable(gl::BLEND);
     CheckGLError();
-    glEnable(gl::DEPTH_TEST);
+    gl::Enable(gl::DEPTH_TEST);
     CheckGLError();
 
     m_program->use();
@@ -271,7 +272,7 @@ void AdaptiveGrid::draw()
 
     m_program->release();
 
-    glDisable(gl::BLEND);
+    gl::Disable(gl::BLEND);
     CheckGLError();
 }
 

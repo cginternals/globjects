@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-#include <GL/glew.h>
+
 
 #include <glbinding/constants.h>
 
@@ -36,25 +36,25 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        glClearColor(1.f, 1.f, 1.f, 1.f);
+        gl::ClearColor(1.f, 1.f, 1.f, 1.f);
         CheckGLError();
     }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        glViewport(0, 0, event.width(), event.height());
+        gl::Viewport(0, 0, event.width(), event.height());
         CheckGLError();
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClearColor(
+        gl::ClearColor(
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             1.f);
         CheckGLError();
-        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
     }
 

@@ -32,7 +32,7 @@ State* State::currentState()
 {
     State* state = new State(DeferredMode);
 
-    std::vector<GLenum> capabilities = {
+    std::vector<gl::GLenum> capabilities = {
         gl::BLEND,
         gl::COLOR_LOGIC_OP,
         gl::CULL_FACE,
@@ -83,7 +83,7 @@ State* State::currentState()
         }
     }
 
-    for (GLenum capability : capabilities)
+    for (gl::GLenum capability : capabilities)
     {
         state->setEnabled(capability, glow::isEnabled(capability));
     }
@@ -114,7 +114,7 @@ State* State::currentState()
     state->stencilMaskSeparate(gl::BACK, getEnum(gl::STENCIL_BACK_WRITEMASK));
 
     // pixel store
-    std::vector<GLenum> pixelstoreParameters = {
+    std::vector<gl::GLenum> pixelstoreParameters = {
         gl::PACK_SWAP_BYTES,
         gl::PACK_LSB_FIRST,
         gl::PACK_ROW_LENGTH,
@@ -132,7 +132,7 @@ State* State::currentState()
         gl::UNPACK_SKIP_IMAGES,
         gl::UNPACK_ALIGNMENT
     };
-    for (GLenum param : pixelstoreParameters)
+    for (gl::GLenum param : pixelstoreParameters)
     {
         state->pixelStore(param, getInteger(param));
     }
@@ -140,7 +140,7 @@ State* State::currentState()
     return state;
 }
 
-void State::enable(GLenum capability)
+void State::enable(gl::GLenum capability)
 {
     Capability* cap = getCapability(capability);
     cap->enable();
@@ -148,7 +148,7 @@ void State::enable(GLenum capability)
         cap->apply();
 }
 
-void State::disable(GLenum capability)
+void State::disable(gl::GLenum capability)
 {
     Capability* cap = getCapability(capability);
     cap->disable();
@@ -156,7 +156,7 @@ void State::disable(GLenum capability)
         cap->apply();
 }
 
-bool State::isEnabled(GLenum capability) const
+bool State::isEnabled(gl::GLenum capability) const
 {
     if (m_capabilities.find(capability) == m_capabilities.end())
         return false;
@@ -164,7 +164,7 @@ bool State::isEnabled(GLenum capability) const
     return m_capabilities.at(capability)->isEnabled();
 }
 
-void State::enable(GLenum capability, int index)
+void State::enable(gl::GLenum capability, int index)
 {   
     Capability* cap = getCapability(capability);
     cap->enable(index);
@@ -172,7 +172,7 @@ void State::enable(GLenum capability, int index)
         cap->apply();
 }
 
-void State::disable(GLenum capability, int index)
+void State::disable(gl::GLenum capability, int index)
 {
     Capability* cap = getCapability(capability);
     cap->disable(index);
@@ -180,7 +180,7 @@ void State::disable(GLenum capability, int index)
         cap->apply();
 }
 
-bool State::isEnabled(GLenum capability, int index) const
+bool State::isEnabled(gl::GLenum capability, int index) const
 {
     if (m_capabilities.find(capability) == m_capabilities.end())
         return false;
@@ -220,7 +220,7 @@ void State::addCapability(Capability * capability)
     m_capabilities[capability->capability()] = capability;
 }
 
-Capability* State::getCapability(GLenum capability)
+Capability* State::getCapability(gl::GLenum capability)
 {
     if (m_capabilities.find(capability) == m_capabilities.end())
     {
@@ -242,7 +242,7 @@ std::vector<Capability*> State::capabilities() const
     return caps;
 }
 
-Capability* State::capability(GLenum capability)
+Capability* State::capability(gl::GLenum capability)
 {
     auto it = m_capabilities.find(capability);
     if (it == m_capabilities.end())
@@ -251,7 +251,7 @@ Capability* State::capability(GLenum capability)
     return it->second;
 }
 
-const Capability* State::capability(GLenum capability) const
+const Capability* State::capability(gl::GLenum capability) const
 {
     auto it = m_capabilities.find(capability);
     if (it == m_capabilities.end())

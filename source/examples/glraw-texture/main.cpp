@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+
 
 #include <glow/Error.h>
 #include <glow/logging.h>
@@ -38,7 +38,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
 
         createAndSetupTexture();
@@ -51,13 +51,13 @@ public:
         int height = event.height();
     	int side = std::min<int>(width, height);
 
-        glViewport((width - side) / 2, (height - side) / 2, side, side);
+        gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
         CheckGLError();
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         m_quad->draw();
@@ -112,7 +112,7 @@ void EventHandler::createAndSetupTexture()
 
     m_texture = glow::Texture::createDefault(gl::TEXTURE_2D);
 
-    m_texture->compressedImage2D(0, gl::COMPRESSED_RGBA_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, static_cast<GLsizei>(raw.size()), raw.data());
+    m_texture->compressedImage2D(0, gl::COMPRESSED_RGBA_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, static_cast<gl::GLsizei>(raw.size()), raw.data());
 }
 
 void EventHandler::createAndSetupGeometry()

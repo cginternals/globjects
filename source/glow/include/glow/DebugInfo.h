@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 #include <glow/glow_api.h>
 #include <glow/ObjectVisitor.h>
@@ -40,7 +40,7 @@ public:
 		std::vector<Property> properties;
 
 		void addProperty(const std::string & name, const std::string & value);
-		void addProperty(const std::string & name, GLint value);
+		void addProperty(const std::string & name, gl::GLint value);
 	};
 	struct InfoGroup
 	{

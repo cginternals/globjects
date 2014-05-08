@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
+
 
 #include <array>
 #include <vector>
@@ -22,21 +22,21 @@ public:
 
     const LocationIdentity & identity() const;
 
-    void setBinding(GLuint bindingIndex);
+    void setBinding(gl::GLuint bindingIndex);
 
-    void getActive(GLenum pname, GLint * params) const;
-    GLint getActive(GLenum pname) const;
-    std::vector<GLint> getActive(GLenum pname, GLint paramCount) const;
+    void getActive(gl::GLenum pname, gl::GLint * params) const;
+    gl::GLint getActive(gl::GLenum pname) const;
+    std::vector<gl::GLint> getActive(gl::GLenum pname, gl::GLint paramCount) const;
 
-    std::vector<GLint> getActiveUniformIndices() const;
+    std::vector<gl::GLint> getActiveUniformIndices() const;
 
     std::string getName() const;
 protected:
     const Program * m_program;
     LocationIdentity m_identity;
-    GLuint m_bindingIndex;
+    gl::GLuint m_bindingIndex;
 
-    GLuint blockIndex() const;
+    gl::GLuint blockIndex() const;
     void updateBinding() const;
 };
 

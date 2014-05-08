@@ -9,7 +9,18 @@ if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOW_UTILS AND OPTION_BUILD_GLOW_WINDO
         # for compatibility between glm 0.9.4 and 0.9.5
         add_definitions("-DGLM_FORCE_RADIANS")
 	
+	find_package(OpenGL REQUIRED)
+	find_package(GLM REQUIRED)
+	find_package(GLFW REQUIRED)
+	find_package(GLBinding REQUIRED)
+	
 	get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
+	
+	set(GLOW_EXAMPLE_DEPENDENCY_INCLUDES
+		${GLM_INCLUDE_DIR}
+		${GLFW_INCLUDE_DIR}
+		${GLBINDING_INCLUDE_DIR}
+	)
 
 	set(GLOW_EXAMPLE_INCLUDES
 		${GENERATED_HEADER_PATH}
@@ -20,15 +31,22 @@ if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOW_UTILS AND OPTION_BUILD_GLOW_WINDO
 	)
 	
 	set(GLOW_EXAMPLES_LIBRARIES
+		${OPENGL_LIBRARIES}
+		${GLBINDING_LIBRARY}
+		${GLFW_LIBRARY}
 		glowbase
 		glow
 		glowutils
 		glowwindow
-		${EXAMPLE_COMMON}
 	)
 	
 	add_subdirectory("common")
 	include_directories("common")
+	
+	set(GLOW_EXAMPLES_LIBRARIES
+		${GLOW_EXAMPLES_LIBRARIES}
+		${EXAMPLE_COMMON}
+	)
 
 	add_subdirectory("bindless-textures")
 	add_subdirectory("camerapath")

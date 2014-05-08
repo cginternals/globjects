@@ -1,9 +1,7 @@
-
-#include <GL/glew.h>
-
-#include <glbinding/glbinding.h>
-
 #include "ExampleWindowEventHandler.h"
+
+#include <glow/glow.h>
+
 #include <glowwindow/events.h>
 #include <glowwindow/Window.h>
 
@@ -23,7 +21,7 @@ ExampleWindowEventHandler::~ExampleWindowEventHandler()
 
 void ExampleWindowEventHandler::initialize(glowwindow::Window & /*window*/)
 {
-    gl::initialize();
+    glow::init();
 }
 
 void ExampleWindowEventHandler::handleEvent(glowwindow::WindowEvent & event)
@@ -54,7 +52,7 @@ void ExampleWindowEventHandler::handleEvent(glowwindow::WindowEvent & event)
 
 void ExampleWindowEventHandler::setViewport(glowwindow::ResizeEvent & event)
 {
-    glViewport(0, 0, event.width(), event.height());
+    gl::Viewport(0, 0, event.width(), event.height());
 }
 
 namespace {

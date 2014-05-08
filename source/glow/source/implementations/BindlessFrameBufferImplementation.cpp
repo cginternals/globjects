@@ -1,5 +1,7 @@
 #include "BindlessFrameBufferImplementation.h"
 
+#include <glbinding/functions.h>
+
 #include <glow/Error.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/Texture.h>
@@ -7,83 +9,83 @@
 
 namespace glow {
 
-GLenum BindlessFrameBufferImplementation::checkStatus(const FrameBufferObject * fbo) const
+gl::GLenum BindlessFrameBufferImplementation::checkStatus(const FrameBufferObject * fbo) const
 {
-    GLenum result = glCheckNamedFramebufferStatusEXT(fbo->id(), gl::FRAMEBUFFER);
+    gl::GLenum result = gl::CheckNamedFramebufferStatusEXT(fbo->id(), gl::FRAMEBUFFER);
     CheckGLError();
 
     return result;
 }
 
-void BindlessFrameBufferImplementation::setParameter(const FrameBufferObject * fbo, GLenum pname, GLint param) const
+void BindlessFrameBufferImplementation::setParameter(const FrameBufferObject * fbo, gl::GLenum pname, gl::GLint param) const
 {
-    glNamedFramebufferParameteriEXT(fbo->id(), pname, param);
+    gl::NamedFramebufferParameteriEXT(fbo->id(), pname, param);
     CheckGLError();
 }
 
-GLint BindlessFrameBufferImplementation::getAttachmentParameter(const FrameBufferObject * fbo, GLenum attachment, GLenum pname) const
+gl::GLint BindlessFrameBufferImplementation::getAttachmentParameter(const FrameBufferObject * fbo, gl::GLenum attachment, gl::GLenum pname) const
 {
-    GLint result = 0;
+    gl::GLint result = 0;
 
-    glGetNamedFramebufferAttachmentParameterivEXT(fbo->id(), attachment, pname, &result);
+    gl::GetNamedFramebufferAttachmentParameterivEXT(fbo->id(), attachment, pname, &result);
     CheckGLError();
 
     return result;
 }
 
-void BindlessFrameBufferImplementation::attachTexture(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
+void BindlessFrameBufferImplementation::attachTexture(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const
 {
-    glNamedFramebufferTextureEXT(fbo->id(), attachment, texture ? texture->id() : 0, level);
+    gl::NamedFramebufferTextureEXT(fbo->id(), attachment, texture ? texture->id() : 0, level);
     CheckGLError();
 }
 
-void BindlessFrameBufferImplementation::attachTexture1D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
+void BindlessFrameBufferImplementation::attachTexture1D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const
 {
-    glNamedFramebufferTexture1DEXT(fbo->id(), attachment, texture ? texture->target() : gl::TEXTURE_1D, texture ? texture->id() : 0, level);
+    gl::NamedFramebufferTexture1DEXT(fbo->id(), attachment, texture ? texture->target() : gl::TEXTURE_1D, texture ? texture->id() : 0, level);
     CheckGLError();
 }
 
-void BindlessFrameBufferImplementation::attachTexture2D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
+void BindlessFrameBufferImplementation::attachTexture2D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const
 {
-    glNamedFramebufferTexture2DEXT(fbo->id(), attachment, texture ? texture->target() : gl::TEXTURE_2D, texture ? texture->id() : 0, level);
+    gl::NamedFramebufferTexture2DEXT(fbo->id(), attachment, texture ? texture->target() : gl::TEXTURE_2D, texture ? texture->id() : 0, level);
     CheckGLError();
 }
 
-void BindlessFrameBufferImplementation::attachTexture3D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const
+void BindlessFrameBufferImplementation::attachTexture3D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const
 {
-    glNamedFramebufferTexture3DEXT(fbo->id(), attachment, texture ? texture->target() : gl::TEXTURE_3D, texture ? texture->id() : 0, level, layer);
+    gl::NamedFramebufferTexture3DEXT(fbo->id(), attachment, texture ? texture->target() : gl::TEXTURE_3D, texture ? texture->id() : 0, level, layer);
     CheckGLError();
 }
 
-void BindlessFrameBufferImplementation::attachTextureLayer(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const
+void BindlessFrameBufferImplementation::attachTextureLayer(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const
 {
-    glNamedFramebufferTextureLayerEXT(fbo->id(), attachment, texture ? texture->id() : 0, level, layer);
+    gl::NamedFramebufferTextureLayerEXT(fbo->id(), attachment, texture ? texture->id() : 0, level, layer);
     CheckGLError();
 }
 
-void BindlessFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const
+void BindlessFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject * fbo, gl::GLenum attachment, RenderBufferObject * renderBuffer) const
 {
     renderBuffer->bind(gl::RENDERBUFFER); // TODO: is this necessary?
 
-    glNamedFramebufferRenderbufferEXT(fbo->id(), attachment, gl::RENDERBUFFER, renderBuffer->id());
+    gl::NamedFramebufferRenderbufferEXT(fbo->id(), attachment, gl::RENDERBUFFER, renderBuffer->id());
     CheckGLError();
 }
 
-void BindlessFrameBufferImplementation::setReadBuffer(const FrameBufferObject * fbo, GLenum mode) const
+void BindlessFrameBufferImplementation::setReadBuffer(const FrameBufferObject * fbo, gl::GLenum mode) const
 {
-    glFramebufferReadBufferEXT(fbo->id(), mode);
+    gl::FramebufferReadBufferEXT(fbo->id(), mode);
     CheckGLError();
 }
 
-void BindlessFrameBufferImplementation::setDrawBuffer(const FrameBufferObject * fbo, GLenum mode) const
+void BindlessFrameBufferImplementation::setDrawBuffer(const FrameBufferObject * fbo, gl::GLenum mode) const
 {
-    glFramebufferDrawBufferEXT(fbo->id(), mode);
+    gl::FramebufferDrawBufferEXT(fbo->id(), mode);
     CheckGLError();
 }
 
-void BindlessFrameBufferImplementation::setDrawBuffers(const FrameBufferObject * fbo, GLsizei n, const GLenum * modes) const
+void BindlessFrameBufferImplementation::setDrawBuffers(const FrameBufferObject * fbo, gl::GLsizei n, const gl::GLenum * modes) const
 {
-    glFramebufferDrawBuffersEXT(fbo->id(), n, modes);
+    gl::FramebufferDrawBuffersEXT(fbo->id(), n, modes);
     CheckGLError();
 }
 

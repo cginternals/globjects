@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 #include <glowbase/Referenced.h>
 
@@ -26,11 +26,11 @@ class FrameBufferObject;
 class GLOW_API FrameBufferAttachment : public Referenced
 {
 public:
-    FrameBufferAttachment(FrameBufferObject * fbo, GLenum attachment);
+    FrameBufferAttachment(FrameBufferObject * fbo, gl::GLenum attachment);
 
-	GLenum attachment() const;
+	gl::GLenum attachment() const;
 
-    GLint getParameter(GLenum pname) const;
+    gl::GLint getParameter(gl::GLenum pname) const;
 
 	virtual bool isTextureAttachment() const;
 	virtual bool isRenderBufferAttachment() const;
@@ -44,7 +44,7 @@ public:
 
 protected:
     FrameBufferObject * m_fbo;
-	GLenum m_attachment;
+	gl::GLenum m_attachment;
 };
 
 } // namespace glow

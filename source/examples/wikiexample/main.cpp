@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+
 
 #include <glow/Buffer.h>
 #include <glow/Program.h>
@@ -74,7 +74,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
 
         
@@ -116,13 +116,13 @@ public:
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        glViewport(0, 0, event.width(), event.height());
+        gl::Viewport(0, 0, event.width(), event.height());
         CheckGLError();
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
 		program->use();

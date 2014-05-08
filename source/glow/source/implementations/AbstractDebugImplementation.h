@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
+
 
 #include <functional>
 #include <vector>
@@ -30,7 +30,7 @@ public:
 
     virtual void insertMessage(const DebugMessage & message) = 0;
 
-    virtual void controlMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids, GLboolean enabled) = 0;
+    virtual void controlMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids, gl::GLboolean enabled) = 0;
 protected:
     DebugMessageCallback m_messageCallback;
 };

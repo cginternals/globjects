@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+
 
 #include <algorithm>
 #include <random>
@@ -70,7 +70,7 @@ public:
             return;
         }
 
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
         CheckGLError();
 
 	    createAndSetupTexture();
@@ -84,13 +84,13 @@ public:
         int height = event.height();
         int side = std::min<int>(width, height);
 
-        glViewport((width - side) / 2, (height - side) / 2, side, side);
+        gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
         CheckGLError();
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         CheckGLError();
 
         ++m_frame %= static_cast<int>(200 * glm::pi<double>());

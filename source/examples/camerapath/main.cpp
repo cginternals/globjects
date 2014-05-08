@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+
 
 #include <algorithm>
 #include <random>
@@ -114,7 +114,7 @@ public:
 
         debugmessageoutput::enable();
 
-        glClearColor(1.0f, 1.0f, 1.0f, 0.f);
+        gl::ClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
 
         m_sphere = new Program();
@@ -155,13 +155,13 @@ public:
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        glViewport(0, 0, event.width(), event.height());
+        gl::Viewport(0, 0, event.width(), event.height());
         m_camera.setViewport(event.width(), event.height());
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
 
         m_agrid->update();
         m_sphere->setUniform("transform", m_camera.viewProjection());
@@ -285,7 +285,7 @@ public:
 
     virtual vec3 objAt(const ivec2 & windowCoordinates) const override
     {
-        return unproject(m_camera, static_cast<GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
+        return unproject(m_camera, static_cast<gl::GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
     }
 
     virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override

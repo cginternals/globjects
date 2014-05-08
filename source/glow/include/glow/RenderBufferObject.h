@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
+
 
 #include <glbinding/constants.h>
 
@@ -23,17 +23,17 @@ public:
 
     virtual void accept(ObjectVisitor & visitor) override;
 
-    void bind(GLenum target = gl::RENDERBUFFER) const;
-    static void unbind(GLenum target = gl::RENDERBUFFER);
+    void bind(gl::GLenum target = gl::RENDERBUFFER) const;
+    static void unbind(gl::GLenum target = gl::RENDERBUFFER);
 
-    void storage(GLenum internalformat, GLsizei width, GLsizei height);
-    void storageMultisample(GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
+    void storage(gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height);
+    void storageMultisample(gl::GLsizei samples, gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height);
 
-    GLint getParameter(GLenum pname) const;
+    gl::GLint getParameter(gl::GLenum pname) const;
 protected:
     virtual ~RenderBufferObject();
 
-	static GLuint genRenderBuffer();
+	static gl::GLuint genRenderBuffer();
 };
 
 } // namespace glow

@@ -25,7 +25,7 @@ const glow::AbstractBufferImplementation & implementation()
 namespace glow
 {
 
-void Buffer::setWorkingTarget(GLenum target)
+void Buffer::setWorkingTarget(gl::GLenum target)
 {
     LegacyBufferImplementation::s_workingTarget = target;
 }
@@ -127,7 +127,7 @@ void Buffer::setStorage(gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLbitf
     implementation().setStorage(this, size, data, flags);
 }
 
-GLint Buffer::getParameter(gl::GLenum pname) const
+gl::GLint Buffer::getParameter(gl::GLenum pname) const
 {
     gl::GLint value = 0;
 

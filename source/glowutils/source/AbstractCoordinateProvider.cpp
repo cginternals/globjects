@@ -1,10 +1,7 @@
 #include <glowutils/AbstractCoordinateProvider.h>
 
 #include <glbinding/constants.h>
-
-#include <cfloat>
-
-#include <GL/glew.h>
+#include <glbinding/functions.h>
 
 #include <glm/glm.hpp>
 
@@ -19,20 +16,20 @@ namespace glowutils
 
 float AbstractCoordinateProvider::depthAt(
     const Camera & camera
-,   const GLenum format
+,   const gl::GLenum format
 ,   const ivec2 & windowCoordinates)
 {
-    const GLint x(windowCoordinates.x);
-    const GLint y(windowCoordinates.y);
+    const gl::GLint x(windowCoordinates.x);
+    const gl::GLint y(windowCoordinates.y);
 
-    const GLint w(static_cast<GLint>(camera.viewport().x));
-    const GLint h(static_cast<GLint>(camera.viewport().y));
+    const gl::GLint w(static_cast<gl::GLint>(camera.viewport().x));
+    const gl::GLint h(static_cast<gl::GLint>(camera.viewport().y));
 
     if (x >= w || y >= h)
         return 1.f;
 
-    GLfloat z;
-    glReadPixels(x, h - y - 1, 1, 1, format, gl::FLOAT, reinterpret_cast<void*>(&z));
+    gl::GLfloat z;
+    gl::ReadPixels(x, h - y - 1, 1, 1, format, gl::FLOAT, reinterpret_cast<void*>(&z));
     CheckGLError();
 
     return z;
@@ -45,7 +42,7 @@ bool AbstractCoordinateProvider::validDepth(const float depth)
 
 const vec3 AbstractCoordinateProvider::unproject(
     const Camera & camera
-,   const GLenum depthFormat
+,   const gl::GLenum depthFormat
 ,   const ivec2 & windowCoordinates)
 {
     const glm::mat4 viewProjectionInverted = camera.viewProjectionInverted();

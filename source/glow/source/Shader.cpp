@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include <glbinding/constants.h>
+#include <glbinding/functions.h>
 
 #include <glowbase/ref_ptr.h>
 #include <glowbase/Version.h>
@@ -41,7 +42,7 @@ namespace glow
 bool Shader::forceFallbackIncludeProcessor = false;
 
 
-Shader::Shader(const GLenum type)
+Shader::Shader(const gl::GLenum type)
 : Object(create(type))
 , m_type(type)
 , m_compiled(false)
@@ -50,20 +51,20 @@ Shader::Shader(const GLenum type)
 }
 
 
-Shader::Shader(const GLenum type, AbstractStringSource * source)
+Shader::Shader(const gl::GLenum type, AbstractStringSource * source)
 : Shader(type)
 {
     setSource(source);
 }
 
-Shader::Shader(const GLenum type, AbstractStringSource * source, const std::vector<std::string> & includePaths)
+Shader::Shader(const gl::GLenum type, AbstractStringSource * source, const std::vector<std::string> & includePaths)
 : Shader(type)
 {
     setIncludePaths(includePaths);
     setSource(source);
 }
 
-Shader * Shader::fromString(const GLenum type, const std::string & sourceString)
+Shader * Shader::fromString(const gl::GLenum type, const std::string & sourceString)
 {
     return new Shader(type, new StaticStringSource(sourceString));
 }
@@ -77,14 +78,14 @@ Shader::~Shader()
 
 	if (ownsGLObject())
 	{
-		glDeleteShader(m_id);
+		gl::DeleteShader(m_id);
 		CheckGLError();
 	}
 }
 
-GLuint Shader::create(GLenum type)
+gl::GLuint Shader::create(gl::GLenum type)
 {
-	GLuint result = glCreateShader(type);
+    gl::GLuint result = gl::CreateShader(type);
 	CheckGLError();
 	return result;
 }
@@ -94,7 +95,7 @@ void Shader::accept(ObjectVisitor& visitor)
 	visitor.visitShader(this);
 }
 
-GLenum Shader::type() const
+gl::GLenum Shader::type() const
 {
 	return m_type;
 }
@@ -150,7 +151,7 @@ void Shader::updateSource()
 
     std::vector<const char*> cStrings = collectCStrings(sources);
 
-    glShaderSource(m_id, static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
+    gl::ShaderSource(m_id, static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
     CheckGLError();
 
     invalidate();
@@ -164,12 +165,12 @@ bool Shader::compile() const
     if (hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
     {
         std::vector<const char*> cStrings = collectCStrings(m_includePaths);
-        glCompileShaderIncludeARB(m_id, static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
+        gl::CompileShaderIncludeARB(m_id, static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
         CheckGLError();
     }
     else
     {
-        glCompileShader(m_id);
+        gl::CompileShader(m_id);
         CheckGLError();
     }
 
@@ -201,10 +202,10 @@ void Shader::setIncludePaths(const std::vector<std::string> & includePaths)
     invalidate();
 }
 
-GLint Shader::get(GLenum pname) const
+gl::GLint Shader::get(gl::GLenum pname) const
 {
-    GLint value = 0;
-    glGetShaderiv(m_id, pname, &value);
+    gl::GLint value = 0;
+    gl::GetShaderiv(m_id, pname, &value);
     CheckGLError();
 
     return value;
@@ -212,10 +213,10 @@ GLint Shader::get(GLenum pname) const
 
 std::string Shader::getSource() const
 {
-    GLint sourceLength = get(gl::SHADER_SOURCE_LENGTH);
+    gl::GLint sourceLength = get(gl::SHADER_SOURCE_LENGTH);
     std::vector<char> source(sourceLength);
 
-    glGetShaderSource(m_id, sourceLength, nullptr, source.data());
+    gl::GetShaderSource(m_id, sourceLength, nullptr, source.data());
     CheckGLError();
 
     return std::string(source.data(), sourceLength);
@@ -223,7 +224,7 @@ std::string Shader::getSource() const
 
 bool Shader::checkCompileStatus() const
 {
-    GLint status = get(gl::COMPILE_STATUS);
+    gl::GLint status = get(gl::COMPILE_STATUS);
 
     if (gl::FALSE == status)
     {
@@ -240,10 +241,10 @@ bool Shader::checkCompileStatus() const
 
 std::string Shader::infoLog() const
 {
-    GLsizei length = get(gl::INFO_LOG_LENGTH);
+    gl::GLsizei length = get(gl::INFO_LOG_LENGTH);
 	std::vector<char> log(length);
 
-	glGetShaderInfoLog(m_id, length, &length, log.data());
+	gl::GetShaderInfoLog(m_id, length, &length, log.data());
 	CheckGLError();
 
 	return std::string(log.data(), length);
@@ -269,7 +270,7 @@ std::string Shader::typeString() const
     return typeString(m_type);
 }
 
-std::string Shader::typeString(GLenum type)
+std::string Shader::typeString(gl::GLenum type)
 {
     switch (type)
 	{

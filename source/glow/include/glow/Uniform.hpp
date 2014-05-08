@@ -8,13 +8,13 @@ namespace glow
 {
 
 template<typename T>
-Uniform<T>::Uniform(GLint location)
+Uniform<T>::Uniform(gl::GLint location)
 : Uniform(location, T())
 {
 }
 
 template<typename T>
-Uniform<T>::Uniform(GLint location, const T & value)
+Uniform<T>::Uniform(gl::GLint location, const T & value)
 : AbstractUniform(location)
 , m_value(value)
 {
@@ -45,7 +45,7 @@ const T & Uniform<T>::value() const
 }
 
 template<typename T>
-void Uniform<T>::updateAt(const Program * program, GLint location) const
+void Uniform<T>::updateAt(const Program * program, gl::GLint location) const
 {
     setValue(program, location, m_value);
 }

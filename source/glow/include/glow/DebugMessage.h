@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <GL/glew.h>
+
 
 #include <glow/glow_api.h>
 #include <glow/Error.h>
@@ -13,12 +13,12 @@ namespace glow
 class GLOW_API DebugMessage
 {
 public:
-    DebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string & message);
+    DebugMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, const std::string & message);
 
-    GLenum source() const;
-    GLenum type() const;
-    GLuint id() const;
-    GLenum severity() const;
+    gl::GLenum source() const;
+    gl::GLenum type() const;
+    gl::GLuint id() const;
+    gl::GLenum severity() const;
     const std::string & message() const;
 
     virtual bool isManualErrorMessage() const;
@@ -30,10 +30,10 @@ public:
     virtual std::string toString() const;
 
 protected:
-    GLenum m_source;
-    GLenum m_type;
-    GLuint m_id;
-    GLenum m_severity;
+    gl::GLenum m_source;
+    gl::GLenum m_type;
+    gl::GLuint m_id;
+    gl::GLenum m_severity;
     std::string m_message;
 };
 

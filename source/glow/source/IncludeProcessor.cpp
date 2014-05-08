@@ -102,8 +102,8 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
 
                 if (!inMultiLineComment && contains(trimmedLine, "extension"))
                 {
-                    // #extension gl::ARB_shading_language_include : require
-                    if (contains(trimmedLine, "gl::ARB_shading_language_include"))
+                    // #extension GL_ARB_shading_language_include : require
+                    if (contains(trimmedLine, "GL_ARB_shading_language_include"))
                     {
                         // drop line
                     }

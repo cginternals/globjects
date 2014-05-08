@@ -5,7 +5,7 @@
 
 #include <glbinding/constants.h>
 
-#include <GL/glew.h>
+
 
 #include <glow/glow_api.h>
 #include <glow/Object.h>
@@ -62,28 +62,28 @@ public:
 
     virtual void accept(ObjectVisitor & visitor) override;
 
-    void bind(GLenum target = gl::TRANSFORM_FEEDBACK) const;
-    static void unbind(GLenum target = gl::TRANSFORM_FEEDBACK);
+    void bind(gl::GLenum target = gl::TRANSFORM_FEEDBACK) const;
+    static void unbind(gl::GLenum target = gl::TRANSFORM_FEEDBACK);
 
-	void begin(GLenum primitiveMode);
+	void begin(gl::GLenum primitiveMode);
 	void pause();
 	void resume();
 	void end();
 
-    void draw(GLenum primitiveMode) const;
+    void draw(gl::GLenum primitiveMode) const;
 
-	void setVaryings(const Program * program, GLsizei count, const char ** varyingNames, GLenum bufferMode) const;
-    void setVaryings(const Program * program, const std::vector<const char *> & varyingNames, GLenum bufferMode) const;
+	void setVaryings(const Program * program, gl::GLsizei count, const char ** varyingNames, gl::GLenum bufferMode) const;
+    void setVaryings(const Program * program, const std::vector<const char *> & varyingNames, gl::GLenum bufferMode) const;
 
     template <std::size_t Count>
-    void setVaryings(const Program * program, const std::array<const char *, Count> & varyingNames, GLenum bufferMode) const;
+    void setVaryings(const Program * program, const std::array<const char *, Count> & varyingNames, gl::GLenum bufferMode) const;
 
-    static bool isTransformFeedback(GLuint id);
+    static bool isTransformFeedback(gl::GLuint id);
 
 protected:
     virtual ~TransformFeedback();
 
-	static GLuint genTransformFeedback();
+	static gl::GLuint genTransformFeedback();
 };
 
 } // namespace glow

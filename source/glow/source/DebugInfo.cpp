@@ -167,7 +167,7 @@ void DebugInfo::visitBuffer(Buffer* buffer)
 	InfoUnit info;
 	info.name = name("Buffer", buffer);
 
-	GLint memory = buffer->getParameter(gl::BUFFER_SIZE);
+	gl::GLint memory = buffer->getParameter(gl::BUFFER_SIZE);
 	m_memoryUsage["Buffers"] += memory;
 	info.addProperty("memory", humanReadableSize(memory));
 
@@ -216,7 +216,7 @@ void DebugInfo::visitProgram(Program* program)
 	InfoUnit info;
 	info.name = name("Program", program);
 
-	GLint memory = program->get(gl::PROGRAM_BINARY_LENGTH);
+	gl::GLint memory = program->get(gl::PROGRAM_BINARY_LENGTH);
 	m_memoryUsage["Programs"] += memory;
 	info.addProperty("memory", humanReadableSize(memory));
 
@@ -301,7 +301,7 @@ void DebugInfo::visitTexture(Texture* texture)
         int memory = 0;
         for (int i = 0; i<=maxLevels; ++i)
         {
-            if (texture->getLevelParameter(i, gl::TEXTURE_COMPRESSED) == static_cast<GLint>(gl::TRUE))
+            if (texture->getLevelParameter(i, gl::TEXTURE_COMPRESSED) == static_cast<gl::GLint>(gl::TRUE))
             {
                 memory += texture->getLevelParameter(i, gl::TEXTURE_COMPRESSED_IMAGE_SIZE);
             }
@@ -423,7 +423,7 @@ void DebugInfo::InfoUnit::addProperty(const std::string& name, const std::string
 	properties.push_back({name, value});
 }
 
-void DebugInfo::InfoUnit::addProperty(const std::string& name, GLint value)
+void DebugInfo::InfoUnit::addProperty(const std::string& name, gl::GLint value)
 {
 	addProperty(name, std::to_string(value));
 }
