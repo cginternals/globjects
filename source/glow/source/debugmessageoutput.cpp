@@ -3,12 +3,12 @@
 #include <unordered_map>
 
 #include <glbinding/constants.h>
+#include <glbinding/Extension.h>
 
 #include <glow/logging.h>
 #include <glow/Error.h>
 #include <glow/DebugMessage.h>
 #include <glow/glow.h>
-#include <glow/Extension.h>
 
 #include "registry/Registry.h"
 #include "registry/ImplementationRegistry.h"

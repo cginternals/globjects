@@ -1,9 +1,9 @@
 #include <glow/memory.h>
 
 #include <glbinding/constants.h>
+#include <glbinding/Extension.h>
 
 #include <glow/glow.h>
-#include <glow/Extension.h>
 
 namespace {
 

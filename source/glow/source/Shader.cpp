@@ -137,7 +137,7 @@ void Shader::updateSource()
 
     if (m_source)
     {
-        if (hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
+        if (hasExtension(gl::Extension::ARB_shading_language_include) && !forceFallbackIncludeProcessor)
         {
             sources = m_source->strings();
         }
@@ -162,7 +162,7 @@ bool Shader::compile() const
     if (m_compilationFailed)
         return false;
 
-    if (hasExtension(GLOW_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
+    if (hasExtension(gl::Extension::ARB_shading_language_include) && !forceFallbackIncludeProcessor)
     {
         std::vector<const char*> cStrings = collectCStrings(m_includePaths);
         gl::CompileShaderIncludeARB(m_id, static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);

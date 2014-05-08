@@ -5,11 +5,11 @@
 #include <array>
 
 #include <glbinding/types.h>
+#include <glbinding/Extension.h>
 
 #include <glowbase/Version.h>
 
 #include <glow/glow_api.h>
-#include <glow/Extension.h>
 
 namespace glow 
 {
@@ -53,10 +53,10 @@ std::array<gl::GLdouble, Count> getDoubles(gl::GLenum pname);
 template <int Count>
 std::array<gl::GLboolean, Count> getBooleans(gl::GLenum pname);
 
-GLOW_API bool hasExtension(Extension extension);
+GLOW_API bool hasExtension(gl::Extension extension);
 GLOW_API bool hasExtension(const std::string & extensionName);
-GLOW_API bool isInCoreProfile(Extension extension, const Version & version);
-GLOW_API bool isInCoreProfile(Extension extension);
+GLOW_API bool isInCoreProfile(gl::Extension extension, const Version & version);
+GLOW_API bool isInCoreProfile(gl::Extension extension);
 
 GLOW_API void enable(gl::GLenum capability);
 GLOW_API void disable(gl::GLenum capability);

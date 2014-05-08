@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <glbinding/functions.h>
+#include <glbinding/Extension.h>
 
 #include <glow/logging.h>
 #include <glow/glow.h>
@@ -12,7 +13,6 @@
 #include <glow/ObjectVisitor.h>
 #include <glow/Shader.h>
 #include <glow/ProgramBinary.h>
-#include <glow/Extension.h>
 #include <glow/Buffer.h>
 
 namespace glow
@@ -146,7 +146,8 @@ void Program::link() const
 
 bool Program::prepareForLinkage() const
 {
-    if (m_binary && hasExtension(GLOW_ARB_get_program_binary))
+    // TODO: cache
+    if (m_binary && hasExtension(gl::Extension::ARB_get_program_binary))
     {
         gl::ProgramBinary(m_id, m_binary->format(), m_binary->data(), m_binary->length());
 
@@ -380,7 +381,7 @@ void Program::setBinary(ProgramBinary * binary)
 
 ProgramBinary * Program::getBinary() const
 {
-    if (!hasExtension(GLOW_ARB_get_program_binary))
+    if (!hasExtension(gl::Extension::ARB_get_program_binary))
     {
         return nullptr;
     }

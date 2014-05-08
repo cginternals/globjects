@@ -109,11 +109,11 @@ public:
         
         // initialize techniques
 
-        if (glow::hasExtension(glow::GLOW_ARB_compute_shader)) {
+        if (glow::hasExtension(glow::Extension::ARB_compute_shader)) {
             m_techniques[ComputeShaderTechnique] = new ComputeShaderParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         }
-        if (glow::hasExtension(glow::GLOW_ARB_transform_feedback3)) {
+        if (glow::hasExtension(glow::Extension::ARB_transform_feedback3)) {
             m_techniques[TransformFeedbackTechnique] = new TransformFeedbackParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         }

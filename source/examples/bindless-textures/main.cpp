@@ -17,8 +17,8 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
-#include <glow/debugmessageoutput.h>
 #include <glow/Extension.h>
+#include <glow/debugmessageoutput.h>
 #include <glow/glow.h>
 
 #include <glowutils/ScreenAlignedQuad.h>
@@ -76,7 +76,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        if (!glow::hasExtension(glow::Extension::GLOW_NV_bindless_texture))
+        if (!glow::hasExtension(glow::Extension::NV_bindless_texture))
         {
             glow::critical() << "Blindess textures are not supported";
 

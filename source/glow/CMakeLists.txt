@@ -20,11 +20,8 @@ include_directories(
     ${GLBINDING_INCLUDE_DIR}
 )
 
-get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
-
 include_directories(
     BEFORE
-    ${GENERATED_HEADER_PATH}
     ${CMAKE_SOURCE_DIR}/source/glowbase/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -81,7 +78,6 @@ set(sources
 	${source_path}/debugmessageoutput.cpp
 	${source_path}/debugmessageoutput_private.h
 	${source_path}/Error.cpp
-	${source_path}/Extension.cpp
 	${source_path}/FrameBufferAttachment.cpp
 	${source_path}/FrameBufferObject.cpp
 	${source_path}/glmlogging.cpp

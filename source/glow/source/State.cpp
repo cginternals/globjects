@@ -1,9 +1,9 @@
 #include <glow/State.h>
 
 #include <glbinding/constants.h>
+#include <glbinding/Extension.h>
 
 #include <glow/glow.h>
-#include <glow/Extension.h>
 #include <glow/Capability.h>
 
 #include <glow/logging.h>
@@ -59,25 +59,27 @@ State* State::currentState()
     if (glow::version() >= Version(3, 1))
     {
         capabilities.push_back(gl::PRIMITIVE_RESTART);
-        if (hasExtension(GLOW_ARB_ES3_compatibility))
+        if (hasExtension(gl::Extension::ARB_ES3_compatibility))
         {
             capabilities.push_back(gl::PRIMITIVE_RESTART_FIXED_INDEX);
         }
         state->primitiveRestartIndex(getInteger(gl::PRIMITIVE_RESTART_INDEX));
 
-        if (hasExtension(GLOW_ARB_sample_shading))
+        if (hasExtension(gl::Extension::ARB_sample_shading))
         {
             capabilities.push_back(gl::SAMPLE_SHADING);
         }
-        if (hasExtension(GLOW_ARB_seamless_cube_map))
+        if (hasExtension(gl::Extension::ARB_seamless_cube_map))
         {
             capabilities.push_back(gl::TEXTURE_CUBE_MAP_SEAMLESS);
         }
-        if (hasExtension(GLOW_ARB_provoking_vertex))
+        if (hasExtension(gl::Extension::ARB_provoking_vertex))
         {
             state->provokingVertex(getEnum(gl::PROVOKING_VERTEX));
         }
-        if (hasExtension(GLOW_KHR_debug)) {
+        // is this necessary here? should be controlled by glow::debugmessageoutput
+        if (hasExtension(gl::Extension::KHR_debug))
+        {
             capabilities.push_back(gl::DEBUG_OUTPUT);
             capabilities.push_back(gl::DEBUG_OUTPUT_SYNCHRONOUS);
         }

@@ -17,7 +17,7 @@ AbstractDebugImplementation::~AbstractDebugImplementation()
 
 AbstractDebugImplementation * AbstractDebugImplementation::create()
 {
-    if (hasExtension(GLOW_KHR_debug))
+    if (hasExtension(gl::Extension::KHR_debug))
     {
         return new DebugImplementation();
     }

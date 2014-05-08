@@ -220,7 +220,7 @@ std::vector<std::string> getExtensions()
     return extensions;
 }
 
-bool hasExtension(Extension extension)
+bool hasExtension(gl::Extension extension)
 {
     return ExtensionRegistry::current().hasExtension(extension);
 }
@@ -230,12 +230,12 @@ bool hasExtension(const std::string & extensionName)
     return ExtensionRegistry::current().hasExtension(extensionName);
 }
 
-bool isInCoreProfile(Extension extension, const Version & version)
+bool isInCoreProfile(gl::Extension extension, const Version & version)
 {
     return ExtensionRegistry::current().isInCoreProfile(extension, version);
 }
 
-bool isInCoreProfile(Extension extension)
+bool isInCoreProfile(gl::Extension extension)
 {
     return ExtensionRegistry::current().isInCoreProfile(extension);
 }

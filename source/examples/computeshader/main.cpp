@@ -14,13 +14,13 @@
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
+#include <glow/Extension.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/debugmessageoutput.h>
 #include <glow/Texture.h>
-#include <glow/Extension.h>
 #include <glow/glow.h>
 
 #include <glowutils/File.h>
@@ -61,7 +61,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        if (!glow::hasExtension(glow::Extension::GLOW_ARB_compute_shader))
+        if (!glow::hasExtension(glow::Extension::ARB_compute_shader))
         {
             glow::critical() << "Compute shaders are not supported";
 
