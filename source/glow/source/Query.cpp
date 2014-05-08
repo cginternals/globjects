@@ -28,7 +28,6 @@ Query::~Query()
 	if (ownsGLObject())
 	{
         gl::DeleteQueries(1, &m_id);
-
 	}
 }
 
@@ -64,7 +63,6 @@ gl::GLuint Query::genQuery()
 
     gl::GenQueries(1, &id);
 
-
 	return id;
 }
 
@@ -74,7 +72,6 @@ gl::GLint Query::get(gl::GLenum target, gl::GLenum pname)
 
     gl::GetQueryiv(target, pname, &value);
 
-
     return value;
 }
 
@@ -83,7 +80,6 @@ gl::GLint Query::getIndexed(gl::GLenum target, gl::GLuint index, gl::GLenum pnam
     gl::GLint value = 0;
 
     gl::GetQueryIndexediv(target, index, pname, &value);
-
 
     return value;
 }
@@ -96,25 +92,21 @@ void Query::accept(ObjectVisitor& visitor)
 void Query::begin(gl::GLenum target) const
 {
     gl::BeginQuery(target, m_id);
-
 }
 
 void Query::end(gl::GLenum target) const
 {
     gl::EndQuery(target);
-
 }
 
 void Query::beginIndexed(gl::GLenum target, gl::GLuint index) const
 {
     gl::BeginQueryIndexed(target, index, m_id);
-
 }
 
 void Query::endIndexed(gl::GLenum target, gl::GLuint index) const
 {
     gl::EndQueryIndexed(target, index);
-
 }
 
 gl::GLuint Query::get(gl::GLenum pname) const
@@ -122,7 +114,6 @@ gl::GLuint Query::get(gl::GLenum pname) const
     gl::GLuint value = 0;
 	
     gl::GetQueryObjectuiv(m_id, pname, &value);
-
 	
 	return value;
 }
@@ -132,7 +123,6 @@ gl::GLuint64 Query::get64(gl::GLenum pname) const
     gl::GLuint64 value = 0;
 	
     gl::GetQueryObjectui64v(m_id, pname, &value);
-
 	
 	return value;
 }
@@ -199,15 +189,11 @@ gl::GLuint64 Query::waitAndGet64(gl::GLenum pname, const std::chrono::duration<i
 void Query::counter(gl::GLenum target) const
 {
     gl::QueryCounter(m_id, target);
-
 }
 
 bool Query::isQuery(gl::GLuint id)
 {
-    bool result = gl::IsQuery(id) == gl::TRUE;
-
-
-	return result;
+    return gl::IsQuery(id) == gl::TRUE;
 }
 
 } // namespace glow

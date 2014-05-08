@@ -48,5 +48,5 @@ gl::GLint evictionCount()
     return getMemoryInformation(gl::GPU_MEMORY_INFO_EVICTION_COUNT_NVX);
 }
 
-}
-}
+} // namespace memory
+} // namespace glow

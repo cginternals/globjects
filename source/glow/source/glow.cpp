@@ -82,7 +82,6 @@ gl::GLint getInteger(gl::GLenum pname)
 
     gl::GetIntegerv(pname, &value);
 
-
 	return value;
 }
 
@@ -97,7 +96,6 @@ gl::GLfloat getFloat(gl::GLenum pname)
 
     gl::GetFloatv(pname, &value);
 
-
 	return value;
 }
 
@@ -106,7 +104,6 @@ gl::GLdouble getDouble(gl::GLenum pname)
 	gl::GLdouble value;
 
     gl::GetDoublev(pname, &value);
-
 
 	return value;
 }
@@ -117,7 +114,6 @@ gl::GLboolean getBoolean(gl::GLenum pname)
 
     gl::GetBooleanv(pname, &value);
 
-
 	return value;
 }
 
@@ -126,7 +122,6 @@ gl::GLint getInteger(gl::GLenum pname, gl::GLuint index)
 	gl::GLint value;
 
     gl::GetIntegeri_v(pname, index, &value);
-
 
 	return value;
 }
@@ -142,7 +137,6 @@ gl::GLfloat getFloat(gl::GLenum pname, gl::GLuint index)
 
     gl::GetFloati_v(pname, index, &value);
 
-
     return value;
 }
 
@@ -152,7 +146,6 @@ gl::GLdouble getDouble(gl::GLenum pname, gl::GLuint index)
 
     gl::GetDoublei_v(pname, index, &value);
 
-
     return value;
 }
 
@@ -161,7 +154,6 @@ gl::GLboolean getBoolean(gl::GLenum pname, gl::GLuint index)
     gl::GLboolean value;
 
     gl::GetBooleani_v(pname, index, &value);
-
 
     return value;
 }
@@ -243,13 +235,11 @@ bool isInCoreProfile(gl::Extension extension)
 void enable(gl::GLenum capability)
 {
     gl::Enable(capability);
-
 }
 
 void disable(gl::GLenum capability)
 {
     gl::Disable(capability);
-
 }
 
 bool isEnabled(gl::GLenum capability)
@@ -267,13 +257,11 @@ void setEnabled(gl::GLenum capability, bool enabled)
 void enable(gl::GLenum capability, int index)
 {
     gl::Enablei(capability, index);
-
 }
 
 void disable(gl::GLenum capability, int index)
 {
     gl::Disablei(capability, index);
-
 }
 
 bool isEnabled(gl::GLenum capability, int index)

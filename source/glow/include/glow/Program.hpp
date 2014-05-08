@@ -105,7 +105,6 @@ void Program::attach(Shader * shader, Shaders... shaders)
 
     gl::AttachShader(m_id, shader->id());
 
-
     shader->registerListener(this);
     m_shaders.insert(shader);
 

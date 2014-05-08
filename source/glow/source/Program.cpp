@@ -201,16 +201,12 @@ void Program::bindAttributeLocation(gl::GLuint index, const std::string & name) 
 
 gl::GLint Program::getFragDataLocation(const std::string & name) const
 {
-    gl::GLint location = gl::GetFragDataLocation(m_id, name.c_str());
-
-    return location;
+    return gl::GetFragDataLocation(m_id, name.c_str());
 }
 
 gl::GLint Program::getFragDataIndex(const std::string & name) const
 {
-    gl::GLint location = gl::GetFragDataIndex(m_id, name.c_str());
-
-    return location;
+    return gl::GetFragDataIndex(m_id, name.c_str());
 }
 
 gl::GLint Program::getUniformLocation(const std::string& name) const

@@ -60,8 +60,6 @@ void VertexAttributeBinding_GL_3_0::bindAttribute(gl::GLint /*attributeIndex*/)
 
 void VertexAttributeBinding_GL_3_0::bindBuffer(const Buffer* /*vbo*/, gl::GLint baseoffset, gl::GLint stride)
 {
-    //assert(vbo != nullptr);
-
     m_baseoffset = baseoffset;
     m_stride = stride;
 
@@ -116,7 +114,6 @@ void VertexAttributeBinding_GL_3_0::finish()
         Buffer::unbind(gl::ARRAY_BUFFER);
     }
 
-
     const gl::GLint attribute = attributeIndex();
 
     switch (m_format.method)
@@ -131,7 +128,6 @@ void VertexAttributeBinding_GL_3_0::finish()
         break;
     default:
         gl::VertexAttribPointer(attribute, m_format.size, m_format.type, m_format.normalized, m_stride, offset);
-
     }
 }
 
@@ -164,7 +160,6 @@ void VertexAttributeBinding_GL_4_3::bindAttribute(gl::GLint attributeIndex)
     vao()->bind();
 
     gl::VertexAttribBinding(attributeIndex, bindingIndex());
-
 }
 
 void VertexAttributeBinding_GL_4_3::bindBuffer(const Buffer* vbo, gl::GLint baseoffset, gl::GLint stride)
@@ -172,7 +167,6 @@ void VertexAttributeBinding_GL_4_3::bindBuffer(const Buffer* vbo, gl::GLint base
     vao()->bind();
 
     gl::BindVertexBuffer(bindingIndex(), vbo ? vbo->id() : 0, baseoffset, stride);
-
 }
 
 void VertexAttributeBinding_GL_4_3::setFormat(gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeoffset)
@@ -180,7 +174,6 @@ void VertexAttributeBinding_GL_4_3::setFormat(gl::GLint size, gl::GLenum type, g
     vao()->bind();
 
     gl::VertexAttribFormat(attributeIndex(), size, type, normalized, relativeoffset);
-
 }
 
 void VertexAttributeBinding_GL_4_3::setIFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset)
@@ -188,7 +181,6 @@ void VertexAttributeBinding_GL_4_3::setIFormat(gl::GLint size, gl::GLenum type, 
     vao()->bind();
 
     gl::VertexAttribIFormat(attributeIndex(), size, type, relativeoffset);
-
 }
 
 void VertexAttributeBinding_GL_4_3::setLFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset)
@@ -196,7 +188,6 @@ void VertexAttributeBinding_GL_4_3::setLFormat(gl::GLint size, gl::GLenum type, 
     vao()->bind();
 
     gl::VertexAttribLFormat(attributeIndex(), size, type, relativeoffset);
-
 }
 
 } // namespace glow

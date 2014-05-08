@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <vector>
 
-
+#include <glbinding/types.h>
 
 #include <glowbase/Referenced.h>
 

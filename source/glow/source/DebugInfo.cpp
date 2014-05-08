@@ -117,8 +117,7 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::generalInfo()
 
 std::vector<DebugInfo::InfoGroup> DebugInfo::objectInfo()
 {
-	DebugInfo debugInfo;
-	return debugInfo.collectObjectInfo();
+    return DebugInfo().collectObjectInfo();
 }
 
 
@@ -432,6 +431,5 @@ void DebugInfo::InfoGroup::addInfoUnit(const InfoUnit& unit)
 {
 	units.push_back(unit);
 }
-
 
 } // namespace glow

@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <glbinding/types.h>
 
 #include <glow/glow_api.h>
 #include <glow/Object.h>
@@ -34,7 +34,6 @@ protected:
     virtual ~Sampler();
 
     static gl::GLuint genSampler();
-
 };
 
 } // namespace glow

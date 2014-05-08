@@ -3,9 +3,8 @@
 #include <vector>
 #include <array>
 
+#include <glbinding/types.h>
 #include <glbinding/constants.h>
-
-
 
 #include <glow/glow_api.h>
 #include <glow/Object.h>

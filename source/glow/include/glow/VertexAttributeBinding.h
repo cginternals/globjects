@@ -1,7 +1,6 @@
 #pragma once
 
-
-
+#include <glbinding/types.h>
 #include <glbinding/constants.h>
 
 #include <glowbase/Referenced.h>

@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-
+#include <glbinding/types.h>
 
 #include <glow/glow_api.h>
 

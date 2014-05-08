@@ -56,7 +56,6 @@ void NamedString::createNamedString()
     std::string str = string();
 
     gl::NamedStringARB(m_type, static_cast<gl::GLint>(m_name.size()), m_name.c_str(), static_cast<gl::GLint>(str.size()), str.c_str());
-
 }
 
 void NamedString::deleteNamedString()
@@ -65,7 +64,6 @@ void NamedString::deleteNamedString()
         return;
 
     gl::DeleteNamedStringARB(static_cast<gl::GLint>(m_name.size()), m_name.c_str());
-
 }
 
 void NamedString::registerNamedString()
@@ -87,10 +85,7 @@ bool NamedString::isNamedString(const std::string & name)
 
     if (hasNativeSupport())
     {
-        bool result = gl::IsNamedStringARB(static_cast<gl::GLint>(name.size()), name.c_str()) == gl::TRUE;
-
-
-        return result;
+        return gl::IsNamedStringARB(static_cast<gl::GLint>(name.size()), name.c_str()) == gl::TRUE;
     }
 
     return false;
@@ -103,7 +98,6 @@ gl::GLint NamedString::getParameter(gl::GLenum pname)
         gl::GLint result = 0;
 
         gl::GetNamedStringivARB(static_cast<gl::GLint>(m_name.size()), m_name.c_str(), pname, &result);
-
 
         return result;
     }
@@ -129,15 +123,11 @@ NamedString * NamedString::obtain(const std::string & name)
         gl::GLint length;
 
         gl::GetNamedStringivARB(static_cast<gl::GLint>(name.size()), name.c_str(), gl::NAMED_STRING_TYPE_ARB, &type);
-
-
         gl::GetNamedStringivARB(static_cast<gl::GLint>(name.size()), name.c_str(), gl::NAMED_STRING_LENGTH_ARB, &length);
-
 
         std::vector<char> string(length);
 
         gl::GetNamedStringARB(static_cast<gl::GLint>(name.size()), name.c_str(), length, nullptr, string.data());
-
 
         namedString = create(name, std::string(string.data(), string.size()), static_cast<gl::GLenum>(type));
     }

@@ -12,30 +12,21 @@ void * LegacyBufferImplementation::map(const Buffer * buffer, gl::GLenum access)
 {
     buffer->bind(s_workingTarget);
 
-    void * result = gl::MapBuffer(s_workingTarget, access);
-
-
-    return result;
+    return gl::MapBuffer(s_workingTarget, access);
 }
 
 void * LegacyBufferImplementation::mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::GLbitfield access) const
 {
     buffer->bind(s_workingTarget);
 
-    void * result = gl::MapBufferRange(s_workingTarget, offset, length, access);
-
-
-    return result;
+    return gl::MapBufferRange(s_workingTarget, offset, length, access);
 }
 
 bool LegacyBufferImplementation::unmap(const Buffer * buffer) const
 {
     buffer->bind(s_workingTarget);
 
-    gl::GLboolean success = gl::UnmapBuffer(s_workingTarget);
-
-
-    return success == gl::TRUE;
+    return gl::UnmapBuffer(s_workingTarget);
 }
 
 void LegacyBufferImplementation::setData(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLenum usage) const
@@ -43,7 +34,6 @@ void LegacyBufferImplementation::setData(const Buffer * buffer, gl::GLsizeiptr s
     buffer->bind(s_workingTarget);
 
     gl::BufferData(s_workingTarget, size, data, usage);
-
 }
 
 void LegacyBufferImplementation::setSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, const gl::GLvoid * data) const
@@ -51,7 +41,6 @@ void LegacyBufferImplementation::setSubData(const Buffer * buffer, gl::GLintptr 
     buffer->bind(s_workingTarget);
 
     gl::BufferSubData(s_workingTarget, offset, size, data);
-
 }
 
 void LegacyBufferImplementation::setStorage(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLbitfield flags) const
@@ -59,7 +48,6 @@ void LegacyBufferImplementation::setStorage(const Buffer * buffer, gl::GLsizeipt
     buffer->bind(s_workingTarget);
 
     gl::BufferStorage(s_workingTarget, size, data, flags);
-
 }
 
 void LegacyBufferImplementation::copySubData(const Buffer * buffer, Buffer * other, gl::GLintptr readOffset, gl::GLintptr writeOffset, gl::GLsizeiptr size) const
@@ -71,7 +59,6 @@ void LegacyBufferImplementation::copySubData(const Buffer * buffer, Buffer * oth
     other->bind(writeTarget);
 
     gl::CopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
-
 }
 
 void LegacyBufferImplementation::getParameter(const Buffer * buffer, gl::GLenum pname, gl::GLint * data) const
@@ -79,7 +66,6 @@ void LegacyBufferImplementation::getParameter(const Buffer * buffer, gl::GLenum 
     buffer->bind(s_workingTarget);
 
     gl::GetBufferParameteriv(s_workingTarget, pname, data);
-
 }
 
 void LegacyBufferImplementation::clearData(const Buffer * buffer, gl::GLenum internalformat, gl::GLenum format, gl::GLenum type, const void * data) const
@@ -87,7 +73,6 @@ void LegacyBufferImplementation::clearData(const Buffer * buffer, gl::GLenum int
     buffer->bind(s_workingTarget);
 
     gl::ClearBufferData(s_workingTarget, internalformat, format, type, data);
-
 }
 
 void LegacyBufferImplementation::clearSubData(const Buffer * buffer, gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data) const
@@ -95,7 +80,6 @@ void LegacyBufferImplementation::clearSubData(const Buffer * buffer, gl::GLenum 
     buffer->bind(s_workingTarget);
 
     gl::ClearBufferSubData(s_workingTarget, internalformat, offset, size, format, type, data);
-
 }
 
 void LegacyBufferImplementation::flushMappedRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const
@@ -103,7 +87,6 @@ void LegacyBufferImplementation::flushMappedRange(const Buffer * buffer, gl::GLi
     buffer->bind(s_workingTarget);
 
     gl::FlushMappedBufferRange(s_workingTarget, offset, length);
-
 }
 
 } // namespace glow

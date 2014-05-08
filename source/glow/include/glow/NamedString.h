@@ -4,8 +4,6 @@
 
 #include <glbinding/constants.h>
 
-
-
 #include <glowbase/ChangeListener.h>
 #include <glowbase/ref_ptr.h>
 #include <glowbase/Referenced.h>
