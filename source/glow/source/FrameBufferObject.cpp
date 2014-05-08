@@ -60,7 +60,7 @@ FrameBufferObject::~FrameBufferObject()
 	if (ownsGLObject())
 	{
         gl::DeleteFramebuffers(1, &m_id);
-		CheckGLError();
+
 	}
 }
 
@@ -69,7 +69,7 @@ gl::GLuint FrameBufferObject::genFrameBuffer()
 	gl::GLuint id = 0;
 
     gl::GenFramebuffers(1, &id);
-	CheckGLError();
+
 
 	return id;
 }
@@ -82,13 +82,13 @@ void FrameBufferObject::accept(ObjectVisitor& visitor)
 void FrameBufferObject::bind(gl::GLenum target) const
 {
     gl::BindFramebuffer(target, m_id);
-	CheckGLError();
+
 }
 
 void FrameBufferObject::unbind(gl::GLenum target)
 {
     gl::BindFramebuffer(target, 0);
-    CheckGLError();
+
 }
 
 void FrameBufferObject::setParameter(gl::GLenum pname, gl::GLint param)
@@ -200,7 +200,7 @@ void FrameBufferObject::clear(gl::GLbitfield mask)
     bind(gl::FRAMEBUFFER);
 
     gl::Clear(mask);
-    CheckGLError();
+
 }
 
 void FrameBufferObject::clearBufferiv(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLint * value)
@@ -208,7 +208,7 @@ void FrameBufferObject::clearBufferiv(gl::GLenum buffer, gl::GLint drawBuffer, c
     bind(gl::FRAMEBUFFER);
 
     gl::ClearBufferiv(buffer, drawBuffer, value);
-    CheckGLError();
+
 }
 
 void FrameBufferObject::clearBufferuiv(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLuint * value)
@@ -216,7 +216,7 @@ void FrameBufferObject::clearBufferuiv(gl::GLenum buffer, gl::GLint drawBuffer, 
     bind(gl::FRAMEBUFFER);
 
     gl::ClearBufferuiv(buffer, drawBuffer, value);
-    CheckGLError();
+
 }
 
 void FrameBufferObject::clearBufferfv(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLfloat * value)
@@ -224,7 +224,7 @@ void FrameBufferObject::clearBufferfv(gl::GLenum buffer, gl::GLint drawBuffer, c
     bind(gl::FRAMEBUFFER);
 
     gl::ClearBufferfv(buffer, drawBuffer, value);
-    CheckGLError();
+
 }
 
 void FrameBufferObject::clearBufferfi(gl::GLenum buffer, gl::GLint drawBuffer, gl::GLfloat depth, gl::GLint stencil)
@@ -232,7 +232,7 @@ void FrameBufferObject::clearBufferfi(gl::GLenum buffer, gl::GLint drawBuffer, g
     bind(gl::FRAMEBUFFER);
 
     gl::ClearBufferfi(buffer, drawBuffer, depth, stencil);
-    CheckGLError();
+
 }
 
 void FrameBufferObject::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const glm::ivec4 & value)
@@ -253,7 +253,7 @@ void FrameBufferObject::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, con
 void FrameBufferObject::colorMask(gl::GLboolean red, gl::GLboolean green, gl::GLboolean blue, gl::GLboolean alpha)
 {
     gl::ColorMask(red, green, blue, alpha);
-    CheckGLError();
+
 }
 
 void FrameBufferObject::colorMask(const glm::bvec4 & mask)
@@ -264,7 +264,7 @@ void FrameBufferObject::colorMask(const glm::bvec4 & mask)
 void FrameBufferObject::colorMaski(gl::GLuint buffer, gl::GLboolean red, gl::GLboolean green, gl::GLboolean blue, gl::GLboolean alpha)
 {
     gl::ColorMaski(buffer, red, green, blue, alpha);
-    CheckGLError();
+
 }
 
 void FrameBufferObject::colorMaski(gl::GLuint buffer, const glm::bvec4 & mask)
@@ -275,7 +275,7 @@ void FrameBufferObject::colorMaski(gl::GLuint buffer, const glm::bvec4 & mask)
 void FrameBufferObject::clearColor(gl::GLfloat red, gl::GLfloat green, gl::GLfloat blue, gl::GLfloat alpha)
 {
     gl::ClearColor(red, green, blue, alpha);
-    CheckGLError();
+
 }
 
 void FrameBufferObject::clearColor(const glm::vec4 & color)
@@ -286,7 +286,7 @@ void FrameBufferObject::clearColor(const glm::vec4 & color)
 void FrameBufferObject::clearDepth(gl::GLclampd depth)
 {
     gl::ClearDepth(depth);
-    CheckGLError();
+
 }
 
 void FrameBufferObject::readPixels(gl::GLint x, gl::GLint y, gl::GLsizei width, gl::GLsizei height, gl::GLenum format, gl::GLenum type, gl::GLvoid * data) const
@@ -294,7 +294,7 @@ void FrameBufferObject::readPixels(gl::GLint x, gl::GLint y, gl::GLsizei width, 
     bind(gl::READ_FRAMEBUFFER);
 
     gl::ReadPixels(x, y, width, height, format, type, data);
-	CheckGLError();
+
 }
 
 void FrameBufferObject::readPixels(const std::array<gl::GLint, 4> & rect, gl::GLenum format, gl::GLenum type, gl::GLvoid * data) const
@@ -352,7 +352,7 @@ void FrameBufferObject::blit(gl::GLenum readBuffer, const std::array<gl::GLint, 
 void FrameBufferObject::blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::GLbitfield mask, gl::GLenum filter)
 {
     gl::BlitFramebuffer(srcX0, srcY0, srcX1, srcY1, destX0, destY0, destX1, destY1, mask, filter);
-    CheckGLError();
+
 }
 
 void FrameBufferObject::blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::GLbitfield mask, gl::GLenum filter)

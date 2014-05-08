@@ -35,7 +35,7 @@ class GLOW_API Buffer : public Object
 public:
     /**
      * Sets the target that is used for binding buffers to call state changing OpenGL functions.
-     * This has an effect only when gl::EXT_direct_state_access is not available.
+     * This has an effect only when GL_EXT_direct_state_access is not available.
      * Usually this target never has to be changed unless you want to ensure that a certain binding target will not be used.
      * @param target
      */

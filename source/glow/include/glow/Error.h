@@ -35,7 +35,4 @@ protected:
 	gl::GLenum m_errorCode;
 };
 
-// TODO: remove completely
-#define CheckGLError()
-
 } // namespace glow

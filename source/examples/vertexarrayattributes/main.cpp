@@ -77,10 +77,10 @@ public:
         glow::debugmessageoutput::enable();
 
         gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
-        CheckGLError();
+
 
         glPointSize(10.0);
-        CheckGLError();
+
 
         m_vao = new glow::VertexArrayObject();
         m_buffer = new glow::Buffer();
@@ -168,13 +168,13 @@ public:
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         gl::Viewport(0, 0, event.width(), event.height());
-        CheckGLError();
+
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        CheckGLError();
+
 
         m_shaderProgram->use();
         m_vao->drawArrays(gl::POINTS, 0, 2);

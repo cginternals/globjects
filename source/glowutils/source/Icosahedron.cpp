@@ -110,7 +110,7 @@ Icosahedron::~Icosahedron()
 void Icosahedron::draw(const gl::GLenum mode)
 {
     gl::Enable(gl::DEPTH_TEST);
-    CheckGLError();
+
 
     m_vao->bind();
     m_vao->drawElements(mode, m_size, gl::UNSIGNED_SHORT, nullptr);

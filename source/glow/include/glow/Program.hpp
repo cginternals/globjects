@@ -104,7 +104,7 @@ void Program::attach(Shader * shader, Shaders... shaders)
     assert(shader != nullptr);
 
     gl::AttachShader(m_id, shader->id());
-    CheckGLError();
+
 
     shader->registerListener(this);
     m_shaders.insert(shader);

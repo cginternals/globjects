@@ -25,7 +25,7 @@ Sync::~Sync()
 gl::GLsync Sync::fenceSync(gl::GLenum condition, gl::GLbitfield flags)
 {
     gl::GLsync sync = gl::FenceSync(condition, flags);
-    CheckGLError();
+
 
     return sync;
 }
@@ -38,7 +38,7 @@ gl::GLsync Sync::sync() const
 gl::GLenum Sync::clientWait(gl::GLbitfield flags, gl::GLuint64 timeout)
 {
     gl::GLenum result = gl::ClientWaitSync(m_sync, flags, timeout);
-    CheckGLError();
+
 
     return result;
 }
@@ -46,13 +46,13 @@ gl::GLenum Sync::clientWait(gl::GLbitfield flags, gl::GLuint64 timeout)
 void Sync::wait(gl::GLbitfield flags, gl::GLuint64 timeout)
 {
     gl::WaitSync(m_sync, flags, timeout);
-    CheckGLError();
+
 }
 
 void Sync::get(gl::GLenum pname, gl::GLsizei bufsize, gl::GLsizei * length, gl::GLint * values)
 {
     gl::GetSynciv(m_sync, pname, bufsize, length, values);
-    CheckGLError();
+
 }
 
 gl::GLint Sync::get(gl::GLenum pname)

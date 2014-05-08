@@ -83,7 +83,7 @@ UnitCube::UnitCube(const gl::GLuint vertexAttribLocation, const gl::GLuint norma
 void UnitCube::draw()
 {
     gl::Enable(gl::DEPTH_TEST);
-    CheckGLError();
+
 
     m_vao->bind();
     m_vao->drawArrays(gl::TRIANGLE_STRIP, 0, 14);

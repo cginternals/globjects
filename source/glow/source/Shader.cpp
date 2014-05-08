@@ -79,14 +79,14 @@ Shader::~Shader()
 	if (ownsGLObject())
 	{
 		gl::DeleteShader(m_id);
-		CheckGLError();
+
 	}
 }
 
 gl::GLuint Shader::create(gl::GLenum type)
 {
     gl::GLuint result = gl::CreateShader(type);
-	CheckGLError();
+
 	return result;
 }
 
@@ -152,7 +152,7 @@ void Shader::updateSource()
     std::vector<const char*> cStrings = collectCStrings(sources);
 
     gl::ShaderSource(m_id, static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
-    CheckGLError();
+
 
     invalidate();
 }
@@ -166,12 +166,12 @@ bool Shader::compile() const
     {
         std::vector<const char*> cStrings = collectCStrings(m_includePaths);
         gl::CompileShaderIncludeARB(m_id, static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
-        CheckGLError();
+
     }
     else
     {
         gl::CompileShader(m_id);
-        CheckGLError();
+
     }
 
     m_compiled = checkCompileStatus();
@@ -206,7 +206,7 @@ gl::GLint Shader::get(gl::GLenum pname) const
 {
     gl::GLint value = 0;
     gl::GetShaderiv(m_id, pname, &value);
-    CheckGLError();
+
 
     return value;
 }
@@ -217,7 +217,7 @@ std::string Shader::getSource() const
     std::vector<char> source(sourceLength);
 
     gl::GetShaderSource(m_id, sourceLength, nullptr, source.data());
-    CheckGLError();
+
 
     return std::string(source.data(), sourceLength);
 }
@@ -245,7 +245,7 @@ std::string Shader::infoLog() const
 	std::vector<char> log(length);
 
 	gl::GetShaderInfoLog(m_id, length, &length, log.data());
-	CheckGLError();
+
 
 	return std::string(log.data(), length);
 }

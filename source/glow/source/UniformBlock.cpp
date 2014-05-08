@@ -45,7 +45,7 @@ void UniformBlock::updateBinding() const
     m_program->checkDirty();
 
     gl::UniformBlockBinding(m_program->id(), blockIndex(), m_bindingIndex);
-    CheckGLError();
+
 }
 
 void UniformBlock::getActive(gl::GLenum pname, gl::GLint * params) const
@@ -53,7 +53,7 @@ void UniformBlock::getActive(gl::GLenum pname, gl::GLint * params) const
     m_program->checkDirty();
 
     gl::GetActiveUniformBlockiv(m_program->id(), blockIndex(), pname, params);
-    CheckGLError();
+
 }
 
 gl::GLint UniformBlock::getActive(gl::GLenum pname) const
@@ -84,7 +84,7 @@ std::string UniformBlock::getName() const
     std::vector<char> name(length);
 
     gl::GetActiveUniformBlockName(m_program->id(), blockIndex(), length, nullptr, name.data());
-    CheckGLError();
+
 
     return std::string(name.data(), length);
 }

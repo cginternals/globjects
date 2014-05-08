@@ -28,7 +28,7 @@ Sampler::~Sampler()
     if (ownsGLObject())
     {
         gl::DeleteSamplers(1, &m_id);
-        CheckGLError();
+
     }
 }
 
@@ -37,7 +37,7 @@ gl::GLuint Sampler::genSampler()
     gl::GLuint id = 0;
 
     gl::GenSamplers(1, &id);
-    CheckGLError();
+
 
     return id;
 }
@@ -50,32 +50,32 @@ void Sampler::accept(ObjectVisitor & visitor)
 void Sampler::bind(gl::GLuint unit) const
 {
     gl::BindSampler(unit, m_id);
-    CheckGLError();
+
 }
 
 void Sampler::unbind(gl::GLuint unit)
 {
     gl::BindSampler(unit, 0);
-    CheckGLError();
+
 }
 
 void Sampler::setParameter(gl::GLenum name, gl::GLint value)
 {
     gl::SamplerParameteri(m_id, name, value);
-    CheckGLError();
+
 }
 
 void Sampler::setParameter(gl::GLenum name, gl::GLfloat value)
 {
     gl::SamplerParameterf(m_id, name, value);
-    CheckGLError();
+
 }
 
 gl::GLint Sampler::getParameteri(gl::GLenum pname) const
 {
     gl::GLint value = 0;
     gl::GetSamplerParameteriv(m_id, pname, &value);
-    CheckGLError();
+
 	return value;
 }
 
@@ -83,7 +83,7 @@ gl::GLfloat Sampler::getParameterf(gl::GLenum pname) const
 {
     gl::GLfloat value = 0;
     gl::GetSamplerParameterfv(m_id, pname, &value);
-    CheckGLError();
+
 	return value;
 }
 

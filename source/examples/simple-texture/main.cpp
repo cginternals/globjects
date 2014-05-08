@@ -40,7 +40,7 @@ public:
         glow::debugmessageoutput::enable();
 
         gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
-        CheckGLError();
+
 
         createAndSetupTexture();
 	    createAndSetupGeometry();
@@ -53,13 +53,13 @@ public:
     	int side = std::min<int>(width, height);
 
         gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
-        CheckGLError();
+
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        CheckGLError();
+
 
         m_quad->draw();
     }

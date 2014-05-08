@@ -75,7 +75,7 @@ public:
         glow::debugmessageoutput::enable();
 
         gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
-        CheckGLError();
+
 
         
         glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::StaticStringSource(vertexShaderCode));
@@ -117,13 +117,13 @@ public:
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         gl::Viewport(0, 0, event.width(), event.height());
-        CheckGLError();
+
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        CheckGLError();
+
 
 		program->use();
         vao->drawArrays(gl::TRIANGLE_STRIP, 0, 4);

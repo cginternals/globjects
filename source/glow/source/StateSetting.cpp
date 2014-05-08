@@ -43,7 +43,7 @@ StateSetting::~StateSetting()
 void StateSetting::apply()
 {
     (*m_functionCall)();
-    CheckGLError();
+
 }
 
 const StateSettingType & StateSetting::type() const

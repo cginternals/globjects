@@ -99,7 +99,7 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
     m_renderFbo->unbind();
 
     gl::MemoryBarrier(gl::SHADER_STORAGE_BARRIER_BIT);
-    CheckGLError();
+
 
     m_postFbo->bind();
     m_postFbo->clear(gl::COLOR_BUFFER_BIT);

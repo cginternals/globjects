@@ -56,7 +56,7 @@ public:
         glow::debugmessageoutput::enable();
 
         gl::ClearColor(1.0f, 1.0f, 1.0f, 0.f);
-        CheckGLError();
+
 
         m_sphere = new glow::Program();
         m_sphere->attach(
@@ -85,7 +85,7 @@ public:
         int height = event.height();
 
         gl::Viewport(0, 0, width, height);
-        CheckGLError();
+
 
         m_camera.setViewport(width, height);
     }
@@ -93,7 +93,7 @@ public:
     virtual void paintEvent(PaintEvent &) override
     {
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        CheckGLError();
+
 
         m_agrid->update();
 

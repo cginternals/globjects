@@ -34,19 +34,19 @@ public:
         glow::debugmessageoutput::enable();
 
         gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
-        CheckGLError();
+
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         gl::Viewport(0, 0, event.width(), event.height());
-        CheckGLError();
+
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        CheckGLError();
+
     }
 
     virtual void idle(Window & window) override

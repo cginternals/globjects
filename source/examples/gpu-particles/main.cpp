@@ -131,7 +131,7 @@ public:
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         gl::Viewport(0, 0, event.width(), event.height());
-        CheckGLError();
+
 
         m_camera->setViewport(event.size());
 

@@ -58,7 +58,7 @@ public:
         glow::debugmessageoutput::enable();
 
         gl::ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        CheckGLError();
+
 
 		glow::Shader* vertexShader = glowutils::createShaderFromFile(gl::VERTEX_SHADER, "data/transparency/transparency.vert");
 
@@ -111,10 +111,10 @@ public:
 
         // STAGE2 - Draw the texture of each algorithm& onto the screen aligned quad
 		gl::Disable(gl::DEPTH_TEST);
-		CheckGLError();
+
 
 		gl::DepthMask(gl::FALSE);
-		CheckGLError();
+
 
 		m_quad->program()->setUniform("topLeft", 0);
         m_quad->program()->setUniform("topRight", 1);
@@ -128,10 +128,10 @@ public:
 		m_quad->draw();
 
 		gl::Enable(gl::DEPTH_TEST);
-		CheckGLError();
+
 
 		gl::DepthMask(gl::TRUE);
-		CheckGLError();
+
 	}
 
     virtual void framebufferResizeEvent(glowwindow::ResizeEvent & event) override {
@@ -139,7 +139,7 @@ public:
 		int height = event.height();
 
         gl::Viewport(0, 0, width, height);
-        CheckGLError();
+
 
         for (auto& algo : m_algos) {
             algo->resize(width, height);

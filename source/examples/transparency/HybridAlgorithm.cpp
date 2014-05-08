@@ -79,9 +79,9 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_prepassFbo->clearBuffer(gl::COLOR, 0, glm::vec4(1.0f));
 
     gl::Enable(gl::DEPTH_TEST);
-    CheckGLError();
+
     gl::Disable(gl::BLEND);
-    CheckGLError();
+
 
     m_opaqueProgram->setUniform("viewprojectionmatrix", camera->viewProjection());
     m_opaqueProgram->setUniform("normalmatrix", camera->normal());
@@ -94,7 +94,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     //
     m_prepassFbo->setDrawBuffer(gl::NONE);
     gl::DepthMask(gl::FALSE);
-    CheckGLError();
+
 
     static unsigned int initialDepthKTab = std::numeric_limits<unsigned int>::max();
     m_depthKTab->clearData(gl::R32UI, gl::RED, gl::UNSIGNED_INT, &initialDepthKTab);
@@ -108,12 +108,12 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     drawFunction(m_depthKTabProgram.get());
 
     gl::DepthMask(gl::TRUE);
-    CheckGLError();
+
 
     m_prepassFbo->unbind();
 
     gl::MemoryBarrier(gl::SHADER_STORAGE_BARRIER_BIT);
-    CheckGLError();
+
 
     //
     // compute visibility k-TAB: The alpha visibility for each of the first k fragments.
@@ -132,7 +132,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_visibilityKTabProgram->dispatchCompute(width * height / 32 + 1, 1, 1);
 
     gl::MemoryBarrier(gl::SHADER_STORAGE_BARRIER_BIT);
-    CheckGLError();
+
 
     //
     // render translucent colors
@@ -142,11 +142,11 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     m_colorFbo->clearBuffer(gl::COLOR, 1, glm::vec4(0.0f));
 
     gl::Enable(gl::BLEND);
-    CheckGLError();
+
     gl::BlendFunc(gl::ONE, gl::ONE);
-    CheckGLError();
+
     gl::DepthMask(gl::FALSE);
-    CheckGLError();
+
 
     static unsigned int initialDepthComplexity = 0;
     m_depthComplexityBuffer->clearData(gl::R32UI, gl::RED, gl::UNSIGNED_INT, &initialDepthComplexity);
@@ -160,11 +160,11 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     drawFunction(m_colorProgram);
 
     gl::DepthMask(gl::TRUE);
-    CheckGLError();
+
     gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
-    CheckGLError();
+
     gl::Disable(gl::BLEND);
-    CheckGLError();
+
 
     m_colorFbo->unbind();
 

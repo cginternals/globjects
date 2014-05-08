@@ -32,12 +32,12 @@ void GlBlendAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
     m_fbo->bind();
 
     gl::Viewport(0, 0, width, height);
-    CheckGLError();
+
 
     camera->setViewport(width, height);
 
     gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-    CheckGLError();
+
 
     m_program->setUniform("viewprojectionmatrix", camera->viewProjection());
     m_program->setUniform("normalmatrix", camera->normal());
@@ -45,14 +45,14 @@ void GlBlendAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera*
     m_program->use();
 
     gl::Enable(gl::BLEND);
-    CheckGLError();
+
     gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
-    CheckGLError();
+
 
     drawFunction(m_program);
 
     gl::Disable(gl::BLEND);
-    CheckGLError();
+
 
     m_fbo->unbind();
 }

@@ -50,7 +50,7 @@ gl::GLuint Buffer::genBuffer()
     gl::GLuint id = 0;
 
     gl::GenBuffers(1, &id);
-	CheckGLError();
+
 
 	return id;
 }
@@ -60,7 +60,7 @@ Buffer::~Buffer()
 	if (ownsGLObject())
 	{
         gl::DeleteBuffers(1, &m_id);
-		CheckGLError();
+
 	}
 }
 
@@ -72,19 +72,19 @@ void Buffer::accept(ObjectVisitor& visitor)
 void Buffer::bind(gl::GLenum target) const
 {
     gl::BindBuffer(target, m_id);
-    CheckGLError();
+
 }
 
 void Buffer::unbind(gl::GLenum target)
 {
     gl::BindBuffer(target, 0);
-    CheckGLError();
+
 }
 
 void Buffer::unbind(gl::GLenum target, gl::GLuint index)
 {
     gl::BindBufferBase(target, index, 0);
-    CheckGLError();
+
 }
 
 const void * Buffer::map() const
@@ -139,13 +139,13 @@ gl::GLint Buffer::getParameter(gl::GLenum pname) const
 void Buffer::bindBase(gl::GLenum target, gl::GLuint index) const
 {
     gl::BindBufferBase(target, index, m_id);
-    CheckGLError();
+
 }
 
 void Buffer::bindRange(gl::GLenum target, gl::GLuint index, gl::GLintptr offset, gl::GLsizeiptr size) const
 {
     gl::BindBufferRange(target, index, m_id, offset, size);
-    CheckGLError();
+
 }
 
 void Buffer::copySubData(Buffer * buffer, gl::GLintptr readOffset, gl::GLintptr writeOffset, gl::GLsizeiptr size) const

@@ -56,7 +56,7 @@ public:
         glow::debugmessageoutput::enable();
 
         gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
-        CheckGLError();
+
 
         m_camera.setZNear(0.1f);
         m_camera.setZFar(32.f);
@@ -72,7 +72,7 @@ public:
         int height = event.height();
 
         gl::Viewport(0, 0, width, height);
-        CheckGLError();
+
 
         m_camera.setViewport(width, height);
     }
@@ -80,7 +80,7 @@ public:
     virtual void paintEvent(PaintEvent &) override
     {
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        CheckGLError();
+
 
         m_program->setUniform("modelViewProjection", m_camera.viewProjection());
 

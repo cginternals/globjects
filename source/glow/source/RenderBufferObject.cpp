@@ -18,7 +18,7 @@ RenderBufferObject::~RenderBufferObject()
 	if (ownsGLObject())
 	{
 		gl::DeleteRenderbuffers(1, &m_id);
-		CheckGLError();
+
 	}
 }
 
@@ -27,7 +27,7 @@ gl::GLuint RenderBufferObject::genRenderBuffer()
 	gl::GLuint id = 0;
 
 	gl::GenRenderbuffers(1, &id);
-	CheckGLError();
+
 
 	return id;
 }
@@ -40,13 +40,13 @@ void RenderBufferObject::accept(ObjectVisitor& visitor)
 void RenderBufferObject::bind(gl::GLenum target) const
 {
     gl::BindRenderbuffer(target, m_id);
-	CheckGLError();
+
 }
 
 void RenderBufferObject::unbind(gl::GLenum target)
 {
     gl::BindRenderbuffer(target, 0);
-	CheckGLError();
+
 }
 
 void RenderBufferObject::storage(gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height)
@@ -54,7 +54,7 @@ void RenderBufferObject::storage(gl::GLenum internalformat, gl::GLsizei width, g
     bind(gl::RENDERBUFFER);
 
     gl::RenderbufferStorage(gl::RENDERBUFFER, internalformat, width, height);
-	CheckGLError();
+
 }
 
 void RenderBufferObject::storageMultisample(gl::GLsizei samples, gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height)
@@ -62,7 +62,7 @@ void RenderBufferObject::storageMultisample(gl::GLsizei samples, gl::GLenum inte
     bind(gl::RENDERBUFFER);
 
     gl::RenderbufferStorageMultisample(gl::RENDERBUFFER, samples, internalformat, width, height);
-	CheckGLError();
+
 }
 
 gl::GLint RenderBufferObject::getParameter(gl::GLenum pname) const
@@ -72,7 +72,7 @@ gl::GLint RenderBufferObject::getParameter(gl::GLenum pname) const
     bind(gl::RENDERBUFFER);
 
 	gl::GetRenderbufferParameteriv(gl::RENDERBUFFER, pname, &value);
-	CheckGLError();
+
 
 	return value;
 }

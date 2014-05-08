@@ -67,7 +67,7 @@ public:
         glow::debugmessageoutput::enable();
 
 		gl::ClearColor(1.0f, 1.0f, 1.0f, 0.f);
-        CheckGLError();
+
 
 		m_fbo = new glow::FrameBufferObject();
 
@@ -127,7 +127,7 @@ public:
         int height = event.height();
 
         gl::Viewport(0, 0, width, height);
-        CheckGLError();
+
 
         m_camera.setViewport(width, height);
 
@@ -150,7 +150,7 @@ public:
 
 		m_fbo->bind();
 		gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        CheckGLError();
+
 
 		m_sphere->use();
 		m_icosahedron->draw();
@@ -159,9 +159,9 @@ public:
 		m_fbo->unbind();
 
 		gl::Disable(gl::DEPTH_TEST);
-        CheckGLError();
+
         gl::DepthMask(gl::FALSE);
-        CheckGLError();
+
 
 		m_phong->setUniform("normal", 0);
 		m_phong->setUniform("geom", 1);
@@ -174,9 +174,9 @@ public:
         m_normal->unbindActive(gl::TEXTURE0);
 
 		gl::Enable(gl::DEPTH_TEST);
-        CheckGLError();
+
         gl::DepthMask(gl::TRUE);
-        CheckGLError();
+
 
 		// use the fbo's depth buffer as default depth buffer ;)
 		// Note: this requires the depth formats to match exactly.

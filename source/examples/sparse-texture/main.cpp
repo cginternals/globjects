@@ -44,7 +44,7 @@ public:
         glow::debugmessageoutput::enable();
 
         gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
-        CheckGLError();
+
 
         createAndSetupTexture();
 	    createAndSetupGeometry();
@@ -57,13 +57,13 @@ public:
     	int side = std::min<int>(width, height);
 
         gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
-        CheckGLError();
+
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        CheckGLError();
+
 
         mapNextPage();
 
@@ -135,21 +135,21 @@ void EventHandler::createAndSetupTexture()
     for (int i = 0; i < numPageSizes; ++i) {
         glow::info("gl::VIRTUAL_PAGE_SIZE_X_ARB[%;] = %;", i, pageSizesX[i]);
     }
-    CheckGLError();
+
 
     std::vector<int> pageSizesY(numPageSizes);
     gl::GetInternalformativ(gl::TEXTURE_2D, gl::RGBA8, gl::VIRTUAL_PAGE_SIZE_Y_ARB, static_cast<gl::GLsizei>(numPageSizes * sizeof(int)), pageSizesY.data());
     for (int i = 0; i < numPageSizes; ++i) {
         glow::info("gl::VIRTUAL_PAGE_SIZE_Y_ARB[%;] = %;", i, pageSizesY[i]);
     }
-    CheckGLError();
+
 
     std::vector<int> pageSizesZ(numPageSizes);
     gl::GetInternalformativ(gl::TEXTURE_2D, gl::RGBA8, gl::VIRTUAL_PAGE_SIZE_Z_ARB, static_cast<gl::GLsizei>(numPageSizes * sizeof(int)), pageSizesZ.data());
     for (int i = 0; i < numPageSizes; ++i) {
         glow::info("gl::VIRTUAL_PAGE_SIZE_Z_ARB[%;] = %;", i, pageSizesZ[i]);
     }
-    CheckGLError();
+
 
     m_pageSize = glm::ivec2(pageSizesX[0], pageSizesY[0]);
     m_numPages = m_textureSize / m_pageSize;
@@ -159,7 +159,7 @@ void EventHandler::createAndSetupTexture()
     int maxSparseTextureSize;
     gl::GetIntegerv(gl::MAX_SPARSE_TEXTURE_SIZE_ARB, &maxSparseTextureSize);
     glow::info("gl::MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
-    CheckGLError();
+
 
 	m_texture = new glow::Texture(gl::TEXTURE_2D);
 

@@ -65,14 +65,14 @@ bool init(bool showWarnings)
 std::string getString(gl::GLenum pname)
 {
     const gl::GLubyte* result = gl::GetString(pname);
-	CheckGLError();
+
 	return reinterpret_cast<const char*>(result);
 }
 
 std::string getString(gl::GLenum pname, gl::GLuint index)
 {
     const gl::GLubyte* result = gl::GetStringi(pname, index);
-    CheckGLError();
+
     return reinterpret_cast<const char*>(result);
 }
 
@@ -81,7 +81,7 @@ gl::GLint getInteger(gl::GLenum pname)
 	gl::GLint value;
 
     gl::GetIntegerv(pname, &value);
-	CheckGLError();
+
 
 	return value;
 }
@@ -96,7 +96,7 @@ gl::GLfloat getFloat(gl::GLenum pname)
 	gl::GLfloat value;
 
     gl::GetFloatv(pname, &value);
-	CheckGLError();
+
 
 	return value;
 }
@@ -106,7 +106,7 @@ gl::GLdouble getDouble(gl::GLenum pname)
 	gl::GLdouble value;
 
     gl::GetDoublev(pname, &value);
-	CheckGLError();
+
 
 	return value;
 }
@@ -116,7 +116,7 @@ gl::GLboolean getBoolean(gl::GLenum pname)
 	gl::GLboolean value;
 
     gl::GetBooleanv(pname, &value);
-	CheckGLError();
+
 
 	return value;
 }
@@ -126,7 +126,7 @@ gl::GLint getInteger(gl::GLenum pname, gl::GLuint index)
 	gl::GLint value;
 
     gl::GetIntegeri_v(pname, index, &value);
-	CheckGLError();
+
 
 	return value;
 }
@@ -141,7 +141,7 @@ gl::GLfloat getFloat(gl::GLenum pname, gl::GLuint index)
     gl::GLfloat value;
 
     gl::GetFloati_v(pname, index, &value);
-    CheckGLError();
+
 
     return value;
 }
@@ -151,7 +151,7 @@ gl::GLdouble getDouble(gl::GLenum pname, gl::GLuint index)
     gl::GLdouble value;
 
     gl::GetDoublei_v(pname, index, &value);
-    CheckGLError();
+
 
     return value;
 }
@@ -161,7 +161,7 @@ gl::GLboolean getBoolean(gl::GLenum pname, gl::GLuint index)
     gl::GLboolean value;
 
     gl::GetBooleani_v(pname, index, &value);
-    CheckGLError();
+
 
     return value;
 }
@@ -243,19 +243,19 @@ bool isInCoreProfile(Extension extension)
 void enable(gl::GLenum capability)
 {
     gl::Enable(capability);
-    CheckGLError();
+
 }
 
 void disable(gl::GLenum capability)
 {
     gl::Disable(capability);
-    CheckGLError();
+
 }
 
 bool isEnabled(gl::GLenum capability)
 {
     gl::GLboolean value = gl::IsEnabled(capability);
-    CheckGLError();
+
     return value == gl::TRUE;
 }
 
@@ -267,19 +267,19 @@ void setEnabled(gl::GLenum capability, bool enabled)
 void enable(gl::GLenum capability, int index)
 {
     gl::Enablei(capability, index);
-    CheckGLError();
+
 }
 
 void disable(gl::GLenum capability, int index)
 {
     gl::Disablei(capability, index);
-    CheckGLError();
+
 }
 
 bool isEnabled(gl::GLenum capability, int index)
 {
     gl::GLboolean value = gl::IsEnabledi(capability, index);
-    CheckGLError();
+
     return value == gl::TRUE;
 }
 

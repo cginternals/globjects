@@ -37,13 +37,13 @@ public:
         glow::debugmessageoutput::enable();
 
         gl::ClearColor(1.f, 1.f, 1.f, 1.f);
-        CheckGLError();
+
     }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         gl::Viewport(0, 0, event.width(), event.height());
-        CheckGLError();
+
     }
 
     virtual void paintEvent(PaintEvent &) override
@@ -53,9 +53,9 @@ public:
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             1.f);
-        CheckGLError();
+
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        CheckGLError();
+
     }
 
     virtual void idle(Window & window) override

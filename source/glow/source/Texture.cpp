@@ -39,7 +39,7 @@ Texture::~Texture()
 	if (ownsGLObject())
 	{
 		gl::DeleteTextures(1, &m_id);
-		CheckGLError();
+
 	}
 }
 
@@ -61,7 +61,7 @@ gl::GLuint Texture::genTexture()
     gl::GLuint id = 0;
 
     gl::GenTextures(1, &id);
-    CheckGLError();
+
 
     return id;
 }
@@ -69,33 +69,33 @@ gl::GLuint Texture::genTexture()
 void Texture::bind() const
 {
     gl::BindTexture(m_target, m_id);
-	CheckGLError();
+
 }
 
 void Texture::unbind() const
 {
     gl::BindTexture(m_target, 0);
-	CheckGLError();
+
 }
 
 void Texture::unbind(const gl::GLenum target)
 {
     gl::BindTexture(target, 0);
-    CheckGLError();
+
 }
 
 void Texture::bindActive(const gl::GLenum texture) const
 {
     gl::ActiveTexture(texture);
     gl::BindTexture(m_target, m_id);
-    CheckGLError();
+
 }
 
 void Texture::unbindActive(const gl::GLenum texture) const
 {
     gl::ActiveTexture(texture);
     gl::BindTexture(m_target, 0);
-    CheckGLError();
+
 }
 
 gl::GLenum Texture::target() const
@@ -108,7 +108,7 @@ void Texture::setParameter(gl::GLenum name, gl::GLint value)
 	bind();
 
     gl::TexParameteri(m_target, name, value);
-	CheckGLError();
+
 }
 
 void Texture::setParameter(gl::GLenum name, gl::GLfloat value)
@@ -116,7 +116,7 @@ void Texture::setParameter(gl::GLenum name, gl::GLfloat value)
 	bind();
 
     gl::TexParameterf(m_target, name, value);
-	CheckGLError();
+
 }
 
 gl::GLint Texture::getParameter(gl::GLenum pname) const
@@ -126,7 +126,7 @@ gl::GLint Texture::getParameter(gl::GLenum pname) const
 	gl::GLint value = 0;
 
     gl::GetTexParameteriv(m_target, pname, &value);
-	CheckGLError();
+
 
 	return value;
 }
@@ -138,7 +138,7 @@ gl::GLint Texture::getLevelParameter(gl::GLint level, gl::GLenum pname) const
 	gl::GLint value = 0;
 
     gl::GetTexLevelParameteriv(m_target, level, pname, &value);
-	CheckGLError();
+
 
 	return value;
 }
@@ -148,7 +148,7 @@ void Texture::getImage(gl::GLint level, gl::GLenum format, gl::GLenum type, gl::
     bind();
 
     gl::GetTexImage(m_target, level, format, type, image);
-    CheckGLError();
+
 }
 
 std::vector<unsigned char> Texture::getImage(gl::GLint level, gl::GLenum format, gl::GLenum type) const
@@ -169,7 +169,7 @@ void Texture::getCompressedImage(gl::GLint lod, gl::GLvoid * image) const
     bind();
 
     gl::GetCompressedTexImage(m_target, lod, image);
-    CheckGLError();
+
 }
 
 std::vector<unsigned char> Texture::getCompressedImage(gl::GLint lod) const
@@ -187,7 +187,7 @@ void Texture::image1D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei wi
     bind();
 
     gl::TexImage1D(m_target, level, internalFormat, width, border, format, type, data);
-    CheckGLError();
+
 }
 
 void Texture::compressedImage1D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data)
@@ -195,7 +195,7 @@ void Texture::compressedImage1D(gl::GLint level, gl::GLenum internalFormat, gl::
     bind();
 
     gl::CompressedTexImage1D(m_target, level, internalFormat, width, border, imageSize, data);
-    CheckGLError();
+
 }
 
 void Texture::subImage1D(gl::GLint level, gl::GLint xOffset, gl::GLsizei width, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data)
@@ -203,7 +203,7 @@ void Texture::subImage1D(gl::GLint level, gl::GLint xOffset, gl::GLsizei width, 
     bind();
 
     gl::TexSubImage1D(m_target, level, xOffset, width, format, type, data);
-    CheckGLError();
+
 }
 
 void Texture::image2D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
@@ -211,7 +211,7 @@ void Texture::image2D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei wi
 	bind();
 
     gl::TexImage2D(m_target, level, internalFormat, width, height, border, format, type, data);
-	CheckGLError();
+
 }
 
 void Texture::image2D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
@@ -224,7 +224,7 @@ void Texture::image2D(gl::GLenum target, gl::GLint level, gl::GLenum internalFor
     bind();
 
     gl::TexImage2D(target, level, internalFormat, width, height, border, format, type, data);
-    CheckGLError();
+
 }
 
 void Texture::image2D(gl::GLenum target, gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
@@ -237,7 +237,7 @@ void Texture::compressedImage2D(gl::GLint level, gl::GLenum internalFormat, gl::
     bind();
 
     gl::CompressedTexImage2D(m_target, level, internalFormat, width, height, border, imageSize, data);
-    CheckGLError();
+
 }
 
 void Texture::compressedImage2D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data)
@@ -250,7 +250,7 @@ void Texture::subImage2D(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, 
     bind();
 
     gl::TexSubImage2D(m_target, level, xOffset, yOffset, width, height, format, type, data);
-    CheckGLError();
+
 }
 
 void Texture::subImage2D(gl::GLint level, const glm::ivec2& offset, const glm::ivec2& size, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data)
@@ -263,7 +263,7 @@ void Texture::image3D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei wi
     bind();
 
     gl::TexImage3D(m_target, level, internalFormat, width, height, depth, border, format, type, data);
-    CheckGLError();
+
 }
 
 void Texture::image3D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec3 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
@@ -276,7 +276,7 @@ void Texture::compressedImage3D(gl::GLint level, gl::GLenum internalFormat, gl::
     bind();
 
     gl::CompressedTexImage3D(m_target, level, internalFormat, width, height, depth, border, imageSize, data);
-    CheckGLError();
+
 }
 
 void Texture::compressedImage3D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec3 & size, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data)
@@ -289,7 +289,7 @@ void Texture::subImage3D(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, 
     bind();
 
     gl::TexSubImage3D(m_target, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
-    CheckGLError();
+
 }
 
 void Texture::subImage3D(gl::GLint level, const glm::ivec3& offset, const glm::ivec3& size, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data)
@@ -302,7 +302,7 @@ void Texture::image2DMultisample(gl::GLsizei samples, gl::GLenum internalFormat,
     bind();
 
     gl::TexImage2DMultisample(m_target, samples, internalFormat, width, height, fixedSamplesLocations);
-    CheckGLError();
+
 }
 
 void Texture::image2DMultisample(gl::GLsizei samples, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLboolean fixedSamplesLocations)
@@ -315,7 +315,7 @@ void Texture::image3DMultisample(gl::GLsizei samples, gl::GLenum internalFormat,
     bind();
 
     gl::TexImage3DMultisample(m_target, samples, internalFormat, width, height, depth, fixedSamplesLocations);
-    CheckGLError();
+
 }
 
 void Texture::image3DMultisample(gl::GLsizei samples, gl::GLenum internalFormat, const glm::ivec3 & size, gl::GLboolean fixedSamplesLocations)
@@ -328,7 +328,7 @@ void Texture::storage1D(gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsiz
     bind();
 
     gl::TexStorage1D(m_target, levels, internalFormat, width);
-    CheckGLError();
+
 }
 
 void Texture::storage2D(gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height)
@@ -336,7 +336,7 @@ void Texture::storage2D(gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsiz
 	bind();
 
     gl::TexStorage2D(m_target, levels, internalFormat, width, height);
-	CheckGLError();
+
 }
 
 void Texture::storage2D(gl::GLsizei levels, gl::GLenum internalFormat, const glm::ivec2 & size)
@@ -349,7 +349,7 @@ void Texture::storage3D(gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsiz
     bind();
 
     gl::TexStorage3D(m_target, levels, internalFormat, width, height, depth);
-    CheckGLError();
+
 }
 
 void Texture::storage3D(gl::GLsizei levels, gl::GLenum internalFormat, const glm::ivec3 & size)
@@ -360,7 +360,7 @@ void Texture::storage3D(gl::GLsizei levels, gl::GLenum internalFormat, const glm
 void Texture::textureView(gl::GLuint originalTexture, gl::GLenum internalFormat, gl::GLuint minLevel, gl::GLuint numLevels, gl::GLuint minLayer, gl::GLuint numLayers)
 {
     gl::TextureView(m_id, m_target, originalTexture, internalFormat, minLevel, numLevels, minLayer, numLayers);
-    CheckGLError();
+
 }
 
 void Texture::texBuffer(gl::GLenum internalFormat, Buffer * buffer)
@@ -368,7 +368,7 @@ void Texture::texBuffer(gl::GLenum internalFormat, Buffer * buffer)
     bind();
 
     gl::TexBuffer(m_target, internalFormat, buffer ? buffer->id() : 0);
-    CheckGLError();
+
 }
 
 void Texture::texBuffer(gl::GLenum activeTexture, gl::GLenum internalFormat, Buffer * buffer)
@@ -382,7 +382,7 @@ void Texture::texBufferRange(gl::GLenum internalFormat, Buffer * buffer, gl::GLi
     bind();
 
     gl::TexBufferRange(m_target, internalFormat, buffer ? buffer->id() : 0, offset, size);
-    CheckGLError();
+
 }
 
 void Texture::texBufferRange(gl::GLenum activeTexture, gl::GLenum internalFormat, Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size)
@@ -394,7 +394,7 @@ void Texture::texBufferRange(gl::GLenum activeTexture, gl::GLenum internalFormat
 void Texture::clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const void * data)
 {
     gl::ClearTexImage(m_id, level, format, type, data);
-    CheckGLError();
+
 }
 
 void Texture::clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const glm::vec4 & value)
@@ -415,7 +415,7 @@ void Texture::clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, co
 void Texture::clearSubImage(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLenum format, gl::GLenum type, const void * data)
 {
     gl::ClearTexSubImage(m_id, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
-    CheckGLError();
+
 }
 
 void Texture::clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const void * data)
@@ -443,7 +443,7 @@ void Texture::bindImageTexture(gl::GLuint unit, gl::GLint level, gl::GLboolean l
 	bind();
 
 	gl::BindImageTexture(unit, m_id, level, layered, layer, access, format);
-	CheckGLError();
+
 }
 
 void Texture::generateMipmap()
@@ -451,7 +451,7 @@ void Texture::generateMipmap()
 	bind();
 
     gl::GenerateMipmap(m_target);
-	CheckGLError();
+
 }
 
 void Texture::accept(ObjectVisitor& visitor)
@@ -462,14 +462,14 @@ void Texture::accept(ObjectVisitor& visitor)
 TextureHandle Texture::textureHandle() const
 {
     TextureHandle result = gl::GetTextureHandleARB(m_id);
-	CheckGLError();
+
 	return result;
 }
 
 gl::GLboolean Texture::isResident() const
 {
     bool result = gl::IsTextureHandleResidentARB(textureHandle()) == gl::TRUE;
-	CheckGLError();
+
 
 	return result;
 }
@@ -479,7 +479,7 @@ TextureHandle Texture::makeResident() const
     TextureHandle handle = textureHandle();
 
     gl::MakeTextureHandleResidentARB(handle);
-	CheckGLError();
+
 
 	return handle;
 }
@@ -487,7 +487,7 @@ TextureHandle Texture::makeResident() const
 void Texture::makeNonResident() const
 {
     gl::MakeTextureHandleNonResidentARB(textureHandle());
-	CheckGLError();
+
 }
 
 void Texture::pageCommitment(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLboolean commit) const
@@ -495,7 +495,7 @@ void Texture::pageCommitment(gl::GLint level, gl::GLint xOffset, gl::GLint yOffs
     bind();
 
     gl::TexPageCommitmentARB(m_target, level, xOffset, yOffset, zOffset, width, height, depth, commit);
-    CheckGLError();
+
 }
 
 void Texture::pageCommitment(gl::GLint level, const glm::ivec3& offset, const glm::ivec3& size, gl::GLboolean commit) const

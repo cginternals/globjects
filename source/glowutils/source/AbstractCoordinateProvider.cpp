@@ -30,7 +30,7 @@ float AbstractCoordinateProvider::depthAt(
 
     gl::GLfloat z;
     gl::ReadPixels(x, h - y - 1, 1, 1, format, gl::FLOAT, reinterpret_cast<void*>(&z));
-    CheckGLError();
+
 
     return z;
 }

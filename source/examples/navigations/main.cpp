@@ -77,7 +77,7 @@ public:
         glow::debugmessageoutput::enable();
 
         gl::ClearColor(1.0f, 1.0f, 1.0f, 0.f);
-        CheckGLError();
+
 
         m_sphere = new glow::Program();
         glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glowutils::File("data/adaptive-grid/sphere.vert"));
@@ -113,7 +113,7 @@ public:
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
         gl::Viewport(0, 0, event.width(), event.height());
-        CheckGLError();
+
 
         m_camera.setViewport(event.width(), event.height());
     }
@@ -121,7 +121,7 @@ public:
     virtual void paintEvent(PaintEvent &) override
     {
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        CheckGLError();
+
 
         m_agrid->update();
         m_sphere->setUniform("transform", m_camera.viewProjection());

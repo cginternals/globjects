@@ -129,7 +129,7 @@ void ScreenAlignedQuad::draw()
     if (m_texture)
 	{
         gl::ActiveTexture(gl::TEXTURE0 + m_samplerIndex);
-        CheckGLError();
+
 
         m_texture->bind();
 	}

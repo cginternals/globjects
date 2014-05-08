@@ -58,7 +58,7 @@ public:
         glow::debugmessageoutput::enable();
 
         gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
-        CheckGLError();
+
 
 	    createAndSetupShaders();
 	    createAndSetupGeometry();
@@ -74,7 +74,7 @@ public:
     	int side = std::min<int>(width, height);
 
 	    gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
-        CheckGLError();
+
 
 	    m_shaderProgram->setUniform("modelView", glm::mat4());
         m_shaderProgram->setUniform("projection", glm::ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
@@ -83,7 +83,7 @@ public:
     virtual void paintEvent(PaintEvent &) override
     {
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        CheckGLError();
+
 
         glow::Buffer* drawBuffer = m_vertexBuffer1;
         glow::Buffer* writeBuffer = m_vertexBuffer2;
@@ -98,7 +98,7 @@ public:
         writeBuffer->bindBase(gl::TRANSFORM_FEEDBACK_BUFFER, 0);
 
         gl::Enable(gl::RASTERIZER_DISCARD);
-        CheckGLError();
+
         m_transformFeedbackProgram->use();
         m_transformFeedback->bind();
         m_transformFeedback->begin(gl::TRIANGLES);
@@ -106,7 +106,7 @@ public:
         m_transformFeedback->end();
         m_transformFeedback->unbind();
         gl::Disable(gl::RASTERIZER_DISCARD);
-        CheckGLError();
+
 
         m_vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(glm::vec4));
 
