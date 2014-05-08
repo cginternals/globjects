@@ -30,15 +30,12 @@ public:
 	bool isError() const;
     operator bool() const;
 
-    static void check(const char * file, int line);
+    static void check(const std::string & message);
 protected:
 	gl::GLenum m_errorCode;
 };
 
-#ifdef NDEBUG
+// TODO: remove completely
 #define CheckGLError()
-#else
-#define CheckGLError() glow::Error::check(__FILE__, __LINE__)
-#endif
 
 } // namespace glow

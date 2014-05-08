@@ -2,6 +2,7 @@
 
 #include <glbinding/glbinding.h>
 #include <glbinding/functions.h>
+#include <glbinding/AbstractFunction.h>
 
 #include <glow/Error.h>
 #include <glow/logging.h>
@@ -18,6 +19,17 @@ bool glowIsInitialized = false;
 
 bool initializeGLBinding()
 {
+    gl::AbstractFunction::enableCallbacksForAllExcept({ "glGetError" });
+
+    gl::AbstractFunction::setAfterCallback([](const gl::AbstractFunction & function) {
+        Error::check(function.name());
+    });
+
+    /*AbstractFunction::setBeforeCallback([](const AbstractFunction & f) {
+        // logging
+        std::cout << f.name() << std::endl;
+    });*/
+
     return gl::initialize();
 }
 

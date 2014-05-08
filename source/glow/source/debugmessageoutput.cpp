@@ -108,22 +108,22 @@ void controlMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl
     implementation().controlMessages(source, type, severity, count, ids, enabled);
 }
 
-void signalError(const Error & error, const char * file, int line)
+void signalError(const Error & error, const std::string & message)
 {
     if (!error.isError())
         return;
 
-    std::stringstream stream;
-    stream << error.name() << " generated. [" << file << ":" << line << "]";
-
     if (!Registry::current().isInitialized())
     {
-        glow::debug() << "Error during initialization: " << stream.str();
+        glow::debug() << "Error during initialization: " << error.name();
         return;
     }
 
     if (!implementation().isFallback())
         return;
+
+    std::stringstream stream;
+    stream << error.name() << " generated: " << message;
 
     insertMessage(DebugMessage(gl::DEBUG_SOURCE_API_ARB, gl::DEBUG_TYPE_ERROR_ARB, error.code(), gl::DEBUG_SEVERITY_HIGH_ARB, stream.str()));
 }
