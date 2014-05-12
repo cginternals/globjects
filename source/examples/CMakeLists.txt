@@ -1,9 +1,5 @@
 
 if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOW_UTILS AND OPTION_BUILD_GLOW_WINDOW)
-	if(WIN32)
-		install(FILES ${GLEW_INCLUDE_DIR}/../bin/glew32.dll DESTINATION ${INSTALL_BIN})
-	endif()
-
 	set(EXAMPLE_COMMON examplecommon)
 
         # for compatibility between glm 0.9.4 and 0.9.5

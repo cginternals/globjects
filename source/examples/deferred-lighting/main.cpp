@@ -1,6 +1,4 @@
 
-#include <GL/glew.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -103,8 +101,6 @@ protected:
 */
 int main(int argc, char** argv)
 {
-    glewExperimental = GL_TRUE;
-
     ContextFormat format;
 
     Window window;
