@@ -40,4 +40,4 @@ If you are contributing to this project, please keep the following notes in mind
 * Use lazy initialization as often as possible for time consuming tasks.
 * Member Variables always start with ```m_```, ```g_```, and ```s_``` (e.g.,```m_member```, ```g_global```, and ```s_static```)..
 * Interface or abstract class names always start with Abstract (e.g., ```AbstractArray```).
-* Enforce strict include sequence: cpp-related header, std, gl, glm, glbinding, glow.
+* Enforce strict include sequence: cpp-related header, std, glm, glbinding, glow.
