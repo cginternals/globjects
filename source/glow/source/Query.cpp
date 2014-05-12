@@ -129,7 +129,7 @@ gl::GLuint64 Query::get64(gl::GLenum pname) const
 
 bool Query::resultAvailable() const
 {
-	return get(gl::QUERY_RESULT_AVAILABLE) == gl::TRUE;
+	return get(gl::QUERY_RESULT_AVAILABLE) == gl::TRUE_;
 }
 
 void Query::wait() const
@@ -193,7 +193,7 @@ void Query::counter(gl::GLenum target) const
 
 bool Query::isQuery(gl::GLuint id)
 {
-    return gl::IsQuery(id) == gl::TRUE;
+    return gl::IsQuery(id) == gl::TRUE_;
 }
 
 } // namespace glow

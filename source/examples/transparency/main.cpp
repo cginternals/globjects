@@ -113,7 +113,7 @@ public:
 		gl::Disable(gl::DEPTH_TEST);
 
 
-		gl::DepthMask(gl::FALSE);
+		gl::DepthMask(gl::FALSE_);
 
 
 		m_quad->program()->setUniform("topLeft", 0);
@@ -130,7 +130,7 @@ public:
 		gl::Enable(gl::DEPTH_TEST);
 
 
-		gl::DepthMask(gl::TRUE);
+		gl::DepthMask(gl::TRUE_);
 
 	}
 

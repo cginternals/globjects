@@ -26,7 +26,7 @@ bool LegacyBufferImplementation::unmap(const Buffer * buffer) const
 {
     buffer->bind(s_workingTarget);
 
-    return gl::UnmapBuffer(s_workingTarget);
+    return gl::TRUE_ == gl::UnmapBuffer(s_workingTarget);
 }
 
 void LegacyBufferImplementation::setData(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLenum usage) const

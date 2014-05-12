@@ -164,7 +164,7 @@ void EventHandler::createAndSetupTexture()
 	m_texture = new glow::Texture(gl::TEXTURE_2D);
 
     // make texture sparse
-    m_texture->setParameter(gl::TEXTURE_SPARSE_ARB, static_cast<gl::GLint>(gl::TRUE));
+    m_texture->setParameter(gl::TEXTURE_SPARSE_ARB, static_cast<gl::GLint>(gl::TRUE_));
     // specify the page size via its index in the array retrieved above (we simply use the first here)
     m_texture->setParameter(gl::VIRTUAL_PAGE_SIZE_INDEX_ARB, 0);
 
@@ -203,11 +203,11 @@ void EventHandler::mapNextPage()
     // unmap oldest page
     int oldestPage = (currentPage + m_totalPages - m_maxResidentPages) % m_totalPages;
     glm::ivec2 oldOffset = glm::ivec2(oldestPage % m_numPages.x, oldestPage / m_numPages.x) * m_pageSize;
-    m_texture->pageCommitment(0, glm::ivec3(oldOffset, 0), glm::ivec3(m_pageSize, 1), gl::FALSE);
+    m_texture->pageCommitment(0, glm::ivec3(oldOffset, 0), glm::ivec3(m_pageSize, 1), gl::FALSE_);
 
     // map next page
     glm::ivec2 newOffset = glm::ivec2(currentPage % m_numPages.x, currentPage / m_numPages.x) * m_pageSize;
-    m_texture->pageCommitment(0, glm::ivec3(newOffset, 0), glm::ivec3(m_pageSize, 1), gl::TRUE);
+    m_texture->pageCommitment(0, glm::ivec3(newOffset, 0), glm::ivec3(m_pageSize, 1), gl::TRUE_);
     m_texture->subImage2D(0, newOffset, m_pageSize, gl::RGBA, gl::UNSIGNED_BYTE, data.data());
     currentPage = (currentPage + 1) % m_totalPages;
 }

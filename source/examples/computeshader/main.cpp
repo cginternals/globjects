@@ -163,7 +163,7 @@ void EventHandler::createAndSetupTexture()
     m_texture = glow::Texture::createDefault(gl::TEXTURE_2D);
 
 	m_texture->image2D(0, gl::R32F, 512, 512, 0, gl::RED, gl::FLOAT, nullptr);
-	m_texture->bindImageTexture(0, 0, gl::FALSE, 0, gl::WRITE_ONLY, gl::R32F);
+	m_texture->bindImageTexture(0, 0, gl::FALSE_, 0, gl::WRITE_ONLY, gl::R32F);
 }
 
 void EventHandler::createAndSetupShaders()

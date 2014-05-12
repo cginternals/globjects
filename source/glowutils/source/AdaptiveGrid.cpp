@@ -130,7 +130,7 @@ AdaptiveGrid::AdaptiveGrid(
 
     binding->setAttribute(0);
     binding->setBuffer(m_buffer, 0, sizeof(vec4));
-    binding->setFormat(4, gl::FLOAT, gl::FALSE, 0);
+    binding->setFormat(4, gl::FLOAT, gl::FALSE_, 0);
 
     m_vao->enable(0);
 }

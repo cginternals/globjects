@@ -36,7 +36,7 @@ public:
 	void setFormat(
         gl::GLint size
     ,   gl::GLenum type
-    ,   gl::GLboolean normalized = static_cast<gl::GLboolean>(gl::FALSE)
+    ,   gl::GLboolean normalized = static_cast<gl::GLboolean>(gl::FALSE_)
     ,   gl::GLuint relativeoffset = 0);
 	void setIFormat(
         gl::GLint size

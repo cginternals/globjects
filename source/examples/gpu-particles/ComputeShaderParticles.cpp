@@ -85,13 +85,13 @@ void ComputeShaderParticles::initialize()
     auto positionsBinding = m_vao->binding(0);
     positionsBinding->setAttribute(0);
     positionsBinding->setBuffer(m_positionsSSBO, 0, sizeof(vec4));
-    positionsBinding->setFormat(4, gl::FLOAT, gl::FALSE, 0);
+    positionsBinding->setFormat(4, gl::FLOAT, gl::FALSE_, 0);
     m_vao->enable(0);
 
     auto velocitiesBinding = m_vao->binding(1);
     velocitiesBinding->setAttribute(1);
     velocitiesBinding->setBuffer(m_velocitiesSSBO, 0, sizeof(vec4));
-    velocitiesBinding->setFormat(4, gl::FLOAT, gl::FALSE, 0);
+    velocitiesBinding->setFormat(4, gl::FLOAT, gl::FALSE_, 0);
     m_vao->enable(1);
 
     m_vao->unbind();

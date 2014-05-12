@@ -91,55 +91,55 @@ void LegacyUniformImplementation::set(const Program * program, const gl::GLint l
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const glm::mat2 & value) const
 {
     program->use();
-    gl::UniformMatrix2fv(location, 1, gl::FALSE, glm::value_ptr(value));
+    gl::UniformMatrix2fv(location, 1, gl::FALSE_, glm::value_ptr(value));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const glm::mat3 & value) const
 {
     program->use();
-    gl::UniformMatrix3fv(location, 1, gl::FALSE, glm::value_ptr(value));
+    gl::UniformMatrix3fv(location, 1, gl::FALSE_, glm::value_ptr(value));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const glm::mat4 & value) const
 {
     program->use();
-    gl::UniformMatrix4fv(location, 1, gl::FALSE, glm::value_ptr(value));
+    gl::UniformMatrix4fv(location, 1, gl::FALSE_, glm::value_ptr(value));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const glm::mat2x3 & value) const
 {
     program->use();
-    gl::UniformMatrix2x3fv(location, 1, gl::FALSE, glm::value_ptr(value));
+    gl::UniformMatrix2x3fv(location, 1, gl::FALSE_, glm::value_ptr(value));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const glm::mat3x2 & value) const
 {
     program->use();
-    gl::UniformMatrix3x2fv(location, 1, gl::FALSE, glm::value_ptr(value));
+    gl::UniformMatrix3x2fv(location, 1, gl::FALSE_, glm::value_ptr(value));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const glm::mat2x4 & value) const
 {
     program->use();
-    gl::UniformMatrix2x4fv(location, 1, gl::FALSE, glm::value_ptr(value));
+    gl::UniformMatrix2x4fv(location, 1, gl::FALSE_, glm::value_ptr(value));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const glm::mat4x2 & value) const
 {
     program->use();
-    gl::UniformMatrix4x2fv(location, 1, gl::FALSE, glm::value_ptr(value));
+    gl::UniformMatrix4x2fv(location, 1, gl::FALSE_, glm::value_ptr(value));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const glm::mat3x4 & value) const
 {
     program->use();
-    gl::UniformMatrix3x4fv(location, 1, gl::FALSE, glm::value_ptr(value));
+    gl::UniformMatrix3x4fv(location, 1, gl::FALSE_, glm::value_ptr(value));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const glm::mat4x3 & value) const
 {
     program->use();
-    gl::UniformMatrix4x3fv(location, 1, gl::FALSE, glm::value_ptr(value));
+    gl::UniformMatrix4x3fv(location, 1, gl::FALSE_, glm::value_ptr(value));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const TextureHandle & value) const
@@ -235,55 +235,55 @@ void LegacyUniformImplementation::set(const Program * program, const gl::GLint l
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const std::vector<glm::mat2> & value) const
 {
     program->use();
-    gl::UniformMatrix2fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
+    gl::UniformMatrix2fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE_, reinterpret_cast<const float*>(value.data()));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const std::vector<glm::mat3> & value) const
 {
     program->use();
-    gl::UniformMatrix3fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
+    gl::UniformMatrix3fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE_, reinterpret_cast<const float*>(value.data()));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const std::vector<glm::mat4> & value) const
 {
     program->use();
-    gl::UniformMatrix4fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
+    gl::UniformMatrix4fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE_, reinterpret_cast<const float*>(value.data()));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const std::vector<glm::mat2x3> & value) const
 {
     program->use();
-    gl::UniformMatrix2x3fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
+    gl::UniformMatrix2x3fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE_, reinterpret_cast<const float*>(value.data()));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const std::vector<glm::mat3x2> & value) const
 {
     program->use();
-    gl::UniformMatrix3x2fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
+    gl::UniformMatrix3x2fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE_, reinterpret_cast<const float*>(value.data()));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const std::vector<glm::mat2x4> & value) const
 {
     program->use();
-    gl::UniformMatrix2x4fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
+    gl::UniformMatrix2x4fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE_, reinterpret_cast<const float*>(value.data()));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const std::vector<glm::mat4x2> & value) const
 {
     program->use();
-    gl::UniformMatrix4x2fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
+    gl::UniformMatrix4x2fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE_, reinterpret_cast<const float*>(value.data()));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const std::vector<glm::mat3x4> & value) const
 {
     program->use();
-    gl::UniformMatrix3x4fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
+    gl::UniformMatrix3x4fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE_, reinterpret_cast<const float*>(value.data()));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const std::vector<glm::mat4x3> & value) const
 {
     program->use();
-    gl::UniformMatrix4x3fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE, reinterpret_cast<const float*>(value.data()));
+    gl::UniformMatrix4x3fv(location, static_cast<gl::GLint>(value.size()), gl::FALSE_, reinterpret_cast<const float*>(value.data()));
 }
 
 void LegacyUniformImplementation::set(const Program * program, const gl::GLint location, const std::vector<TextureHandle> & value) const

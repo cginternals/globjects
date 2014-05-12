@@ -179,7 +179,7 @@ bool Program::compileAttachedShaders() const
 
 bool Program::checkLinkStatus() const
 {
-    if (gl::FALSE == get(gl::LINK_STATUS))
+    if (gl::FALSE_ == get(gl::LINK_STATUS))
     {
         critical()
             << "Linker error:" << std::endl

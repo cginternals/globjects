@@ -57,7 +57,7 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
 
     gl::Enable(gl::DEPTH_TEST);
 
-    gl::DepthMask(gl::TRUE);
+    gl::DepthMask(gl::TRUE_);
 
     gl::Disable(gl::BLEND);
 
@@ -68,7 +68,7 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
 
     drawFunction(m_opaqueProgram.get());
 
-    gl::DepthMask(gl::FALSE);
+    gl::DepthMask(gl::FALSE_);
 
     gl::Enable(gl::BLEND);
 
@@ -87,7 +87,7 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils:
     m_postFbo->bind();
     m_postFbo->clear(gl::COLOR_BUFFER_BIT);
 
-    gl::DepthMask(gl::TRUE);
+    gl::DepthMask(gl::TRUE_);
 
     gl::Disable(gl::BLEND);
 

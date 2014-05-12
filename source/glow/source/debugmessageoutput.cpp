@@ -78,7 +78,7 @@ void enableMessage(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::
 
 void enableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids)
 {
-    controlMessages(source, type, severity, count, ids, gl::TRUE);
+    controlMessages(source, type, severity, count, ids, gl::TRUE_);
 }
 
 void enableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, const std::vector<gl::GLuint> & ids)
@@ -93,7 +93,7 @@ void disableMessage(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl:
 
 void disableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids)
 {
-    controlMessages(source, type, severity, count, ids, gl::FALSE);
+    controlMessages(source, type, severity, count, ids, gl::FALSE_);
 }
 
 void disableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, const std::vector<gl::GLuint> & ids)

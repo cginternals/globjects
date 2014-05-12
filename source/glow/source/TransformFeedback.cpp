@@ -93,7 +93,7 @@ void TransformFeedback::setVaryings(const Program *program, const std::vector<co
 
 bool TransformFeedback::isTransformFeedback(gl::GLuint id)
 {
-    return gl::IsTransformFeedback(id) == gl::TRUE;
+    return gl::IsTransformFeedback(id) == gl::TRUE_;
 }
 
 } // namespace glow

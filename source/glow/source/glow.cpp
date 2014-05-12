@@ -246,7 +246,7 @@ bool isEnabled(gl::GLenum capability)
 {
     gl::GLboolean value = gl::IsEnabled(capability);
 
-    return value == gl::TRUE;
+    return value == gl::TRUE_;
 }
 
 void setEnabled(gl::GLenum capability, bool enabled)
@@ -268,7 +268,7 @@ bool isEnabled(gl::GLenum capability, int index)
 {
     gl::GLboolean value = gl::IsEnabledi(capability, index);
 
-    return value == gl::TRUE;
+    return value == gl::TRUE_;
 }
 
 void setEnabled(gl::GLenum capability, int index, bool enabled)

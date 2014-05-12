@@ -300,7 +300,7 @@ void DebugInfo::visitTexture(Texture* texture)
         int memory = 0;
         for (int i = 0; i<=maxLevels; ++i)
         {
-            if (texture->getLevelParameter(i, gl::TEXTURE_COMPRESSED) == static_cast<gl::GLint>(gl::TRUE))
+            if (texture->getLevelParameter(i, gl::TEXTURE_COMPRESSED) == static_cast<gl::GLint>(gl::TRUE_))
             {
                 memory += texture->getLevelParameter(i, gl::TEXTURE_COMPRESSED_IMAGE_SIZE);
             }

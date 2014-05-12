@@ -68,13 +68,13 @@ UnitCube::UnitCube(const gl::GLuint vertexAttribLocation, const gl::GLuint norma
     auto vertexBinding = m_vao->binding(0);
     vertexBinding->setAttribute(vertexAttribLocation);
     vertexBinding->setBuffer(m_strip.get(), 0, static_cast<gl::GLint>(sizeof(vec3) * 2));
-    vertexBinding->setFormat(3, gl::FLOAT, gl::FALSE, 0);
+    vertexBinding->setFormat(3, gl::FLOAT, gl::FALSE_, 0);
     m_vao->enable(0);
 
     auto normalBinding = m_vao->binding(1);
     normalBinding->setAttribute(normalAttribLocation);
     normalBinding->setBuffer(m_strip.get(), 0, static_cast<gl::GLint>(sizeof(vec3) * 2));
-    normalBinding->setFormat(3, gl::FLOAT, gl::TRUE, sizeof(vec3));
+    normalBinding->setFormat(3, gl::FLOAT, gl::TRUE_, sizeof(vec3));
     m_vao->enable(1);
 
     m_vao->unbind();

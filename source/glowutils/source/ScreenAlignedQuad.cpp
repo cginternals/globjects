@@ -118,7 +118,7 @@ void ScreenAlignedQuad::initialize()
 	auto binding = m_vao->binding(0);
 	binding->setAttribute(0);
 	binding->setBuffer(m_buffer, 0, sizeof(glm::vec2));
-	binding->setFormat(2, gl::FLOAT, gl::FALSE, 0);
+	binding->setFormat(2, gl::FLOAT, gl::FALSE_, 0);
 	m_vao->enable(0);
 
     setSamplerUniform(0);

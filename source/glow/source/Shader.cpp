@@ -220,7 +220,7 @@ bool Shader::checkCompileStatus() const
 {
     gl::GLint status = get(gl::COMPILE_STATUS);
 
-    if (status == gl::FALSE)
+    if (status == gl::FALSE_)
     {
         critical()
             << "Compiler error:" << std::endl

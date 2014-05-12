@@ -16,7 +16,7 @@ Error::Error(gl::GLenum errorCode)
 }
 
 Error::Error()
-: Error(gl::NO_ERROR)
+: Error(gl::NO_ERROR_)
 {
 }
 
@@ -29,7 +29,7 @@ std::string Error::name() const
 {
     switch(m_errorCode)
     {
-        case gl::NO_ERROR:
+        case gl::NO_ERROR_:
             return "GL_NO_ERROR";
         case gl::INVALID_ENUM:
             return "GL_INVALID_ENUM";
@@ -58,7 +58,7 @@ void Error::clear()
 
 bool Error::isError() const
 {
-	return m_errorCode != gl::NO_ERROR;
+	return m_errorCode != gl::NO_ERROR_;
 }
 
 Error::operator bool() const

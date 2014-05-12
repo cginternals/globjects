@@ -77,7 +77,7 @@ protected:
     gl::GLenum m_primitiveMode;
 };
 
-GLOWUTILS_API VertexDrawable::AttributeFormat Format(gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset, gl::GLboolean normalized = gl::FALSE);
+GLOWUTILS_API VertexDrawable::AttributeFormat Format(gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset, gl::GLboolean normalized = gl::FALSE_);
 GLOWUTILS_API VertexDrawable::AttributeFormat FormatI(gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset);
 GLOWUTILS_API VertexDrawable::AttributeFormat FormatL(gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset);
 

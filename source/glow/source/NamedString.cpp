@@ -85,7 +85,7 @@ bool NamedString::isNamedString(const std::string & name)
 
     if (hasNativeSupport())
     {
-        return gl::IsNamedStringARB(static_cast<gl::GLint>(name.size()), name.c_str()) == gl::TRUE;
+        return gl::IsNamedStringARB(static_cast<gl::GLint>(name.size()), name.c_str()) == gl::TRUE_;
     }
 
     return false;

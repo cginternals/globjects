@@ -18,7 +18,7 @@ void * BindlessBufferImplementation::mapRange(const Buffer * buffer, gl::GLintpt
 
 bool BindlessBufferImplementation::unmap(const Buffer * buffer) const
 {
-    return gl::UnmapNamedBufferEXT(buffer->id());
+    return gl::TRUE_ == gl::UnmapNamedBufferEXT(buffer->id());
 }
 
 void BindlessBufferImplementation::setData(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLenum usage) const

@@ -77,7 +77,7 @@ void VertexAttributeBinding_GL_3_0::setFormat(gl::GLint size, gl::GLenum type, g
 
 void VertexAttributeBinding_GL_3_0::setIFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset)
 {
-    m_format = Format(Format::I, size, type, gl::FALSE, relativeoffset);
+    m_format = Format(Format::I, size, type, gl::FALSE_, relativeoffset);
 
     m_hasFormat = true;
     finishIfComplete();
@@ -85,7 +85,7 @@ void VertexAttributeBinding_GL_3_0::setIFormat(gl::GLint size, gl::GLenum type, 
 
 void VertexAttributeBinding_GL_3_0::setLFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset)
 {
-    m_format = Format(Format::L, size, type, gl::FALSE, relativeoffset);
+    m_format = Format(Format::L, size, type, gl::FALSE_, relativeoffset);
 
     m_hasFormat = true;
     finishIfComplete();
@@ -135,7 +135,7 @@ VertexAttributeBinding_GL_3_0::Format::Format()
 : method(O)
 , size(0)
 , type(0)
-, normalized(gl::FALSE)
+, normalized(gl::FALSE_)
 , relativeoffset(0)
 {
 }

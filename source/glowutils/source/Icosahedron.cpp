@@ -97,7 +97,7 @@ Icosahedron::Icosahedron(const gl::GLsizei iterations, const gl::GLuint vertexAt
     auto vertexBinding = m_vao->binding(0);
     vertexBinding->setAttribute(vertexAttribLocation);
     vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
-    vertexBinding->setFormat(3, gl::FLOAT, gl::TRUE);
+    vertexBinding->setFormat(3, gl::FLOAT, gl::TRUE_);
     m_vao->enable(0);
 
     m_vao->unbind();

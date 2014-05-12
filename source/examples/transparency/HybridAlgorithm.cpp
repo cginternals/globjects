@@ -93,7 +93,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
     // render translucent geometry into depth k-TAB (store depth and alpha for the first (minimum depth) k fragments)
     //
     m_prepassFbo->setDrawBuffer(gl::NONE);
-    gl::DepthMask(gl::FALSE);
+    gl::DepthMask(gl::FALSE_);
 
 
     static unsigned int initialDepthKTab = std::numeric_limits<unsigned int>::max();
@@ -107,7 +107,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
 
     drawFunction(m_depthKTabProgram.get());
 
-    gl::DepthMask(gl::TRUE);
+    gl::DepthMask(gl::TRUE_);
 
 
     m_prepassFbo->unbind();
@@ -145,7 +145,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
 
     gl::BlendFunc(gl::ONE, gl::ONE);
 
-    gl::DepthMask(gl::FALSE);
+    gl::DepthMask(gl::FALSE_);
 
 
     static unsigned int initialDepthComplexity = 0;
@@ -159,7 +159,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* 
 
     drawFunction(m_colorProgram);
 
-    gl::DepthMask(gl::TRUE);
+    gl::DepthMask(gl::TRUE_);
 
     gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
 

@@ -1,33 +1,33 @@
 
+#include "contextid.h"
 
 #ifdef WIN32
-#include <GL/wglew.h>
+#include <windows.h>
 #elif __APPLE__
 //#include <...>
 #else
 #include <GL/glxew.h>
 #endif
 
-#include "contextid.h"
 
 namespace glow {
 
-long long getContextId()
+ContextID getContextId()
 {
-    long long handle = 0;
+    ContextID id = 0;
 
 #ifdef WIN32
-    const int contextID = reinterpret_cast<int>(wgl::GetCurrentContext());
-    handle = static_cast<long long>(contextID);
+    const HGLRC context = wglGetCurrentContext();
+    id = reinterpret_cast<ContextID>(context);
 #elif __APPLE__
     //const GLXContext context = glXGetCurrentContext();
     //handle = reinterpret_cast<long long>(context);
 #else
     const GLXContext context = glXGetCurrentContext();
-    handle = reinterpret_cast<long long>(context);
+    id = reinterpret_cast<ContextID>(context);
 #endif
 
-    return handle;
+    return id;
 }
 
 } // namespace glow

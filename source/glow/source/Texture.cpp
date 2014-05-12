@@ -431,7 +431,7 @@ TextureHandle Texture::textureHandle() const
 
 gl::GLboolean Texture::isResident() const
 {
-    return gl::IsTextureHandleResidentARB(textureHandle()) == gl::TRUE;
+    return gl::IsTextureHandleResidentARB(textureHandle()) == gl::TRUE_;
 }
 
 TextureHandle Texture::makeResident() const
