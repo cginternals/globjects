@@ -4,7 +4,9 @@
 #include <array>
 #include <vector>
 
-#include <GL/glew.h>
+#include <glbinding/constants.h>
+
+
 
 #include <glm/glm.hpp>
 
@@ -27,7 +29,7 @@ namespace glowutils
 class GLOWUTILS_API Icosahedron : public glow::Referenced
 {
 public:
-    using Face = std::array<GLushort, 3>;
+    using Face = std::array<gl::GLushort, 3>;
 
     static const std::array<glm::vec3, 12> vertices();
     static const std::array<Face, 20> indices(); /// individual triangle indices (no strip, no fan)
@@ -42,26 +44,26 @@ public:
 
 public:
     Icosahedron(
-        GLsizei iterations = 0
-    ,   GLuint vertexAttribLocation = 0);
+        gl::GLsizei iterations = 0
+    ,   gl::GLuint vertexAttribLocation = 0);
 
 
 
 
     /** draws the icosahedron as single triangles (TODO: generate set of triangle strips?)
     */
-    void draw(GLenum mode = GL_TRIANGLES);
+    void draw(gl::GLenum mode = gl::TRIANGLES);
 
 private:
     /** Splits a triangle edge by adding an appropriate new point (normalized
         on sphere) to the points (if not already cached) and returns the index
         to this point.
     */
-    static GLushort split(
-        GLushort a
-    ,   GLushort b
+    static gl::GLushort split(
+        gl::GLushort a
+    ,   gl::GLushort b
     ,   std::vector<glm::vec3> & points
-    ,   std::unordered_map<glm::uint, GLushort> & cache);
+    ,   std::unordered_map<glm::uint, gl::GLushort> & cache);
 
 private:
     glow::ref_ptr<glow::VertexArrayObject> m_vao;
@@ -69,7 +71,7 @@ private:
     glow::ref_ptr<glow::Buffer> m_vertices;
     glow::ref_ptr<glow::Buffer> m_indices;
 
-    GLsizei m_size;
+    gl::GLsizei m_size;
 protected:
     virtual ~Icosahedron();
 };

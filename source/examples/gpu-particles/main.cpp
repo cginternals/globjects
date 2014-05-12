@@ -1,6 +1,6 @@
 #include <map>
 
-#include <GL/glew.h>
+#include <glbinding/functions.h>
 
 #include <algorithm>
 #include <vector>
@@ -85,18 +85,13 @@ public:
         delete m_camera;
     }
 
-    virtual void initialize(Window & ) override
+    virtual void initialize(Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
-        m_forces = new glow::Texture(GL_TEXTURE_3D);
-
-        m_forces->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        m_forces->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        
-        m_forces->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        m_forces->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        m_forces->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        m_forces = glow::Texture::createDefault(gl::TEXTURE_3D);
 
         // Initialize shader includes
 
@@ -114,11 +109,11 @@ public:
         
         // initialize techniques
 
-        if (glow::hasExtension(glow::GLOW_ARB_compute_shader)) {
+        if (glow::hasExtension(glow::Extension::ARB_compute_shader)) {
             m_techniques[ComputeShaderTechnique] = new ComputeShaderParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         }
-        if (glow::hasExtension(glow::GLOW_ARB_transform_feedback3)) {
+        if (glow::hasExtension(glow::Extension::ARB_transform_feedback3)) {
             m_techniques[TransformFeedbackTechnique] = new TransformFeedbackParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         }
@@ -135,8 +130,8 @@ public:
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        glViewport(0, 0, event.width(), event.height());
-        CheckGLError();
+        gl::Viewport(0, 0, event.width(), event.height());
+
 
         m_camera->setViewport(event.size());
 
@@ -194,7 +189,7 @@ public:
             forces[i] = f * (1.f - length(vec3(x, y, z)) / std::sqrt(3.f));
         }
 
-        m_forces->image3D(0, GL_RGB32F, fdim.x, fdim.y, fdim.z, 0, GL_RGB, GL_FLOAT, forces.data());
+        m_forces->image3D(0, gl::RGB32F, fdim.x, fdim.y, fdim.z, 0, gl::RGB, gl::FLOAT, forces.data());
 
         if (!particles)
             return;

@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+#include <glbinding/functions.h>
 
 #include <algorithm>
 #include <random>
@@ -60,38 +60,29 @@ public:
 	void createAndSetupShaders();
 	void createAndSetupGeometry();
 
-    virtual void initialize(Window & ) override
+    virtual void initialize(Window & window) override
 	{
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
-		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
-        CheckGLError();
+		gl::ClearColor(1.0f, 1.0f, 1.0f, 0.f);
+
 
 		m_fbo = new glow::FrameBufferObject();
 
-		m_normal = new glow::Texture(GL_TEXTURE_2D);
-		m_normal->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		m_normal->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		m_normal->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		m_normal->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		m_normal->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-		m_geom = new glow::Texture(GL_TEXTURE_2D);
-		m_geom->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		m_geom->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		m_geom->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		m_geom->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		m_geom->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        m_normal = glow::Texture::createDefault(gl::TEXTURE_2D);
+        m_geom = glow::Texture::createDefault(gl::TEXTURE_2D);
 
 		m_depth = new glow::RenderBufferObject();
 
-		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_normal);
-		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_geom);
-		m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depth);
+		m_fbo->attachTexture2D(gl::COLOR_ATTACHMENT0, m_normal);
+		m_fbo->attachTexture2D(gl::COLOR_ATTACHMENT1, m_geom);
+		m_fbo->attachRenderBuffer(gl::DEPTH_ATTACHMENT, m_depth);
 
         m_fbo->bind();
 		// ToDo: this could be done automatically by default..
-		m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
+		m_fbo->setDrawBuffers({ gl::COLOR_ATTACHMENT0, gl::COLOR_ATTACHMENT1 });
 
                 
         glowutils::StringTemplate* sphereVertexShader = new glowutils::StringTemplate(new glowutils::File("data/post-processing/sphere.vert"));
@@ -108,11 +99,11 @@ public:
 
                 
 		m_sphere = new glow::Program();
-        m_sphere->attach(new glow::Shader(GL_VERTEX_SHADER, sphereVertexShader), new glow::Shader(GL_FRAGMENT_SHADER, sphereFragmentShader));
+        m_sphere->attach(new glow::Shader(gl::VERTEX_SHADER, sphereVertexShader), new glow::Shader(gl::FRAGMENT_SHADER, sphereFragmentShader));
                 
 
 		m_phong = new glow::Program();
-        m_phong->attach(new glow::Shader(GL_VERTEX_SHADER, phongVertexShader), new glow::Shader(GL_FRAGMENT_SHADER, phongFragmentShader));
+        m_phong->attach(new glow::Shader(gl::VERTEX_SHADER, phongVertexShader), new glow::Shader(gl::FRAGMENT_SHADER, phongFragmentShader));
                 
                 
 
@@ -135,16 +126,16 @@ public:
         int width = event.width();
         int height = event.height();
 
-        glViewport(0, 0, width, height);
-        CheckGLError();
+        gl::Viewport(0, 0, width, height);
+
 
         m_camera.setViewport(width, height);
 
-		m_normal->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-		m_geom->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
+		m_normal->image2D(0, gl::RGBA32F, width, height, 0, gl::RGBA, gl::FLOAT, nullptr);
+		m_geom->image2D(0, gl::RGBA32F, width, height, 0, gl::RGBA, gl::FLOAT, nullptr);
 
-        int result = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
-        m_depth->storage(result == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
+        int result = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(gl::DEPTH, gl::FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
+        m_depth->storage(result == 16 ? gl::DEPTH_COMPONENT16 : gl::DEPTH_COMPONENT, width, height);
 	}
 
     virtual void paintEvent(PaintEvent &) override
@@ -158,8 +149,8 @@ public:
 
 
 		m_fbo->bind();
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        CheckGLError();
+		gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+
 
 		m_sphere->use();
 		m_icosahedron->draw();
@@ -167,33 +158,33 @@ public:
 
 		m_fbo->unbind();
 
-		glDisable(GL_DEPTH_TEST);
-        CheckGLError();
-		glDepthMask(GL_FALSE);
-        CheckGLError();
+		gl::Disable(gl::DEPTH_TEST);
+
+        gl::DepthMask(gl::FALSE_);
+
 
 		m_phong->setUniform("normal", 0);
 		m_phong->setUniform("geom", 1);
-        m_normal->bindActive(GL_TEXTURE0);
-        m_geom->bindActive(GL_TEXTURE1);
+        m_normal->bindActive(gl::TEXTURE0);
+        m_geom->bindActive(gl::TEXTURE1);
 
 		m_quad->draw();
 
-        m_geom->unbindActive(GL_TEXTURE1);
-        m_normal->unbindActive(GL_TEXTURE0);
+        m_geom->unbindActive(gl::TEXTURE1);
+        m_normal->unbindActive(gl::TEXTURE0);
 
-		glEnable(GL_DEPTH_TEST);
-        CheckGLError();
-		glDepthMask(GL_TRUE);
-        CheckGLError();
+		gl::Enable(gl::DEPTH_TEST);
+
+        gl::DepthMask(gl::TRUE_);
+
 
 		// use the fbo's depth buffer as default depth buffer ;)
 		// Note: this requires the depth formats to match exactly.
 
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo->id());
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        glBlitFramebuffer(0, 0, m_camera.viewport().x, m_camera.viewport().y, 0, 0, m_camera.viewport().x, m_camera.viewport().y,
-			GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+		gl::BindFramebuffer(gl::READ_FRAMEBUFFER, m_fbo->id());
+		gl::BindFramebuffer(gl::DRAW_FRAMEBUFFER, 0);
+        gl::BlitFramebuffer(0, 0, m_camera.viewport().x, m_camera.viewport().y, 0, 0, m_camera.viewport().x, m_camera.viewport().y,
+			gl::DEPTH_BUFFER_BIT, gl::NEAREST);
 
 		m_agrid->draw();
 		

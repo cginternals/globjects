@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+#include <glbinding/functions.h>
 
 #include <glow/glow.h>
 #include <glow/Program.h>
@@ -41,11 +41,11 @@ ComputeShaderParticles::~ComputeShaderParticles()
 
 void ComputeShaderParticles::initialize()
 {
-    static const int max_invocations = getInteger(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS);
+    static const int max_invocations = getInteger(gl::MAX_COMPUTE_WORK_GROUP_INVOCATIONS);
     static const ivec3 max_count = ivec3(
-        getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0)
-      , getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1)
-      , getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2));
+        getInteger(gl::MAX_COMPUTE_WORK_GROUP_COUNT, 0)
+      , getInteger(gl::MAX_COMPUTE_WORK_GROUP_COUNT, 1)
+      , getInteger(gl::MAX_COMPUTE_WORK_GROUP_COUNT, 2));
 
     const int groups = static_cast<int>(ceil(static_cast<float>(m_numParticles) / static_cast<float>(max_invocations)));
 
@@ -66,13 +66,13 @@ void ComputeShaderParticles::initialize()
     stringTemplate->replace("MAX_INVOCATION", max_invocations);
     stringTemplate->update();
 
-    m_computeProgram->attach(new Shader(GL_COMPUTE_SHADER, stringTemplate));
+    m_computeProgram->attach(new Shader(gl::COMPUTE_SHADER, stringTemplate));
 
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
-        , glowutils::createShaderFromFile(GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-        , glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        glowutils::createShaderFromFile(gl::VERTEX_SHADER, "data/gpu-particles/points.vert")
+        , glowutils::createShaderFromFile(gl::GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+        , glowutils::createShaderFromFile(gl::FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 
     m_positionsSSBO = new Buffer();
     m_velocitiesSSBO = new Buffer();
@@ -85,13 +85,13 @@ void ComputeShaderParticles::initialize()
     auto positionsBinding = m_vao->binding(0);
     positionsBinding->setAttribute(0);
     positionsBinding->setBuffer(m_positionsSSBO, 0, sizeof(vec4));
-    positionsBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
+    positionsBinding->setFormat(4, gl::FLOAT, gl::FALSE_, 0);
     m_vao->enable(0);
 
     auto velocitiesBinding = m_vao->binding(1);
     velocitiesBinding->setAttribute(1);
     velocitiesBinding->setBuffer(m_velocitiesSSBO, 0, sizeof(vec4));
-    velocitiesBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
+    velocitiesBinding->setFormat(4, gl::FLOAT, gl::FALSE_, 0);
     m_vao->enable(1);
 
     m_vao->unbind();
@@ -100,32 +100,32 @@ void ComputeShaderParticles::initialize()
 
     m_fbo = new FrameBufferObject();
 
-    m_color = new Texture(GL_TEXTURE_2D);
-    m_color->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    m_color->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    m_color->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    m_color->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    m_color->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    m_color = new Texture(gl::TEXTURE_2D);
+    m_color->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_color->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::NEAREST));
+    m_color->setParameter(gl::TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_color->setParameter(gl::TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    m_color->setParameter(gl::TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
 
-    m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_color);
-    m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0 });
+    m_fbo->attachTexture2D(gl::COLOR_ATTACHMENT0, m_color);
+    m_fbo->setDrawBuffers({ gl::COLOR_ATTACHMENT0 });
     m_fbo->unbind();
 
     m_quad = new glowutils::ScreenAlignedQuad(m_color);
     m_clear = new glowutils::ScreenAlignedQuad(
-        glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
+        glowutils::createShaderFromFile(gl::FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 
 void ComputeShaderParticles::reset()
 {
-    m_positionsSSBO->setData(m_positions, GL_STATIC_DRAW);
-    m_velocitiesSSBO->setData(m_velocities, GL_STATIC_DRAW);
+    m_positionsSSBO->setData(m_positions, gl::STATIC_DRAW);
+    m_velocitiesSSBO->setData(m_velocities, gl::STATIC_DRAW);
 }
 
 void ComputeShaderParticles::step(const float elapsed)
 {
-    m_positionsSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
-    m_velocitiesSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
+    m_positionsSSBO->bindBase(gl::SHADER_STORAGE_BUFFER, 0);
+    m_velocitiesSSBO->bindBase(gl::SHADER_STORAGE_BUFFER, 1);
 
     m_forces.bind();
     m_computeProgram->setUniform("forces", 0);
@@ -139,51 +139,51 @@ void ComputeShaderParticles::step(const float elapsed)
 
     m_forces.unbind();
 
-    m_positionsSSBO->unbind(GL_SHADER_STORAGE_BUFFER, 0);
-    m_velocitiesSSBO->unbind(GL_SHADER_STORAGE_BUFFER, 1);
+    m_positionsSSBO->unbind(gl::SHADER_STORAGE_BUFFER, 0);
+    m_velocitiesSSBO->unbind(gl::SHADER_STORAGE_BUFFER, 1);
 }
 
 void ComputeShaderParticles::draw(const float elapsed)
 {
-    glDisable(GL_DEPTH_TEST);
+    gl::Disable(gl::DEPTH_TEST);
 
     m_fbo->bind();
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+    gl::Enable(gl::BLEND);
+    gl::BlendFunc(gl::ZERO, gl::ONE_MINUS_SRC_COLOR);
     m_clear->program()->setUniform("elapsed", elapsed);
     m_clear->draw();
 
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    gl::BlendFunc(gl::SRC_ALPHA, gl::ONE);
 
     m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
     m_drawProgram->use();
 
     m_vao->bind();
-    m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
+    m_vao->drawArrays(gl::POINTS, 0, m_numParticles);
     m_vao->unbind();
 
     m_drawProgram->release();
 
-    glDisable(GL_BLEND);
+    gl::Disable(gl::BLEND);
 
     m_fbo->unbind();
 
     m_quad->draw();
 
-    glEnable(GL_DEPTH_TEST);
+    gl::Enable(gl::DEPTH_TEST);
 }
 
 void ComputeShaderParticles::resize()
 {
     m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
 
-    m_color->image2D(0, GL_RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, GL_RGB, GL_FLOAT, nullptr);
+    m_color->image2D(0, gl::RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, gl::RGB, gl::FLOAT, nullptr);
 
     m_fbo->bind();
 
-    glClear(GL_COLOR_BUFFER_BIT);
+    gl::Clear(gl::COLOR_BUFFER_BIT);
 
     m_fbo->unbind();
 }

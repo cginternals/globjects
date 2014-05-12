@@ -2,7 +2,7 @@
 
 #include <map>
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 #include <glow/glow_api.h>
 
@@ -12,10 +12,10 @@ namespace glow
 class GLOW_API Capability
 {
 public:
-    Capability(GLenum capability);
-    Capability(GLenum capability, bool enabled);
+    Capability(gl::GLenum capability);
+    Capability(gl::GLenum capability, bool enabled);
 
-    GLenum capability() const;
+    gl::GLenum capability() const;
 
     void enable();
     void disable();
@@ -27,7 +27,7 @@ public:
 
     void apply();
 protected:
-    GLenum m_capability;
+    gl::GLenum m_capability;
     bool m_enabled;
     std::map<int, bool> m_indexEnabled;
 };

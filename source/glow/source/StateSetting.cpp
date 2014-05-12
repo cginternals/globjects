@@ -25,7 +25,7 @@ std::size_t StateSettingType::hash() const
     return std::hash<void*>()(m_functionIdentifier);
 }
 
-void StateSettingType::specializeType(GLenum subtype)
+void StateSettingType::specializeType(gl::GLenum subtype)
 {
     m_subtypes.insert(subtype);
 }
@@ -43,7 +43,7 @@ StateSetting::~StateSetting()
 void StateSetting::apply()
 {
     (*m_functionCall)();
-    CheckGLError();
+
 }
 
 const StateSettingType & StateSetting::type() const

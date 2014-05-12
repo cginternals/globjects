@@ -2,9 +2,11 @@
 
 #include <sstream>
 
+#include <glbinding/constants.h>
+
 namespace glow {
 
-DebugMessage::DebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string & message)
+DebugMessage::DebugMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, const std::string & message)
 : m_source(source)
 , m_type(type)
 , m_id(id)
@@ -18,22 +20,22 @@ bool DebugMessage::isManualErrorMessage() const
     return false;
 }
 
-GLenum DebugMessage::source() const
+gl::GLenum DebugMessage::source() const
 {
     return m_source;
 }
 
-GLenum DebugMessage::type() const
+gl::GLenum DebugMessage::type() const
 {
     return m_type;
 }
 
-GLuint DebugMessage::id() const
+gl::GLuint DebugMessage::id() const
 {
     return m_id;
 }
 
-GLenum DebugMessage::severity() const
+gl::GLenum DebugMessage::severity() const
 {
     return m_severity;
 }
@@ -62,11 +64,11 @@ std::string DebugMessage::severityString() const
 {
     switch (m_severity)
     {
-        case GL_DEBUG_SEVERITY_HIGH_ARB:
+        case gl::DEBUG_SEVERITY_HIGH_ARB:
             return "high";
-        case GL_DEBUG_SEVERITY_MEDIUM_ARB:
+        case gl::DEBUG_SEVERITY_MEDIUM_ARB:
             return "medium";
-        case GL_DEBUG_SEVERITY_LOW_ARB:
+        case gl::DEBUG_SEVERITY_LOW_ARB:
             return "low";
         default:
             return "unknown";
@@ -77,17 +79,17 @@ std::string DebugMessage::sourceString() const
 {
     switch (m_source)
     {
-        case GL_DEBUG_SOURCE_API_ARB:
+        case gl::DEBUG_SOURCE_API_ARB:
             return "API";
-        case GL_DEBUG_SOURCE_WINDOW_SYSTEM_ARB:
+        case gl::DEBUG_SOURCE_WINDOW_SYSTEM_ARB:
             return "Window System";
-        case GL_DEBUG_SOURCE_SHADER_COMPILER_ARB:
+        case gl::DEBUG_SOURCE_SHADER_COMPILER_ARB:
             return "Shader Compiler";
-        case GL_DEBUG_SOURCE_THIRD_PARTY_ARB:
+        case gl::DEBUG_SOURCE_THIRD_PARTY_ARB:
             return "Third Party";
-        case GL_DEBUG_SOURCE_APPLICATION_ARB:
+        case gl::DEBUG_SOURCE_APPLICATION_ARB:
             return "Application";
-        case GL_DEBUG_SOURCE_OTHER_ARB:
+        case gl::DEBUG_SOURCE_OTHER_ARB:
             return "Other";
         default:
             return "Unknown";
@@ -98,17 +100,17 @@ std::string DebugMessage::typeString() const
 {
     switch (m_type)
     {
-        case GL_DEBUG_TYPE_OTHER_ARB:
+        case gl::DEBUG_TYPE_OTHER_ARB:
             return "other";
-        case GL_DEBUG_TYPE_ERROR_ARB:
+        case gl::DEBUG_TYPE_ERROR_ARB:
             return "error";
-        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB:
+        case gl::DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB:
             return "deprecated behavior";
-        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB:
+        case gl::DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB:
             return "undefined behavior";
-        case GL_DEBUG_TYPE_PORTABILITY_ARB:
+        case gl::DEBUG_TYPE_PORTABILITY_ARB:
             return "portability";
-        case GL_DEBUG_TYPE_PERFORMANCE_ARB:
+        case gl::DEBUG_TYPE_PERFORMANCE_ARB:
             return "performance";
         default:
             return "unknown";

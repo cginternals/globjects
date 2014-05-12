@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+
 
 #include <algorithm>
 #include <random>
@@ -49,12 +49,14 @@ public:
     void createAndSetupTexture();
 	void createAndSetupGeometry();
 
-    virtual void initialize(Window & ) override
+    virtual void initialize(Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-        CheckGLError();
+        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
+
 
         m_camera.setZNear(0.1f);
         m_camera.setZFar(32.f);
@@ -69,16 +71,16 @@ public:
         int width = event.width();
         int height = event.height();
 
-        glViewport(0, 0, width, height);
-        CheckGLError();
+        gl::Viewport(0, 0, width, height);
+
 
         m_camera.setViewport(width, height);
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        CheckGLError();
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+
 
         m_program->setUniform("modelViewProjection", m_camera.viewProjection());
 
@@ -165,20 +167,20 @@ int main(int /*argc*/, char* /*argv*/[])
 
 void EventHandler::createAndSetupTexture()
 {
-	m_texture = new glow::Texture(GL_TEXTURE_2D);
+	m_texture = new glow::Texture(gl::TEXTURE_2D);
 
-	m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    m_texture->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::LINEAR_MIPMAP_LINEAR));
+    m_texture->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::LINEAR));
 
-	m_texture->setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-    m_texture->setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+    m_texture->setParameter(gl::TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::REPEAT));
+    m_texture->setParameter(gl::TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::REPEAT));
 
     RawFile raw("data/mipmap-filtering/grass.256.256.dxt1-rgb.raw");
     if (!raw.isValid())
         return;
 
-    m_texture->compressedImage2D(0, GL_COMPRESSED_RGB_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, static_cast<GLsizei>(raw.size()), raw.data());   
-    glGenerateMipmap(GL_TEXTURE_2D);
+    m_texture->compressedImage2D(0, gl::COMPRESSED_RGB_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, static_cast<gl::GLsizei>(raw.size()), raw.data());   
+    gl::GenerateMipmap(gl::TEXTURE_2D);
 }
 
 void EventHandler::createAndSetupGeometry()
@@ -187,7 +189,7 @@ void EventHandler::createAndSetupGeometry()
     glowutils::StringTemplate * sphereFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/mipmap-filtering/mipmap.frag"));
 
     m_program = new glow::Program();
-    m_program->attach(new glow::Shader(GL_VERTEX_SHADER, sphereVertexShader), new glow::Shader(GL_FRAGMENT_SHADER, sphereFragmentShader));
+    m_program->attach(new glow::Shader(gl::VERTEX_SHADER, sphereVertexShader), new glow::Shader(gl::FRAGMENT_SHADER, sphereFragmentShader));
 
 	m_quad = new glowutils::ScreenAlignedQuad(m_program);
     m_quad->setSamplerUniform(0);

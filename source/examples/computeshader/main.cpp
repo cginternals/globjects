@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+
 
 #include <algorithm>
 #include <random>
@@ -14,13 +14,13 @@
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
+#include <glow/Extension.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/debugmessageoutput.h>
 #include <glow/Texture.h>
-#include <glow/Extension.h>
 #include <glow/glow.h>
 
 #include <glowutils/File.h>
@@ -57,9 +57,11 @@ public:
 
     virtual void initialize(Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
-        if (!glow::hasExtension(glow::Extension::GLOW_ARB_compute_shader))
+        if (!glow::hasExtension(glow::Extension::ARB_compute_shader))
         {
             glow::critical() << "Compute shaders are not supported";
 
@@ -68,8 +70,8 @@ public:
             return;
         }
 
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-        CheckGLError();
+        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
+
 
 	    createAndSetupTexture();
 	    createAndSetupShaders();
@@ -82,14 +84,14 @@ public:
         int height = event.height();
         int side = std::min<int>(width, height);
 
-        glViewport((width - side) / 2, (height - side) / 2, side, side);
-        CheckGLError();
+        gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
+
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        CheckGLError();
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+
 
         ++m_frame %= static_cast<int>(200 * glm::pi<double>());
 
@@ -158,19 +160,16 @@ int main(int /*argc*/, char* /*argv*/[])
 
 void EventHandler::createAndSetupTexture()
 {
-	m_texture = new glow::Texture(GL_TEXTURE_2D);
+    m_texture = glow::Texture::createDefault(gl::TEXTURE_2D);
 
-    m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	m_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
-	m_texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
+	m_texture->image2D(0, gl::R32F, 512, 512, 0, gl::RED, gl::FLOAT, nullptr);
+	m_texture->bindImageTexture(0, 0, gl::FALSE_, 0, gl::WRITE_ONLY, gl::R32F);
 }
 
 void EventHandler::createAndSetupShaders()
 {
     m_computeProgram = new glow::Program();
-    m_computeProgram->attach(glowutils::createShaderFromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+    m_computeProgram->attach(glowutils::createShaderFromFile(gl::COMPUTE_SHADER, "data/computeshader/cstest.comp"));
 
     m_computeProgram->setUniform("destTex", 0);
 }

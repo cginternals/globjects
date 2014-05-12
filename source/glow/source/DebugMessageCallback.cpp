@@ -1,5 +1,7 @@
 #include "DebugMessageCallback.h"
 
+#include <glbinding/constants.h>
+
 #ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
 #include <stdexcept>
 #endif
@@ -56,7 +58,7 @@ void DebugMessageCallback::callCallbacks(const DebugMessage & message) const
 
 void DebugMessageCallback::defaultAction(const DebugMessage & message) const
 {
-    if (message.type() == GL_DEBUG_TYPE_ERROR_ARB)
+    if (message.type() == gl::DEBUG_TYPE_ERROR_ARB)
     {
         handleError(message);
     }

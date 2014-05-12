@@ -1,5 +1,8 @@
 #include <glow/Error.h>
 
+#include <glbinding/constants.h>
+#include <glbinding/functions.h>
+
 #include <glow/DebugMessage.h>
 #include "debugmessageoutput_private.h"
 
@@ -7,17 +10,17 @@ namespace glow
 {
 
 
-Error::Error(GLenum errorCode)
+Error::Error(gl::GLenum errorCode)
 : m_errorCode(errorCode)
 {
 }
 
 Error::Error()
-: Error(GL_NO_ERROR)
+: Error(gl::NO_ERROR_)
 {
 }
 
-GLenum Error::code() const
+gl::GLenum Error::code() const
 {
 	return m_errorCode;
 }
@@ -26,17 +29,17 @@ std::string Error::name() const
 {
     switch(m_errorCode)
     {
-        case GL_NO_ERROR:
+        case gl::NO_ERROR_:
             return "GL_NO_ERROR";
-        case GL_INVALID_ENUM:
+        case gl::INVALID_ENUM:
             return "GL_INVALID_ENUM";
-        case GL_INVALID_VALUE:
+        case gl::INVALID_VALUE:
             return "GL_INVALID_VALUE";
-        case GL_INVALID_OPERATION:
+        case gl::INVALID_OPERATION:
             return "GL_INVALID_OPERATION";
-        case GL_INVALID_FRAMEBUFFER_OPERATION:
+        case gl::INVALID_FRAMEBUFFER_OPERATION:
             return "GL_INVALID_FRAMEBUFFER_OPERATION";
-        case GL_OUT_OF_MEMORY:
+        case gl::OUT_OF_MEMORY:
             return "GL_OUT_OF_MEMORY";
         default:
             return "Unknown GLenum.";
@@ -45,7 +48,7 @@ std::string Error::name() const
 
 Error Error::get()
 {
-	return Error(glGetError());
+    return Error(gl::GetError());
 }
 
 void Error::clear()
@@ -55,7 +58,7 @@ void Error::clear()
 
 bool Error::isError() const
 {
-	return m_errorCode != GL_NO_ERROR;
+	return m_errorCode != gl::NO_ERROR_;
 }
 
 Error::operator bool() const
@@ -63,14 +66,14 @@ Error::operator bool() const
     return isError();
 }
 
-void Error::check(const char * file, int line)
+void Error::check(const std::string & message)
 {
     Error error = Error::get();
 
     if (!error)
         return;
 
-    debugmessageoutput::signalError(error, file, line);
+    debugmessageoutput::signalError(error, message);
 }
 
 } // namespace glow

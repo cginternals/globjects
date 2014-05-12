@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include <glbinding/functions.h>
+
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
 #include <glow/Program.h>
@@ -18,17 +20,15 @@ TransformFeedback::~TransformFeedback()
 {
 	if (ownsGLObject())
 	{
-		glDeleteTransformFeedbacks(1, &m_id);
-		CheckGLError();
+		gl::DeleteTransformFeedbacks(1, &m_id);
 	}
 }
 
-GLuint TransformFeedback::genTransformFeedback()
+gl::GLuint TransformFeedback::genTransformFeedback()
 {
-    GLuint id = 0;
+    gl::GLuint id = 0;
 
-	glGenTransformFeedbacks(1, &id);
-	CheckGLError();
+	gl::GenTransformFeedbacks(1, &id);
 
 	return id;
 }
@@ -38,73 +38,62 @@ void TransformFeedback::accept(ObjectVisitor& visitor)
 	visitor.visitTransformFeedback(this);
 }
 
-void TransformFeedback::bind(GLenum target) const
+void TransformFeedback::bind(gl::GLenum target) const
 {
-    glBindTransformFeedback(target, m_id);
-	CheckGLError();
+    gl::BindTransformFeedback(target, m_id);
 }
 
-void TransformFeedback::unbind(GLenum target)
+void TransformFeedback::unbind(gl::GLenum target)
 {
-    glBindTransformFeedback(target, 0);
-	CheckGLError();
+    gl::BindTransformFeedback(target, 0);
 }
 
-void TransformFeedback::begin(GLenum primitiveMode)
+void TransformFeedback::begin(gl::GLenum primitiveMode)
 {
-	glBeginTransformFeedback(primitiveMode);
-	CheckGLError();
+	gl::BeginTransformFeedback(primitiveMode);
 }
 
 void TransformFeedback::pause()
 {
-	glPauseTransformFeedback();
-	CheckGLError();
+    gl::PauseTransformFeedback();
 }
 
 void TransformFeedback::resume()
 {
-	glResumeTransformFeedback();
-	CheckGLError();
+    gl::ResumeTransformFeedback();
 }
 
 void TransformFeedback::end()
 {
-	glEndTransformFeedback();
-	CheckGLError();
+	gl::EndTransformFeedback();
 }
 
-void TransformFeedback::draw(GLenum primitiveMode) const
+void TransformFeedback::draw(gl::GLenum primitiveMode) const
 {
-    bind(GL_TRANSFORM_FEEDBACK); // TODO: is this necessary
+    bind(gl::TRANSFORM_FEEDBACK); // TODO: is this necessary
 
-    glDrawTransformFeedback(primitiveMode, m_id);
-	CheckGLError();
+    gl::DrawTransformFeedback(primitiveMode, m_id);
 }
 
-void TransformFeedback::setVaryings(const Program * program, GLsizei count, const char** varyingNames, GLenum bufferMode) const
+void TransformFeedback::setVaryings(const Program * program, gl::GLsizei count, const char** varyingNames, gl::GLenum bufferMode) const
 {
     assert(varyingNames != nullptr || count == 0);
 
-    bind(GL_TRANSFORM_FEEDBACK);
+    bind(gl::TRANSFORM_FEEDBACK);
 
-	glTransformFeedbackVaryings(program->id(), count, varyingNames, bufferMode);
-	CheckGLError();
+    gl::TransformFeedbackVaryings(program->id(), count, varyingNames, bufferMode);
 
 	program->invalidate();
 }
 
-void TransformFeedback::setVaryings(const Program *program, const std::vector<const char*> & varyingNames, GLenum bufferMode) const
+void TransformFeedback::setVaryings(const Program *program, const std::vector<const char*> & varyingNames, gl::GLenum bufferMode) const
 {
-    setVaryings(program, static_cast<GLint>(varyingNames.size()), const_cast<const char**>(varyingNames.data()), bufferMode);
+    setVaryings(program, static_cast<gl::GLint>(varyingNames.size()), const_cast<const char**>(varyingNames.data()), bufferMode);
 }
 
-bool TransformFeedback::isTransformFeedback(GLuint id)
+bool TransformFeedback::isTransformFeedback(gl::GLuint id)
 {
-    bool result = glIsTransformFeedback(id) == GL_TRUE;
-	CheckGLError();
-
-	return result;
+    return gl::IsTransformFeedback(id) == gl::TRUE_;
 }
 
 } // namespace glow

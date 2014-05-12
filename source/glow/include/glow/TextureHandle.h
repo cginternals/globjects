@@ -1,10 +1,10 @@
 #pragma once
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 namespace glow 
 {
 
-using TextureHandle = GLuint64;
+using TextureHandle = gl::GLuint64;
 
 } // namespace glow

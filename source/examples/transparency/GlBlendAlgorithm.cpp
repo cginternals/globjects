@@ -15,7 +15,7 @@ void GlBlendAlgorithm::initialize(const std::string & transparencyShaderFilePath
     assert(vertexShader != nullptr);
 
 	m_program = new glow::Program();
-	m_program->attach(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, transparencyShaderFilePath + "glblend.frag"));
+	m_program->attach(glowutils::createShaderFromFile(gl::FRAGMENT_SHADER, transparencyShaderFilePath + "glblend.frag"));
     m_program->attach(vertexShader);
 	if (geometryShader != nullptr) m_program->attach(geometryShader);
 
@@ -23,44 +23,44 @@ void GlBlendAlgorithm::initialize(const std::string & transparencyShaderFilePath
     m_depthBuffer = new glow::RenderBufferObject();
 
 	m_fbo = new glow::FrameBufferObject();
-    m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorTex);
-    m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depthBuffer);
-    m_fbo->setDrawBuffer(GL_COLOR_ATTACHMENT0);
+    m_fbo->attachTexture2D(gl::COLOR_ATTACHMENT0, m_colorTex);
+    m_fbo->attachRenderBuffer(gl::DEPTH_ATTACHMENT, m_depthBuffer);
+    m_fbo->setDrawBuffer(gl::COLOR_ATTACHMENT0);
 }
 
 void GlBlendAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) {
     m_fbo->bind();
 
-    glViewport(0, 0, width, height);
-    CheckGLError();
+    gl::Viewport(0, 0, width, height);
+
 
     camera->setViewport(width, height);
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    CheckGLError();
+    gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+
 
     m_program->setUniform("viewprojectionmatrix", camera->viewProjection());
     m_program->setUniform("normalmatrix", camera->normal());
     m_program->setUniform("screenSize", glm::vec2(width, height));
     m_program->use();
 
-    glEnable(GL_BLEND);
-    CheckGLError();
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    CheckGLError();
+    gl::Enable(gl::BLEND);
+
+    gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
+
 
     drawFunction(m_program);
 
-    glDisable(GL_BLEND);
-    CheckGLError();
+    gl::Disable(gl::BLEND);
+
 
     m_fbo->unbind();
 }
 
 void GlBlendAlgorithm::resize(int width, int height) {
-	int depthBits = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
-    m_colorTex->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-    m_depthBuffer->storage(depthBits == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
+	int depthBits = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(gl::DEPTH, gl::FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
+    m_colorTex->image2D(0, gl::RGBA32F, width, height, 0, gl::RGBA, gl::FLOAT, nullptr);
+    m_depthBuffer->storage(depthBits == 16 ? gl::DEPTH_COMPONENT16 : gl::DEPTH_COMPONENT, width, height);
 }
 
 glow::Texture* GlBlendAlgorithm::getOutput()

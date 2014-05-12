@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <GL/glew.h>
+
 
 #include <glowbase/ref_ptr.h>
 

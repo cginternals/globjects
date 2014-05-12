@@ -1,8 +1,8 @@
 #include <glow/constants.h>
 
-#include <algorithm>
+#include <glbinding/meta.h>
 
-#include <glow/gl_constants.h>
+#include <algorithm>
 
 namespace {
 
@@ -58,27 +58,21 @@ void sortByExtension(std::vector<std::string> & names)
 
 namespace glow {
 
-std::vector<std::string> enumNames(GLenum param)
+std::vector<std::string> enumNames(gl::GLenum param)
 {
-    auto range = GLconstants.equal_range(static_cast<GLuint64>(param));
-
-    std::vector<std::string> names;
-    for (auto it = range.first; it != range.second; ++it)
-    {
-        names.push_back(it->second);
-    }
+    std::vector<std::string> names = gl::meta::getNames(param);
 
     sortByExtension(names);
 
     return names;
 }
 
-std::string enumName(GLenum param)
+std::string enumName(gl::GLenum param)
 {
     std::vector<std::string> names = enumNames(param);
     if (names.empty())
     {
-        return "UNKNOWN_GL_ENUM";
+        return "Unknown";
     }
 
     return names[0];

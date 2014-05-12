@@ -3,7 +3,8 @@
 #include <vector>
 #include <array>
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
+#include <glbinding/constants.h>
 
 #include <glow/glow_api.h>
 #include <glow/Object.h>
@@ -25,17 +26,17 @@ class Program;
 
         Program* program = createProgramIncludingShaders();
         TransformFeedback* transformFeedback = new TransformFeedback();
-        Buffer* buffer = new Buffer(GL_ARRAY_BUFFER);
+        Buffer* buffer = new Buffer(gl::ARRAY_BUFFER);
     
-        transformFeedback->setVaryings(program, Array<const char*>{ "vertex_out" }, GL_INTERLEAVED_ATTRIBS);
+        transformFeedback->setVaryings(program, Array<const char*>{ "vertex_out" }, gl::INTERLEAVED_ATTRIBS);
     
-        buffer->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
-        buffer->setData(vertexSize, nullptr, GL_DYNAMIC_DRAW);
+        buffer->bindBase(gl::TRANSFORM_FEEDBACK_BUFFER, 0);
+        buffer->setData(vertexSize, nullptr, gl::DYNAMIC_DRAW);
     
         program->use(); // use Program before issueing the begin method of TransformFeedback
     
         transformFeedback->bind();
-        transformFeedback->begin(GL_POINTS); // record point vertices
+        transformFeedback->begin(gl::POINTS); // record point vertices
     
         // draw calls
     
@@ -45,7 +46,7 @@ class Program;
         program->release();
     
         // replay recorded vertices
-        transformFeeback->draw(GL_POINTS);
+        transformFeeback->draw(gl::POINTS);
    
    \endcode
  
@@ -60,28 +61,28 @@ public:
 
     virtual void accept(ObjectVisitor & visitor) override;
 
-    void bind(GLenum target = GL_TRANSFORM_FEEDBACK) const;
-    static void unbind(GLenum target = GL_TRANSFORM_FEEDBACK);
+    void bind(gl::GLenum target = gl::TRANSFORM_FEEDBACK) const;
+    static void unbind(gl::GLenum target = gl::TRANSFORM_FEEDBACK);
 
-	void begin(GLenum primitiveMode);
+	void begin(gl::GLenum primitiveMode);
 	void pause();
 	void resume();
 	void end();
 
-    void draw(GLenum primitiveMode) const;
+    void draw(gl::GLenum primitiveMode) const;
 
-	void setVaryings(const Program * program, GLsizei count, const char ** varyingNames, GLenum bufferMode) const;
-    void setVaryings(const Program * program, const std::vector<const char *> & varyingNames, GLenum bufferMode) const;
+	void setVaryings(const Program * program, gl::GLsizei count, const char ** varyingNames, gl::GLenum bufferMode) const;
+    void setVaryings(const Program * program, const std::vector<const char *> & varyingNames, gl::GLenum bufferMode) const;
 
     template <std::size_t Count>
-    void setVaryings(const Program * program, const std::array<const char *, Count> & varyingNames, GLenum bufferMode) const;
+    void setVaryings(const Program * program, const std::array<const char *, Count> & varyingNames, gl::GLenum bufferMode) const;
 
-    static bool isTransformFeedback(GLuint id);
+    static bool isTransformFeedback(gl::GLuint id);
 
 protected:
     virtual ~TransformFeedback();
 
-	static GLuint genTransformFeedback();
+	static gl::GLuint genTransformFeedback();
 };
 
 } // namespace glow

@@ -1,7 +1,9 @@
 
 #include <iostream>
 
-#include <GL/glew.h>
+
+
+#include <glbinding/constants.h>
 
 #include <glow/Error.h>
 #include <glow/debugmessageoutput.h>
@@ -28,30 +30,32 @@ public:
     {
     }
 
-    virtual void initialize(Window & ) override
+    virtual void initialize(Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
-        glClearColor(1.f, 1.f, 1.f, 1.f);
-        CheckGLError();
+        gl::ClearColor(1.f, 1.f, 1.f, 1.f);
+
     }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        glViewport(0, 0, event.width(), event.height());
-        CheckGLError();
+        gl::Viewport(0, 0, event.width(), event.height());
+
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClearColor(
+        gl::ClearColor(
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             1.f);
-        CheckGLError();
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        CheckGLError();
+
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+
     }
 
     virtual void idle(Window & window) override

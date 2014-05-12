@@ -1,6 +1,6 @@
 #include <glow/RenderBufferObject.h>
 
-#include <cmath>
+#include <glbinding/functions.h>
 
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
@@ -17,17 +17,15 @@ RenderBufferObject::~RenderBufferObject()
 {
 	if (ownsGLObject())
 	{
-		glDeleteRenderbuffers(1, &m_id);
-		CheckGLError();
+		gl::DeleteRenderbuffers(1, &m_id);
 	}
 }
 
-GLuint RenderBufferObject::genRenderBuffer()
+gl::GLuint RenderBufferObject::genRenderBuffer()
 {
-	GLuint id = 0;
+	gl::GLuint id = 0;
 
-	glGenRenderbuffers(1, &id);
-	CheckGLError();
+	gl::GenRenderbuffers(1, &id);
 
 	return id;
 }
@@ -37,42 +35,37 @@ void RenderBufferObject::accept(ObjectVisitor& visitor)
 	visitor.visitRenderBufferObject(this);
 }
 
-void RenderBufferObject::bind(GLenum target) const
+void RenderBufferObject::bind(gl::GLenum target) const
 {
-    glBindRenderbuffer(target, m_id);
-	CheckGLError();
+    gl::BindRenderbuffer(target, m_id);
 }
 
-void RenderBufferObject::unbind(GLenum target)
+void RenderBufferObject::unbind(gl::GLenum target)
 {
-    glBindRenderbuffer(target, 0);
-	CheckGLError();
+    gl::BindRenderbuffer(target, 0);
 }
 
-void RenderBufferObject::storage(GLenum internalformat, GLsizei width, GLsizei height)
+void RenderBufferObject::storage(gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height)
 {
-    bind(GL_RENDERBUFFER);
+    bind(gl::RENDERBUFFER);
 
-	glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
-	CheckGLError();
+    gl::RenderbufferStorage(gl::RENDERBUFFER, internalformat, width, height);
 }
 
-void RenderBufferObject::storageMultisample(GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
+void RenderBufferObject::storageMultisample(gl::GLsizei samples, gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height)
 {
-    bind(GL_RENDERBUFFER);
+    bind(gl::RENDERBUFFER);
 
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, internalformat, width, height);
-	CheckGLError();
+    gl::RenderbufferStorageMultisample(gl::RENDERBUFFER, samples, internalformat, width, height);
 }
 
-GLint RenderBufferObject::getParameter(GLenum pname) const
+gl::GLint RenderBufferObject::getParameter(gl::GLenum pname) const
 {
-	GLint value = 0;
+	gl::GLint value = 0;
 
-    bind(GL_RENDERBUFFER);
+    bind(gl::RENDERBUFFER);
 
-	glGetRenderbufferParameteriv(GL_RENDERBUFFER, pname, &value);
-	CheckGLError();
+	gl::GetRenderbufferParameteriv(gl::RENDERBUFFER, pname, &value);
 
 	return value;
 }

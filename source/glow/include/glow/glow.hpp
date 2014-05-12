@@ -1,5 +1,8 @@
 #pragma once
 
+#include <glbinding/types.h>
+#include <glbinding/functions.h>
+
 #include <glow/glow.h>
 
 #include <glow/Error.h>
@@ -8,45 +11,41 @@ namespace glow
 {
 
 template <int Count>
-std::array<GLint, Count> getIntegers(GLenum pname)
+std::array<gl::GLint, Count> getIntegers(gl::GLenum pname)
 {
-    std::array<GLint, Count> values;
+    std::array<gl::GLint, Count> values;
 
-    glGetIntegerv(pname, reinterpret_cast<GLint*>(&values));
-    CheckGLError();
+    gl::GetIntegerv(pname, reinterpret_cast<gl::GLint*>(&values));
 
     return values;
 }
 
 template <int Count>
-std::array<GLfloat, Count> getFloats(GLenum pname)
+std::array<gl::GLfloat, Count> getFloats(gl::GLenum pname)
 {
-    std::array<GLfloat, Count> values;
+    std::array<gl::GLfloat, Count> values;
 
-    glGetFloatv(pname, reinterpret_cast<GLfloat*>(&values));
-    CheckGLError();
+    gl::GetFloatv(pname, reinterpret_cast<gl::GLfloat*>(&values));
 
     return values;
 }
 
 template <int Count>
-std::array<GLdouble, Count> getDoubles(GLenum pname)
+std::array<gl::GLdouble, Count> getDoubles(gl::GLenum pname)
 {
-    std::array<GLdouble, Count> values;
+    std::array<gl::GLdouble, Count> values;
 
-    glGetDoublev(pname, reinterpret_cast<GLdouble*>(&values));
-    CheckGLError();
+    gl::GetDoublev(pname, reinterpret_cast<gl::GLdouble*>(&values));
 
     return values;
 }
 
 template <int Count>
-std::array<GLboolean, Count> getBooleans(GLenum pname)
+std::array<gl::GLboolean, Count> getBooleans(gl::GLenum pname)
 {
-    std::array<GLboolean, Count> values;
+    std::array<gl::GLboolean, Count> values;
 
-    glGetBooleanv(pname, reinterpret_cast<GLboolean*>(&values));
-    CheckGLError();
+    gl::GetBooleanv(pname, reinterpret_cast<gl::GLboolean*>(&values));
 
     return values;
 }

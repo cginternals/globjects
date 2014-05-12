@@ -6,20 +6,12 @@ message(STATUS "Example ${target}")
 # External libraries
 #
 
-find_package(OpenGL REQUIRED)
-find_package(GLM REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(GLFW REQUIRED)
-
 #
 # Includes
 #
 
 include_directories(
-    ${OPENGL_INCLUDE_DIR}
-    ${GLM_INCLUDE_DIR}
-    ${GLEW_INCLUDE_DIR}
-    ${GLFW_INCLUDE_DIR}
+    ${GLOW_EXAMPLE_DEPENDENCY_INCLUDES}
 )
 
 include_directories(
@@ -33,9 +25,6 @@ include_directories(
 #
 
 set(libs
-    ${OPENGL_LIBRARIES}
-    ${GLEW_LIBRARY}
-    ${GLFW_LIBRARY}
     ${GLOW_EXAMPLES_LIBRARIES}
 )
 

@@ -2,6 +2,9 @@
 
 #include <algorithm>
 
+#include <glbinding/constants.h>
+#include <glbinding/functions.h>
+
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glow/Error.h>
@@ -13,19 +16,19 @@
 namespace glow
 {
 
-Texture::Texture(GLenum  target)
+Texture::Texture(gl::GLenum  target)
 : Object(genTexture())
 , m_target(target)
 {
 }
 
-Texture::Texture(GLuint id, GLenum  target, bool takeOwnership)
+Texture::Texture(gl::GLuint id, gl::GLenum  target, bool takeOwnership)
 : Object(id, takeOwnership)
 , m_target(target)
 {
 }
 
-Texture * Texture::fromId(GLuint id, GLenum  target, bool takeOwnership)
+Texture * Texture::fromId(gl::GLuint id, gl::GLenum  target, bool takeOwnership)
 {
     return new Texture(id, target, takeOwnership);
 }
@@ -35,123 +38,111 @@ Texture::~Texture()
 {
 	if (ownsGLObject())
 	{
-		glDeleteTextures(1, &m_id);
-		CheckGLError();
+		gl::DeleteTextures(1, &m_id);
 	}
 }
 
-Texture * Texture::createDefault(GLenum target)
+Texture * Texture::createDefault(gl::GLenum target)
 {
     Texture* tex = new Texture(target);
 
-    tex->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    tex->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    tex->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    tex->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    tex->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    tex->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::LINEAR));
+    tex->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::LINEAR));
+    tex->setParameter(gl::TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    tex->setParameter(gl::TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    tex->setParameter(gl::TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
 
     return tex;
 }
 
-GLuint Texture::genTexture()
+gl::GLuint Texture::genTexture()
 {
-    GLuint id = 0;
+    gl::GLuint id = 0;
 
-    glGenTextures(1, &id);
-    CheckGLError();
+    gl::GenTextures(1, &id);
 
     return id;
 }
 
 void Texture::bind() const
 {
-    glBindTexture(m_target, m_id);
-	CheckGLError();
+    gl::BindTexture(m_target, m_id);
 }
 
 void Texture::unbind() const
 {
-    glBindTexture(m_target, 0);
-	CheckGLError();
+    unbind(m_target);
 }
 
-void Texture::unbind(const GLenum target)
+void Texture::unbind(const gl::GLenum target)
 {
-    glBindTexture(target, 0);
-    CheckGLError();
+    gl::BindTexture(target, 0);
 }
 
-void Texture::bindActive(const GLenum texture) const
+void Texture::bindActive(const gl::GLenum texture) const
 {
-    glActiveTexture(texture);
-    glBindTexture(m_target, m_id);
-    CheckGLError();
+    gl::ActiveTexture(texture);
+    gl::BindTexture(m_target, m_id);
 }
 
-void Texture::unbindActive(const GLenum texture) const
+void Texture::unbindActive(const gl::GLenum texture) const
 {
-    glActiveTexture(texture);
-    glBindTexture(m_target, 0);
-    CheckGLError();
+    gl::ActiveTexture(texture);
+    gl::BindTexture(m_target, 0);
 }
 
-GLenum Texture::target() const
+gl::GLenum Texture::target() const
 {
     return m_target;
 }
 
-void Texture::setParameter(GLenum name, GLint value)
+void Texture::setParameter(gl::GLenum name, gl::GLint value)
 {
 	bind();
 
-    glTexParameteri(m_target, name, value);
-	CheckGLError();
+    gl::TexParameteri(m_target, name, value);
 }
 
-void Texture::setParameter(GLenum name, GLfloat value)
+void Texture::setParameter(gl::GLenum name, gl::GLfloat value)
 {
 	bind();
 
-    glTexParameterf(m_target, name, value);
-	CheckGLError();
+    gl::TexParameterf(m_target, name, value);
 }
 
-GLint Texture::getParameter(GLenum pname) const
+gl::GLint Texture::getParameter(gl::GLenum pname) const
 {
 	bind();
 
-	GLint value = 0;
+	gl::GLint value = 0;
 
-    glGetTexParameteriv(m_target, pname, &value);
-	CheckGLError();
+    gl::GetTexParameteriv(m_target, pname, &value);
 
 	return value;
 }
 
-GLint Texture::getLevelParameter(GLint level, GLenum pname) const
+gl::GLint Texture::getLevelParameter(gl::GLint level, gl::GLenum pname) const
 {
 	bind();
 
-	GLint value = 0;
+	gl::GLint value = 0;
 
-    glGetTexLevelParameteriv(m_target, level, pname, &value);
-	CheckGLError();
+    gl::GetTexLevelParameteriv(m_target, level, pname, &value);
 
 	return value;
 }
 
-void Texture::getImage(GLint level, GLenum format, GLenum type, GLvoid * image) const
+void Texture::getImage(gl::GLint level, gl::GLenum format, gl::GLenum type, gl::GLvoid * image) const
 {
     bind();
 
-    glGetTexImage(m_target, level, format, type, image);
-    CheckGLError();
+    gl::GetTexImage(m_target, level, format, type, image);
 }
 
-std::vector<unsigned char> Texture::getImage(GLint level, GLenum format, GLenum type) const
+std::vector<unsigned char> Texture::getImage(gl::GLint level, gl::GLenum format, gl::GLenum type) const
 {
-    GLint width = getLevelParameter(level, GL_TEXTURE_WIDTH);
-    GLint height = getLevelParameter(level, GL_TEXTURE_HEIGHT);
+    gl::GLint width = getLevelParameter(level, gl::TEXTURE_WIDTH);
+    gl::GLint height = getLevelParameter(level, gl::TEXTURE_HEIGHT);
 
     int byteSize = imageSizeInBytes(width, height, format, type);
 
@@ -161,17 +152,16 @@ std::vector<unsigned char> Texture::getImage(GLint level, GLenum format, GLenum 
     return data;
 }
 
-void Texture::getCompressedImage(GLint lod, GLvoid * image) const
+void Texture::getCompressedImage(gl::GLint lod, gl::GLvoid * image) const
 {
     bind();
 
-    glGetCompressedTexImage(m_target, lod, image);
-    CheckGLError();
+    gl::GetCompressedTexImage(m_target, lod, image);
 }
 
-std::vector<unsigned char> Texture::getCompressedImage(GLint lod) const
+std::vector<unsigned char> Texture::getCompressedImage(gl::GLint lod) const
 {
-    GLint size = getLevelParameter(lod, GL_TEXTURE_COMPRESSED_IMAGE_SIZE);
+    gl::GLint size = getLevelParameter(lod, gl::TEXTURE_COMPRESSED_IMAGE_SIZE);
 
     std::vector<unsigned char> data(size);
     getCompressedImage(lod, data.data());
@@ -179,276 +169,254 @@ std::vector<unsigned char> Texture::getCompressedImage(GLint lod) const
     return data;
 }
 
-void Texture::image1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid* data)
+void Texture::image1D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
 {
     bind();
 
-    glTexImage1D(m_target, level, internalFormat, width, border, format, type, data);
-    CheckGLError();
+    gl::TexImage1D(m_target, level, internalFormat, width, border, format, type, data);
 }
 
-void Texture::compressedImage1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLsizei imageSize, const GLvoid * data)
+void Texture::compressedImage1D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data)
 {
     bind();
 
-    glCompressedTexImage1D(m_target, level, internalFormat, width, border, imageSize, data);
-    CheckGLError();
+    gl::CompressedTexImage1D(m_target, level, internalFormat, width, border, imageSize, data);
 }
 
-void Texture::subImage1D(GLint level, GLint xOffset, GLsizei width, GLenum format, GLenum type, const GLvoid * data)
+void Texture::subImage1D(gl::GLint level, gl::GLint xOffset, gl::GLsizei width, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data)
 {
     bind();
 
-    glTexSubImage1D(m_target, level, xOffset, width, format, type, data);
-    CheckGLError();
+    gl::TexSubImage1D(m_target, level, xOffset, width, format, type, data);
 }
 
-void Texture::image2D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data)
+void Texture::image2D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
 {
 	bind();
 
-    glTexImage2D(m_target, level, internalFormat, width, height, border, format, type, data);
-	CheckGLError();
+    gl::TexImage2D(m_target, level, internalFormat, width, height, border, format, type, data);
 }
 
-void Texture::image2D(GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLenum format, GLenum type, const GLvoid* data)
+void Texture::image2D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
 {
     image2D(level, internalFormat, size.x, size.y, border, format, type, data);
 }
 
-void Texture::image2D(GLenum target, GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* data)
+void Texture::image2D(gl::GLenum target, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
 {
     bind();
 
-    glTexImage2D(target, level, internalFormat, width, height, border, format, type, data);
-    CheckGLError();
+    gl::TexImage2D(target, level, internalFormat, width, height, border, format, type, data);
 }
 
-void Texture::image2D(GLenum target, GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLenum format, GLenum type, const GLvoid* data)
+void Texture::image2D(gl::GLenum target, gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
 {
     image2D(target, level, internalFormat, size.x, size.y, border, format, type, data);
 }
 
-void Texture::compressedImage2D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid * data)
+void Texture::compressedImage2D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data)
 {
     bind();
 
-    glCompressedTexImage2D(m_target, level, internalFormat, width, height, border, imageSize, data);
-    CheckGLError();
+    gl::CompressedTexImage2D(m_target, level, internalFormat, width, height, border, imageSize, data);
 }
 
-void Texture::compressedImage2D(GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLsizei imageSize, const GLvoid * data)
+void Texture::compressedImage2D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data)
 {
     compressedImage2D(level, internalFormat, size.x, size.y, border, imageSize, data);
 }
 
-void Texture::subImage2D(GLint level, GLint xOffset, GLint yOffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid * data)
+void Texture::subImage2D(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLsizei width, gl::GLsizei height, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data)
 {
     bind();
 
-    glTexSubImage2D(m_target, level, xOffset, yOffset, width, height, format, type, data);
-    CheckGLError();
+    gl::TexSubImage2D(m_target, level, xOffset, yOffset, width, height, format, type, data);
 }
 
-void Texture::subImage2D(GLint level, const glm::ivec2& offset, const glm::ivec2& size, GLenum format, GLenum type, const GLvoid * data)
+void Texture::subImage2D(gl::GLint level, const glm::ivec2& offset, const glm::ivec2& size, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data)
 {
     subImage2D(level, offset.x, offset.y, size.x, size.y, format, type, data);
 }
 
-void Texture::image3D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid* data)
+void Texture::image3D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
 {
     bind();
 
-    glTexImage3D(m_target, level, internalFormat, width, height, depth, border, format, type, data);
-    CheckGLError();
+    gl::TexImage3D(m_target, level, internalFormat, width, height, depth, border, format, type, data);
 }
 
-void Texture::image3D(GLint level, GLenum internalFormat, const glm::ivec3 & size, GLint border, GLenum format, GLenum type, const GLvoid* data)
+void Texture::image3D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec3 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
 {
     image3D(level, internalFormat, size.x, size.y, size.z, border, format, type, data);
 }
 
-void Texture::compressedImage3D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const GLvoid * data)
+void Texture::compressedImage3D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data)
 {
     bind();
 
-    glCompressedTexImage3D(m_target, level, internalFormat, width, height, depth, border, imageSize, data);
-    CheckGLError();
+    gl::CompressedTexImage3D(m_target, level, internalFormat, width, height, depth, border, imageSize, data);
 }
 
-void Texture::compressedImage3D(GLint level, GLenum internalFormat, const glm::ivec3 & size, GLint border, GLsizei imageSize, const GLvoid * data)
+void Texture::compressedImage3D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec3 & size, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data)
 {
     compressedImage3D(level, internalFormat, size.x, size.y, size.z, border, imageSize, data);
 }
 
-void Texture::subImage3D(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid * data)
+void Texture::subImage3D(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data)
 {
     bind();
 
-    glTexSubImage3D(m_target, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
-    CheckGLError();
+    gl::TexSubImage3D(m_target, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
 }
 
-void Texture::subImage3D(GLint level, const glm::ivec3& offset, const glm::ivec3& size, GLenum format, GLenum type, const GLvoid * data)
+void Texture::subImage3D(gl::GLint level, const glm::ivec3& offset, const glm::ivec3& size, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data)
 {
     subImage3D(level, offset.x, offset.y, offset.z, size.x, size.y, size.z, format, type, data);
 }
 
-void Texture::image2DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLboolean fixedSamplesLocations)
+void Texture::image2DMultisample(gl::GLsizei samples, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLboolean fixedSamplesLocations)
 {
     bind();
 
-    glTexImage2DMultisample(m_target, samples, internalFormat, width, height, fixedSamplesLocations);
-    CheckGLError();
+    gl::TexImage2DMultisample(m_target, samples, internalFormat, width, height, fixedSamplesLocations);
 }
 
-void Texture::image2DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec2 & size, GLboolean fixedSamplesLocations)
+void Texture::image2DMultisample(gl::GLsizei samples, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLboolean fixedSamplesLocations)
 {
     image2DMultisample(samples, internalFormat, size.x, size.y, fixedSamplesLocations);
 }
 
-void Texture::image3DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedSamplesLocations)
+void Texture::image3DMultisample(gl::GLsizei samples, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLboolean fixedSamplesLocations)
 {
     bind();
 
-    glTexImage3DMultisample(m_target, samples, internalFormat, width, height, depth, fixedSamplesLocations);
-    CheckGLError();
+    gl::TexImage3DMultisample(m_target, samples, internalFormat, width, height, depth, fixedSamplesLocations);
 }
 
-void Texture::image3DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec3 & size, GLboolean fixedSamplesLocations)
+void Texture::image3DMultisample(gl::GLsizei samples, gl::GLenum internalFormat, const glm::ivec3 & size, gl::GLboolean fixedSamplesLocations)
 {
     image3DMultisample(samples, internalFormat, size.x, size.y, size.z, fixedSamplesLocations);
 }
 
-void Texture::storage1D(GLsizei levels, GLenum internalFormat, GLsizei width)
+void Texture::storage1D(gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width)
 {
     bind();
 
-    glTexStorage1D(m_target, levels, internalFormat, width);
-    CheckGLError();
+    gl::TexStorage1D(m_target, levels, internalFormat, width);
 }
 
-void Texture::storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height)
+void Texture::storage2D(gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height)
 {
 	bind();
 
-    glTexStorage2D(m_target, levels, internalFormat, width, height);
-	CheckGLError();
+    gl::TexStorage2D(m_target, levels, internalFormat, width, height);
 }
 
-void Texture::storage2D(GLsizei levels, GLenum internalFormat, const glm::ivec2 & size)
+void Texture::storage2D(gl::GLsizei levels, gl::GLenum internalFormat, const glm::ivec2 & size)
 {
     storage2D(levels, internalFormat, size.x, size.y);
 }
 
-void Texture::storage3D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth)
+void Texture::storage3D(gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth)
 {
     bind();
 
-    glTexStorage3D(m_target, levels, internalFormat, width, height, depth);
-    CheckGLError();
+    gl::TexStorage3D(m_target, levels, internalFormat, width, height, depth);
 }
 
-void Texture::storage3D(GLsizei levels, GLenum internalFormat, const glm::ivec3 & size)
+void Texture::storage3D(gl::GLsizei levels, gl::GLenum internalFormat, const glm::ivec3 & size)
 {
     storage3D(levels, internalFormat, size.x, size.y, size.z);
 }
 
-void Texture::textureView(GLuint originalTexture, GLenum internalFormat, GLuint minLevel, GLuint numLevels, GLuint minLayer, GLuint numLayers)
+void Texture::textureView(gl::GLuint originalTexture, gl::GLenum internalFormat, gl::GLuint minLevel, gl::GLuint numLevels, gl::GLuint minLayer, gl::GLuint numLayers)
 {
-    glTextureView(m_id, m_target, originalTexture, internalFormat, minLevel, numLevels, minLayer, numLayers);
-    CheckGLError();
+    gl::TextureView(m_id, m_target, originalTexture, internalFormat, minLevel, numLevels, minLayer, numLayers);
 }
 
-void Texture::texBuffer(GLenum internalFormat, Buffer * buffer)
+void Texture::texBuffer(gl::GLenum internalFormat, Buffer * buffer)
 {
     bind();
 
-    glTexBuffer(m_target, internalFormat, buffer ? buffer->id() : 0);
-    CheckGLError();
+    gl::TexBuffer(m_target, internalFormat, buffer ? buffer->id() : 0);
 }
 
-void Texture::texBuffer(GLenum activeTexture, GLenum internalFormat, Buffer * buffer)
+void Texture::texBuffer(gl::GLenum activeTexture, gl::GLenum internalFormat, Buffer * buffer)
 {
     bindActive(activeTexture);
     texBuffer(internalFormat, buffer);
 }
 
-void Texture::texBufferRange(GLenum internalFormat, Buffer * buffer, GLintptr offset, GLsizeiptr size)
+void Texture::texBufferRange(gl::GLenum internalFormat, Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size)
 {
     bind();
 
-    glTexBufferRange(m_target, internalFormat, buffer ? buffer->id() : 0, offset, size);
-    CheckGLError();
+    gl::TexBufferRange(m_target, internalFormat, buffer ? buffer->id() : 0, offset, size);
 }
 
-void Texture::texBufferRange(GLenum activeTexture, GLenum internalFormat, Buffer * buffer, GLintptr offset, GLsizeiptr size)
+void Texture::texBufferRange(gl::GLenum activeTexture, gl::GLenum internalFormat, Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size)
 {
     bindActive(activeTexture);
     texBufferRange(internalFormat, buffer, offset, size);
 }
 
-void Texture::clearImage(GLint level, GLenum format, GLenum type, const void * data)
+void Texture::clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const void * data)
 {
-    glClearTexImage(m_id, level, format, type, data);
-    CheckGLError();
+    gl::ClearTexImage(m_id, level, format, type, data);
 }
 
-void Texture::clearImage(GLint level, GLenum format, GLenum type, const glm::vec4 & value)
-{
-    clearImage(level, format, type, glm::value_ptr(value));
-}
-
-void Texture::clearImage(GLint level, GLenum format, GLenum type, const glm::ivec4 & value)
+void Texture::clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const glm::vec4 & value)
 {
     clearImage(level, format, type, glm::value_ptr(value));
 }
 
-void Texture::clearImage(GLint level, GLenum format, GLenum type, const glm::uvec4 & value)
+void Texture::clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const glm::ivec4 & value)
 {
     clearImage(level, format, type, glm::value_ptr(value));
 }
 
-void Texture::clearSubImage(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * data)
+void Texture::clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const glm::uvec4 & value)
 {
-    glClearTexSubImage(m_id, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
-    CheckGLError();
+    clearImage(level, format, type, glm::value_ptr(value));
 }
 
-void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const void * data)
+void Texture::clearSubImage(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLenum format, gl::GLenum type, const void * data)
+{
+    gl::ClearTexSubImage(m_id, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
+}
+
+void Texture::clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const void * data)
 {
     clearSubImage(level, offset.x, offset.y, offset.z, size.x, size.y, size.z, format, type, data);
 }
 
-void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::vec4 & value)
+void Texture::clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const glm::vec4 & value)
 {
     clearSubImage(level, offset, size, format, type, glm::value_ptr(value));
 }
 
-void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::ivec4 & value)
+void Texture::clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const glm::ivec4 & value)
 {
     clearSubImage(level, offset, size, format, type, glm::value_ptr(value));
 }
 
-void Texture::clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::uvec4 & value)
+void Texture::clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const glm::uvec4 & value)
 {
     clearSubImage(level, offset, size, format, type, glm::value_ptr(value));
 }
 
-void Texture::bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format) const
+void Texture::bindImageTexture(gl::GLuint unit, gl::GLint level, gl::GLboolean layered, gl::GLint layer, gl::GLenum access, gl::GLenum format) const
 {
 	bind();
 
-	glBindImageTexture(unit, m_id, level, layered, layer, access, format);
-	CheckGLError();
+	gl::BindImageTexture(unit, m_id, level, layered, layer, access, format);
 }
 
 void Texture::generateMipmap()
 {
 	bind();
 
-    glGenerateMipmap(m_target);
-	CheckGLError();
+    gl::GenerateMipmap(m_target);
 }
 
 void Texture::accept(ObjectVisitor& visitor)
@@ -458,44 +426,36 @@ void Texture::accept(ObjectVisitor& visitor)
 
 TextureHandle Texture::textureHandle() const
 {
-    TextureHandle result = glGetTextureHandleARB(m_id);
-	CheckGLError();
-	return result;
+    return gl::GetTextureHandleARB(m_id);
 }
 
-GLboolean Texture::isResident() const
+gl::GLboolean Texture::isResident() const
 {
-    bool result = glIsTextureHandleResidentARB(textureHandle()) == GL_TRUE;
-	CheckGLError();
-
-	return result;
+    return gl::IsTextureHandleResidentARB(textureHandle()) == gl::TRUE_;
 }
 
 TextureHandle Texture::makeResident() const
 {
     TextureHandle handle = textureHandle();
 
-    glMakeTextureHandleResidentARB(handle);
-	CheckGLError();
+    gl::MakeTextureHandleResidentARB(handle);
 
 	return handle;
 }
 
 void Texture::makeNonResident() const
 {
-    glMakeTextureHandleNonResidentARB(textureHandle());
-	CheckGLError();
+    gl::MakeTextureHandleNonResidentARB(textureHandle());
 }
 
-void Texture::pageCommitment(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit) const
+void Texture::pageCommitment(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLboolean commit) const
 {
     bind();
 
-    glTexPageCommitmentARB(m_target, level, xOffset, yOffset, zOffset, width, height, depth, commit);
-    CheckGLError();
+    gl::TexPageCommitmentARB(m_target, level, xOffset, yOffset, zOffset, width, height, depth, commit);
 }
 
-void Texture::pageCommitment(GLint level, const glm::ivec3& offset, const glm::ivec3& size, GLboolean commit) const
+void Texture::pageCommitment(gl::GLint level, const glm::ivec3& offset, const glm::ivec3& size, gl::GLboolean commit) const
 {
     pageCommitment(level, offset.x, offset.y, offset.z, size.x, size.y, size.z, commit);
 }

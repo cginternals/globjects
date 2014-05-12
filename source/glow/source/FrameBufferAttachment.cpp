@@ -8,18 +8,18 @@
 namespace glow
 {
 
-FrameBufferAttachment::FrameBufferAttachment(FrameBufferObject * fbo, GLenum attachment)
+FrameBufferAttachment::FrameBufferAttachment(FrameBufferObject * fbo, gl::GLenum attachment)
 : m_fbo(fbo)
 , m_attachment(attachment)
 {
 }
 
-GLenum FrameBufferAttachment::attachment() const
+gl::GLenum FrameBufferAttachment::attachment() const
 {
 	return m_attachment;
 }
 
-GLint FrameBufferAttachment::getParameter(GLenum pname) const
+gl::GLint FrameBufferAttachment::getParameter(gl::GLenum pname) const
 {
     return m_fbo->getAttachmentParameter(m_attachment, pname);
 }
@@ -38,17 +38,17 @@ std::string FrameBufferAttachment::attachmentString() const
 {
 	switch (m_attachment)
 	{
-		case GL_DEPTH_ATTACHMENT:
-			return "GL_DEPTH_ATTACHMENT";
-		case GL_STENCIL_ATTACHMENT:
-			return "GL_STENCIL_ATTACHMENT";
-		case GL_DEPTH_STENCIL_ATTACHMENT:
-			return "GL_DEPTH_STENCIL_ATTACHMENT";
+		case gl::DEPTH_ATTACHMENT:
+			return "gl::DEPTH_ATTACHMENT";
+		case gl::STENCIL_ATTACHMENT:
+			return "gl::STENCIL_ATTACHMENT";
+		case gl::DEPTH_STENCIL_ATTACHMENT:
+			return "gl::DEPTH_STENCIL_ATTACHMENT";
 	}
 
-	if (m_attachment>=GL_COLOR_ATTACHMENT0 && GL_COLOR_ATTACHMENT0<= GL_COLOR_ATTACHMENT15)
+	if (m_attachment>=gl::COLOR_ATTACHMENT0 && gl::COLOR_ATTACHMENT0<= gl::COLOR_ATTACHMENT15)
 	{
-		return "GL_COLOR_ATTACHMENT"+std::to_string(m_attachment-GL_COLOR_ATTACHMENT0);
+		return "gl::COLOR_ATTACHMENT"+std::to_string(m_attachment-gl::COLOR_ATTACHMENT0);
 	}
 
 	return "Unknown attachment "+std::to_string(m_attachment);

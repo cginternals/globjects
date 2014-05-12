@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
+
 
 #include <glow/FrameBufferObject.h>
 
@@ -15,18 +15,18 @@ public:
 
     static AbstractFrameBufferImplementation * create();
 
-    virtual GLenum checkStatus(const FrameBufferObject * fbo) const = 0;
-    virtual void setParameter(const FrameBufferObject * fbo, GLenum pname, GLint param) const = 0;
-    virtual GLint getAttachmentParameter(const FrameBufferObject * fbo, GLenum attachment, GLenum pname) const = 0;
-    virtual void attachTexture(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const = 0;
-    virtual void attachTexture1D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const = 0;
-    virtual void attachTexture2D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const = 0;
-    virtual void attachTexture3D(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const = 0;
-    virtual void attachTextureLayer(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const = 0;
-    virtual void attachRenderBuffer(const FrameBufferObject * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const = 0;
-    virtual void setReadBuffer(const FrameBufferObject * fbo, GLenum mode) const = 0;
-    virtual void setDrawBuffer(const FrameBufferObject * fbo, GLenum mode) const = 0;
-    virtual void setDrawBuffers(const FrameBufferObject * fbo, GLsizei n, const GLenum * modes) const = 0;
+    virtual gl::GLenum checkStatus(const FrameBufferObject * fbo) const = 0;
+    virtual void setParameter(const FrameBufferObject * fbo, gl::GLenum pname, gl::GLint param) const = 0;
+    virtual gl::GLint getAttachmentParameter(const FrameBufferObject * fbo, gl::GLenum attachment, gl::GLenum pname) const = 0;
+    virtual void attachTexture(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const = 0;
+    virtual void attachTexture1D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const = 0;
+    virtual void attachTexture2D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const = 0;
+    virtual void attachTexture3D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const = 0;
+    virtual void attachTextureLayer(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const = 0;
+    virtual void attachRenderBuffer(const FrameBufferObject * fbo, gl::GLenum attachment, RenderBufferObject * renderBuffer) const = 0;
+    virtual void setReadBuffer(const FrameBufferObject * fbo, gl::GLenum mode) const = 0;
+    virtual void setDrawBuffer(const FrameBufferObject * fbo, gl::GLenum mode) const = 0;
+    virtual void setDrawBuffers(const FrameBufferObject * fbo, gl::GLsizei n, const gl::GLenum * modes) const = 0;
 };
 
 } // namespace glow

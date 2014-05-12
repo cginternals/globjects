@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 #include <glow/glow_api.h>
 
@@ -18,27 +18,21 @@ class GLOW_API Error
 {
 public:
 	Error();
-	Error(GLenum errorCode);
+	Error(gl::GLenum errorCode);
 
     static Error get();
 
 	static void clear();
 
-	GLenum code() const;
+	gl::GLenum code() const;
 	std::string name() const;
 
 	bool isError() const;
     operator bool() const;
 
-    static void check(const char * file, int line);
+    static void check(const std::string & message);
 protected:
-	GLenum m_errorCode;
+	gl::GLenum m_errorCode;
 };
-
-#ifdef NDEBUG
-#define CheckGLError()
-#else
-#define CheckGLError() glow::Error::check(__FILE__, __LINE__)
-#endif
 
 } // namespace glow

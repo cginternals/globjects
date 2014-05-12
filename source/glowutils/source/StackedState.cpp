@@ -72,7 +72,7 @@ void StackedState::undoState(glow::State * state)
     }
 }
 
-glow::Capability * StackedState::findCapability(GLenum capability)
+glow::Capability * StackedState::findCapability(gl::GLenum capability)
 {
     for (int i = static_cast<int>(m_stack.size()-1); i>=0; --i)
     {
@@ -99,32 +99,32 @@ glow::StateSetting * StackedState::findSetting(const glow::StateSettingType & ty
 }
 
 
-void StackedState::enable(GLenum capability)
+void StackedState::enable(gl::GLenum capability)
 {
     m_currentState->enable(capability);
 }
 
-void StackedState::disable(GLenum capability)
+void StackedState::disable(gl::GLenum capability)
 {
     m_currentState->disable(capability);
 }
 
-bool StackedState::isEnabled(GLenum capability) const
+bool StackedState::isEnabled(gl::GLenum capability) const
 {
     return m_currentState->isEnabled(capability);
 }
 
-void StackedState::enable(GLenum capability, int index)
+void StackedState::enable(gl::GLenum capability, int index)
 {
     m_currentState->enable(capability, index);
 }
 
-void StackedState::disable(GLenum capability, int index)
+void StackedState::disable(gl::GLenum capability, int index)
 {
     m_currentState->disable(capability, index);
 }
 
-bool StackedState::isEnabled(GLenum capability, int index) const
+bool StackedState::isEnabled(gl::GLenum capability, int index) const
 {
     return m_currentState->isEnabled(capability, index);
 }

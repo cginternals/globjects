@@ -9,7 +9,7 @@ message(STATUS "Lib ${target}")
 
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
-find_package(GLEW REQUIRED)
+find_package(GLBinding REQUIRED)
 find_package(GLFW REQUIRED)
 
 #
@@ -19,17 +19,13 @@ find_package(GLFW REQUIRED)
 include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
-    ${GLEW_INCLUDE_DIR}
+    ${GLBINDING_INCLUDE_DIR}
     ${GLFW_INCLUDE_DIR}
 )
 
-get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
-
 include_directories(
     BEFORE
-    ${GENERATED_HEADER_PATH}
     ${CMAKE_SOURCE_DIR}/source/glowbase/include
-    ${CMAKE_SOURCE_DIR}/source/glow/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -39,10 +35,9 @@ include_directories(
 
 set(libs
     ${OPENGL_LIBRARIES}
-    ${GLEW_LIBRARY}
+    ${GLBINDING_LIBRARY}
     ${GLFW_LIBRARY}
     glowbase
-    glow
 )
 
 #

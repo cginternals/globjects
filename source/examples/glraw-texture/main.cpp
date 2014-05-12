@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+
 
 #include <glow/Error.h>
 #include <glow/logging.h>
@@ -32,12 +32,14 @@ public:
     void createAndSetupTexture();
 	void createAndSetupGeometry();
 
-    virtual void initialize(Window & ) override
+    virtual void initialize(Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-        CheckGLError();
+        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
+
 
         createAndSetupTexture();
 	    createAndSetupGeometry();
@@ -49,14 +51,14 @@ public:
         int height = event.height();
     	int side = std::min<int>(width, height);
 
-        glViewport((width - side) / 2, (height - side) / 2, side, side);
-        CheckGLError();
+        gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
+
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        CheckGLError();
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+
 
         m_quad->draw();
     }
@@ -108,16 +110,9 @@ void EventHandler::createAndSetupTexture()
     if (!raw.isValid())
         return;
 
-	m_texture = new glow::Texture(GL_TEXTURE_2D);
+    m_texture = glow::Texture::createDefault(gl::TEXTURE_2D);
 
-	m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	m_texture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	m_texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	m_texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-    m_texture->compressedImage2D(0, GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, static_cast<GLsizei>(raw.size()), raw.data());
+    m_texture->compressedImage2D(0, gl::COMPRESSED_RGBA_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, static_cast<gl::GLsizei>(raw.size()), raw.data());
 }
 
 void EventHandler::createAndSetupGeometry()

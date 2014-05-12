@@ -65,7 +65,7 @@ macro (find LIB_NAME HEADER)
 
     find_path(${LIB_NAME_UPPER}_INCLUDE_DIR ${HEADER}
         ${ENVGLOW_DIR}/include
-        ${ENVTEMPLATE_DIR}/source/${LIBNAME}/include
+        ${ENVGLOW_DIR}/source/${LIBNAME}/include
         ${GLOW_DIR}/include
         ${GLOW_DIR}/source/${LIBNAME}/include
         ${ENVPROGRAMFILES}/glow/include

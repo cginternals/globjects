@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 #include <glowbase/Referenced.h>
 #include <glowbase/ChangeListener.h>
@@ -25,16 +25,16 @@ class AbstractStringSource;
 class GLOW_API ProgramBinary : public Referenced, public Changeable, protected ChangeListener
 {
 public:
-    ProgramBinary(GLenum binaryFormat, const std::vector<char> & binaryData);
-    ProgramBinary(GLenum binaryFormat, AbstractStringSource * dataSource);
+    ProgramBinary(gl::GLenum binaryFormat, const std::vector<char> & binaryData);
+    ProgramBinary(gl::GLenum binaryFormat, AbstractStringSource * dataSource);
 
-    GLenum format() const;
+    gl::GLenum format() const;
     const void * data() const;
-    GLsizei length() const;
+    gl::GLsizei length() const;
 
      virtual void notifyChanged(const Changeable* sender) override;
 protected:
-    GLenum m_binaryFormat;
+    gl::GLenum m_binaryFormat;
     ref_ptr<AbstractStringSource> m_dataSource;
 
     mutable bool m_valid;

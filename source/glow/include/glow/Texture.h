@@ -1,6 +1,7 @@
 #pragma once
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
+#include <glbinding/constants.h>
 
 #include <vector>
 
@@ -25,103 +26,103 @@ class Buffer;
 class GLOW_API Texture : public Object
 {
 public:
-    Texture(GLenum target = GL_TEXTURE_2D);
-    static Texture * fromId(GLuint id, GLenum  target, bool takeOwnership = false);
+    Texture(gl::GLenum target = gl::TEXTURE_2D);
+    static Texture * fromId(gl::GLuint id, gl::GLenum  target, bool takeOwnership = false);
 
-    static Texture * createDefault(GLenum target = GL_TEXTURE_2D);
+    static Texture * createDefault(gl::GLenum target = gl::TEXTURE_2D);
 
     virtual void accept(ObjectVisitor & visitor) override;
 
     void bind() const;
     void unbind() const;
-    static void unbind(GLenum target);
+    static void unbind(gl::GLenum target);
 
-    void bindActive(GLenum texture) const;
-    void unbindActive(GLenum texture) const;
+    void bindActive(gl::GLenum texture) const;
+    void unbindActive(gl::GLenum texture) const;
 
-    void setParameter(GLenum name, GLint value);
-    void setParameter(GLenum name, GLfloat value);
+    void setParameter(gl::GLenum name, gl::GLint value);
+    void setParameter(gl::GLenum name, gl::GLfloat value);
 
-    GLint getParameter(GLenum pname) const;
-    GLint getLevelParameter(GLint level, GLenum pname) const;
+    gl::GLint getParameter(gl::GLenum pname) const;
+    gl::GLint getLevelParameter(gl::GLint level, gl::GLenum pname) const;
 
-    void getImage(GLint level, GLenum format, GLenum type, GLvoid * image) const;
-    std::vector<unsigned char> getImage(GLint level, GLenum format, GLenum type) const;
+    void getImage(gl::GLint level, gl::GLenum format, gl::GLenum type, gl::GLvoid * image) const;
+    std::vector<unsigned char> getImage(gl::GLint level, gl::GLenum format, gl::GLenum type) const;
 
-    void getCompressedImage(GLint lod, GLvoid * image) const;
-    std::vector<unsigned char> getCompressedImage(GLint lod = 0) const;
+    void getCompressedImage(gl::GLint lod, gl::GLvoid * image) const;
+    std::vector<unsigned char> getCompressedImage(gl::GLint lod = 0) const;
 
-    GLenum target() const;
+    gl::GLenum target() const;
 
-    void image1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid * data);
-    void compressedImage1D(GLint level, GLenum internalFormat, GLsizei width, GLint border, GLsizei imageSize, const GLvoid * data);
-    void subImage1D(GLint level, GLint xOffset, GLsizei width, GLenum format, GLenum type, const GLvoid * data);
+    void image1D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    void compressedImage1D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data);
+    void subImage1D(gl::GLint level, gl::GLint xOffset, gl::GLsizei width, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
 
-    void image2D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid * data);
-    void image2D(GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLenum format, GLenum type, const GLvoid * data);
-    void image2D(GLenum target, GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid * data);
-    void image2D(GLenum target, GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLenum format, GLenum type, const GLvoid * data);
-    void compressedImage2D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid * data);
-    void compressedImage2D(GLint level, GLenum internalFormat, const glm::ivec2 & size, GLint border, GLsizei imageSize, const GLvoid * data);
-    void subImage2D(GLint level, GLint xOffset, GLint yOffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid * data);
-    void subImage2D(GLint level, const glm::ivec2& offset, const glm::ivec2& size, GLenum format, GLenum type, const GLvoid * data);
+    void image2D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    void image2D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    void image2D(gl::GLenum target, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    void image2D(gl::GLenum target, gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    void compressedImage2D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data);
+    void compressedImage2D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data);
+    void subImage2D(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLsizei width, gl::GLsizei height, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    void subImage2D(gl::GLint level, const glm::ivec2& offset, const glm::ivec2& size, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
 
-    void image3D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid * data);
-    void image3D(GLint level, GLenum internalFormat, const glm::ivec3 & size, GLint border, GLenum format, GLenum type, const GLvoid * data);
-    void compressedImage3D(GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const GLvoid * data);
-    void compressedImage3D(GLint level, GLenum internalFormat, const glm::ivec3 & size, GLint border, GLsizei imageSize, const GLvoid * data);
-    void subImage3D(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid * data);
-    void subImage3D(GLint level, const glm::ivec3& offset, const glm::ivec3& size, GLenum format, GLenum type, const GLvoid * data);
+    void image3D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    void image3D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec3 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    void compressedImage3D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data);
+    void compressedImage3D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec3 & size, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data);
+    void subImage3D(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    void subImage3D(gl::GLint level, const glm::ivec3& offset, const glm::ivec3& size, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
 
-    void image2DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLboolean fixedSamplesLocations);
-    void image2DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec2 & size, GLboolean fixedSamplesLocations);
-    void image3DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedSamplesLocations);
-    void image3DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec3 & size, GLboolean fixedSamplesLocations);
+    void image2DMultisample(gl::GLsizei samples, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLboolean fixedSamplesLocations);
+    void image2DMultisample(gl::GLsizei samples, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLboolean fixedSamplesLocations);
+    void image3DMultisample(gl::GLsizei samples, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLboolean fixedSamplesLocations);
+    void image3DMultisample(gl::GLsizei samples, gl::GLenum internalFormat, const glm::ivec3 & size, gl::GLboolean fixedSamplesLocations);
 
-    void storage1D(GLsizei levels, GLenum internalFormat, GLsizei width);
-    void storage2D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height);
-    void storage2D(GLsizei levels, GLenum internalFormat, const glm::ivec2 & size);
-    void storage3D(GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth);
-    void storage3D(GLsizei levels, GLenum internalFormat, const glm::ivec3 & size);
+    void storage1D(gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width);
+    void storage2D(gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height);
+    void storage2D(gl::GLsizei levels, gl::GLenum internalFormat, const glm::ivec2 & size);
+    void storage3D(gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth);
+    void storage3D(gl::GLsizei levels, gl::GLenum internalFormat, const glm::ivec3 & size);
 
-    void textureView(GLuint originalTexture, GLenum internalFormat, GLuint minLevel, GLuint numLevels, GLuint minLayer, GLuint numLayers);
+    void textureView(gl::GLuint originalTexture, gl::GLenum internalFormat, gl::GLuint minLevel, gl::GLuint numLevels, gl::GLuint minLayer, gl::GLuint numLayers);
 
-    void texBuffer(GLenum internalFormat, Buffer * buffer);
-    void texBuffer(GLenum activeTexture, GLenum internalFormat, Buffer * buffer);
-    void texBufferRange(GLenum internalFormat, Buffer * buffer, GLintptr offset, GLsizeiptr size);
-    void texBufferRange(GLenum activeTexture, GLenum internalFormat, Buffer * buffer, GLintptr offset, GLsizeiptr size);
+    void texBuffer(gl::GLenum internalFormat, Buffer * buffer);
+    void texBuffer(gl::GLenum activeTexture, gl::GLenum internalFormat, Buffer * buffer);
+    void texBufferRange(gl::GLenum internalFormat, Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size);
+    void texBufferRange(gl::GLenum activeTexture, gl::GLenum internalFormat, Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size);
 
-    void clearImage(GLint level, GLenum format, GLenum type, const void * data);
-    void clearImage(GLint level, GLenum format, GLenum type, const glm::vec4 & value);
-    void clearImage(GLint level, GLenum format, GLenum type, const glm::ivec4 & value);
-    void clearImage(GLint level, GLenum format, GLenum type, const glm::uvec4 & value);
+    void clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const void * data);
+    void clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const glm::vec4 & value);
+    void clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const glm::ivec4 & value);
+    void clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const glm::uvec4 & value);
 
-    void clearSubImage(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * data);
-    void clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const void * data);
-    void clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::vec4 & value);
-    void clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::ivec4 & value);
-    void clearSubImage(GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, GLenum format, GLenum type, const glm::uvec4 & value);
+    void clearSubImage(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLenum format, gl::GLenum type, const void * data);
+    void clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const void * data);
+    void clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const glm::vec4 & value);
+    void clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const glm::ivec4 & value);
+    void clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const glm::uvec4 & value);
 
-    void bindImageTexture(GLuint unit, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format) const;
+    void bindImageTexture(gl::GLuint unit, gl::GLint level, gl::GLboolean layered, gl::GLint layer, gl::GLenum access, gl::GLenum format) const;
 
     void generateMipmap();
 
     TextureHandle textureHandle() const;
-    GLboolean isResident() const;
+    gl::GLboolean isResident() const;
     TextureHandle makeResident() const;
     void makeNonResident() const;
 
-    void pageCommitment(GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit) const;
-    void pageCommitment(GLint level, const glm::ivec3& offset, const glm::ivec3& size, GLboolean commit) const;
+    void pageCommitment(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLboolean commit) const;
+    void pageCommitment(gl::GLint level, const glm::ivec3& offset, const glm::ivec3& size, gl::GLboolean commit) const;
 
 protected:
-    Texture(GLuint id, GLenum target, bool takeOwnership);
+    Texture(gl::GLuint id, gl::GLenum target, bool takeOwnership);
     virtual ~Texture();
 
-    static GLuint genTexture();
+    static gl::GLuint genTexture();
 
 protected:
-    GLenum m_target;
+    gl::GLenum m_target;
 };
 
 } // namespace glow

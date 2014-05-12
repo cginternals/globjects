@@ -1,7 +1,11 @@
 #pragma once
 
+#include <stdint.h>
+
 namespace glow {
 
-long long getContextId();
+using ContextID = int64_t;
+
+ContextID getContextId();
 
 } // namespace glow

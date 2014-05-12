@@ -90,7 +90,7 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::generalInfo()
     generalInfo.addProperty("vendor", vendor());
     generalInfo.addProperty("renderer", renderer());
     generalInfo.addProperty("core profile", isCoreProfile()?"true":"false");
-    generalInfo.addProperty("GLSL version", getString(GL_SHADING_LANGUAGE_VERSION));
+    generalInfo.addProperty("GLSL version", getString(gl::SHADING_LANGUAGE_VERSION));
 
 	memoryInfo.addProperty("total", humanReadableSize(1024ll*memory::total()));
 	memoryInfo.addProperty("dedicated", humanReadableSize(1024ll*memory::dedicated()));
@@ -98,15 +98,15 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::generalInfo()
 	memoryInfo.addProperty("evicted", humanReadableSize(1024ll*memory::evicted()));
 	memoryInfo.addProperty("evictionCount", memory::evictionCount());
 
-    int maxTextureSize = getInteger(GL_MAX_TEXTURE_SIZE);
+    int maxTextureSize = getInteger(gl::MAX_TEXTURE_SIZE);
 	textureInfo.addProperty("Max Texture Size", std::to_string(maxTextureSize)+" x "+std::to_string(maxTextureSize));
-    textureInfo.addProperty("Max Vertex Texture Image Units", getInteger(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS));
-    textureInfo.addProperty("Max Texture Image Units", getInteger(GL_MAX_IMAGE_UNITS));
-    textureInfo.addProperty("Max Geometry Texture Units", getInteger(GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS));
-    auto maxViewportSize = getIntegers<2>(GL_MAX_VIEWPORT_DIMS);
+    textureInfo.addProperty("Max Vertex Texture Image Units", getInteger(gl::MAX_VERTEX_TEXTURE_IMAGE_UNITS));
+    textureInfo.addProperty("Max Texture Image Units", getInteger(gl::MAX_IMAGE_UNITS));
+    textureInfo.addProperty("Max Geometry Texture Units", getInteger(gl::MAX_GEOMETRY_TEXTURE_IMAGE_UNITS));
+    auto maxViewportSize = getIntegers<2>(gl::MAX_VIEWPORT_DIMS);
 	textureInfo.addProperty("Max viewport size", std::to_string(maxViewportSize[0])+" x "+std::to_string(maxViewportSize[1]));
-    textureInfo.addProperty("Max clip distances", getInteger(GL_MAX_CLIP_DISTANCES));
-    textureInfo.addProperty("Max Samples", getInteger(GL_MAX_SAMPLES));
+    textureInfo.addProperty("Max clip distances", getInteger(gl::MAX_CLIP_DISTANCES));
+    textureInfo.addProperty("Max Samples", getInteger(gl::MAX_SAMPLES));
 
 	generalGroup.addInfoUnit(generalInfo);
 	generalGroup.addInfoUnit(memoryInfo);
@@ -117,8 +117,7 @@ std::vector<DebugInfo::InfoGroup> DebugInfo::generalInfo()
 
 std::vector<DebugInfo::InfoGroup> DebugInfo::objectInfo()
 {
-	DebugInfo debugInfo;
-	return debugInfo.collectObjectInfo();
+    return DebugInfo().collectObjectInfo();
 }
 
 
@@ -167,7 +166,7 @@ void DebugInfo::visitBuffer(Buffer* buffer)
 	InfoUnit info;
 	info.name = name("Buffer", buffer);
 
-	GLint memory = buffer->getParameter(GL_BUFFER_SIZE);
+	gl::GLint memory = buffer->getParameter(gl::BUFFER_SIZE);
 	m_memoryUsage["Buffers"] += memory;
 	info.addProperty("memory", humanReadableSize(memory));
 
@@ -216,7 +215,7 @@ void DebugInfo::visitProgram(Program* program)
 	InfoUnit info;
 	info.name = name("Program", program);
 
-	GLint memory = program->get(GL_PROGRAM_BINARY_LENGTH);
+	gl::GLint memory = program->get(gl::PROGRAM_BINARY_LENGTH);
 	m_memoryUsage["Programs"] += memory;
 	info.addProperty("memory", humanReadableSize(memory));
 
@@ -236,16 +235,16 @@ void DebugInfo::visitRenderBufferObject(RenderBufferObject* rbo)
 	InfoUnit info;
 	info.name = name("RenderBufferObject", rbo);
 
-	int w = rbo->getParameter(GL_RENDERBUFFER_WIDTH);
-	int h = rbo->getParameter(GL_RENDERBUFFER_HEIGHT);
+	int w = rbo->getParameter(gl::RENDERBUFFER_WIDTH);
+	int h = rbo->getParameter(gl::RENDERBUFFER_HEIGHT);
 
-	int r = rbo->getParameter(GL_RENDERBUFFER_RED_SIZE);
-	int g = rbo->getParameter(GL_RENDERBUFFER_GREEN_SIZE);
-	int b = rbo->getParameter(GL_RENDERBUFFER_BLUE_SIZE);
-	int a = rbo->getParameter(GL_RENDERBUFFER_ALPHA_SIZE);
+	int r = rbo->getParameter(gl::RENDERBUFFER_RED_SIZE);
+	int g = rbo->getParameter(gl::RENDERBUFFER_GREEN_SIZE);
+	int b = rbo->getParameter(gl::RENDERBUFFER_BLUE_SIZE);
+	int a = rbo->getParameter(gl::RENDERBUFFER_ALPHA_SIZE);
 
-	int d = rbo->getParameter(GL_RENDERBUFFER_DEPTH_SIZE);
-	int s = rbo->getParameter(GL_RENDERBUFFER_STENCIL_SIZE);
+	int d = rbo->getParameter(gl::RENDERBUFFER_DEPTH_SIZE);
+	int s = rbo->getParameter(gl::RENDERBUFFER_STENCIL_SIZE);
 
 	int memory = (int)std::ceil((w*h*(r+g+b+a+d+s))/8.0);
 
@@ -289,10 +288,10 @@ void DebugInfo::visitTexture(Texture* texture)
 	InfoUnit info;
 	info.name = name("Texture", texture);
 
-    int maxTextureSize = getInteger(GL_MAX_TEXTURE_SIZE);
+    int maxTextureSize = getInteger(gl::MAX_TEXTURE_SIZE);
 	int maxLevels = (int)std::ceil(std::log(maxTextureSize)/std::log(2))+1;
 
-    if (texture->target() == GL_TEXTURE_CUBE_MAP)
+    if (texture->target() == gl::TEXTURE_CUBE_MAP)
     {
         info.addProperty("size", "cubemap size computation not implemented yet");
     }
@@ -301,21 +300,21 @@ void DebugInfo::visitTexture(Texture* texture)
         int memory = 0;
         for (int i = 0; i<=maxLevels; ++i)
         {
-            if (texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED) == GL_TRUE)
+            if (texture->getLevelParameter(i, gl::TEXTURE_COMPRESSED) == static_cast<gl::GLint>(gl::TRUE_))
             {
-                memory += texture->getLevelParameter(i, GL_TEXTURE_COMPRESSED_IMAGE_SIZE);
+                memory += texture->getLevelParameter(i, gl::TEXTURE_COMPRESSED_IMAGE_SIZE);
             }
             else
             {
-                int w = texture->getLevelParameter(i, GL_TEXTURE_WIDTH);
-                int h = texture->getLevelParameter(i, GL_TEXTURE_HEIGHT);
-                int d = texture->getLevelParameter(i, GL_TEXTURE_DEPTH);
+                int w = texture->getLevelParameter(i, gl::TEXTURE_WIDTH);
+                int h = texture->getLevelParameter(i, gl::TEXTURE_HEIGHT);
+                int d = texture->getLevelParameter(i, gl::TEXTURE_DEPTH);
 
-                int r = texture->getLevelParameter(i, GL_TEXTURE_RED_SIZE);
-                int g = texture->getLevelParameter(i, GL_TEXTURE_GREEN_SIZE);
-                int b = texture->getLevelParameter(i, GL_TEXTURE_BLUE_SIZE);
-                int a = texture->getLevelParameter(i, GL_TEXTURE_ALPHA_SIZE);
-                int ds = texture->getLevelParameter(i, GL_TEXTURE_DEPTH_SIZE);
+                int r = texture->getLevelParameter(i, gl::TEXTURE_RED_SIZE);
+                int g = texture->getLevelParameter(i, gl::TEXTURE_GREEN_SIZE);
+                int b = texture->getLevelParameter(i, gl::TEXTURE_BLUE_SIZE);
+                int a = texture->getLevelParameter(i, gl::TEXTURE_ALPHA_SIZE);
+                int ds = texture->getLevelParameter(i, gl::TEXTURE_DEPTH_SIZE);
 
                 memory += (int)std::ceil((w*h*d*(r+g+b+a+ds))/8.0);
             }
@@ -323,7 +322,7 @@ void DebugInfo::visitTexture(Texture* texture)
 
         m_memoryUsage["Textures"] += memory;
         info.addProperty("memory", humanReadableSize(memory));
-        info.addProperty("size", std::to_string(texture->getLevelParameter(0, GL_TEXTURE_WIDTH))+" x "+std::to_string(texture->getLevelParameter(0, GL_TEXTURE_HEIGHT)));
+        info.addProperty("size", std::to_string(texture->getLevelParameter(0, gl::TEXTURE_WIDTH))+" x "+std::to_string(texture->getLevelParameter(0, gl::TEXTURE_HEIGHT)));
     }
 
 	addInfo("Textures", info);
@@ -423,7 +422,7 @@ void DebugInfo::InfoUnit::addProperty(const std::string& name, const std::string
 	properties.push_back({name, value});
 }
 
-void DebugInfo::InfoUnit::addProperty(const std::string& name, GLint value)
+void DebugInfo::InfoUnit::addProperty(const std::string& name, gl::GLint value)
 {
 	addProperty(name, std::to_string(value));
 }
@@ -432,6 +431,5 @@ void DebugInfo::InfoGroup::addInfoUnit(const InfoUnit& unit)
 {
 	units.push_back(unit);
 }
-
 
 } // namespace glow

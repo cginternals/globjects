@@ -6,12 +6,12 @@
 namespace glow
 {
 
-ProgramBinary::ProgramBinary(GLenum binaryFormat, const std::vector<char> & binaryData)
+ProgramBinary::ProgramBinary(gl::GLenum binaryFormat, const std::vector<char> & binaryData)
 : ProgramBinary(binaryFormat, new StaticStringSource(binaryData.data(), binaryData.size()))
 {
 }
 
-ProgramBinary::ProgramBinary(GLenum binaryFormat, AbstractStringSource * dataSource)
+ProgramBinary::ProgramBinary(gl::GLenum binaryFormat, AbstractStringSource * dataSource)
 : m_binaryFormat(binaryFormat)
 , m_dataSource(dataSource)
 , m_valid(false)
@@ -30,7 +30,7 @@ ProgramBinary::~ProgramBinary()
     }
 }
 
-GLenum ProgramBinary::format() const
+gl::GLenum ProgramBinary::format() const
 {
     return m_binaryFormat;
 }
@@ -42,11 +42,11 @@ const void * ProgramBinary::data() const
     return reinterpret_cast<const void*>(m_binaryData.data());
 }
 
-GLsizei ProgramBinary::length() const
+gl::GLsizei ProgramBinary::length() const
 {
     validate();
 
-    return static_cast<GLsizei>(m_binaryData.size());
+    return static_cast<gl::GLsizei>(m_binaryData.size());
 }
 
 void ProgramBinary::notifyChanged(const Changeable *)

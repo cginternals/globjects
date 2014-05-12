@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 #include <glow/glow_api.h>
 
@@ -16,26 +16,26 @@ public:
     VertexAttributeBindingImplementation(const VertexAttributeBinding * binding);
     virtual ~VertexAttributeBindingImplementation();
 
-    GLint attributeIndex() const;
-    GLint bindingIndex() const;
+    gl::GLint attributeIndex() const;
+    gl::GLint bindingIndex() const;
 
     const VertexArrayObject * vao() const;
     const Buffer * vbo() const;
 
-    virtual void bindAttribute(GLint attributeIndex) = 0;
+    virtual void bindAttribute(gl::GLint attributeIndex) = 0;
     virtual void bindBuffer(
         const Buffer * vbo
-    ,   GLint baseoffset
-    ,   GLint stride) = 0;
+    ,   gl::GLint baseoffset
+    ,   gl::GLint stride) = 0;
 
     virtual void setFormat(
-        GLint size
-    ,   GLenum type
-    ,   GLboolean normalized
-    ,   GLuint relativeoffset) = 0;
+        gl::GLint size
+    ,   gl::GLenum type
+    ,   gl::GLboolean normalized
+    ,   gl::GLuint relativeoffset) = 0;
 
-    virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset) = 0;
-    virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset) = 0;
+    virtual void setIFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset) = 0;
+    virtual void setLFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset) = 0;
 
 protected:
     const VertexAttributeBinding * m_binding;
@@ -47,12 +47,12 @@ class VertexAttributeBinding_GL_3_0 : public VertexAttributeBindingImplementatio
 public:
     VertexAttributeBinding_GL_3_0(const VertexAttributeBinding * binding);
 
-    virtual void bindAttribute(GLint attributeIndex);
-    virtual void bindBuffer(const Buffer* vbo, GLint baseoffset, GLint stride);
+    virtual void bindAttribute(gl::GLint attributeIndex);
+    virtual void bindBuffer(const Buffer* vbo, gl::GLint baseoffset, gl::GLint stride);
 
-    virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
-    virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
-    virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset);
+    virtual void setFormat(gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeoffset);
+    virtual void setIFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset);
+    virtual void setLFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset);
 
 protected:
     void finishIfComplete();
@@ -71,22 +71,22 @@ protected:
         Format();
         Format(
             Method method
-        ,   GLint size
-        ,   GLenum type
-        ,   GLboolean normalized
-        ,   GLuint relativeoffset);
+        ,   gl::GLint size
+        ,   gl::GLenum type
+        ,   gl::GLboolean normalized
+        ,   gl::GLuint relativeoffset);
 
         Method method;
 
-        GLint size;
-        GLenum type;
-        GLboolean normalized;
-        GLuint relativeoffset;
+        gl::GLint size;
+        gl::GLenum type;
+        gl::GLboolean normalized;
+        gl::GLuint relativeoffset;
     };
 
     Format m_format;
-    GLint m_baseoffset;
-    GLint m_stride;
+    gl::GLint m_baseoffset;
+    gl::GLint m_stride;
 
     bool m_hasFormat;
     bool m_hasBuffer;
@@ -98,12 +98,12 @@ class VertexAttributeBinding_GL_4_3 : public VertexAttributeBindingImplementatio
 public:
     VertexAttributeBinding_GL_4_3(const VertexAttributeBinding* binding);
 
-    virtual void bindAttribute(GLint attributeIndex);
-    virtual void bindBuffer(const Buffer * vbo, GLint baseoffset, GLint stride);
+    virtual void bindAttribute(gl::GLint attributeIndex);
+    virtual void bindBuffer(const Buffer * vbo, gl::GLint baseoffset, gl::GLint stride);
 
-    virtual void setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
-    virtual void setIFormat(GLint size, GLenum type, GLuint relativeoffset);
-    virtual void setLFormat(GLint size, GLenum type, GLuint relativeoffset);
+    virtual void setFormat(gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeoffset);
+    virtual void setIFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset);
+    virtual void setLFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset);
 };
 
 } // namespace glow

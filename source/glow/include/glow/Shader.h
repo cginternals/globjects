@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 #include <glow/glow_api.h>
 
@@ -39,16 +39,16 @@ class GLOW_API Shader : public Object, protected ChangeListener, public Changeab
     friend class ShaderCompiler;
 
 public:
-    static Shader * fromString(const GLenum type, const std::string & sourceString);
+    static Shader * fromString(const gl::GLenum type, const std::string & sourceString);
 
 public:
-    Shader(const GLenum type);
-    Shader(const GLenum type, AbstractStringSource * source);
-    Shader(const GLenum type, AbstractStringSource * source, const std::vector<std::string> & includePaths);
+    Shader(const gl::GLenum type);
+    Shader(const gl::GLenum type, AbstractStringSource * source);
+    Shader(const gl::GLenum type, AbstractStringSource * source, const std::vector<std::string> & includePaths);
 
     virtual void accept(ObjectVisitor& visitor) override;
 
-	GLenum type() const;
+	gl::GLenum type() const;
 
     void setSource(AbstractStringSource * source);
 	void setSource(const std::string & source);
@@ -60,27 +60,27 @@ public:
 	bool isCompiled() const;
     void invalidate();
 
-    GLint get(GLenum pname) const;
+    gl::GLint get(gl::GLenum pname) const;
     std::string getSource() const;
     bool checkCompileStatus() const;
 	std::string infoLog() const;
 
     std::string typeString() const;
 
-    static std::string typeString(GLenum type);
+    static std::string typeString(gl::GLenum type);
 
 protected:
     virtual ~Shader();
 
     virtual void notifyChanged(const Changeable * changebale) override;
 protected:
-    static GLuint create(GLenum type);
+    static gl::GLuint create(gl::GLenum type);
     static void setSource(const Shader & shader, const std::string & source);
 
     std::string shaderString() const;
 
 protected:
-	GLenum m_type;
+	gl::GLenum m_type;
     ref_ptr<AbstractStringSource> m_source;
     std::vector<std::string> m_includePaths;
 

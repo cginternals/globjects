@@ -1,7 +1,8 @@
 #include <glowutils/AdaptiveGrid.h>
 
-#include <cmath>
 #include <vector>
+
+#include <glbinding/functions.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -73,7 +74,7 @@ void main()
 {
     float t = v_type;
 
-    float z = gl_FragCoord.z; 
+    float z = gl_FragCoord.z;
 
     // complete function
     // z = (2.0 * zfar * znear / (zfar + znear - (zfar - znear) * (2.0 * z - 1.0)));
@@ -117,8 +118,8 @@ AdaptiveGrid::AdaptiveGrid(
 #endif
   
   
-    m_program->attach(new Shader(GL_VERTEX_SHADER, vertexShaderString),
-                      new Shader(GL_FRAGMENT_SHADER, fragmentShaderString));
+    m_program->attach(new Shader(gl::VERTEX_SHADER, vertexShaderString),
+                      new Shader(gl::FRAGMENT_SHADER, fragmentShaderString));
 
     setColor(vec3(.8f));
 
@@ -129,7 +130,7 @@ AdaptiveGrid::AdaptiveGrid(
 
     binding->setAttribute(0);
     binding->setBuffer(m_buffer, 0, sizeof(vec4));
-    binding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
+    binding->setFormat(4, gl::FLOAT, gl::FALSE_, 0);
 
     m_vao->enable(0);
 }
@@ -181,7 +182,7 @@ void AdaptiveGrid::setupGridLineBuffer(unsigned short segments)
         point = vec4(vec3(T * vec4(point.x, point.y, point.z, 1.f)), point.w);
 
     m_buffer = new Buffer();
-    m_buffer->setData(points, GL_STATIC_DRAW);
+    m_buffer->setData(points, gl::STATIC_DRAW);
 
     m_size = static_cast<unsigned short>(segments * 64 - 4);
 }
@@ -256,23 +257,23 @@ void AdaptiveGrid::update(
 
 void AdaptiveGrid::draw()
 {
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    CheckGLError();
-    glEnable(GL_BLEND);
-    CheckGLError();
-    glEnable(GL_DEPTH_TEST);
-    CheckGLError();
+    gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
+
+    gl::Enable(gl::BLEND);
+
+    gl::Enable(gl::DEPTH_TEST);
+
 
     m_program->use();
 
     m_vao->bind();
-    m_vao->drawArrays(GL_LINES, 0, m_size);
+    m_vao->drawArrays(gl::LINES, 0, m_size);
     m_vao->unbind();
 
     m_program->release();
 
-    glDisable(GL_BLEND);
-    CheckGLError();
+    gl::Disable(gl::BLEND);
+
 }
 
 } // namespace glowutils

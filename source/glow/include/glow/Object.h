@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <GL/glew.h>
+#include <glbinding/types.h>
 
 #include <glowbase/Referenced.h>
 
@@ -24,7 +24,7 @@ class GLOW_API Object : public Referenced
 public:
     virtual void accept(ObjectVisitor & visitor) = 0;
 
-    GLuint id() const;
+    gl::GLuint id() const;
 
 	bool ownsGLObject() const;
 
@@ -36,11 +36,11 @@ public:
     bool hasName() const;
 
 protected:
-    Object(GLuint id, bool takeOwnership = true);
+    Object(gl::GLuint id, bool takeOwnership = true);
     virtual ~Object();
 
 protected:
-	GLuint m_id;
+    gl::GLuint m_id;
 	bool m_ownsGLObject;
 
     std::string m_name;

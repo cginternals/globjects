@@ -34,7 +34,7 @@ void FallbackDebugImplementation::insertMessage(const DebugMessage & message)
         m_messageCallback(message);
 }
 
-void FallbackDebugImplementation::controlMessages(GLenum , GLenum , GLenum , GLsizei , const GLuint * , GLboolean )
+void FallbackDebugImplementation::controlMessages(gl::GLenum , gl::GLenum , gl::GLenum , gl::GLsizei , const gl::GLuint * , gl::GLboolean )
 {
     // ignore
 }

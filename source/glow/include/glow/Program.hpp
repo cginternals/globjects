@@ -4,6 +4,8 @@
 
 #include <cassert>
 
+#include <glbinding/functions.h>
+
 #include <glowbase/baselogging.h>
 
 #include <glow/Uniform.h>
@@ -67,7 +69,7 @@ void Program::setUniform(const std::string & name, const T & value)
 }
 
 template<typename T>
-void Program::setUniform(GLint location, const T & value)
+void Program::setUniform(gl::GLint location, const T & value)
 {
     setUniformByIdentity(location, value);
 }
@@ -85,13 +87,13 @@ const Uniform<T> * Program::getUniform(const std::string & name) const
 }
 
 template<typename T>
-Uniform<T> * Program::getUniform(GLint location)
+Uniform<T> * Program::getUniform(gl::GLint location)
 {
     return getUniformByIdentity<T>(location);
 }
 
 template<typename T>
-const Uniform<T> * Program::getUniform(GLint location) const
+const Uniform<T> * Program::getUniform(gl::GLint location) const
 {
     return getUniformByIdentity<T>(location);
 }
@@ -101,8 +103,7 @@ void Program::attach(Shader * shader, Shaders... shaders)
 {
     assert(shader != nullptr);
 
-    glAttachShader(m_id, shader->id());
-    CheckGLError();
+    gl::AttachShader(m_id, shader->id());
 
     shader->registerListener(this);
     m_shaders.insert(shader);

@@ -2,11 +2,13 @@
 #include <cassert>
 #include <unordered_map>
 
+#include <glbinding/constants.h>
+#include <glbinding/Extension.h>
+
 #include <glow/logging.h>
 #include <glow/Error.h>
 #include <glow/DebugMessage.h>
 #include <glow/glow.h>
-#include <glow/Extension.h>
 
 #include "registry/Registry.h"
 #include "registry/ImplementationRegistry.h"
@@ -52,14 +54,14 @@ void setSynchronous(bool synchronous)
     implementation().setSynchronous(synchronous);
 }
 
-void insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message)
+void insertMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message)
 {
     assert(message != nullptr);
 
     insertMessage(DebugMessage(source, type, id, severity, std::string(message, length)));
 }
 
-void insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string & message)
+void insertMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, const std::string & message)
 {
     insertMessage(DebugMessage(source, type, id, severity, message));
 }
@@ -69,61 +71,61 @@ void insertMessage(const DebugMessage & message)
     implementation().insertMessage(message);
 }
 
-void enableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
+void enableMessage(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLuint id)
 {
     enableMessages(source, type, severity, 1, &id);
 }
 
-void enableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids)
+void enableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids)
 {
-    controlMessages(source, type, severity, count, ids, GL_TRUE);
+    controlMessages(source, type, severity, count, ids, gl::TRUE_);
 }
 
-void enableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint> & ids)
+void enableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, const std::vector<gl::GLuint> & ids)
 {
     enableMessages(source, type, severity, static_cast<int>(ids.size()), ids.data());
 }
 
-void disableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
+void disableMessage(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLuint id)
 {
     disableMessages(source, type, severity, 1, &id);
 }
 
-void disableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids)
+void disableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids)
 {
-    controlMessages(source, type, severity, count, ids, GL_FALSE);
+    controlMessages(source, type, severity, count, ids, gl::FALSE_);
 }
 
-void disableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint> & ids)
+void disableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, const std::vector<gl::GLuint> & ids)
 {
     disableMessages(source, type, severity, static_cast<int>(ids.size()), ids.data());
 }
 
-void controlMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids, GLboolean enabled)
+void controlMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids, gl::GLboolean enabled)
 {
     assert(ids != nullptr || count == 0);
 
     implementation().controlMessages(source, type, severity, count, ids, enabled);
 }
 
-void signalError(const Error & error, const char * file, int line)
+void signalError(const Error & error, const std::string & message)
 {
     if (!error.isError())
         return;
 
-    std::stringstream stream;
-    stream << error.name() << " generated. [" << file << ":" << line << "]";
-
     if (!Registry::current().isInitialized())
     {
-        glow::debug() << "Error during initialization: " << stream.str();
+        glow::debug() << "Error during initialization: " << error.name();
         return;
     }
 
     if (!implementation().isFallback())
         return;
 
-    insertMessage(DebugMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, error.code(), GL_DEBUG_SEVERITY_HIGH_ARB, stream.str()));
+    std::stringstream stream;
+    stream << error.name() << " generated: " << message;
+
+    insertMessage(DebugMessage(gl::DEBUG_SOURCE_API_ARB, gl::DEBUG_TYPE_ERROR_ARB, error.code(), gl::DEBUG_SEVERITY_HIGH_ARB, stream.str()));
 }
 
 } // namespace debugmessageoutput

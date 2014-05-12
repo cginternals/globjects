@@ -1,5 +1,5 @@
 
-#include <GL/glew.h>
+
 
 #include <glow/Buffer.h>
 #include <glow/debugmessageoutput.h>
@@ -31,14 +31,16 @@ public:
     {
     }
 
-    virtual void initialize(Window & ) override
+    virtual void initialize(Window & window) override
     {
+        ExampleWindowEventHandler::initialize(window);
+
         glow::debugmessageoutput::enable();
 
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-        CheckGLError();
+        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
+
+        m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(gl::FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
 
         m_quad->program()->setUniform("maximum", 10);
         m_quad->program()->setUniform("rowCount", 10);
@@ -58,9 +60,9 @@ public:
         };
 
         m_buffer = new glow::Buffer();
-        m_buffer->setData(sizeof(data), data, GL_STATIC_DRAW);
+        m_buffer->setData(sizeof(data), data, gl::STATIC_DRAW);
 
-        m_buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
+        m_buffer->bindBase(gl::SHADER_STORAGE_BUFFER, 1);
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -69,14 +71,14 @@ public:
         int height = event.height();
         int side = std::min<int>(width, height);
 
-        glViewport((width - side) / 2, (height - side) / 2, side, side);
-        CheckGLError();
+        gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
+
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        CheckGLError();
+        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+
 
         m_quad->draw();
     }

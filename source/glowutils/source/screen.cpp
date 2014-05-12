@@ -80,7 +80,7 @@ void getDesktopResolution(
 
 #else
 
-    // http://content.gpwiki.org/index.php/OpenGL:Tutorials:Setting_up_OpenGL_on_X11
+    // http://content.gpwiki.org/index.php/OpenGL:Tutorials:Setting_up_Opengl::on_X11
 
 #endif 
 }
