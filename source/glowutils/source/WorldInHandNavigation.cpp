@@ -100,7 +100,8 @@ void WorldInHandNavigation::reset()
 const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     bool & intersects
 ,   const ivec2 & mouse
-,   const vec3 & p0) const
+,   const vec3 & p0
+,   const vec3 & normal) const
 {
     if (!m_coordsProvider)
         return vec3();
@@ -111,13 +112,14 @@ const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     const vec3 ln = m_coordsProvider->objAt(mouse, 0.0);
     const vec3 lf = m_coordsProvider->objAt(mouse, 1.0);
 
-    return navigationmath::rayPlaneIntersection(intersects, ln, lf, p0);
+    return navigationmath::rayPlaneIntersection(intersects, ln, lf, p0, normal);
 }
 
 const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     bool & intersects
 ,   const ivec2 & mouse
 ,   const vec3 & p0
+,   const vec3 & normal
 ,   const mat4 & viewProjectionInverted) const
 {
     if (!m_coordsProvider)
@@ -129,7 +131,7 @@ const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
     const vec3 ln = m_coordsProvider->objAt(mouse, 0.0, viewProjectionInverted);
     const vec3 lf = m_coordsProvider->objAt(mouse, 1.0, viewProjectionInverted);
 
-    return navigationmath::rayPlaneIntersection(intersects, ln, lf, p0);
+    return navigationmath::rayPlaneIntersection(intersects, ln, lf, p0, normal);
 }
 
 const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
@@ -144,7 +146,7 @@ const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
 
     // no scene object was picked - simulate picking on xz-plane
     if (!valid)
-        return mouseRayPlaneIntersection(intersects, mouse, vec3());
+        return mouseRayPlaneIntersection(intersects, mouse, vec3(), vec3(0.0f, 1.0, 0.0f));
 
     return m_coordsProvider->objAt(mouse, depth);
 }
@@ -159,6 +161,7 @@ void WorldInHandNavigation::panBegin(const ivec2 & mouse)
     
     bool intersects;
     m_i0 = mouseRayPlaneIntersection(intersects, mouse);
+    m_n0 = m_coordsProvider->objAt(mouse, 0.0, m_viewProjectionInverted) - m_i0;
 
     if (intersects)
     {
@@ -200,7 +203,7 @@ void WorldInHandNavigation::panProcess(const ivec2 & mouse)
     ,   glm::clamp(mouse.y, 0, m_camera->viewport().y));
 
     bool intersects;
-    m_i1 = mouseRayPlaneIntersection(intersects, clamped, m_i0, m_viewProjectionInverted);
+    m_i1 = mouseRayPlaneIntersection(intersects, clamped, m_i0, m_n0, m_viewProjectionInverted);
 
     if (intersects)
         pan(m_i0 - m_i1);

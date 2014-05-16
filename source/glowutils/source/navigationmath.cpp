@@ -33,7 +33,7 @@ vec3 rayPlaneIntersection(
 ,	const vec3 & normal)
 {
 	const vec3 r0 = rnear; // root of the ray
-	const vec3 &r = rfar - rnear; 
+	const vec3 r = rfar - rnear; 
 
 	// intersect with plane in point normal form
 	const float lDotN = dot(r, normal);
