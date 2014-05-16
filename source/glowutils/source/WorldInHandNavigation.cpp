@@ -236,7 +236,6 @@ void WorldInHandNavigation::rotateBegin(const ivec2 & mouse)
 
     m_m0 = mouse;
 
-    m_eye = m_camera->eye();
     m_center = m_camera->center();
 }
 
@@ -260,33 +259,34 @@ void WorldInHandNavigation::rotateProcess(const ivec2 & mouse)
     const float wDeltaY = delta.y / static_cast<float>(m_camera->viewport().y);
 
     rotate(wDeltaX, wDeltaY);
+
+    m_m0 = mouse;
 }
 
 void WorldInHandNavigation::rotate(
     float hAngle
 ,   float vAngle)
 {
-    static const vec3 up(0.f, 1.f, 0.f);
-
     m_rotationHappened = true;
-
-    const vec3 ray(normalize(m_camera->center() - m_eye));
-    const vec3 rotAxis(cross(ray, up));
 
     hAngle *= ROTATION_HOR_DOF;
     vAngle *= ROTATION_VER_DOF;
 
     enforceRotationConstraints(hAngle, vAngle);
 
-    vec3 t = m_i0Valid ? m_i0 : m_center;
+    vec3 origin = m_i0Valid ? m_i0 : m_center;
 
-    mat4 transform = translate(mat4(), t);
-    transform = glm::rotate(transform, hAngle, up);
+    const vec3 ray(normalize(origin - m_camera->eye()));
+    const vec3 rotAxis(cross(ray, m_camera->up()));
+
+    mat4 transform = translate(mat4(), origin);
+    transform = glm::rotate(transform, hAngle, m_camera->up());
     transform = glm::rotate(transform, vAngle, rotAxis);
-    transform = translate(transform, -t);
+    transform = translate(transform, -origin);
 
-    m_camera->setEye(vec3(transform * vec4(m_eye, 0.f)));
-    m_camera->setCenter(vec3(transform * vec4(m_center, 0.f)));
+    m_camera->setEye(vec3(transform * vec4(m_camera->eye(), 1.0f)));
+    m_camera->setCenter(vec3(transform * vec4(m_camera->center(), 1.0f)));
+    m_camera->setUp(glm::normalize(vec3(transform * vec4(m_camera->up(), 0.0f))));
 
     m_camera->update();
 }
