@@ -107,7 +107,7 @@ gl::GLint NamedString::getParameter(gl::GLenum pname)
         case gl::NAMED_STRING_LENGTH_ARB:
             return static_cast<gl::GLint>(string().size());
         case gl::NAMED_STRING_TYPE_ARB:
-            return m_type;
+            return static_cast<gl::GLint>(m_type);
         default:
             return -1;
     }

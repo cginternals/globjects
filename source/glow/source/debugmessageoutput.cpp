@@ -125,7 +125,7 @@ void signalError(const Error & error, const std::string & message)
     std::stringstream stream;
     stream << error.name() << " generated: " << message;
 
-    insertMessage(DebugMessage(gl::DEBUG_SOURCE_API_ARB, gl::DEBUG_TYPE_ERROR_ARB, error.code(), gl::DEBUG_SEVERITY_HIGH_ARB, stream.str()));
+    insertMessage(DebugMessage(gl::DEBUG_SOURCE_API_ARB, gl::DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), gl::DEBUG_SEVERITY_HIGH_ARB, stream.str()));
 }
 
 } // namespace debugmessageoutput

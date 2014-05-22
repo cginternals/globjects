@@ -3,6 +3,8 @@
 #include <sstream>
 #include <string>
 
+#include <glow/constants.h>
+
 #include <glow/FrameBufferObject.h>
 
 namespace glow
@@ -36,22 +38,7 @@ bool FrameBufferAttachment::isRenderBufferAttachment() const
 
 std::string FrameBufferAttachment::attachmentString() const
 {
-	switch (m_attachment)
-	{
-		case gl::DEPTH_ATTACHMENT:
-			return "gl::DEPTH_ATTACHMENT";
-		case gl::STENCIL_ATTACHMENT:
-			return "gl::STENCIL_ATTACHMENT";
-		case gl::DEPTH_STENCIL_ATTACHMENT:
-			return "gl::DEPTH_STENCIL_ATTACHMENT";
-	}
-
-	if (m_attachment>=gl::COLOR_ATTACHMENT0 && gl::COLOR_ATTACHMENT0<= gl::COLOR_ATTACHMENT15)
-	{
-		return "gl::COLOR_ATTACHMENT"+std::to_string(m_attachment-gl::COLOR_ATTACHMENT0);
-	}
-
-	return "Unknown attachment "+std::to_string(m_attachment);
+    return glow::enumName(m_attachment);
 }
 
 TextureAttachment * FrameBufferAttachment::asTextureAttachment()

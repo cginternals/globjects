@@ -105,6 +105,9 @@ int bytesPerPixel(gl::GLenum format, gl::GLenum type)
         case gl::UNSIGNED_INT_5_9_9_9_REV:
         case gl::FLOAT_32_UNSIGNED_INT_24_8_REV:
             return 4; // 32 bit
+
+        default:
+            break;
     }
 
     return numberOfComponents(format) * byteSize(type);

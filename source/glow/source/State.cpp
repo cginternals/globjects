@@ -96,24 +96,24 @@ State* State::currentState()
     state->clearDepth(getFloat(gl::DEPTH_CLEAR_VALUE));
     state->clearStencil(getInteger(gl::STENCIL_CLEAR_VALUE));
     state->colorMask(getBooleans<4>(gl::COLOR_WRITEMASK));
-    state->cullFace(getInteger(gl::CULL_FACE_MODE));
-    state->depthFunc(getInteger(gl::DEPTH_FUNC));
+    state->cullFace(getEnum(gl::CULL_FACE_MODE));
+    state->depthFunc(getEnum(gl::DEPTH_FUNC));
     state->depthRange(getFloats<2>(gl::DEPTH_RANGE));
     state->frontFace(getEnum(gl::FRONT_FACE));
-    state->logicOp(getInteger(gl::LOGIC_OP_MODE));
-    state->pointParameter(gl::POINT_FADE_THRESHOLD_SIZE, getEnum(gl::POINT_FADE_THRESHOLD_SIZE));
-    state->pointParameter(gl::POINT_SPRITE_COORD_ORIGIN, getEnum(gl::POINT_SPRITE_COORD_ORIGIN));
+    state->logicOp(getEnum(gl::LOGIC_OP_MODE));
+    state->pointParameter(gl::POINT_FADE_THRESHOLD_SIZE, getInteger(gl::POINT_FADE_THRESHOLD_SIZE));
+    state->pointParameter(gl::POINT_SPRITE_COORD_ORIGIN, getInteger(gl::POINT_SPRITE_COORD_ORIGIN));
     state->pointSize(getFloat(gl::POINT_SIZE));
-    state->polygonMode(gl::FRONT_AND_BACK, getInteger(gl::POLYGON_MODE)); // is it right to only set gl::FRONT_AND_BACK?
+    state->polygonMode(gl::FRONT_AND_BACK, getEnum(gl::POLYGON_MODE)); // is it right to only set gl::FRONT_AND_BACK?
     state->polygonOffset(getFloat(gl::POLYGON_OFFSET_FACTOR), getFloat(gl::POLYGON_OFFSET_UNITS));
     state->sampleCoverage(getFloat(gl::SAMPLE_COVERAGE_VALUE), getBoolean(gl::SAMPLE_COVERAGE_INVERT));
     state->scissor(getIntegers<4>(gl::SCISSOR_BOX));
-    state->stencilFuncSeparate(gl::FRONT, getEnum(gl::STENCIL_FUNC), getEnum(gl::STENCIL_REF), getEnum(gl::STENCIL_VALUE_MASK));
+    state->stencilFuncSeparate(gl::FRONT, getEnum(gl::STENCIL_FUNC), getInteger(gl::STENCIL_REF), getInteger(gl::STENCIL_VALUE_MASK));
     state->stencilOpSeparate(gl::FRONT, getEnum(gl::STENCIL_FAIL), getEnum(gl::STENCIL_PASS_DEPTH_FAIL), getEnum(gl::STENCIL_PASS_DEPTH_PASS));
-    state->stencilMaskSeparate(gl::FRONT, getEnum(gl::STENCIL_WRITEMASK));
-    state->stencilFuncSeparate(gl::BACK, getEnum(gl::STENCIL_BACK_FUNC), getEnum(gl::STENCIL_BACK_REF), getEnum(gl::STENCIL_BACK_VALUE_MASK));
+    state->stencilMaskSeparate(gl::FRONT, getInteger(gl::STENCIL_WRITEMASK));
+    state->stencilFuncSeparate(gl::BACK, getEnum(gl::STENCIL_BACK_FUNC), getInteger(gl::STENCIL_BACK_REF), getInteger(gl::STENCIL_BACK_VALUE_MASK));
     state->stencilOpSeparate(gl::BACK, getEnum(gl::STENCIL_BACK_FAIL), getEnum(gl::STENCIL_BACK_PASS_DEPTH_FAIL), getEnum(gl::STENCIL_BACK_PASS_DEPTH_PASS));
-    state->stencilMaskSeparate(gl::BACK, getEnum(gl::STENCIL_BACK_WRITEMASK));
+    state->stencilMaskSeparate(gl::BACK, getInteger(gl::STENCIL_BACK_WRITEMASK));
 
     // pixel store
     std::vector<gl::GLenum> pixelstoreParameters = {
