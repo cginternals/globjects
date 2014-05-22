@@ -48,6 +48,7 @@ WorldInHandNavigation::WorldInHandNavigation()
 , m_homeCenter(DEFAULT_CENTER)
 , m_homeUp(DEFAULT_UP)
 , m_i0Valid(false)
+, m_aabbValid(false)
 {
 }
 
@@ -63,6 +64,7 @@ WorldInHandNavigation::InteractionMode WorldInHandNavigation::mode() const
 void WorldInHandNavigation::setBoundaryHint(const AxisAlignedBoundingBox & aabb)
 {
     m_aabb = aabb;
+    m_aabbValid = true;
 }
 
 void WorldInHandNavigation::setCoordinateProvider(AbstractCoordinateProvider * provider)
@@ -142,13 +144,71 @@ const vec3 WorldInHandNavigation::mouseRayPlaneIntersection(
         return vec3();
 
     const float depth = m_coordsProvider->depthAt(mouse);
-    const bool valid = AbstractCoordinateProvider::validDepth(depth);
+    bool valid = AbstractCoordinateProvider::validDepth(depth);
 
-    // no scene object was picked - simulate picking on xz-plane
-    if (!valid)
-        return mouseRayPlaneIntersection(intersects, mouse, vec3(), vec3(0.0f, 1.0, 0.0f));
+    if (valid) {
+        return m_coordsProvider->objAt(mouse, depth);
+    }
 
-    return m_coordsProvider->objAt(mouse, depth);
+    const vec3 ln = m_coordsProvider->objAt(mouse, 0.0);
+    const vec3 lf = m_coordsProvider->objAt(mouse, 1.0);
+
+    // try picking on aabb
+    vec3 i = rayAabbIntersection(valid, ln, lf);
+    if (valid) {
+        return i;
+    }
+
+    // last resort: pick on xz plane
+    return mouseRayPlaneIntersection(intersects, mouse, vec3(), vec3(0.0f, 1.0, 0.0f));
+}
+
+const glm::vec3 WorldInHandNavigation::rayAabbIntersection(
+    bool& intersects
+,   const glm::vec3& ln
+,   const glm::vec3& lf) const
+{
+    if (!m_aabbValid) {
+        intersects = false;
+        return vec3(0.0f);
+    }
+
+    vec3 r = lf - ln;
+    vec3 intersection[3];
+    bool valid[3] = {false, false, false};
+
+    if (r.x > 0.0f) {
+        intersection[0] = navigationmath::rayPlaneIntersection(valid[0], ln, lf, m_aabb.urb(), vec3(-1.0f, 0.0f, 0.0f), true);
+    } else {
+        intersection[0] = navigationmath::rayPlaneIntersection(valid[0], ln, lf, m_aabb.llf(), vec3(1.0f, 0.0f, 0.0f), true);
+    }
+
+    if (r.y > 0.0f) {
+        intersection[1] = navigationmath::rayPlaneIntersection(valid[1], ln, lf, m_aabb.urb(), vec3(0.0f, -1.0f, 0.0f), true);
+    } else {
+        intersection[1] = navigationmath::rayPlaneIntersection(valid[1], ln, lf, m_aabb.llf(), vec3(0.0f, 1.0f, 0.0f), true);
+    }
+
+    if (r.z > 0.0f) {
+        intersection[2] = navigationmath::rayPlaneIntersection(valid[2], ln, lf, m_aabb.urb(), vec3(0.0f, 0.0f, -1.0f), true);
+    } else {
+        intersection[2] = navigationmath::rayPlaneIntersection(valid[2], ln, lf, m_aabb.llf(), vec3(0.0f, 0.0f, 1.0f), true);
+    }
+
+    float minLength = std::numeric_limits<float>::max();
+    int minIndex = -1;
+    for (int i = 0; i < 2; ++i) {
+        if (valid[i]) {
+            float length = glm::length(ln - intersection[i]);
+            if (length < minLength) {
+                minLength = length;
+                minIndex = i;
+            }
+        }
+    }
+
+    intersects = minIndex >= 0;
+    return minIndex >= 0 ? intersection[minIndex] : vec3(0.0f);
 }
 
 void WorldInHandNavigation::panBegin(const ivec2 & mouse)
@@ -326,8 +386,9 @@ void WorldInHandNavigation::scaleAtMouse(
     // center based on the intersection with the scene and use this to obtain 
     // the new viewray-groundplane intersection as new center.
     const vec3 center = lf + scale * (lf - i);
-
-    m_camera->setCenter(navigationmath::rayPlaneIntersection(intersects, eye, center));
+    i = rayAabbIntersection(intersects, eye, center);
+    
+    m_camera->setCenter(intersects ? i : center);
     m_camera->update();
 }
 

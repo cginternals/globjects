@@ -24,7 +24,8 @@ GLOWUTILS_API glm::vec3 rayPlaneIntersection(
 ,	const glm::vec3 & rnear	///< ray start
 ,	const glm::vec3 & rfar  ///< ray end - used for line direction retrieval
 ,	const glm::vec3 & location = glm::vec3(0.f, 0.f, 0.f) ///< location of the plane
-,	const glm::vec3 & normal = glm::vec3(0.f, 1.f, 0.f)); ///< normal of the plane
+,	const glm::vec3 & normal = glm::vec3(0.f, 1.f, 0.f)  ///< normal of the plane
+,   const bool forwardOnly = false); ///<  accept only intersections that are located in front of rnear in ray direction (i.e only positive t)
 
 //glm::vec3 rayPlaneIntersectionExt(
 //    const glm::vec3 & rnear ///< ray start

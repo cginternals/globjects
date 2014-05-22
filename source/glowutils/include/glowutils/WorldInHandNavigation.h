@@ -78,10 +78,15 @@ protected:
 	,	const glm::vec3 & p0
     ,   const glm::vec3 & normal
 	,	const glm::mat4 & viewProjectionInverted) const;
+    const glm::vec3 rayAabbIntersection(
+        bool& intersects
+    ,   const glm::vec3& ln
+    ,   const glm::vec3& lf) const;
 
 protected:
     Camera * m_camera;
     AxisAlignedBoundingBox m_aabb;
+    bool m_aabbValid;
 
     AbstractCoordinateProvider * m_coordsProvider;
 
