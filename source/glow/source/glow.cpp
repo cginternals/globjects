@@ -19,16 +19,11 @@ bool glowIsInitialized = false;
 
 bool initializeGLBinding()
 {
-    gl::AbstractFunction::enableCallbacksForAllExcept({ "glGetError" });
+    gl::AbstractFunction::setCallbackLevelForAllExcept(gl::AbstractFunction::CallbackLevel::After, { "glGetError" });
 
     gl::AbstractFunction::setAfterCallback([](const gl::AbstractFunction & function) {
         Error::check(function.name());
     });
-
-    /*AbstractFunction::setBeforeCallback([](const AbstractFunction & f) {
-        // logging
-        std::cout << f.name() << std::endl;
-    });*/
 
     return gl::initialize();
 }

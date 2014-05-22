@@ -46,11 +46,11 @@ Texture * Texture::createDefault(gl::GLenum target)
 {
     Texture* tex = new Texture(target);
 
-    tex->setParameter(gl::TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::LINEAR));
-    tex->setParameter(gl::TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::LINEAR));
-    tex->setParameter(gl::TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
-    tex->setParameter(gl::TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
-    tex->setParameter(gl::TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::CLAMP_TO_EDGE));
+    tex->setParameter(gl::TEXTURE_MIN_FILTER, gl::LINEAR);
+    tex->setParameter(gl::TEXTURE_MAG_FILTER, gl::LINEAR);
+    tex->setParameter(gl::TEXTURE_WRAP_S, gl::CLAMP_TO_EDGE);
+    tex->setParameter(gl::TEXTURE_WRAP_T, gl::CLAMP_TO_EDGE);
+    tex->setParameter(gl::TEXTURE_WRAP_R, gl::CLAMP_TO_EDGE);
 
     return tex;
 }
@@ -94,6 +94,13 @@ void Texture::unbindActive(const gl::GLenum texture) const
 gl::GLenum Texture::target() const
 {
     return m_target;
+}
+
+void Texture::setParameter(gl::GLenum name, gl::GLenum value)
+{
+    bind();
+
+    gl::TexParameteri(m_target, name, static_cast<gl::GLint>(value.value));
 }
 
 void Texture::setParameter(gl::GLenum name, gl::GLint value)

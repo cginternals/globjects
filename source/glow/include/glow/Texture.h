@@ -40,6 +40,7 @@ public:
     void bindActive(gl::GLenum texture) const;
     void unbindActive(gl::GLenum texture) const;
 
+    void setParameter(gl::GLenum name, gl::GLenum value);
     void setParameter(gl::GLenum name, gl::GLint value);
     void setParameter(gl::GLenum name, gl::GLfloat value);
 
