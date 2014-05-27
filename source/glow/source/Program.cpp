@@ -38,6 +38,11 @@ Program::~Program()
 		detach(shader);
 	}
 
+    for (std::pair<LocationIdentity, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
+    {
+        uniformPair.second->deregisterProgram(this);
+    }
+
 	if (ownsGLObject())
 	{
         gl::DeleteProgram(m_id);
