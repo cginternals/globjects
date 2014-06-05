@@ -41,6 +41,7 @@ namespace glowutils
 
 WorldInHandNavigation::WorldInHandNavigation()
 : m_camera(nullptr)
+, m_aabbValid(false)
 , m_coordsProvider(nullptr)
 , m_rotationHappened(false)
 , m_mode(NoInteraction)
@@ -48,7 +49,6 @@ WorldInHandNavigation::WorldInHandNavigation()
 , m_homeCenter(DEFAULT_CENTER)
 , m_homeUp(DEFAULT_UP)
 , m_i0Valid(false)
-, m_aabbValid(false)
 {
 }
 
