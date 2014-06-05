@@ -370,7 +370,7 @@ void FrameBufferObject::printStatus(bool onlyErrors) const
 	{
 		std::stringstream ss;
 		ss.flags(std::ios::hex | std::ios::showbase);
-		ss << status;
+        ss << static_cast<unsigned int>(status);
 
         critical() << enumName(status) << " (" << ss.str() << ")";
 	}

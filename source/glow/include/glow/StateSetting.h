@@ -4,6 +4,7 @@
 #include <set>
 
 #include <glbinding/types.h>
+#include <glbinding/enums.h>
 
 #include <glow/glow_api.h>
 #include <glowbase/FunctionCall.h>

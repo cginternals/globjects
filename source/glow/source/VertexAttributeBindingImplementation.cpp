@@ -134,7 +134,7 @@ void VertexAttributeBinding_GL_3_0::finish()
 VertexAttributeBinding_GL_3_0::Format::Format()
 : method(O)
 , size(0)
-, type(0)
+, type(static_cast<gl::GLenum>(0))
 , normalized(gl::FALSE_)
 , relativeoffset(0)
 {

@@ -98,9 +98,7 @@ gl::GLenum Texture::target() const
 
 void Texture::setParameter(gl::GLenum name, gl::GLenum value)
 {
-    bind();
-
-    gl::TexParameteri(m_target, name, static_cast<gl::GLint>(value.value));
+    setParameter(name, static_cast<gl::GLint>(value));
 }
 
 void Texture::setParameter(gl::GLenum name, gl::GLint value)
@@ -176,11 +174,11 @@ std::vector<unsigned char> Texture::getCompressedImage(gl::GLint lod) const
     return data;
 }
 
-void Texture::image1D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
+void Texture::image1D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data)
 {
     bind();
 
-    gl::TexImage1D(m_target, level, internalFormat, width, border, format, type, data);
+    gl::TexImage1D(m_target, level, static_cast<gl::GLint>(internalFormat), width, border, format, type, data);
 }
 
 void Texture::compressedImage1D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data)
@@ -201,7 +199,7 @@ void Texture::image2D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei wi
 {
 	bind();
 
-    gl::TexImage2D(m_target, level, internalFormat, width, height, border, format, type, data);
+    gl::TexImage2D(m_target, level, static_cast<gl::GLint>(internalFormat), width, height, border, format, type, data);
 }
 
 void Texture::image2D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
@@ -213,7 +211,7 @@ void Texture::image2D(gl::GLenum target, gl::GLint level, gl::GLenum internalFor
 {
     bind();
 
-    gl::TexImage2D(target, level, internalFormat, width, height, border, format, type, data);
+    gl::TexImage2D(target, level, static_cast<gl::GLint>(internalFormat), width, height, border, format, type, data);
 }
 
 void Texture::image2D(gl::GLenum target, gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
@@ -249,7 +247,7 @@ void Texture::image3D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei wi
 {
     bind();
 
-    gl::TexImage3D(m_target, level, internalFormat, width, height, depth, border, format, type, data);
+    gl::TexImage3D(m_target, level, static_cast<gl::GLint>(internalFormat), width, height, depth, border, format, type, data);
 }
 
 void Texture::image3D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec3 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid* data)
