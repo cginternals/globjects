@@ -7,7 +7,7 @@
 #include <glow/Texture.h>
 #include <glow/RenderBufferObject.h>
 
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 #include <glowutils/Camera.h>
 #include <glowutils/glowutils.h>
 

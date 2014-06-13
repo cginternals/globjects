@@ -9,7 +9,7 @@
 #include <glow/Buffer.h>
 #include <glow/NamedString.h>
 
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 #include <glowutils/Camera.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/glowutils.h>
@@ -23,7 +23,7 @@ const int VISIBILITY_KTAB_SIZE = ABUFFER_SIZE + 1;
 
 void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
     glow::NamedString::create("/transparency/hybrid_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
-    glow::NamedString::create("/transparency/hybrid.glsl", new glowutils::File(transparencyShaderFilePath + "hybrid.glsl"));
+    glow::NamedString::create("/transparency/hybrid.glsl", new glow::File(transparencyShaderFilePath + "hybrid.glsl"));
 
 	m_opaqueProgram = new glow::Program;
     m_opaqueProgram->attach(vertexShader);

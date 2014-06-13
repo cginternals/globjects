@@ -8,11 +8,11 @@
 
 #include <glowbase/ref_ptr.h>
 #include <glowbase/Version.h>
+#include <glowbase/AbstractStringSource.h>
+#include <glowbase/StaticStringSource.h>
 
 #include <glow/Program.h>
 #include <glow/logging.h>
-#include <glow/AbstractStringSource.h>
-#include <glow/StaticStringSource.h>
 #include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
 #include <glow/glow.h>

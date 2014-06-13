@@ -9,12 +9,13 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include <glowbase/StaticStringSource.h>
+
 #include <glow/Buffer.h>
 #include <glow/Program.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/logging.h>
-#include <glow/StaticStringSource.h>
 
 #include <glowutils/Camera.h>
 #include <glowutils/StringTemplate.h>

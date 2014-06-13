@@ -27,8 +27,8 @@
 #include <glowutils/UnitCube.h>
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/Camera.h>
-#include <glowutils/File.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
+#include <glowbase/File.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 
@@ -85,10 +85,10 @@ public:
 		m_fbo->setDrawBuffers({ gl::COLOR_ATTACHMENT0, gl::COLOR_ATTACHMENT1 });
 
                 
-        glowutils::StringTemplate* sphereVertexShader = new glowutils::StringTemplate(new glowutils::File("data/post-processing/sphere.vert"));
-        glowutils::StringTemplate* sphereFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/post-processing/sphere.frag"));
-        glowutils::StringTemplate* phongVertexShader = new glowutils::StringTemplate(new glowutils::File("data/post-processing/phong.vert"));
-        glowutils::StringTemplate* phongFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/post-processing/phong.frag"));
+        glowutils::StringTemplate* sphereVertexShader = new glowutils::StringTemplate(new glow::File("data/post-processing/sphere.vert"));
+        glowutils::StringTemplate* sphereFragmentShader = new glowutils::StringTemplate(new glow::File("data/post-processing/sphere.frag"));
+        glowutils::StringTemplate* phongVertexShader = new glowutils::StringTemplate(new glow::File("data/post-processing/phong.vert"));
+        glowutils::StringTemplate* phongFragmentShader = new glowutils::StringTemplate(new glow::File("data/post-processing/phong.frag"));
 
 #ifdef MAC_OS
                 sphereVertexShader->replace("#version 140", "#version 150");
@@ -199,7 +199,7 @@ public:
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
-            glowutils::File::reloadAll();
+            glow::File::reloadAll();
 			break;
 		}
 	}

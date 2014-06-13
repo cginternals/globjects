@@ -21,7 +21,7 @@
 #include <glow/debugmessageoutput.h>
 
 #include <glowutils/Timer.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/Camera.h>

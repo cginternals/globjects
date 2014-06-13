@@ -36,7 +36,6 @@ public:
 	ref_ptr(T * referenced);
 	ref_ptr(const ref_ptr & reference);
     ref_ptr(ref_ptr && reference);
-    //template <typename Other> ref_ptr(const ref_ptr<Other> & reference);
 	~ref_ptr();
 
     ref_ptr & operator=(const ref_ptr & reference);

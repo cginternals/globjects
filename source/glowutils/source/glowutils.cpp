@@ -4,7 +4,7 @@
 #include <glow/NamedString.h>
 #include <glow/Shader.h>
 
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 
 #ifdef _MSC_VER
 #include "windows.h"

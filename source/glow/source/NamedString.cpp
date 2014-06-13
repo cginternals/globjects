@@ -2,7 +2,7 @@
 
 #include <glbinding/functions.h>
 
-#include <glow/StaticStringSource.h>
+#include <glowbase/StaticStringSource.h>
 
 #include <glow/Error.h>
 #include "registry/NamedStringRegistry.h"

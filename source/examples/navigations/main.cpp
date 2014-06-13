@@ -26,8 +26,8 @@
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/FlightNavigation.h>
-#include <glowutils/File.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
+#include <glowbase/File.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 
@@ -80,8 +80,8 @@ public:
 
 
         m_sphere = new glow::Program();
-        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glowutils::File("data/adaptive-grid/sphere.vert"));
-        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glowutils::File("data/adaptive-grid/sphere.frag"));
+        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::File("data/adaptive-grid/sphere.vert"));
+        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::File("data/adaptive-grid/sphere.frag"));
 
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");
@@ -147,7 +147,7 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_F5:
-            glowutils::File::reloadAll();
+            glow::File::reloadAll();
             break;
         case GLFW_KEY_1:
             m_flightEnabled = !m_flightEnabled;

@@ -21,8 +21,8 @@
 
 #include <glowutils/Timer.h>
 #include <glowutils/Camera.h>
-#include <glowutils/File.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
+#include <glowbase/File.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
 
@@ -95,7 +95,7 @@ public:
 
         // Initialize shader includes
 
-        glow::NamedString::create("/glow/data/gpu-particles/particleMovement.inc", new glowutils::File("data/gpu-particles/particleMovement.inc"));
+        glow::NamedString::create("/glow/data/gpu-particles/particleMovement.inc", new glow::File("data/gpu-particles/particleMovement.inc"));
         
         // initialize camera
 
@@ -252,7 +252,7 @@ public:
             break;
 
         case GLFW_KEY_F5:
-            glowutils::File::reloadAll();
+            glow::File::reloadAll();
             break;
         }
     }

@@ -2,9 +2,7 @@
 
 #include <set>
 
-#include <glowutils/glowutils_api.h>
-
-namespace glowutils
+namespace glow
 {
 class File;
 

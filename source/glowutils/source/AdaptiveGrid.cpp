@@ -8,12 +8,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <glowbase/StaticStringSource.h>
+
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
-#include <glow/StaticStringSource.h>
 
 #include <glowutils/Plane3.h>
 #include <glowutils/Camera.h>

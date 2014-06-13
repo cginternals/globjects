@@ -64,11 +64,9 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
 	${source_path}/AbstractState.cpp
-	${source_path}/AbstractStringSource.cpp
 	${source_path}/AbstractUniform.cpp
 	${source_path}/Buffer.cpp
 	${source_path}/Capability.cpp
-	${source_path}/CompositeStringSource.cpp
 	${source_path}/constants.cpp
 	${source_path}/container_helpers.hpp
 	${source_path}/DebugInfo.cpp
@@ -137,7 +135,6 @@ set(sources
 	${source_path}/Shader.cpp
 	${source_path}/State.cpp
 	${source_path}/StateSetting.cpp
-	${source_path}/StaticStringSource.cpp
 	${source_path}/Sync.cpp
 	${source_path}/TextureAttachment.cpp
 	${source_path}/Texture.cpp
@@ -152,13 +149,11 @@ set(sources
 set(api_includes
 	${include_path}/AbstractState.h
 	${include_path}/AbstractState.hpp
-	${include_path}/AbstractStringSource.h
 	${include_path}/AbstractUniform.h
 	${include_path}/AbstractUniform.hpp
 	${include_path}/Buffer.h
 	${include_path}/Buffer.hpp
 	${include_path}/Capability.h
-	${include_path}/CompositeStringSource.h
 	${include_path}/constants.h
 	${include_path}/DebugInfo.h
 	${include_path}/DebugMessage.h
@@ -190,7 +185,6 @@ set(api_includes
 	${include_path}/State.h
 	${include_path}/StateSetting.h
 	${include_path}/StateSetting.hpp
-	${include_path}/StaticStringSource.h
 	${include_path}/Sync.h
 	${include_path}/TextureAttachment.h
 	${include_path}/Texture.h

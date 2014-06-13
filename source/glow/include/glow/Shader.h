@@ -10,9 +10,9 @@
 #include <glowbase/Changeable.h>
 #include <glowbase/ChangeListener.h>
 #include <glowbase/ref_ptr.h>
+#include <glowbase/AbstractStringSource.h>
 
 #include <glow/Object.h>
-#include <glow/AbstractStringSource.h>
 
 namespace glow 
 {

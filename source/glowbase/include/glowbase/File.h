@@ -2,18 +2,11 @@
 
 #include <string>
 
-#include <glow/AbstractStringSource.h>
-
-#include <glowutils/glowutils_api.h>
+#include <glowbase/AbstractStringSource.h>
+#include <glowbase/glowbase_api.h>
 
 namespace glow
 {
-    class Shader;
-}
-    
-namespace glowutils
-{
-class FileRegistry;
 
 /** \brief String source associated to a file.
     
@@ -22,7 +15,7 @@ class FileRegistry;
 
     \see StringSource
  */
-class GLOWUTILS_API File : public glow::AbstractStringSource
+class GLOWBASE_API File : public glow::AbstractStringSource
 {
 public:
     File(const std::string & filePath);
@@ -30,7 +23,7 @@ public:
     virtual std::string string() const override;
     virtual std::string shortInfo() const override;
 
-	const std::string & filePath() const;
+    const std::string & filePath() const;
 
     void reload();
 

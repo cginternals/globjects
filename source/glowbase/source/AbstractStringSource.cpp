@@ -1,4 +1,4 @@
-#include <glow/AbstractStringSource.h>
+#include <glowbase/AbstractStringSource.h>
 
 namespace glow
 {

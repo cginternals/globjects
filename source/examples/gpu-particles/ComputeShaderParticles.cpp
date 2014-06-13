@@ -1,10 +1,11 @@
 
 #include <glbinding/functions.h>
 
+#include <glowbase/AbstractStringSource.h>
+
 #include <glow/glow.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
-#include <glow/AbstractStringSource.h>
 #include <glow/Buffer.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
@@ -15,7 +16,7 @@
 
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/Camera.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 #include <glowutils/StringTemplate.h>
 #include <glowutils/glowutils.h>
 
@@ -62,7 +63,7 @@ void ComputeShaderParticles::initialize()
     m_computeProgram = new Program();
     
     glowutils::StringTemplate * stringTemplate = new glowutils::StringTemplate(
-        new glowutils::File("data/gpu-particles/particle.comp"));
+        new glow::File("data/gpu-particles/particle.comp"));
     stringTemplate->replace("MAX_INVOCATION", max_invocations);
     stringTemplate->update();
 

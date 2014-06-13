@@ -1,17 +1,12 @@
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 
-#include <cassert>
 #include <fstream>
 
 #include <glowbase/baselogging.h>
 
-#include <glow/Shader.h>
-
 #include "FileRegistry.h"
 
-using namespace glow;
-
-namespace glowutils
+namespace glow
 {
 
 File::File(const std::string & filePath)

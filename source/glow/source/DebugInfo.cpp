@@ -7,6 +7,8 @@
 
 #include "registry/ObjectRegistry.h"
 
+#include <glowbase/AbstractStringSource.h>
+
 #include <glow/logging.h>
 #include <glow/glow.h>
 #include <glow/memory.h>
@@ -19,7 +21,6 @@
 #include <glow/RenderBufferObject.h>
 #include <glow/Sampler.h>
 #include <glow/Shader.h>
-#include <glow/AbstractStringSource.h>
 #include <glow/Texture.h>
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>

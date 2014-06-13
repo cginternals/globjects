@@ -16,7 +16,7 @@
 #include <glowutils/Camera.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/StringTemplate.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -102,7 +102,7 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_F5:
-            glowutils::File::reloadAll();
+            glow::File::reloadAll();
             break;
         case GLFW_KEY_UP:
             m_angle += 0.5f;
@@ -185,8 +185,8 @@ void EventHandler::createAndSetupTexture()
 
 void EventHandler::createAndSetupGeometry()
 {
-    glowutils::StringTemplate * sphereVertexShader = new glowutils::StringTemplate(new glowutils::File("data/mipmap-filtering/mipmap.vert"));
-    glowutils::StringTemplate * sphereFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/mipmap-filtering/mipmap.frag"));
+    glowutils::StringTemplate * sphereVertexShader = new glowutils::StringTemplate(new glow::File("data/mipmap-filtering/mipmap.vert"));
+    glowutils::StringTemplate * sphereFragmentShader = new glowutils::StringTemplate(new glow::File("data/mipmap-filtering/mipmap.frag"));
 
     m_program = new glow::Program();
     m_program->attach(new glow::Shader(gl::VERTEX_SHADER, sphereVertexShader), new glow::Shader(gl::FRAGMENT_SHADER, sphereFragmentShader));

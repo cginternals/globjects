@@ -15,11 +15,11 @@
 #include <glowwindow/events.h>
 
 #include <glowutils/UnitCube.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 #include <glowutils/Camera.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include "GlBlendAlgorithm.h"
 #include "ABufferAlgorithm.h"
@@ -223,7 +223,7 @@ public:
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
-			glowutils::File::reloadAll();
+			glow::File::reloadAll();
 			break;
 		}
 	}

@@ -26,14 +26,6 @@ ref_ptr<T>::ref_ptr(const ref_ptr & reference)
 	increaseRef();
 }
 
-/*template <typename Other>
-template<typename T>
-ref_ptr<T>::ref_ptr(const ref_ptr<Other> & reference)
-: m_referenced(reference.m_referenced)
-{
-    increaseRef();
-}*/
-
 template<typename T>
 ref_ptr<T>::ref_ptr(ref_ptr && reference)
 : m_referenced(reference.m_referenced)

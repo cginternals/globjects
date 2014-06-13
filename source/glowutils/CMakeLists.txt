@@ -75,9 +75,6 @@ set(sources
 	${source_path}/CameraPathPlayer.cpp
 	${source_path}/CameraPathRecorder.cpp
 	${source_path}/dirent_msvc.h
-	${source_path}/File.cpp
-	${source_path}/FileRegistry.cpp
-	${source_path}/FileRegistry.h
 	${source_path}/FlightNavigation.cpp
 	${source_path}/glowutils.cpp
 	${source_path}/Icosahedron.cpp
@@ -107,7 +104,6 @@ set(api_includes
 	${include_path}/CameraPath.h
 	${include_path}/CameraPathPlayer.h
 	${include_path}/CameraPathRecorder.h
-	${include_path}/File.h
 	${include_path}/FlightNavigation.h
 	${include_path}/glowutils_api.h
 	${include_path}/glowutils.h

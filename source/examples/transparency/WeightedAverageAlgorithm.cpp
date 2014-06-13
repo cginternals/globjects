@@ -6,7 +6,7 @@
 #include <glow/RenderBufferObject.h>
 #include <glow/Buffer.h>
 
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 #include <glowutils/Camera.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/glowutils.h>

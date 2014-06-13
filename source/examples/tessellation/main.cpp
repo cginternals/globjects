@@ -21,8 +21,8 @@
 #include <glowutils/Icosahedron.h>
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/Camera.h>
-#include <glowutils/File.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
+#include <glowbase/File.h>
 #include <glowutils/glowutils.h>
 
 #include <glowwindow/ContextFormat.h>
@@ -124,7 +124,7 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_F5:
-            glowutils::File::reloadAll();
+            glow::File::reloadAll();
             break;
         }
     }

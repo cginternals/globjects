@@ -1,4 +1,4 @@
-#include <glow/StaticStringSource.h>
+#include <glowbase/StaticStringSource.h>
 
 namespace glow
 {

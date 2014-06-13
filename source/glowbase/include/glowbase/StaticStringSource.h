@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include <glow/glow_api.h>
-#include <glow/AbstractStringSource.h>
+#include <glowbase/glowbase_api.h>
+#include <glowbase/AbstractStringSource.h>
 
 namespace glow 
 {
@@ -14,7 +14,7 @@ namespace glow
     
     \see StringSource
  */
-class GLOW_API StaticStringSource : public AbstractStringSource
+class GLOWBASE_API StaticStringSource : public AbstractStringSource
 {
 public:
     StaticStringSource(const std::string& string);

@@ -3,13 +3,14 @@
 #include <cassert>
 #include <array>
 
+#include <glowbase/StaticStringSource.h>
+
 #include <glow/Program.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/Texture.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
 #include <glow/Shader.h>
-#include <glow/StaticStringSource.h>
 
 #include <glowutils/StringTemplate.h>
 

@@ -2,9 +2,9 @@
 
 #include <cassert>
 
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 
-namespace glowutils
+namespace glow
 {
 
 FileRegistry* FileRegistry::s_instance = new FileRegistry;

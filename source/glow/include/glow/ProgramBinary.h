@@ -8,9 +8,9 @@
 #include <glowbase/ChangeListener.h>
 #include <glowbase/Changeable.h>
 #include <glowbase/ref_ptr.h>
+#include <glowbase/AbstractStringSource.h>
 
 #include <glow/glow_api.h>
-#include <glow/AbstractStringSource.h>
 
 namespace glow
 {

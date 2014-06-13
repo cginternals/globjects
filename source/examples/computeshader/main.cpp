@@ -23,8 +23,8 @@
 #include <glow/Texture.h>
 #include <glow/glow.h>
 
-#include <glowutils/File.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
+#include <glowbase/File.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/glowutils.h>
 
@@ -113,7 +113,7 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glowutils::File::reloadAll();
+            glow::File::reloadAll();
     }
 
 protected:

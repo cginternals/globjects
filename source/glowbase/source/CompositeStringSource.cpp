@@ -1,4 +1,4 @@
-#include <glow/CompositeStringSource.h>
+#include <glowbase/CompositeStringSource.h>
 
 #include <sstream>
 #include <cassert>

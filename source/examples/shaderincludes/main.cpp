@@ -7,8 +7,8 @@
 #include <glow/debugmessageoutput.h>
 #include <glow/logging.h>
 
-#include <glowutils/File.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
+#include <glowbase/File.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
@@ -45,9 +45,9 @@ public:
         gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
-        glow::NamedString::create("/shaderincludes/color.glsl", new glowutils::File("data/shaderincludes/color.glsl"));
+        glow::NamedString::create("/shaderincludes/color.glsl", new glow::File("data/shaderincludes/color.glsl"));
 
-      glowutils::StringTemplate* fragmentShaderString = new glowutils::StringTemplate(new glowutils::File("data/shaderincludes/test.frag"));
+      glowutils::StringTemplate* fragmentShaderString = new glowutils::StringTemplate(new glow::File("data/shaderincludes/test.frag"));
 #ifdef MAC_OS
       fragmentShaderString->replace("#version 140", "#version 150");
 #endif
@@ -81,7 +81,7 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glowutils::File::reloadAll();
+            glow::File::reloadAll();
     }
 
 protected:

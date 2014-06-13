@@ -2,8 +2,7 @@
 
 #include <glowbase/ChangeListener.h>
 #include <glowbase/ref_ptr.h>
-
-#include <glow/AbstractStringSource.h>
+#include <glowbase/AbstractStringSource.h>
 
 #include <glowutils/glowutils_api.h>
 

@@ -21,10 +21,11 @@
 #include <glow/debugmessageoutput.h>
 #include <glow/glow.h>
 
+#include <glowbase/File.h>
+
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/Camera.h>
-#include <glowutils/File.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/AbstractCoordinateProvider.h>
@@ -139,7 +140,7 @@ public:
     virtual void keyPressEvent(KeyEvent & event) override
     {
         if (event.key()==GLFW_KEY_F5)
-            glowutils::File::reloadAll();
+            glow::File::reloadAll();
         else if (event.key()==GLFW_KEY_SPACE)
         {
             m_nav.reset();

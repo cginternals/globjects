@@ -13,7 +13,7 @@
 #include <glow/State.h>
 #include <glow/glow.h>
 
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 
@@ -67,8 +67,8 @@ public:
         m_vao = new glow::VertexArrayObject();
         m_buffer = new glow::Buffer();
 
-        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glowutils::File("data/states/standard.vert"));
-        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glowutils::File("data/states/standard.frag"));
+        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::File("data/states/standard.vert"));
+        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::File("data/states/standard.frag"));
         
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");

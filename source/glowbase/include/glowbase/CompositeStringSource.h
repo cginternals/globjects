@@ -3,16 +3,16 @@
 #include <string>
 #include <vector>
 
+#include <glowbase/glowbase_api.h>
+
 #include <glowbase/ref_ptr.h>
 #include <glowbase/ChangeListener.h>
-
-#include <glow/glow_api.h>
-#include <glow/AbstractStringSource.h>
+#include <glowbase/AbstractStringSource.h>
 
 namespace glow
 {
 
-class GLOW_API CompositeStringSource : public AbstractStringSource, protected ChangeListener
+class GLOWBASE_API CompositeStringSource : public AbstractStringSource, protected ChangeListener
 {
 public:
     CompositeStringSource();

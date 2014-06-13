@@ -45,19 +45,26 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(sources
 	${source_path}/AbstractFunctionCall.cpp
+	${source_path}/AbstractStringSource.cpp
 	${source_path}/baselogging.cpp
 	${source_path}/Changeable.cpp
 	${source_path}/ChangeListener.cpp
+	${source_path}/CompositeStringSource.cpp
 	${source_path}/ConsoleLogger.cpp
+	${source_path}/File.cpp
+	${source_path}/FileRegistry.cpp
+	${source_path}/FileRegistry.h
 	${source_path}/formatString.cpp
 	${source_path}/HeapOnly.cpp
 	${source_path}/LogMessageBuilder.cpp
 	${source_path}/LogMessage.cpp
 	${source_path}/Referenced.cpp
+	${source_path}/StaticStringSource.cpp
 	${source_path}/Version.cpp
 )
 
 set(api_includes
+	${include_path}/AbstractStringSource.h
 	${include_path}/AbstractFunctionCall.h
 	${include_path}/AbstractLogHandler.h
 	${include_path}/baselogging.h
@@ -66,8 +73,10 @@ set(api_includes
 	${include_path}/CachedValue.hpp
 	${include_path}/Changeable.h
 	${include_path}/ChangeListener.h
+	${include_path}/CompositeStringSource.h
 	${include_path}/ConsoleLogger.h
 	${include_path}/container_helpers.hpp
+	${include_path}/File.h
 	${include_path}/formatString.h
 	${include_path}/formatString.hpp
 	${include_path}/FunctionCall.h
@@ -80,6 +89,7 @@ set(api_includes
 	${include_path}/Referenced.h
 	${include_path}/ref_ptr.h
 	${include_path}/ref_ptr.hpp
+	${include_path}/StaticStringSource.h
 	${include_path}/Version.h
 )
 
