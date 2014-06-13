@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+
 namespace glow
 {
 
@@ -28,13 +30,13 @@ class Referenced;
 template<typename T>
 class ref_ptr
 {
-    // This prevents T to be forward declared when using ref_ptr
-    //static_assert(std::is_base_of<Referenced, T>::value, "T is not a subclass of Referenced");
+    static_assert(std::is_base_of<Referenced, T>::value, "T is not a subclass of Referenced");
 public:
 	ref_ptr();
 	ref_ptr(T * referenced);
 	ref_ptr(const ref_ptr & reference);
     ref_ptr(ref_ptr && reference);
+    //template <typename Other> ref_ptr(const ref_ptr<Other> & reference);
 	~ref_ptr();
 
     ref_ptr & operator=(const ref_ptr & reference);
@@ -59,7 +61,7 @@ protected:
 	void decreaseRef();
 
 protected:
-    mutable Referenced * m_referenced;
+    mutable T * m_referenced;
 };
 
 template <typename T>

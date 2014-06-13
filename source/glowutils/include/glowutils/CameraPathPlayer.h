@@ -7,17 +7,13 @@
 
 #include <glowbase/ref_ptr.h>
 
-#include <glowutils/glowutils_api.h>
+#include <glow/VertexArrayObject.h>
+#include <glow/Program.h>
+#include <glow/Buffer.h>
 
+#include <glowutils/glowutils_api.h>
 #include <glowutils/CameraPath.h>
 
-namespace glow {
-
-class VertexArrayObject;
-class Program;
-class Buffer;
-
-}
 
 namespace glowutils
 {

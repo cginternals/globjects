@@ -2,23 +2,16 @@
 
 #include <glowbase/ref_ptr.h>
 
+#include <glow/Buffer.h>
+#include <glow/FrameBufferObject.h>
+#include <glow/Program.h>
+#include <glow/Texture.h>
+#include <glow/TransformFeedback.h>
+#include <glow/VertexArrayObject.h>
+
+#include <glowutils/ScreenAlignedQuad.h>
+
 #include "AbstractParticleTechnique.h"
-
-namespace glow
-{
-    class Program;
-    class Buffer;
-    class TransformFeedback;
-    class Texture;
-    class FrameBufferObject;
-    class VertexArrayObject;
-}
-
-namespace glowutils
-{
-    class ScreenAlignedQuad;
-}
-
 
 class TransformFeedbackParticles : public AbstractParticleTechnique
 {

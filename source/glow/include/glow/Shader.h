@@ -12,12 +12,11 @@
 #include <glowbase/ref_ptr.h>
 
 #include <glow/Object.h>
-
-// http://www.opengl.org/wiki/Shader
+#include <glow/AbstractStringSource.h>
 
 namespace glow 
 {
-class AbstractStringSource;
+
 class Program;
 
 /** \brief Encapsulates OpenGL shaders.
@@ -27,6 +26,8 @@ class Program;
     Program::attach(). A Shader subclasses either ChangeListener and Changeable
     to react to changing shader sources and to propagate this change to 
     ChangeListeners.
+
+    \see  http://www.opengl.org/wiki/Shader
 
     \see Program
     \see ShaderSource

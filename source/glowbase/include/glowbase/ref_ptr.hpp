@@ -4,20 +4,7 @@
 
 #include <glowbase/Referenced.h>
 
-#include <type_traits>
-
-namespace {
-
-template <typename T>
-struct non_const_pointer
-{
-    using type = typename std::add_pointer<typename std::decay<T>::type>::type;
-};
-
-}
-
-namespace glow
-{
+namespace glow {
 
 template<typename T>
 ref_ptr<T>::ref_ptr()
@@ -27,7 +14,7 @@ ref_ptr<T>::ref_ptr()
 
 template<typename T>
 ref_ptr<T>::ref_ptr(T * referenced)
-: m_referenced(static_cast<Referenced*>(const_cast<typename non_const_pointer<T>::type>(referenced)))
+: m_referenced(referenced)
 {
 	increaseRef();
 }
@@ -38,6 +25,14 @@ ref_ptr<T>::ref_ptr(const ref_ptr & reference)
 {
 	increaseRef();
 }
+
+/*template <typename Other>
+template<typename T>
+ref_ptr<T>::ref_ptr(const ref_ptr<Other> & reference)
+: m_referenced(reference.m_referenced)
+{
+    increaseRef();
+}*/
 
 template<typename T>
 ref_ptr<T>::ref_ptr(ref_ptr && reference)
@@ -65,25 +60,25 @@ ref_ptr<T> & ref_ptr<T>::operator=(const ref_ptr & reference)
 template<typename T>
 T & ref_ptr<T>::operator*() const
 {
-    return *static_cast<T*>(m_referenced);
+    return *m_referenced;
 }
 
 template<typename T>
 T * ref_ptr<T>::operator->() const
 {
-    return static_cast<T*>(m_referenced);
+    return m_referenced;
 }
 
 template<typename T>
 T * ref_ptr<T>::get() const
 {
-    return static_cast<T*>(m_referenced);
+    return m_referenced;
 }
 
 template<typename T>
 ref_ptr<T>::operator T *() const
 {
-    return static_cast<T*>(m_referenced);
+    return m_referenced;
 }
 
 template<typename T>

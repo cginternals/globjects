@@ -7,14 +7,9 @@
 
 #include <glowutils/glowutils_api.h>
 
-namespace glow
-{
-
-class Program;
-class VertexArrayObject;
-class Buffer;
-
-}
+#include <glow/Program.h>
+#include <glow/VertexArrayObject.h>
+#include <glow/Buffer.h>
  
 namespace glowutils 
 {

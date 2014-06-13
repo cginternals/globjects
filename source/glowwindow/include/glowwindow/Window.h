@@ -10,6 +10,7 @@
 
 #include <glowwindow/glowwindow_api.h>
 #include <glowwindow/MainLoop.h>
+#include <glowwindow/WindowEventHandler.h>
 
 struct GLFWwindow;
 struct GLFWmonitor;
@@ -23,7 +24,6 @@ namespace glowwindow
 {
 
 class WindowEvent;
-class WindowEventHandler;
 class ContextFormat;
 class Context;
 

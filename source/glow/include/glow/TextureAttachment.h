@@ -6,11 +6,11 @@
 
 #include <glow/glow_api.h>
 #include <glow/FrameBufferAttachment.h>
+#include <glow/Texture.h>
 
 namespace glow 
 {
 
-class Texture;
 class FrameBufferObject;
 
 /** \brief Encapsulates texture attachments of a frame buffer object.

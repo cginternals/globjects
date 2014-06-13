@@ -9,13 +9,10 @@
 #include <glowbase/ref_ptr.h>
 #include <glowbase/Referenced.h>
 
-#include <glowutils/glowutils_api.h>
+#include <glow/VertexArrayObject.h>
+#include <glow/Buffer.h>
 
-namespace glow
-{
-    class VertexArrayObject;
-    class Buffer;
-}
+#include <glowutils/glowutils_api.h>
 
 namespace glowutils 
 {

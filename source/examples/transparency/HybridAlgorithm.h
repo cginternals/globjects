@@ -2,20 +2,17 @@
 
 #include "AbstractTransparencyAlgorithm.h"
 
-namespace glow {
+#include <glow/Buffer.h>
+#include <glow/FrameBufferObject.h>
+#include <glow/Program.h>
+#include <glow/Texture.h>
+#include <glow/RenderBufferObject.h>
 
-class Program;
-class FrameBufferObject;
-class Texture;
-class RenderBufferObject;
-class Buffer;
-
-}
+#include <glowutils/ScreenAlignedQuad.h>
 
 namespace glowutils {
 
 class Camera;
-class ScreenAlignedQuad;
 
 }
 

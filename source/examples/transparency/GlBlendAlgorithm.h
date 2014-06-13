@@ -2,14 +2,10 @@
 
 #include "AbstractTransparencyAlgorithm.h"
 
-namespace glow {
-
-class Program;
-class FrameBufferObject;
-class Texture;
-class RenderBufferObject;
-
-}
+#include <glow/Program.h>
+#include <glow/FrameBufferObject.h>
+#include <glow/RenderBufferObject.h>
+#include <glow/Texture.h>
 
 namespace glowutils {
 

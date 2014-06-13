@@ -6,22 +6,15 @@
 
 #include <glbinding/constants.h>
 
-
-
 #include <glm/glm.hpp>
 
 #include <glowbase/Referenced.h>
 #include <glowbase/ref_ptr.h>
 
+#include <glow/VertexArrayObject.h>
+#include <glow/Buffer.h>
+
 #include <glowutils/glowutils_api.h>
-
-namespace glow
-{
-
-class VertexArrayObject;
-class Buffer;
-
-}
 
 namespace glowutils 
 {

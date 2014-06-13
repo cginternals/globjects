@@ -3,17 +3,13 @@
 #include <glowbase/Referenced.h>
 #include <glowbase/ref_ptr.h>
 
+#include <glow/VertexArrayObject.h>
+#include <glow/Program.h>
+#include <glow/Buffer.h>
+#include <glow/Texture.h>
+#include <glow/Shader.h>
+
 #include <glowutils/glowutils_api.h>
-
-namespace glow {
-
-class Buffer;
-class Program;
-class Shader;
-class Texture;
-class VertexArrayObject;
-
-}
 
 namespace glowutils
 {

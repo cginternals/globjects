@@ -13,14 +13,12 @@
 #include <glow/Object.h>
 #include <glow/LocationIdentity.h>
 #include <glow/UniformBlock.h>
+#include <glow/Shader.h>
+#include <glow/ProgramBinary.h>
+#include <glow/AbstractUniform.h>
 
 namespace glow
 {
-class Shader;
-class ProgramBinary;
-
-class AbstractUniform;
-template<typename T> class Uniform;
 
 /** \brief Wraps an OpenGL program.
     
