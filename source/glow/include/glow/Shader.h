@@ -36,8 +36,7 @@ class Program;
  */
 class GLOW_API Shader : public Object, protected ChangeListener, public Changeable
 {
-	friend class Program;
-    friend class ShaderCompiler;
+    friend class Program;
 
 public:
     static Shader * fromString(const gl::GLenum type, const std::string & sourceString);
