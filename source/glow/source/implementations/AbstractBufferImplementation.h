@@ -2,10 +2,10 @@
 
 #include <glbinding/types.h>
 
-#include <glow/Buffer.h>
-
 namespace glow
 {
+
+class Buffer;
 
 class AbstractBufferImplementation
 {

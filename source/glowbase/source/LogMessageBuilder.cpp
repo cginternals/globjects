@@ -1,9 +1,10 @@
 #include <glowbase/LogMessageBuilder.h>
-#include <glowbase/AbstractLogHandler.h>
-#include <glowbase/Version.h>
 
 #include <cstring>
 #include <cassert>
+
+#include <glowbase/AbstractLogHandler.h>
+#include <glowbase/Version.h>
 
 namespace glow
 {

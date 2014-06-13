@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include <glowbase/LogMessage.h>
-
 namespace glow
 {
 

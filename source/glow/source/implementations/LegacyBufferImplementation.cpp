@@ -2,7 +2,7 @@
 
 #include <glbinding/functions.h>
 
-#include <glow/Error.h>
+#include <glow/Buffer.h>
 
 namespace glow {
 

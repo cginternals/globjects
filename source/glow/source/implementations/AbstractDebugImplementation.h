@@ -1,12 +1,12 @@
 #pragma once
 
-#include <functional>
-#include <vector>
+#include <glbinding/types.h>
 
-#include <glow/DebugMessage.h>
 #include "../DebugMessageCallback.h"
 
 namespace glow {
+
+class DebugMessage;
 
 class AbstractDebugImplementation
 {

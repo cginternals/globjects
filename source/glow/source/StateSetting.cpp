@@ -1,7 +1,5 @@
 #include <glow/StateSetting.h>
 
-#include <glow/Error.h>
-
 namespace glow
 {
 

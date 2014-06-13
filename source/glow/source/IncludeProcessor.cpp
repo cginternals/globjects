@@ -9,7 +9,6 @@
 #include <glowbase/StaticStringSource.h>
 #include <glowbase/CompositeStringSource.h>
 
-#include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/glow.h>
 #include <glow/NamedString.h>

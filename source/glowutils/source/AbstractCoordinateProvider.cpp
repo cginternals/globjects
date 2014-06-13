@@ -5,8 +5,6 @@
 
 #include <glm/glm.hpp>
 
-#include <glow/Error.h>
-
 #include <glowutils/Camera.h>
 
 using namespace glm;

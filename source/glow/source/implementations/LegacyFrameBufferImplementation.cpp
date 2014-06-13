@@ -2,9 +2,9 @@
 
 #include <glbinding/functions.h>
 
+#include <glow/FrameBufferObject.h>
 #include <glow/Texture.h>
 #include <glow/RenderBufferObject.h>
-#include <glow/Error.h>
 
 namespace glow {
 

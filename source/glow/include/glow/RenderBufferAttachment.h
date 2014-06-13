@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 #include <glowbase/ref_ptr.h>
 
 #include <glow/glow_api.h>

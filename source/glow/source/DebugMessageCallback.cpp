@@ -2,6 +2,8 @@
 
 #include <glbinding/constants.h>
 
+#include <glow/DebugMessage.h>
+
 #ifdef GLOW_GL_ERROR_RAISE_EXCEPTION
 #include <stdexcept>
 #endif

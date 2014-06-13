@@ -1,6 +1,4 @@
 
-
-#include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/Texture.h>
 #include <glow/debugmessageoutput.h>

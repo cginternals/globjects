@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <glm/glm.hpp>
+#include <glm/vec3.hpp>
 
 #include <glowbase/ChangeListener.h>
 #include <glowbase/ref_ptr.h>

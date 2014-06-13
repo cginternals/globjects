@@ -17,7 +17,6 @@
 #include <glow/Extension.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
-#include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/debugmessageoutput.h>
 #include <glow/Texture.h>

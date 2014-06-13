@@ -3,17 +3,13 @@
 #include <glbinding/constants.h>
 #include <glbinding/functions.h>
 
-#include <glow/glow.h>
+#include <glow/DebugMessage.h>
 
-#ifdef WIN32
-#include <Windows.h>
-#else
-#define APIENTRY
-#endif
+#include <glow/glow.h>
 
 namespace glow {
 
-void APIENTRY DebugImplementation::debugMessageCallback(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message, const void * param)
+void GL_APIENTRY DebugImplementation::debugMessageCallback(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message, const void * param)
 {
     if (!param)
         return;

@@ -1,12 +1,8 @@
 #pragma once
 
-#include "AbstractDebugImplementation.h"
+#include <glbinding/types.h>
 
-#ifdef WIN32
-#include <Windows.h>
-#else
-#define APIENTRY
-#endif
+#include "AbstractDebugImplementation.h"
 
 namespace glow {
 
@@ -22,7 +18,7 @@ public:
 protected:
     void registerCallback();
 
-    static void APIENTRY debugMessageCallback(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message, const void * param);
+    static void GL_APIENTRY debugMessageCallback(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message, const void * param);
 };
 
 } // namespace glow

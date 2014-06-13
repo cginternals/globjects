@@ -1,11 +1,13 @@
 #pragma once
 
-
-
-#include <glow/FrameBufferObject.h>
+#include <glbinding/types.h>
 
 namespace glow
 {
+
+class FrameBufferObject;
+class Texture;
+class RenderBufferObject;
 
 class AbstractFrameBufferImplementation
 {

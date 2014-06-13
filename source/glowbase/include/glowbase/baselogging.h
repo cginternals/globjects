@@ -1,11 +1,15 @@
 #pragma once
 
 #include <glowbase/glowbase_api.h>
-#include <glowbase/AbstractLogHandler.h>
+
+#include <glowbase/LogMessage.h>
 #include <glowbase/LogMessageBuilder.h>
 
 namespace glow
 {
+
+class AbstractLogHandler;
+class LogMessageBuilder;
 
 /**
   * Creates a stream like object (LogMessageBuilder) to create a LogMessage from the objects

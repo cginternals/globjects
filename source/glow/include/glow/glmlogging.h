@@ -4,7 +4,7 @@
 
 #include <glowbase/LogMessageBuilder.h>
 
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 namespace glow {
 

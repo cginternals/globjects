@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include<type_traits>
+#include <type_traits>
 
 template <typename T, class InputIterator, class Function>
 std::vector<T> collect(InputIterator first, InputIterator last, Function mapper)

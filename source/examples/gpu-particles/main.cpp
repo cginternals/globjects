@@ -12,7 +12,6 @@
 #include <glm/gtc/random.hpp>
 
 #include <glow/glow.h>
-#include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/Texture.h>
 #include <glow/NamedString.h>

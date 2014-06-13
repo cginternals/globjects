@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include <glowbase/AbstractLogHandler.h>
+#include <glowbase/LogMessageBuilder.h>
 #include <glowbase/ConsoleLogger.h>
 
 namespace

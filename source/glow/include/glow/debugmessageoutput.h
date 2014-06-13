@@ -4,7 +4,7 @@
 #include <vector>
 #include <functional>
 
-
+#include <glbinding/types.h>
 
 #include <glow/glow_api.h>
 

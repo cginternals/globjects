@@ -1,6 +1,5 @@
 #include "FallbackDebugImplementation.h"
 
-
 namespace glow {
 
 FallbackDebugImplementation::FallbackDebugImplementation()

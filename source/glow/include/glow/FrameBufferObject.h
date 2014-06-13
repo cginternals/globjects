@@ -7,14 +7,12 @@
 
 #include <glbinding/constants.h>
 
-#include <glm/glm.hpp>
+#include <glm/vec4.hpp>
 
 #include <glowbase/ref_ptr.h>
 
 #include <glow/glow_api.h>
 #include <glow/Object.h>
-
-
 
 namespace glow 
 {

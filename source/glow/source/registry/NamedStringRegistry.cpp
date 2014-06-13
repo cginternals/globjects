@@ -2,6 +2,7 @@
 #include "Registry.h"
 
 #include <glow/logging.h>
+#include <glow/NamedString.h>
 
 #include <glow/glow.h>
 

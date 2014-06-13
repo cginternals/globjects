@@ -2,7 +2,6 @@
 
 #include <glbinding/functions.h>
 
-#include <glow/Error.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/Texture.h>
 #include <glow/RenderBufferObject.h>

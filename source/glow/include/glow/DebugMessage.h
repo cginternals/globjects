@@ -2,10 +2,9 @@
 
 #include <string>
 
-
+#include <glbinding/types.h>
 
 #include <glow/glow_api.h>
-#include <glow/Error.h>
 
 namespace glow
 {

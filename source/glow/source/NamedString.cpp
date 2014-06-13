@@ -4,7 +4,6 @@
 
 #include <glowbase/StaticStringSource.h>
 
-#include <glow/Error.h>
 #include "registry/NamedStringRegistry.h"
 
 namespace glow {

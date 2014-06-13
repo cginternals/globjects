@@ -1,8 +1,5 @@
 #pragma once
 
-
-
-#include <array>
 #include <vector>
 
 #include <glow/glow_api.h>

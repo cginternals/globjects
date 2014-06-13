@@ -1,7 +1,8 @@
 #pragma once
 
-#include <glowbase/FunctionCall.h>
 #include <glow/StateSetting.h>
+
+#include <glowbase/FunctionCall.h>
 
 namespace glow
 {

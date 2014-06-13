@@ -1,8 +1,5 @@
 #include <glbinding/constants.h>
 
-
-
-#include <glow/Error.h>
 #include <glow/logging.h>
 #include <glow/debugmessageoutput.h>
 

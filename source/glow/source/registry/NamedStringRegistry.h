@@ -3,9 +3,9 @@
 #include <string>
 #include <unordered_map>
 
-#include <glow/NamedString.h>
-
 namespace glow {
+
+class NamedString;
 
 class NamedStringRegistry
 {

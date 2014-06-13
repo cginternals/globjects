@@ -1,11 +1,11 @@
 #pragma once
 
-#include <glow/Buffer.h>
-
 #include "AbstractBufferImplementation.h"
 
 namespace glow
 {
+
+class Buffer;
 
 class BindlessBufferImplementation : public AbstractBufferImplementation
 {

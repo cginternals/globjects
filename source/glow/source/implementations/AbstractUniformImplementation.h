@@ -2,13 +2,14 @@
 
 #include <vector>
 
+#include <glm/glm.hpp>
 
-
-#include <glow/Program.h>
 #include <glow/TextureHandle.h>
 
 namespace glow
 {
+
+class Program;
 
 class AbstractUniformImplementation
 {

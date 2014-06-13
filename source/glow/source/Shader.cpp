@@ -13,7 +13,6 @@
 
 #include <glow/Program.h>
 #include <glow/logging.h>
-#include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
 #include <glow/glow.h>
 

@@ -7,7 +7,6 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
-#include <glow/Error.h>
 
 using namespace glm;
 using namespace glow;

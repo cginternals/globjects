@@ -3,9 +3,9 @@
 #include <vector>
 #include <functional>
 
-#include <glow/DebugMessage.h>
-
 namespace glow {
+
+class DebugMessage;
 
 class DebugMessageCallback
 {

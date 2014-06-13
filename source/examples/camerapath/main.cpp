@@ -11,7 +11,6 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/constants.hpp>
 
-#include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>

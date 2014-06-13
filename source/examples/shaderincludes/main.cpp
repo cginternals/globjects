@@ -1,7 +1,4 @@
 
-
-
-#include <glow/Error.h>
 #include <glow/NamedString.h>
 #include <glow/Shader.h>
 #include <glow/debugmessageoutput.h>

@@ -2,8 +2,6 @@
 
 #include <glbinding/functions.h>
 
-#include <glow/Error.h>
-
 namespace glow
 {
 

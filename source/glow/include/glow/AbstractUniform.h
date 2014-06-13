@@ -5,9 +5,7 @@
 #include <vector>
 #include <array>
 
-
-
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 #include <glowbase/Referenced.h>
 

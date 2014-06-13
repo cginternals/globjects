@@ -7,7 +7,6 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include <glow/Error.h>
 #include <glow/Buffer.h>
 #include <glow/ObjectVisitor.h>
 

@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 #include "AbstractFrameBufferImplementation.h"
 
 namespace glow

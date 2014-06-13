@@ -12,7 +12,6 @@
 #include <glowbase/formatString.h>
 
 #include <glow/glow.h>
-#include <glow/Error.h>
 #include <glow/Uniform.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>

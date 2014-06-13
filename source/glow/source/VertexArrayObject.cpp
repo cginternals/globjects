@@ -4,7 +4,6 @@
 
 #include <glbinding/functions.h>
 
-#include <glow/Error.h>
 #include <glow/ObjectVisitor.h>
 #include <glow/VertexAttributeBinding.h>
 

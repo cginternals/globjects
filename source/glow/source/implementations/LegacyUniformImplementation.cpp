@@ -2,10 +2,9 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include <glbinding/constants.h>
 #include <glbinding/functions.h>
 
-#include <glow/Error.h>
+#include <glow/Program.h>
 
 namespace glow
 {

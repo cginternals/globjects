@@ -5,7 +5,9 @@
 
 #include <vector>
 
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 #include <glow/glow_api.h>
 #include <glow/Object.h>

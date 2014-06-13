@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glow/objectlogging.h>
-#include <glow/glmlogging.h>
+
 #include <glow/Uniform.h>
 
 namespace glow {

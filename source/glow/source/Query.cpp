@@ -3,7 +3,6 @@
 #include <glbinding/functions.h>
 
 #include <glow/ObjectVisitor.h>
-#include <glow/Error.h>
 
 namespace glow
 {

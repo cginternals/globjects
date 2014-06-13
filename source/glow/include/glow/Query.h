@@ -4,8 +4,6 @@
 
 #include <glbinding/constants.h>
 
-
-
 #include <glow/glow_api.h>
 #include <glow/Object.h>
 

@@ -1,11 +1,9 @@
 #pragma once
 
-#include <glbinding/types.h>
-#include <glbinding/functions.h>
-
 #include <glow/glow.h>
 
-#include <glow/Error.h>
+#include <glbinding/types.h>
+#include <glbinding/functions.h>
 
 namespace glow 
 {
