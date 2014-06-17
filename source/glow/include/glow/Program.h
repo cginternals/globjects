@@ -40,8 +40,8 @@ namespace glow
 
         Program * program = new Program();
         program->attach(
-            Shader::fromString(gl::VERTEX_SHADER, "...")
-          , Shader::fromString(gl::FRAGMENT_SHADER, "...")
+            Shader::fromString(gl::GL_VERTEX_SHADER, "...")
+          , Shader::fromString(gl::GL_FRAGMENT_SHADER, "...")
           , ...);
         program->use();
     
@@ -55,7 +55,7 @@ namespace glow
     \code{.cpp}
 
         Program * program = new Program();
-        program->attach(Shader::fromString(gl::COMPUTE_SHADER, "..."));
+        program->attach(Shader::fromString(gl::GL_COMPUTE_SHADER, "..."));
     
         program->dispatchCompute(128, 1, 1);
     

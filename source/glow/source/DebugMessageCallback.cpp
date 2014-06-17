@@ -60,7 +60,7 @@ void DebugMessageCallback::callCallbacks(const DebugMessage & message) const
 
 void DebugMessageCallback::defaultAction(const DebugMessage & message) const
 {
-    if (message.type() == gl::DEBUG_TYPE_ERROR_ARB)
+    if (message.type() == gl::GL_DEBUG_TYPE_ERROR_ARB)
     {
         handleError(message);
     }

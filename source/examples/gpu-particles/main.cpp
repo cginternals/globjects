@@ -90,7 +90,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        m_forces = glow::Texture::createDefault(gl::TEXTURE_3D);
+        m_forces = glow::Texture::createDefault(gl::GL_TEXTURE_3D);
 
         // Initialize shader includes
 
@@ -129,7 +129,7 @@ public:
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        gl::Viewport(0, 0, event.width(), event.height());
+        gl::glViewport(0, 0, event.width(), event.height());
 
 
         m_camera->setViewport(event.size());
@@ -188,7 +188,7 @@ public:
             forces[i] = f * (1.f - length(vec3(x, y, z)) / std::sqrt(3.f));
         }
 
-        m_forces->image3D(0, gl::RGB32F, fdim.x, fdim.y, fdim.z, 0, gl::RGB, gl::FLOAT, forces.data());
+        m_forces->image3D(0, gl::GL_RGB32F, fdim.x, fdim.y, fdim.z, 0, gl::GL_RGB, gl::GL_FLOAT, forces.data());
 
         if (!particles)
             return;

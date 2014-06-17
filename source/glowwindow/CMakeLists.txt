@@ -72,6 +72,7 @@ set(api_includes
     ${include_path}/Context.h
     ${include_path}/ContextFormat.h
     ${include_path}/events.h
+    ${include_path}/keys.h
     ${include_path}/MainLoop.h
     ${include_path}/Window.h
     ${include_path}/WindowEventHandler.h

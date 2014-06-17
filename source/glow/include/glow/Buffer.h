@@ -24,8 +24,8 @@ namespace glow
  * The current bound VertexArrayObject and Program will specify the render pipeline and data.
  *
  * \code{.cpp}
- * Buffer * buffer = new Buffer(gl::SHADER_STORAGE_BUFFER);
- * buffer->setData(sizeof(glm::vec4) * 100, nullptr, gl::DYNAMIC_DRAW); // allocate 100 vec4
+ * Buffer * buffer = new Buffer(gl::GL_SHADER_STORAGE_BUFFER);
+ * buffer->setData(sizeof(glm::vec4) * 100, nullptr, gl::GL_DYNAMIC_DRAW); // allocate 100 vec4
  * \endcode
  *
  * \see http://www.opengl.org/wiki/Buffer_Object
@@ -62,7 +62,7 @@ public:
     /**
      * Binds the buffer to target.
      * @param target the target for binding
-     * \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::BindBuffer.xml
+     * \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glBindBuffer.xml
      */
     void bind(gl::GLenum target) const;
 
@@ -86,17 +86,17 @@ public:
      * @param usage used as a performance hint on how the buffer is used
      * \see https://www.opengl.org/sdk/docs/man4/xhtml/glBufferData.xml
      */
-    void setData(gl::GLsizeiptr size, const gl::GLvoid * data = nullptr, gl::GLenum usage = gl::STATIC_DRAW);
+    void setData(gl::GLsizeiptr size, const gl::GLvoid * data = nullptr, gl::GLenum usage = gl::GL_STATIC_DRAW);
     /**
      * Convenience method to simplify passing of data in form of an std::vector.
      */
     template <typename T>
-    void setData(const std::vector<T> & data, gl::GLenum usage = gl::STATIC_DRAW);
+    void setData(const std::vector<T> & data, gl::GLenum usage = gl::GL_STATIC_DRAW);
     /**
      * Convenience method to simplify passing of data in form of an std::array.
      */
     template <typename T, std::size_t Count>
-    void setData(const std::array<T, Count> & data, gl::GLenum usage = gl::STATIC_DRAW);
+    void setData(const std::array<T, Count> & data, gl::GLenum usage = gl::GL_STATIC_DRAW);
     /**
      * Wraps the OpenGL function glBufferSubData.
      * Writes data only to a defined area of the memory.
@@ -137,11 +137,11 @@ public:
     void setStorage(const std::array<T, Count> & data, gl::GLbitfield flags);
 
     /**
-     * Wraps the OpenGL function gl::GetBufferParameter.
+     * Wraps the OpenGL function gl::glGetBufferParameter.
      * Queries OpenGL for internal state of the buffer.
-     * @param pname name of the parameter, e.g. gl::BUFFER_SIZE
+     * @param pname name of the parameter, e.g. gl::glBUFFER_SIZE
      * @return integer value for the parameter
-     * \see http://www.opengl.org/sdk/docs/man/xhtml/gl::GetBufferParameter.xml
+     * \see http://www.opengl.org/sdk/docs/man/xhtml/gl::glGetBufferParameter.xml
      */
     gl::GLint getParameter(gl::GLenum pname) const;
 
@@ -156,7 +156,7 @@ public:
      * @param access specifies reading/writing access
      * @return a pointer to the mapped memory
      */
-    void * map(gl::GLenum access = gl::READ_ONLY);
+    void * map(gl::GLenum access = gl::GL_READ_ONLY);
     /**
      * Wraps the OpenGL function glMapBufferRange.
      * Maps only a range of the buffers memory.
@@ -182,13 +182,13 @@ public:
     void flushMappedRange(gl::GLintptr offset, gl::GLsizeiptr length);
 
     /**
-     * Wraps the OpenGL function gl::BindBufferBase.
-     * \see http://www.opengl.org/sdk/docs/man/xhtml/gl::BindBufferBase.xml
+     * Wraps the OpenGL function gl::glBindBufferBase.
+     * \see http://www.opengl.org/sdk/docs/man/xhtml/gl::glBindBufferBase.xml
      */
     void bindBase(gl::GLenum target, gl::GLuint index) const;
     /**
-     * Wraps the OpenGL function gl::BindBufferRange.
-     * \see http://www.opengl.org/sdk/docs/man3/xhtml/gl::BindBufferRange.xml
+     * Wraps the OpenGL function gl::glBindBufferRange.
+     * \see http://www.opengl.org/sdk/docs/man3/xhtml/gl::glBindBufferRange.xml
      */
     void bindRange(gl::GLenum target, gl::GLuint index, gl::GLintptr offset, gl::GLsizeiptr size) const;
 
@@ -212,20 +212,20 @@ public:
      * @param size size of the data to be copied
      * @param usage buffer usage
      */
-    void copyData(Buffer * buffer, gl::GLsizeiptr size, gl::GLenum usage = gl::STATIC_DRAW) const;
+    void copyData(Buffer * buffer, gl::GLsizeiptr size, gl::GLenum usage = gl::GL_STATIC_DRAW) const;
 
     /**
-     * Wraps the OpenGL function gl::ClearBufferData.
+     * Wraps the OpenGL function gl::glClearBufferData.
      * Clears the Buffer's data by filling it with the value in data, which has to be long enough to match format.
      * @param data up to 4 components of the vector value to fill the buffer with
-     * \see http://www.opengl.org/sdk/docs/man/xhtml/gl::ClearBufferData.xml
+     * \see http://www.opengl.org/sdk/docs/man/xhtml/gl::glClearBufferData.xml
      */
     void clearData(gl::GLenum internalformat, gl::GLenum format, gl::GLenum type, const void * data = nullptr);
     /**
-     * Wraps the OpenGL function gl::ClearBufferSubData.
+     * Wraps the OpenGL function gl::glClearBufferSubData.
      * @param offset offset in bytes
      * @param size size in bytes
-     * \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::ClearBufferSubData.xml
+     * \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glClearBufferSubData.xml
      */
     void clearSubData(gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data = nullptr);
 
@@ -238,14 +238,14 @@ protected:
     /**
      * @brief ~Buffer
      * Automatically deletes the associated OpenGL buffer unless the object was created with an external id.
-     * \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::DeleteBuffers.xml
+     * \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glDeleteBuffers.xml
      */
     virtual ~Buffer();
 
     /**
-     * Wraps the OpenGL function gl::GenBuffers.
+     * Wraps the OpenGL function gl::glGenBuffers.
      * @return id of a newly created OpenGL buffer
-     * /see https://www.opengl.org/sdk/docs/man4/xhtml/gl::GenBuffers.xml
+     * /see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glGenBuffers.xml
      */
     static gl::GLuint genBuffer();
 };

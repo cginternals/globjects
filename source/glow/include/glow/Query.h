@@ -28,7 +28,7 @@ namespace glow
     An example time measurement:
     \code{.cpp}
 
-        Query * query = new Query(gl::TIME_ELAPSED);
+        Query * query = new Query(gl::glTIME_ELAPSED);
         query->begin();
     
         // more GL calls
@@ -83,23 +83,23 @@ public:
 	
     static bool isQuery(gl::GLuint id);
 
-	gl::GLuint get(gl::GLenum pname = gl::QUERY_RESULT) const;
-    gl::GLuint64 get64(gl::GLenum pname = gl::QUERY_RESULT) const;
+    gl::GLuint get(gl::GLenum pname = gl::GL_QUERY_RESULT) const;
+    gl::GLuint64 get64(gl::GLenum pname = gl::GL_QUERY_RESULT) const;
 	
 	bool resultAvailable() const;
     void wait() const;
     void wait(const std::chrono::duration<int, std::nano> & timeout) const;
 	
-    gl::GLuint waitAndGet(gl::GLenum pname = gl::QUERY_RESULT) const;
-    gl::GLuint64 waitAndGet64(gl::GLenum pname = gl::QUERY_RESULT) const;
+    gl::GLuint waitAndGet(gl::GLenum pname = gl::GL_QUERY_RESULT) const;
+    gl::GLuint64 waitAndGet64(gl::GLenum pname = gl::GL_QUERY_RESULT) const;
 
-    gl::GLuint waitAndGet(const std::chrono::duration<int, std::nano> & timeout, gl::GLenum pname = gl::QUERY_RESULT) const;
-    gl::GLuint64 waitAndGet64(const std::chrono::duration<int, std::nano> & timeout, gl::GLenum pname = gl::QUERY_RESULT) const;
+    gl::GLuint waitAndGet(const std::chrono::duration<int, std::nano> & timeout, gl::GLenum pname = gl::GL_QUERY_RESULT) const;
+    gl::GLuint64 waitAndGet64(const std::chrono::duration<int, std::nano> & timeout, gl::GLenum pname = gl::GL_QUERY_RESULT) const;
 
     gl::GLuint waitAndGet(gl::GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const;
     gl::GLuint64 waitAndGet64(gl::GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const;
 	
-    void counter(gl::GLenum target = gl::TIMESTAMP) const;
+    void counter(gl::GLenum target = gl::GL_TIMESTAMP) const;
 protected:
 	
     Query(gl::GLuint id, bool takeOwnership);

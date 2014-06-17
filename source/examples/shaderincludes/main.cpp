@@ -39,7 +39,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
         glow::NamedString::create("/shaderincludes/color.glsl", new glow::File("data/shaderincludes/color.glsl"));
@@ -49,7 +49,7 @@ public:
       fragmentShaderString->replace("#version 140", "#version 150");
 #endif
 
-      m_quad = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::FRAGMENT_SHADER, fragmentShaderString));
+      m_quad = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderString));
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -58,13 +58,13 @@ public:
         int height = event.height();
         int side = std::min<int>(width, height);
 
-        gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
+        gl::glViewport((width - side) / 2, (height - side) / 2, side, side);
 
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
 
         m_quad->draw();

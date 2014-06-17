@@ -22,8 +22,8 @@ public:
 
     virtual void accept(ObjectVisitor & visitor) override;
 
-    void bind(gl::GLenum target = gl::RENDERBUFFER) const;
-    static void unbind(gl::GLenum target = gl::RENDERBUFFER);
+    void bind(gl::GLenum target = gl::GL_RENDERBUFFER) const;
+    static void unbind(gl::GLenum target = gl::GL_RENDERBUFFER);
 
     void storage(gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height);
     void storageMultisample(gl::GLsizei samples, gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height);

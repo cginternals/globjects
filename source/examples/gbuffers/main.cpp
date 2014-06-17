@@ -58,7 +58,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        gl::ClearColor(1.0f, 1.0f, 1.0f, 0.f);
+        gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
         m_icosahedron = new glowutils::Icosahedron(2);
 
@@ -72,21 +72,21 @@ public:
 #endif
         
         m_sphere->attach(
-            new glow::Shader(gl::VERTEX_SHADER, vertexShaderSource),
-            new glow::Shader(gl::FRAGMENT_SHADER, fragmentShaderSource)
+            new glow::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
+            new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
         );
 
-        m_colorTexture = glow::Texture::createDefault(gl::TEXTURE_2D);
-        m_depthTexture = glow::Texture::createDefault(gl::TEXTURE_2D);
-        m_normalTexture = glow::Texture::createDefault(gl::TEXTURE_2D);
-        m_geometryTexture = glow::Texture::createDefault(gl::TEXTURE_2D);
+        m_colorTexture = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_depthTexture = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_normalTexture = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_geometryTexture = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
 
         m_sphereFBO = new glow::FrameBufferObject;
 
-        m_sphereFBO->attachTexture(gl::COLOR_ATTACHMENT0, m_colorTexture);
-        m_sphereFBO->attachTexture(gl::COLOR_ATTACHMENT1, m_normalTexture);
-        m_sphereFBO->attachTexture(gl::COLOR_ATTACHMENT2, m_geometryTexture);
-        m_sphereFBO->attachTexture(gl::DEPTH_ATTACHMENT, m_depthTexture);
+        m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorTexture);
+        m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_normalTexture);
+        m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT2, m_geometryTexture);
+        m_sphereFBO->attachTexture(gl::GL_DEPTH_ATTACHMENT, m_depthTexture);
 
         glowutils::StringTemplate* postprocessingSource = new glowutils::StringTemplate(new glow::File("data/gbuffers/postprocessing.frag"));
 
@@ -94,17 +94,17 @@ public:
         postprocessingSource->replace("#version 140", "#version 150");
 #endif
 
-        m_postprocessing = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::FRAGMENT_SHADER, postprocessingSource));
+        m_postprocessing = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::GL_FRAGMENT_SHADER, postprocessingSource));
         m_postprocessing->program()->setUniform<gl::GLint>("colorSource", 0);
         m_postprocessing->program()->setUniform<gl::GLint>("normalSource", 1);
         m_postprocessing->program()->setUniform<gl::GLint>("worldCoordSource", 2);
         m_postprocessing->program()->setUniform<gl::GLint>("depthSource", 3);
 
-        m_postprocessedTexture = glow::Texture::createDefault(gl::TEXTURE_2D);
+        m_postprocessedTexture = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
 
         m_postprocessingFBO = new glow::FrameBufferObject;
 
-        m_postprocessingFBO->attachTexture(gl::COLOR_ATTACHMENT0, m_postprocessedTexture);
+        m_postprocessingFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_postprocessedTexture);
 
         glowutils::StringTemplate* gBufferChoiceSource = new glowutils::StringTemplate(new glow::File("data/gbuffers/gbufferchoice.frag"));
 
@@ -112,7 +112,7 @@ public:
         gBufferChoiceSource->replace("#version 140", "#version 150");
 #endif
 
-        m_gBufferChoice = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::FRAGMENT_SHADER, gBufferChoiceSource));
+        m_gBufferChoice = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::GL_FRAGMENT_SHADER, gBufferChoiceSource));
         m_gBufferChoice->program()->setUniform<gl::GLint>("postprocessedSource", 0);
         m_gBufferChoice->program()->setUniform<gl::GLint>("colorSource", 1);
         m_gBufferChoice->program()->setUniform<gl::GLint>("normalSource", 2);
@@ -136,17 +136,17 @@ public:
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        gl::Viewport(0, 0, event.width(), event.height());
+        gl::glViewport(0, 0, event.width(), event.height());
 
         m_postprocessing->program()->setUniform<glm::vec2>("screenSize", glm::vec2(event.size()));
 
         m_camera.setViewport(event.width(), event.height());
 
-        m_colorTexture->image2D(0, gl::RGBA8, event.width(), event.height(), 0, gl::RGBA, gl::UNSIGNED_BYTE, nullptr);
-        m_normalTexture->image2D(0, gl::RGBA16F, event.width(), event.height(), 0, gl::RGBA, gl::FLOAT, nullptr);
-        m_geometryTexture->image2D(0, gl::RGBA16F, event.width(), event.height(), 0, gl::RGBA, gl::FLOAT, nullptr);
-        m_depthTexture->image2D(0, gl::DEPTH_COMPONENT, event.width(), event.height(), 0, gl::DEPTH_COMPONENT, gl::FLOAT, nullptr);
-        m_postprocessedTexture->image2D(0, gl::RGBA8, event.width(), event.height(), 0, gl::RGBA, gl::UNSIGNED_BYTE, nullptr);
+        m_colorTexture->image2D(0, gl::GL_RGBA8, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
+        m_normalTexture->image2D(0, gl::GL_RGBA16F, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
+        m_geometryTexture->image2D(0, gl::GL_RGBA16F, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
+        m_depthTexture->image2D(0, gl::GL_DEPTH_COMPONENT, event.width(), event.height(), 0, gl::GL_DEPTH_COMPONENT, gl::GL_FLOAT, nullptr);
+        m_postprocessedTexture->image2D(0, gl::GL_RGBA8, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
     }
 
     virtual void paintEvent(PaintEvent &) override
@@ -154,9 +154,9 @@ public:
         // Sphere Pass
 
         m_sphereFBO->bind();
-        m_sphereFBO->setDrawBuffers({ gl::COLOR_ATTACHMENT0, gl::COLOR_ATTACHMENT1, gl::COLOR_ATTACHMENT2 });
+        m_sphereFBO->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1, gl::GL_COLOR_ATTACHMENT2 });
 
-        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
         m_sphere->setUniform("transform", m_camera.viewProjection());
         m_sphere->setUniform("modelView", m_camera.view());
@@ -171,21 +171,21 @@ public:
         // Postprocessing Pass
 
         m_postprocessingFBO->bind();
-        m_postprocessingFBO->setDrawBuffers({ gl::COLOR_ATTACHMENT0 });
+        m_postprocessingFBO->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 
-        gl::Clear(gl::COLOR_BUFFER_BIT);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT);
 
-        m_colorTexture->bindActive(gl::TEXTURE0);
-        m_normalTexture->bindActive(gl::TEXTURE1);
-        m_geometryTexture->bindActive(gl::TEXTURE2);
-        m_depthTexture->bindActive(gl::TEXTURE3);
+        m_colorTexture->bindActive(gl::GL_TEXTURE0);
+        m_normalTexture->bindActive(gl::GL_TEXTURE1);
+        m_geometryTexture->bindActive(gl::GL_TEXTURE2);
+        m_depthTexture->bindActive(gl::GL_TEXTURE3);
 
         m_postprocessing->draw();
 
-        m_colorTexture->unbindActive(gl::TEXTURE0);
-        m_normalTexture->unbindActive(gl::TEXTURE1);
-        m_geometryTexture->unbindActive(gl::TEXTURE2);
-        m_depthTexture->unbindActive(gl::TEXTURE3);
+        m_colorTexture->unbindActive(gl::GL_TEXTURE0);
+        m_normalTexture->unbindActive(gl::GL_TEXTURE1);
+        m_geometryTexture->unbindActive(gl::GL_TEXTURE2);
+        m_depthTexture->unbindActive(gl::GL_TEXTURE3);
 
         m_postprocessingFBO->unbind();
 
@@ -193,21 +193,21 @@ public:
 
         glow::FrameBufferObject::defaultFBO()->bind();
 
-        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
-        m_postprocessedTexture->bindActive(gl::TEXTURE0);
-        m_colorTexture->bindActive(gl::TEXTURE1);
-        m_normalTexture->bindActive(gl::TEXTURE2);
-        m_geometryTexture->bindActive(gl::TEXTURE3);
-        m_depthTexture->bindActive(gl::TEXTURE4);
+        m_postprocessedTexture->bindActive(gl::GL_TEXTURE0);
+        m_colorTexture->bindActive(gl::GL_TEXTURE1);
+        m_normalTexture->bindActive(gl::GL_TEXTURE2);
+        m_geometryTexture->bindActive(gl::GL_TEXTURE3);
+        m_depthTexture->bindActive(gl::GL_TEXTURE4);
 
         m_gBufferChoice->draw();
 
-        m_postprocessedTexture->unbindActive(gl::TEXTURE0);
-        m_colorTexture->unbindActive(gl::TEXTURE1);
-        m_normalTexture->unbindActive(gl::TEXTURE2);
-        m_geometryTexture->unbindActive(gl::TEXTURE3);
-        m_depthTexture->unbindActive(gl::TEXTURE4);
+        m_postprocessedTexture->unbindActive(gl::GL_TEXTURE0);
+        m_colorTexture->unbindActive(gl::GL_TEXTURE1);
+        m_normalTexture->unbindActive(gl::GL_TEXTURE2);
+        m_geometryTexture->unbindActive(gl::GL_TEXTURE3);
+        m_depthTexture->unbindActive(gl::GL_TEXTURE4);
     }
 
     virtual void timerEvent(TimerEvent & event) override
@@ -308,7 +308,7 @@ public:
     {
         m_sphereFBO->bind();
 
-        float depth = AbstractCoordinateProvider::depthAt(m_camera, gl::DEPTH_COMPONENT, windowCoordinates);
+        float depth = AbstractCoordinateProvider::depthAt(m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
 
         m_sphereFBO->unbind();
 
@@ -317,7 +317,7 @@ public:
 
     virtual vec3 objAt(const ivec2 & windowCoordinates) const override
     {
-        return unproject(m_camera, static_cast<gl::GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
+        return unproject(m_camera, static_cast<gl::GLenum>(gl::GL_DEPTH_COMPONENT), windowCoordinates);
     }
 
     virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override

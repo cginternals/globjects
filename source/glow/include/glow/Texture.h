@@ -28,10 +28,10 @@ class Buffer;
 class GLOW_API Texture : public Object
 {
 public:
-    Texture(gl::GLenum target = gl::TEXTURE_2D);
+    Texture(gl::GLenum target = gl::GL_TEXTURE_2D);
     static Texture * fromId(gl::GLuint id, gl::GLenum  target, bool takeOwnership = false);
 
-    static Texture * createDefault(gl::GLenum target = gl::TEXTURE_2D);
+    static Texture * createDefault(gl::GLenum target = gl::GL_TEXTURE_2D);
 
     virtual void accept(ObjectVisitor & visitor) override;
 

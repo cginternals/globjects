@@ -35,25 +35,25 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        gl::ClearColor(1.f, 1.f, 1.f, 1.f);
+        gl::glClearColor(1.f, 1.f, 1.f, 1.f);
 
     }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        gl::Viewport(0, 0, event.width(), event.height());
+        gl::glViewport(0, 0, event.width(), event.height());
 
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        gl::ClearColor(
+        gl::glClearColor(
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             1.f);
 
-        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
     }
 

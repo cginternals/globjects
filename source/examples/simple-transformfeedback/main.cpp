@@ -56,7 +56,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
 	    createAndSetupShaders();
@@ -72,7 +72,7 @@ public:
         int height = event.height();
     	int side = std::min<int>(width, height);
 
-	    gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
+	    gl::glViewport((width - side) / 2, (height - side) / 2, side, side);
 
 
 	    m_shaderProgram->setUniform("modelView", glm::mat4());
@@ -81,7 +81,7 @@ public:
 
     virtual void paintEvent(PaintEvent &) override
     {
-        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
 
         glow::Buffer* drawBuffer = m_vertexBuffer1;
@@ -94,23 +94,23 @@ public:
 
         m_vao->binding(0)->setBuffer(drawBuffer, 0, sizeof(glm::vec4));
 
-        writeBuffer->bindBase(gl::TRANSFORM_FEEDBACK_BUFFER, 0);
+        writeBuffer->bindBase(gl::GL_TRANSFORM_FEEDBACK_BUFFER, 0);
 
-        gl::Enable(gl::RASTERIZER_DISCARD);
+        gl::glEnable(gl::GL_RASTERIZER_DISCARD);
 
         m_transformFeedbackProgram->use();
         m_transformFeedback->bind();
-        m_transformFeedback->begin(gl::TRIANGLES);
-        m_vao->drawArrays(gl::TRIANGLES, 0, 6);
+        m_transformFeedback->begin(gl::GL_TRIANGLES);
+        m_vao->drawArrays(gl::GL_TRIANGLES, 0, 6);
         m_transformFeedback->end();
         m_transformFeedback->unbind();
-        gl::Disable(gl::RASTERIZER_DISCARD);
+        gl::glDisable(gl::GL_RASTERIZER_DISCARD);
 
 
         m_vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(glm::vec4));
 
         m_shaderProgram->use();
-        m_transformFeedback->draw(gl::TRIANGLE_STRIP);
+        m_transformFeedback->draw(gl::GL_TRIANGLE_STRIP);
         m_shaderProgram->release();
 
         m_vao->unbind();
@@ -181,12 +181,12 @@ void EventHandler::createAndSetupShaders()
 {
 	m_shaderProgram = new glow::Program();
     m_shaderProgram->attach(
-        glowutils::createShaderFromFile(gl::VERTEX_SHADER, "data/transformfeedback/simple.vert")
-    ,   glowutils::createShaderFromFile(gl::FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
+        glowutils::createShaderFromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/simple.vert")
+    ,   glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
 
     m_transformFeedbackProgram = new glow::Program();
     m_transformFeedbackProgram->attach(
-        glowutils::createShaderFromFile(gl::VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
+        glowutils::createShaderFromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
     m_transformFeedbackProgram->setUniform("deltaT", 0.0f);
 }
 
@@ -222,11 +222,11 @@ void EventHandler::createAndSetupGeometry()
 	m_vao = new glow::VertexArrayObject();
 
     m_vao->binding(0)->setAttribute(0);
-    m_vao->binding(0)->setFormat(4, gl::FLOAT);
+    m_vao->binding(0)->setFormat(4, gl::GL_FLOAT);
 
     m_vao->binding(1)->setAttribute(1);
     m_vao->binding(1)->setBuffer(m_colorBuffer, 0, sizeof(glm::vec4));
-    m_vao->binding(1)->setFormat(4, gl::FLOAT);
+    m_vao->binding(1)->setFormat(4, gl::GL_FLOAT);
 
     m_vao->enable(0);
     m_vao->enable(1);
@@ -235,5 +235,5 @@ void EventHandler::createAndSetupGeometry()
 void EventHandler::createAndSetupTransformFeedback()
 {
     m_transformFeedback = new glow::TransformFeedback();
-    m_transformFeedback->setVaryings(m_transformFeedbackProgram, std::array<const char*, 1>{ { "next_position" } }, gl::INTERLEAVED_ATTRIBS);
+    m_transformFeedback->setVaryings(m_transformFeedbackProgram, std::array<const char*, 1>{ { "next_position" } }, gl::GL_INTERLEAVED_ATTRIBS);
 }

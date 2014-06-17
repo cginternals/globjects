@@ -38,7 +38,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
         createAndSetupTexture();
@@ -51,13 +51,13 @@ public:
         int height = event.height();
     	int side = std::min<int>(width, height);
 
-        gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
+        gl::glViewport((width - side) / 2, (height - side) / 2, side, side);
 
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
 
         m_quad->draw();
@@ -118,9 +118,9 @@ void EventHandler::createAndSetupTexture()
     for (int i = 0; i < w * h * 4; ++i)
         data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
 
-    m_texture = glow::Texture::createDefault(gl::TEXTURE_2D);
+    m_texture = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
 
-	m_texture->image2D(0, gl::RGBA8, w, h, 0, gl::RGBA, gl::UNSIGNED_BYTE, data);
+	m_texture->image2D(0, gl::GL_RGBA8, w, h, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, data);
 
 }
 

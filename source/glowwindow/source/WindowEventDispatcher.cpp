@@ -245,12 +245,12 @@ void WindowEventDispatcher::handleMove(GLFWwindow* glfwWindow, int x, int y)
 
 void WindowEventDispatcher::handleFocus(GLFWwindow* glfwWindow, int focused)
 {
-    dispatchEvent(glfwWindow, new FocusEvent(focused == gl::TRUE_));
+    dispatchEvent(glfwWindow, new FocusEvent(focused == GL_TRUE));
 }
 
 void WindowEventDispatcher::handleIconify(GLFWwindow* glfwWindow, int iconified)
 {
-    dispatchEvent(glfwWindow, new IconifyEvent(iconified == gl::TRUE_));
+    dispatchEvent(glfwWindow, new IconifyEvent(iconified == GL_TRUE));
 }
 
 void WindowEventDispatcher::handleClose(GLFWwindow* glfwWindow)
