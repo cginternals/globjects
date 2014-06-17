@@ -45,6 +45,7 @@ if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOW_UTILS AND OPTION_BUILD_GLOW_WINDO
 	add_subdirectory("camerapath")
 	add_subdirectory("commandlineoutput")
 	add_subdirectory("computeshader")
+	add_subdirectory("gbuffers")
 	add_subdirectory("gpu-particles")
 	add_subdirectory("glraw-texture")
 	add_subdirectory("multiple-contexts")

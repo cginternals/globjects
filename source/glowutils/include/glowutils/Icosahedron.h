@@ -38,7 +38,8 @@ public:
 public:
     Icosahedron(
         gl::GLsizei iterations = 0
-    ,   gl::GLuint vertexAttribLocation = 0);
+    ,   const gl::GLint positionLocation = 0
+    ,   const gl::GLint normalLocation = 1);
 
 
 
