@@ -69,7 +69,7 @@ public:
             return;
         }
 
-        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
 	    createAndSetupTexture();
@@ -83,13 +83,13 @@ public:
         int height = event.height();
         int side = std::min<int>(width, height);
 
-        gl::Viewport((width - side) / 2, (height - side) / 2, side, side);
+        gl::glViewport((width - side) / 2, (height - side) / 2, side, side);
 
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
 
         ++m_frame %= static_cast<int>(200 * glm::pi<double>());
@@ -159,16 +159,16 @@ int main(int /*argc*/, char* /*argv*/[])
 
 void EventHandler::createAndSetupTexture()
 {
-    m_texture = glow::Texture::createDefault(gl::TEXTURE_2D);
+    m_texture = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
 
-	m_texture->image2D(0, gl::R32F, 512, 512, 0, gl::RED, gl::FLOAT, nullptr);
-	m_texture->bindImageTexture(0, 0, gl::FALSE_, 0, gl::WRITE_ONLY, gl::R32F);
+    m_texture->image2D(0, gl::GL_R32F, 512, 512, 0, gl::GL_RED, gl::GL_FLOAT, nullptr);
+    m_texture->bindImageTexture(0, 0, gl::GL_FALSE, 0, gl::GL_WRITE_ONLY, gl::GL_R32F);
 }
 
 void EventHandler::createAndSetupShaders()
 {
     m_computeProgram = new glow::Program();
-    m_computeProgram->attach(glowutils::createShaderFromFile(gl::COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+    m_computeProgram->attach(glowutils::createShaderFromFile(gl::GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
 
     m_computeProgram->setUniform("destTex", 0);
 }

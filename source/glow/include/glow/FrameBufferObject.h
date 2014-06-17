@@ -52,8 +52,8 @@ public:
 
     virtual void accept(ObjectVisitor& visitor) override;
 
-    void bind(gl::GLenum target = gl::FRAMEBUFFER) const;
-    static void unbind(gl::GLenum target = gl::FRAMEBUFFER);
+    void bind(gl::GLenum target = gl::GL_FRAMEBUFFER) const;
+    static void unbind(gl::GLenum target = gl::GL_FRAMEBUFFER);
 
 	void setParameter(gl::GLenum pname, gl::GLint param);
     gl::GLint getAttachmentParameter(gl::GLenum attachment, gl::GLenum pname) const;

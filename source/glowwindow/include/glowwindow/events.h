@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include <glowwindow/keys.h>
 
 #include <glm/glm.hpp>
 

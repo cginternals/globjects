@@ -16,7 +16,7 @@ RenderBufferObject::~RenderBufferObject()
 {
 	if (ownsGLObject())
 	{
-		gl::DeleteRenderbuffers(1, &m_id);
+		gl::glDeleteRenderbuffers(1, &m_id);
 	}
 }
 
@@ -24,7 +24,7 @@ gl::GLuint RenderBufferObject::genRenderBuffer()
 {
 	gl::GLuint id = 0;
 
-	gl::GenRenderbuffers(1, &id);
+	gl::glGenRenderbuffers(1, &id);
 
 	return id;
 }
@@ -36,35 +36,35 @@ void RenderBufferObject::accept(ObjectVisitor& visitor)
 
 void RenderBufferObject::bind(gl::GLenum target) const
 {
-    gl::BindRenderbuffer(target, m_id);
+    gl::glBindRenderbuffer(target, m_id);
 }
 
 void RenderBufferObject::unbind(gl::GLenum target)
 {
-    gl::BindRenderbuffer(target, 0);
+    gl::glBindRenderbuffer(target, 0);
 }
 
 void RenderBufferObject::storage(gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height)
 {
-    bind(gl::RENDERBUFFER);
+    bind(gl::GL_RENDERBUFFER);
 
-    gl::RenderbufferStorage(gl::RENDERBUFFER, internalformat, width, height);
+    gl::glRenderbufferStorage(gl::GL_RENDERBUFFER, internalformat, width, height);
 }
 
 void RenderBufferObject::storageMultisample(gl::GLsizei samples, gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height)
 {
-    bind(gl::RENDERBUFFER);
+    bind(gl::GL_RENDERBUFFER);
 
-    gl::RenderbufferStorageMultisample(gl::RENDERBUFFER, samples, internalformat, width, height);
+    gl::glRenderbufferStorageMultisample(gl::GL_RENDERBUFFER, samples, internalformat, width, height);
 }
 
 gl::GLint RenderBufferObject::getParameter(gl::GLenum pname) const
 {
 	gl::GLint value = 0;
 
-    bind(gl::RENDERBUFFER);
+    bind(gl::GL_RENDERBUFFER);
 
-	gl::GetRenderbufferParameteriv(gl::RENDERBUFFER, pname, &value);
+	gl::glGetRenderbufferParameteriv(gl::GL_RENDERBUFFER, pname, &value);
 
 	return value;
 }

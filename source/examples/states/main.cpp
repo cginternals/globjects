@@ -43,11 +43,11 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
         m_defaultPointSizeState = new glow::State();
-        m_defaultPointSizeState->pointSize(glow::getFloat(gl::POINT_SIZE));
+        m_defaultPointSizeState->pointSize(glow::getFloat(gl::GL_POINT_SIZE));
         m_thinnestPointSizeState = new glow::State();
         m_thinnestPointSizeState->pointSize(2.0f);
         m_thinPointSizeState = new glow::State();
@@ -57,9 +57,9 @@ public:
         m_thickPointSizeState = new glow::State();
         m_thickPointSizeState->pointSize(20.0f);
         m_disableRasterizerState = new glow::State();
-        m_disableRasterizerState->enable(gl::RASTERIZER_DISCARD);
+        m_disableRasterizerState->enable(gl::GL_RASTERIZER_DISCARD);
         m_enableRasterizerState = new glow::State();
-        m_enableRasterizerState->disable(gl::RASTERIZER_DISCARD);
+        m_enableRasterizerState->disable(gl::GL_RASTERIZER_DISCARD);
 
         m_vao = new glow::VertexArrayObject();
         m_buffer = new glow::Buffer();
@@ -73,8 +73,8 @@ public:
 #endif
         
         m_shaderProgram = new glow::Program();
-        m_shaderProgram->attach(new glow::Shader(gl::VERTEX_SHADER, vertexShaderSource),
-                                new glow::Shader(gl::FRAGMENT_SHADER, fragmentShaderSource));
+        m_shaderProgram->attach(new glow::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
+                                new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
         
         m_buffer->setData(std::vector<glm::vec2>({
               glm::vec2(-0.8, 0.8), glm::vec2(-0.4, 0.8), glm::vec2(0.0, 0.8), glm::vec2(0.4, 0.8), glm::vec2(0.8, 0.8)
@@ -87,63 +87,63 @@ public:
             , glm::vec2(-0.8, -0.6), glm::vec2(-0.4, -0.6), glm::vec2(0.0, -0.6), glm::vec2(0.4, -0.6), glm::vec2(0.8, -0.6)
             , glm::vec2(-0.8, -0.8), glm::vec2(-0.4, -0.8), glm::vec2(0.0, -0.8), glm::vec2(0.4, -0.8), glm::vec2(0.8, -0.8)
             })
-            , gl::STATIC_DRAW
+            , gl::GL_STATIC_DRAW
         );
 
         m_vao->binding(0)->setAttribute(0);
         m_vao->binding(0)->setBuffer(m_buffer, 0, sizeof(glm::vec2));
-        m_vao->binding(0)->setFormat(2, gl::FLOAT);
+        m_vao->binding(0)->setFormat(2, gl::GL_FLOAT);
         m_vao->enable(0);
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        gl::Viewport(0, 0, event.width(), event.height());
+        gl::glViewport(0, 0, event.width(), event.height());
 
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
 
         m_shaderProgram->use();
 
         m_defaultPointSizeState->apply();
-        m_vao->drawArrays(gl::POINTS, 0, 5);
+        m_vao->drawArrays(gl::GL_POINTS, 0, 5);
 
         m_thinnestPointSizeState->apply();
-        m_vao->drawArrays(gl::POINTS, 5, 5);
+        m_vao->drawArrays(gl::GL_POINTS, 5, 5);
 
         m_thinPointSizeState->apply();
-        m_vao->drawArrays(gl::POINTS, 10, 5);
+        m_vao->drawArrays(gl::GL_POINTS, 10, 5);
 
         m_normalPointSizeState->apply();
-        m_vao->drawArrays(gl::POINTS, 15, 5);
+        m_vao->drawArrays(gl::GL_POINTS, 15, 5);
 
         m_thickPointSizeState->apply();
 
-        m_vao->drawArrays(gl::POINTS, 20, 1);
+        m_vao->drawArrays(gl::GL_POINTS, 20, 1);
         m_disableRasterizerState->apply();
-        m_vao->drawArrays(gl::POINTS, 21, 1);
+        m_vao->drawArrays(gl::GL_POINTS, 21, 1);
         m_enableRasterizerState->apply();
-        m_vao->drawArrays(gl::POINTS, 22, 1);
+        m_vao->drawArrays(gl::GL_POINTS, 22, 1);
         m_disableRasterizerState->apply();
-        m_vao->drawArrays(gl::POINTS, 23, 1);
+        m_vao->drawArrays(gl::GL_POINTS, 23, 1);
         m_enableRasterizerState->apply();
-        m_vao->drawArrays(gl::POINTS, 24, 1);
+        m_vao->drawArrays(gl::GL_POINTS, 24, 1);
 
         m_normalPointSizeState->apply();
-        m_vao->drawArrays(gl::POINTS, 25, 5);
+        m_vao->drawArrays(gl::GL_POINTS, 25, 5);
 
         m_thinPointSizeState->apply();
-        m_vao->drawArrays(gl::POINTS, 30, 5);
+        m_vao->drawArrays(gl::GL_POINTS, 30, 5);
 
         m_thinnestPointSizeState->apply();
-        m_vao->drawArrays(gl::POINTS, 35, 5);
+        m_vao->drawArrays(gl::GL_POINTS, 35, 5);
 
         m_defaultPointSizeState->apply();
-        m_vao->drawArrays(gl::POINTS, 35, 5);
+        m_vao->drawArrays(gl::GL_POINTS, 35, 5);
 
         m_shaderProgram->release();
     }

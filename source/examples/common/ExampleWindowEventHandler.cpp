@@ -52,7 +52,7 @@ void ExampleWindowEventHandler::handleEvent(glowwindow::WindowEvent & event)
 
 void ExampleWindowEventHandler::setViewport(glowwindow::ResizeEvent & event)
 {
-    gl::Viewport(0, 0, event.width(), event.height());
+    gl::glViewport(0, 0, event.width(), event.height());
 }
 
 namespace {

@@ -26,7 +26,7 @@ public:
 
     /** draws the unit cube as single triangle strip. Note: interleaved array 
         is used, so the normal comes from the provoking vertex (expected to be
-        the default gl::LAST_VERTEX_CONVENTION). use flat interpolation to get 
+        the default gl::glLAST_VERTEX_CONVENTION). use flat interpolation to get 
         the face normal within the fragment shader.
     */
     void draw();

@@ -78,7 +78,7 @@ void enableMessage(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::
 
 void enableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids)
 {
-    controlMessages(source, type, severity, count, ids, gl::TRUE_);
+    controlMessages(source, type, severity, count, ids, gl::GL_TRUE);
 }
 
 void enableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, const std::vector<gl::GLuint> & ids)
@@ -93,7 +93,7 @@ void disableMessage(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl:
 
 void disableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids)
 {
-    controlMessages(source, type, severity, count, ids, gl::FALSE_);
+    controlMessages(source, type, severity, count, ids, gl::GL_FALSE);
 }
 
 void disableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, const std::vector<gl::GLuint> & ids)
@@ -125,7 +125,7 @@ void signalError(const Error & error, const std::string & message)
     std::stringstream stream;
     stream << error.name() << " generated: " << message;
 
-    insertMessage(DebugMessage(gl::DEBUG_SOURCE_API_ARB, gl::DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), gl::DEBUG_SEVERITY_HIGH_ARB, stream.str()));
+    insertMessage(DebugMessage(gl::GL_DEBUG_SOURCE_API_ARB, gl::GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), gl::GL_DEBUG_SEVERITY_HIGH_ARB, stream.str()));
 }
 
 } // namespace debugmessageoutput

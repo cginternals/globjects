@@ -26,17 +26,17 @@ class Program;
 
         Program* program = createProgramIncludingShaders();
         TransformFeedback* transformFeedback = new TransformFeedback();
-        Buffer* buffer = new Buffer(gl::ARRAY_BUFFER);
+        Buffer* buffer = new Buffer(gl::GL_ARRAY_BUFFER);
     
-        transformFeedback->setVaryings(program, Array<const char*>{ "vertex_out" }, gl::INTERLEAVED_ATTRIBS);
+        transformFeedback->setVaryings(program, Array<const char*>{ "vertex_out" }, gl::GL_INTERLEAVED_ATTRIBS);
     
-        buffer->bindBase(gl::TRANSFORM_FEEDBACK_BUFFER, 0);
-        buffer->setData(vertexSize, nullptr, gl::DYNAMIC_DRAW);
+        buffer->bindBase(gl::GL_TRANSFORM_FEEDBACK_BUFFER, 0);
+        buffer->setData(vertexSize, nullptr, gl::GL_DYNAMIC_DRAW);
     
         program->use(); // use Program before issueing the begin method of TransformFeedback
     
         transformFeedback->bind();
-        transformFeedback->begin(gl::POINTS); // record point vertices
+        transformFeedback->begin(gl::GL_POINTS); // record point vertices
     
         // draw calls
     
@@ -46,7 +46,7 @@ class Program;
         program->release();
     
         // replay recorded vertices
-        transformFeeback->draw(gl::POINTS);
+        transformFeeback->draw(gl::GL_POINTS);
    
    \endcode
  
@@ -61,8 +61,8 @@ public:
 
     virtual void accept(ObjectVisitor & visitor) override;
 
-    void bind(gl::GLenum target = gl::TRANSFORM_FEEDBACK) const;
-    static void unbind(gl::GLenum target = gl::TRANSFORM_FEEDBACK);
+    void bind(gl::GLenum target = gl::GL_TRANSFORM_FEEDBACK) const;
+    static void unbind(gl::GLenum target = gl::GL_TRANSFORM_FEEDBACK);
 
 	void begin(gl::GLenum primitiveMode);
 	void pause();

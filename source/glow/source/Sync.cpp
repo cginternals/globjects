@@ -17,12 +17,12 @@ Sync::Sync(gl::GLsync sync)
 
 Sync::~Sync()
 {
-    gl::DeleteSync(m_sync);
+    gl::glDeleteSync(m_sync);
 }
 
 gl::GLsync Sync::fenceSync(gl::GLenum condition, gl::GLbitfield flags)
 {
-    return gl::FenceSync(condition, flags);
+    return gl::glFenceSync(condition, flags);
 }
 
 gl::GLsync Sync::sync() const
@@ -32,17 +32,17 @@ gl::GLsync Sync::sync() const
 
 gl::GLenum Sync::clientWait(gl::GLbitfield flags, gl::GLuint64 timeout)
 {
-    return gl::ClientWaitSync(m_sync, flags, timeout);
+    return gl::glClientWaitSync(m_sync, flags, timeout);
 }
 
 void Sync::wait(gl::GLbitfield flags, gl::GLuint64 timeout)
 {
-    gl::WaitSync(m_sync, flags, timeout);
+    gl::glWaitSync(m_sync, flags, timeout);
 }
 
 void Sync::get(gl::GLenum pname, gl::GLsizei bufsize, gl::GLsizei * length, gl::GLint * values)
 {
-    gl::GetSynciv(m_sync, pname, bufsize, length, values);
+    gl::glGetSynciv(m_sync, pname, bufsize, length, values);
 }
 
 gl::GLint Sync::get(gl::GLenum pname)

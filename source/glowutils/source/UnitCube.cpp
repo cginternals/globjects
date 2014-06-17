@@ -60,20 +60,20 @@ UnitCube::UnitCube(const gl::GLuint vertexAttribLocation, const gl::GLuint norma
 : m_strip(new Buffer())
 , m_vao(new VertexArrayObject)
 {
-    m_strip->setData(strip(), gl::STATIC_DRAW);
+    m_strip->setData(strip(), gl::GL_STATIC_DRAW);
 
     m_vao->bind();
 
     auto vertexBinding = m_vao->binding(0);
     vertexBinding->setAttribute(vertexAttribLocation);
     vertexBinding->setBuffer(m_strip.get(), 0, static_cast<gl::GLint>(sizeof(vec3) * 2));
-    vertexBinding->setFormat(3, gl::FLOAT, gl::FALSE_, 0);
+    vertexBinding->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
     m_vao->enable(0);
 
     auto normalBinding = m_vao->binding(1);
     normalBinding->setAttribute(normalAttribLocation);
     normalBinding->setBuffer(m_strip.get(), 0, static_cast<gl::GLint>(sizeof(vec3) * 2));
-    normalBinding->setFormat(3, gl::FLOAT, gl::TRUE_, sizeof(vec3));
+    normalBinding->setFormat(3, gl::GL_FLOAT, gl::GL_TRUE, sizeof(vec3));
     m_vao->enable(1);
 
     m_vao->unbind();
@@ -81,11 +81,11 @@ UnitCube::UnitCube(const gl::GLuint vertexAttribLocation, const gl::GLuint norma
 
 void UnitCube::draw()
 {
-    gl::Enable(gl::DEPTH_TEST);
+    gl::glEnable(gl::GL_DEPTH_TEST);
 
 
     m_vao->bind();
-    m_vao->drawArrays(gl::TRIANGLE_STRIP, 0, 14);
+    m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 14);
     m_vao->unbind();
 }
 

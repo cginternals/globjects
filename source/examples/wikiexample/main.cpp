@@ -74,7 +74,7 @@ public:
 
         glow::debugmessageoutput::enable();
 
-        gl::ClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
         
@@ -97,8 +97,8 @@ public:
         vao->ref();
 
 		program->attach(
-                        new glow::Shader(gl::VERTEX_SHADER, vertexShaderSource),
-                        new glow::Shader(gl::FRAGMENT_SHADER, fragmentShaderSource)
+                        new glow::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
+                        new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
                         );
 
         cornerBuffer->setData(std::array<glm::vec2, 4>{ {
@@ -110,23 +110,23 @@ public:
 
         vao->binding(0)->setAttribute(0);
 		vao->binding(0)->setBuffer(cornerBuffer, 0, sizeof(glm::vec2));
-        vao->binding(0)->setFormat(2, gl::FLOAT);
+        vao->binding(0)->setFormat(2, gl::GL_FLOAT);
         vao->enable(0);
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        gl::Viewport(0, 0, event.width(), event.height());
+        gl::glViewport(0, 0, event.width(), event.height());
 
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
 
 		program->use();
-        vao->drawArrays(gl::TRIANGLE_STRIP, 0, 4);
+        vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
     }
 
     virtual void idle(Window & window) override

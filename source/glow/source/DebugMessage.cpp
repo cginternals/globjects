@@ -64,11 +64,11 @@ std::string DebugMessage::severityString() const
 {
     switch (m_severity)
     {
-        case gl::DEBUG_SEVERITY_HIGH_ARB:
+        case gl::GL_DEBUG_SEVERITY_HIGH_ARB:
             return "high";
-        case gl::DEBUG_SEVERITY_MEDIUM_ARB:
+        case gl::GL_DEBUG_SEVERITY_MEDIUM_ARB:
             return "medium";
-        case gl::DEBUG_SEVERITY_LOW_ARB:
+        case gl::GL_DEBUG_SEVERITY_LOW_ARB:
             return "low";
         default:
             return "unknown";
@@ -79,17 +79,17 @@ std::string DebugMessage::sourceString() const
 {
     switch (m_source)
     {
-        case gl::DEBUG_SOURCE_API_ARB:
+        case gl::GL_DEBUG_SOURCE_API_ARB:
             return "API";
-        case gl::DEBUG_SOURCE_WINDOW_SYSTEM_ARB:
+        case gl::GL_DEBUG_SOURCE_WINDOW_SYSTEM_ARB:
             return "Window System";
-        case gl::DEBUG_SOURCE_SHADER_COMPILER_ARB:
+        case gl::GL_DEBUG_SOURCE_SHADER_COMPILER_ARB:
             return "Shader Compiler";
-        case gl::DEBUG_SOURCE_THIRD_PARTY_ARB:
+        case gl::GL_DEBUG_SOURCE_THIRD_PARTY_ARB:
             return "Third Party";
-        case gl::DEBUG_SOURCE_APPLICATION_ARB:
+        case gl::GL_DEBUG_SOURCE_APPLICATION_ARB:
             return "Application";
-        case gl::DEBUG_SOURCE_OTHER_ARB:
+        case gl::GL_DEBUG_SOURCE_OTHER_ARB:
             return "Other";
         default:
             return "Unknown";
@@ -100,17 +100,17 @@ std::string DebugMessage::typeString() const
 {
     switch (m_type)
     {
-        case gl::DEBUG_TYPE_OTHER_ARB:
+        case gl::GL_DEBUG_TYPE_OTHER_ARB:
             return "other";
-        case gl::DEBUG_TYPE_ERROR_ARB:
+        case gl::GL_DEBUG_TYPE_ERROR_ARB:
             return "error";
-        case gl::DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB:
+        case gl::GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB:
             return "deprecated behavior";
-        case gl::DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB:
+        case gl::GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB:
             return "undefined behavior";
-        case gl::DEBUG_TYPE_PORTABILITY_ARB:
+        case gl::GL_DEBUG_TYPE_PORTABILITY_ARB:
             return "portability";
-        case gl::DEBUG_TYPE_PERFORMANCE_ARB:
+        case gl::GL_DEBUG_TYPE_PERFORMANCE_ARB:
             return "performance";
         default:
             return "unknown";

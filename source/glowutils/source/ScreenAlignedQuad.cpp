@@ -68,10 +68,10 @@ ScreenAlignedQuad::ScreenAlignedQuad(
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
     
-    m_vertexShader   = new Shader(gl::VERTEX_SHADER, vertexShaderSource);
+    m_vertexShader   = new Shader(gl::GL_VERTEX_SHADER, vertexShaderSource);
     
     if (!m_fragmentShader)
-        m_fragmentShader = new Shader(gl::FRAGMENT_SHADER, fragmentShaderSource);
+        m_fragmentShader = new Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
 
     m_program->attach(m_vertexShader, m_fragmentShader);
 
@@ -114,12 +114,12 @@ void ScreenAlignedQuad::initialize()
 
     m_vao = new VertexArrayObject;
     m_buffer = new Buffer();
-    m_buffer->setData(raw, gl::STATIC_DRAW); //needed for some drivers
+    m_buffer->setData(raw, gl::GL_STATIC_DRAW); //needed for some drivers
 
 	auto binding = m_vao->binding(0);
 	binding->setAttribute(0);
 	binding->setBuffer(m_buffer, 0, sizeof(glm::vec2));
-	binding->setFormat(2, gl::FLOAT, gl::FALSE_, 0);
+	binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->enable(0);
 
     setSamplerUniform(0);
@@ -129,14 +129,14 @@ void ScreenAlignedQuad::draw()
 {
     if (m_texture)
 	{
-        gl::ActiveTexture(gl::TEXTURE0 + m_samplerIndex);
+        gl::glActiveTexture(gl::GL_TEXTURE0 + m_samplerIndex);
 
 
         m_texture->bind();
 	}
 
     m_program->use();
-    m_vao->drawArrays(gl::TRIANGLE_STRIP, 0, 4);
+    m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
     m_program->release();
 
 	if (m_texture)

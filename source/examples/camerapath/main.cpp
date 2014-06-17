@@ -113,7 +113,7 @@ public:
 
         debugmessageoutput::enable();
 
-        gl::ClearColor(1.0f, 1.0f, 1.0f, 0.f);
+        gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
 
         m_sphere = new Program();
@@ -127,8 +127,8 @@ public:
 #endif
       
         m_sphere->attach(
-            new Shader(gl::VERTEX_SHADER, vertexShaderSource)
-        ,   new Shader(gl::FRAGMENT_SHADER, fragmentShaderSource));
+            new Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
+        ,   new Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
 
         m_icosahedron = new Icosahedron(iterations);
         m_agrid = new AdaptiveGrid(16U);
@@ -154,13 +154,13 @@ public:
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        gl::Viewport(0, 0, event.width(), event.height());
+        gl::glViewport(0, 0, event.width(), event.height());
         m_camera.setViewport(event.width(), event.height());
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
         m_agrid->update();
         m_sphere->setUniform("transform", m_camera.viewProjection());
@@ -279,12 +279,12 @@ public:
 
     virtual float depthAt(const ivec2 & windowCoordinates) const override
     {
-        return AbstractCoordinateProvider::depthAt(m_camera, gl::DEPTH_COMPONENT, windowCoordinates);
+        return AbstractCoordinateProvider::depthAt(m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
     }
 
     virtual vec3 objAt(const ivec2 & windowCoordinates) const override
     {
-        return unproject(m_camera, static_cast<gl::GLenum>(gl::DEPTH_COMPONENT), windowCoordinates);
+        return unproject(m_camera, static_cast<gl::GLenum>(gl::GL_DEPTH_COMPONENT), windowCoordinates);
     }
 
     virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override

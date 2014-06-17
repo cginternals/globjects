@@ -3,6 +3,7 @@
 #include <glbinding/glbinding.h>
 #include <glbinding/functions.h>
 #include <glbinding/AbstractFunction.h>
+#include <glbinding/initialize.h>
 
 #include <glow/Error.h>
 #include <glow/logging.h>
@@ -59,14 +60,14 @@ bool init(bool showWarnings)
 
 std::string getString(gl::GLenum pname)
 {
-    const gl::GLubyte* result = gl::GetString(pname);
+    const gl::GLubyte* result = gl::glGetString(pname);
 
 	return reinterpret_cast<const char*>(result);
 }
 
 std::string getString(gl::GLenum pname, gl::GLuint index)
 {
-    const gl::GLubyte* result = gl::GetStringi(pname, index);
+    const gl::GLubyte* result = gl::glGetStringi(pname, index);
 
     return reinterpret_cast<const char*>(result);
 }
@@ -75,7 +76,7 @@ gl::GLint getInteger(gl::GLenum pname)
 {
 	gl::GLint value;
 
-    gl::GetIntegerv(pname, &value);
+    gl::glGetIntegerv(pname, &value);
 
 	return value;
 }
@@ -89,7 +90,7 @@ gl::GLfloat getFloat(gl::GLenum pname)
 {
 	gl::GLfloat value;
 
-    gl::GetFloatv(pname, &value);
+    gl::glGetFloatv(pname, &value);
 
 	return value;
 }
@@ -98,7 +99,7 @@ gl::GLdouble getDouble(gl::GLenum pname)
 {
 	gl::GLdouble value;
 
-    gl::GetDoublev(pname, &value);
+    gl::glGetDoublev(pname, &value);
 
 	return value;
 }
@@ -107,7 +108,7 @@ gl::GLboolean getBoolean(gl::GLenum pname)
 {
 	gl::GLboolean value;
 
-    gl::GetBooleanv(pname, &value);
+    gl::glGetBooleanv(pname, &value);
 
 	return value;
 }
@@ -116,7 +117,7 @@ gl::GLint getInteger(gl::GLenum pname, gl::GLuint index)
 {
 	gl::GLint value;
 
-    gl::GetIntegeri_v(pname, index, &value);
+    gl::glGetIntegeri_v(pname, index, &value);
 
 	return value;
 }
@@ -130,7 +131,7 @@ gl::GLfloat getFloat(gl::GLenum pname, gl::GLuint index)
 {
     gl::GLfloat value;
 
-    gl::GetFloati_v(pname, index, &value);
+    gl::glGetFloati_v(pname, index, &value);
 
     return value;
 }
@@ -139,7 +140,7 @@ gl::GLdouble getDouble(gl::GLenum pname, gl::GLuint index)
 {
     gl::GLdouble value;
 
-    gl::GetDoublei_v(pname, index, &value);
+    gl::glGetDoublei_v(pname, index, &value);
 
     return value;
 }
@@ -148,34 +149,34 @@ gl::GLboolean getBoolean(gl::GLenum pname, gl::GLuint index)
 {
     gl::GLboolean value;
 
-    gl::GetBooleani_v(pname, index, &value);
+    gl::glGetBooleani_v(pname, index, &value);
 
     return value;
 }
 
 std::string vendor()
 {
-    return getString(gl::VENDOR);
+    return getString(gl::GL_VENDOR);
 }
 
 std::string renderer()
 {
-    return getString(gl::RENDERER);
+    return getString(gl::GL_RENDERER);
 }
 
 std::string versionString()
 {
-    return getString(gl::VERSION);
+    return getString(gl::GL_VERSION);
 }
 
 gl::GLint majorVersion()
 {
-    return getInteger(gl::MAJOR_VERSION);
+    return getInteger(gl::GL_MAJOR_VERSION);
 }
 
 gl::GLint minorVersion()
 {
-    return getInteger(gl::MINOR_VERSION);
+    return getInteger(gl::GL_MINOR_VERSION);
 }
 
 Version version()
@@ -190,18 +191,18 @@ bool isCoreProfile()
         return false;
     }
 
-    return (getInteger(gl::CONTEXT_PROFILE_MASK) & gl::CONTEXT_CORE_PROFILE_BIT) > 0;
+    return (getInteger(gl::GL_CONTEXT_PROFILE_MASK) & gl::GL_CONTEXT_CORE_PROFILE_BIT) > 0;
 }
 
 std::vector<std::string> getExtensions()
 {
-    int count = getInteger(gl::NUM_EXTENSIONS);
+    int count = getInteger(gl::GL_NUM_EXTENSIONS);
 
     std::vector<std::string> extensions(count);
 
     for (int i=0; i<count; ++i)
     {
-        extensions[i] = getString(gl::EXTENSIONS, i);
+        extensions[i] = getString(gl::GL_EXTENSIONS, i);
     }
 
     return extensions;
@@ -229,19 +230,19 @@ bool isInCoreProfile(gl::Extension extension)
 
 void enable(gl::GLenum capability)
 {
-    gl::Enable(capability);
+    gl::glEnable(capability);
 }
 
 void disable(gl::GLenum capability)
 {
-    gl::Disable(capability);
+    gl::glDisable(capability);
 }
 
 bool isEnabled(gl::GLenum capability)
 {
-    gl::GLboolean value = gl::IsEnabled(capability);
+    gl::GLboolean value = gl::glIsEnabled(capability);
 
-    return value == gl::TRUE_;
+    return value == gl::GL_TRUE;
 }
 
 void setEnabled(gl::GLenum capability, bool enabled)
@@ -251,19 +252,19 @@ void setEnabled(gl::GLenum capability, bool enabled)
 
 void enable(gl::GLenum capability, int index)
 {
-    gl::Enablei(capability, index);
+    gl::glEnablei(capability, index);
 }
 
 void disable(gl::GLenum capability, int index)
 {
-    gl::Disablei(capability, index);
+    gl::glDisablei(capability, index);
 }
 
 bool isEnabled(gl::GLenum capability, int index)
 {
-    gl::GLboolean value = gl::IsEnabledi(capability, index);
+    gl::GLboolean value = gl::glIsEnabledi(capability, index);
 
-    return value == gl::TRUE_;
+    return value == gl::GL_TRUE;
 }
 
 void setEnabled(gl::GLenum capability, int index, bool enabled)

@@ -25,27 +25,27 @@ namespace memory
 
 gl::GLint total()
 {
-    return getMemoryInformation(gl::GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX);
+    return getMemoryInformation(gl::GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX);
 }
 
 gl::GLint dedicated()
 {
-    return getMemoryInformation(gl::GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX);
+    return getMemoryInformation(gl::GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX);
 }
 
 gl::GLint available()
 {
-    return getMemoryInformation(gl::GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX);
+    return getMemoryInformation(gl::GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX);
 }
 
 gl::GLint evicted()
 {
-    return getMemoryInformation(gl::GPU_MEMORY_INFO_EVICTED_MEMORY_NVX);
+    return getMemoryInformation(gl::GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX);
 }
 
 gl::GLint evictionCount()
 {
-    return getMemoryInformation(gl::GPU_MEMORY_INFO_EVICTION_COUNT_NVX);
+    return getMemoryInformation(gl::GL_GPU_MEMORY_INFO_EVICTION_COUNT_NVX);
 }
 
 } // namespace memory

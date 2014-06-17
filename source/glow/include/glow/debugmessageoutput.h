@@ -28,7 +28,7 @@ class DebugMessage;
     callback can be set which gets called for every occuring OpenGL error using
     addCallback().
 
-    Debug messages can only be obtained using the gl::ARB_debug_output extension,
+    Debug messages can only be obtained using the gl::glARB_debug_output extension,
     which is in the OpenGL 4.3 Core Profile. Occuring OpenGL debug messages can
     be filtered using enableMessage(), enableMessages(), disableMessage() and
     disableMessages().
