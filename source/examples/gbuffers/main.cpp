@@ -370,6 +370,14 @@ int main(int /*argc*/, char* /*argv*/[])
     glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
     glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
 
+    glow::info() << "\nSwitch between G-Buffers";
+    glow::info() << "\t" << "1" << "\t" << "Postprocessed";
+    glow::info() << "\t" << "2" << "\t" << "Color";
+    glow::info() << "\t" << "3" << "\t" << "Normal";
+    glow::info() << "\t" << "4" << "\t" << "Geometry";
+    glow::info() << "\t" << "5" << "\t" << "Depth";
+
+
     ContextFormat format;
     format.setVersion(3, 1);
 
