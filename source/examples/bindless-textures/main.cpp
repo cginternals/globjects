@@ -94,8 +94,8 @@ public:
 
         m_program = new glow::Program;
         m_program->attach(
-            glowutils::createShaderFromFile(gl::GL_VERTEX_SHADER, "data/bindless-textures/shader.vert"),
-            glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag")
+            glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/bindless-textures/shader.vert"),
+            glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag")
         );
 
         std::array<glow::TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;

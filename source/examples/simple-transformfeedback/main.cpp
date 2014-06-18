@@ -181,12 +181,12 @@ void EventHandler::createAndSetupShaders()
 {
 	m_shaderProgram = new glow::Program();
     m_shaderProgram->attach(
-        glowutils::createShaderFromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/simple.vert")
-    ,   glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
+        glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/simple.vert")
+    ,   glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
 
     m_transformFeedbackProgram = new glow::Program();
     m_transformFeedbackProgram->attach(
-        glowutils::createShaderFromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
+        glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
     m_transformFeedbackProgram->setUniform("deltaT", 0.0f);
 }
 

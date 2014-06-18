@@ -168,7 +168,7 @@ void EventHandler::createAndSetupTexture()
 void EventHandler::createAndSetupShaders()
 {
     m_computeProgram = new glow::Program();
-    m_computeProgram->attach(glowutils::createShaderFromFile(gl::GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+    m_computeProgram->attach(glow::Shader::fromFile(gl::GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
 
     m_computeProgram->setUniform("destTex", 0);
 }

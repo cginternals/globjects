@@ -66,7 +66,7 @@ void FragmentShaderParticles::initialize()
 
     // Create screen aligned quad for particle update
     m_quadUpdate = new ScreenAlignedQuad(
-        createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/particle.frag"),
+        Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/particle.frag"),
         m_texPositions );
     m_quadUpdate->program()->setUniform("vertices",   0);
     m_quadUpdate->program()->setUniform("velocities", 1);
@@ -88,15 +88,15 @@ void FragmentShaderParticles::initialize()
 
     // Create screen aligned quads for clear and rendering
     m_clear = new ScreenAlignedQuad(
-        createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag") );
+        Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag") );
     m_quad  = new ScreenAlignedQuad(m_colorBuffer);
 
     // Create draw program
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        createShaderFromFile(gl::GL_VERTEX_SHADER,   "data/gpu-particles/points_fragment.vert")
-    ,   createShaderFromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-    ,   createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        Shader::fromFile(gl::GL_VERTEX_SHADER,   "data/gpu-particles/points_fragment.vert")
+    ,   Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+    ,   Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 }
 
 void FragmentShaderParticles::reset()

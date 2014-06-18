@@ -42,7 +42,7 @@ void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath
     glow::NamedString::create("/transparency/abuffer.glsl", new glow::File(transparencyShaderFilePath + "abuffer.glsl"));
 
     m_program = new glow::Program();
-	m_program->attach(glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath +  "abuffer.frag"));
+	m_program->attach(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath +  "abuffer.frag"));
 	m_program->attach(vertexShader);
 	if (geometryShader != nullptr) m_program->attach(geometryShader);
 
@@ -63,7 +63,7 @@ void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath
     m_counter = new glow::Buffer();
     m_counter->setName("A Buffer Counter");
 
-	m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath +  "abuffer_post.frag"));
+	m_quad = new glowutils::ScreenAlignedQuad(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath +  "abuffer_post.frag"));
 
     m_colorBuffer = createColorTex();
     m_postFbo = new glow::FrameBufferObject;

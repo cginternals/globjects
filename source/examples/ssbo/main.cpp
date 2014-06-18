@@ -40,7 +40,7 @@ public:
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
-        m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
+        m_quad = new glowutils::ScreenAlignedQuad(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
 
         m_quad->program()->setUniform("maximum", 10);
         m_quad->program()->setUniform("rowCount", 10);

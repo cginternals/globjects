@@ -15,7 +15,7 @@ void GlBlendAlgorithm::initialize(const std::string & transparencyShaderFilePath
     assert(vertexShader != nullptr);
 
 	m_program = new glow::Program();
-	m_program->attach(glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "glblend.frag"));
+	m_program->attach(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "glblend.frag"));
     m_program->attach(vertexShader);
 	if (geometryShader != nullptr) m_program->attach(geometryShader);
 

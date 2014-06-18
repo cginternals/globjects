@@ -1,10 +1,9 @@
 #include <glowutils/glowutils.h>
 
+#include <glowbase/File.h>
+
 #include <glow/logging.h>
 #include <glow/NamedString.h>
-#include <glow/Shader.h>
-
-#include <glowbase/File.h>
 
 #ifdef _MSC_VER
 #include "windows.h"
@@ -58,16 +57,6 @@ using namespace glow;
 
 namespace glowutils
 {
-
-Shader * createShaderFromFile(const gl::GLenum type, const std::string& fileName)
-{
-    return new Shader(type, new File(fileName));
-}
-
-Shader * createShaderFromFile(gl::GLenum type, const std::string & fileName, const std::vector<std::string> & includePaths)
-{
-    return new Shader(type, new File(fileName), includePaths);
-}
 
 void scanDirectory(const std::string & directory, const std::string & fileExtension)
 {

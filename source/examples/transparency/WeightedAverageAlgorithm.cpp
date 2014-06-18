@@ -14,12 +14,12 @@
 void WeightedAverageAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
 
     m_opaqueProgram = new glow::Program;
-	m_opaqueProgram->attach(glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_opaque.frag"));
+	m_opaqueProgram->attach(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_opaque.frag"));
     m_opaqueProgram->attach(vertexShader);
 	if (geometryShader != nullptr) m_opaqueProgram->attach(geometryShader);
 
     m_accumulationProgram = new glow::Program;
-	m_accumulationProgram->attach(glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_translucent.frag"));
+	m_accumulationProgram->attach(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_translucent.frag"));
     m_accumulationProgram->attach(vertexShader);
 	if (geometryShader != nullptr) m_accumulationProgram->attach(geometryShader);
 
@@ -35,7 +35,7 @@ void WeightedAverageAlgorithm::initialize(const std::string & transparencyShader
     m_renderFbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depthBuffer);
     m_renderFbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1 });
 
-	m_quad = new glowutils::ScreenAlignedQuad(glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_post.frag"));
+	m_quad = new glowutils::ScreenAlignedQuad(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_post.frag"));
 
     m_colorBuffer = createColorTex();
     m_postFbo = new glow::FrameBufferObject;

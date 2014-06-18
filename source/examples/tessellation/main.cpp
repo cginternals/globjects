@@ -59,12 +59,12 @@ public:
 
         m_sphere = new glow::Program();
         m_sphere->attach(
-            glowutils::createShaderFromFile(gl::GL_VERTEX_SHADER, "data/tessellation/sphere.vert")
-        ,   glowutils::createShaderFromFile(gl::GL_TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
-        ,   glowutils::createShaderFromFile(gl::GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
-        ,   glowutils::createShaderFromFile(gl::GL_GEOMETRY_SHADER, "data/tessellation/sphere.geom")
-        ,   glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
-        ,   glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/common/phong.frag"));
+            glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/tessellation/sphere.vert")
+        ,   glow::Shader::fromFile(gl::GL_TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
+        ,   glow::Shader::fromFile(gl::GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
+        ,   glow::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/tessellation/sphere.geom")
+        ,   glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
+        ,   glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/common/phong.frag"));
 
         m_icosahedron = new glowutils::Icosahedron();
         m_agrid = new glowutils::AdaptiveGrid(16U);

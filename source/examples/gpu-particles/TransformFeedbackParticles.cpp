@@ -44,7 +44,7 @@ void TransformFeedbackParticles::initialize()
     reset();
 
     m_transformFeedbackProgram = new glow::Program();
-    m_transformFeedbackProgram->attach(glowutils::createShaderFromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
+    m_transformFeedbackProgram->attach(glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
 
     m_transformFeedbackProgram->link();
 
@@ -53,9 +53,9 @@ void TransformFeedbackParticles::initialize()
 
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        glowutils::createShaderFromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
-    ,   glowutils::createShaderFromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-    ,   glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
+    ,   glow::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+    ,   glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 
     m_vao = new VertexArrayObject();
     m_vao->bind();
@@ -90,7 +90,7 @@ void TransformFeedbackParticles::initialize()
 
     m_quad = new glowutils::ScreenAlignedQuad(m_color);
     m_clear = new glowutils::ScreenAlignedQuad(
-        glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
+        glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 
 void TransformFeedbackParticles::reset()

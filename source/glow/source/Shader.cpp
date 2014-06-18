@@ -10,6 +10,7 @@
 #include <glowbase/Version.h>
 #include <glowbase/AbstractStringSource.h>
 #include <glowbase/StaticStringSource.h>
+#include <glowbase/File.h>
 
 #include <glow/Program.h>
 #include <glow/logging.h>
@@ -66,6 +67,11 @@ Shader::Shader(const gl::GLenum type, AbstractStringSource * source, const std::
 Shader * Shader::fromString(const gl::GLenum type, const std::string & sourceString)
 {
     return new Shader(type, new StaticStringSource(sourceString));
+}
+
+Shader * Shader::fromFile(const gl::GLenum type, const std::string & filename)
+{
+    return new Shader(type, new File(filename));
 }
 
 Shader::~Shader()

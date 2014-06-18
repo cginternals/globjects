@@ -60,7 +60,7 @@ public:
         gl::glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 
-		glow::Shader* vertexShader = glowutils::createShaderFromFile(gl::GL_VERTEX_SHADER, "data/transparency/transparency.vert");
+		glow::Shader* vertexShader = glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transparency/transparency.vert");
 
         m_algos.push_back(new GlBlendAlgorithm);
         m_algos.push_back(new ABufferAlgorithm);
@@ -76,8 +76,8 @@ public:
 
 		// Setup the screen aligned quad stuff
 		glow::Program* quadProgram = new glow::Program();
-        quadProgram->attach(glowutils::createShaderFromFile(gl::GL_FRAGMENT_SHADER, "data/transparency/quad.frag"));
-        quadProgram->attach(glowutils::createShaderFromFile(gl::GL_VERTEX_SHADER, "data/transparency/quad.vert"));
+        quadProgram->attach(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/transparency/quad.frag"));
+        quadProgram->attach(glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transparency/quad.vert"));
         m_quad = new glowutils::ScreenAlignedQuad(quadProgram);
 
 		m_aabb.extend(glm::vec3(-1.f, -0.5f, -10.5f));
