@@ -54,7 +54,7 @@ bool AxisAlignedBoundingBox::extend(const vec3 & vertex)
     if (vertex.z > m_urb.z)
         m_urb.z = vertex.z;
 
-    const bool extended(urb != m_urb && llf != m_llf);
+    const bool extended(urb != m_urb || llf != m_llf);
 
     if (extended)
     {
