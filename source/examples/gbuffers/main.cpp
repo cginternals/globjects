@@ -4,20 +4,16 @@
 #include <glow/Program.h>
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
-#include <glow/logging.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/debugmessageoutput.h>
 #include <glow/Texture.h>
 
-#include <glowutils/Timer.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/Camera.h>
-#include <glowutils/AdaptiveGrid.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
-#include <glowutils/FlightNavigation.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 #include <glowutils/ScreenAlignedQuad.h>
@@ -60,17 +56,22 @@ public:
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-        m_icosahedron = new glowutils::Icosahedron(2);
-
-        m_sphere = new glow::Program();
-        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::File("data/gbuffers/sphere.vert"));
-        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::File("data/gbuffers/sphere.frag"));
+        auto vertexShaderSource = new glowutils::StringTemplate(new glow::File("data/gbuffers/sphere.vert"));
+        auto fragmentShaderSource = new glowutils::StringTemplate(new glow::File("data/gbuffers/sphere.frag"));
+        auto postprocessingSource = new glowutils::StringTemplate(new glow::File("data/gbuffers/postprocessing.frag"));
+        auto gBufferChoiceSource = new glowutils::StringTemplate(new glow::File("data/gbuffers/gbufferchoice.frag"));
 
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");
         fragmentShaderSource->replace("#version 140", "#version 150");
+        postprocessingSource->replace("#version 140", "#version 150");
+        gBufferChoiceSource->replace("#version 140", "#version 150");
 #endif
-        
+
+        m_icosahedron = new glowutils::Icosahedron(2);
+
+        m_sphere = new glow::Program();
+
         m_sphere->attach(
             new glow::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
             new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
@@ -82,17 +83,11 @@ public:
         m_geometryTexture = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
 
         m_sphereFBO = new glow::FrameBufferObject;
-
         m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorTexture);
         m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_normalTexture);
         m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT2, m_geometryTexture);
         m_sphereFBO->attachTexture(gl::GL_DEPTH_ATTACHMENT, m_depthTexture);
-
-        glowutils::StringTemplate* postprocessingSource = new glowutils::StringTemplate(new glow::File("data/gbuffers/postprocessing.frag"));
-
-#ifdef MAC_OS
-        postprocessingSource->replace("#version 140", "#version 150");
-#endif
+        m_sphereFBO->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1, gl::GL_COLOR_ATTACHMENT2 });
 
         m_postprocessing = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::GL_FRAGMENT_SHADER, postprocessingSource));
         m_postprocessing->program()->setUniform<gl::GLint>("colorSource", 0);
@@ -103,14 +98,8 @@ public:
         m_postprocessedTexture = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
 
         m_postprocessingFBO = new glow::FrameBufferObject;
-
         m_postprocessingFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_postprocessedTexture);
-
-        glowutils::StringTemplate* gBufferChoiceSource = new glowutils::StringTemplate(new glow::File("data/gbuffers/gbufferchoice.frag"));
-
-#ifdef MAC_OS
-        gBufferChoiceSource->replace("#version 140", "#version 150");
-#endif
+        m_postprocessingFBO->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 
         m_gBufferChoice = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::GL_FRAGMENT_SHADER, gBufferChoiceSource));
         m_gBufferChoice->program()->setUniform<gl::GLint>("postprocessedSource", 0);
@@ -126,6 +115,8 @@ public:
         m_gBufferChoice->program()->setUniform<gl::GLfloat>("farZ", m_camera.zFar());
 
         window.addTimer(0, 0, false);
+
+        cameraChanged();
     }
 
     virtual void finalize(Window &) override
@@ -142,6 +133,8 @@ public:
 
         m_camera.setViewport(event.width(), event.height());
 
+        cameraChanged();
+
         m_colorTexture->image2D(0, gl::GL_RGBA8, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
         m_normalTexture->image2D(0, gl::GL_RGBA16F, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
         m_geometryTexture->image2D(0, gl::GL_RGBA16F, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
@@ -149,18 +142,20 @@ public:
         m_postprocessedTexture->image2D(0, gl::GL_RGBA8, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
     }
 
+    void cameraChanged()
+    {
+        m_sphere->setUniform("transform", m_camera.viewProjection());
+        m_sphere->setUniform("modelView", m_camera.view());
+        m_sphere->setUniform("normalMatrix", m_camera.normal());
+    }
+
     virtual void paintEvent(PaintEvent &) override
     {
         // Sphere Pass
 
         m_sphereFBO->bind();
-        m_sphereFBO->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1, gl::GL_COLOR_ATTACHMENT2 });
 
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
-
-        m_sphere->setUniform("transform", m_camera.viewProjection());
-        m_sphere->setUniform("modelView", m_camera.view());
-        m_sphere->setUniform("normalMatrix", m_camera.normal());
 
         m_sphere->use();
         m_icosahedron->draw();
@@ -171,7 +166,6 @@ public:
         // Postprocessing Pass
 
         m_postprocessingFBO->bind();
-        m_postprocessingFBO->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 
         gl::glClear(gl::GL_COLOR_BUFFER_BIT);
 
@@ -191,7 +185,7 @@ public:
 
         // GBuffer Choice Pass (including blitting)
 
-        glow::FrameBufferObject::defaultFBO()->bind();
+        // If no FBO is bound to GL_FRAMEBUFFER the default FBO is bound to GL_FRAMEBUFFER
 
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
@@ -241,6 +235,7 @@ public:
             m_camera.setCenter(vec3());
             m_camera.setEye(vec3(0.f, 1.f, 4.0f));
             m_camera.setUp(vec3(0,1,0));
+            cameraChanged();
             break;
         }
     }
@@ -268,11 +263,13 @@ public:
         case glowutils::WorldInHandNavigation::PanInteraction:
             m_nav.panProcess(event.pos());
             event.accept();
+            cameraChanged();
             break;
 
         case glowutils::WorldInHandNavigation::RotateInteraction:
             m_nav.rotateProcess(event.pos());
             event.accept();
+            cameraChanged();
             break;
         case glowutils::WorldInHandNavigation::NoInteraction:
             break;
@@ -302,6 +299,7 @@ public:
 
         m_nav.scaleAtMouse(event.pos(), -event.offset().y * 0.1f);
         event.accept();
+        cameraChanged();
     }
 
     virtual float depthAt(const ivec2 & windowCoordinates) const override
