@@ -23,6 +23,42 @@
 
 using namespace glm;
 
+namespace {
+
+    const char* vertexSource = R"(
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
+
+uniform mat4 transform;
+
+layout(location = 0) in vec4 vertex;
+
+out float t;
+
+void main()
+{
+    gl_Position = transform * vec4(vertex.xyz, 1.0);
+    t = vertex.w;
+
+}
+)";
+
+    const char* fragmentSource = R"(
+#version 140
+#extension GL_ARB_explicit_attrib_location : require
+
+layout(location=0) out vec4 fragColor;
+
+in float t;
+
+void main()
+{
+    fragColor = vec4(vec3(1.0, 0.2+t*0.8, t/2.0), 1.0);
+}
+)";
+
+}
+
 namespace glowutils
 {
 
@@ -84,51 +120,6 @@ void CameraPathPlayer::prepare()
     }
 
     prepareControlPoints();
-}
-
-namespace {
-vec3 intersection(const vec3& a, const vec3& r, const vec3& p, const vec3& n)
-{
-    float rDotN = dot(r, n);
-
-    assert(std::abs(rDotN) < std::numeric_limits<float>::epsilon());
-
-    float t = dot(p - a, n) / rDotN;
-    return a + r * t;
-}
-
-const char* vertexSource = R"(
-#version 140
-#extension GL_ARB_explicit_attrib_location : require
-
-uniform mat4 transform;
-
-layout(location = 0) in vec4 vertex;
-
-out float t;
-
-void main()
-{
-    gl_Position = transform * vec4(vertex.xyz, 1.0);
-    t = vertex.w;
-
-}
-)";
-
-const char* fragmentSource = R"(
-#version 140
-#extension GL_ARB_explicit_attrib_location : require
-
-layout(location=0) out vec4 fragColor;
-
-in float t;
-
-void main()
-{
-    fragColor = vec4(vec3(1.0, 0.2+t*0.8, t/2.0), 1.0);
-}
-)";
-
 }
 
 void CameraPathPlayer::prepareControlPoints()
