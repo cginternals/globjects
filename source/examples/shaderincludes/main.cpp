@@ -1,11 +1,9 @@
+#include <glowbase/File.h>
 
 #include <glow/NamedString.h>
 #include <glow/Shader.h>
 #include <glow/debugmessageoutput.h>
-#include <glow/logging.h>
 
-#include <glowbase/File.h>
-#include <glowbase/File.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
@@ -31,8 +29,6 @@ public:
     {
     }
 
-    void createAndSetupShaders();
-
     virtual void initialize(Window & window) override
     {
         ExampleWindowEventHandler::initialize(window);
@@ -41,15 +37,15 @@ public:
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-
         glow::NamedString::create("/shaderincludes/color.glsl", new glow::File("data/shaderincludes/color.glsl"));
 
-      glowutils::StringTemplate* fragmentShaderString = new glowutils::StringTemplate(new glow::File("data/shaderincludes/test.frag"));
+        glowutils::StringTemplate* fragmentShaderString = new glowutils::StringTemplate(new glow::File("data/shaderincludes/test.frag"));
+
 #ifdef MAC_OS
-      fragmentShaderString->replace("#version 140", "#version 150");
+        fragmentShaderString->replace("#version 140", "#version 150");
 #endif
 
-      m_quad = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderString));
+        m_quad = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderString));
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -59,13 +55,11 @@ public:
         int side = std::min<int>(width, height);
 
         gl::glViewport((width - side) / 2, (height - side) / 2, side, side);
-
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
-
 
         m_quad->draw();
     }
