@@ -50,28 +50,21 @@ Shader::Shader(const gl::GLenum type)
 {
 }
 
-
-Shader::Shader(const gl::GLenum type, AbstractStringSource * source)
-: Shader(type)
-{
-    setSource(source);
-}
-
-Shader::Shader(const gl::GLenum type, AbstractStringSource * source, const std::vector<std::string> & includePaths)
+Shader::Shader(const gl::GLenum type, AbstractStringSource * source, const IncludePaths & includePaths)
 : Shader(type)
 {
     setIncludePaths(includePaths);
     setSource(source);
 }
 
-Shader * Shader::fromString(const gl::GLenum type, const std::string & sourceString)
+Shader * Shader::fromString(const gl::GLenum type, const std::string & sourceString, const IncludePaths & includePaths)
 {
-    return new Shader(type, new StaticStringSource(sourceString));
+    return new Shader(type, new StaticStringSource(sourceString), includePaths);
 }
 
-Shader * Shader::fromFile(const gl::GLenum type, const std::string & filename)
+Shader * Shader::fromFile(const gl::GLenum type, const std::string & filename, const IncludePaths & includePaths)
 {
-    return new Shader(type, new File(filename));
+    return new Shader(type, new File(filename), includePaths);
 }
 
 Shader::~Shader()

@@ -15,13 +15,13 @@ message(STATUS "Example ${target}")
 
 include_directories(
     ${GLOW_EXAMPLE_DEPENDENCY_INCLUDES}
+    ${OPENSCENEGRAPH_INCLUDE_DIRS}
 )
 
 include_directories(
     BEFORE
     ${GLOW_EXAMPLE_INCLUDES}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${OPENSCENEGRAPH_INCLUDE_DIRS}
 )
 
 #

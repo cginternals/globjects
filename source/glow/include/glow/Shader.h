@@ -37,15 +37,16 @@ class Program;
 class GLOW_API Shader : public Object, protected ChangeListener, public Changeable
 {
     friend class Program;
+public:
+    using IncludePaths = std::vector<std::string>;
 
 public:
-    static Shader * fromString(const gl::GLenum type, const std::string & sourceString);
-    static Shader * fromFile(const gl::GLenum type, const std::string & filename);
+    static Shader * fromString(const gl::GLenum type, const std::string & sourceString, const IncludePaths & includePaths = IncludePaths());
+    static Shader * fromFile(const gl::GLenum type, const std::string & filename, const IncludePaths & includePaths = IncludePaths());
 
 public:
     Shader(const gl::GLenum type);
-    Shader(const gl::GLenum type, AbstractStringSource * source);
-    Shader(const gl::GLenum type, AbstractStringSource * source, const std::vector<std::string> & includePaths);
+    Shader(const gl::GLenum type, AbstractStringSource * source, const IncludePaths & includePaths = IncludePaths());
 
     virtual void accept(ObjectVisitor& visitor) override;
 
@@ -55,7 +56,7 @@ public:
 	void setSource(const std::string & source);
     const AbstractStringSource* source() const;
     void updateSource();
-    void setIncludePaths(const std::vector<std::string> & includePaths);
+    void setIncludePaths(const IncludePaths & includePaths);
 
     bool compile() const;
 	bool isCompiled() const;
@@ -83,7 +84,7 @@ protected:
 protected:
 	gl::GLenum m_type;
     ref_ptr<AbstractStringSource> m_source;
-    std::vector<std::string> m_includePaths;
+    IncludePaths m_includePaths;
 
     mutable bool m_compiled;
     mutable bool m_compilationFailed;
