@@ -8,6 +8,8 @@ namespace glow
 {
 
 class Object;
+class FrameBufferObject;
+class VertexArrayObject;
 
 /** \brief Tracks all wrapped OpenGL objects in glow.
     
@@ -24,12 +26,17 @@ public:
 
     std::set<Object *>::iterator begin();
     std::set<Object *>::iterator end();
+
+    FrameBufferObject * defaultFBO();
+    VertexArrayObject * defaultVAO();
 protected:
     void registerObject(Object * object);
     void deregisterObject(Object * object);
 
 protected:
     std::set<Object *> m_objects;
+    FrameBufferObject * m_defaultFBO;
+    VertexArrayObject * m_defaultVAO;
 };
 
 } // namespace glow

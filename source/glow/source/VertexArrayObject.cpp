@@ -8,6 +8,7 @@
 #include <glow/VertexAttributeBinding.h>
 
 #include "container_helpers.hpp"
+#include "registry/ObjectRegistry.h"
 
 namespace glow
 {
@@ -25,6 +26,11 @@ VertexArrayObject::VertexArrayObject(gl::GLuint id, bool takeOwnership)
 VertexArrayObject * VertexArrayObject::fromId(gl::GLuint id, bool takeOwnership)
 {
     return new VertexArrayObject(id, takeOwnership);
+}
+
+VertexArrayObject * VertexArrayObject::defaultVAO()
+{
+    return ObjectRegistry::current().defaultVAO();
 }
 
 VertexArrayObject::~VertexArrayObject()

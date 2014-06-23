@@ -18,6 +18,7 @@
 #include "pixelformat.h"
 
 #include "registry/ImplementationRegistry.h"
+#include "registry/ObjectRegistry.h"
 #include "implementations/AbstractFrameBufferImplementation.h"
 
 namespace {
@@ -49,9 +50,7 @@ FrameBufferObject * FrameBufferObject::fromId(gl::GLuint id, bool takeOwnership)
 
 FrameBufferObject * FrameBufferObject::defaultFBO()
 {
-    // TODO: this is dangerous as the receiver needs to delete this object.
-    // better store default objects in the ObjectRegistry
-    return new FrameBufferObject(0, false);
+    return ObjectRegistry::current().defaultFBO();
 }
 
 FrameBufferObject::~FrameBufferObject()

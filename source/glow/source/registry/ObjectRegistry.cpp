@@ -4,11 +4,14 @@
 #include <cassert>
 
 #include <glow/Object.h>
+#include <glow/FrameBufferObject.h>
+#include <glow/VertexArrayObject.h>
 
 namespace glow 
 {
 
 ObjectRegistry::ObjectRegistry()
+: m_defaultFBO(nullptr)
 {
 }
 
@@ -50,6 +53,28 @@ void ObjectRegistry::deregisterObject(Object * object)
         return;
 
     m_objects.erase(object);
+}
+
+FrameBufferObject * ObjectRegistry::defaultFBO()
+{
+    if (m_defaultFBO == nullptr)
+    {
+        m_defaultFBO = FrameBufferObject::fromId(0, false);
+        m_defaultFBO->ref();
+    }
+
+    return m_defaultFBO;
+}
+
+VertexArrayObject * ObjectRegistry::defaultVAO()
+{
+    if (m_defaultVAO == nullptr)
+    {
+        m_defaultVAO = VertexArrayObject::fromId(0, false);
+        m_defaultVAO->ref();
+    }
+
+    return m_defaultVAO;
 }
 
 } // namespace glow

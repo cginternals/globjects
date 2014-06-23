@@ -22,6 +22,8 @@ public:
     VertexArrayObject();
     static VertexArrayObject * fromId(gl::GLuint id, bool takeOwnership = false);
 
+    static VertexArrayObject * defaultVAO();
+
     virtual void accept(ObjectVisitor & visitor) override;
 
     void bind() const;
