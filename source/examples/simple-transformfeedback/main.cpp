@@ -17,7 +17,7 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/logging.h>
 #include <glow/TransformFeedback.h>
-#include <glow/debugmessageoutput.h>
+#include <glow/DebugMessage.h>
 
 #include <glowutils/Timer.h>
 #include <glowbase/File.h>
@@ -54,7 +54,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::debugmessageoutput::enable();
+        glow::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 

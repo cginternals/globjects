@@ -17,7 +17,7 @@
 #include <glow/VertexAttributeBinding.h>
 #include <glow/Buffer.h>
 #include <glow/Extension.h>
-#include <glow/debugmessageoutput.h>
+#include <glow/DebugMessage.h>
 #include <glow/glow.h>
 
 #include <glowbase/File.h>
@@ -74,7 +74,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::debugmessageoutput::enable();
+        glow::DebugMessage::enable();
 
         if (!glow::hasExtension(glow::Extension::NV_bindless_texture))
         {

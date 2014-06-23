@@ -14,19 +14,24 @@ void GL_APIENTRY DebugImplementation::debugMessageCallback(gl::GLenum source, gl
     if (!param)
         return;
 
-    const DebugMessageCallback & messageCallback = *reinterpret_cast<const DebugMessageCallback*>(param);
+    const DebugImplementation * debugImplementation = reinterpret_cast<const DebugImplementation*>(param);
 
-    messageCallback(glow::DebugMessage(source, type, id, severity, std::string(message, length)));
+    debugImplementation->handleMessage(DebugMessage(source, type, id, severity, std::string(message, length)));
+}
+
+DebugImplementation::DebugImplementation()
+: m_isRegistered(false)
+{
 }
 
 void DebugImplementation::registerCallback()
 {
-    if (m_messageCallback.isRegistered())
+    if (m_isRegistered)
         return;
 
-    gl::glDebugMessageCallback(reinterpret_cast<gl::GLDEBUGPROC>(debugMessageCallback), reinterpret_cast<const void*>(&m_messageCallback));
+    gl::glDebugMessageCallback(reinterpret_cast<gl::GLDEBUGPROC>(debugMessageCallback), reinterpret_cast<void*>(this));
 
-    m_messageCallback.setRegistered(true);
+    m_isRegistered = true;
 }
 
 void DebugImplementation::enable()
@@ -48,9 +53,6 @@ void DebugImplementation::setSynchronous(bool synchronous)
 
 void DebugImplementation::insertMessage(const DebugMessage & message)
 {
-    if (message.isManualErrorMessage())
-        return;
-
     gl::glDebugMessageInsert(message.source(), message.type(), message.id(), message.severity(), static_cast<gl::GLsizei>(message.message().length()), message.message().c_str());
 }
 

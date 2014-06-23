@@ -3,12 +3,8 @@
 #include <glbinding/constants.h>
 #include <glbinding/functions.h>
 
-#include <glow/DebugMessage.h>
-#include "debugmessageoutput_private.h"
-
 namespace glow
 {
-
 
 Error::Error(gl::GLenum errorCode)
 : m_errorCode(errorCode)
@@ -64,16 +60,6 @@ bool Error::isError() const
 Error::operator bool() const
 {
     return isError();
-}
-
-void Error::check(const std::string & message)
-{
-    Error error = Error::get();
-
-    if (!error)
-        return;
-
-    debugmessageoutput::signalError(error, message);
 }
 
 } // namespace glow

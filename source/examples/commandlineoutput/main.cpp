@@ -25,7 +25,7 @@
 #include <glow/TransformFeedback.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/logging.h>
-#include <glow/debugmessageoutput.h>
+#include <glow/DebugMessage.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -49,7 +49,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::debugmessageoutput::enable();
+        glow::DebugMessage::enable();
 
         std::cout << "glow Objects tests" << std::endl;
 

@@ -2,11 +2,9 @@
 
 #include <glbinding/types.h>
 
-#include "../DebugMessageCallback.h"
+#include <glow/DebugMessage.h>
 
 namespace glow {
-
-class DebugMessage;
 
 class AbstractDebugImplementation
 {
@@ -16,8 +14,7 @@ public:
 
     static AbstractDebugImplementation * create();
 
-    void setCallback(DebugMessageCallback::Callback callback);
-    void addCallback(DebugMessageCallback::Callback callback);
+    void setCallback(DebugMessage::Callback callback);
 
     virtual bool isFallback();
 
@@ -30,7 +27,10 @@ public:
 
     virtual void controlMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids, gl::GLboolean enabled) = 0;
 protected:
-    DebugMessageCallback m_messageCallback;
+    DebugMessage::Callback m_messageCallback;
+    static DebugMessage::Callback s_defaultCallback;
+
+    virtual void handleMessage(const DebugMessage & message) const;
 };
 
 } // namespace glow

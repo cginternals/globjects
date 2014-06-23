@@ -30,12 +30,15 @@ void FallbackDebugImplementation::setSynchronous(bool)
 void FallbackDebugImplementation::insertMessage(const DebugMessage & message)
 {
     if (m_enabled)
-        m_messageCallback(message);
+    {
+        handleMessage(message);
+    }
 }
 
 void FallbackDebugImplementation::controlMessages(gl::GLenum , gl::GLenum , gl::GLenum , gl::GLsizei , const gl::GLuint * , gl::GLboolean )
 {
     // ignore
+    // TODO: emulate OpenGL's filtering functionality
 }
 
 } // namespace glow

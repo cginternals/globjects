@@ -6,7 +6,7 @@
 #include <glow/Shader.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
-#include <glow/debugmessageoutput.h>
+#include <glow/DebugMessage.h>
 #include <glow/State.h>
 #include <glow/glow.h>
 
@@ -41,7 +41,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::debugmessageoutput::enable();
+        glow::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 

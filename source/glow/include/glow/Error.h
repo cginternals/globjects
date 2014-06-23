@@ -29,8 +29,6 @@ public:
 
 	bool isError() const;
     operator bool() const;
-
-    static void check(const std::string & message);
 protected:
 	gl::GLenum m_errorCode;
 };

@@ -18,7 +18,7 @@
 #include <glow/FrameBufferObject.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/Texture.h>
-#include <glow/debugmessageoutput.h>
+#include <glow/DebugMessage.h>
 
 #include <glowutils/Timer.h>
 #include <glowutils/ScreenAlignedQuad.h>
@@ -63,7 +63,7 @@ public:
 	{
         ExampleWindowEventHandler::initialize(window);
 
-        glow::debugmessageoutput::enable();
+        glow::DebugMessage::enable();
 
 		gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 

@@ -2,7 +2,7 @@
 
 
 #include <glow/Buffer.h>
-#include <glow/debugmessageoutput.h>
+#include <glow/DebugMessage.h>
 #include <glow/Program.h>
 
 #include <glowbase/File.h>
@@ -35,7 +35,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::debugmessageoutput::enable();
+        glow::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 

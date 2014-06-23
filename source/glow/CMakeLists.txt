@@ -70,11 +70,7 @@ set(sources
 	${source_path}/constants.cpp
 	${source_path}/container_helpers.hpp
 	${source_path}/DebugInfo.cpp
-	${source_path}/DebugMessageCallback.cpp
-	${source_path}/DebugMessageCallback.h
 	${source_path}/DebugMessage.cpp
-	${source_path}/debugmessageoutput.cpp
-	${source_path}/debugmessageoutput_private.h
 	${source_path}/Error.cpp
 	${source_path}/FrameBufferAttachment.cpp
 	${source_path}/FrameBufferObject.cpp
@@ -157,7 +153,6 @@ set(api_includes
 	${include_path}/constants.h
 	${include_path}/DebugInfo.h
 	${include_path}/DebugMessage.h
-	${include_path}/debugmessageoutput.h
 	${include_path}/Error.h
 	${include_path}/Extension.h
 	${include_path}/FrameBufferAttachment.h

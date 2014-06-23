@@ -1,10 +1,20 @@
 #include <glow/DebugMessage.h>
 
 #include <sstream>
+#include <cassert>
 
 #include <glbinding/constants.h>
 
+#include "registry/Registry.h"
+#include "registry/ImplementationRegistry.h"
+#include "implementations/AbstractDebugImplementation.h"
+
 namespace glow {
+
+AbstractDebugImplementation & implementation()
+{
+    return ImplementationRegistry::current().debugImplementation();
+}
 
 DebugMessage::DebugMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, const std::string & message)
 : m_source(source)
@@ -13,11 +23,6 @@ DebugMessage::DebugMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl
 , m_severity(severity)
 , m_message(message)
 {
-}
-
-bool DebugMessage::isManualErrorMessage() const
-{
-    return false;
 }
 
 gl::GLenum DebugMessage::source() const
@@ -115,6 +120,87 @@ std::string DebugMessage::typeString() const
         default:
             return "unknown";
     }
+}
+
+bool DebugMessage::isFallbackImplementation()
+{
+    return implementation().isFallback();
+}
+
+void DebugMessage::enable(bool synchronous)
+{
+    implementation().enable();
+
+    setSynchronous(synchronous);
+}
+
+void DebugMessage::disable()
+{
+    implementation().disable();
+}
+
+void DebugMessage::setCallback(Callback callback)
+{
+    implementation().setCallback(callback);
+}
+
+void DebugMessage::setSynchronous(bool synchronous)
+{
+    implementation().setSynchronous(synchronous);
+}
+
+void DebugMessage::insertMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message)
+{
+    assert(message != nullptr);
+
+    insertMessage(DebugMessage(source, type, id, severity, std::string(message, length)));
+}
+
+void DebugMessage::insertMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, const std::string & message)
+{
+    insertMessage(DebugMessage(source, type, id, severity, message));
+}
+
+void DebugMessage::insertMessage(const DebugMessage & message)
+{
+    implementation().insertMessage(message);
+}
+
+void DebugMessage::enableMessage(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLuint id)
+{
+    enableMessages(source, type, severity, 1, &id);
+}
+
+void DebugMessage::enableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids)
+{
+    controlMessages(source, type, severity, count, ids, gl::GL_TRUE);
+}
+
+void DebugMessage::enableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, const std::vector<gl::GLuint> & ids)
+{
+    enableMessages(source, type, severity, static_cast<int>(ids.size()), ids.data());
+}
+
+void DebugMessage::disableMessage(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLuint id)
+{
+    disableMessages(source, type, severity, 1, &id);
+}
+
+void DebugMessage::disableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids)
+{
+    controlMessages(source, type, severity, count, ids, gl::GL_FALSE);
+}
+
+void DebugMessage::disableMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, const std::vector<gl::GLuint> & ids)
+{
+    disableMessages(source, type, severity, static_cast<int>(ids.size()), ids.data());
+}
+
+void DebugMessage::controlMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids, gl::GLboolean enabled)
+{
+    assert(ids != nullptr || count == 0);
+
+    implementation().controlMessages(source, type, severity, count, ids, enabled);
 }
 
 } // namespace glow

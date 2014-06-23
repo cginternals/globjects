@@ -5,7 +5,7 @@
 
 #include <glow/Program.h>
 #include <glow/Texture.h>
-#include <glow/debugmessageoutput.h>
+#include <glow/DebugMessage.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Window.h>
@@ -55,7 +55,7 @@ public:
 
         ExampleWindowEventHandler::initialize(window);
 
-        glow::debugmessageoutput::enable();
+        glow::DebugMessage::enable();
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 

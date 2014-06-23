@@ -5,7 +5,7 @@
 
 #include <glbinding/constants.h>
 
-#include <glow/debugmessageoutput.h>
+#include <glow/DebugMessage.h>
 #include <glow/logging.h>
 
 #include <glowwindow/Window.h>
@@ -33,7 +33,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::debugmessageoutput::enable();
+        glow::DebugMessage::enable();
 
         gl::glClearColor(1.f, 1.f, 1.f, 1.f);
 

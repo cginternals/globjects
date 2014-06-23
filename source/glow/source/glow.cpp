@@ -11,10 +11,36 @@
 #include "registry/Registry.h"
 #include "registry/ExtensionRegistry.h"
 
+#include <glow/DebugMessage.h>
+#include <glow/logging.h>
+
 #include <glow/NamedString.h>
 
 namespace glow
 {
+
+void manualErrorCheckAfter(const gl::AbstractFunction & function)
+{
+    Error error = Error::get();
+
+    if (!error)
+        return;
+
+    if (!Registry::current().isInitialized())
+    {
+        debug() << "Error during initialization: " << error.name();
+        return;
+    }
+
+    if (!DebugMessage::isFallbackImplementation())
+        return;
+
+    std::stringstream stream;
+    stream << function.name() << " generated " << error.name();
+
+    DebugMessage::insertMessage(gl::GL_DEBUG_SOURCE_API_ARB, gl::GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), gl::GL_DEBUG_SEVERITY_HIGH_ARB, stream.str());
+}
+
 
 bool glowIsInitialized = false;
 
@@ -23,7 +49,7 @@ bool initializeGLBinding()
     gl::AbstractFunction::setCallbackLevelForAllExcept(gl::AbstractFunction::CallbackLevel::After, { "glGetError" });
 
     gl::AbstractFunction::setAfterCallback([](const gl::AbstractFunction & function) {
-        Error::check(function.name());
+        manualErrorCheckAfter(function);
     });
 
     return gl::initialize();

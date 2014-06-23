@@ -15,7 +15,7 @@
 #include <glow/logging.h>
 #include <glow/Texture.h>
 #include <glow/NamedString.h>
-#include <glow/debugmessageoutput.h>
+#include <glow/DebugMessage.h>
 #include <glow/Extension.h>
 
 #include <glowutils/Timer.h>
@@ -88,7 +88,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::debugmessageoutput::enable();
+        glow::DebugMessage::enable();
 
         m_forces = glow::Texture::createDefault(gl::GL_TEXTURE_3D);
 

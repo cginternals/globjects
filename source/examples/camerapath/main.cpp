@@ -17,7 +17,7 @@
 #include <glow/Buffer.h>
 #include <glow/logging.h>
 #include <glow/VertexArrayObject.h>
-#include <glow/debugmessageoutput.h>
+#include <glow/DebugMessage.h>
 
 #include <glowutils/Timer.h>
 #include <glowbase/File.h>
@@ -111,7 +111,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        debugmessageoutput::enable();
+        DebugMessage::enable();
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 

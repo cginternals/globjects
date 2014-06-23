@@ -18,7 +18,7 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/VertexAttributeBinding.h>
 #include <glow/logging.h>
-#include <glow/debugmessageoutput.h>
+#include <glow/DebugMessage.h>
 #include <glow/Texture.h>
 #include <glow/glow.h>
 
@@ -58,7 +58,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::debugmessageoutput::enable();
+        glow::DebugMessage::enable();
 
         if (!glow::hasExtension(glow::Extension::ARB_compute_shader))
         {

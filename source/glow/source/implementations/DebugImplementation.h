@@ -9,6 +9,8 @@ namespace glow {
 class DebugImplementation : public AbstractDebugImplementation
 {
 public:
+    DebugImplementation();
+
     virtual void enable() override;
     virtual void disable() override;
     virtual void setSynchronous(bool synchronous) override;
@@ -16,6 +18,7 @@ public:
     virtual void controlMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids, gl::GLboolean enabled) override;
 
 protected:
+    bool m_isRegistered;
     void registerCallback();
 
     static void GL_APIENTRY debugMessageCallback(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message, const void * param);
