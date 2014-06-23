@@ -22,6 +22,11 @@ gl::GLuint Object::id() const
 	return m_id;
 }
 
+bool Object::isDefault() const
+{
+    return m_id == 0;
+}
+
 bool Object::ownsGLObject() const
 {
     return m_ownsGLObject && m_id>0;

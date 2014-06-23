@@ -35,6 +35,8 @@ public:
 	void setName(const std::string & name);
     bool hasName() const;
 
+    bool isDefault() const;
+
 protected:
     Object(gl::GLuint id, bool takeOwnership = true);
     virtual ~Object();

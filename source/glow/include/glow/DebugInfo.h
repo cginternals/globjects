@@ -19,6 +19,8 @@ namespace glow
     ObjectVisitor. The debug info can be queried using generalInfo() and 
     objectInfo() or be printed to the command line using printObjectInfo(), 
     printGeneralInfo() or printAll().
+	
+	@deprecated
     
     \code{.cpp}
 
