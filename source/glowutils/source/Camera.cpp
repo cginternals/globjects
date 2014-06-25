@@ -5,6 +5,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 
+#include <glm/gtx/transform.hpp>
+
+
 using namespace glm;
 
 namespace glowutils
@@ -140,6 +143,18 @@ void Camera::setFovy(const float fovy)
     dirty();
 }
 
+const glm::vec3 & Camera::projectionOffset() const
+{
+    return m_projectionOffset;
+}
+
+void Camera::setProjectionOffset(const glm::vec3 & projectionOffset)
+{
+    m_projectionOffset = projectionOffset;
+
+    dirty();
+}
+
 const ivec2 & Camera::viewport() const
 {
     return m_viewport;
@@ -182,7 +197,7 @@ const mat4 & Camera::view() const
 {
     if (m_dirty)
         update();
-    
+
     if (!m_view.isValid())
         m_view.setValue(lookAt(m_eye, m_center, m_up));
 
@@ -195,7 +210,7 @@ const mat4 & Camera::projection() const
         update();
 
     if (!m_projection.isValid())
-	    m_projection.setValue(perspective(m_fovy, m_aspect, m_zNear, m_zFar));
+	    m_projection.setValue(glm::translate(m_projectionOffset) * perspective(m_fovy, m_aspect, m_zNear, m_zFar));
 
     return m_projection.value();
 }
@@ -207,7 +222,7 @@ const mat4 & Camera::viewProjection() const
 
     if (!m_viewProjection.isValid())
     	m_viewProjection.setValue(projection() * view());
-    
+
     return m_viewProjection.value();
 }
 
