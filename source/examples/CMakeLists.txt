@@ -64,7 +64,10 @@ if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOW_UTILS AND OPTION_BUILD_GLOW_WINDO
 	add_subdirectory("wikiexample")
 	add_subdirectory("transparency")
 	add_subdirectory("sparse-texture")
+	
 	add_subdirectory("osgexample")
+	add_subdirectory("qtexample")
+	
 elseif(OPTION_BUILD_EXAMPLES)
 	if (OPTION_BUILD_GLOW_UTILS)
 		message(STATUS "Examples can't be build because glowwindow is not build")
