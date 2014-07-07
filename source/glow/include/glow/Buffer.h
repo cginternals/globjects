@@ -51,7 +51,7 @@ public:
      * will not delete it in the destructor.
      * @param id an external OpenGL buffer id
      */
-    static Buffer * fromId(gl::GLuint id, bool takeOwnership = false);
+    static Buffer * fromId(gl::GLuint id);
 
     /**
      * Implements the visitor pattern.
@@ -234,20 +234,14 @@ protected:
      * Creates a buffer with an external id.
      * @param id an external OpenGL buffer id
      */
-    Buffer(gl::GLuint id, bool takeOwnership);
+    Buffer(IDResource * resource);
+
     /**
      * @brief ~Buffer
      * Automatically deletes the associated OpenGL buffer unless the object was created with an external id.
      * \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glDeleteBuffers.xml
      */
     virtual ~Buffer();
-
-    /**
-     * Wraps the OpenGL function gl::glGenBuffers.
-     * @return id of a newly created OpenGL buffer
-     * /see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glGenBuffers.xml
-     */
-    static gl::GLuint genBuffer();
 };
 
 } // namespace glow

@@ -74,10 +74,8 @@ public:
 protected:
     virtual ~Shader();
 
-    virtual void notifyChanged(const Changeable * changebale) override;
+    virtual void notifyChanged(const Changeable * changeable) override;
 protected:
-    static gl::GLuint create(gl::GLenum type);
-    static void setSource(const Shader & shader, const std::string & source);
 
     std::string shaderString() const;
 

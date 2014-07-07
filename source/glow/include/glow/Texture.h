@@ -29,7 +29,7 @@ class GLOW_API Texture : public Object
 {
 public:
     Texture(gl::GLenum target = gl::GL_TEXTURE_2D);
-    static Texture * fromId(gl::GLuint id, gl::GLenum  target, bool takeOwnership = false);
+    static Texture * fromId(gl::GLuint id, gl::GLenum  target);
 
     static Texture * createDefault(gl::GLenum target = gl::GL_TEXTURE_2D);
 
@@ -119,10 +119,8 @@ public:
     void pageCommitment(gl::GLint level, const glm::ivec3& offset, const glm::ivec3& size, gl::GLboolean commit) const;
 
 protected:
-    Texture(gl::GLuint id, gl::GLenum target, bool takeOwnership);
+    Texture(IDResource * resource, gl::GLenum target);
     virtual ~Texture();
-
-    static gl::GLuint genTexture();
 
 protected:
     gl::GLenum m_target;

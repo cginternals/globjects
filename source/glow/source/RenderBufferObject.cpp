@@ -4,29 +4,18 @@
 
 #include <glow/ObjectVisitor.h>
 
+#include "Resource.h"
+
 namespace glow
 {
 
 RenderBufferObject::RenderBufferObject()
-: Object(genRenderBuffer())
+: Object(new RenderBufferObjectResource)
 {
 }
 
 RenderBufferObject::~RenderBufferObject()
 {
-	if (ownsGLObject())
-	{
-		gl::glDeleteRenderbuffers(1, &m_id);
-	}
-}
-
-gl::GLuint RenderBufferObject::genRenderBuffer()
-{
-	gl::GLuint id = 0;
-
-	gl::glGenRenderbuffers(1, &id);
-
-	return id;
 }
 
 void RenderBufferObject::accept(ObjectVisitor& visitor)
@@ -36,7 +25,7 @@ void RenderBufferObject::accept(ObjectVisitor& visitor)
 
 void RenderBufferObject::bind(gl::GLenum target) const
 {
-    gl::glBindRenderbuffer(target, m_id);
+    gl::glBindRenderbuffer(target, id());
 }
 
 void RenderBufferObject::unbind(gl::GLenum target)

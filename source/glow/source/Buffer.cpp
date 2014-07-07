@@ -9,6 +9,8 @@
 
 #include "registry/ImplementationRegistry.h"
 
+#include "Resource.h"
+
 #include "implementations/AbstractBufferImplementation.h"
 #include "implementations/LegacyBufferImplementation.h"
 
@@ -30,35 +32,22 @@ void Buffer::setWorkingTarget(gl::GLenum target)
 }
 
 Buffer::Buffer()
-: Object(genBuffer())
+: Object(new BufferResource)
 {
 }
 
-Buffer::Buffer(gl::GLuint id, bool takeOwnership)
-: Object(id, takeOwnership)
+Buffer::Buffer(IDResource * resource)
+: Object(resource)
 {
 }
 
-Buffer * Buffer::fromId(gl::GLuint id, bool takeOwnership)
+Buffer * Buffer::fromId(gl::GLuint id)
 {
-    return new Buffer(id, takeOwnership);
-}
-
-gl::GLuint Buffer::genBuffer()
-{
-    gl::GLuint id = 0;
-
-    gl::glGenBuffers(1, &id);
-
-	return id;
+    return new Buffer(new ExternalResource(id));
 }
 
 Buffer::~Buffer()
 {
-	if (ownsGLObject())
-	{
-        gl::glDeleteBuffers(1, &m_id);
-	}
 }
 
 void Buffer::accept(ObjectVisitor& visitor)
@@ -68,7 +57,7 @@ void Buffer::accept(ObjectVisitor& visitor)
 
 void Buffer::bind(gl::GLenum target) const
 {
-    gl::glBindBuffer(target, m_id);
+    gl::glBindBuffer(target, id());
 }
 
 void Buffer::unbind(gl::GLenum target)
@@ -132,12 +121,12 @@ gl::GLint Buffer::getParameter(gl::GLenum pname) const
 
 void Buffer::bindBase(gl::GLenum target, gl::GLuint index) const
 {
-    gl::glBindBufferBase(target, index, m_id);
+    gl::glBindBufferBase(target, index, id());
 }
 
 void Buffer::bindRange(gl::GLenum target, gl::GLuint index, gl::GLintptr offset, gl::GLsizeiptr size) const
 {
-    gl::glBindBufferRange(target, index, m_id, offset, size);
+    gl::glBindBufferRange(target, index, id(), offset, size);
 }
 
 void Buffer::copySubData(Buffer * buffer, gl::GLintptr readOffset, gl::GLintptr writeOffset, gl::GLsizeiptr size) const

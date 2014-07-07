@@ -21,6 +21,8 @@
 #include "registry/ObjectRegistry.h"
 #include "implementations/AbstractFrameBufferImplementation.h"
 
+#include "Resource.h"
+
 namespace {
 
 const glow::AbstractFrameBufferImplementation & implementation()
@@ -34,18 +36,18 @@ namespace glow
 {
 
 FrameBufferObject::FrameBufferObject()
-: Object(genFrameBuffer())
+: Object(new FrameBufferObjectResource)
 {
 }
 
-FrameBufferObject::FrameBufferObject(gl::GLuint id, bool takeOwnership)
-: Object(id, takeOwnership)
+FrameBufferObject::FrameBufferObject(IDResource * resource)
+: Object(resource)
 {
 }
 
-FrameBufferObject * FrameBufferObject::fromId(gl::GLuint id, bool takeOwnership)
+FrameBufferObject * FrameBufferObject::fromId(gl::GLuint id)
 {
-    return new FrameBufferObject(id, takeOwnership);
+    return new FrameBufferObject(new ExternalResource(id));
 }
 
 FrameBufferObject * FrameBufferObject::defaultFBO()
@@ -55,19 +57,6 @@ FrameBufferObject * FrameBufferObject::defaultFBO()
 
 FrameBufferObject::~FrameBufferObject()
 {
-	if (ownsGLObject())
-	{
-        gl::glDeleteFramebuffers(1, &m_id);
-	}
-}
-
-gl::GLuint FrameBufferObject::genFrameBuffer()
-{
-	gl::GLuint id = 0;
-
-    gl::glGenFramebuffers(1, &id);
-
-	return id;
 }
 
 void FrameBufferObject::accept(ObjectVisitor& visitor)
@@ -77,7 +66,7 @@ void FrameBufferObject::accept(ObjectVisitor& visitor)
 
 void FrameBufferObject::bind(gl::GLenum target) const
 {
-    gl::glBindFramebuffer(target, m_id);
+    gl::glBindFramebuffer(target, id());
 }
 
 void FrameBufferObject::unbind(gl::GLenum target)

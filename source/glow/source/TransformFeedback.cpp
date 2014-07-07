@@ -7,29 +7,18 @@
 #include <glow/ObjectVisitor.h>
 #include <glow/Program.h>
 
+#include "Resource.h"
+
 namespace glow
 {
 
 TransformFeedback::TransformFeedback()
-: Object(genTransformFeedback())
+: Object(new TransformFeedbackResource)
 {
 }
 
 TransformFeedback::~TransformFeedback()
 {
-	if (ownsGLObject())
-	{
-		gl::glDeleteTransformFeedbacks(1, &m_id);
-	}
-}
-
-gl::GLuint TransformFeedback::genTransformFeedback()
-{
-    gl::GLuint id = 0;
-
-	gl::glGenTransformFeedbacks(1, &id);
-
-	return id;
 }
 
 void TransformFeedback::accept(ObjectVisitor& visitor)
@@ -39,7 +28,7 @@ void TransformFeedback::accept(ObjectVisitor& visitor)
 
 void TransformFeedback::bind(gl::GLenum target) const
 {
-    gl::glBindTransformFeedback(target, m_id);
+    gl::glBindTransformFeedback(target, id());
 }
 
 void TransformFeedback::unbind(gl::GLenum target)
@@ -71,7 +60,7 @@ void TransformFeedback::draw(gl::GLenum primitiveMode) const
 {
     bind(gl::GL_TRANSFORM_FEEDBACK); // TODO: is this necessary
 
-    gl::glDrawTransformFeedback(primitiveMode, m_id);
+    gl::glDrawTransformFeedback(primitiveMode, id());
 }
 
 void TransformFeedback::setVaryings(const Program * program, gl::GLsizei count, const char** varyingNames, gl::GLenum bufferMode) const

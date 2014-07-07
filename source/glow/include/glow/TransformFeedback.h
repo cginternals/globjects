@@ -81,8 +81,6 @@ public:
 
 protected:
     virtual ~TransformFeedback();
-
-	static gl::GLuint genTransformFeedback();
 };
 
 } // namespace glow

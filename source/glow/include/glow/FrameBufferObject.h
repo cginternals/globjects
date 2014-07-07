@@ -46,7 +46,7 @@ class GLOW_API FrameBufferObject : public Object
 {
 public:
 	FrameBufferObject();
-    static FrameBufferObject * fromId(gl::GLuint id, bool takeOwnership = false);
+    static FrameBufferObject * fromId(gl::GLuint id);
 
     static FrameBufferObject * defaultFBO();
 
@@ -108,12 +108,10 @@ public:
     void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, gl::GLenum drawBuffer, const std::array<gl::GLint, 4> & destRect, gl::GLbitfield mask, gl::GLenum filter) const;
     void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<gl::GLenum> & drawBuffers, const std::array<gl::GLint, 4> & destRect, gl::GLbitfield mask, gl::GLenum filter) const;
 protected:
-    FrameBufferObject(gl::GLuint id, bool takeOwnership);
+    FrameBufferObject(IDResource * resource);
     virtual ~FrameBufferObject();
 
     void addAttachment(FrameBufferAttachment * attachment);
-
-    static gl::GLuint genFrameBuffer();
 
     static void blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::GLbitfield mask, gl::GLenum filter);
     static void blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::GLbitfield mask, gl::GLenum filter);

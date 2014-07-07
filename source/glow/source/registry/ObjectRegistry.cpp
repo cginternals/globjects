@@ -59,7 +59,7 @@ FrameBufferObject * ObjectRegistry::defaultFBO()
 {
     if (m_defaultFBO == nullptr)
     {
-        m_defaultFBO = FrameBufferObject::fromId(0, false);
+        m_defaultFBO = FrameBufferObject::fromId(0);
         m_defaultFBO->ref();
     }
 
@@ -70,7 +70,7 @@ VertexArrayObject * ObjectRegistry::defaultVAO()
 {
     if (m_defaultVAO == nullptr)
     {
-        m_defaultVAO = VertexArrayObject::fromId(0, false);
+        m_defaultVAO = VertexArrayObject::fromId(0);
         m_defaultVAO->ref();
     }
 

@@ -19,6 +19,8 @@
 
 #include "IncludeProcessor.h"
 
+#include "Resource.h"
+
 namespace
 {
 
@@ -43,7 +45,7 @@ bool Shader::forceFallbackIncludeProcessor = false;
 
 
 Shader::Shader(const gl::GLenum type)
-: Object(create(type))
+: Object(new ShaderResource(type))
 , m_type(type)
 , m_compiled(false)
 , m_compilationFailed(false)
@@ -73,18 +75,6 @@ Shader::~Shader()
 	{
 		m_source->deregisterListener(this);
 	}
-
-	if (ownsGLObject())
-	{
-		gl::glDeleteShader(m_id);
-	}
-}
-
-gl::GLuint Shader::create(gl::GLenum type)
-{
-    gl::GLuint result = gl::glCreateShader(type);
-
-	return result;
 }
 
 void Shader::accept(ObjectVisitor& visitor)
@@ -148,7 +138,7 @@ void Shader::updateSource()
 
     std::vector<const char*> cStrings = collectCStrings(sources);
 
-    gl::glShaderSource(m_id, static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
+    gl::glShaderSource(id(), static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
 
     invalidate();
 }
@@ -161,11 +151,11 @@ bool Shader::compile() const
     if (hasExtension(gl::Extension::ARB_shading_language_include) && !forceFallbackIncludeProcessor)
     {
         std::vector<const char*> cStrings = collectCStrings(m_includePaths);
-        gl::glCompileShaderIncludeARB(m_id, static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
+        gl::glCompileShaderIncludeARB(id(), static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
     }
     else
     {
-        gl::glCompileShader(m_id);
+        gl::glCompileShader(id());
     }
 
     m_compiled = checkCompileStatus();
@@ -199,7 +189,7 @@ void Shader::setIncludePaths(const std::vector<std::string> & includePaths)
 gl::GLint Shader::get(gl::GLenum pname) const
 {
     gl::GLint value = 0;
-    gl::glGetShaderiv(m_id, pname, &value);
+    gl::glGetShaderiv(id(), pname, &value);
 
     return value;
 }
@@ -209,7 +199,7 @@ std::string Shader::getSource() const
     gl::GLint sourceLength = get(gl::GL_SHADER_SOURCE_LENGTH);
     std::vector<char> source(sourceLength);
 
-    gl::glGetShaderSource(m_id, sourceLength, nullptr, source.data());
+    gl::glGetShaderSource(id(), sourceLength, nullptr, source.data());
 
     return std::string(source.data(), sourceLength);
 }
@@ -236,7 +226,7 @@ std::string Shader::infoLog() const
     gl::GLsizei length = get(gl::GL_INFO_LOG_LENGTH);
 	std::vector<char> log(length);
 
-	gl::glGetShaderInfoLog(m_id, length, &length, log.data());
+	gl::glGetShaderInfoLog(id(), length, &length, log.data());
 
 	return std::string(log.data(), length);
 }

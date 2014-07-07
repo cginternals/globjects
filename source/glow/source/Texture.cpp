@@ -11,61 +11,49 @@
 #include <glow/ObjectVisitor.h>
 
 #include "pixelformat.h"
+#include "Resource.h"
 
 namespace glow
 {
 
 Texture::Texture(gl::GLenum  target)
-: Object(genTexture())
+: Object(new TextureResource)
 , m_target(target)
 {
 }
 
-Texture::Texture(gl::GLuint id, gl::GLenum  target, bool takeOwnership)
-: Object(id, takeOwnership)
+Texture::Texture(IDResource * resource, gl::GLenum  target)
+: Object(resource)
 , m_target(target)
 {
 }
 
-Texture * Texture::fromId(gl::GLuint id, gl::GLenum  target, bool takeOwnership)
+Texture * Texture::fromId(gl::GLuint id, gl::GLenum target)
 {
-    return new Texture(id, target, takeOwnership);
+    return new Texture(new ExternalResource(id), target);
 }
 
 
 Texture::~Texture()
 {
-	if (ownsGLObject())
-	{
-		gl::glDeleteTextures(1, &m_id);
-	}
 }
 
 Texture * Texture::createDefault(gl::GLenum target)
 {
-    Texture* tex = new Texture(target);
+    Texture* texture = new Texture(target);
 
-    tex->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_LINEAR);
-    tex->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_LINEAR);
-    tex->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_CLAMP_TO_EDGE);
-    tex->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_CLAMP_TO_EDGE);
-    tex->setParameter(gl::GL_TEXTURE_WRAP_R, gl::GL_CLAMP_TO_EDGE);
+    texture->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_LINEAR);
+    texture->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_LINEAR);
+    texture->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_CLAMP_TO_EDGE);
+    texture->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_CLAMP_TO_EDGE);
+    texture->setParameter(gl::GL_TEXTURE_WRAP_R, gl::GL_CLAMP_TO_EDGE);
 
-    return tex;
-}
-
-gl::GLuint Texture::genTexture()
-{
-    gl::GLuint id = 0;
-
-    gl::glGenTextures(1, &id);
-
-    return id;
+    return texture;
 }
 
 void Texture::bind() const
 {
-    gl::glBindTexture(m_target, m_id);
+    gl::glBindTexture(m_target, id());
 }
 
 void Texture::unbind() const
@@ -81,7 +69,7 @@ void Texture::unbind(const gl::GLenum target)
 void Texture::bindActive(const gl::GLenum texture) const
 {
     gl::glActiveTexture(texture);
-    gl::glBindTexture(m_target, m_id);
+    gl::glBindTexture(m_target, id());
 }
 
 void Texture::unbindActive(const gl::GLenum texture) const
@@ -335,7 +323,7 @@ void Texture::storage3D(gl::GLsizei levels, gl::GLenum internalFormat, const glm
 
 void Texture::textureView(gl::GLuint originalTexture, gl::GLenum internalFormat, gl::GLuint minLevel, gl::GLuint numLevels, gl::GLuint minLayer, gl::GLuint numLayers)
 {
-    gl::glTextureView(m_id, m_target, originalTexture, internalFormat, minLevel, numLevels, minLayer, numLayers);
+    gl::glTextureView(id(), m_target, originalTexture, internalFormat, minLevel, numLevels, minLayer, numLayers);
 }
 
 void Texture::texBuffer(gl::GLenum internalFormat, Buffer * buffer)
@@ -366,7 +354,7 @@ void Texture::texBufferRange(gl::GLenum activeTexture, gl::GLenum internalFormat
 
 void Texture::clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const void * data)
 {
-    gl::glClearTexImage(m_id, level, format, type, data);
+    gl::glClearTexImage(id(), level, format, type, data);
 }
 
 void Texture::clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const glm::vec4 & value)
@@ -386,7 +374,7 @@ void Texture::clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, co
 
 void Texture::clearSubImage(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLenum format, gl::GLenum type, const void * data)
 {
-    gl::glClearTexSubImage(m_id, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
+    gl::glClearTexSubImage(id(), level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
 }
 
 void Texture::clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const void * data)
@@ -413,7 +401,7 @@ void Texture::bindImageTexture(gl::GLuint unit, gl::GLint level, gl::GLboolean l
 {
 	bind();
 
-	gl::glBindImageTexture(unit, m_id, level, layered, layer, access, format);
+	gl::glBindImageTexture(unit, id(), level, layered, layer, access, format);
 }
 
 void Texture::generateMipmap()
@@ -430,7 +418,7 @@ void Texture::accept(ObjectVisitor& visitor)
 
 TextureHandle Texture::textureHandle() const
 {
-    return gl::glGetTextureHandleARB(m_id);
+    return gl::glGetTextureHandleARB(id());
 }
 
 gl::GLboolean Texture::isResident() const

@@ -11,6 +11,7 @@
 namespace glow {
 
 class ObjectVisitor;
+class IDResource;
 
 /** \brief Superclass of all wrapped OpenGL objects.
     
@@ -26,11 +27,6 @@ public:
 
     gl::GLuint id() const;
 
-	bool ownsGLObject() const;
-
-    void takeOwnership();
-    void releaseOwnership();
-
 	const std::string & name() const;
 	void setName(const std::string & name);
     bool hasName() const;
@@ -38,12 +34,11 @@ public:
     bool isDefault() const;
 
 protected:
-    Object(gl::GLuint id, bool takeOwnership = true);
+    Object(IDResource * resource);
     virtual ~Object();
 
 protected:
-    gl::GLuint m_id;
-	bool m_ownsGLObject;
+    IDResource * m_resource;
 
     std::string m_name;
 };
