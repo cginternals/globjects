@@ -1,11 +1,20 @@
 
 #include "QtOpenGLWindow.h"
 
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch"
+#endif
 #include <QApplication>
 #include <QMainWindow>
 #include <QTimer>
 #include <QResizeEvent>
 #include <QWheelEvent>
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -146,6 +155,9 @@ public:
             case Qt::RightButton:
                 m_nav.rotateBegin(pos);
                 break;
+
+            default:
+                break;
         }
 
         doneCurrent();
@@ -185,6 +197,8 @@ public:
 
             case Qt::RightButton:
                 m_nav.rotateEnd();
+                break;
+            default:
                 break;
         }
 

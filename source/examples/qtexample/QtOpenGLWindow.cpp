@@ -1,11 +1,19 @@
 #include "QtOpenGLWindow.h"
 
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch"
+#endif
 #include <QApplication>
 #include <QDebug>
-
 #include <QResizeEvent>
 #include <QSurfaceFormat>
 #include <QOpenGLContext>
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 QSurfaceFormat defaultFormat()
 {
