@@ -17,7 +17,7 @@ AbstractUniformImplementation::~AbstractUniformImplementation()
 
 AbstractUniformImplementation * AbstractUniformImplementation::create()
 {
-    if (hasExtension(gl::Extension::EXT_direct_state_access))
+    if (hasExtension(gl::GLextension::GL_EXT_direct_state_access))
     {
         return new BindlessUniformImplementation();
     }

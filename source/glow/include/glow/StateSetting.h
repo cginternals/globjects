@@ -4,7 +4,7 @@
 #include <set>
 
 #include <glbinding/types.h>
-#include <glbinding/enums.h>
+#include <glbinding/enum.h>
 
 #include <glow/glow_api.h>
 

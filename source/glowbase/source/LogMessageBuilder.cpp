@@ -4,7 +4,7 @@
 #include <cassert>
 
 #include <glowbase/AbstractLogHandler.h>
-#include <glowbase/Version.h>
+#include <glbinding/Version.h>
 
 namespace glow
 {
@@ -145,7 +145,7 @@ LogMessageBuilder & LogMessageBuilder::operator<<(LogMessageBuilder::WidthManipu
 }
 #endif
 
-LogMessageBuilder & LogMessageBuilder::operator<<(const Version & version)
+LogMessageBuilder & LogMessageBuilder::operator<<(const gl::Version & version)
 {
     *this << "Version " << version.toString();
 

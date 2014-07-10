@@ -1,9 +1,9 @@
 #pragma once
 
-#include <glbinding/Extension.h>
+#include <glbinding/extension.h>
 
 namespace glow {
 
-using Extension = gl::Extension;
+using Extension = gl::GLextension;
 
 } // namespace glow

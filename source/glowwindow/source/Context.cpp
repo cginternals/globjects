@@ -3,7 +3,7 @@
 #include <cassert>
 
 #include <glowbase/baselogging.h>
-#include <glowbase/Version.h>
+#include <glbinding/Version.h>
 
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
@@ -78,7 +78,7 @@ bool Context::create(const ContextFormat & format, const int width, const int he
 
 void Context::prepareFormat(const ContextFormat & format)
 {
-    Version version = validateVersion(format.version());
+    gl::Version version = validateVersion(format.version());
 
     if (!format.version().isNull() && format.version() != version)
     {
@@ -101,10 +101,10 @@ void Context::prepareFormat(const ContextFormat & format)
   
 #else
   
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.majorVersion);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.minorVersion);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.m_major);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.m_minor);
 
-    if (version >= Version(3, 0))
+    if (version >= gl::Version(3, 0))
     {
         if (format.forwardCompatible())
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
@@ -112,7 +112,7 @@ void Context::prepareFormat(const ContextFormat & format)
             glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,  true);
     }
   
-    if (version >= Version(3, 2))
+    if (version >= gl::Version(3, 2))
     {
         glfwWindowHint(GLFW_OPENGL_PROFILE,
             format.profile() == ContextFormat::CoreProfile ? GLFW_OPENGL_CORE_PROFILE :
@@ -207,9 +207,9 @@ void Context::doneCurrent()
     glfwMakeContextCurrent(0);
 }
 
-Version Context::maximumSupportedVersion()
+gl::Version Context::maximumSupportedVersion()
 {
-    Version maxVersion;
+    gl::Version maxVersion;
     
     /*
      * GLFW3 does not set default hint values on window creation so at least
@@ -245,7 +245,7 @@ Version Context::maximumSupportedVersion()
             getInteger(0x821B, &majorVersion); // major version
             getInteger(0x821C, &minorVersion); // minor version
 
-            maxVersion = glow::Version(majorVersion, minorVersion);
+            maxVersion = gl::Version(majorVersion, minorVersion);
         }
 
         glfwDestroyWindow(versionCheckWindow);
@@ -254,16 +254,16 @@ Version Context::maximumSupportedVersion()
     return maxVersion;
 }
 
-Version Context::validateVersion(const Version & version)
+gl::Version Context::validateVersion(const gl::Version & version)
 {
-    Version maxVersion = maximumSupportedVersion();
+    gl::Version maxVersion = maximumSupportedVersion();
     
     if (maxVersion.isNull())
     {
 #ifdef MAC_OS
-        maxVersion = Version(3, 2);
+        maxVersion = gl::Version(3, 2);
 #else
-        maxVersion = Version(3, 0);
+        maxVersion = gl::Version(3, 0);
 #endif
       
     }
@@ -275,7 +275,7 @@ Version Context::validateVersion(const Version & version)
 
     if (!version.isValid())
     {
-        Version nearestValidVersion = version.nearestValidVersion();
+        gl::Version nearestValidVersion = version.nearest();
         if (nearestValidVersion > maxVersion)
         {
             return maxVersion;

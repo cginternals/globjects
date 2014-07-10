@@ -1,7 +1,7 @@
 #include "ExtensionRegistry.h"
 #include "Registry.h"
 
-#include <glbinding/meta.h>
+#include <glbinding/Meta.h>
 
 #include <glow/glow.h>
 
@@ -18,17 +18,17 @@ ExtensionRegistry & ExtensionRegistry::current()
 }
 
 
-std::set<gl::Extension>::iterator ExtensionRegistry::begin()
+std::set<gl::GLextension>::iterator ExtensionRegistry::begin()
 {
     return availableExtensions().begin();
 }
 
-std::set<gl::Extension>::iterator ExtensionRegistry::end()
+std::set<gl::GLextension>::iterator ExtensionRegistry::end()
 {
     return availableExtensions().end();
 }
 
-const std::set<gl::Extension> & ExtensionRegistry::availableExtensions()
+const std::set<gl::GLextension> & ExtensionRegistry::availableExtensions()
 {
     initialize();
     return m_availableExtensions;
@@ -47,9 +47,9 @@ void ExtensionRegistry::initialize()
 
     for (const std::string & extensionName : getExtensions())
     {
-        gl::Extension extension = gl::meta::extensionFromString(extensionName);
+        gl::GLextension extension = gl::Meta::getExtension(extensionName);
 
-        if (extension != gl::Extension::Unknown)
+        if (extension != gl::GLextension::UNKNOWN)
         {
             m_availableExtensions.insert(extension);
         }
@@ -62,7 +62,7 @@ void ExtensionRegistry::initialize()
     m_initialized = true;
 }
 
-bool ExtensionRegistry::hasExtension(gl::Extension extension)
+bool ExtensionRegistry::hasExtension(gl::GLextension extension)
 {
     initialize();
 
@@ -76,9 +76,9 @@ bool ExtensionRegistry::hasExtension(const std::string & extensionName)
 {
     initialize();
 
-    gl::Extension extension = gl::meta::extensionFromString(extensionName);
+    gl::GLextension extension = gl::Meta::getExtension(extensionName);
 
-    if (extension != gl::Extension::Unknown)
+    if (extension != gl::GLextension::UNKNOWN)
     {
         return hasExtension(extension);
     }
@@ -88,20 +88,14 @@ bool ExtensionRegistry::hasExtension(const std::string & extensionName)
     }
 }
 
-Version getCoreVersion(gl::Extension extension)
+gl::Version getCoreVersion(gl::GLextension extension)
 {
-    auto pair = gl::meta::coreVersionForExtension(extension);
-    if (pair.first > 0)
-    {
-        return Version(pair.first, pair.second);
-    }
-
-    return Version();
+    return gl::Meta::getRequiringVersion(extension);
 }
 
-bool ExtensionRegistry::isInCoreProfile(gl::Extension extension, const Version & version)
+bool ExtensionRegistry::isInCoreProfile(gl::GLextension extension, const gl::Version & version)
 {
-    Version coreVersion = getCoreVersion(extension);
+    gl::Version coreVersion = getCoreVersion(extension);
 
     if (!coreVersion.isValid())
         return false;
@@ -110,7 +104,7 @@ bool ExtensionRegistry::isInCoreProfile(gl::Extension extension, const Version &
 }
 
 
-bool ExtensionRegistry::isInCoreProfile(gl::Extension extension)
+bool ExtensionRegistry::isInCoreProfile(gl::GLextension extension)
 {
     return isInCoreProfile(extension, glow::version());
 }

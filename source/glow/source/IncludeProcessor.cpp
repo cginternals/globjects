@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cctype>
 
-#include <glowbase/Version.h>
+#include <glbinding/Version.h>
 #include <glowbase/AbstractStringSource.h>
 #include <glowbase/StaticStringSource.h>
 #include <glowbase/CompositeStringSource.h>

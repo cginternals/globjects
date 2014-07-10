@@ -3,7 +3,8 @@
 #include <sstream>
 #include <cassert>
 
-#include <glbinding/constants.h>
+#include <glbinding/enum.h>
+#include <glbinding/boolean.h>
 
 #include "registry/Registry.h"
 #include "registry/ImplementationRegistry.h"

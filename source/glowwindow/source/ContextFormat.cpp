@@ -31,27 +31,27 @@ ContextFormat::~ContextFormat()
 {
 }
 
-void ContextFormat::setVersion(unsigned int major, unsigned int minor)
+void ContextFormat::setVersion(unsigned int majorVersion, unsigned int minorVersion)
 {
-    setVersion(Version(major, minor));
+    setVersion(gl::Version(majorVersion, minorVersion));
 }
 
-void ContextFormat::setVersion(const Version & version)
+void ContextFormat::setVersion(const gl::Version & version)
 {
     m_version = version;
 }
 
 int ContextFormat::majorVersion() const
 {
-    return m_version.majorVersion;
+    return m_version.m_major;
 }
 
 int ContextFormat::minorVersion() const
 {
-    return m_version.minorVersion;
+    return m_version.m_minor;
 }
 
-const Version & ContextFormat::version() const
+const gl::Version & ContextFormat::version() const
 {
     return m_version;
 }

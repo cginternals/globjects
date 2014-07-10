@@ -3,7 +3,8 @@
 #include <set>
 #include <string>
 
-#include <glbinding/Extension.h>
+#include <glbinding/extension.h>
+#include <glbinding/Version.h>
 
 #include <glow/glow_api.h>
 
@@ -18,19 +19,19 @@ public:
     ExtensionRegistry();
     static ExtensionRegistry & current();
 
-    std::set<gl::Extension>::iterator begin();
-    std::set<gl::Extension>::iterator end();
+    std::set<gl::GLextension>::iterator begin();
+    std::set<gl::GLextension>::iterator end();
 
-    const std::set<gl::Extension> & availableExtensions();
+    const std::set<gl::GLextension> & availableExtensions();
     const std::set<std::string> & unknownAvailableExtensions();
 
-    bool hasExtension(gl::Extension extension);
+    bool hasExtension(gl::GLextension extension);
     bool hasExtension(const std::string & extensionName);
-    bool isInCoreProfile(gl::Extension extension);
-    bool isInCoreProfile(gl::Extension extension, const Version & version);
+    bool isInCoreProfile(gl::GLextension extension);
+    bool isInCoreProfile(gl::GLextension extension, const gl::Version & version);
 protected:
     bool m_initialized;
-    std::set<gl::Extension> m_availableExtensions;
+    std::set<gl::GLextension> m_availableExtensions;
     std::set<std::string> m_unknownAvailableExtensions;
 
     void initialize();

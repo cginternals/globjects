@@ -86,7 +86,7 @@ public:
         std::cout << "glow::Uniform = "; glow::info() << uniform.get();
         std::cout << "glow::AbstractUniform = "; glow::info() << static_cast<glow::AbstractUniform*>(uniform.get());
 
-        std::cout << "glow::Version = "; glow::info() << glow::version();
+        std::cout << "gl::Version = "; glow::info() << glow::version();
 
         std::vector<glow::Buffer*> buffers{new glow::Buffer(), new glow::Buffer()};
         std::cout << "std::vector<glow::Buffer*> = "; glow::info() << buffers;

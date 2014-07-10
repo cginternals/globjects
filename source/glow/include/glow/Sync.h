@@ -1,7 +1,9 @@
 #pragma once
 
 #include <glbinding/types.h>
-#include <glbinding/constants.h>
+#include <glbinding/enum.h>
+#include <glbinding/bitfield.h>
+#include <glbinding/values.h>
 
 #include <glowbase/Referenced.h>
 
@@ -13,12 +15,12 @@ namespace glow
 class GLOW_API Sync : public Referenced
 {
 public:
-    static Sync * fence(gl::GLenum condition = gl::GL_SYNC_GPU_COMMANDS_COMPLETE, gl::GLbitfield flags = 0);
+    static Sync * fence(gl::GLenum condition = gl::GL_SYNC_GPU_COMMANDS_COMPLETE, gl::GLbitfield flags = static_cast<gl::GLbitfield>(0));
 
     virtual ~Sync();
 
     gl::GLenum clientWait(gl::GLbitfield flags = gl::GL_SYNC_FLUSH_COMMANDS_BIT, gl::GLuint64 timeout = gl::GL_TIMEOUT_IGNORED);
-    void wait(gl::GLbitfield flags = 0, gl::GLuint64 timeout = gl::GL_TIMEOUT_IGNORED);
+    void wait(gl::GLbitfield flags = static_cast<gl::GLbitfield>(0), gl::GLuint64 timeout = gl::GL_TIMEOUT_IGNORED);
 
     void get(gl::GLenum pname, gl::GLsizei bufsize, gl::GLsizei * length, gl::GLint * values);
     gl::GLint get(gl::GLenum pname);

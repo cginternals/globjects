@@ -246,7 +246,7 @@ void FrameBufferObject::colorMask(gl::GLboolean red, gl::GLboolean green, gl::GL
 
 void FrameBufferObject::colorMask(const glm::bvec4 & mask)
 {
-    colorMask(mask[0], mask[1], mask[2], mask[3]);
+    colorMask(static_cast<gl::GLboolean>(mask[0]), static_cast<gl::GLboolean>(mask[1]), static_cast<gl::GLboolean>(mask[2]), static_cast<gl::GLboolean>(mask[3]));
 }
 
 void FrameBufferObject::colorMaski(gl::GLuint buffer, gl::GLboolean red, gl::GLboolean green, gl::GLboolean blue, gl::GLboolean alpha)
@@ -256,7 +256,7 @@ void FrameBufferObject::colorMaski(gl::GLuint buffer, gl::GLboolean red, gl::GLb
 
 void FrameBufferObject::colorMaski(gl::GLuint buffer, const glm::bvec4 & mask)
 {
-    colorMaski(buffer, mask[0], mask[1], mask[2], mask[3]);
+    colorMaski(buffer, static_cast<gl::GLboolean>(mask[0]), static_cast<gl::GLboolean>(mask[1]), static_cast<gl::GLboolean>(mask[2]), static_cast<gl::GLboolean>(mask[3]));
 }
 
 void FrameBufferObject::clearColor(gl::GLfloat red, gl::GLfloat green, gl::GLfloat blue, gl::GLfloat alpha)

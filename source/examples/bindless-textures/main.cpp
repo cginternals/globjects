@@ -76,7 +76,7 @@ public:
 
         glow::DebugMessage::enable();
 
-        if (!glow::hasExtension(glow::Extension::NV_bindless_texture))
+        if (!glow::hasExtension(glow::Extension::GL_NV_bindless_texture))
         {
             glow::critical() << "Blindess textures are not supported";
 

@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include <glbinding/constants.h>
+#include <glbinding/enum.h>
 #include <glbinding/functions.h>
 
 #include <glm/gtc/type_ptr.hpp>
@@ -433,7 +433,7 @@ TextureHandle Texture::textureHandle() const
     return gl::glGetTextureHandleARB(m_id);
 }
 
-gl::GLboolean Texture::isResident() const
+bool Texture::isResident() const
 {
     return gl::glIsTextureHandleResidentARB(textureHandle()) == gl::GL_TRUE;
 }

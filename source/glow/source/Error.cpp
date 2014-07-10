@@ -1,6 +1,6 @@
 #include <glow/Error.h>
 
-#include <glbinding/constants.h>
+#include <glbinding/enum.h>
 #include <glbinding/functions.h>
 
 namespace glow

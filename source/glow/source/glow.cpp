@@ -1,6 +1,6 @@
 #include <glow/glow.h>
 
-#include <glbinding/glbinding.h>
+#include <glbinding/gl.h>
 #include <glbinding/functions.h>
 #include <glbinding/AbstractFunction.h>
 #include <glbinding/initialize.h>
@@ -52,7 +52,9 @@ bool initializeGLBinding()
         manualErrorCheckAfter(function);
     });
 
-    return gl::initialize();
+    gl::initialize();
+
+    return true;
 }
 
 bool isInitialized()
@@ -205,19 +207,19 @@ gl::GLint minorVersion()
     return getInteger(gl::GL_MINOR_VERSION);
 }
 
-Version version()
+gl::Version version()
 {
-    return Version(majorVersion(), minorVersion());
+    return gl::Version(majorVersion(), minorVersion());
 }
 
 bool isCoreProfile()
 {
-    if (version()<Version(3,2))
+    if (version()<gl::Version(3,2))
     {
         return false;
     }
 
-    return (getInteger(gl::GL_CONTEXT_PROFILE_MASK) & gl::GL_CONTEXT_CORE_PROFILE_BIT) > 0;
+    return (getInteger(gl::GL_CONTEXT_PROFILE_MASK) & static_cast<unsigned>(gl::GL_CONTEXT_CORE_PROFILE_BIT)) > 0;
 }
 
 std::vector<std::string> getExtensions()
@@ -234,7 +236,7 @@ std::vector<std::string> getExtensions()
     return extensions;
 }
 
-bool hasExtension(gl::Extension extension)
+bool hasExtension(gl::GLextension extension)
 {
     return ExtensionRegistry::current().hasExtension(extension);
 }
@@ -244,12 +246,12 @@ bool hasExtension(const std::string & extensionName)
     return ExtensionRegistry::current().hasExtension(extensionName);
 }
 
-bool isInCoreProfile(gl::Extension extension, const Version & version)
+bool isInCoreProfile(gl::GLextension extension, const gl::Version & version)
 {
     return ExtensionRegistry::current().isInCoreProfile(extension, version);
 }
 
-bool isInCoreProfile(gl::Extension extension)
+bool isInCoreProfile(gl::GLextension extension)
 {
     return ExtensionRegistry::current().isInCoreProfile(extension);
 }

@@ -1,6 +1,6 @@
 #include <glowutils/AbstractCoordinateProvider.h>
 
-#include <glbinding/constants.h>
+#include <glbinding/enum.h>
 #include <glbinding/functions.h>
 
 #include <glm/glm.hpp>
