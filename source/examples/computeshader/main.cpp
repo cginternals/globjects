@@ -60,7 +60,7 @@ public:
 
         glow::DebugMessage::enable();
 
-        if (!glow::hasExtension(glow::Extension::ARB_compute_shader))
+        if (!glow::hasExtension(glow::Extension::GL_ARB_compute_shader))
         {
             glow::critical() << "Compute shaders are not supported";
 
