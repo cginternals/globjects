@@ -4,39 +4,28 @@
 
 #include <glow/ObjectVisitor.h>
 
+#include "Resource.h"
+
 namespace glow
 {
 
 Sampler::Sampler()
-: Object(genSampler())
+: Object(new SamplerResource)
 {
 }
 
-Sampler::Sampler(gl::GLuint id, bool takeOwnership)
-: Object(id, takeOwnership)
+Sampler::Sampler(IDResource * resource)
+: Object(resource)
 {
 }
 
-Sampler * Sampler::fromId(gl::GLuint id, bool takeOwnership)
+Sampler * Sampler::fromId(gl::GLuint id)
 {
-    return new Sampler(id, takeOwnership);
+    return new Sampler(new ExternalResource(id));
 }
 
 Sampler::~Sampler()
 {
-    if (ownsGLObject())
-    {
-        gl::glDeleteSamplers(1, &m_id);
-    }
-}
-
-gl::GLuint Sampler::genSampler()
-{
-    gl::GLuint id = 0;
-
-    gl::glGenSamplers(1, &id);
-
-    return id;
 }
 
 void Sampler::accept(ObjectVisitor & visitor)
@@ -46,7 +35,7 @@ void Sampler::accept(ObjectVisitor & visitor)
 
 void Sampler::bind(gl::GLuint unit) const
 {
-    gl::glBindSampler(unit, m_id);
+    gl::glBindSampler(unit, id());
 }
 
 void Sampler::unbind(gl::GLuint unit)
@@ -56,18 +45,18 @@ void Sampler::unbind(gl::GLuint unit)
 
 void Sampler::setParameter(gl::GLenum name, gl::GLint value)
 {
-    gl::glSamplerParameteri(m_id, name, value);
+    gl::glSamplerParameteri(id(), name, value);
 }
 
 void Sampler::setParameter(gl::GLenum name, gl::GLfloat value)
 {
-    gl::glSamplerParameterf(m_id, name, value);
+    gl::glSamplerParameterf(id(), name, value);
 }
 
 gl::GLint Sampler::getParameteri(gl::GLenum pname) const
 {
     gl::GLint value = 0;
-    gl::glGetSamplerParameteriv(m_id, pname, &value);
+    gl::glGetSamplerParameteriv(id(), pname, &value);
 
 	return value;
 }
@@ -75,7 +64,7 @@ gl::GLint Sampler::getParameteri(gl::GLenum pname) const
 gl::GLfloat Sampler::getParameterf(gl::GLenum pname) const
 {
     gl::GLfloat value = 0;
-    gl::glGetSamplerParameterfv(m_id, pname, &value);
+    gl::glGetSamplerParameterfv(id(), pname, &value);
 
 	return value;
 }

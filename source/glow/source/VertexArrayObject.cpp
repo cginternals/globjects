@@ -10,22 +10,24 @@
 #include "container_helpers.hpp"
 #include "registry/ObjectRegistry.h"
 
+#include "Resource.h"
+
 namespace glow
 {
 
 VertexArrayObject::VertexArrayObject()
-: Object(genVertexArray())
+: Object(new VertexArrayObjectResource)
 {
 }
 
-VertexArrayObject::VertexArrayObject(gl::GLuint id, bool takeOwnership)
-: Object(id, takeOwnership)
+VertexArrayObject::VertexArrayObject(IDResource * resource)
+: Object(resource)
 {
 }
 
-VertexArrayObject * VertexArrayObject::fromId(gl::GLuint id, bool takeOwnership)
+VertexArrayObject * VertexArrayObject::fromId(gl::GLuint id)
 {
-    return new VertexArrayObject(id, takeOwnership);
+    return new VertexArrayObject(new ExternalResource(id));
 }
 
 VertexArrayObject * VertexArrayObject::defaultVAO()
@@ -35,19 +37,6 @@ VertexArrayObject * VertexArrayObject::defaultVAO()
 
 VertexArrayObject::~VertexArrayObject()
 {
-	if (ownsGLObject())
-	{
-		gl::glDeleteVertexArrays(1, &m_id);
-	}
-}
-
-gl::GLuint VertexArrayObject::genVertexArray()
-{
-	gl::GLuint id = 0;
-
-	gl::glGenVertexArrays(1, &id);
-
-	return id;
 }
 
 void VertexArrayObject::accept(ObjectVisitor & visitor)
@@ -57,7 +46,7 @@ void VertexArrayObject::accept(ObjectVisitor & visitor)
 
 void VertexArrayObject::bind() const
 {
-	gl::glBindVertexArray(m_id);
+	gl::glBindVertexArray(id());
 }
 
 void VertexArrayObject::unbind()

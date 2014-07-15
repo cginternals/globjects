@@ -63,7 +63,7 @@ class GLOW_API Query : public Object
 {
 public:
     Query();
-    static Query * fromId(gl::GLuint id, bool takeOwnership = false);
+    static Query * fromId(gl::GLuint id);
 
     static Query * current(gl::GLenum target);
     static Query * timestamp();
@@ -102,7 +102,7 @@ public:
     void counter(gl::GLenum target = gl::GL_TIMESTAMP) const;
 protected:
 	
-    Query(gl::GLuint id, bool takeOwnership);
+    Query(IDResource * resource);
     virtual ~Query();
 
 	static gl::GLuint genQuery();

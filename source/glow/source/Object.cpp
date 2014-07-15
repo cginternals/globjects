@@ -2,12 +2,13 @@
 
 #include "registry/ObjectRegistry.h"
 
+#include "Resource.h"
+
 namespace glow
 {
 
-Object::Object(gl::GLuint id, bool takeOwnership)
-: m_id(id)
-, m_ownsGLObject(takeOwnership)
+Object::Object(IDResource * resource)
+: m_resource(resource)
 {
     ObjectRegistry::current().registerObject(this);
 }
@@ -15,31 +16,17 @@ Object::Object(gl::GLuint id, bool takeOwnership)
 Object::~Object()
 {
     ObjectRegistry::current().deregisterObject(this);
+    delete m_resource;
 }
 
 gl::GLuint Object::id() const
 {
-	return m_id;
+    return m_resource->id();
 }
 
 bool Object::isDefault() const
 {
-    return m_id == 0;
-}
-
-bool Object::ownsGLObject() const
-{
-    return m_ownsGLObject && m_id>0;
-}
-
-void Object::takeOwnership()
-{
-    m_ownsGLObject = true;
-}
-
-void Object::releaseOwnership()
-{
-    m_ownsGLObject = false;
+    return id() == 0;
 }
 
 const std::string& Object::name() const

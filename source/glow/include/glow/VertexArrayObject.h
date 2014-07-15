@@ -20,7 +20,7 @@ class GLOW_API VertexArrayObject : public Object
 {
 public:
     VertexArrayObject();
-    static VertexArrayObject * fromId(gl::GLuint id, bool takeOwnership = false);
+    static VertexArrayObject * fromId(gl::GLuint id);
 
     static VertexArrayObject * defaultVAO();
 
@@ -72,10 +72,8 @@ public:
     void multiDrawElements(gl::GLenum mode, gl::GLenum type, const std::vector<MultiDrawElementsRange> & ranges) const;
     void multiDrawElementsBaseVertex(gl::GLenum mode, gl::GLenum type, const std::vector<MultiDrawElementsBaseVertexRange> & ranges) const;
 protected:
-    VertexArrayObject(gl::GLuint id, bool takeOwnership);
+    VertexArrayObject(IDResource * resource);
     virtual ~VertexArrayObject();
-
-    static gl::GLuint genVertexArray();
 
 protected:
     std::map<gl::GLuint, ref_ptr<VertexAttributeBinding >> m_bindings;

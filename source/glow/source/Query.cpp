@@ -5,30 +5,28 @@
 
 #include <glow/ObjectVisitor.h>
 
+#include "Resource.h"
+
 namespace glow
 {
 
 Query::Query()
-: Object(genQuery())
+: Object(new QueryResource)
 {
 }
 
-Query::Query(gl::GLuint id, bool takeOwnership)
-: Object(id, takeOwnership)
+Query::Query(IDResource * resource)
+: Object(resource)
 {
 }
 
-Query * Query::fromId(gl::GLuint id, bool takeOwnership)
+Query * Query::fromId(gl::GLuint id)
 {
-    return new Query(id, takeOwnership);
+    return new Query(new ExternalResource(id));
 }
 
 Query::~Query()
 {
-	if (ownsGLObject())
-	{
-        gl::glDeleteQueries(1, &m_id);
-	}
 }
 
 Query * Query::current(gl::GLenum target)
@@ -41,7 +39,7 @@ Query * Query::current(gl::GLenum target)
     }
 	
     // TODO: fetch correct query from object registry
-    return Query::fromId(id, false);
+    return Query::fromId(id);
 }
 
 Query * Query::timestamp()
@@ -91,7 +89,7 @@ void Query::accept(ObjectVisitor& visitor)
 
 void Query::begin(gl::GLenum target) const
 {
-    gl::glBeginQuery(target, m_id);
+    gl::glBeginQuery(target, id());
 }
 
 void Query::end(gl::GLenum target) const
@@ -101,7 +99,7 @@ void Query::end(gl::GLenum target) const
 
 void Query::beginIndexed(gl::GLenum target, gl::GLuint index) const
 {
-    gl::glBeginQueryIndexed(target, index, m_id);
+    gl::glBeginQueryIndexed(target, index, id());
 }
 
 void Query::endIndexed(gl::GLenum target, gl::GLuint index) const
@@ -113,7 +111,7 @@ gl::GLuint Query::get(gl::GLenum pname) const
 {
     gl::GLuint value = 0;
 	
-    gl::glGetQueryObjectuiv(m_id, pname, &value);
+    gl::glGetQueryObjectuiv(id(), pname, &value);
 	
 	return value;
 }
@@ -122,7 +120,7 @@ gl::GLuint64 Query::get64(gl::GLenum pname) const
 {
     gl::GLuint64 value = 0;
 	
-    gl::glGetQueryObjectui64v(m_id, pname, &value);
+    gl::glGetQueryObjectui64v(id(), pname, &value);
 	
 	return value;
 }
@@ -188,7 +186,7 @@ gl::GLuint64 Query::waitAndGet64(gl::GLenum pname, const std::chrono::duration<i
 
 void Query::counter(gl::GLenum target) const
 {
-    gl::glQueryCounter(m_id, target);
+    gl::glQueryCounter(id(), target);
 }
 
 bool Query::isQuery(gl::GLuint id)

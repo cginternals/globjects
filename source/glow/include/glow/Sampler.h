@@ -16,7 +16,7 @@ class GLOW_API Sampler : public Object
 {
 public:
     Sampler();
-    static Sampler * fromId(gl::GLuint id, bool takeOwnership = false);
+    static Sampler * fromId(gl::GLuint id);
 
     virtual void accept(ObjectVisitor & visitor) override;
 
@@ -30,10 +30,8 @@ public:
     gl::GLfloat getParameterf(gl::GLenum pname) const;
 
 protected:
-    Sampler(gl::GLuint id, bool takeOwnership = true);
+    Sampler(IDResource * resource);
     virtual ~Sampler();
-
-    static gl::GLuint genSampler();
 };
 
 } // namespace glow

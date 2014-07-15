@@ -85,7 +85,7 @@ void GlowInterface::initialize()
 
 void GlowInterface::setupTexture(unsigned id, unsigned target)
 {
-    impl->osgTexture = Texture::fromId((GLuint)id, static_cast<GLenum>(target), false);
+    impl->osgTexture = Texture::fromId(static_cast<GLuint>(id), static_cast<GLenum>(target));
 
     impl->quad->setTexture(impl->osgTexture);
 }

@@ -31,8 +31,6 @@ public:
     gl::GLint getParameter(gl::GLenum pname) const;
 protected:
     virtual ~RenderBufferObject();
-
-	static gl::GLuint genRenderBuffer();
 };
 
 } // namespace glow

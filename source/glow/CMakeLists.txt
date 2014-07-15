@@ -114,6 +114,8 @@ set(sources
 	${source_path}/ProgramBinary.cpp
 	${source_path}/Program.cpp
 	${source_path}/Query.cpp
+	${source_path}/Resource.h
+	${source_path}/Resource.cpp
 	${source_path}/registry/contextid.h
 	${source_path}/registry/ImplementationRegistry.cpp
 	${source_path}/registry/Registry.cpp
