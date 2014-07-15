@@ -227,8 +227,8 @@ bool ContextFormat::verifyVersionAndProfile(const ContextFormat & requested, con
     if (requested.version() != created.version())
 	{
         glow::warning() << "A context with a different OpenGL Version as requested was created: "
-            << requested.version() << " requested, "
-            << created.version() << "  created.";
+            << requested.version().toString() << " requested, "
+            << created.version().toString() << "  created.";
 
 		if (requested.profile() == CoreProfile)
 			return false;

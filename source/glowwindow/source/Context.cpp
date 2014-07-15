@@ -82,7 +82,7 @@ void Context::prepareFormat(const ContextFormat & format)
 
     if (!format.version().isNull() && format.version() != version)
     {
-        glow::warning() << "Changed unsupported OpenGL version from " << format.version() << " to " << version << ".";
+        glow::warning() << "Changed unsupported OpenGL version from " << format.version().toString() << " to " << version.toString() << ".";
     }
     
     /*
