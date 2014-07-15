@@ -74,6 +74,7 @@ set(sources
 	${source_path}/Error.cpp
 	${source_path}/FrameBufferAttachment.cpp
 	${source_path}/FrameBufferObject.cpp
+	${source_path}/glbindinglogging.cpp
 	${source_path}/glmlogging.cpp
 	${source_path}/glow.cpp
 	${source_path}/implementations/AbstractUniformImplementation.cpp
@@ -157,6 +158,7 @@ set(api_includes
 	${include_path}/Extension.h
 	${include_path}/FrameBufferAttachment.h
 	${include_path}/FrameBufferObject.h
+	${include_path}/glbindinglogging.h
 	${include_path}/glmlogging.h
 	${include_path}/glow_api.h
 	${include_path}/glow.h

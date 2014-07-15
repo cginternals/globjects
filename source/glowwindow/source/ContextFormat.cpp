@@ -31,27 +31,27 @@ ContextFormat::~ContextFormat()
 {
 }
 
-void ContextFormat::setVersion(unsigned int major, unsigned int minor)
+void ContextFormat::setVersion(unsigned int majorVersion, unsigned int minorVersion)
 {
-    setVersion(Version(major, minor));
+    setVersion(glbinding::Version(majorVersion, minorVersion));
 }
 
-void ContextFormat::setVersion(const Version & version)
+void ContextFormat::setVersion(const glbinding::Version & version)
 {
     m_version = version;
 }
 
 int ContextFormat::majorVersion() const
 {
-    return m_version.majorVersion;
+    return m_version.m_major;
 }
 
 int ContextFormat::minorVersion() const
 {
-    return m_version.minorVersion;
+    return m_version.m_minor;
 }
 
-const Version & ContextFormat::version() const
+const glbinding::Version & ContextFormat::version() const
 {
     return m_version;
 }
@@ -227,8 +227,8 @@ bool ContextFormat::verifyVersionAndProfile(const ContextFormat & requested, con
     if (requested.version() != created.version())
 	{
         glow::warning() << "A context with a different OpenGL Version as requested was created: "
-            << requested.version() << " requested, "
-            << created.version() << "  created.";
+            << requested.version().toString() << " requested, "
+            << created.version().toString() << "  created.";
 
 		if (requested.profile() == CoreProfile)
 			return false;

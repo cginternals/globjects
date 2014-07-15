@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-#include <glowbase/Version.h>
+#include <glbinding/Version.h>
 
 #include <glowwindow/glowwindow_api.h>
 
@@ -64,12 +64,12 @@ public:
         Note: OpenGL versions previous to 3.2. are not supported and might not
         work. It is not taken into account in the development of glow.
     */
-    void setVersion(const glow::Version & version);
-    void setVersion(unsigned int major, unsigned int minor);
+    void setVersion(const glbinding::Version & version);
+    void setVersion(unsigned int majorVersion, unsigned int minorVersion);
 
     int majorVersion() const;
     int minorVersion() const;
-    const glow::Version & version() const;
+    const glbinding::Version & version() const;
 
 	Profile profile() const;
     void setProfile(Profile profile);
@@ -118,7 +118,7 @@ protected:
     ,   std::vector<std::string> & issues);
 
 protected:
-    glow::Version m_version;
+    glbinding::Version m_version;
 
 	Profile m_profile;
 

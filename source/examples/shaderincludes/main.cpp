@@ -1,3 +1,5 @@
+#include <glbinding/gl.h>
+
 #include <glowbase/File.h>
 
 #include <glow/NamedString.h>

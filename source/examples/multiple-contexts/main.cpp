@@ -1,9 +1,7 @@
 
 #include <iostream>
 
-
-
-#include <glbinding/constants.h>
+#include <glbinding/gl.h>
 
 #include <glow/DebugMessage.h>
 #include <glow/logging.h>

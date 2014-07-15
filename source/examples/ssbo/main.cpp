@@ -1,11 +1,10 @@
 
-
+#include <glbinding/gl.h>
 
 #include <glow/Buffer.h>
 #include <glow/DebugMessage.h>
 #include <glow/Program.h>
 
-#include <glowbase/File.h>
 #include <glowbase/File.h>
 #include <glowutils/ScreenAlignedQuad.h>
 #include <glowutils/glowutils.h>

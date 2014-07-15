@@ -4,7 +4,8 @@
 #include <vector>
 
 #include <glbinding/functions.h>
-#include <glbinding/Extension.h>
+#include <glbinding/extension.h>
+#include <glbinding/boolean.h>
 
 #include <glow/logging.h>
 #include <glow/glow.h>
@@ -151,7 +152,7 @@ void Program::link() const
 bool Program::prepareForLinkage() const
 {
     // TODO: cache
-    if (m_binary && hasExtension(gl::Extension::ARB_get_program_binary))
+    if (m_binary && hasExtension(gl::GLextension::GL_ARB_get_program_binary))
     {
         gl::glProgramBinary(m_id, m_binary->format(), m_binary->data(), m_binary->length());
 
@@ -183,7 +184,7 @@ bool Program::compileAttachedShaders() const
 
 bool Program::checkLinkStatus() const
 {
-    if (gl::GL_FALSE == get(gl::GL_LINK_STATUS))
+    if (gl::GL_FALSE == static_cast<gl::GLboolean>(get(gl::GL_LINK_STATUS)))
     {
         critical()
             << "Linker error:" << std::endl
@@ -381,7 +382,7 @@ void Program::setBinary(ProgramBinary * binary)
 
 ProgramBinary * Program::getBinary() const
 {
-    if (!hasExtension(gl::Extension::ARB_get_program_binary))
+    if (!hasExtension(gl::GLextension::GL_ARB_get_program_binary))
     {
         return nullptr;
     }

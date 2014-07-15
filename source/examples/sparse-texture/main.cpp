@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <random>
 
+#include <glbinding/gl.h>
+
 #include <glow/logging.h>
 #include <glow/Texture.h>
 #include <glow/DebugMessage.h>

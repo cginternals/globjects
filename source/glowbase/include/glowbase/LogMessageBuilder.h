@@ -11,11 +11,11 @@
 #include <glowbase/LogMessage.h>
 #include <glowbase/ref_ptr.h>
 
+
 namespace glow
 {
 
 class AbstractLogHandler;
-class Version;
 
 /** \brief Builds a LogMessage from different kinds of primitive types.
 
@@ -78,7 +78,6 @@ public:
 #endif
 	
     // glow base objects
-    LogMessageBuilder & operator<<(const Version & version);
     template <typename T>
     LogMessageBuilder & operator<<(const ref_ptr<T> & ref_pointer);
 	

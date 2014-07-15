@@ -6,7 +6,8 @@
 
 #include <glm/fwd.hpp>
 
-namespace glow {
+namespace glow 
+{
 
 GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::vec2 & vector);
 GLOW_API LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::vec3 & vector);

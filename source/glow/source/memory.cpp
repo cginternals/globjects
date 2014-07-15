@@ -1,7 +1,7 @@
 #include <glow/memory.h>
 
-#include <glbinding/constants.h>
-#include <glbinding/Extension.h>
+#include <glbinding/enum.h>
+#include <glbinding/extension.h>
 
 #include <glow/glow.h>
 
@@ -9,7 +9,7 @@ namespace {
 
 gl::GLint getMemoryInformation(gl::GLenum pname)
 {
-    if (!glow::hasExtension(gl::Extension::NVX_gpu_memory_info))
+    if (!glow::hasExtension(gl::GLextension::GL_NVX_gpu_memory_info))
         return -1;
 
     return glow::getInteger(pname);

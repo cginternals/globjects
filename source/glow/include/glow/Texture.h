@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glbinding/types.h>
-#include <glbinding/constants.h>
+#include <glbinding/enum.h>
 
 #include <vector>
 
@@ -111,7 +111,7 @@ public:
     void generateMipmap();
 
     TextureHandle textureHandle() const;
-    gl::GLboolean isResident() const;
+    bool isResident() const;
     TextureHandle makeResident() const;
     void makeNonResident() const;
 

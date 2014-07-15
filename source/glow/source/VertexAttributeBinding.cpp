@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include <glowbase/Version.h>
+#include <glbinding/Version.h>
 
 #include <glow/VertexArrayObject.h>
 #include <glow/glow.h>
@@ -23,7 +23,7 @@ VertexAttributeBinding::VertexAttributeBinding(
 {
     assert(vao != nullptr);
 
-    m_implementation = hasExtension(gl::Extension::ARB_vertex_attrib_binding)
+    m_implementation = hasExtension(gl::GLextension::GL_ARB_vertex_attrib_binding)
         ? static_cast<VertexAttributeBindingImplementation*>(new VertexAttributeBinding_GL_4_3(this))
         : static_cast<VertexAttributeBindingImplementation*>(new VertexAttributeBinding_GL_3_0(this));
 

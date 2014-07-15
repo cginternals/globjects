@@ -2,6 +2,8 @@
 #include <glow/Program.h>
 #include <glow/Buffer.h>
 
+#include <glbinding/values.h>
+
 namespace glow {
 
 UniformBlock::UniformBlock()

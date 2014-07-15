@@ -5,9 +5,9 @@
 #include <array>
 
 #include <glbinding/types.h>
-#include <glbinding/Extension.h>
+#include <glbinding/extension.h>
 
-#include <glowbase/Version.h>
+#include <glbinding/Version.h>
 
 #include <glow/glow_api.h>
 
@@ -39,7 +39,7 @@ GLOW_API std::string renderer();
 GLOW_API std::string versionString();
 GLOW_API gl::GLint majorVersion();
 GLOW_API gl::GLint minorVersion();
-GLOW_API Version version();
+GLOW_API glbinding::Version version();
 GLOW_API bool isCoreProfile();
 
 GLOW_API std::vector<std::string> getExtensions();
@@ -53,10 +53,10 @@ std::array<gl::GLdouble, Count> getDoubles(gl::GLenum pname);
 template <int Count>
 std::array<gl::GLboolean, Count> getBooleans(gl::GLenum pname);
 
-GLOW_API bool hasExtension(gl::Extension extension);
+GLOW_API bool hasExtension(gl::GLextension extension);
 GLOW_API bool hasExtension(const std::string & extensionName);
-GLOW_API bool isInCoreProfile(gl::Extension extension, const Version & version);
-GLOW_API bool isInCoreProfile(gl::Extension extension);
+GLOW_API bool isInCoreProfile(gl::GLextension extension, const glbinding::Version & version);
+GLOW_API bool isInCoreProfile(gl::GLextension extension);
 
 GLOW_API void enable(gl::GLenum capability);
 GLOW_API void disable(gl::GLenum capability);

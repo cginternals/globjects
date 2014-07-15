@@ -1,6 +1,7 @@
 #include <glow/Query.h>
 
 #include <glbinding/functions.h>
+#include <glbinding/boolean.h>
 
 #include <glow/ObjectVisitor.h>
 
@@ -128,7 +129,7 @@ gl::GLuint64 Query::get64(gl::GLenum pname) const
 
 bool Query::resultAvailable() const
 {
-	return get(gl::GL_QUERY_RESULT_AVAILABLE) == gl::GL_TRUE;
+    return static_cast<gl::GLboolean>(get(gl::GL_QUERY_RESULT_AVAILABLE)) == gl::GL_TRUE;
 }
 
 void Query::wait() const

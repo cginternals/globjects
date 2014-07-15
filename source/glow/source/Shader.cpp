@@ -3,11 +3,12 @@
 #include <vector>
 #include <sstream>
 
-#include <glbinding/constants.h>
+#include <glbinding/enum.h>
 #include <glbinding/functions.h>
+#include <glbinding/boolean.h>
 
 #include <glowbase/ref_ptr.h>
-#include <glowbase/Version.h>
+#include <glbinding/Version.h>
 #include <glowbase/AbstractStringSource.h>
 #include <glowbase/StaticStringSource.h>
 #include <glowbase/File.h>
@@ -134,7 +135,7 @@ void Shader::updateSource()
 
     if (m_source)
     {
-        if (hasExtension(gl::Extension::ARB_shading_language_include) && !forceFallbackIncludeProcessor)
+        if (hasExtension(gl::GLextension::GL_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
         {
             sources = m_source->strings();
         }
@@ -158,7 +159,7 @@ bool Shader::compile() const
     if (m_compilationFailed)
         return false;
 
-    if (hasExtension(gl::Extension::ARB_shading_language_include) && !forceFallbackIncludeProcessor)
+    if (hasExtension(gl::GLextension::GL_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
     {
         std::vector<const char*> cStrings = collectCStrings(m_includePaths);
         gl::glCompileShaderIncludeARB(m_id, static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
@@ -216,7 +217,7 @@ std::string Shader::getSource() const
 
 bool Shader::checkCompileStatus() const
 {
-    gl::GLint status = get(gl::GL_COMPILE_STATUS);
+    gl::GLboolean status = static_cast<gl::GLboolean>(get(gl::GL_COMPILE_STATUS));
 
     if (status == gl::GL_FALSE)
     {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glbinding/types.h>
-#include <glbinding/constants.h>
+#include <glbinding/enum.h>
 
 #include <glow/glow_api.h>
 #include <glow/Object.h>

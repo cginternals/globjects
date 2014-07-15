@@ -7,6 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include <glbinding/gl.h>
+
 #include <glow/logging.h>
 #include <glow/Texture.h>
 #include <glow/Program.h>

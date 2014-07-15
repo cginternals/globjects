@@ -3,6 +3,8 @@
 #include <glow/glow.h>
 #include <glow/logging.h>
 
+#include <glbinding/enum.h>
+
 #include "DebugImplementation.h"
 #include "FallbackDebugImplementation.h"
 
@@ -38,7 +40,7 @@ AbstractDebugImplementation::~AbstractDebugImplementation()
 
 AbstractDebugImplementation * AbstractDebugImplementation::create()
 {
-    if (hasExtension(gl::Extension::KHR_debug))
+    if (hasExtension(gl::GLextension::GL_KHR_debug))
     {
         return new DebugImplementation();
     }

@@ -10,6 +10,8 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/constants.hpp>
 
+#include <glbinding/gl.h>
+
 #include <glow/Uniform.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>
@@ -60,7 +62,7 @@ public:
 
         glow::DebugMessage::enable();
 
-        if (!glow::hasExtension(glow::Extension::ARB_compute_shader))
+        if (!glow::hasExtension(glow::Extension::GL_ARB_compute_shader))
         {
             glow::critical() << "Compute shaders are not supported";
 

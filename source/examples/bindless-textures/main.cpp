@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <random>
 
+#include <glbinding/gl.h>
+
 #include <glow/logging.h>
 #include <glow/State.h>
 #include <glow/Capability.h>
@@ -76,7 +78,7 @@ public:
 
         glow::DebugMessage::enable();
 
-        if (!glow::hasExtension(glow::Extension::NV_bindless_texture))
+        if (!glow::hasExtension(glow::Extension::GL_NV_bindless_texture))
         {
             glow::critical() << "Blindess textures are not supported";
 

@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include <glbinding/gl.h>
+
 #include <glow/Program.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/Texture.h>

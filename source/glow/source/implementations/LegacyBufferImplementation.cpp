@@ -1,6 +1,7 @@
 #include "LegacyBufferImplementation.h"
 
 #include <glbinding/functions.h>
+#include <glbinding/boolean.h>
 
 #include <glow/Buffer.h>
 

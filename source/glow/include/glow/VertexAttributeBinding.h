@@ -1,7 +1,8 @@
 #pragma once
 
 #include <glbinding/types.h>
-#include <glbinding/constants.h>
+#include <glbinding/enum.h>
+#include <glbinding/boolean.h>
 
 #include <glowbase/Referenced.h>
 
@@ -35,7 +36,7 @@ public:
 	void setFormat(
         gl::GLint size
     ,   gl::GLenum type
-    ,   gl::GLboolean normalized = static_cast<gl::GLboolean>(gl::GL_FALSE)
+    ,   gl::GLboolean normalized = gl::GL_FALSE
     ,   gl::GLuint relativeoffset = 0);
 	void setIFormat(
         gl::GLint size

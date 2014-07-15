@@ -47,7 +47,7 @@ void NamedStringRegistry::deregisterNamedString(NamedString * namedString)
 bool NamedStringRegistry::hasNativeSupport()
 {
     // TODO: cache
-    return hasExtension(gl::Extension::ARB_shading_language_include);
+    return hasExtension(gl::GLextension::GL_ARB_shading_language_include);
 }
 
 } // namespace glow

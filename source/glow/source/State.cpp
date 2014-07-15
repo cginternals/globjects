@@ -1,7 +1,7 @@
 #include <glow/State.h>
 
-#include <glbinding/constants.h>
-#include <glbinding/Extension.h>
+#include <glbinding/enum.h>
+#include <glbinding/extension.h>
 
 #include <glow/glow.h>
 #include <glow/Capability.h>
@@ -56,29 +56,29 @@ State* State::currentState()
         gl::GL_STENCIL_TEST
     };
 
-    if (glow::version() >= Version(3, 1))
+    if (glow::version() >= glbinding::Version(3, 1))
     {
         capabilities.push_back(gl::GL_PRIMITIVE_RESTART);
-        if (hasExtension(gl::Extension::ARB_ES3_compatibility))
+        if (hasExtension(gl::GLextension::GL_ARB_ES3_compatibility))
         {
             capabilities.push_back(gl::GL_PRIMITIVE_RESTART_FIXED_INDEX);
         }
         state->primitiveRestartIndex(getInteger(gl::GL_PRIMITIVE_RESTART_INDEX));
 
-        if (hasExtension(gl::Extension::ARB_sample_shading))
+        if (hasExtension(gl::GLextension::GL_ARB_sample_shading))
         {
             capabilities.push_back(gl::GL_SAMPLE_SHADING);
         }
-        if (hasExtension(gl::Extension::ARB_seamless_cube_map))
+        if (hasExtension(gl::GLextension::GL_ARB_seamless_cube_map))
         {
             capabilities.push_back(gl::GL_TEXTURE_CUBE_MAP_SEAMLESS);
         }
-        if (hasExtension(gl::Extension::ARB_provoking_vertex))
+        if (hasExtension(gl::GLextension::GL_ARB_provoking_vertex))
         {
             state->provokingVertex(getEnum(gl::GL_PROVOKING_VERTEX));
         }
         // is this necessary here? should be controlled by glow::debugmessageoutput
-        if (hasExtension(gl::Extension::KHR_debug))
+        if (hasExtension(gl::GLextension::GL_KHR_debug))
         {
             capabilities.push_back(gl::GL_DEBUG_OUTPUT);
             capabilities.push_back(gl::GL_DEBUG_OUTPUT_SYNCHRONOUS);
