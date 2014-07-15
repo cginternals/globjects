@@ -35,7 +35,7 @@ else()
 	set(EXCEPTION_FLAG "-fno-exceptions")
 endif()
 
-set(LINUX_COMPILE_FLAGS "-fvisibility=hidden -pthread -pipe -fPIC -Wreturn-type -Wall -pedantic -Wextra -Wfloat-equal -Wcast-qual -Wcast-align -Wconversion -Werror -Wno-error=float-equal -Wno-error=conversion -Wno-error=switch -Wno-error=shorten-64-to-32 ${EXCEPTION_FLAG}")
+set(LINUX_COMPILE_FLAGS "-fvisibility=hidden -pthread -pipe -fPIC -Wreturn-type -Wall -pedantic -Wextra -Wfloat-equal -Wcast-qual -Wcast-align -Wconversion -Werror -Wno-error=float-equal -Wno-error=conversion -Wno-error=switch ${EXCEPTION_FLAG}")
 # pthread       -> use pthread library
 # no-rtti       -> disable c++ rtti
 # no-exceptions -> disable exception handling
@@ -50,7 +50,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 	set(LINUX_COMPILE_FLAGS "${LINUX_COMPILE_FLAGS} -Wtrampolines")
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	# clang
-	set(LINUX_COMPILE_FLAGS "${LINUX_COMPILE_FLAGS} -Wno-mismatched-tags -Wno-unsequenced -Wno-sign-conversion -Wno-unused-function -Wno-missing-braces")
+        set(LINUX_COMPILE_FLAGS "${LINUX_COMPILE_FLAGS} -Wno-mismatched-tags -Wno-unsequenced -Wno-sign-conversion -Wno-unused-function -Wno-missing-braces -Wno-error=shorten-64-to-32")
 endif()
 
 set(LINUX_LINKER_FLAGS "-pthread")
