@@ -78,7 +78,7 @@ bool Context::create(const ContextFormat & format, const int width, const int he
 
 void Context::prepareFormat(const ContextFormat & format)
 {
-    gl::Version version = validateVersion(format.version());
+    glbinding::Version version = validateVersion(format.version());
 
     if (!format.version().isNull() && format.version() != version)
     {
@@ -104,7 +104,7 @@ void Context::prepareFormat(const ContextFormat & format)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.m_major);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.m_minor);
 
-    if (version >= gl::Version(3, 0))
+    if (version >= glbinding::Version(3, 0))
     {
         if (format.forwardCompatible())
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
@@ -112,7 +112,7 @@ void Context::prepareFormat(const ContextFormat & format)
             glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,  true);
     }
   
-    if (version >= gl::Version(3, 2))
+    if (version >= glbinding::Version(3, 2))
     {
         glfwWindowHint(GLFW_OPENGL_PROFILE,
             format.profile() == ContextFormat::CoreProfile ? GLFW_OPENGL_CORE_PROFILE :
@@ -207,9 +207,9 @@ void Context::doneCurrent()
     glfwMakeContextCurrent(0);
 }
 
-gl::Version Context::maximumSupportedVersion()
+glbinding::Version Context::maximumSupportedVersion()
 {
-    gl::Version maxVersion;
+    glbinding::Version maxVersion;
     
     /*
      * GLFW3 does not set default hint values on window creation so at least
@@ -245,7 +245,7 @@ gl::Version Context::maximumSupportedVersion()
             getInteger(0x821B, &majorVersion); // major version
             getInteger(0x821C, &minorVersion); // minor version
 
-            maxVersion = gl::Version(majorVersion, minorVersion);
+            maxVersion = glbinding::Version(majorVersion, minorVersion);
         }
 
         glfwDestroyWindow(versionCheckWindow);
@@ -254,16 +254,16 @@ gl::Version Context::maximumSupportedVersion()
     return maxVersion;
 }
 
-gl::Version Context::validateVersion(const gl::Version & version)
+glbinding::Version Context::validateVersion(const glbinding::Version & version)
 {
-    gl::Version maxVersion = maximumSupportedVersion();
+    glbinding::Version maxVersion = maximumSupportedVersion();
     
     if (maxVersion.isNull())
     {
 #ifdef MAC_OS
-        maxVersion = gl::Version(3, 2);
+        maxVersion = glbinding::Version(3, 2);
 #else
-        maxVersion = gl::Version(3, 0);
+        maxVersion = glbinding::Version(3, 0);
 #endif
       
     }
@@ -275,7 +275,7 @@ gl::Version Context::validateVersion(const gl::Version & version)
 
     if (!version.isValid())
     {
-        gl::Version nearestValidVersion = version.nearest();
+        glbinding::Version nearestValidVersion = version.nearest();
         if (nearestValidVersion > maxVersion)
         {
             return maxVersion;

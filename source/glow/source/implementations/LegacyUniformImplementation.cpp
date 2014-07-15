@@ -3,6 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glbinding/functions.h>
+#include <glbinding/boolean.h>
 
 #include <glow/Program.h>
 

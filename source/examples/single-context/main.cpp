@@ -1,4 +1,4 @@
-#include <glbinding/enum.h>
+#include <glbinding/gl.h>
 
 #include <glow/logging.h>
 #include <glow/DebugMessage.h>

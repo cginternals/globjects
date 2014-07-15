@@ -6,6 +6,7 @@
 #include <array>
 #include <string>
 
+#include <glbinding/boolean.h>
 
 #include <glowbase/ref_ptr.h>
 #include <glowbase/Referenced.h>

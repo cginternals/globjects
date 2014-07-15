@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include <glbinding/functions.h>
+#include <glbinding/boolean.h>
 
 #include <glow/ObjectVisitor.h>
 #include <glow/Program.h>

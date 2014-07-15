@@ -1,6 +1,6 @@
 #include "HybridAlgorithm.h"
 
-#include <glbinding/functions.h>
+#include <glbinding/gl.h>
 
 #include <glow/Program.h>
 #include <glow/FrameBufferObject.h>

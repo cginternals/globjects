@@ -3,6 +3,8 @@
 #include <glow/glow.h>
 #include <glow/logging.h>
 
+#include <glbinding/enum.h>
+
 #include "DebugImplementation.h"
 #include "FallbackDebugImplementation.h"
 

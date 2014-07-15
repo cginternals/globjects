@@ -67,8 +67,8 @@ private:
     GLFWwindow * m_window;
 
 private:
-    static gl::Version maximumSupportedVersion();
-    static gl::Version validateVersion(const gl::Version & version);
+    static glbinding::Version maximumSupportedVersion();
+    static glbinding::Version validateVersion(const glbinding::Version & version);
     void prepareFormat(const ContextFormat & format);
 
     static void handleError(int errorCode, const char* errorMessage);

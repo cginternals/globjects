@@ -5,6 +5,7 @@
 
 #include <glbinding/functions.h>
 #include <glbinding/extension.h>
+#include <glbinding/boolean.h>
 
 #include <glow/logging.h>
 #include <glow/glow.h>

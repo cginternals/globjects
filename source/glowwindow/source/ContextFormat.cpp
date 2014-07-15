@@ -33,10 +33,10 @@ ContextFormat::~ContextFormat()
 
 void ContextFormat::setVersion(unsigned int majorVersion, unsigned int minorVersion)
 {
-    setVersion(gl::Version(majorVersion, minorVersion));
+    setVersion(glbinding::Version(majorVersion, minorVersion));
 }
 
-void ContextFormat::setVersion(const gl::Version & version)
+void ContextFormat::setVersion(const glbinding::Version & version)
 {
     m_version = version;
 }
@@ -51,7 +51,7 @@ int ContextFormat::minorVersion() const
     return m_version.m_minor;
 }
 
-const gl::Version & ContextFormat::version() const
+const glbinding::Version & ContextFormat::version() const
 {
     return m_version;
 }

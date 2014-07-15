@@ -145,7 +145,7 @@ LogMessageBuilder & LogMessageBuilder::operator<<(LogMessageBuilder::WidthManipu
 }
 #endif
 
-LogMessageBuilder & LogMessageBuilder::operator<<(const gl::Version & version)
+LogMessageBuilder & LogMessageBuilder::operator<<(const glbinding::Version & version)
 {
     *this << "Version " << version.toString();
 

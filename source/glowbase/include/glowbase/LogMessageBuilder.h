@@ -11,7 +11,7 @@
 #include <glowbase/LogMessage.h>
 #include <glowbase/ref_ptr.h>
 
-namespace gl {
+namespace glbinding {
 class Version;
 }
 
@@ -81,7 +81,7 @@ public:
 #endif
 	
     // glow base objects
-    LogMessageBuilder & operator<<(const gl::Version & version);
+    LogMessageBuilder & operator<<(const glbinding::Version & version);
     template <typename T>
     LogMessageBuilder & operator<<(const ref_ptr<T> & ref_pointer);
 	

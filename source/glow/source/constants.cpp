@@ -6,7 +6,7 @@ namespace glow {
 
 std::string enumName(gl::GLenum param)
 {
-    return gl::Meta::getString(param);
+    return glbinding::Meta::getString(param);
 }
 
 } // namespace glow

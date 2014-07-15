@@ -4,6 +4,7 @@
 
 #include <glbinding/enum.h>
 #include <glbinding/functions.h>
+#include <glbinding/boolean.h>
 
 #include <glm/gtc/type_ptr.hpp>
 

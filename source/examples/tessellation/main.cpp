@@ -1,5 +1,5 @@
 
-#include <glbinding/functions.h>
+#include <glbinding/gl.h>
 
 #include <algorithm>
 #include <random>

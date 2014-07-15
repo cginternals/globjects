@@ -56,7 +56,7 @@ State* State::currentState()
         gl::GL_STENCIL_TEST
     };
 
-    if (glow::version() >= gl::Version(3, 1))
+    if (glow::version() >= glbinding::Version(3, 1))
     {
         capabilities.push_back(gl::GL_PRIMITIVE_RESTART);
         if (hasExtension(gl::GLextension::GL_ARB_ES3_compatibility))

@@ -1,5 +1,4 @@
-
-#include <glbinding/functions.h>
+#include <glbinding/gl.h>
 
 #include <glowbase/AbstractStringSource.h>
 

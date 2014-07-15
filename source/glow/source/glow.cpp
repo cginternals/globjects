@@ -19,7 +19,7 @@
 namespace glow
 {
 
-void manualErrorCheckAfter(const gl::AbstractFunction & function)
+void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
 {
     Error error = Error::get();
 
@@ -46,9 +46,9 @@ bool glowIsInitialized = false;
 
 bool initializeGLBinding()
 {
-    gl::AbstractFunction::setCallbackLevelForAllExcept(gl::AbstractFunction::CallbackLevel::After, { "glGetError" });
+    glbinding::AbstractFunction::setCallbackLevelForAllExcept(glbinding::AbstractFunction::CallbackLevel::After, { "glGetError" });
 
-    gl::AbstractFunction::setAfterCallback([](const gl::AbstractFunction & function) {
+    glbinding::AbstractFunction::setAfterCallback([](const glbinding::AbstractFunction & function) {
         manualErrorCheckAfter(function);
     });
 
@@ -207,14 +207,14 @@ gl::GLint minorVersion()
     return getInteger(gl::GL_MINOR_VERSION);
 }
 
-gl::Version version()
+glbinding::Version version()
 {
-    return gl::Version(majorVersion(), minorVersion());
+    return glbinding::Version(majorVersion(), minorVersion());
 }
 
 bool isCoreProfile()
 {
-    if (version()<gl::Version(3,2))
+    if (version()<glbinding::Version(3,2))
     {
         return false;
     }
@@ -246,7 +246,7 @@ bool hasExtension(const std::string & extensionName)
     return ExtensionRegistry::current().hasExtension(extensionName);
 }
 
-bool isInCoreProfile(gl::GLextension extension, const gl::Version & version)
+bool isInCoreProfile(gl::GLextension extension, const glbinding::Version & version)
 {
     return ExtensionRegistry::current().isInCoreProfile(extension, version);
 }

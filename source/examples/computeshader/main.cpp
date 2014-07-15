@@ -10,6 +10,8 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/constants.hpp>
 
+#include <glbinding/gl.h>
+
 #include <glow/Uniform.h>
 #include <glow/Program.h>
 #include <glow/Shader.h>

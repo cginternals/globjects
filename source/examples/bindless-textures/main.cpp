@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <random>
 
+#include <glbinding/gl.h>
+
 #include <glow/logging.h>
 #include <glow/State.h>
 #include <glow/Capability.h>

@@ -28,7 +28,7 @@ public:
     bool hasExtension(gl::GLextension extension);
     bool hasExtension(const std::string & extensionName);
     bool isInCoreProfile(gl::GLextension extension);
-    bool isInCoreProfile(gl::GLextension extension, const gl::Version & version);
+    bool isInCoreProfile(gl::GLextension extension, const glbinding::Version & version);
 protected:
     bool m_initialized;
     std::set<gl::GLextension> m_availableExtensions;

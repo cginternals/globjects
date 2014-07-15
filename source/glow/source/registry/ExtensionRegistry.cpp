@@ -47,7 +47,7 @@ void ExtensionRegistry::initialize()
 
     for (const std::string & extensionName : getExtensions())
     {
-        gl::GLextension extension = gl::Meta::getExtension(extensionName);
+        gl::GLextension extension = glbinding::Meta::getExtension(extensionName);
 
         if (extension != gl::GLextension::UNKNOWN)
         {
@@ -76,7 +76,7 @@ bool ExtensionRegistry::hasExtension(const std::string & extensionName)
 {
     initialize();
 
-    gl::GLextension extension = gl::Meta::getExtension(extensionName);
+    gl::GLextension extension = glbinding::Meta::getExtension(extensionName);
 
     if (extension != gl::GLextension::UNKNOWN)
     {
@@ -88,14 +88,14 @@ bool ExtensionRegistry::hasExtension(const std::string & extensionName)
     }
 }
 
-gl::Version getCoreVersion(gl::GLextension extension)
+glbinding::Version getCoreVersion(gl::GLextension extension)
 {
-    return gl::Meta::getRequiringVersion(extension);
+    return glbinding::Meta::getRequiringVersion(extension);
 }
 
-bool ExtensionRegistry::isInCoreProfile(gl::GLextension extension, const gl::Version & version)
+bool ExtensionRegistry::isInCoreProfile(gl::GLextension extension, const glbinding::Version & version)
 {
-    gl::Version coreVersion = getCoreVersion(extension);
+    glbinding::Version coreVersion = getCoreVersion(extension);
 
     if (!coreVersion.isValid())
         return false;
