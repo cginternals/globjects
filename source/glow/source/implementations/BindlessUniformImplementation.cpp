@@ -2,8 +2,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include <glbinding/functions.h>
-#include <glbinding/boolean.h>
+#include <glbinding/gl/functions.h>
+#include <glbinding/gl/boolean.h>
 
 #include <glow/Program.h>
 

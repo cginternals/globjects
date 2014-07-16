@@ -1,4 +1,4 @@
-#include <glbinding/gl.h>
+#include <glbinding/gl/gl.h>
 
 #include <glow/Buffer.h>
 #include <glow/Program.h>

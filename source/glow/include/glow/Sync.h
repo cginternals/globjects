@@ -1,9 +1,9 @@
 #pragma once
 
-#include <glbinding/types.h>
-#include <glbinding/enum.h>
-#include <glbinding/bitfield.h>
-#include <glbinding/values.h>
+#include <glbinding/gl/types.h>
+#include <glbinding/gl/enum.h>
+#include <glbinding/gl/bitfield.h>
+#include <glbinding/gl/values.h>
 
 #include <glowbase/Referenced.h>
 

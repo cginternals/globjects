@@ -10,7 +10,7 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/constants.hpp>
 
-#include <glbinding/gl.h>
+#include <glbinding/gl/gl.h>
 
 #include <glow/Uniform.h>
 #include <glow/Program.h>

@@ -3,7 +3,7 @@
 #include <cassert>
 #include <cmath>
 
-#include <glbinding/enum.h>
+#include <glbinding/gl/enum.h>
 
 
 

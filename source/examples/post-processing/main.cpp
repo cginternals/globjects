@@ -1,5 +1,5 @@
 
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 #include <algorithm>
 #include <random>
@@ -9,7 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <glbinding/gl.h>
+#include <glbinding/gl/gl.h>
 
 #include <glow/Uniform.h>
 #include <glow/Program.h>

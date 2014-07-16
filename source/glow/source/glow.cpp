@@ -1,9 +1,9 @@
 #include <glow/glow.h>
 
-#include <glbinding/gl.h>
-#include <glbinding/functions.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/gl/functions.h>
 #include <glbinding/AbstractFunction.h>
-#include <glbinding/initialize.h>
+#include <glbinding/gl/initialize.h>
 
 #include <glow/Error.h>
 #include <glow/logging.h>

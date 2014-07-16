@@ -1,6 +1,6 @@
 #include <glow/AbstractState.h>
 
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 #include <glow/StateSetting.h>
 

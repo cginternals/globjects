@@ -1,6 +1,6 @@
 #include <glow/RenderBufferObject.h>
 
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 #include <glow/ObjectVisitor.h>
 

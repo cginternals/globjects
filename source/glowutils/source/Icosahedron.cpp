@@ -3,7 +3,7 @@
 #include <iterator>
 #include <algorithm>
 
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 #include <glm/glm.hpp>
 

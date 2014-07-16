@@ -1,6 +1,6 @@
 #include "BindlessFrameBufferImplementation.h"
 
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 #include <glow/FrameBufferObject.h>
 #include <glow/Texture.h>

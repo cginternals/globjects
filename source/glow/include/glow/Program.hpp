@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 #include <glowbase/baselogging.h>
 

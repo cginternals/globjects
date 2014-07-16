@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

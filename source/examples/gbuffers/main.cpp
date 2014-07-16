@@ -1,4 +1,4 @@
-#include <glbinding/gl.h>
+#include <glbinding/gl/gl.h>
 
 #include <glowbase/File.h>
 

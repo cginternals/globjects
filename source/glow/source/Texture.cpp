@@ -2,9 +2,9 @@
 
 #include <algorithm>
 
-#include <glbinding/enum.h>
-#include <glbinding/functions.h>
-#include <glbinding/boolean.h>
+#include <glbinding/gl/enum.h>
+#include <glbinding/gl/functions.h>
+#include <glbinding/gl/boolean.h>
 
 #include <glm/gtc/type_ptr.hpp>
 

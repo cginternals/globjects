@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-#include <glbinding/types.h>
+#include <glbinding/gl/types.h>
 
 #include <glow/glow_api.h>
 #include <glow/ObjectVisitor.h>

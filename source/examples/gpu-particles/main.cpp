@@ -1,6 +1,6 @@
 #include <map>
 
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 #include <algorithm>
 #include <vector>

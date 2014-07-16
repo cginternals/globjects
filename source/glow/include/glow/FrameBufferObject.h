@@ -5,7 +5,7 @@
 #include <vector>
 #include <array>
 
-#include <glbinding/enum.h>
+#include <glbinding/gl/enum.h>
 
 #include <glm/vec4.hpp>
 

@@ -1,7 +1,7 @@
 #include <glow/State.h>
 
-#include <glbinding/enum.h>
-#include <glbinding/extension.h>
+#include <glbinding/gl/enum.h>
+#include <glbinding/gl/extension.h>
 
 #include <glow/glow.h>
 #include <glow/Capability.h>

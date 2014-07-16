@@ -20,7 +20,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <glbinding/gl.h>
+#include <glbinding/gl/gl.h>
 
 #include <glow/glow.h>
 #include <glow/Uniform.h>

@@ -2,8 +2,8 @@
 
 #include <glow/glow.h>
 
-#include <glbinding/types.h>
-#include <glbinding/functions.h>
+#include <glbinding/gl/types.h>
+#include <glbinding/gl/functions.h>
 
 namespace glow 
 {

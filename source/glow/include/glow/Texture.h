@@ -1,7 +1,7 @@
 #pragma once
 
-#include <glbinding/types.h>
-#include <glbinding/enum.h>
+#include <glbinding/gl/types.h>
+#include <glbinding/gl/enum.h>
 
 #include <vector>
 

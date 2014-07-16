@@ -1,8 +1,8 @@
 #pragma once
 
-#include <glbinding/types.h>
-#include <glbinding/enum.h>
-#include <glbinding/boolean.h>
+#include <glbinding/gl/types.h>
+#include <glbinding/gl/enum.h>
+#include <glbinding/gl/boolean.h>
 
 #include <glowbase/Referenced.h>
 

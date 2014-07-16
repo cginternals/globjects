@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glbinding/extension.h>
+#include <glbinding/gl/extension.h>
 
 namespace glow {
 

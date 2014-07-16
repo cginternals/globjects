@@ -3,7 +3,7 @@
 #include <set>
 #include <string>
 
-#include <glbinding/extension.h>
+#include <glbinding/gl/extension.h>
 #include <glbinding/Version.h>
 
 #include <glow/glow_api.h>

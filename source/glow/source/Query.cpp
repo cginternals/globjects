@@ -1,7 +1,7 @@
 #include <glow/Query.h>
 
-#include <glbinding/functions.h>
-#include <glbinding/boolean.h>
+#include <glbinding/gl/functions.h>
+#include <glbinding/gl/boolean.h>
 
 #include <glow/ObjectVisitor.h>
 

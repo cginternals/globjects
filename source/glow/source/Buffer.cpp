@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 #include <glow/glow.h>
 #include <glow/ObjectVisitor.h>

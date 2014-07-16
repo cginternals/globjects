@@ -1,7 +1,7 @@
 #include <glowutils/AbstractCoordinateProvider.h>
 
-#include <glbinding/enum.h>
-#include <glbinding/functions.h>
+#include <glbinding/gl/enum.h>
+#include <glbinding/gl/functions.h>
 
 #include <glm/glm.hpp>
 

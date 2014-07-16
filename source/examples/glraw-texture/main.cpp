@@ -1,5 +1,5 @@
 
-#include <glbinding/gl.h>
+#include <glbinding/gl/gl.h>
 
 #include <glow/logging.h>
 #include <glow/Texture.h>

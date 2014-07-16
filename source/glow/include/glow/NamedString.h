@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <glbinding/enum.h>
+#include <glbinding/gl/enum.h>
 
 #include <glowbase/ChangeListener.h>
 #include <glowbase/ref_ptr.h>

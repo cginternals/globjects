@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 #include <glm/gtc/type_ptr.hpp>
 

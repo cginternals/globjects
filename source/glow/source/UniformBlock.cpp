@@ -2,7 +2,7 @@
 #include <glow/Program.h>
 #include <glow/Buffer.h>
 
-#include <glbinding/values.h>
+#include <glbinding/gl/values.h>
 
 namespace glow {
 

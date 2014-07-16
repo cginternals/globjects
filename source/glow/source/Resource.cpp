@@ -1,6 +1,6 @@
 #include "Resource.h"
 
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 namespace {
 

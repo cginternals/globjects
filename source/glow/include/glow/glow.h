@@ -4,8 +4,8 @@
 #include <vector>
 #include <array>
 
-#include <glbinding/types.h>
-#include <glbinding/extension.h>
+#include <glbinding/gl/types.h>
+#include <glbinding/gl/extension.h>
 
 #include <glbinding/Version.h>
 

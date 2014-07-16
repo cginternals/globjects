@@ -1,5 +1,5 @@
 
-#include <glbinding/gl.h>
+#include <glbinding/gl/gl.h>
 
 #include <glowbase/ref_ptr.h>
 

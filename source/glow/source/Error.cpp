@@ -1,7 +1,7 @@
 #include <glow/Error.h>
 
-#include <glbinding/enum.h>
-#include <glbinding/functions.h>
+#include <glbinding/gl/enum.h>
+#include <glbinding/gl/functions.h>
 
 namespace glow
 {

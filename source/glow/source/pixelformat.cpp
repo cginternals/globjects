@@ -1,6 +1,6 @@
 #include "pixelformat.h"
 
-#include <glbinding/enum.h>
+#include <glbinding/gl/enum.h>
 
 #include <glow/glow.h>
 #include <glow/logging.h>

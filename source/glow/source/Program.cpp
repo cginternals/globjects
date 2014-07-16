@@ -3,9 +3,9 @@
 #include <cassert>
 #include <vector>
 
-#include <glbinding/functions.h>
-#include <glbinding/extension.h>
-#include <glbinding/boolean.h>
+#include <glbinding/gl/functions.h>
+#include <glbinding/gl/extension.h>
+#include <glbinding/gl/boolean.h>
 
 #include <glow/logging.h>
 #include <glow/glow.h>
