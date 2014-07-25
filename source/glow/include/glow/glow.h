@@ -18,6 +18,10 @@ class AbstractStringSource;
 
 GLOW_API bool isInitialized();
 GLOW_API bool init(bool showWarnings = false);
+GLOW_API bool registerCurrentContext();
+
+GLOW_API void setContext(long long contextId);
+GLOW_API void setCurrentContext();
 
 GLOW_API std::string getString(gl::GLenum pname);
 GLOW_API std::string getString(gl::GLenum pname, gl::GLuint index);
