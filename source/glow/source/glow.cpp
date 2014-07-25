@@ -62,7 +62,7 @@ bool initializeGLBinding(long long contextId)
     });
 
     if (g_glBindingContextIndices.find(contextId) == g_glBindingContextIndices.end())
-        g_glBindingContextIndices[contextId] = g_glBindingContextIndices.size();
+        g_glBindingContextIndices[contextId] = static_cast<int>(g_glBindingContextIndices.size());
 
     glbinding::FunctionObjects::initialize(g_glBindingContextIndices[contextId]);
 
