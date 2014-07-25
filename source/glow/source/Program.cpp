@@ -16,6 +16,17 @@
 #include <glow/Buffer.h>
 
 #include "Resource.h"
+#include "registry/ImplementationRegistry.h"
+#include "implementations/AbstractProgramBinaryImplementation.h"
+
+namespace {
+
+const glow::AbstractProgramBinaryImplementation & binaryImplementation()
+{
+    return glow::ImplementationRegistry::current().programBinaryImplementation();
+}
+
+}
 
 namespace glow
 {
@@ -127,7 +138,7 @@ void Program::link() const
 {
     m_linked = false;
 
-    if (!prepareForLinkage())
+    if (!binaryImplementation().updateProgramLinkSource(this))
         return;
 
     gl::glLinkProgram(id());
@@ -137,19 +148,6 @@ void Program::link() const
 
     updateUniforms();
     updateUniformBlockBindings();
-}
-
-bool Program::prepareForLinkage() const
-{
-    // TODO: cache
-    if (m_binary && hasExtension(gl::GLextension::GL_ARB_get_program_binary))
-    {
-        gl::glProgramBinary(id(), m_binary->format(), m_binary->data(), m_binary->length());
-
-        return true;
-    }
-
-    return compileAttachedShaders();
 }
 
 bool Program::compileAttachedShaders() const
@@ -372,24 +370,7 @@ void Program::setBinary(ProgramBinary * binary)
 
 ProgramBinary * Program::getBinary() const
 {
-    if (!hasExtension(gl::GLextension::GL_ARB_get_program_binary))
-    {
-        return nullptr;
-    }
-
-    int length = get(gl::GL_PROGRAM_BINARY_LENGTH);
-
-    if (length == 0)
-    {
-        return nullptr;
-    }
-
-    gl::GLenum format;
-    std::vector<char> binary(length);
-
-    gl::glGetProgramBinary(id(), length, nullptr, &format, binary.data());
-
-    return new ProgramBinary(format, binary);
+    return binaryImplementation().getProgramBinary(this);
 }
 
 gl::GLint Program::get(gl::GLenum pname) const

@@ -6,6 +6,7 @@
 #include "../implementations/AbstractBufferImplementation.h"
 #include "../implementations/AbstractFrameBufferImplementation.h"
 #include "../implementations/AbstractDebugImplementation.h"
+#include "../implementations/AbstractProgramBinaryImplementation.h"
 
 namespace glow {
 
@@ -14,6 +15,7 @@ ImplementationRegistry::ImplementationRegistry()
 , m_bufferImplementation(nullptr)
 , m_frameBufferImplementation(nullptr)
 , m_debugImplementation(nullptr)
+, m_programBinaryImplementation(nullptr)
 {
     initialize();
 }
@@ -24,6 +26,7 @@ ImplementationRegistry::~ImplementationRegistry()
     delete m_bufferImplementation;
     delete m_frameBufferImplementation;
     delete m_debugImplementation;
+    delete m_programBinaryImplementation;
 }
 
 ImplementationRegistry & ImplementationRegistry::current()
@@ -37,6 +40,7 @@ void ImplementationRegistry::initialize()
     m_bufferImplementation = AbstractBufferImplementation::create();
     m_frameBufferImplementation = AbstractFrameBufferImplementation::create();
     m_debugImplementation = AbstractDebugImplementation::create();
+    m_programBinaryImplementation = AbstractProgramBinaryImplementation::create();
 }
 
 AbstractUniformImplementation & ImplementationRegistry::uniformImplementation()
@@ -57,6 +61,11 @@ AbstractFrameBufferImplementation & ImplementationRegistry::frameBufferImplement
 AbstractDebugImplementation & ImplementationRegistry::debugImplementation()
 {
     return *m_debugImplementation;
+}
+
+AbstractProgramBinaryImplementation & ImplementationRegistry::programBinaryImplementation()
+{
+    return *m_programBinaryImplementation;
 }
 
 } // namespace glow

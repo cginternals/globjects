@@ -9,6 +9,7 @@ class AbstractUniformImplementation;
 class AbstractBufferImplementation;
 class AbstractFrameBufferImplementation;
 class AbstractDebugImplementation;
+class AbstractProgramBinaryImplementation;
 
 class GLOW_API ImplementationRegistry
 {
@@ -24,11 +25,13 @@ public:
     AbstractBufferImplementation & bufferImplementation();
     AbstractFrameBufferImplementation & frameBufferImplementation();
     AbstractDebugImplementation & debugImplementation();
+    AbstractProgramBinaryImplementation & programBinaryImplementation();
 protected:
     AbstractUniformImplementation * m_uniformImplementation;
     AbstractBufferImplementation * m_bufferImplementation;
     AbstractFrameBufferImplementation * m_frameBufferImplementation;
     AbstractDebugImplementation * m_debugImplementation;
+    AbstractProgramBinaryImplementation * m_programBinaryImplementation;
 };
 
 } // namespace glow

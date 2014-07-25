@@ -69,6 +69,8 @@ namespace glow
 class GLOW_API Program : public Object, protected ChangeListener
 {
     friend class UniformBlock;
+    friend class GetProgramBinaryImplementation;
+    friend class NoProgramBinaryImplementation;
 public:
 	Program();
     Program(ProgramBinary * binary);
@@ -159,7 +161,6 @@ protected:
     bool checkLinkStatus() const;
     void checkDirty() const;
 
-    bool prepareForLinkage() const;
     bool compileAttachedShaders() const;
     void updateUniforms() const;
     void updateUniformBlockBindings() const;
