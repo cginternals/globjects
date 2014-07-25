@@ -33,7 +33,7 @@ long long Registry::registerCurrentContext()
 
 void Registry::setContext(long long contextId)
 {
-    if (isContextRegistered(contextId))
+    if (!isContextRegistered(contextId))
     {
         glow::debug() << "Requesting OpenGL context " << contextId << " but it isn't registered yet";
     }
