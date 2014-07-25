@@ -18,23 +18,17 @@
 #include <glow/ObjectVisitor.h>
 #include <glow/glow.h>
 
-#include "IncludeProcessor.h"
+#include "registry/ImplementationRegistry.h"
 
+#include "implementations/AbstractShadingLanguageIncludeImplementation.h"
 #include "Resource.h"
 
 namespace
 {
 
-std::vector<const char*> collectCStrings(const std::vector<std::string> & strings)
+const glow::AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation()
 {
-    std::vector<const char*> cStrings;
-
-    for (const std::string & str : strings)
-    {
-        cStrings.push_back(str.c_str());
-    }
-
-    return cStrings;
+    return glow::ImplementationRegistry::current().shadingLanguageIncludeImplementation();
 }
 
 }
@@ -121,25 +115,14 @@ void Shader::notifyChanged(const Changeable *)
 
 void Shader::updateSource()
 {
-    std::vector<std::string> sources;
+    std::vector<const char*> sources;
 
     if (m_source)
     {
-        if (hasExtension(gl::GLextension::GL_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
-        {
-            sources = m_source->strings();
-        }
-        else
-        {
-            ref_ptr<AbstractStringSource> resolvedSource = IncludeProcessor::resolveIncludes(m_source, m_includePaths);
-
-            sources = resolvedSource->strings();
-        }
+        sources = shadingLanguageIncludeImplementation().getSources(this);
     }
 
-    std::vector<const char*> cStrings = collectCStrings(sources);
-
-    gl::glShaderSource(id(), static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
+    gl::glShaderSource(id(), static_cast<gl::GLint>(sources.size()), sources.data(), nullptr);
 
     invalidate();
 }
@@ -149,15 +132,7 @@ bool Shader::compile() const
     if (m_compilationFailed)
         return false;
 
-    if (hasExtension(gl::GLextension::GL_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
-    {
-        std::vector<const char*> cStrings = collectCStrings(m_includePaths);
-        gl::glCompileShaderIncludeARB(id(), static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
-    }
-    else
-    {
-        gl::glCompileShader(id());
-    }
+    shadingLanguageIncludeImplementation().compile(this);
 
     m_compiled = checkCompileStatus();
 
@@ -178,6 +153,11 @@ void Shader::invalidate()
     m_compiled = false;
     m_compilationFailed = false;
     changed();
+}
+
+const Shader::IncludePaths & Shader::includePaths() const
+{
+    return m_includePaths;
 }
 
 void Shader::setIncludePaths(const std::vector<std::string> & includePaths)

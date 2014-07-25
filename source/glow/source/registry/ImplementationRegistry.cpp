@@ -7,6 +7,7 @@
 #include "../implementations/AbstractFrameBufferImplementation.h"
 #include "../implementations/AbstractDebugImplementation.h"
 #include "../implementations/AbstractProgramBinaryImplementation.h"
+#include "../implementations/AbstractShadingLanguageIncludeImplementation.h"
 
 namespace glow {
 
@@ -16,6 +17,7 @@ ImplementationRegistry::ImplementationRegistry()
 , m_frameBufferImplementation(nullptr)
 , m_debugImplementation(nullptr)
 , m_programBinaryImplementation(nullptr)
+, m_shadingLanguageIncludeImplementation(nullptr)
 {
     initialize();
 }
@@ -27,6 +29,7 @@ ImplementationRegistry::~ImplementationRegistry()
     delete m_frameBufferImplementation;
     delete m_debugImplementation;
     delete m_programBinaryImplementation;
+    delete m_shadingLanguageIncludeImplementation;
 }
 
 ImplementationRegistry & ImplementationRegistry::current()
@@ -41,6 +44,7 @@ void ImplementationRegistry::initialize()
     m_frameBufferImplementation = AbstractFrameBufferImplementation::create();
     m_debugImplementation = AbstractDebugImplementation::create();
     m_programBinaryImplementation = AbstractProgramBinaryImplementation::create();
+    m_shadingLanguageIncludeImplementation = AbstractShadingLanguageIncludeImplementation::create();
 }
 
 AbstractUniformImplementation & ImplementationRegistry::uniformImplementation()
@@ -66,6 +70,11 @@ AbstractDebugImplementation & ImplementationRegistry::debugImplementation()
 AbstractProgramBinaryImplementation & ImplementationRegistry::programBinaryImplementation()
 {
     return *m_programBinaryImplementation;
+}
+
+AbstractShadingLanguageIncludeImplementation & ImplementationRegistry::shadingLanguageIncludeImplementation()
+{
+    return *m_shadingLanguageIncludeImplementation;
 }
 
 } // namespace glow

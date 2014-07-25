@@ -56,6 +56,8 @@ public:
 	void setSource(const std::string & source);
     const AbstractStringSource* source() const;
     void updateSource();
+
+    const IncludePaths & includePaths() const;
     void setIncludePaths(const IncludePaths & includePaths);
 
     bool compile() const;
