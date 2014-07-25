@@ -30,20 +30,34 @@ vec3 rayPlaneIntersection(
 ,	const vec3 & rnear
 ,	const vec3 & rfar
 ,	const vec3 & location
-,	const vec3 & normal)
+,	const vec3 & normal
+,   const bool forwardOnly)
 {
 	const vec3 r0 = rnear; // root of the ray
-	const vec3 &r = rfar - rnear; 
+	const vec3 r = rfar - rnear;
+
+	valid = r != vec3(0.0f);
+	if (!valid) {
+		return vec3(0.0f);
+    }
 
 	// intersect with plane in point normal form
 	const float lDotN = dot(r, normal);
 
-	valid = r != vec3();
-
-	if(!valid)
-		return vec3();
+    // if lDotN is 0, the ray is parallel to the plane and there is either no intersection or infinite intersections
+    valid = lDotN != 0.0f;
+	if (!valid) {
+		return vec3(0.0f);
+    }
 
 	float t = dot(location - r0, normal) / lDotN;
+
+    // if forward only, t must be positive
+    valid = !forwardOnly || t >= 0.0f;
+	if (!valid) {
+		return vec3(0.0f);
+    }
+
 	return t * r + r0; // retrieve point via the ray
 }
 

@@ -70,16 +70,23 @@ protected:
     const glm::vec3 mouseRayPlaneIntersection(
         bool & intersects
     ,   const glm::ivec2 & mouse
-    ,   const glm::vec3 & p0) const;
+    ,   const glm::vec3 & p0
+    ,   const glm::vec3 & normal) const;
     const glm::vec3 mouseRayPlaneIntersection(
         bool & intersects
     ,   const glm::ivec2 & mouse
 	,	const glm::vec3 & p0
+    ,   const glm::vec3 & normal
 	,	const glm::mat4 & viewProjectionInverted) const;
+    const glm::vec3 rayAabbIntersection(
+        bool& intersects
+    ,   const glm::vec3& ln
+    ,   const glm::vec3& lf) const;
 
 protected:
     Camera * m_camera;
     AxisAlignedBoundingBox m_aabb;
+    bool m_aabbValid;
 
     AbstractCoordinateProvider * m_coordsProvider;
 
@@ -97,7 +104,8 @@ protected:
     glm::vec3  m_i0;
     glm::vec3  m_i1;
     bool  m_i0Valid; // stores if initial interaction pick yielded valid depth
-    glm::ivec2  m_m0;
+    glm::ivec2 m_m0;
+    glm::vec3  m_n0;
 };
 
 } // namespace glowutils
