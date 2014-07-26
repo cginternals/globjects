@@ -36,9 +36,6 @@ const glow::AbstractShadingLanguageIncludeImplementation & shadingLanguageInclud
 namespace glow
 {
 
-bool Shader::forceFallbackIncludeProcessor = false;
-
-
 Shader::Shader(const gl::GLenum type)
 : Object(new ShaderResource(type))
 , m_type(type)
@@ -70,6 +67,16 @@ Shader::~Shader()
 	{
 		m_source->deregisterListener(this);
 	}
+}
+
+void Shader::forceFallbackIncludeProcessor(bool on)
+{
+    AbstractShadingLanguageIncludeImplementation::forceFallbackIncludeProcessor = on;
+}
+
+bool Shader::forceFallbackIncludeProcessor()
+{
+    return AbstractShadingLanguageIncludeImplementation::forceFallbackIncludeProcessor;
 }
 
 void Shader::accept(ObjectVisitor& visitor)

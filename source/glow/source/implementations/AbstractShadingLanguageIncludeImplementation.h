@@ -20,6 +20,8 @@ public:
     virtual void compile(const Shader* shader) const = 0;
 
     static std::vector<const char*> collectCStrings(const std::vector<std::string> & strings);
+
+    static bool forceFallbackIncludeProcessor;
 };
 
 } // namespace glow

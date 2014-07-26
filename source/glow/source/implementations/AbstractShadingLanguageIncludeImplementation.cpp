@@ -9,6 +9,8 @@
 
 namespace glow {
 
+bool AbstractShadingLanguageIncludeImplementation::forceFallbackIncludeProcessor = false;
+
 AbstractShadingLanguageIncludeImplementation::AbstractShadingLanguageIncludeImplementation()
 {
 }
@@ -19,7 +21,7 @@ AbstractShadingLanguageIncludeImplementation::~AbstractShadingLanguageIncludeImp
 
 AbstractShadingLanguageIncludeImplementation * AbstractShadingLanguageIncludeImplementation::create()
 {
-    if (hasExtension(gl::GLextension::GL_ARB_shading_language_include))
+    if (hasExtension(gl::GLextension::GL_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
     {
         return new ShadingLanguageIncludeImplementation();
     }

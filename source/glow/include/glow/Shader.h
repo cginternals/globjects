@@ -73,6 +73,8 @@ public:
 
     static std::string typeString(gl::GLenum type);
 
+    static void forceFallbackIncludeProcessor(bool on);
+    static bool forceFallbackIncludeProcessor();
 protected:
     virtual ~Shader();
 
@@ -88,9 +90,6 @@ protected:
 
     mutable bool m_compiled;
     mutable bool m_compilationFailed;
-
-public:
-    static bool forceFallbackIncludeProcessor;
 };
 
 } // namespace glow
