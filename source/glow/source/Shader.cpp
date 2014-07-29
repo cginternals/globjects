@@ -122,14 +122,7 @@ void Shader::notifyChanged(const Changeable *)
 
 void Shader::updateSource()
 {
-    std::vector<const char*> sources;
-
-    if (m_source)
-    {
-        sources = shadingLanguageIncludeImplementation().getSources(this);
-    }
-
-    gl::glShaderSource(id(), static_cast<gl::GLint>(sources.size()), sources.data(), nullptr);
+    shadingLanguageIncludeImplementation().updateSources(this);
 
     invalidate();
 }

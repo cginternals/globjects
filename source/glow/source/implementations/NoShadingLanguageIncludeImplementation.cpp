@@ -11,11 +11,20 @@
 
 namespace glow {
 
-std::vector<const char*> NoShadingLanguageIncludeImplementation::getSources(const Shader* shader) const
+void NoShadingLanguageIncludeImplementation::updateSources(const Shader* shader) const
 {
-    ref_ptr<AbstractStringSource> resolvedSource = IncludeProcessor::resolveIncludes(shader->source(), shader->includePaths());
+    std::vector<std::string> sources;
 
-    return collectCStrings(resolvedSource->strings());
+    if (shader->source())
+    {
+        ref_ptr<AbstractStringSource> resolvedSource = IncludeProcessor::resolveIncludes(shader->source(), shader->includePaths());
+
+        sources = resolvedSource->strings();
+    }
+
+    std::vector<const char*> cStrings = collectCStrings(sources);
+
+    gl::glShaderSource(shader->id(), static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
 }
 
 void NoShadingLanguageIncludeImplementation::compile(const Shader* shader) const

@@ -6,9 +6,18 @@
 
 namespace glow {
 
-std::vector<const char*> ShadingLanguageIncludeImplementation::getSources(const Shader* shader) const
+void ShadingLanguageIncludeImplementation::updateSources(const Shader* shader) const
 {
-    return collectCStrings(shader->source()->strings());
+    std::vector<std::string> sources;
+
+    if (shader->source())
+    {
+        sources = shader->source()->strings();
+    }
+
+    std::vector<const char*> cStrings = collectCStrings(sources);
+
+    gl::glShaderSource(shader->id(), static_cast<gl::GLint>(cStrings.size()), cStrings.data(), nullptr);
 }
 
 void ShadingLanguageIncludeImplementation::compile(const Shader* shader) const
