@@ -178,7 +178,7 @@ void FrameBufferObject::setDrawBuffers(const std::vector<gl::GLenum> & modes) co
     setDrawBuffers(static_cast<int>(modes.size()), modes.data());
 }
 
-void FrameBufferObject::clear(gl::GLbitfield mask)
+void FrameBufferObject::clear(gl::ClearBufferMask mask)
 {
     bind(gl::GL_FRAMEBUFFER);
 
@@ -306,12 +306,12 @@ void FrameBufferObject::readPixelsToBuffer(const std::array<gl::GLint, 4> & rect
     pbo->unbind(gl::GL_PIXEL_PACK_BUFFER);
 }
 
-void FrameBufferObject::blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, gl::GLenum drawBuffer, const std::array<gl::GLint, 4> & destRect, gl::GLbitfield mask, gl::GLenum filter) const
+void FrameBufferObject::blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, gl::GLenum drawBuffer, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const
 {
     blit(readBuffer, srcRect, destFbo, std::vector<gl::GLenum>{ drawBuffer }, destRect, mask, filter);
 }
 
-void FrameBufferObject::blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<gl::GLenum> & drawBuffers, const std::array<gl::GLint, 4> & destRect, gl::GLbitfield mask, gl::GLenum filter) const
+void FrameBufferObject::blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<gl::GLenum> & drawBuffers, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const
 {
     setReadBuffer(readBuffer);
     destFbo->setDrawBuffers(drawBuffers);
@@ -322,13 +322,13 @@ void FrameBufferObject::blit(gl::GLenum readBuffer, const std::array<gl::GLint, 
     blit(srcRect, destRect, mask, filter);
 }
 
-void FrameBufferObject::blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::GLbitfield mask, gl::GLenum filter)
+void FrameBufferObject::blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::ClearBufferMask mask, gl::GLenum filter)
 {
     gl::glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, destX0, destY0, destX1, destY1, mask, filter);
 
 }
 
-void FrameBufferObject::blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::GLbitfield mask, gl::GLenum filter)
+void FrameBufferObject::blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter)
 {
     blit(srcRect[0], srcRect[1], srcRect[2], srcRect[3], destRect[0], destRect[1], destRect[2], destRect[3], mask, filter);
 }

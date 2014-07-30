@@ -2,8 +2,6 @@
 
 #include <glow/logging.h>
 
-#include "contextid.h"
-
 #include "ObjectRegistry.h"
 #include "ExtensionRegistry.h"
 #include "ImplementationRegistry.h"
@@ -13,25 +11,19 @@ namespace glow
 {
 
 Registry * Registry::s_currentRegistry = nullptr;
-std::unordered_map<long long, Registry *> Registry::s_registries;
+std::unordered_map<glbinding::ContextId, Registry *> Registry::s_registries;
 
-long long Registry::registerCurrentContext()
+void Registry::registerContext(glbinding::ContextId contextId)
 {
-    long long contextId = getContextId();
-
     if (isContextRegistered(contextId))
     {
         glow::debug() << "OpenGL context " << contextId << " is already registered";
-
-        return contextId;
     }
 
     setCurrentRegistry(contextId);
-
-    return contextId;
 }
 
-void Registry::setContext(long long contextId)
+void Registry::setCurrentContext(glbinding::ContextId contextId)
 {
     if (!isContextRegistered(contextId))
     {
@@ -41,10 +33,8 @@ void Registry::setContext(long long contextId)
     setCurrentRegistry(contextId);
 }
 
-void Registry::deregisterCurrentContext()
+void Registry::deregisterContext(glbinding::ContextId contextId)
 {
-    long long contextId = getContextId();
-
     if (!isContextRegistered(contextId))
     {
         glow::debug() << "OpenGL context " << contextId << " is not registered";
@@ -65,12 +55,12 @@ Registry & Registry::current()
     return *s_currentRegistry;
 }
 
-bool Registry::isContextRegistered(long long contextId)
+bool Registry::isContextRegistered(glbinding::ContextId contextId)
 {
     return s_registries.find(contextId) != s_registries.end();
 }
 
-void Registry::setCurrentRegistry(long long contextId)
+void Registry::setCurrentRegistry(glbinding::ContextId contextId)
 {
     auto it = s_registries.find(contextId);
 

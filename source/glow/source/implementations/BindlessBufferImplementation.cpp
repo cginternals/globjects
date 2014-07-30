@@ -12,7 +12,7 @@ void * BindlessBufferImplementation::map(const Buffer * buffer, gl::GLenum acces
     return gl::glMapNamedBufferEXT(buffer->id(), access);
 }
 
-void * BindlessBufferImplementation::mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::GLbitfield access) const
+void * BindlessBufferImplementation::mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::BufferAccessMask access) const
 {
     return gl::glMapNamedBufferRangeEXT(buffer->id(), offset, length, access);
 }
@@ -32,7 +32,7 @@ void BindlessBufferImplementation::setSubData(const Buffer * buffer, gl::GLintpt
     gl::glNamedBufferSubDataEXT(buffer->id(), offset, size, data);
 }
 
-void BindlessBufferImplementation::setStorage(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLbitfield flags) const
+void BindlessBufferImplementation::setStorage(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::MapBufferUsageMask flags) const
 {
     gl::glNamedBufferStorageEXT(buffer->id(), size, data, flags);
 }

@@ -6,24 +6,18 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/AbstractFunction.h>
 #include <glbinding/FunctionObjects.h>
-#include <glbinding/gl/initialize.h>
+#include <glbinding/glbinding.h>
 
 #include <glow/Error.h>
 #include <glow/logging.h>
 
 #include "registry/Registry.h"
 #include "registry/ExtensionRegistry.h"
-#include "registry/contextid.h"
 
 #include <glow/DebugMessage.h>
 #include <glow/logging.h>
 
 #include <glow/NamedString.h>
-
-namespace
-{
-    std::unordered_map<long long, int> g_glBindingContextIndices;
-}
 
 namespace glow
 {
@@ -61,10 +55,7 @@ bool initializeGLBinding(long long contextId)
         manualErrorCheckAfter(function);
     });
 
-    if (g_glBindingContextIndices.find(contextId) == g_glBindingContextIndices.end())
-        g_glBindingContextIndices[contextId] = static_cast<int>(g_glBindingContextIndices.size());
-
-    glbinding::FunctionObjects::initialize(g_glBindingContextIndices[contextId]);
+    glbinding::initialize(contextId);
 
     return true;
 }
@@ -86,35 +77,31 @@ bool init(bool showWarnings)
         return true;
     }
 
-    long long contextId = Registry::registerCurrentContext();
-
-    if (!initializeGLBinding(contextId))
-    {
-        return false;
-    }
+    registerCurrentContext();
 
     glowIsInitialized = true;
 
     return true;
 }
 
-bool registerCurrentContext()
+void registerCurrentContext()
 {
-    return initializeGLBinding(Registry::registerCurrentContext());
+    glbinding::ContextId contextId = glbinding::getCurrentContextId();
+
+    glbinding::initialize(contextId);
+    Registry::registerContext(contextId);
 }
 
-void setContext(long long contextId)
+void setContext(glbinding::ContextId contextId)
 {
-    Registry::setContext(contextId);
-
-    assert(g_glBindingContextIndices.find(contextId) != g_glBindingContextIndices.end());
-
-    glbinding::FunctionObjects::setContext(g_glBindingContextIndices[contextId]);
+    glbinding::useContext(contextId);
+    Registry::setCurrentContext(contextId);
 }
 
 void setCurrentContext()
 {
-    setContext(getContextId());
+    glbinding::ContextId contextId = glbinding::getCurrentContextId();
+    setContext(contextId);
 }
 
 std::string getString(gl::GLenum pname)

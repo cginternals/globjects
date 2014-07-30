@@ -16,7 +16,7 @@ void * LegacyBufferImplementation::map(const Buffer * buffer, gl::GLenum access)
     return gl::glMapBuffer(s_workingTarget, access);
 }
 
-void * LegacyBufferImplementation::mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::GLbitfield access) const
+void * LegacyBufferImplementation::mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::BufferAccessMask access) const
 {
     buffer->bind(s_workingTarget);
 
@@ -44,7 +44,7 @@ void LegacyBufferImplementation::setSubData(const Buffer * buffer, gl::GLintptr 
     gl::glBufferSubData(s_workingTarget, offset, size, data);
 }
 
-void LegacyBufferImplementation::setStorage(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLbitfield flags) const
+void LegacyBufferImplementation::setStorage(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::MapBufferUsageMask flags) const
 {
     buffer->bind(s_workingTarget);
 

@@ -80,7 +80,7 @@ void* Buffer::map(gl::GLenum access)
     return implementation().map(this, access);
 }
 
-void* Buffer::mapRange(gl::GLintptr offset, gl::GLsizeiptr length, gl::GLbitfield access)
+void* Buffer::mapRange(gl::GLintptr offset, gl::GLsizeiptr length, gl::BufferAccessMask access)
 {
     return implementation().mapRange(this, offset, length, access);
 }
@@ -105,7 +105,7 @@ void Buffer::setSubData(gl::GLintptr offset, gl::GLsizeiptr size, const gl::GLvo
     implementation().setSubData(this, offset, size, data);
 }
 
-void Buffer::setStorage(gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLbitfield flags)
+void Buffer::setStorage(gl::GLsizeiptr size, const gl::GLvoid * data, gl::MapBufferUsageMask flags)
 {
     implementation().setStorage(this, size, data, flags);
 }

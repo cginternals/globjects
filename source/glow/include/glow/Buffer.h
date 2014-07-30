@@ -124,7 +124,7 @@ public:
      * @param flags flags indicating usage
      * \see www.opengl.org/sdk/docs/man/xhtml/glBufferStorage.xml
      */
-    void setStorage(gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLbitfield flags);
+    void setStorage(gl::GLsizeiptr size, const gl::GLvoid * data, gl::MapBufferUsageMask flags);
     /**
      * Convenience method to simplify passing of data in form of an std::vector.
      */
@@ -166,7 +166,7 @@ public:
      * @return pointer to the mapped memory
      * \see http://www.opengl.org/sdk/docs/man/xhtml/glMapBufferRange.xml
      */
-    void * mapRange(gl::GLintptr offset, gl::GLsizeiptr length, gl::GLbitfield access);
+    void * mapRange(gl::GLintptr offset, gl::GLsizeiptr length, gl::BufferAccessMask access);
     /**
      * Wraps the OpenGL function glUnmapBuffer.
      * \see http://www.opengl.org/sdk/docs/man3/xhtml/glMapBuffer.xml

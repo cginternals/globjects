@@ -72,7 +72,7 @@ public:
     void setDrawBuffers(gl::GLsizei n, const gl::GLenum * modes) const;
     void setDrawBuffers(const std::vector<gl::GLenum> & modes) const;
 
-    void clear(gl::GLbitfield mask);
+    void clear(gl::ClearBufferMask mask);
 
     void clearBufferiv(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLint * value);
     void clearBufferuiv(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLuint * value);
@@ -105,16 +105,16 @@ public:
     FrameBufferAttachment * getAttachment(gl::GLenum attachment);
     std::vector<FrameBufferAttachment*> attachments();
 
-    void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, gl::GLenum drawBuffer, const std::array<gl::GLint, 4> & destRect, gl::GLbitfield mask, gl::GLenum filter) const;
-    void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<gl::GLenum> & drawBuffers, const std::array<gl::GLint, 4> & destRect, gl::GLbitfield mask, gl::GLenum filter) const;
+    void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, gl::GLenum drawBuffer, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const;
+    void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<gl::GLenum> & drawBuffers, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const;
 protected:
     FrameBufferObject(IDResource * resource);
     virtual ~FrameBufferObject();
 
     void addAttachment(FrameBufferAttachment * attachment);
 
-    static void blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::GLbitfield mask, gl::GLenum filter);
-    static void blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::GLbitfield mask, gl::GLenum filter);
+    static void blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::ClearBufferMask mask, gl::GLenum filter);
+    static void blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter);
 protected:
 	std::map<gl::GLenum, ref_ptr<FrameBufferAttachment>> m_attachments;
 };

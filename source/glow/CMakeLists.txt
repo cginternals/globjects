@@ -128,8 +128,6 @@ set(sources
 	${source_path}/Query.cpp
 	${source_path}/registry/ObjectRegistry.h
 	${source_path}/registry/ExtensionRegistry.h
-	${source_path}/registry/contextid.cpp
-	${source_path}/registry/contextid.h
 	${source_path}/registry/NamedStringRegistry.cpp
 	${source_path}/registry/ImplementationRegistry.cpp
 	${source_path}/registry/ExtensionRegistry.cpp
