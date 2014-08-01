@@ -5,8 +5,8 @@
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/functions.h>
 #include <glbinding/AbstractFunction.h>
-#include <glbinding/FunctionObjects.h>
-#include <glbinding/gl/initialize.h>
+#include <glbinding/Binding.h>
+#include <glbinding/callbacks.h>
 
 #include <glow/Error.h>
 #include <glow/logging.h>
@@ -20,15 +20,10 @@
 
 #include <glow/NamedString.h>
 
-namespace
-{
-    std::unordered_map<long long, int> g_glBindingContextIndices;
-}
-
 namespace glow
 {
 
-void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
+void manualErrorCheckAfter(const glbinding::FunctionCall & functionCall)
 {
     Error error = Error::get();
 
@@ -45,7 +40,7 @@ void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
         return;
 
     std::stringstream stream;
-    stream << function.name() << " generated " << error.name();
+    stream << functionCall.function.name() << " generated " << error.name();
 
     DebugMessage::insertMessage(gl::GL_DEBUG_SOURCE_API_ARB, gl::GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), gl::GL_DEBUG_SEVERITY_HIGH_ARB, stream.str());
 }
@@ -55,16 +50,13 @@ bool glowIsInitialized = false;
 
 bool initializeGLBinding(long long contextId)
 {
-    glbinding::AbstractFunction::setCallbackLevelForAllExcept(glbinding::AbstractFunction::CallbackLevel::After, { "glGetError" });
+    glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
 
-    glbinding::AbstractFunction::setAfterCallback([](const glbinding::AbstractFunction & function) {
-        manualErrorCheckAfter(function);
+    glbinding::setAfterCallback([](const glbinding::FunctionCall& functionCall) {
+        manualErrorCheckAfter(functionCall);
     });
 
-    if (g_glBindingContextIndices.find(contextId) == g_glBindingContextIndices.end())
-        g_glBindingContextIndices[contextId] = static_cast<int>(g_glBindingContextIndices.size());
-
-    glbinding::FunctionObjects::initialize(g_glBindingContextIndices[contextId]);
+    glbinding::Binding::initialize(contextId);
 
     return true;
 }
@@ -107,9 +99,7 @@ void setContext(long long contextId)
 {
     Registry::setContext(contextId);
 
-    assert(g_glBindingContextIndices.find(contextId) != g_glBindingContextIndices.end());
-
-    glbinding::FunctionObjects::setContext(g_glBindingContextIndices[contextId]);
+    glbinding::Binding::useContext(contextId);
 }
 
 void setCurrentContext()

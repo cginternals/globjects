@@ -15,12 +15,12 @@ namespace glow
 class GLOW_API Sync : public Referenced
 {
 public:
-    static Sync * fence(gl::GLenum condition = gl::GL_SYNC_GPU_COMMANDS_COMPLETE, gl::GLbitfield flags = static_cast<gl::GLbitfield>(0));
+    static Sync * fence(gl::GLenum condition = gl::GL_SYNC_GPU_COMMANDS_COMPLETE, gl::UnusedMask flags = gl::GL_UNUSED_BIT);
 
     virtual ~Sync();
 
-    gl::GLenum clientWait(gl::GLbitfield flags = gl::GL_SYNC_FLUSH_COMMANDS_BIT, gl::GLuint64 timeout = gl::GL_TIMEOUT_IGNORED);
-    void wait(gl::GLbitfield flags = static_cast<gl::GLbitfield>(0), gl::GLuint64 timeout = gl::GL_TIMEOUT_IGNORED);
+    gl::GLenum clientWait(gl::SyncObjectMask flags = gl::GL_SYNC_FLUSH_COMMANDS_BIT, gl::GLuint64 timeout = gl::GL_TIMEOUT_IGNORED);
+    void wait(gl::UnusedMask flags = gl::GL_UNUSED_BIT, gl::GLuint64 timeout = gl::GL_TIMEOUT_IGNORED);
 
     void get(gl::GLenum pname, gl::GLsizei bufsize, gl::GLsizei * length, gl::GLint * values);
     gl::GLint get(gl::GLenum pname);
@@ -31,7 +31,7 @@ protected:
 
     Sync(gl::GLsync sync);
 
-    static gl::GLsync fenceSync(gl::GLenum condition, gl::GLbitfield flags);
+    static gl::GLsync fenceSync(gl::GLenum condition, gl::UnusedMask flags);
 };
 
 } // namespace glow

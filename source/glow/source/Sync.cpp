@@ -5,7 +5,7 @@
 namespace glow
 {
 
-Sync * Sync::fence(gl::GLenum condition, gl::GLbitfield flags)
+Sync * Sync::fence(gl::GLenum condition, gl::UnusedMask flags)
 {
     return new Sync(fenceSync(condition, flags));
 }
@@ -20,7 +20,7 @@ Sync::~Sync()
     gl::glDeleteSync(m_sync);
 }
 
-gl::GLsync Sync::fenceSync(gl::GLenum condition, gl::GLbitfield flags)
+gl::GLsync Sync::fenceSync(gl::GLenum condition, gl::UnusedMask flags)
 {
     return gl::glFenceSync(condition, flags);
 }
@@ -30,12 +30,12 @@ gl::GLsync Sync::sync() const
     return m_sync;
 }
 
-gl::GLenum Sync::clientWait(gl::GLbitfield flags, gl::GLuint64 timeout)
+gl::GLenum Sync::clientWait(gl::SyncObjectMask flags, gl::GLuint64 timeout)
 {
     return gl::glClientWaitSync(m_sync, flags, timeout);
 }
 
-void Sync::wait(gl::GLbitfield flags, gl::GLuint64 timeout)
+void Sync::wait(gl::UnusedMask flags, gl::GLuint64 timeout)
 {
     gl::glWaitSync(m_sync, flags, timeout);
 }
