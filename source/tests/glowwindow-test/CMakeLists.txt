@@ -12,6 +12,7 @@ include_directories(
 
 include_directories(
     BEFORE
+    ${CMAKE_SOURCE_DIR}/source/glowbase/include
     ${CMAKE_SOURCE_DIR}/source/glow/include
     ${CMAKE_SOURCE_DIR}/source/glowwindow/include
 )
@@ -21,9 +22,9 @@ include_directories(
 #
 
 set(libs
-    ${GLEW_LIBRARIES}
     ${GMOCK_LIBRARIES}
     ${GTEST_LIBRARIES}
+    glowbase
     glow
     glowwindow
 )
