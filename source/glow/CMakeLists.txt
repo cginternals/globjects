@@ -39,7 +39,7 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLOW_STATIC")
+    add_definitions("-D${META_PROJECT_NAME_UPPER}_STATIC")
 else()
     add_definitions("-DGLOW_EXPORTS")
 endif()
@@ -217,11 +217,8 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 # Build library
 #
 
-if(OPTION_BUILD_STATIC)
-    add_library(${target} ${api_includes} ${sources})
-else()
-    add_library(${target} SHARED ${api_includes} ${sources})
-endif()
+add_library(${target} ${api_includes} ${sources})
+
 target_link_libraries(${target} ${libs})
 
 set_target_properties(${target}

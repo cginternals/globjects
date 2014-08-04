@@ -55,7 +55,7 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 # Build library
 #
 
-add_library(${target} ${api_includes} ${sources})
+add_library(${target} STATIC ${api_includes} ${sources})
 target_link_libraries(${target} ${libs})
 
 set_target_properties(${target}
