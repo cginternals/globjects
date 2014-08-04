@@ -400,9 +400,13 @@ void Texture::clearSubImage(gl::GLint level, const glm::ivec3 & offset, const gl
 
 void Texture::bindImageTexture(gl::GLuint unit, gl::GLint level, gl::GLboolean layered, gl::GLint layer, gl::GLenum access, gl::GLenum format) const
 {
-	bind();
-
 	gl::glBindImageTexture(unit, id(), level, layered, layer, access, format);
+}
+
+void Texture::unbindImageTexture(gl::GLuint unit)
+{
+    // the concrete parameters (except unit & texture) don't seem to matter, as long as their values are valid
+    gl::glBindImageTexture(unit, 0, 0, gl::GL_FALSE, 0, gl::GL_READ_ONLY, gl::GL_RGBA8);
 }
 
 void Texture::generateMipmap()
