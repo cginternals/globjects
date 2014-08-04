@@ -129,12 +129,12 @@ public:
      * Convenience method to simplify passing of data in form of an std::vector.
      */
     template <typename T>
-    void setStorage(const std::vector<T> & data, gl::GLbitfield flags);
+    void setStorage(const std::vector<T> & data, gl::MapBufferUsageMask flags);
     /**
      * Convenience method to simplify passing of data in form of an std::array.
      */
     template <typename T, std::size_t Count>
-    void setStorage(const std::array<T, Count> & data, gl::GLbitfield flags);
+    void setStorage(const std::array<T, Count> & data, gl::MapBufferUsageMask flags);
 
     /**
      * Wraps the OpenGL function gl::glGetBufferParameter.

@@ -214,7 +214,7 @@ public:
 
         glm::vec2 pos(event->pos().x(), event->pos().y());
 
-        m_nav.scaleAtMouse(pos, static_cast<float>(-event->delta()) * 0.001f);
+        m_nav.scaleAtMouse(glm::ivec2(pos), static_cast<float>(-event->delta()) * 0.001f);
 
         doneCurrent();
     }
