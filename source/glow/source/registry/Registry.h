@@ -4,7 +4,7 @@
 #include <memory>
 
 #include <glow/glow_api.h>
-#include <glbinding/ContextId.h>
+#include <glbinding/ContextHandle.h>
 
 namespace glow
 {
@@ -17,10 +17,10 @@ class NamedStringRegistry;
 class GLOW_API Registry
 {
 public:
-    static void registerContext(glbinding::ContextId contextId);
-    static void deregisterContext(glbinding::ContextId contextId);
+    static void registerContext(glbinding::ContextHandle contextId);
+    static void deregisterContext(glbinding::ContextHandle contextId);
 
-    static void setCurrentContext(glbinding::ContextId contextId);
+    static void setCurrentContext(glbinding::ContextHandle contextId);
 
     static Registry & current();
 
@@ -36,11 +36,11 @@ private:
 
     void initialize();
 
-    static bool isContextRegistered(glbinding::ContextId contextId);
-    static void setCurrentRegistry(glbinding::ContextId contextId);
+    static bool isContextRegistered(glbinding::ContextHandle contextId);
+    static void setCurrentRegistry(glbinding::ContextHandle contextId);
 
     static Registry * s_currentRegistry;
-    static std::unordered_map<glbinding::ContextId, Registry *> s_registries;
+    static std::unordered_map<glbinding::ContextHandle, Registry *> s_registries;
 private:
     bool m_initialized;
     std::unique_ptr<ObjectRegistry> m_objects;

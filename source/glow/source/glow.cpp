@@ -5,8 +5,8 @@
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/functions.h>
 #include <glbinding/AbstractFunction.h>
-#include <glbinding/FunctionObjects.h>
-#include <glbinding/glbinding.h>
+#include <glbinding/Binding.h>
+#include <glbinding/callbacks.h>
 
 #include <glow/Error.h>
 #include <glow/logging.h>
@@ -49,13 +49,13 @@ bool glowIsInitialized = false;
 
 bool initializeGLBinding(long long contextId)
 {
-    glbinding::AbstractFunction::setCallbackLevelForAllExcept(glbinding::AbstractFunction::CallbackLevel::After, { "glGetError" });
+    glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
 
-    glbinding::AbstractFunction::setAfterCallback([](const glbinding::AbstractFunction & function) {
-        manualErrorCheckAfter(function);
+    glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
+        manualErrorCheckAfter(functionCall.function);
     });
 
-    glbinding::initialize(contextId);
+    glbinding::Binding::useContext(contextId);
 
     return true;
 }
@@ -86,21 +86,21 @@ bool init(bool showWarnings)
 
 void registerCurrentContext()
 {
-    glbinding::ContextId contextId = glbinding::getCurrentContextId();
+    glbinding::ContextHandle contextId = glbinding::getCurrentContext();
 
-    glbinding::initialize(contextId);
+    glbinding::Binding::useContext(contextId);
     Registry::registerContext(contextId);
 }
 
-void setContext(glbinding::ContextId contextId)
+void setContext(glbinding::ContextHandle contextId)
 {
-    glbinding::useContext(contextId);
+    glbinding::Binding::useContext(contextId);
     Registry::setCurrentContext(contextId);
 }
 
 void setCurrentContext()
 {
-    glbinding::ContextId contextId = glbinding::getCurrentContextId();
+    glbinding::ContextHandle contextId = glbinding::getCurrentContext();
     setContext(contextId);
 }
 
