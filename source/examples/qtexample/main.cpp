@@ -42,17 +42,15 @@
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 
-using namespace glm;
-
 class Window : public QtOpenGLWindow, glowutils::AbstractCoordinateProvider
 {
 public:
     Window()
     : QtOpenGLWindow()
-    , m_camera(vec3(0.f, 1.f, 4.0f))
+    , m_camera(glm::vec3(0.f, 1.f, 4.0f))
     {
-        m_aabb.extend(vec3(-8.f, -1.f, -8.f));
-        m_aabb.extend(vec3(8.f, 1.f, 8.f));
+        m_aabb.extend(glm::vec3(-8.f, -1.f, -8.f));
+        m_aabb.extend(glm::vec3(8.f, 1.f, 8.f));
 
         m_nav.setCamera(&m_camera);
         m_nav.setCoordinateProvider(this);
@@ -133,9 +131,9 @@ public:
                 glow::File::reloadAll();
                 break;
             case Qt::Key_Space:
-                m_camera.setCenter(vec3());
-                m_camera.setEye(vec3(0.f, 1.f, 4.0f));
-                m_camera.setUp(vec3(0,1,0));
+                m_camera.setCenter(glm::vec3());
+                m_camera.setEye(glm::vec3(0.f, 1.f, 4.0f));
+                m_camera.setUp(glm::vec3(0,1,0));
                 break;
         }
 
@@ -144,7 +142,7 @@ public:
 
     virtual void mousePressEvent(QMouseEvent * event) override
     {
-        ivec2 pos(event->pos().x(), event->pos().y());
+        glm::ivec2 pos(event->pos().x(), event->pos().y());
 
         makeCurrent();
 
@@ -167,7 +165,7 @@ public:
 
     virtual void mouseMoveEvent(QMouseEvent * event) override
     {
-        ivec2 pos(event->pos().x(), event->pos().y());
+        glm::ivec2 pos(event->pos().x(), event->pos().y());
 
         makeCurrent();
 
@@ -214,29 +212,29 @@ public:
 
         makeCurrent();
 
-        ivec2 pos(event->pos().x(), event->pos().y());
+        glm::vec2 pos(event->pos().x(), event->pos().y());
 
         m_nav.scaleAtMouse(pos, static_cast<float>(-event->delta()) * 0.001f);
 
         doneCurrent();
     }
 
-    virtual float depthAt(const ivec2 & windowCoordinates) const override
+    virtual float depthAt(const glm::ivec2 & windowCoordinates) const override
     {
         return AbstractCoordinateProvider::depthAt(m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
     }
 
-    virtual vec3 objAt(const ivec2 & windowCoordinates) const override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) const override
     {
         return unproject(m_camera, static_cast<gl::GLenum>(gl::GL_DEPTH_COMPONENT), windowCoordinates);
     }
 
-    virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) const override
     {
         return unproject(m_camera, depth, windowCoordinates);
     }
 
-    virtual glm::vec3 objAt(const ivec2 & windowCoordinates, const float depth, const mat4 & viewProjectionInverted) const override
+    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth, const glm::mat4 & viewProjectionInverted) const override
     {
         return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
     }
