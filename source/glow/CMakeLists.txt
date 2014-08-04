@@ -17,7 +17,7 @@ find_package(GLBinding REQUIRED)
 
 include_directories(
     ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIR}
+    ${GLBINDING_INCLUDES}
 )
 
 include_directories(
@@ -32,7 +32,7 @@ include_directories(
 
 set(libs
     ${OPENGL_LIBRARIES}
-    ${GLBINDING_LIBRARY}
+    ${GLBINDING_LIBRARIES}
     glowbase
 )
 

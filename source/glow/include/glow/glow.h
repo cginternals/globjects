@@ -8,7 +8,7 @@
 #include <glbinding/gl/extension.h>
 
 #include <glbinding/Version.h>
-#include <glbinding/ContextId.h>
+#include <glbinding/ContextHandle.h>
 
 #include <glow/glow_api.h>
 
@@ -21,7 +21,7 @@ GLOW_API bool isInitialized();
 GLOW_API bool init(bool showWarnings = false);
 
 GLOW_API void registerCurrentContext();
-GLOW_API void setContext(glbinding::ContextId contextId);
+GLOW_API void setContext(glbinding::ContextHandle contextId);
 GLOW_API void setCurrentContext();
 
 GLOW_API std::string getString(gl::GLenum pname);

@@ -11,9 +11,9 @@ namespace glow
 {
 
 Registry * Registry::s_currentRegistry = nullptr;
-std::unordered_map<glbinding::ContextId, Registry *> Registry::s_registries;
+std::unordered_map<glbinding::ContextHandle, Registry *> Registry::s_registries;
 
-void Registry::registerContext(glbinding::ContextId contextId)
+void Registry::registerContext(glbinding::ContextHandle contextId)
 {
     if (isContextRegistered(contextId))
     {
@@ -23,7 +23,7 @@ void Registry::registerContext(glbinding::ContextId contextId)
     setCurrentRegistry(contextId);
 }
 
-void Registry::setCurrentContext(glbinding::ContextId contextId)
+void Registry::setCurrentContext(glbinding::ContextHandle contextId)
 {
     if (!isContextRegistered(contextId))
     {
@@ -33,7 +33,7 @@ void Registry::setCurrentContext(glbinding::ContextId contextId)
     setCurrentRegistry(contextId);
 }
 
-void Registry::deregisterContext(glbinding::ContextId contextId)
+void Registry::deregisterContext(glbinding::ContextHandle contextId)
 {
     if (!isContextRegistered(contextId))
     {
@@ -55,12 +55,12 @@ Registry & Registry::current()
     return *s_currentRegistry;
 }
 
-bool Registry::isContextRegistered(glbinding::ContextId contextId)
+bool Registry::isContextRegistered(glbinding::ContextHandle contextId)
 {
     return s_registries.find(contextId) != s_registries.end();
 }
 
-void Registry::setCurrentRegistry(glbinding::ContextId contextId)
+void Registry::setCurrentRegistry(glbinding::ContextHandle contextId)
 {
     auto it = s_registries.find(contextId);
 
