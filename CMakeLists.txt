@@ -6,10 +6,11 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 set(META_PROJECT_NAME        "glow")
 set(META_VERSION_MAJOR       "0")
 set(META_VERSION_MINOR       "3")
-set(META_VERSION_PATCH       "1")
+set(META_VERSION_PATCH       "2")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "hpicgs group")
 set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glow/")
+set(META_AUTHOR_MAINTAINER   "daniel.limberger@hpi.de")
 
 
 # OPTIONS
@@ -23,6 +24,14 @@ option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
 option(OPTION_GENERATE_GL_INFO    "Automatically generate OpenGL extension and enum information" OFF)
 option(OPTION_BUILD_GLOW_UTILS    "Build glowutils (required for examples)" ON)
 option(OPTION_BUILD_GLOW_WINDOW   "Build glowwindow (required for examples)" ON)
+
+
+if(OPTION_BUILD_STATIC)
+   set(BUILD_SHARED_LIBS OFF)
+   message("Note: ${META_PROJECT_NAME_UPPER}_STATIC needs to be defined for static linking.")
+else()
+    set(BUILD_SHARED_LIBS ON)
+endif()
 
 
 #
