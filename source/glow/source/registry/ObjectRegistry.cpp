@@ -12,6 +12,7 @@ namespace glow
 
 ObjectRegistry::ObjectRegistry()
 : m_defaultFBO(nullptr)
+, m_defaultVAO(nullptr)
 {
 }
 

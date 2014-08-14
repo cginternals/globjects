@@ -58,13 +58,16 @@ TEST_F(ref_ptr_test, ReferenceComparisonConstComparisonsCompile)
     glow::ref_ptr<const ReferencedMock> ref_const_t = new ReferencedMock;
     const glow::ref_ptr<const ReferencedMock> const_ref_const_t = new ReferencedMock;
 
+    bool success1 = false;
+    bool success2 = false;
+
     if (t == ref_t || t == const_ref_t || t == ref_const_t || t == const_ref_const_t)
         if (const_t == ref_t || const_t == const_ref_t || const_t == ref_const_t || const_t == const_ref_const_t)
             if (ref_t == const_ref_t || ref_t == ref_const_t || ref_t == const_ref_const_t)
                 if (const_ref_t == ref_const_t || const_ref_t == const_ref_const_t)
                     if (ref_const_t == const_ref_const_t)
                     {
-                        exit(0);
+                        success1 = true;
                     }
 
     if (ref_t == t || const_ref_t == t || ref_const_t == t || const_ref_const_t == t)
@@ -73,6 +76,11 @@ TEST_F(ref_ptr_test, ReferenceComparisonConstComparisonsCompile)
                 if (ref_const_t == const_ref_t || const_ref_const_t == const_ref_t)
                     if (const_ref_const_t == ref_const_t)
                     {
-                        exit(0);
+                        success2 = true;
                     }
+
+    EXPECT_TRUE(success1 && success2);
+
+    delete t;
+    delete const_t;
 }

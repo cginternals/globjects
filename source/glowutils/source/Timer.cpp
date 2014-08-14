@@ -3,16 +3,17 @@
 namespace glowutils
 {
 
-Timer::Timer(bool start, bool autoUpdate)
+Timer::Timer(bool _start, bool autoUpdate)
 :   m_paused(true)
 ,   m_auto(autoUpdate)
 ,   m_t0(clock::now())
+,   m_tp(m_t0)
+,   m_t1(m_t0)
+,   m_offset(Duration::zero())
+,   m_elapsed(Duration::zero())
 {
-    m_t1 = m_t0;
-    m_tp = m_t0;
-
-    if(start)
-        this->start();
+    if(_start)
+        start();
 }
 
 Timer::~Timer()
