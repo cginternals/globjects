@@ -9,30 +9,30 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <glow/Uniform.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/Buffer.h>
-#include <glow/logging.h>
-#include <glow/DebugMessage.h>
+#include <globjects/Uniform.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/Buffer.h>
+#include <globjects/logging.h>
+#include <globjects/DebugMessage.h>
 
-#include <glowutils/Timer.h>
-#include <glowutils/Icosahedron.h>
-#include <glowutils/AdaptiveGrid.h>
-#include <glowutils/Camera.h>
-#include <glowbase/File.h>
-#include <glowbase/File.h>
-#include <glowutils/glowutils.h>
+#include <globjects-utils/Timer.h>
+#include <globjects-utils/Icosahedron.h>
+#include <globjects-utils/AdaptiveGrid.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-base/File.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/globjects-utils.h>
 
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowwindow;
+using namespace glowindow;
 using namespace glm;
 
 
@@ -52,22 +52,22 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
 
-        m_sphere = new glow::Program();
+        m_sphere = new glo::Program();
         m_sphere->attach(
-            glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/tessellation/sphere.vert")
-        ,   glow::Shader::fromFile(gl::GL_TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
-        ,   glow::Shader::fromFile(gl::GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
-        ,   glow::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/tessellation/sphere.geom")
-        ,   glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
-        ,   glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/common/phong.frag"));
+            glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/tessellation/sphere.vert")
+        ,   glo::Shader::fromFile(gl::GL_TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
+        ,   glo::Shader::fromFile(gl::GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
+        ,   glo::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/tessellation/sphere.geom")
+        ,   glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
+        ,   glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/common/phong.frag"));
 
-        m_icosahedron = new glowutils::Icosahedron();
-        m_agrid = new glowutils::AdaptiveGrid(16U);
+        m_icosahedron = new gloutils::Icosahedron();
+        m_agrid = new gloutils::AdaptiveGrid(16U);
 
         m_time.reset();
         m_time.start();
@@ -123,19 +123,19 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_F5:
-            glow::File::reloadAll();
+            glo::File::reloadAll();
             break;
         }
     }
 
 protected:
-    glow::ref_ptr<glow::Program> m_sphere;
+    glo::ref_ptr<glo::Program> m_sphere;
 
-    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
-    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
+    glo::ref_ptr<gloutils::Icosahedron> m_icosahedron;
+    glo::ref_ptr<gloutils::AdaptiveGrid> m_agrid;
 
-    glowutils::Camera m_camera;
-    glowutils::Timer m_time;
+    gloutils::Camera m_camera;
+    gloutils::Timer m_time;
 
     vec3 m_rand;
 };
@@ -145,11 +145,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 0);

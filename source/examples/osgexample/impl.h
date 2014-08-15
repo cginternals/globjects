@@ -1,12 +1,12 @@
 #pragma once
 
-struct PrivateGlowInterface;
+struct PrivateGlobjectsInterface;
 
-class GlowInterface
+class GlobjectsInterface
 {
 public:
-    GlowInterface();
-    ~GlowInterface();
+    GlobjectsInterface();
+    ~GlobjectsInterface();
 
     void initialize();
 
@@ -17,5 +17,5 @@ public:
     void paint();
 
 protected:
-    PrivateGlowInterface * impl;
+    PrivateGlobjectsInterface * impl;
 };

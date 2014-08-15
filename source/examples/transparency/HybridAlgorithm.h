@@ -2,15 +2,15 @@
 
 #include "AbstractTransparencyAlgorithm.h"
 
-#include <glow/Buffer.h>
-#include <glow/FrameBufferObject.h>
-#include <glow/Program.h>
-#include <glow/Texture.h>
-#include <glow/RenderBufferObject.h>
+#include <globjects/Buffer.h>
+#include <globjects/FrameBufferObject.h>
+#include <globjects/Program.h>
+#include <globjects/Texture.h>
+#include <globjects/RenderBufferObject.h>
 
-#include <glowutils/ScreenAlignedQuad.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
 
-namespace glowutils {
+namespace gloutils {
 
 class Camera;
 
@@ -28,37 +28,37 @@ class Camera;
 */
 class HybridAlgorithm : public AbstractTransparencyAlgorithm {
 public:
-    virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) override;
-    virtual void draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) override;
+    virtual void initialize(const std::string & transparencyShaderFilePath, glo::Shader *vertexShader, glo::Shader *geometryShader) override;
+    virtual void draw(const DrawFunction& drawFunction, gloutils::Camera* camera, int width, int height) override;
     virtual void resize(int width, int height) override;
-    virtual glow::Texture* getOutput() override;
+    virtual glo::Texture* getOutput() override;
 
 private:
     // shared
-    glow::ref_ptr<glow::FrameBufferObject> m_prepassFbo;
-    glow::ref_ptr<glow::RenderBufferObject> m_depthBuffer;
+    glo::ref_ptr<glo::FrameBufferObject> m_prepassFbo;
+    glo::ref_ptr<glo::RenderBufferObject> m_depthBuffer;
 
     // opaque geometry pass
-    glow::ref_ptr<glow::Program> m_opaqueProgram;
-    glow::ref_ptr<glow::Texture> m_opaqueBuffer;
+    glo::ref_ptr<glo::Program> m_opaqueProgram;
+    glo::ref_ptr<glo::Texture> m_opaqueBuffer;
 
     // depth k-TAB pass
-    glow::ref_ptr<glow::Program> m_depthKTabProgram;
-    glow::ref_ptr<glow::Buffer> m_depthKTab;
+    glo::ref_ptr<glo::Program> m_depthKTabProgram;
+    glo::ref_ptr<glo::Buffer> m_depthKTab;
 
     // visibility k-TAB pass
-    glow::ref_ptr<glow::Program> m_visibilityKTabProgram;
-    glow::ref_ptr<glow::Buffer> m_visibilityKTab;
+    glo::ref_ptr<glo::Program> m_visibilityKTabProgram;
+    glo::ref_ptr<glo::Buffer> m_visibilityKTab;
 
     // translucent color pass
-    glow::ref_ptr<glow::Program> m_colorProgram;
-    glow::ref_ptr<glow::FrameBufferObject> m_colorFbo;
-    glow::ref_ptr<glow::Texture> m_coreBuffer;
-    glow::ref_ptr<glow::Texture> m_accumulationBuffer;
-    glow::ref_ptr<glow::Buffer> m_depthComplexityBuffer;
+    glo::ref_ptr<glo::Program> m_colorProgram;
+    glo::ref_ptr<glo::FrameBufferObject> m_colorFbo;
+    glo::ref_ptr<glo::Texture> m_coreBuffer;
+    glo::ref_ptr<glo::Texture> m_accumulationBuffer;
+    glo::ref_ptr<glo::Buffer> m_depthComplexityBuffer;
 
     // composition pass
-    glow::ref_ptr<glow::FrameBufferObject> m_compositionFbo;
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_compositionQuad;
-    glow::ref_ptr<glow::Texture> m_colorBuffer;
+    glo::ref_ptr<glo::FrameBufferObject> m_compositionFbo;
+    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_compositionQuad;
+    glo::ref_ptr<glo::Texture> m_colorBuffer;
 };

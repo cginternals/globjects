@@ -1,23 +1,23 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/Buffer.h>
-#include <glow/DebugMessage.h>
-#include <glow/Program.h>
+#include <globjects/Buffer.h>
+#include <globjects/DebugMessage.h>
+#include <globjects/Program.h>
 
-#include <glowbase/File.h>
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/glowutils.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/globjects-utils.h>
 
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowwindow;
+using namespace glowindow;
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -34,12 +34,12 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
-        m_quad = new glowutils::ScreenAlignedQuad(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
+        m_quad = new gloutils::ScreenAlignedQuad(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
 
         m_quad->program()->setUniform("maximum", 10);
         m_quad->program()->setUniform("rowCount", 10);
@@ -58,7 +58,7 @@ public:
             2,3,4,5,6,7,8,9,10,1
         };
 
-        m_buffer = new glow::Buffer();
+        m_buffer = new glo::Buffer();
         m_buffer->setData(sizeof(data), data, gl::GL_STATIC_DRAW);
 
         m_buffer->bindBase(gl::GL_SHADER_STORAGE_BUFFER, 1);
@@ -90,12 +90,12 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glow::File::reloadAll();
+            glo::File::reloadAll();
     }
 
 protected:
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
-    glow::ref_ptr<glow::Buffer> m_buffer;
+    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<glo::Buffer> m_buffer;
 };
 
 
@@ -103,11 +103,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 3);

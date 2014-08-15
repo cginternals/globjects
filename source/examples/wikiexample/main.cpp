@@ -1,23 +1,23 @@
 #include <glbinding/gl/gl.h>
 
-#include <glow/Buffer.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/VertexAttributeBinding.h>
-#include <glow/DebugMessage.h>
-#include <glowbase/StaticStringSource.h>
+#include <globjects/Buffer.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexAttributeBinding.h>
+#include <globjects/DebugMessage.h>
+#include <globjects-base/StaticStringSource.h>
 
-#include <glowwindow/Window.h>
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowutils/StringTemplate.h>
-#include <glowwindow/events.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-utils/StringTemplate.h>
+#include <globjects-window/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowwindow;
+using namespace glowindow;
 
 namespace {
     const char* vertexShaderCode = R"(
@@ -72,14 +72,14 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
         
-        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::StaticStringSource(vertexShaderCode));
-        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::StaticStringSource(fragmentShaderCode));
+        gloutils::StringTemplate* vertexShaderSource = new gloutils::StringTemplate(new glo::StaticStringSource(vertexShaderCode));
+        gloutils::StringTemplate* fragmentShaderSource = new gloutils::StringTemplate(new glo::StaticStringSource(fragmentShaderCode));
         
         
 #ifdef MAC_OS
@@ -89,16 +89,16 @@ public:
         
         
         
-        cornerBuffer = new glow::Buffer();
+        cornerBuffer = new glo::Buffer();
         cornerBuffer->ref();
-		program = new glow::Program();
+		program = new glo::Program();
         program->ref();
-		vao = new glow::VertexArrayObject();
+		vao = new glo::VertexArrayObject();
         vao->ref();
 
 		program->attach(
-                        new glow::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
-                        new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
+                        new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
+                        new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
                         );
 
         cornerBuffer->setData(std::array<glm::vec2, 4>{ {
@@ -135,18 +135,18 @@ public:
     }
 
 private:
-	glow::VertexArrayObject* vao;
-	glow::Buffer* cornerBuffer;
-	glow::Program* program;
+	glo::VertexArrayObject* vao;
+	glo::Buffer* cornerBuffer;
+	glo::Program* program;
 
 };
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);

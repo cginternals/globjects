@@ -1,30 +1,30 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glowbase/ref_ptr.h>
+#include <globjects-base/ref_ptr.h>
 
-#include <glow/Buffer.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/VertexAttributeBinding.h>
-#include <glow/DebugMessage.h>
+#include <globjects/Buffer.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexAttributeBinding.h>
+#include <globjects/DebugMessage.h>
 
-#include <glowbase/File.h>
-#include <glowutils/glowutils.h>
-#include <glowutils/StringTemplate.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/globjects-utils.h>
+#include <globjects-utils/StringTemplate.h>
 
-#include <glowwindow/Context.h>
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
-#include <glow/logging.h>
+#include <globjects/logging.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowwindow;
+using namespace glowindow;
 
 struct Element
 {
@@ -73,7 +73,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -81,20 +81,20 @@ public:
         gl::glPointSize(10.0);
 
 
-        m_vao = new glow::VertexArrayObject();
-        m_buffer = new glow::Buffer();
+        m_vao = new glo::VertexArrayObject();
+        m_buffer = new glo::Buffer();
 
-        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::File("data/vertexarrayattributes/test.vert"));
-        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::File("data/vertexarrayattributes/test.frag"));
+        gloutils::StringTemplate* vertexShaderSource = new gloutils::StringTemplate(new glo::File("data/vertexarrayattributes/test.vert"));
+        gloutils::StringTemplate* fragmentShaderSource = new gloutils::StringTemplate(new glo::File("data/vertexarrayattributes/test.frag"));
         
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");
         fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
         
-        m_shaderProgram = new glow::Program();
-        m_shaderProgram->attach(new glow::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
-                                new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
+        m_shaderProgram = new glo::Program();
+        m_shaderProgram->attach(new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
+                                new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
         
         m_shaderProgram->bindFragDataLocation(0, "fragColor");
 
@@ -185,17 +185,17 @@ public:
         window.repaint();
     }
 protected:
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
-    glow::ref_ptr<glow::Buffer> m_buffer;
-    glow::ref_ptr<glow::Program> m_shaderProgram;
+    glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::Buffer> m_buffer;
+    glo::ref_ptr<glo::Program> m_shaderProgram;
 };
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);

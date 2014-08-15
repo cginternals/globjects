@@ -1,31 +1,31 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/Buffer.h>
-#include <glow/TransformFeedback.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/VertexAttributeBinding.h>
-#include <glow/FrameBufferObject.h>
-#include <glow/Texture.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/Buffer.h>
+#include <globjects/TransformFeedback.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexAttributeBinding.h>
+#include <globjects/FrameBufferObject.h>
+#include <globjects/Texture.h>
 
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/Camera.h>
-#include <glowbase/File.h>
-#include <glowutils/glowutils.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/globjects-utils.h>
 
 #include "TransformFeedbackParticles.h"
 
 
-using namespace glow;
+using namespace glo;
 using namespace glm;
 
 TransformFeedbackParticles::TransformFeedbackParticles(
     const std::vector<vec4> & positions
 ,   const std::vector<vec4> & velocities
 ,   const Texture & forces
-,   const glowutils::Camera & camera)
+,   const gloutils::Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
 {
 }
@@ -36,26 +36,26 @@ TransformFeedbackParticles::~TransformFeedbackParticles()
 
 void TransformFeedbackParticles::initialize()
 {
-    m_sourcePositions = new glow::Buffer();
-    m_sourceVelocities = new glow::Buffer();
-    m_targetPositions = new glow::Buffer();
-    m_targetVelocities = new glow::Buffer();
+    m_sourcePositions = new glo::Buffer();
+    m_sourceVelocities = new glo::Buffer();
+    m_targetPositions = new glo::Buffer();
+    m_targetVelocities = new glo::Buffer();
 
     reset();
 
-    m_transformFeedbackProgram = new glow::Program();
-    m_transformFeedbackProgram->attach(glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
+    m_transformFeedbackProgram = new glo::Program();
+    m_transformFeedbackProgram->attach(glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
 
     m_transformFeedbackProgram->link();
 
-    m_transformFeedback = new glow::TransformFeedback();
+    m_transformFeedback = new glo::TransformFeedback();
     m_transformFeedback->setVaryings(m_transformFeedbackProgram, std::array<const char*, 2>{ { "out_position", "out_velocity" } }, gl::GL_SEPARATE_ATTRIBS);
 
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
-    ,   glow::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-    ,   glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
+    ,   glo::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+    ,   glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 
     m_vao = new VertexArrayObject();
     m_vao->bind();
@@ -88,9 +88,9 @@ void TransformFeedbackParticles::initialize()
     m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
     m_fbo->unbind();
 
-    m_quad = new glowutils::ScreenAlignedQuad(m_color);
-    m_clear = new glowutils::ScreenAlignedQuad(
-        glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
+    m_quad = new gloutils::ScreenAlignedQuad(m_color);
+    m_clear = new gloutils::ScreenAlignedQuad(
+        glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 
 void TransformFeedbackParticles::reset()

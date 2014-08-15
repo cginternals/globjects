@@ -1,28 +1,28 @@
 #include <glbinding/gl/gl.h>
 
-#include <glowbase/AbstractStringSource.h>
+#include <globjects-base/AbstractStringSource.h>
 
-#include <glow/glow.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/Buffer.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/VertexAttributeBinding.h>
+#include <globjects/globjects.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/Buffer.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexAttributeBinding.h>
 
-#include <glow/FrameBufferObject.h>
-#include <glow/Texture.h>
-#include <glow/RenderBufferObject.h>
+#include <globjects/FrameBufferObject.h>
+#include <globjects/Texture.h>
+#include <globjects/RenderBufferObject.h>
 
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/Camera.h>
-#include <glowbase/File.h>
-#include <glowutils/StringTemplate.h>
-#include <glowutils/glowutils.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/StringTemplate.h>
+#include <globjects-utils/globjects-utils.h>
 
 #include "ComputeShaderParticles.h"
 
 
-using namespace glow;
+using namespace glo;
 using namespace glm;
 
 
@@ -30,7 +30,7 @@ ComputeShaderParticles::ComputeShaderParticles(
     const std::vector<vec4> & positions
 ,   const std::vector<vec4> & velocities
 ,   const Texture & forces
-,   const glowutils::Camera & camera)
+,   const gloutils::Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
 {
 }
@@ -61,8 +61,8 @@ void ComputeShaderParticles::initialize()
 
     m_computeProgram = new Program();
     
-    glowutils::StringTemplate * stringTemplate = new glowutils::StringTemplate(
-        new glow::File("data/gpu-particles/particle.comp"));
+    gloutils::StringTemplate * stringTemplate = new gloutils::StringTemplate(
+        new glo::File("data/gpu-particles/particle.comp"));
     stringTemplate->replace("MAX_INVOCATION", max_invocations);
     stringTemplate->update();
 
@@ -70,9 +70,9 @@ void ComputeShaderParticles::initialize()
 
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
-        , glow::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-        , glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
+        , glo::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+        , glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 
     m_positionsSSBO = new Buffer();
     m_velocitiesSSBO = new Buffer();
@@ -111,9 +111,9 @@ void ComputeShaderParticles::initialize()
     m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
     m_fbo->unbind();
 
-    m_quad = new glowutils::ScreenAlignedQuad(m_color);
-    m_clear = new glowutils::ScreenAlignedQuad(
-        glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
+    m_quad = new gloutils::ScreenAlignedQuad(m_color);
+    m_clear = new gloutils::ScreenAlignedQuad(
+        glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 
 void ComputeShaderParticles::reset()

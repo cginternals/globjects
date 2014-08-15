@@ -1,32 +1,32 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glowbase/ref_ptr.h>
+#include <globjects-base/ref_ptr.h>
 
-#include <glow/Buffer.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/VertexAttributeBinding.h>
-#include <glow/DebugMessage.h>
-#include <glow/State.h>
-#include <glow/glow.h>
+#include <globjects/Buffer.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexAttributeBinding.h>
+#include <globjects/DebugMessage.h>
+#include <globjects/State.h>
+#include <globjects/globjects.h>
 
-#include <glowbase/File.h>
-#include <glowutils/glowutils.h>
-#include <glowutils/StringTemplate.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/globjects-utils.h>
+#include <globjects-utils/StringTemplate.h>
 
-#include <glowwindow/Context.h>
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
-#include <glow/logging.h>
+#include <globjects/logging.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowwindow;
+using namespace glowindow;
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -43,40 +43,40 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
-        m_defaultPointSizeState = new glow::State();
-        m_defaultPointSizeState->pointSize(glow::getFloat(gl::GL_POINT_SIZE));
-        m_thinnestPointSizeState = new glow::State();
+        m_defaultPointSizeState = new glo::State();
+        m_defaultPointSizeState->pointSize(glo::getFloat(gl::GL_POINT_SIZE));
+        m_thinnestPointSizeState = new glo::State();
         m_thinnestPointSizeState->pointSize(2.0f);
-        m_thinPointSizeState = new glow::State();
+        m_thinPointSizeState = new glo::State();
         m_thinPointSizeState->pointSize(5.0f);
-        m_normalPointSizeState = new glow::State();
+        m_normalPointSizeState = new glo::State();
         m_normalPointSizeState->pointSize(10.0f);
-        m_thickPointSizeState = new glow::State();
+        m_thickPointSizeState = new glo::State();
         m_thickPointSizeState->pointSize(20.0f);
-        m_disableRasterizerState = new glow::State();
+        m_disableRasterizerState = new glo::State();
         m_disableRasterizerState->enable(gl::GL_RASTERIZER_DISCARD);
-        m_enableRasterizerState = new glow::State();
+        m_enableRasterizerState = new glo::State();
         m_enableRasterizerState->disable(gl::GL_RASTERIZER_DISCARD);
 
-        m_vao = new glow::VertexArrayObject();
-        m_buffer = new glow::Buffer();
+        m_vao = new glo::VertexArrayObject();
+        m_buffer = new glo::Buffer();
 
-        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::File("data/states/standard.vert"));
-        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::File("data/states/standard.frag"));
+        gloutils::StringTemplate* vertexShaderSource = new gloutils::StringTemplate(new glo::File("data/states/standard.vert"));
+        gloutils::StringTemplate* fragmentShaderSource = new gloutils::StringTemplate(new glo::File("data/states/standard.frag"));
         
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");
         fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
         
-        m_shaderProgram = new glow::Program();
-        m_shaderProgram->attach(new glow::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
-                                new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
+        m_shaderProgram = new glo::Program();
+        m_shaderProgram->attach(new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
+                                new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
         
         m_buffer->setData(std::vector<glm::vec2>({
               glm::vec2(-0.8, 0.8), glm::vec2(-0.4, 0.8), glm::vec2(0.0, 0.8), glm::vec2(0.4, 0.8), glm::vec2(0.8, 0.8)
@@ -155,25 +155,25 @@ public:
         window.repaint();
     }
 protected:
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
-    glow::ref_ptr<glow::Buffer> m_buffer;
-    glow::ref_ptr<glow::Program> m_shaderProgram;
+    glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::Buffer> m_buffer;
+    glo::ref_ptr<glo::Program> m_shaderProgram;
 
-    glow::ref_ptr<glow::State> m_defaultPointSizeState;
-    glow::ref_ptr<glow::State> m_thinnestPointSizeState;
-    glow::ref_ptr<glow::State> m_thinPointSizeState;
-    glow::ref_ptr<glow::State> m_normalPointSizeState;
-    glow::ref_ptr<glow::State> m_thickPointSizeState;
-    glow::ref_ptr<glow::State> m_disableRasterizerState;
-    glow::ref_ptr<glow::State> m_enableRasterizerState;
+    glo::ref_ptr<glo::State> m_defaultPointSizeState;
+    glo::ref_ptr<glo::State> m_thinnestPointSizeState;
+    glo::ref_ptr<glo::State> m_thinPointSizeState;
+    glo::ref_ptr<glo::State> m_normalPointSizeState;
+    glo::ref_ptr<glo::State> m_thickPointSizeState;
+    glo::ref_ptr<glo::State> m_disableRasterizerState;
+    glo::ref_ptr<glo::State> m_enableRasterizerState;
 };
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);

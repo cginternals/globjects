@@ -8,29 +8,29 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <glowbase/ref_ptr.h>
-#include <glowbase/formatString.h>
+#include <globjects-base/ref_ptr.h>
+#include <globjects-base/formatString.h>
 
-#include <glow/glow.h>
-#include <glow/Uniform.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/Buffer.h>
-#include <glow/Query.h>
-#include <glow/FrameBufferObject.h>
-#include <glow/RenderBufferObject.h>
-#include <glow/Sampler.h>
-#include <glow/Sync.h>
-#include <glow/Texture.h>
-#include <glow/TransformFeedback.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/logging.h>
-#include <glow/DebugMessage.h>
+#include <globjects/globjects.h>
+#include <globjects/Uniform.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/Buffer.h>
+#include <globjects/Query.h>
+#include <globjects/FrameBufferObject.h>
+#include <globjects/RenderBufferObject.h>
+#include <globjects/Sampler.h>
+#include <globjects/Sync.h>
+#include <globjects/Texture.h>
+#include <globjects/TransformFeedback.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/logging.h>
+#include <globjects/DebugMessage.h>
 
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
 
 #include <ExampleWindowEventHandler.h>
 
@@ -45,51 +45,51 @@ public:
     {
     }
 
-    virtual void initialize(glowwindow::Window & window) override
+    virtual void initialize(glowindow::Window & window) override
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
-        std::cout << "glow Objects tests" << std::endl;
+        std::cout << "globjects Objects tests" << std::endl;
 
-        glow::ref_ptr<glow::Buffer> buffer(new glow::Buffer());
-        std::cout << "glow::Buffer = "; glow::info() << buffer.get();
+        glo::ref_ptr<glo::Buffer> buffer(new glo::Buffer());
+        std::cout << "glo::Buffer = "; glo::info() << buffer.get();
 
-        std::cout << "glow::FrameBufferObject = "; glow::info() << glow::FrameBufferObject::defaultFBO();
+        std::cout << "glo::FrameBufferObject = "; glo::info() << glo::FrameBufferObject::defaultFBO();
 
-        glow::ref_ptr<glow::Program> program(new glow::Program());
-        std::cout << "glow::Program = "; glow::info() << program.get();
+        glo::ref_ptr<glo::Program> program(new glo::Program());
+        std::cout << "glo::Program = "; glo::info() << program.get();
 
-        glow::ref_ptr<glow::Query> query(new glow::Query());
-        std::cout << "glow::Query = "; glow::info() << query.get();
+        glo::ref_ptr<glo::Query> query(new glo::Query());
+        std::cout << "glo::Query = "; glo::info() << query.get();
 
-        glow::ref_ptr<glow::RenderBufferObject> rbo(new glow::RenderBufferObject());
-        std::cout << "glow::RenderBufferObject = "; glow::info() << rbo.get();
+        glo::ref_ptr<glo::RenderBufferObject> rbo(new glo::RenderBufferObject());
+        std::cout << "glo::RenderBufferObject = "; glo::info() << rbo.get();
 
-        glow::ref_ptr<glow::Sampler> sampler(new glow::Sampler());
-        std::cout << "glow::Sampler = "; glow::info() << sampler.get();
+        glo::ref_ptr<glo::Sampler> sampler(new glo::Sampler());
+        std::cout << "glo::Sampler = "; glo::info() << sampler.get();
 
-        glow::ref_ptr<glow::Shader> shader(new glow::Shader(gl::GL_VERTEX_SHADER));
-        std::cout << "glow::Shader = "; glow::info() << shader.get();
+        glo::ref_ptr<glo::Shader> shader(new glo::Shader(gl::GL_VERTEX_SHADER));
+        std::cout << "glo::Shader = "; glo::info() << shader.get();
 
-        glow::ref_ptr<glow::Texture> texture(new glow::Texture());
-        std::cout << "glow::Texture = "; glow::info() << texture.get();
+        glo::ref_ptr<glo::Texture> texture(new glo::Texture());
+        std::cout << "glo::Texture = "; glo::info() << texture.get();
 
-        glow::ref_ptr<glow::TransformFeedback> tf(new glow::TransformFeedback());
-        std::cout << "glow::TransformFeedback = "; glow::info() << tf.get();
+        glo::ref_ptr<glo::TransformFeedback> tf(new glo::TransformFeedback());
+        std::cout << "glo::TransformFeedback = "; glo::info() << tf.get();
 
-        glow::ref_ptr<glow::VertexArrayObject> vao(new glow::VertexArrayObject());
-        std::cout << "glow::VertexArrayObject = "; glow::info() << vao.get();
+        glo::ref_ptr<glo::VertexArrayObject> vao(new glo::VertexArrayObject());
+        std::cout << "glo::VertexArrayObject = "; glo::info() << vao.get();
 
-        glow::ref_ptr<glow::Uniform<float>> uniform(new glow::Uniform<float>("Pi", 3.14f));
-        std::cout << "glow::Uniform = "; glow::info() << uniform.get();
-        std::cout << "glow::AbstractUniform = "; glow::info() << static_cast<glow::AbstractUniform*>(uniform.get());
+        glo::ref_ptr<glo::Uniform<float>> uniform(new glo::Uniform<float>("Pi", 3.14f));
+        std::cout << "glo::Uniform = "; glo::info() << uniform.get();
+        std::cout << "glo::AbstractUniform = "; glo::info() << static_cast<glo::AbstractUniform*>(uniform.get());
 
-        std::cout << "glbinding::Version = "; glow::info() << glow::version();
+        std::cout << "glbinding::Version = "; glo::info() << glo::version();
 
-        std::vector<glow::Buffer*> buffers{new glow::Buffer(), new glow::Buffer()};
-        std::cout << "std::vector<glow::Buffer*> = "; glow::info() << buffers;
+        std::vector<glo::Buffer*> buffers{new glo::Buffer(), new glo::Buffer()};
+        std::cout << "std::vector<glo::Buffer*> = "; glo::info() << buffers;
 
         window.close();
     }
@@ -99,42 +99,42 @@ public:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowwindow::ContextFormat format;
+    glowindow::ContextFormat format;
     format.setVersion(3, 2);
-    format.setProfile(glowwindow::ContextFormat::CoreProfile);
+    format.setProfile(glowindow::ContextFormat::CoreProfile);
 
-    glowwindow::Window window;
+    glowindow::Window window;
 
     window.setEventHandler(new EventHandler());
 
     std::cout << "Standard types test" << std::endl;
-    std::cout << "const char* \"Hello\" = "; glow::info() << "Hello";
-    std::cout << "const std::string& \"Master\" = "; glow::info() << std::string("Master");
-    std::cout << "bool true = "; glow::info() << true;
-    std::cout << "char 'a' = "; glow::info() << 'a';
-    std::cout << "int 42 = "; glow::info() << 42;
-    std::cout << "float 3.14 = "; glow::info() << 3.14f;
-    std::cout << "double 3.141592654 = "; glow::info() << std::setprecision(10) << 3.141592654;
-    std::cout << "long double 2.71828 = "; glow::info() << 2.71828l;
-    std::cout << "unsigned integer 23 = "; glow::info() << 23u;
-    std::cout << "long integer 1337 = "; glow::info() << 1337l;
-    std::cout << "long long integer 1234567890 = "; glow::info() << 1234567890ll;
-    std::cout << "unsigned long integer 45123 = "; glow::info() << 45123ul;
-    std::cout << "unsigned char 97 = "; glow::info() << 'a';
-    std::cout << "void* " << &window << " = "; glow::info() << static_cast<void*>(&window);
+    std::cout << "const char* \"Hello\" = "; glo::info() << "Hello";
+    std::cout << "const std::string& \"Master\" = "; glo::info() << std::string("Master");
+    std::cout << "bool true = "; glo::info() << true;
+    std::cout << "char 'a' = "; glo::info() << 'a';
+    std::cout << "int 42 = "; glo::info() << 42;
+    std::cout << "float 3.14 = "; glo::info() << 3.14f;
+    std::cout << "double 3.141592654 = "; glo::info() << std::setprecision(10) << 3.141592654;
+    std::cout << "long double 2.71828 = "; glo::info() << 2.71828l;
+    std::cout << "unsigned integer 23 = "; glo::info() << 23u;
+    std::cout << "long integer 1337 = "; glo::info() << 1337l;
+    std::cout << "long long integer 1234567890 = "; glo::info() << 1234567890ll;
+    std::cout << "unsigned long integer 45123 = "; glo::info() << 45123ul;
+    std::cout << "unsigned char 97 = "; glo::info() << 'a';
+    std::cout << "void* " << &window << " = "; glo::info() << static_cast<void*>(&window);
 
     std::cout << std::endl;
 
-    std::cout << "std::array<int, 2> = "; glow::info() << std::array<int, 2>{ { 0, 1 } };
-    std::cout << "std::vector<float> = "; glow::info() << std::vector<float>({ 0.1f, 0.2f, 0.3f });
+    std::cout << "std::array<int, 2> = "; glo::info() << std::array<int, 2>{ { 0, 1 } };
+    std::cout << "std::vector<float> = "; glo::info() << std::vector<float>({ 0.1f, 0.2f, 0.3f });
 
     std::cout << std::endl;
 
     std::cout << "Format string test" << std::endl;
     std::cout << "Expected: " << "This is a test: 42 pi = +3.14159E+00" << std::endl;
-    glow::info("  Actual: This is a test: %; pi = %+0E10.5;", 42, 3.141592653589793);
+    glo::info("  Actual: This is a test: %; pi = %+0E10.5;", 42, 3.141592653589793);
     std::cout << "Expected: " << "a string - 255 - ______2.72" << std::endl;
-    glow::info("  Actual: %; - %X; - %rf?_10.2;", "a string", 255, 2.71828182846);
+    glo::info("  Actual: %; - %X; - %rf?_10.2;", "a string", 255, 2.71828182846);
 
     std::cout << std::endl;
 
@@ -145,5 +145,5 @@ int main(int /*argc*/, char* /*argv*/[])
 
     window.show();
 
-    return glowwindow::MainLoop::run();
+    return glowindow::MainLoop::run();
 }

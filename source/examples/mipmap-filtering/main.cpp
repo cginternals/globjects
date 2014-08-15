@@ -9,28 +9,28 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/logging.h>
-#include <glow/Texture.h>
-#include <glow/Program.h>
-#include <glow/DebugMessage.h>
+#include <globjects/logging.h>
+#include <globjects/Texture.h>
+#include <globjects/Program.h>
+#include <globjects/DebugMessage.h>
 
-#include <glowutils/Camera.h>
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/StringTemplate.h>
-#include <glowbase/File.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/StringTemplate.h>
+#include <globjects-base/File.h>
 
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
 #include "RawFile.h"
 
 #include <ExampleWindowEventHandler.h>
 
 
-using namespace glowwindow;
+using namespace glowindow;
 using namespace glm;
 
 class EventHandler : public ExampleWindowEventHandler
@@ -54,7 +54,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -103,7 +103,7 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_F5:
-            glow::File::reloadAll();
+            glo::File::reloadAll();
             break;
         case GLFW_KEY_UP:
             m_angle += 0.5f;
@@ -121,13 +121,13 @@ public:
     }
 
 protected:
-    glow::ref_ptr<glow::Texture> m_texture;
-    glow::ref_ptr<glow::Program> m_program;
+    glo::ref_ptr<glo::Texture> m_texture;
+    glo::ref_ptr<glo::Program> m_program;
 
-    glowutils::Camera m_camera;
+    gloutils::Camera m_camera;
     float m_angle, m_scale;
 
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
 };
 
 
@@ -135,15 +135,15 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    glow::info() << "\t" << "UP" << "\t\t" << "Tilt up";
-    glow::info() << "\t" << "DOWN" << "\t\t" << "Tilt down";
-    glow::info() << "\t" << "-" << "\t\t" << "Move forward";
-    glow::info() << "\t" << "=" << "\t\t" << "Move backward";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glo::info() << "\t" << "UP" << "\t\t" << "Tilt up";
+    glo::info() << "\t" << "DOWN" << "\t\t" << "Tilt down";
+    glo::info() << "\t" << "-" << "\t\t" << "Move forward";
+    glo::info() << "\t" << "=" << "\t\t" << "Move backward";
 
     ContextFormat format;
     format.setVersion(3, 2);
@@ -168,7 +168,7 @@ int main(int /*argc*/, char* /*argv*/[])
 
 void EventHandler::createAndSetupTexture()
 {
-	m_texture = new glow::Texture(gl::GL_TEXTURE_2D);
+	m_texture = new glo::Texture(gl::GL_TEXTURE_2D);
 
     m_texture->setParameter(gl::GL_TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::GL_LINEAR_MIPMAP_LINEAR));
     m_texture->setParameter(gl::GL_TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::GL_LINEAR));
@@ -186,13 +186,13 @@ void EventHandler::createAndSetupTexture()
 
 void EventHandler::createAndSetupGeometry()
 {
-    glowutils::StringTemplate * sphereVertexShader = new glowutils::StringTemplate(new glow::File("data/mipmap-filtering/mipmap.vert"));
-    glowutils::StringTemplate * sphereFragmentShader = new glowutils::StringTemplate(new glow::File("data/mipmap-filtering/mipmap.frag"));
+    gloutils::StringTemplate * sphereVertexShader = new gloutils::StringTemplate(new glo::File("data/mipmap-filtering/mipmap.vert"));
+    gloutils::StringTemplate * sphereFragmentShader = new gloutils::StringTemplate(new glo::File("data/mipmap-filtering/mipmap.frag"));
 
-    m_program = new glow::Program();
-    m_program->attach(new glow::Shader(gl::GL_VERTEX_SHADER, sphereVertexShader), new glow::Shader(gl::GL_FRAGMENT_SHADER, sphereFragmentShader));
+    m_program = new glo::Program();
+    m_program->attach(new glo::Shader(gl::GL_VERTEX_SHADER, sphereVertexShader), new glo::Shader(gl::GL_FRAGMENT_SHADER, sphereFragmentShader));
 
-	m_quad = new glowutils::ScreenAlignedQuad(m_program);
+	m_quad = new gloutils::ScreenAlignedQuad(m_program);
     m_quad->setSamplerUniform(0);
 
     m_program->setUniform("source", 0);

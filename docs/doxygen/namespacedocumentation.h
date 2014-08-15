@@ -1,22 +1,22 @@
 /**
- * \namespace glow
+ * \namespace glo
  *
  * \brief Contains all the core classes that wrap OpenGL functionality.
  *
- * TODO: Detailed documentation for glow here.
+ * TODO: Detailed documentation for globjects here.
  */
  
  /**
- * \namespace glowutils
+ * \namespace gloutils
  *
  * \brief Utility classes and extended functionality that is not only OpenGL wrapping, 
  * e.g. geometry, camera handling, navigation, etc. .
  *
- * TODO: Detailed documentation for glowutils here.
+ * TODO: Detailed documentation for globjects-utils here.
  */
  
  /**
- * \namespace glowwindow
+ * \namespace glowindow
  *
  * \brief Simple context and window creation and event handling based on GLFW.
  *

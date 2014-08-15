@@ -20,7 +20,7 @@
 
 #include "impl.h"
 
-GlowInterface glowInterface;
+GlobjectsInterface globjectsInterface;
 
 class EventHandler : public osgGA::GUIEventHandler
 {
@@ -47,7 +47,7 @@ bool EventHandler::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapt
             int x = ea.getWindowWidth();
             int y = ea.getWindowHeight();
 
-            glowInterface.resize(x, y);
+            globjectsInterface.resize(x, y);
 
             return false;
         }
@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 {
     osg::ArgumentParser arguments(&argc, argv);
 
-    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName()+" is the example which demonstrates osg together with glow.");
+    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName()+" is the example which demonstrates osg together with globjects.");
     arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName()+" [options] filename ...");
     arguments.getApplicationUsage()->addCommandLineOption("-h or --help","Display this information");
 
@@ -171,15 +171,15 @@ int main(int argc, char* argv[])
                 unsigned int contextID = context->getState()->getContextID();
                 auto t = texture->getTextureObject(contextID);
 
-                glowInterface.initialize();
-                glowInterface.resize(800, 600);
+                globjectsInterface.initialize();
+                globjectsInterface.resize(800, 600);
 
-                glowInterface.setupTexture(t->id(), t->target());
+                globjectsInterface.setupTexture(t->id(), t->target());
 
                 initialized = true;
             }
 
-            glowInterface.paint();
+            globjectsInterface.paint();
         }
     }
 

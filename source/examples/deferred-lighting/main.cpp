@@ -4,22 +4,22 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <glow/AutoTimer.h>
-#include <glow/Array.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/Error.h>
-#include <glow/Texture.h>
-#include <glow/Shader.h>
-#include <glow/Program.h>
-#include <glow/RawFile.h>
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
+#include <globjecs/AutoTimer.h>
+#include <globjecs/Array.h>
+#include <globjecs/VertexArrayObject.h>
+#include <globjecs/Error.h>
+#include <globjecs/Texture.h>
+#include <globjecs/Shader.h>
+#include <globjecs/Program.h>
+#include <globjecs/RawFile.h>
+#include <globjecs-window/ContextFormat.h>
+#include <globjecs-window/Context.h>
+#include <globjecs-window/Window.h>
+#include <globjecs-window/WindowEventHandler.h>
 
-#include <glow/logging.h>
+#include <globjecs/logging.h>
 
-using namespace glow;
+using namespace glo;
 
 class EventHandler : public WindowEventHandler
 {
@@ -33,7 +33,7 @@ public:
     }
 
     void createAndSetupTexture( 
-        glow::ref_ptr<Texture> texture
+        glo::ref_ptr<Texture> texture
     ,   const std::string & fileName);
     void createAndSetupShaders();
     void createAndSetupGeometry();
@@ -44,9 +44,9 @@ public:
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);    
 
-        m_diffuse = new glow::Texture(GL_TEXTURE_2D);
-        m_emissive = new glow::Texture(GL_TEXTURE_2D);
-        m_normals = new glow::Texture(GL_TEXTURE_2D);
+        m_diffuse = new glo::Texture(GL_TEXTURE_2D);
+        m_emissive = new glo::Texture(GL_TEXTURE_2D);
+        m_normals = new glo::Texture(GL_TEXTURE_2D);
         createAndSetupTexture(m_diffuse, "data/deferred-lighting/diffuse.1280.720.rgb.ub");
         createAndSetupTexture(m_emissive, "data/deferred-lighting/emissive.1280.720.rgb.ub");
         createAndSetupTexture(m_normals, "data/deferred-lighting/normals.1280.720.rgb.ub");
@@ -85,15 +85,15 @@ public:
     }
 
 protected:
-    glow::ref_ptr<glow::Program> m_program;
+    glo::ref_ptr<glo::Program> m_program;
 
-    glow::ref_ptr<glow::Texture> m_diffuse;
-    glow::ref_ptr<glow::Texture> m_emissive;
-    glow::ref_ptr<glow::Texture> m_specular;
-    glow::ref_ptr<glow::Texture> m_normals;
+    glo::ref_ptr<glo::Texture> m_diffuse;
+    glo::ref_ptr<glo::Texture> m_emissive;
+    glo::ref_ptr<glo::Texture> m_specular;
+    glo::ref_ptr<glo::Texture> m_normals;
 
-	glow::ref_ptr<glow::VertexArrayObject> m_vao;
-    glow::ref_ptr<glow::Buffer> m_vertexBuffer;
+	glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::Buffer> m_vertexBuffer;
 };
 
 /** This example shows how to create a single window, probably in fullscreen
@@ -116,10 +116,10 @@ int main(int argc, char** argv)
 }
 
 void EventHandler::createAndSetupTexture(
-    glow::ref_ptr<Texture> texture
+    glo::ref_ptr<Texture> texture
 ,   const std::string & fileName)
 {
-    glow::RawFile<unsigned char> file(fileName);
+    glo::RawFile<unsigned char> file(fileName);
 
     texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -133,10 +133,10 @@ void EventHandler::createAndSetupTexture(
 
 void EventHandler::createAndSetupShaders()
 {
-    glow::Shader * vertexShader = glow::Shader::fromFile(GL_VERTEX_SHADER, "data/deferred-lighting/deferred.vert");
-    glow::Shader * fragmentShader = glow::Shader::fromFile(GL_FRAGMENT_SHADER, "data/deferred-lighting/deferred.frag");
+    glo::Shader * vertexShader = glo::Shader::fromFile(GL_VERTEX_SHADER, "data/deferred-lighting/deferred.vert");
+    glo::Shader * fragmentShader = glo::Shader::fromFile(GL_FRAGMENT_SHADER, "data/deferred-lighting/deferred.frag");
 
-	m_program = new glow::Program();
+	m_program = new glo::Program();
 	m_program->attach(vertexShader, fragmentShader);
 	m_program->bindFragDataLocation(0, "fragColor");
 
@@ -145,15 +145,15 @@ void EventHandler::createAndSetupShaders()
 
 void EventHandler::createAndSetupGeometry()
 {
-    auto vertexArray = glow::Vec3Array()
+    auto vertexArray = glo::Vec3Array()
         << glm::vec3(0, 0, 0)
         << glm::vec3(1, 0, 0)
         << glm::vec3(1, 1, 0)
         << glm::vec3(0, 1, 0);
 
-    m_vao = new glow::VertexArrayObject();
+    m_vao = new glo::VertexArrayObject();
 
-    m_vertexBuffer = new glow::Buffer(GL_ARRAY_BUFFER);
+    m_vertexBuffer = new glo::Buffer(GL_ARRAY_BUFFER);
     m_vertexBuffer->setData(vertexArray);
 
     auto binding = m_vao->binding(0);

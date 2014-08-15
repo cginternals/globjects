@@ -4,17 +4,17 @@
 
 
 
-#include <glowbase/ref_ptr.h>
+#include <globjects-base/ref_ptr.h>
 
 #include <glm/glm.hpp>
 
 
-namespace glow
+namespace glo
 {
     class Texture;
 }
 
-namespace glowutils
+namespace gloutils
 {
     class Camera;
 }
@@ -25,8 +25,8 @@ public:
     AbstractParticleTechnique(
         const std::vector<glm::vec4> & postions
     ,   const std::vector<glm::vec4> & velocities
-    ,   const glow::Texture & forces
-    ,   const glowutils::Camera & camera);
+    ,   const glo::Texture & forces
+    ,   const gloutils::Camera & camera);
 
     virtual ~AbstractParticleTechnique();
 
@@ -42,8 +42,8 @@ protected:
     const std::vector<glm::vec4> & m_positions;
     const std::vector<glm::vec4> & m_velocities;
 
-    const glow::Texture & m_forces;
-    const glowutils::Camera & m_camera;
+    const glo::Texture & m_forces;
+    const gloutils::Camera & m_camera;
 
     const unsigned int m_numParticles;
 };

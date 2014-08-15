@@ -11,40 +11,40 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/Uniform.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/Buffer.h>
-#include <glow/logging.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/DebugMessage.h>
+#include <globjects/Uniform.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/Buffer.h>
+#include <globjects/logging.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/DebugMessage.h>
 
-#include <glowutils/Timer.h>
-#include <glowutils/AxisAlignedBoundingBox.h>
-#include <glowutils/Icosahedron.h>
-#include <glowutils/Camera.h>
-#include <glowutils/AdaptiveGrid.h>
-#include <glowutils/AbstractCoordinateProvider.h>
-#include <glowutils/WorldInHandNavigation.h>
-#include <glowutils/FlightNavigation.h>
-#include <glowbase/File.h>
-#include <glowbase/File.h>
-#include <glowutils/glowutils.h>
-#include <glowutils/StringTemplate.h>
+#include <globjects-utils/Timer.h>
+#include <globjects-utils/AxisAlignedBoundingBox.h>
+#include <globjects-utils/Icosahedron.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-utils/AdaptiveGrid.h>
+#include <globjects-utils/AbstractCoordinateProvider.h>
+#include <globjects-utils/WorldInHandNavigation.h>
+#include <globjects-utils/FlightNavigation.h>
+#include <globjects-base/File.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/globjects-utils.h>
+#include <globjects-utils/StringTemplate.h>
 
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowwindow;
+using namespace glowindow;
 using namespace glm;
 
 
-class EventHandler : public ExampleWindowEventHandler, glowutils::AbstractCoordinateProvider
+class EventHandler : public ExampleWindowEventHandler, gloutils::AbstractCoordinateProvider
 {
 public:
     EventHandler()
@@ -75,14 +75,14 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
 
-        m_sphere = new glow::Program();
-        glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::File("data/adaptive-grid/sphere.vert"));
-        glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::File("data/adaptive-grid/sphere.frag"));
+        m_sphere = new glo::Program();
+        gloutils::StringTemplate* vertexShaderSource = new gloutils::StringTemplate(new glo::File("data/adaptive-grid/sphere.vert"));
+        gloutils::StringTemplate* fragmentShaderSource = new gloutils::StringTemplate(new glo::File("data/adaptive-grid/sphere.frag"));
 
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");
@@ -90,12 +90,12 @@ public:
 #endif
         
         m_sphere->attach(
-            new glow::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
-        ,   new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
+            new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
+        ,   new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
         
 
-        m_icosahedron = new glowutils::Icosahedron(2);
-        m_agrid = new glowutils::AdaptiveGrid(16U);
+        m_icosahedron = new gloutils::Icosahedron(2);
+        m_agrid = new gloutils::AdaptiveGrid(16U);
 
         m_camera.setZNear(0.1f);
         m_camera.setZFar(1024.f);
@@ -148,12 +148,12 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_F5:
-            glow::File::reloadAll();
+            glo::File::reloadAll();
             break;
         case GLFW_KEY_1:
             m_flightEnabled = !m_flightEnabled;
             if (!m_flightEnabled)
-                m_flightNav.stopMovement(glowutils::FlightNavigation::All);
+                m_flightNav.stopMovement(gloutils::FlightNavigation::All);
             event.window()->setInputMode(GLFW_CURSOR, m_flightEnabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
             break;
         case GLFW_KEY_SPACE:
@@ -169,19 +169,19 @@ public:
         {
             case GLFW_KEY_W:
             case GLFW_KEY_UP:
-                m_flightNav.startMovement(glowutils::FlightNavigation::Forward);
+                m_flightNav.startMovement(gloutils::FlightNavigation::Forward);
                 break;
             case GLFW_KEY_A:
             case GLFW_KEY_LEFT:
-                m_flightNav.startMovement(glowutils::FlightNavigation::Left);
+                m_flightNav.startMovement(gloutils::FlightNavigation::Left);
                 break;
             case GLFW_KEY_S:
             case GLFW_KEY_DOWN:
-                m_flightNav.startMovement(glowutils::FlightNavigation::Backward);
+                m_flightNav.startMovement(gloutils::FlightNavigation::Backward);
                 break;
             case GLFW_KEY_D:
             case GLFW_KEY_RIGHT:
-                m_flightNav.startMovement(glowutils::FlightNavigation::Right);
+                m_flightNav.startMovement(gloutils::FlightNavigation::Right);
                 break;
         }
     }
@@ -193,19 +193,19 @@ public:
         {
             case GLFW_KEY_W:
             case GLFW_KEY_UP:
-                m_flightNav.stopMovement(glowutils::FlightNavigation::Forward);
+                m_flightNav.stopMovement(gloutils::FlightNavigation::Forward);
                 break;
             case GLFW_KEY_A:
             case GLFW_KEY_LEFT:
-                m_flightNav.stopMovement(glowutils::FlightNavigation::Left);
+                m_flightNav.stopMovement(gloutils::FlightNavigation::Left);
                 break;
             case GLFW_KEY_S:
             case GLFW_KEY_DOWN:
-                m_flightNav.stopMovement(glowutils::FlightNavigation::Backward);
+                m_flightNav.stopMovement(gloutils::FlightNavigation::Backward);
                 break;
             case GLFW_KEY_D:
             case GLFW_KEY_RIGHT:
-                m_flightNav.stopMovement(glowutils::FlightNavigation::Right);
+                m_flightNav.stopMovement(gloutils::FlightNavigation::Right);
                 break;
         }
     }
@@ -240,16 +240,16 @@ public:
 
         switch (m_nav.mode())
         {
-        case glowutils::WorldInHandNavigation::PanInteraction:
+        case gloutils::WorldInHandNavigation::PanInteraction:
             m_nav.panProcess(event.pos());
             event.accept();
             break;
 
-        case glowutils::WorldInHandNavigation::RotateInteraction:
+        case gloutils::WorldInHandNavigation::RotateInteraction:
             m_nav.rotateProcess(event.pos());
             event.accept();
             break;
-        case glowutils::WorldInHandNavigation::NoInteraction:
+        case gloutils::WorldInHandNavigation::NoInteraction:
             break;
         }
     }
@@ -277,7 +277,7 @@ public:
         if (m_flightEnabled)
             return;
 
-        if (glowutils::WorldInHandNavigation::NoInteraction != m_nav.mode())
+        if (gloutils::WorldInHandNavigation::NoInteraction != m_nav.mode())
             return;
 
         m_nav.scaleAtMouse(event.pos(), -event.offset().y * 0.1f);
@@ -309,19 +309,19 @@ public:
 
 protected:
 
-    glow::ref_ptr<glow::Program> m_sphere;
+    glo::ref_ptr<glo::Program> m_sphere;
     
-    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
-    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
+    glo::ref_ptr<gloutils::Icosahedron> m_icosahedron;
+    glo::ref_ptr<gloutils::AdaptiveGrid> m_agrid;
 
-    glowutils::Camera m_camera;
-    glowutils::WorldInHandNavigation m_nav;
-    glowutils::FlightNavigation m_flightNav;
+    gloutils::Camera m_camera;
+    gloutils::WorldInHandNavigation m_nav;
+    gloutils::FlightNavigation m_flightNav;
     glm::ivec2 m_lastMousePos;
     bool m_flightEnabled;
-    glowutils::Timer m_timer;
+    gloutils::Timer m_timer;
 
-    glowutils::AxisAlignedBoundingBox m_aabb;
+    gloutils::AxisAlignedBoundingBox m_aabb;
 };
 
 
@@ -329,31 +329,31 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    glow::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-    glow::info() << "\t" << "1" << "\t" << "Toggle flight mode / world in hand navigation";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glo::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    glo::info() << "\t" << "1" << "\t" << "Toggle flight mode / world in hand navigation";
 
-    glow::info();
-    glow::info() << "\t" << "During world in hand navigation";
-    glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-    glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    glo::info();
+    glo::info() << "\t" << "During world in hand navigation";
+    glo::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    glo::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    glo::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
 
-    glow::info();
-    glow::info() << "\t" << "During flight mode";
-    glow::info() << "\t" << "Mouse Movement" << "\t" << "Look around";
-    glow::info() << "\t" << "W" << "\t\t" << "Move forward";
-    glow::info() << "\t" << "UP" << "\t\t" << "Move forward";
-    glow::info() << "\t" << "A" << "\t\t" << "Move left";
-    glow::info() << "\t" << "LEFT" << "\t\t" << "Move left";
-    glow::info() << "\t" << "S" << "\t\t" << "Move backward";
-    glow::info() << "\t" << "DOWN" << "\t\t" << "Move backward";
-    glow::info() << "\t" << "D" << "\t\t" << "Move right";
-    glow::info() << "\t" << "RIGHT" << "\t\t" << "Move right";
+    glo::info();
+    glo::info() << "\t" << "During flight mode";
+    glo::info() << "\t" << "Mouse Movement" << "\t" << "Look around";
+    glo::info() << "\t" << "W" << "\t\t" << "Move forward";
+    glo::info() << "\t" << "UP" << "\t\t" << "Move forward";
+    glo::info() << "\t" << "A" << "\t\t" << "Move left";
+    glo::info() << "\t" << "LEFT" << "\t\t" << "Move left";
+    glo::info() << "\t" << "S" << "\t\t" << "Move backward";
+    glo::info() << "\t" << "DOWN" << "\t\t" << "Move backward";
+    glo::info() << "\t" << "D" << "\t\t" << "Move right";
+    glo::info() << "\t" << "RIGHT" << "\t\t" << "Move right";
 
     ContextFormat format;
     format.setVersion(3, 0);

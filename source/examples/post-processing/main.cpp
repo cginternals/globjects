@@ -11,37 +11,37 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/Uniform.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/Buffer.h>
-#include <glow/logging.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/FrameBufferObject.h>
-#include <glow/RenderBufferObject.h>
-#include <glow/Texture.h>
-#include <glow/DebugMessage.h>
+#include <globjects/Uniform.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/Buffer.h>
+#include <globjects/logging.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/FrameBufferObject.h>
+#include <globjects/RenderBufferObject.h>
+#include <globjects/Texture.h>
+#include <globjects/DebugMessage.h>
 
-#include <glowutils/Timer.h>
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/Icosahedron.h>
-#include <glowutils/UnitCube.h>
-#include <glowutils/AdaptiveGrid.h>
-#include <glowutils/Camera.h>
-#include <glowbase/File.h>
-#include <glowbase/File.h>
-#include <glowutils/glowutils.h>
-#include <glowutils/StringTemplate.h>
+#include <globjects-utils/Timer.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/Icosahedron.h>
+#include <globjects-utils/UnitCube.h>
+#include <globjects-utils/AdaptiveGrid.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-base/File.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/globjects-utils.h>
+#include <globjects-utils/StringTemplate.h>
 
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowwindow;
+using namespace glowindow;
 using namespace glm;
 
 
@@ -65,17 +65,17 @@ public:
 	{
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
 		gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
 
-		m_fbo = new glow::FrameBufferObject();
+		m_fbo = new glo::FrameBufferObject();
 
-        m_normal = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
-        m_geom = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_normal = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_geom = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
 
-		m_depth = new glow::RenderBufferObject();
+		m_depth = new glo::RenderBufferObject();
 
 		m_fbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_normal);
 		m_fbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT1, m_geom);
@@ -86,10 +86,10 @@ public:
 		m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1 });
 
                 
-        glowutils::StringTemplate* sphereVertexShader = new glowutils::StringTemplate(new glow::File("data/post-processing/sphere.vert"));
-        glowutils::StringTemplate* sphereFragmentShader = new glowutils::StringTemplate(new glow::File("data/post-processing/sphere.frag"));
-        glowutils::StringTemplate* phongVertexShader = new glowutils::StringTemplate(new glow::File("data/post-processing/phong.vert"));
-        glowutils::StringTemplate* phongFragmentShader = new glowutils::StringTemplate(new glow::File("data/post-processing/phong.frag"));
+        gloutils::StringTemplate* sphereVertexShader = new gloutils::StringTemplate(new glo::File("data/post-processing/sphere.vert"));
+        gloutils::StringTemplate* sphereFragmentShader = new gloutils::StringTemplate(new glo::File("data/post-processing/sphere.frag"));
+        gloutils::StringTemplate* phongVertexShader = new gloutils::StringTemplate(new glo::File("data/post-processing/phong.vert"));
+        gloutils::StringTemplate* phongFragmentShader = new gloutils::StringTemplate(new glo::File("data/post-processing/phong.frag"));
 
 #ifdef MAC_OS
                 sphereVertexShader->replace("#version 140", "#version 150");
@@ -99,19 +99,19 @@ public:
 #endif
 
                 
-		m_sphere = new glow::Program();
-        m_sphere->attach(new glow::Shader(gl::GL_VERTEX_SHADER, sphereVertexShader), new glow::Shader(gl::GL_FRAGMENT_SHADER, sphereFragmentShader));
+		m_sphere = new glo::Program();
+        m_sphere->attach(new glo::Shader(gl::GL_VERTEX_SHADER, sphereVertexShader), new glo::Shader(gl::GL_FRAGMENT_SHADER, sphereFragmentShader));
                 
 
-		m_phong = new glow::Program();
-        m_phong->attach(new glow::Shader(gl::GL_VERTEX_SHADER, phongVertexShader), new glow::Shader(gl::GL_FRAGMENT_SHADER, phongFragmentShader));
+		m_phong = new glo::Program();
+        m_phong->attach(new glo::Shader(gl::GL_VERTEX_SHADER, phongVertexShader), new glo::Shader(gl::GL_FRAGMENT_SHADER, phongFragmentShader));
                 
                 
 
-        m_icosahedron = new glowutils::Icosahedron(2);
-        m_agrid = new glowutils::AdaptiveGrid(16U);
+        m_icosahedron = new gloutils::Icosahedron(2);
+        m_agrid = new gloutils::AdaptiveGrid(16U);
 
-        m_quad = new glowutils::ScreenAlignedQuad(m_phong);
+        m_quad = new gloutils::ScreenAlignedQuad(m_phong);
 
 		m_time.reset();
 		m_time.start();
@@ -135,7 +135,7 @@ public:
 		m_normal->image2D(0, gl::GL_RGBA32F, width, height, 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
 		m_geom->image2D(0, gl::GL_RGBA32F, width, height, 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
 
-        int result = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(gl::GL_DEPTH, gl::GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
+        int result = glo::FrameBufferObject::defaultFBO()->getAttachmentParameter(gl::GL_DEPTH, gl::GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
         m_depth->storage(result == 16 ? gl::GL_DEPTH_COMPONENT16 : gl::GL_DEPTH_COMPONENT, width, height);
 	}
 
@@ -200,27 +200,27 @@ public:
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
-            glow::File::reloadAll();
+            glo::File::reloadAll();
 			break;
 		}
 	}
 
 protected:
-    glow::ref_ptr<glow::Program> m_sphere;
-    glow::ref_ptr<glow::Program> m_phong;
+    glo::ref_ptr<glo::Program> m_sphere;
+    glo::ref_ptr<glo::Program> m_phong;
 
-    glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
-    glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
+    glo::ref_ptr<gloutils::Icosahedron> m_icosahedron;
+    glo::ref_ptr<gloutils::AdaptiveGrid> m_agrid;
 
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
 
-    glow::ref_ptr<glow::FrameBufferObject> m_fbo;
-    glow::ref_ptr<glow::Texture> m_normal;
-    glow::ref_ptr<glow::Texture> m_geom;
-    glow::ref_ptr<glow::RenderBufferObject> m_depth;
+    glo::ref_ptr<glo::FrameBufferObject> m_fbo;
+    glo::ref_ptr<glo::Texture> m_normal;
+    glo::ref_ptr<glo::Texture> m_geom;
+    glo::ref_ptr<glo::RenderBufferObject> m_depth;
 
-    glowutils::Camera m_camera;
-    glowutils::Timer m_time;
+    gloutils::Camera m_camera;
+    gloutils::Timer m_time;
 };
 
 
@@ -228,11 +228,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
 	ContextFormat format;
     format.setVersion(3, 0);

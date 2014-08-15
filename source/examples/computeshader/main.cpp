@@ -12,33 +12,33 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/Uniform.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/Buffer.h>
-#include <glow/Extension.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/VertexAttributeBinding.h>
-#include <glow/logging.h>
-#include <glow/DebugMessage.h>
-#include <glow/Texture.h>
-#include <glow/glow.h>
+#include <globjects/Uniform.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/Buffer.h>
+#include <globjects/Extension.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexAttributeBinding.h>
+#include <globjects/logging.h>
+#include <globjects/DebugMessage.h>
+#include <globjects/Texture.h>
+#include <globjects/globjects.h>
 
-#include <glowbase/File.h>
-#include <glowbase/File.h>
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/glowutils.h>
+#include <globjects-base/File.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/globjects-utils.h>
 
-#include <glowwindow/Context.h>
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
 
-using namespace glowwindow;
+using namespace glowindow;
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -60,11 +60,11 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
-        if (!glow::hasExtension(glow::Extension::GL_ARB_compute_shader))
+        if (!glo::hasExtension(glo::Extension::GL_ARB_compute_shader))
         {
-            glow::critical() << "Compute shaders are not supported";
+            glo::critical() << "Compute shaders are not supported";
 
             window.close();
 
@@ -114,14 +114,14 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glow::File::reloadAll();
+            glo::File::reloadAll();
     }
 
 protected:
-	glow::ref_ptr<glow::Texture> m_texture;
+    glo::ref_ptr<glo::Texture> m_texture;
 
-    glow::ref_ptr<glow::Program> m_computeProgram;
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<glo::Program> m_computeProgram;
+    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
 
     unsigned int m_frame;
 };
@@ -131,11 +131,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 3);
@@ -161,7 +161,7 @@ int main(int /*argc*/, char* /*argv*/[])
 
 void EventHandler::createAndSetupTexture()
 {
-    m_texture = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
+    m_texture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
 
     m_texture->image2D(0, gl::GL_R32F, 512, 512, 0, gl::GL_RED, gl::GL_FLOAT, nullptr);
     m_texture->bindImageTexture(0, 0, gl::GL_FALSE, 0, gl::GL_WRITE_ONLY, gl::GL_R32F);
@@ -169,14 +169,14 @@ void EventHandler::createAndSetupTexture()
 
 void EventHandler::createAndSetupShaders()
 {
-    m_computeProgram = new glow::Program();
-    m_computeProgram->attach(glow::Shader::fromFile(gl::GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+    m_computeProgram = new glo::Program();
+    m_computeProgram->attach(glo::Shader::fromFile(gl::GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
 
     m_computeProgram->setUniform("destTex", 0);
 }
 
 void EventHandler::createAndSetupGeometry()
 {
-    m_quad = new glowutils::ScreenAlignedQuad(m_texture);
+    m_quad = new gloutils::ScreenAlignedQuad(m_texture);
     m_quad->setSamplerUniform(0);
 }

@@ -1,22 +1,22 @@
 #include "impl.h"
 
-#include <glowbase/ref_ptr.h>
-#include <glowbase/StaticStringSource.h>
+#include <globjects-base/ref_ptr.h>
+#include <globjects-base/StaticStringSource.h>
 
-#include <glow/glow.h>
-#include <glow/logging.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/Buffer.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/FrameBufferObject.h>
+#include <globjects/bjects.h>
+#include <globjects/logging.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/Buffer.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/FrameBufferObject.h>
 
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/StringTemplate.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/StringTemplate.h>
 
 #include <array>
 
-using namespace glow;
+using namespace globjects;
 using namespace gl;
 using namespace glm;
 
@@ -37,26 +37,26 @@ void main()
 }
 )";
 
-struct PrivateGlowInterface
+struct PrivateGlobjectsInterface
 {
     ivec2 size;
-    ref_ptr<glowutils::ScreenAlignedQuad> quad;
+    ref_ptr<gloutils::ScreenAlignedQuad> quad;
     ref_ptr<Texture> texture;
 
     ref_ptr<Texture> osgTexture;
 };
 
-GlowInterface::GlowInterface()
-: impl(new PrivateGlowInterface)
+GlobjectsInterface::GlobjectsInterface()
+: impl(new PrivateGlobjectsInterface)
 {
 }
 
-GlowInterface::~GlowInterface()
+GlobjectsInterface::~GlobjectsInterface()
 {
     delete impl;
 }
 
-void GlowInterface::initialize()
+void GlobjectsInterface::initialize()
 {
     if (!init())
     {
@@ -75,7 +75,7 @@ void GlowInterface::initialize()
 
     impl->texture->image2D(0, GL_RGB8, ivec2(2), 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-    impl->quad = new glowutils::ScreenAlignedQuad(Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderSource), impl->texture);
+    impl->quad = new gloutils::ScreenAlignedQuad(Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderSource), impl->texture);
     impl->quad->setSamplerUniform(0);
 
     impl->quad->program()->setUniform("source2", 1);
@@ -83,21 +83,21 @@ void GlowInterface::initialize()
     VertexArrayObject::unbind();
 }
 
-void GlowInterface::setupTexture(unsigned id, unsigned target)
+void GlobjectsInterface::setupTexture(unsigned id, unsigned target)
 {
     impl->osgTexture = Texture::fromId(static_cast<GLuint>(id), static_cast<GLenum>(target));
 
     impl->quad->setTexture(impl->osgTexture);
 }
 
-void GlowInterface::resize(int x, int y)
+void GlobjectsInterface::resize(int x, int y)
 {
     impl->size = ivec2(x,y);
 
     //info() << "resize " << impl->size;
 }
 
-void GlowInterface::paint()
+void GlobjectsInterface::paint()
 {
     FrameBufferObject::unbind();
 

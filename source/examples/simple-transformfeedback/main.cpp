@@ -11,30 +11,30 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/Uniform.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/Buffer.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/VertexAttributeBinding.h>
-#include <glow/logging.h>
-#include <glow/TransformFeedback.h>
-#include <glow/DebugMessage.h>
+#include <globjects/Uniform.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/Buffer.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexAttributeBinding.h>
+#include <globjects/logging.h>
+#include <globjects/TransformFeedback.h>
+#include <globjects/DebugMessage.h>
 
-#include <glowutils/Timer.h>
-#include <glowbase/File.h>
-#include <glowbase/File.h>
-#include <glowutils/glowutils.h>
+#include <globjects-utils/Timer.h>
+#include <globjects-base/File.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/globjects-utils.h>
 
-#include <glowwindow/Window.h>
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowwindow;
+using namespace glowindow;
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -56,7 +56,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -86,8 +86,8 @@ public:
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
 
-        glow::Buffer* drawBuffer = m_vertexBuffer1;
-        glow::Buffer* writeBuffer = m_vertexBuffer2;
+        glo::Buffer* drawBuffer = m_vertexBuffer1;
+        glo::Buffer* writeBuffer = m_vertexBuffer2;
 
         m_vao->bind();
 
@@ -128,22 +128,22 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glow::File::reloadAll();
+            glo::File::reloadAll();
     }
 
 protected:
-    glow::ref_ptr<glow::Program> m_shaderProgram;
-    glow::ref_ptr<glow::Program> m_transformFeedbackProgram;
+    glo::ref_ptr<glo::Program> m_shaderProgram;
+    glo::ref_ptr<glo::Program> m_transformFeedbackProgram;
 	
-    glow::ref_ptr<glow::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::VertexArrayObject> m_vao;
 
-    glow::ref_ptr<glow::TransformFeedback> m_transformFeedback;
+    glo::ref_ptr<glo::TransformFeedback> m_transformFeedback;
 	
-    glow::ref_ptr<glow::Buffer> m_vertexBuffer1;
-    glow::ref_ptr<glow::Buffer> m_vertexBuffer2;
-    glow::ref_ptr<glow::Buffer> m_colorBuffer;
+    glo::ref_ptr<glo::Buffer> m_vertexBuffer1;
+    glo::ref_ptr<glo::Buffer> m_vertexBuffer2;
+    glo::ref_ptr<glo::Buffer> m_colorBuffer;
 
-    glowutils::Timer m_timer;
+    gloutils::Timer m_timer;
 };
 
 
@@ -151,11 +151,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 0);
@@ -181,14 +181,14 @@ int main(int /*argc*/, char* /*argv*/[])
 
 void EventHandler::createAndSetupShaders()
 {
-	m_shaderProgram = new glow::Program();
+	m_shaderProgram = new glo::Program();
     m_shaderProgram->attach(
-        glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/simple.vert")
-    ,   glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
+        glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/simple.vert")
+    ,   glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
 
-    m_transformFeedbackProgram = new glow::Program();
+    m_transformFeedbackProgram = new glo::Program();
     m_transformFeedbackProgram->attach(
-        glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
+        glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
     m_transformFeedbackProgram->setUniform("deltaT", 0.0f);
 }
 
@@ -214,14 +214,14 @@ void EventHandler::createAndSetupGeometry()
         , glm::vec4(0, 1, 0, 1)
     });
 
-    m_vertexBuffer1 = new glow::Buffer();
+    m_vertexBuffer1 = new glo::Buffer();
     m_vertexBuffer1->setData(vertexArray);
-    m_vertexBuffer2 = new glow::Buffer();
+    m_vertexBuffer2 = new glo::Buffer();
     m_vertexBuffer2->setData(vertexArray);
-    m_colorBuffer = new glow::Buffer();
+    m_colorBuffer = new glo::Buffer();
     m_colorBuffer->setData(colorArray);
 
-	m_vao = new glow::VertexArrayObject();
+	m_vao = new glo::VertexArrayObject();
 
     m_vao->binding(0)->setAttribute(0);
     m_vao->binding(0)->setFormat(4, gl::GL_FLOAT);
@@ -236,6 +236,6 @@ void EventHandler::createAndSetupGeometry()
 
 void EventHandler::createAndSetupTransformFeedback()
 {
-    m_transformFeedback = new glow::TransformFeedback();
+    m_transformFeedback = new glo::TransformFeedback();
     m_transformFeedback->setVaryings(m_transformFeedbackProgram, std::array<const char*, 1>{ { "next_position" } }, gl::GL_INTERLEAVED_ATTRIBS);
 }
