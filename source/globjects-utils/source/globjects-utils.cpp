@@ -15,10 +15,8 @@
 namespace
 {
 
-std::vector<std::string> getFiles(const std::string & dirName)
+void getFiles(const std::string & dirName, bool recursive, std::vector<std::string> & files)
 {
-    std::vector<std::string> files;
-
     DIR* dir = opendir(dirName.c_str());
     dirent* entry;
     if (!dir)
@@ -29,14 +27,34 @@ std::vector<std::string> getFiles(const std::string & dirName)
     {
         while ((entry = readdir(dir)))
         {
-            std::string filename(entry->d_name);
-            if (filename == "." || std::string(entry->d_name) == "..")
-                continue;
+            std::string name = entry->d_name;
 
-            files.push_back(filename);
+            if (entry->d_type == DT_DIR)
+            {
+                if (name == "." || name == "..")
+                {
+                    continue;
+                }
+
+                if (recursive)
+                {
+                    getFiles(dirName + "/" + name, true, files);
+                }
+            }
+            else if (entry->d_type == DT_REG)
+            {
+                files.push_back(dirName + "/" + entry->d_name);
+            }
         }
         closedir(dir);
     }
+}
+
+std::vector<std::string> getFiles(const std::string & dirName, bool recursive)
+{
+    std::vector<std::string> files;
+
+    getFiles(dirName, recursive, files);
 
     return files;
 }
@@ -58,18 +76,16 @@ using namespace glo;
 namespace gloutils
 {
 
-void scanDirectory(const std::string & directory, const std::string & fileExtension)
+void scanDirectory(const std::string & directory, const std::string & fileExtension, bool recursive)
 {
-    for (const std::string & file: getFiles(directory))
+    for (const std::string & file: getFiles(directory, recursive))
     {
         std::string extension = getExtension(file);
 
         if (fileExtension != "*" && extension != fileExtension)
             continue;
 
-        std::string fileName = directory+"/"+file;
-
-        NamedString::create("/"+fileName, new File(fileName));
+        NamedString::create("/"+file, new File(file));
     }
 }
 
