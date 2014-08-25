@@ -1,9 +1,9 @@
 #include "ExampleWindowEventHandler.h"
 
-#include <glow/glow.h>
+#include <globjects/globjects.h>
 
-#include <glowwindow/events.h>
-#include <glowwindow/Window.h>
+#include <globjects-window/events.h>
+#include <globjects-window/Window.h>
 
 #include <sstream>
 #include <iomanip>
@@ -19,12 +19,12 @@ ExampleWindowEventHandler::~ExampleWindowEventHandler()
 {
 }
 
-void ExampleWindowEventHandler::initialize(glowwindow::Window & /*window*/)
+void ExampleWindowEventHandler::initialize(glowindow::Window & /*window*/)
 {
-    glow::init();
+    glo::init();
 }
 
-void ExampleWindowEventHandler::handleEvent(glowwindow::WindowEvent & event)
+void ExampleWindowEventHandler::handleEvent(glowindow::WindowEvent & event)
 {
     WindowEventHandler::handleEvent(event);
 
@@ -33,16 +33,16 @@ void ExampleWindowEventHandler::handleEvent(glowwindow::WindowEvent & event)
 
     switch (event.type())
     {
-        case glowwindow::WindowEvent::FrameBufferResize:
-            setViewport(static_cast<glowwindow::ResizeEvent&>(event));
+        case glowindow::WindowEvent::FrameBufferResize:
+            setViewport(static_cast<glowindow::ResizeEvent&>(event));
             break;
 
-        case glowwindow::WindowEvent::Paint:
-            computeFps(static_cast<glowwindow::PaintEvent&>(event));
+        case glowindow::WindowEvent::Paint:
+            computeFps(static_cast<glowindow::PaintEvent&>(event));
             break;
 
-        case glowwindow::WindowEvent::KeyPress:
-            handleDefaultKeys(static_cast<glowwindow::KeyEvent&>(event));
+        case glowindow::WindowEvent::KeyPress:
+            handleDefaultKeys(static_cast<glowindow::KeyEvent&>(event));
             break;
 
         default:
@@ -50,7 +50,7 @@ void ExampleWindowEventHandler::handleEvent(glowwindow::WindowEvent & event)
     }
 }
 
-void ExampleWindowEventHandler::setViewport(glowwindow::ResizeEvent & event)
+void ExampleWindowEventHandler::setViewport(glowindow::ResizeEvent & event)
 {
     gl::glViewport(0, 0, event.width(), event.height());
 }
@@ -64,7 +64,7 @@ bool startsWith(const std::string & str, const std::string str2)
 
 }
 
-void ExampleWindowEventHandler::computeFps(glowwindow::PaintEvent & event)
+void ExampleWindowEventHandler::computeFps(glowindow::PaintEvent & event)
 {
        m_timer.update();
 
@@ -90,7 +90,7 @@ void ExampleWindowEventHandler::computeFps(glowwindow::PaintEvent & event)
        }
 }
 
-void ExampleWindowEventHandler::handleDefaultKeys(glowwindow::KeyEvent & event)
+void ExampleWindowEventHandler::handleDefaultKeys(glowindow::KeyEvent & event)
 {
     switch (event.key())
     {

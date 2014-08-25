@@ -1,5 +1,5 @@
 
-if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOW_UTILS AND OPTION_BUILD_GLOW_WINDOW)
+if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOBJECTS_UTILS AND OPTION_BUILD_GLOBJECTS_WINDOW)
 	set(EXAMPLE_COMMON examplecommon)
 
         # for compatibility between glm 0.9.4 and 0.9.5
@@ -9,33 +9,33 @@ if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOW_UTILS AND OPTION_BUILD_GLOW_WINDO
 	find_package(GLFW REQUIRED)
 	find_package(GLBinding REQUIRED)
 	
-	set(GLOW_EXAMPLE_DEPENDENCY_INCLUDES
+	set(GLOBJECTS_EXAMPLE_DEPENDENCY_INCLUDES
 		${GLM_INCLUDE_DIR}
 		${GLFW_INCLUDE_DIR}
 		${GLBINDING_INCLUDES}
 	)
 
-	set(GLOW_EXAMPLE_INCLUDES
-		${CMAKE_SOURCE_DIR}/source/glowbase/include
-		${CMAKE_SOURCE_DIR}/source/glow/include
-		${CMAKE_SOURCE_DIR}/source/glowutils/include
-		${CMAKE_SOURCE_DIR}/source/glowwindow/include
+	set(GLOBJECTS_EXAMPLE_INCLUDES
+		${CMAKE_SOURCE_DIR}/source/globjects-base/include
+		${CMAKE_SOURCE_DIR}/source/globjects/include
+		${CMAKE_SOURCE_DIR}/source/globjects-utils/include
+		${CMAKE_SOURCE_DIR}/source/globjects-window/include
 	)
 	
-	set(GLOW_EXAMPLES_LIBRARIES
+	set(GLOBJECTS_EXAMPLES_LIBRARIES
 		${GLBINDING_LIBRARIES}
 		${GLFW_LIBRARY}
-		glowbase
-		glow
-		glowutils
-		glowwindow
+		globjects-base
+		globjects
+		globjects-utils
+		globjects-window
 	)
 	
 	add_subdirectory("common")
 	include_directories("common")
 	
-	set(GLOW_EXAMPLES_LIBRARIES
-		${GLOW_EXAMPLES_LIBRARIES}
+	set(GLOBJECTS_EXAMPLES_LIBRARIES
+		${GLOBJECTS_EXAMPLES_LIBRARIES}
 		${EXAMPLE_COMMON}
 	)
 
@@ -67,11 +67,11 @@ if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOW_UTILS AND OPTION_BUILD_GLOW_WINDO
 	add_subdirectory("qtexample")
 	
 elseif(OPTION_BUILD_EXAMPLES)
-	if (OPTION_BUILD_GLOW_UTILS)
-		message(STATUS "Examples can't be build because glowwindow is not build")
-	elseif(OPTION_BUILD_GLOW_WINDOW)
-		message(STATUS "Examples can't be build because glowutils is not build")
+	if (OPTION_BUILD_GLOBJECTS_UTILS)
+		message(STATUS "Examples can't be build because globjects-window is not build")
+	elseif(OPTION_BUILD_GLOBJECTS_WINDOW)
+		message(STATUS "Examples can't be build because globjects-utils is not build")
 	else()
-		message(STATUS "Examples can't be build because glowutils and glowwindow is not build")
+		message(STATUS "Examples can't be build because globjects-utils and globjects-window is not build")
 	endif()
 endif()

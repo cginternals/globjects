@@ -13,37 +13,37 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/Uniform.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/Buffer.h>
-#include <glow/logging.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/DebugMessage.h>
+#include <globjects/Uniform.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/Buffer.h>
+#include <globjects/logging.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/DebugMessage.h>
 
-#include <glowutils/Timer.h>
-#include <glowbase/File.h>
-#include <glowutils/AxisAlignedBoundingBox.h>
-#include <glowutils/Icosahedron.h>
-#include <glowutils/Camera.h>
-#include <glowutils/AdaptiveGrid.h>
-#include <glowutils/AbstractCoordinateProvider.h>
-#include <glowutils/WorldInHandNavigation.h>
-#include <glowutils/CameraPathRecorder.h>
-#include <glowutils/CameraPathPlayer.h>
-#include <glowutils/glowutils.h>
-#include <glowutils/StringTemplate.h>
+#include <globjects-utils/Timer.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/AxisAlignedBoundingBox.h>
+#include <globjects-utils/Icosahedron.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-utils/AdaptiveGrid.h>
+#include <globjects-utils/AbstractCoordinateProvider.h>
+#include <globjects-utils/WorldInHandNavigation.h>
+#include <globjects-utils/CameraPathRecorder.h>
+#include <globjects-utils/CameraPathPlayer.h>
+#include <globjects-utils/globjects-utils.h>
+#include <globjects-utils/StringTemplate.h>
 
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glow;
-using namespace glowwindow;
-using namespace glowutils;
+using namespace glo;
+using namespace glowindow;
+using namespace gloutils;
 using namespace glm;
 
 
@@ -304,12 +304,12 @@ public:
 
 protected:
 
-    glow::ref_ptr<Program> m_sphere;
+    glo::ref_ptr<Program> m_sphere;
 
-    glow::ref_ptr<Icosahedron> m_icosahedron;
-    glow::ref_ptr<AdaptiveGrid> m_agrid;
+    glo::ref_ptr<Icosahedron> m_icosahedron;
+    glo::ref_ptr<AdaptiveGrid> m_agrid;
 
-    glowutils::Timer timer;
+    gloutils::Timer timer;
     Camera m_camera;
     float angle;
     CameraPath path;
@@ -327,18 +327,18 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    //glowbase::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    //glowbase::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-    glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-    glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
-    glow::info() << "\t" << "T" << "\t\t" << "Toggle camera path usage";
-    glow::info() << "\t" << "/" << "\t\t" << "Increase Icosahedron resolution";
-    glow::info() << "\t" << "]" << "\t\t" << "Decrease Icosahedron resolution";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    //GLOBJECTS_BASE::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    //GLOBJECTS_BASE::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    glo::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    glo::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    glo::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    glo::info() << "\t" << "T" << "\t\t" << "Toggle camera path usage";
+    glo::info() << "\t" << "/" << "\t\t" << "Increase Icosahedron resolution";
+    glo::info() << "\t" << "]" << "\t\t" << "Decrease Icosahedron resolution";
 
     ContextFormat format;
     format.setVersion(3, 0);

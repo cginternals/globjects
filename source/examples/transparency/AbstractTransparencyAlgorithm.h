@@ -3,15 +3,15 @@
 #include <functional>
 #include <string>
 
-#include <glowbase/ref_ptr.h>
+#include <globjects-base/ref_ptr.h>
 
-namespace glow {
+namespace glo {
 	class Program;
 	class Texture;
 	class Shader;
 }
 
-namespace glowutils {
+namespace gloutils {
 
 class Camera;
 
@@ -32,9 +32,9 @@ class Camera;
             - pass the current width and height of the viewport
         4. Use AbstractTransparencyAlgorithm#getOutput to obtain the texture that contains the rendered scene
 */
-class AbstractTransparencyAlgorithm : public glow::Referenced {
+class AbstractTransparencyAlgorithm : public glo::Referenced {
 public:
-    using DrawFunction = std::function<void(glow::Program*)>;
+    using DrawFunction = std::function<void(glo::Program*)>;
 
     /**
         \brief initializes the transparency algorithm. Must only be called once.
@@ -47,7 +47,7 @@ public:
             vec4 vertex_color : The color of the vertex
         If a geometry shader is used the varying variables must be passed through.
     */
-    virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader);
+    virtual void initialize(const std::string & transparencyShaderFilePath, glo::Shader *vertexShader, glo::Shader *geometryShader);
 
     /**
         \brief draws the given scene with transparency
@@ -56,7 +56,7 @@ public:
         \param width the width of the viewport
         \param height the height of the viewport
     */
-    virtual void draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) = 0;
+    virtual void draw(const DrawFunction& drawFunction, gloutils::Camera* camera, int width, int height) = 0;
 
     /**
         \brief resizes the structures used by the transparency algorithm to fit the given viewport
@@ -68,8 +68,8 @@ public:
     /**
         \return the texture that contains the scene rendered with transparency after AbstractTransparencyAlgorithm#draw has been called and returned
     */
-    virtual glow::Texture* getOutput() = 0;
+    virtual glo::Texture* getOutput() = 0;
 
 protected:
-    glow::Texture* createColorTex();
+    glo::Texture* createColorTex();
 };

@@ -1,21 +1,21 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/Program.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/FrameBufferObject.h>
-#include <glow/Texture.h>
+#include <globjects/Program.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/FrameBufferObject.h>
+#include <globjects/Texture.h>
 
-#include <glowutils/Camera.h>
-#include <glowbase/File.h>
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/glowutils.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/globjects-utils.h>
 
 #include "FragmentShaderParticles.h"
 
 
-using namespace glow;
-using namespace glowutils;
+using namespace glo;
+using namespace gloutils;
 using namespace glm;
 
 
@@ -37,14 +37,14 @@ FragmentShaderParticles::~FragmentShaderParticles()
 void FragmentShaderParticles::initialize()
 {
     // Create textures to store the particle data
-    m_texPositions = new glow::Texture(gl::GL_TEXTURE_2D);
+    m_texPositions = new glo::Texture(gl::GL_TEXTURE_2D);
     m_texPositions->setParameter(gl::GL_TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
     m_texPositions->setParameter(gl::GL_TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
     m_texPositions->setParameter(gl::GL_TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
     m_texPositions->setParameter(gl::GL_TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
     m_texPositions->setParameter(gl::GL_TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
 
-    m_texVelocities = new glow::Texture(gl::GL_TEXTURE_2D);
+    m_texVelocities = new glo::Texture(gl::GL_TEXTURE_2D);
     m_texVelocities->setParameter(gl::GL_TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
     m_texVelocities->setParameter(gl::GL_TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
     m_texVelocities->setParameter(gl::GL_TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));

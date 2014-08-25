@@ -2,50 +2,50 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/Program.h>
-#include <glow/FrameBufferObject.h>
-#include <glow/Texture.h>
-#include <glow/RenderBufferObject.h>
-#include <glow/Buffer.h>
+#include <globjects/Program.h>
+#include <globjects/FrameBufferObject.h>
+#include <globjects/Texture.h>
+#include <globjects/RenderBufferObject.h>
+#include <globjects/Buffer.h>
 
-#include <glowbase/File.h>
-#include <glowutils/Camera.h>
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/glowutils.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/globjects-utils.h>
 
-void WeightedAverageAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
+void WeightedAverageAlgorithm::initialize(const std::string & transparencyShaderFilePath, glo::Shader *vertexShader, glo::Shader *geometryShader) {
 
-    m_opaqueProgram = new glow::Program;
-	m_opaqueProgram->attach(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_opaque.frag"));
+    m_opaqueProgram = new glo::Program;
+	m_opaqueProgram->attach(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_opaque.frag"));
     m_opaqueProgram->attach(vertexShader);
 	if (geometryShader != nullptr) m_opaqueProgram->attach(geometryShader);
 
-    m_accumulationProgram = new glow::Program;
-	m_accumulationProgram->attach(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_translucent.frag"));
+    m_accumulationProgram = new glo::Program;
+	m_accumulationProgram->attach(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_translucent.frag"));
     m_accumulationProgram->attach(vertexShader);
 	if (geometryShader != nullptr) m_accumulationProgram->attach(geometryShader);
 
     m_opaqueBuffer = createColorTex();
     m_accumulationBuffer = createColorTex();
-    m_depthBuffer = new glow::RenderBufferObject();
+    m_depthBuffer = new glo::RenderBufferObject();
 
-    m_depthComplexityBuffer = new glow::Buffer();
+    m_depthComplexityBuffer = new glo::Buffer();
 
-    m_renderFbo = new glow::FrameBufferObject();
+    m_renderFbo = new glo::FrameBufferObject();
     m_renderFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_opaqueBuffer);
     m_renderFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT1, m_accumulationBuffer);
     m_renderFbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depthBuffer);
     m_renderFbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1 });
 
-	m_quad = new glowutils::ScreenAlignedQuad(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_post.frag"));
+	m_quad = new gloutils::ScreenAlignedQuad(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_post.frag"));
 
     m_colorBuffer = createColorTex();
-    m_postFbo = new glow::FrameBufferObject;
+    m_postFbo = new glo::FrameBufferObject;
     m_postFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer);
     m_postFbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 }
 
-void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) {
+void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* camera, int width, int height) {
     static float clearDepth = 1.0f;
     m_renderFbo->bind();
     m_renderFbo->clearBuffer(gl::GL_COLOR, 0, glm::vec4(1.0f)); // clear opaque buffer with background
@@ -122,7 +122,7 @@ void WeightedAverageAlgorithm::resize(int width, int height) {
     m_depthComplexityBuffer->setData(static_cast<gl::GLint>(width * height * sizeof(unsigned int)), nullptr, gl::GL_DYNAMIC_DRAW);
 }
 
-glow::Texture* WeightedAverageAlgorithm::getOutput()
+glo::Texture* WeightedAverageAlgorithm::getOutput()
 {
     return m_colorBuffer;
 }

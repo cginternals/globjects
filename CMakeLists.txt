@@ -3,13 +3,13 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 
 # PROJECT DESCRIPTION
 
-set(META_PROJECT_NAME        "glow")
+set(META_PROJECT_NAME        "globjects")
 set(META_VERSION_MAJOR       "0")
 set(META_VERSION_MINOR       "3")
 set(META_VERSION_PATCH       "2")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "hpicgs group")
-set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glow/")
+set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/globjects/")
 set(META_AUTHOR_MAINTAINER   "daniel.limberger@hpi.de")
 
 
@@ -19,10 +19,10 @@ option(OPTION_LIMIT_CONFIGS       "Generate limited configs (Release; Debug)" ON
 option(OPTION_PORTABLE_INSTALL    "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC        "Build static libraries" OFF)
 option(OPTION_BUILD_TESTS         "Build tests (if gmock and gtest are found)" ON)
-option(OPTION_BUILD_EXAMPLES      "Build examples (requires optional modules glowutils and glowwindow)" ON)
+option(OPTION_BUILD_EXAMPLES      "Build examples (requires optional modules globjects-utils and globjects-window)" ON)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
-option(OPTION_BUILD_GLOW_UTILS    "Build glowutils (required for examples)" ON)
-option(OPTION_BUILD_GLOW_WINDOW   "Build glowwindow (required for examples)" ON)
+option(OPTION_BUILD_GLOBJECTS_UTILS    "Build globjects-utils (required for examples)" ON)
+option(OPTION_BUILD_GLOBJECTS_WINDOW   "Build globjects-window (required for examples)" ON)
 
 
 if(OPTION_BUILD_STATIC)
@@ -144,7 +144,7 @@ endif()
 #
 
 # Project meta files
-install(FILES glow-config.cmake DESTINATION ${INSTALL_ROOT})
+install(FILES globjects-config.cmake DESTINATION ${INSTALL_ROOT})
 install(FILES AUTHORS           DESTINATION ${INSTALL_ROOT})
 install(FILES LICENSE           DESTINATION ${INSTALL_ROOT})
 

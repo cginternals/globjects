@@ -9,41 +9,41 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/logging.h>
-#include <glow/State.h>
-#include <glow/Capability.h>
-#include <glow/Texture.h>
-#include <glow/Program.h>
-#include <glow/Shader.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/VertexAttributeBinding.h>
-#include <glow/Buffer.h>
-#include <glow/Extension.h>
-#include <glow/DebugMessage.h>
-#include <glow/glow.h>
+#include <globjects/logging.h>
+#include <globjects/State.h>
+#include <globjects/Capability.h>
+#include <globjects/Texture.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexAttributeBinding.h>
+#include <globjects/Buffer.h>
+#include <globjects/Extension.h>
+#include <globjects/DebugMessage.h>
+#include <globjects/globjects.h>
 
-#include <glowbase/File.h>
+#include <globjects-base/File.h>
 
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/glowutils.h>
-#include <glowutils/Camera.h>
-#include <glowutils/AxisAlignedBoundingBox.h>
-#include <glowutils/AdaptiveGrid.h>
-#include <glowutils/AbstractCoordinateProvider.h>
-#include <glowutils/WorldInHandNavigation.h>
-#include <glowutils/VertexDrawable.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/globjects-utils.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-utils/AxisAlignedBoundingBox.h>
+#include <globjects-utils/AdaptiveGrid.h>
+#include <globjects-utils/AbstractCoordinateProvider.h>
+#include <globjects-utils/WorldInHandNavigation.h>
+#include <globjects-utils/VertexDrawable.h>
 
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowwindow;
+using namespace glowindow;
 
-class EventHandler : public ExampleWindowEventHandler, glowutils::AbstractCoordinateProvider
+class EventHandler : public ExampleWindowEventHandler, gloutils::AbstractCoordinateProvider
 {
 public:
     struct Vertex
@@ -58,7 +58,7 @@ public:
         m_aabb.extend(glm::vec3(-8.f, -1.f, -8.f));
         m_aabb.extend(glm::vec3(8.f, 1.f, 8.f));
 
-        m_camera = glowutils::Camera(glm::vec3(0.0, 1.0, -1.0)*2.f, glm::vec3(), glm::vec3(0.0, 1.0, 0.0));
+        m_camera = gloutils::Camera(glm::vec3(0.0, 1.0, -1.0)*2.f, glm::vec3(), glm::vec3(0.0, 1.0, 0.0));
 
         m_nav.setCamera(&m_camera);
         m_nav.setCoordinateProvider(this);
@@ -76,31 +76,31 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
-        if (!glow::hasExtension(glow::Extension::GL_NV_bindless_texture))
+        if (!glo::hasExtension(glo::Extension::GL_NV_bindless_texture))
         {
-            glow::critical() << "Blindess textures are not supported";
+            glo::critical() << "Blindess textures are not supported";
 
             window.close();
 
             return;
         }
 
-        glow::ref_ptr<glow::State> state = new glow::State;
+        glo::ref_ptr<glo::State> state = new glo::State;
         state->enable(gl::GL_CULL_FACE);
         state->clearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         createGeometry();
         createTextures();
 
-        m_program = new glow::Program;
+        m_program = new glo::Program;
         m_program->attach(
-            glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/bindless-textures/shader.vert"),
-            glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag")
+            glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/bindless-textures/shader.vert"),
+            glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag")
         );
 
-        std::array<glow::TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
+        std::array<glo::TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
         for (unsigned i = 0; i < m_textures.size(); ++i)
         {
             handles[i] = m_textures[i]->makeResident();
@@ -141,7 +141,7 @@ public:
     virtual void keyPressEvent(KeyEvent & event) override
     {
         if (event.key()==GLFW_KEY_F5)
-            glow::File::reloadAll();
+            glo::File::reloadAll();
         else if (event.key()==GLFW_KEY_SPACE)
         {
             m_nav.reset();
@@ -168,12 +168,12 @@ public:
     {
         switch (m_nav.mode())
         {
-            case glowutils::WorldInHandNavigation::PanInteraction:
+            case gloutils::WorldInHandNavigation::PanInteraction:
                 m_nav.panProcess(event.pos());
                 event.accept();
                 break;
 
-            case glowutils::WorldInHandNavigation::RotateInteraction:
+            case gloutils::WorldInHandNavigation::RotateInteraction:
                 m_nav.rotateProcess(event.pos());
                 event.accept();
 
@@ -199,7 +199,7 @@ public:
 
     virtual void scrollEvent(ScrollEvent & event) override
     {
-        if (glowutils::WorldInHandNavigation::NoInteraction != m_nav.mode())
+        if (gloutils::WorldInHandNavigation::NoInteraction != m_nav.mode())
             return;
 
         m_nav.scaleAtMouse(event.pos(), -event.offset().y * 0.1f);
@@ -230,14 +230,14 @@ public:
     }
 
 protected:
-    glowutils::Camera m_camera;
+    gloutils::Camera m_camera;
 
-    glowutils::WorldInHandNavigation m_nav;
-    glowutils::AxisAlignedBoundingBox m_aabb;
+    gloutils::WorldInHandNavigation m_nav;
+    gloutils::AxisAlignedBoundingBox m_aabb;
 
-    std::array<glow::ref_ptr<glow::Texture>, 4> m_textures;
-    glow::ref_ptr<glow::Program> m_program;
-    glow::ref_ptr<glowutils::VertexDrawable> m_drawable;
+    std::array<glo::ref_ptr<glo::Texture>, 4> m_textures;
+    glo::ref_ptr<glo::Program> m_program;
+    glo::ref_ptr<gloutils::VertexDrawable> m_drawable;
 };
 
 
@@ -245,15 +245,15 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    glow::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-    glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-    glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glo::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    glo::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    glo::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    glo::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
 
     ContextFormat format;
     format.setVersion(3, 0);
@@ -287,7 +287,7 @@ void EventHandler::createTextures()
 
     for (unsigned i = 0; i < m_textures.size(); ++i)
     {
-        glow::Texture* texture = glow::Texture::createDefault(gl::GL_TEXTURE_2D);
+        glo::Texture* texture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
 
         static const int w = 512;
         static const int h = 512;
@@ -336,12 +336,12 @@ void EventHandler::createGeometry()
         Vertex{ points[1], glm::vec2(0.5, 1.0), 3 }
     } };
 
-    m_drawable = new glowutils::VertexDrawable(vertices, gl::GL_TRIANGLE_STRIP);
+    m_drawable = new gloutils::VertexDrawable(vertices, gl::GL_TRIANGLE_STRIP);
 
     m_drawable->setFormats({
-        glowutils::Format(3, gl::GL_FLOAT, offsetof(Vertex, position)),
-        glowutils::Format(2, gl::GL_FLOAT, offsetof(Vertex, texCoord)),
-        glowutils::FormatI(1, gl::GL_INT, offsetof(Vertex, side))
+        gloutils::Format(3, gl::GL_FLOAT, offsetof(Vertex, position)),
+        gloutils::Format(2, gl::GL_FLOAT, offsetof(Vertex, texCoord)),
+        gloutils::FormatI(1, gl::GL_INT, offsetof(Vertex, side))
     });
     m_drawable->enableAll();
 }

@@ -4,29 +4,29 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <glow/Program.h>
-#include <glow/Texture.h>
-#include <glow/DebugMessage.h>
+#include <globjects/Program.h>
+#include <globjects/Texture.h>
+#include <globjects/DebugMessage.h>
 
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/MainLoop.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/MainLoop.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
-#include <glowutils/UnitCube.h>
-#include <glowbase/File.h>
-#include <glowutils/Camera.h>
-#include <glowutils/AbstractCoordinateProvider.h>
-#include <glowutils/WorldInHandNavigation.h>
-#include <glowbase/File.h>
-#include <glowutils/ScreenAlignedQuad.h>
+#include <globjects-utils/UnitCube.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-utils/AbstractCoordinateProvider.h>
+#include <globjects-utils/WorldInHandNavigation.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
 #include "GlBlendAlgorithm.h"
 #include "ABufferAlgorithm.h"
 #include "WeightedAverageAlgorithm.h"
 #include "HybridAlgorithm.h"
-#include <glowutils/glowutils.h>
+#include <globjects-utils/globjects-utils.h>
 
 #include <ExampleWindowEventHandler.h>
 
@@ -40,28 +40,28 @@ struct CubeUniformAttributes {
 
 } // anonymous namespace
 
-class EventHandler : public ExampleWindowEventHandler, glowutils::AbstractCoordinateProvider {
+class EventHandler : public ExampleWindowEventHandler, gloutils::AbstractCoordinateProvider {
 private:
-	glowutils::Camera* m_camera;
-	glowutils::UnitCube* m_cube;
-	glowutils::WorldInHandNavigation m_nav;
-	glowutils::AxisAlignedBoundingBox m_aabb;
-	glowutils::ScreenAlignedQuad* m_quad;
+	gloutils::Camera* m_camera;
+	gloutils::UnitCube* m_cube;
+	gloutils::WorldInHandNavigation m_nav;
+	gloutils::AxisAlignedBoundingBox m_aabb;
+	gloutils::ScreenAlignedQuad* m_quad;
     std::vector<AbstractTransparencyAlgorithm*> m_algos;
 	
 public:
-    virtual void initialize(glowwindow::Window & window) override {
+    virtual void initialize(glowindow::Window & window) override {
 
 		window.addTimer(0, 0);
 
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 
-		glow::Shader* vertexShader = glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transparency/transparency.vert");
+		glo::Shader* vertexShader = glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transparency/transparency.vert");
 
         m_algos.push_back(new GlBlendAlgorithm);
         m_algos.push_back(new ABufferAlgorithm);
@@ -71,15 +71,15 @@ public:
 			algo->initialize("data/transparency/", vertexShader, nullptr);
         }
 
-        m_cube = new glowutils::UnitCube;
+        m_cube = new gloutils::UnitCube;
 
-        m_camera = new glowutils::Camera(glm::vec3(0.0f, 0.0f, -15.0f), glm::vec3(0.0f, 0.0f, -8.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        m_camera = new gloutils::Camera(glm::vec3(0.0f, 0.0f, -15.0f), glm::vec3(0.0f, 0.0f, -8.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// Setup the screen aligned quad stuff
-		glow::Program* quadProgram = new glow::Program();
-        quadProgram->attach(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/transparency/quad.frag"));
-        quadProgram->attach(glow::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transparency/quad.vert"));
-        m_quad = new glowutils::ScreenAlignedQuad(quadProgram);
+		glo::Program* quadProgram = new glo::Program();
+        quadProgram->attach(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/transparency/quad.frag"));
+        quadProgram->attach(glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transparency/quad.vert"));
+        m_quad = new gloutils::ScreenAlignedQuad(quadProgram);
 
 		m_aabb.extend(glm::vec3(-1.f, -0.5f, -10.5f));
 		m_aabb.extend(glm::vec3(0.f, 0.5f, -5.5));
@@ -89,7 +89,7 @@ public:
         m_nav.setBoundaryHint(m_aabb);
 	}
 
-    virtual void paintEvent(glowwindow::PaintEvent& event) override {
+    virtual void paintEvent(glowindow::PaintEvent& event) override {
 		int width = event.window()->width();
 		int height = event.window()->height();
 
@@ -101,7 +101,7 @@ public:
 		};
 
         for (auto& algo : m_algos) {
-            algo->draw([&](glow::Program* program) {
+            algo->draw([&](glo::Program* program) {
                 for (int c = 0; c < 4; c++) {
                     program->setUniform("modelmatrix", glm::translate<float>(cubes[c].position));
                     program->setUniform("color", cubes[c].color);
@@ -135,7 +135,7 @@ public:
 
 	}
 
-    virtual void framebufferResizeEvent(glowwindow::ResizeEvent & event) override {
+    virtual void framebufferResizeEvent(glowindow::ResizeEvent & event) override {
 		int width = event.width();
 		int height = event.height();
 
@@ -149,7 +149,7 @@ public:
 
     virtual float depthAt(const glm::ivec2 & windowCoordinates) const override
 	{
-		return glowutils::AbstractCoordinateProvider::depthAt(*m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
+		return gloutils::AbstractCoordinateProvider::depthAt(*m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
 	}
 
     virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) const override
@@ -167,7 +167,7 @@ public:
 		return unproject(*m_camera, viewProjectionInverted, depth, windowCoordinates);
 	}
 
-	virtual void mousePressEvent(glowwindow::MouseEvent & event) override
+	virtual void mousePressEvent(glowindow::MouseEvent & event) override
 	{
 		switch (event.button())
 		{
@@ -183,25 +183,25 @@ public:
 		}
 	}
 
-	virtual void mouseMoveEvent(glowwindow::MouseEvent & event) override
+	virtual void mouseMoveEvent(glowindow::MouseEvent & event) override
 	{
 		switch (m_nav.mode())
 		{
-		case glowutils::WorldInHandNavigation::PanInteraction:
+		case gloutils::WorldInHandNavigation::PanInteraction:
 			m_nav.panProcess(event.pos());
 			event.accept();
 			break;
 
-		case glowutils::WorldInHandNavigation::RotateInteraction:
+		case gloutils::WorldInHandNavigation::RotateInteraction:
 			m_nav.rotateProcess(event.pos());
 			event.accept();
             break;
-        case glowutils::WorldInHandNavigation::NoInteraction:
+        case gloutils::WorldInHandNavigation::NoInteraction:
             break;
 		}
 	}
 
-	virtual void mouseReleaseEvent(glowwindow::MouseEvent & event) override
+	virtual void mouseReleaseEvent(glowindow::MouseEvent & event) override
 	{
 		switch (event.button())
 		{
@@ -217,19 +217,19 @@ public:
 		}
 	}
 
-	virtual void keyPressEvent(glowwindow::KeyEvent & event) override
+	virtual void keyPressEvent(glowindow::KeyEvent & event) override
 	{
         //const float d = 0.08f;
 
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
-			glow::File::reloadAll();
+			glo::File::reloadAll();
 			break;
 		}
 	}
 
-	virtual void timerEvent(glowwindow::TimerEvent & event) override
+	virtual void timerEvent(glowindow::TimerEvent & event) override
 	{
 		event.window()->repaint();
 	}
@@ -238,24 +238,24 @@ public:
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glo::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    glo::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
 
-    glowwindow::ContextFormat format;
+    glowindow::ContextFormat format;
     format.setVersion(4, 3);
     format.setDepthBufferSize(16);
     //format.setSamples(4);
 
-    glowwindow::Window window;
+    glowindow::Window window;
 
     if (!window.create(format, "Transparency")) return 1;
-    window.context()->setSwapInterval(glowwindow::Context::NoVerticalSyncronization);
+    window.context()->setSwapInterval(glowindow::Context::NoVerticalSyncronization);
     window.setEventHandler(new EventHandler());
     window.show();
-    return glowwindow::MainLoop::run();
+    return glowindow::MainLoop::run();
 }

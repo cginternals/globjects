@@ -2,12 +2,12 @@
 
 #include "AbstractTransparencyAlgorithm.h"
 
-#include <glow/Program.h>
-#include <glow/FrameBufferObject.h>
-#include <glow/RenderBufferObject.h>
-#include <glow/Texture.h>
+#include <globjects/Program.h>
+#include <globjects/FrameBufferObject.h>
+#include <globjects/RenderBufferObject.h>
+#include <globjects/Texture.h>
 
-namespace glowutils {
+namespace gloutils {
 
 class Camera;
 
@@ -17,14 +17,14 @@ class GlBlendAlgorithm : public AbstractTransparencyAlgorithm
 {
 
 public:
-    virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader * vertexShader, glow::Shader * geometryShader) override;
-    virtual void draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) override;
+    virtual void initialize(const std::string & transparencyShaderFilePath, glo::Shader * vertexShader, glo::Shader * geometryShader) override;
+    virtual void draw(const DrawFunction& drawFunction, gloutils::Camera* camera, int width, int height) override;
     virtual void resize(int width, int height) override;
-    virtual glow::Texture * getOutput() override;
+    virtual glo::Texture * getOutput() override;
 
 private:
-    glow::ref_ptr<glow::Program> m_program;
-    glow::ref_ptr<glow::FrameBufferObject> m_fbo;
-    glow::ref_ptr<glow::Texture> m_colorTex;
-    glow::ref_ptr<glow::RenderBufferObject> m_depthBuffer;
+    glo::ref_ptr<glo::Program> m_program;
+    glo::ref_ptr<glo::FrameBufferObject> m_fbo;
+    glo::ref_ptr<glo::Texture> m_colorTex;
+    glo::ref_ptr<glo::RenderBufferObject> m_depthBuffer;
 };

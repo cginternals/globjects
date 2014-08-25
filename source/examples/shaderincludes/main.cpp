@@ -1,24 +1,24 @@
 #include <glbinding/gl/gl.h>
 
-#include <glowbase/File.h>
+#include <globjects-base/File.h>
 
-#include <glow/NamedString.h>
-#include <glow/Shader.h>
-#include <glow/DebugMessage.h>
+#include <globjects/NamedString.h>
+#include <globjects/Shader.h>
+#include <globjects/DebugMessage.h>
 
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/glowutils.h>
-#include <glowutils/StringTemplate.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/globjects-utils.h>
+#include <globjects-utils/StringTemplate.h>
 
-#include <glowwindow/ContextFormat.h>
-#include <glowwindow/Context.h>
-#include <glowwindow/Window.h>
-#include <glowwindow/WindowEventHandler.h>
-#include <glowwindow/events.h>
+#include <globjects-window/ContextFormat.h>
+#include <globjects-window/Context.h>
+#include <globjects-window/Window.h>
+#include <globjects-window/WindowEventHandler.h>
+#include <globjects-window/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowwindow;
+using namespace glowindow;
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -35,19 +35,19 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glow::DebugMessage::enable();
+        glo::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        glow::NamedString::create("/shaderincludes/color.glsl", new glow::File("data/shaderincludes/color.glsl"));
+        glo::NamedString::create("/shaderincludes/color.glsl", new glo::File("data/shaderincludes/color.glsl"));
 
-        glowutils::StringTemplate* fragmentShaderString = new glowutils::StringTemplate(new glow::File("data/shaderincludes/test.frag"));
+        gloutils::StringTemplate* fragmentShaderString = new gloutils::StringTemplate(new glo::File("data/shaderincludes/test.frag"));
 
 #ifdef MAC_OS
         fragmentShaderString->replace("#version 140", "#version 150");
 #endif
 
-        m_quad = new glowutils::ScreenAlignedQuad(new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderString));
+        m_quad = new gloutils::ScreenAlignedQuad(new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderString));
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -74,11 +74,11 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glow::File::reloadAll();
+            glo::File::reloadAll();
     }
 
 protected:
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
 };
 
 
@@ -86,11 +86,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glow::info() << "Usage:";
-    glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    glo::info() << "Usage:";
+    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(3, 0);

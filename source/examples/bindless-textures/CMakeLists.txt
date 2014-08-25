@@ -11,12 +11,12 @@ message(STATUS "Example ${target}")
 #
 
 include_directories(
-    ${GLOW_EXAMPLE_DEPENDENCY_INCLUDES}
+    ${GLOBJECTS_EXAMPLE_DEPENDENCY_INCLUDES}
 )
 
 include_directories(
     BEFORE
-    ${GLOW_EXAMPLE_INCLUDES}
+    ${GLOBJECTS_EXAMPLE_INCLUDES}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -25,7 +25,7 @@ include_directories(
 #
 
 set(libs
-    ${GLOW_EXAMPLES_LIBRARIES}
+    ${GLOBJECTS_EXAMPLES_LIBRARIES}
 )
 
 #

@@ -2,15 +2,15 @@
 
 #include "AbstractTransparencyAlgorithm.h"
 
-#include <glow/Program.h>
-#include <glow/FrameBufferObject.h>
-#include <glow/RenderBufferObject.h>
-#include <glow/Texture.h>
-#include <glow/Buffer.h>
+#include <globjects/Program.h>
+#include <globjects/FrameBufferObject.h>
+#include <globjects/RenderBufferObject.h>
+#include <globjects/Texture.h>
+#include <globjects/Buffer.h>
 
-#include <glowutils/ScreenAlignedQuad.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
 
-namespace glowutils {
+namespace gloutils {
 
 class Camera;
 
@@ -25,25 +25,25 @@ class Camera;
 */
 class ABufferAlgorithm : public AbstractTransparencyAlgorithm {
 public:
-    virtual void initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) override;
-    virtual void draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) override;
+    virtual void initialize(const std::string & transparencyShaderFilePath, glo::Shader *vertexShader, glo::Shader *geometryShader) override;
+    virtual void draw(const DrawFunction& drawFunction, gloutils::Camera* camera, int width, int height) override;
     virtual void resize(int width, int height) override;
-    virtual glow::Texture* getOutput() override;
+    virtual glo::Texture* getOutput() override;
 
 private:
     // geometry pass
-    glow::ref_ptr<glow::Program> m_program;
-    glow::ref_ptr<glow::FrameBufferObject> m_renderFbo;
-    glow::ref_ptr<glow::Texture> m_opaqueBuffer;
-    glow::ref_ptr<glow::RenderBufferObject> m_depthBuffer;
+    glo::ref_ptr<glo::Program> m_program;
+    glo::ref_ptr<glo::FrameBufferObject> m_renderFbo;
+    glo::ref_ptr<glo::Texture> m_opaqueBuffer;
+    glo::ref_ptr<glo::RenderBufferObject> m_depthBuffer;
 
     // A Buffer
-    glow::ref_ptr<glow::Buffer> m_linkedListBuffer;
-    glow::ref_ptr<glow::Buffer> m_headBuffer;
-    glow::ref_ptr<glow::Buffer> m_counter;
+    glo::ref_ptr<glo::Buffer> m_linkedListBuffer;
+    glo::ref_ptr<glo::Buffer> m_headBuffer;
+    glo::ref_ptr<glo::Buffer> m_counter;
 
     // post processing pass
-    glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
-    glow::ref_ptr<glow::FrameBufferObject> m_postFbo;
-    glow::ref_ptr<glow::Texture> m_colorBuffer;
+    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<glo::FrameBufferObject> m_postFbo;
+    glo::ref_ptr<glo::Texture> m_colorBuffer;
 };

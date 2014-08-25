@@ -2,17 +2,17 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <glow/Program.h>
-#include <glow/FrameBufferObject.h>
-#include <glow/Texture.h>
-#include <glow/RenderBufferObject.h>
-#include <glow/Buffer.h>
-#include <glow/NamedString.h>
+#include <globjects/Program.h>
+#include <globjects/FrameBufferObject.h>
+#include <globjects/Texture.h>
+#include <globjects/RenderBufferObject.h>
+#include <globjects/Buffer.h>
+#include <globjects/NamedString.h>
 
-#include <glowbase/File.h>
-#include <glowutils/Camera.h>
-#include <glowutils/ScreenAlignedQuad.h>
-#include <glowutils/glowutils.h>
+#include <globjects-base/File.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects-utils/globjects-utils.h>
 
 namespace {
 
@@ -21,54 +21,54 @@ const int VISIBILITY_KTAB_SIZE = ABUFFER_SIZE + 1;
 
 }
 
-void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath, glow::Shader *vertexShader, glow::Shader *geometryShader) {
-    glow::NamedString::create("/transparency/hybrid_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
-    glow::NamedString::create("/transparency/hybrid.glsl", new glow::File(transparencyShaderFilePath + "hybrid.glsl"));
+void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath, glo::Shader *vertexShader, glo::Shader *geometryShader) {
+    glo::NamedString::create("/transparency/hybrid_definitions", "const int ABUFFER_SIZE = " + std::to_string(ABUFFER_SIZE) + ";");
+    glo::NamedString::create("/transparency/hybrid.glsl", new glo::File(transparencyShaderFilePath + "hybrid.glsl"));
 
-	m_opaqueProgram = new glow::Program;
+	m_opaqueProgram = new glo::Program;
     m_opaqueProgram->attach(vertexShader);
-	m_opaqueProgram->attach(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_opaque.frag"));
+	m_opaqueProgram->attach(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_opaque.frag"));
 	if (geometryShader != nullptr) m_opaqueProgram->attach(geometryShader);
 
-	m_depthKTabProgram = new glow::Program;
+	m_depthKTabProgram = new glo::Program;
     m_depthKTabProgram->attach(vertexShader);
-	m_depthKTabProgram->attach(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_depthktab.frag"));
+	m_depthKTabProgram->attach(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_depthktab.frag"));
 	if (geometryShader != nullptr) m_depthKTabProgram->attach(geometryShader);
 
-	m_visibilityKTabProgram = new glow::Program;
-	m_visibilityKTabProgram->attach(glow::Shader::fromFile(gl::GL_COMPUTE_SHADER, transparencyShaderFilePath + "hybrid_visibilityktab.comp"));
+	m_visibilityKTabProgram = new glo::Program;
+	m_visibilityKTabProgram->attach(glo::Shader::fromFile(gl::GL_COMPUTE_SHADER, transparencyShaderFilePath + "hybrid_visibilityktab.comp"));
 
-	m_colorProgram = new glow::Program;
+	m_colorProgram = new glo::Program;
     m_colorProgram->attach(vertexShader);
-	m_colorProgram->attach(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_color.frag"));
+	m_colorProgram->attach(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_color.frag"));
 	if (geometryShader != nullptr) m_colorProgram->attach(geometryShader);
 
-	m_depthBuffer = new glow::RenderBufferObject;
+	m_depthBuffer = new glo::RenderBufferObject;
     m_opaqueBuffer = createColorTex();
     m_coreBuffer = createColorTex();
     m_accumulationBuffer = createColorTex();
     m_colorBuffer = createColorTex();
-    m_depthKTab = new glow::Buffer();
-    m_visibilityKTab = new glow::Buffer();
-    m_depthComplexityBuffer = new glow::Buffer();
+    m_depthKTab = new glo::Buffer();
+    m_visibilityKTab = new glo::Buffer();
+    m_depthComplexityBuffer = new glo::Buffer();
 
-	m_prepassFbo = new glow::FrameBufferObject;
+	m_prepassFbo = new glo::FrameBufferObject;
     m_prepassFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
     m_prepassFbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
 
-	m_colorFbo = new glow::FrameBufferObject;
+	m_colorFbo = new glo::FrameBufferObject;
     m_colorFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_coreBuffer.get());
     m_colorFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT1, m_accumulationBuffer.get());
     m_colorFbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
     m_colorFbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1 });
 
-	m_compositionQuad = new glowutils::ScreenAlignedQuad(glow::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_post.frag"));
-    m_compositionFbo = new glow::FrameBufferObject;
+	m_compositionQuad = new gloutils::ScreenAlignedQuad(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_post.frag"));
+    m_compositionFbo = new glo::FrameBufferObject;
     m_compositionFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer.get());
     m_compositionFbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 }
 
-void HybridAlgorithm::draw(const DrawFunction& drawFunction, glowutils::Camera* camera, int width, int height) {
+void HybridAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* camera, int width, int height) {
     m_prepassFbo->bind();
 
     //
@@ -202,7 +202,7 @@ void HybridAlgorithm::resize(int width, int height) {
     m_depthComplexityBuffer->setData(static_cast<gl::GLsizei>(width * height * sizeof(unsigned int)), nullptr, gl::GL_DYNAMIC_DRAW);
 }
 
-glow::Texture* HybridAlgorithm::getOutput()
+glo::Texture* HybridAlgorithm::getOutput()
 {
     return m_colorBuffer;
 }
