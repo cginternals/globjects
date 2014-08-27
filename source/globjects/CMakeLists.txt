@@ -79,6 +79,7 @@ set(sources
 	${source_path}/globjects.cpp
 	${source_path}/implementations/AbstractProgramBinaryImplementation.h
 	${source_path}/implementations/BindlessBufferImplementation.cpp
+	${source_path}/implementations/BindlessEXTBufferImplementation.cpp
 	${source_path}/implementations/ShadingLanguageIncludeImplementation.cpp
 	${source_path}/implementations/DebugImplementation.cpp
 	${source_path}/implementations/LegacyUniformImplementation.cpp
@@ -97,7 +98,7 @@ set(sources
 	${source_path}/implementations/BindlessFrameBufferImplementation.cpp
 	${source_path}/implementations/LegacyUniformImplementation.h
 	${source_path}/implementations/GetProgramBinaryImplementation.cpp
-	${source_path}/implementations/BindlessBufferImplementation.h
+	${source_path}/implementations/BindlessEXTBufferImplementation.h
 	${source_path}/implementations/NoShadingLanguageIncludeImplementation.h
 	${source_path}/implementations/BindlessUniformImplementation.cpp
 	${source_path}/implementations/AbstractDebugImplementation.h
