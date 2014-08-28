@@ -11,6 +11,9 @@ find_package(GLM REQUIRED)
 find_package(GLBinding REQUIRED)
 find_package(GLFW REQUIRED)
 
+# if glfw is deployed as static lib, opengl is required 
+find_package(OPENGL REQUIRED)
+
 #
 # Includes
 #
@@ -34,6 +37,7 @@ include_directories(
 set(libs
     ${GLBINDING_LIBRARY}
     ${GLFW_LIBRARY}
+    ${OPENGL_LIBRARIES}
     globjects-base
 )
 
