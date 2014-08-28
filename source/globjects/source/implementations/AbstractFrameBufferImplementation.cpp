@@ -15,7 +15,7 @@ using namespace gl;
 namespace glo 
 {
     
-GLenum LegacyFrameBufferImplementation::s_workingTarget = GL_FRAMEBUFFER;
+GLenum AbstractFrameBufferImplementation::s_workingTarget = GL_FRAMEBUFFER;
 
 AbstractFrameBufferImplementation::AbstractFrameBufferImplementation()
 {

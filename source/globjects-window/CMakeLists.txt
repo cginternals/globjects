@@ -12,7 +12,7 @@ find_package(GLBinding REQUIRED)
 find_package(GLFW REQUIRED)
 
 # if glfw is deployed as static lib, opengl is required 
-find_package(OPENGL REQUIRED)
+find_package(OpenGL REQUIRED)
 
 #
 # Includes
