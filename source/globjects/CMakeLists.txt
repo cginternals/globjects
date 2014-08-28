@@ -77,6 +77,7 @@ set(sources
 	${source_path}/globjects.cpp
 	${source_path}/implementations/AbstractProgramBinaryImplementation.h
 	${source_path}/implementations/BindlessBufferImplementation.cpp
+	${source_path}/implementations/BindlessEXTBufferImplementation.cpp
 	${source_path}/implementations/ShadingLanguageIncludeImplementation.cpp
 	${source_path}/implementations/DebugImplementation.cpp
 	${source_path}/implementations/LegacyUniformImplementation.cpp
@@ -93,9 +94,10 @@ set(sources
 	${source_path}/implementations/AbstractBufferImplementation.h
 	${source_path}/implementations/NoProgramBinaryImplementation.h
 	${source_path}/implementations/BindlessFrameBufferImplementation.cpp
+	${source_path}/implementations/BindlessEXTFrameBufferImplementation.cpp
 	${source_path}/implementations/LegacyUniformImplementation.h
 	${source_path}/implementations/GetProgramBinaryImplementation.cpp
-	${source_path}/implementations/BindlessBufferImplementation.h
+	${source_path}/implementations/BindlessEXTBufferImplementation.h
 	${source_path}/implementations/NoShadingLanguageIncludeImplementation.h
 	${source_path}/implementations/BindlessUniformImplementation.cpp
 	${source_path}/implementations/AbstractDebugImplementation.h
@@ -109,6 +111,7 @@ set(sources
 	${source_path}/implementations/AbstractUniformImplementation.h
 	${source_path}/implementations/AbstractUniformImplementation.cpp
 	${source_path}/implementations/BindlessFrameBufferImplementation.h
+	${source_path}/implementations/BindlessEXTFrameBufferImplementation.h
 	${source_path}/implementations/AbstractFrameBufferImplementation.cpp
 	${source_path}/implementations/LegacyFrameBufferImplementation.cpp
 	${source_path}/IncludeProcessor.cpp
