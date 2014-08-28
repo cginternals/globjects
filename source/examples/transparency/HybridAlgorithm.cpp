@@ -53,18 +53,18 @@ void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath,
     m_depthComplexityBuffer = new glo::Buffer();
 
 	m_prepassFbo = new glo::FrameBufferObject;
-    m_prepassFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
+    m_prepassFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
     m_prepassFbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
 
 	m_colorFbo = new glo::FrameBufferObject;
-    m_colorFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_coreBuffer.get());
-    m_colorFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT1, m_accumulationBuffer.get());
+    m_colorFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_coreBuffer.get());
+    m_colorFbo->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_accumulationBuffer.get());
     m_colorFbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
     m_colorFbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1 });
 
 	m_compositionQuad = new gloutils::ScreenAlignedQuad(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_post.frag"));
     m_compositionFbo = new glo::FrameBufferObject;
-    m_compositionFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer.get());
+    m_compositionFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer.get());
     m_compositionFbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 }
 

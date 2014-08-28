@@ -32,21 +32,6 @@ void BindlessEXTFrameBufferImplementation::attachTexture(const FrameBufferObject
     gl::glNamedFramebufferTextureEXT(fbo->id(), attachment, texture ? texture->id() : 0, level);
 }
 
-void BindlessEXTFrameBufferImplementation::attachTexture1D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const
-{
-    gl::glNamedFramebufferTexture1DEXT(fbo->id(), attachment, texture ? texture->target() : gl::GL_TEXTURE_1D, texture ? texture->id() : 0, level);
-}
-
-void BindlessEXTFrameBufferImplementation::attachTexture2D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const
-{
-    gl::glNamedFramebufferTexture2DEXT(fbo->id(), attachment, texture ? texture->target() : gl::GL_TEXTURE_2D, texture ? texture->id() : 0, level);
-}
-
-void BindlessEXTFrameBufferImplementation::attachTexture3D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const
-{
-    gl::glNamedFramebufferTexture3DEXT(fbo->id(), attachment, texture ? texture->target() : gl::GL_TEXTURE_3D, texture ? texture->id() : 0, level, layer);
-}
-
 void BindlessEXTFrameBufferImplementation::attachTextureLayer(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const
 {
     gl::glNamedFramebufferTextureLayerEXT(fbo->id(), attachment, texture ? texture->id() : 0, level, layer);

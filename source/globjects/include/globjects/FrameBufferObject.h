@@ -58,10 +58,7 @@ public:
 	void setParameter(gl::GLenum pname, gl::GLint param);
     gl::GLint getAttachmentParameter(gl::GLenum attachment, gl::GLenum pname) const;
 
-	void attachTexture(gl::GLenum attachment, Texture * texture, gl::GLint level = 0);
-	void attachTexture1D(gl::GLenum attachment, Texture * texture, gl::GLint level = 0);
-	void attachTexture2D(gl::GLenum attachment, Texture * texture, gl::GLint level = 0);
-    void attachTexture3D(gl::GLenum attachment, Texture * texture, gl::GLint level = 0, gl::GLint layer = 0);
+    void attachTexture(gl::GLenum attachment, Texture * texture, gl::GLint level = 0);
 	void attachTextureLayer(gl::GLenum attachment, Texture * texture, gl::GLint level = 0, gl::GLint layer = 0);
 	void attachRenderBuffer(gl::GLenum attachment, RenderBufferObject * renderBuffer);
 

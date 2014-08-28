@@ -25,7 +25,7 @@ void GlBlendAlgorithm::initialize(const std::string & transparencyShaderFilePath
     m_depthBuffer = new glo::RenderBufferObject();
 
 	m_fbo = new glo::FrameBufferObject();
-    m_fbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_colorTex);
+    m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorTex);
     m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depthBuffer);
     m_fbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 }

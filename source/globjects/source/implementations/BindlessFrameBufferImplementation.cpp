@@ -32,21 +32,6 @@ void BindlessFrameBufferImplementation::attachTexture(const FrameBufferObject * 
     gl::glNamedFramebufferTexture(fbo->id(), attachment, texture ? texture->id() : 0, level);
 }
 
-void BindlessFrameBufferImplementation::attachTexture1D(const FrameBufferObject * /*fbo*/, gl::GLenum /*attachment*/, Texture * /*texture*/, gl::GLint /*level*/) const
-{
-    assert(false);
-}
-
-void BindlessFrameBufferImplementation::attachTexture2D(const FrameBufferObject * /*fbo*/, gl::GLenum /*attachment*/, Texture * /*texture*/, gl::GLint /*level*/) const
-{
-    assert(false);
-}
-
-void BindlessFrameBufferImplementation::attachTexture3D(const FrameBufferObject * /*fbo*/, gl::GLenum /*attachment*/, Texture * /*texture*/, gl::GLint /*level*/, gl::GLint /*layer*/) const
-{
-    assert(false);
-}
-
 void BindlessFrameBufferImplementation::attachTextureLayer(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const
 {
     gl::glNamedFramebufferTextureLayer(fbo->id(), attachment, texture ? texture->id() : 0, level, layer);
@@ -54,7 +39,7 @@ void BindlessFrameBufferImplementation::attachTextureLayer(const FrameBufferObje
 
 void BindlessFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject * fbo, gl::GLenum attachment, RenderBufferObject * renderBuffer) const
 {
-    //renderBuffer->bind(gl::GL_RENDERBUFFER); // TODO: is this necessary?
+    renderBuffer->bind(gl::GL_RENDERBUFFER); // TODO: is this necessary?
 
     gl::glNamedFramebufferRenderbuffer(fbo->id(), attachment, gl::GL_RENDERBUFFER, renderBuffer->id());
 }

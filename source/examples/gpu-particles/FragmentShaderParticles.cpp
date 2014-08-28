@@ -59,8 +59,8 @@ void FragmentShaderParticles::initialize()
 
     // Create frame buffer object for update
     m_fboUpdate = new FrameBufferObject();
-    m_fboUpdate->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_texPositions);
-    m_fboUpdate->attachTexture2D(gl::GL_COLOR_ATTACHMENT1, m_texVelocities);
+    m_fboUpdate->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_texPositions);
+    m_fboUpdate->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_texVelocities);
     m_fboUpdate->setDrawBuffers({gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1});
     m_fboUpdate->unbind();
 
@@ -82,7 +82,7 @@ void FragmentShaderParticles::initialize()
     m_colorBuffer->setParameter(gl::GL_TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
     m_colorBuffer->setParameter(gl::GL_TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
 
-    m_fbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer);
+    m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer);
     m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
     m_fbo->unbind();
 

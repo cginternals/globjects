@@ -67,25 +67,23 @@ public:
 
         glo::DebugMessage::enable();
 
-		gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
+        gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-
-		m_fbo = new glo::FrameBufferObject();
+        m_fbo = new glo::FrameBufferObject();
 
         m_normal = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
         m_geom = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
 
-		m_depth = new glo::RenderBufferObject();
+        m_depth = new glo::RenderBufferObject();
 
-		m_fbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_normal);
-		m_fbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT1, m_geom);
+        m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_normal);
+        m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_geom);
         m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);
 
         m_fbo->bind();
-		// ToDo: this could be done automatically by default..
-		m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1 });
+        // ToDo: this could be done automatically by default..
+        m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1 });
 
-                
         gloutils::StringTemplate* sphereVertexShader = new gloutils::StringTemplate(new glo::File("data/post-processing/sphere.vert"));
         gloutils::StringTemplate* sphereFragmentShader = new gloutils::StringTemplate(new glo::File("data/post-processing/sphere.frag"));
         gloutils::StringTemplate* phongVertexShader = new gloutils::StringTemplate(new glo::File("data/post-processing/phong.vert"));

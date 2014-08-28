@@ -50,7 +50,7 @@ void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath
     m_depthBuffer = new glo::RenderBufferObject();
 
     m_renderFbo = new glo::FrameBufferObject();
-    m_renderFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
+    m_renderFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
     m_renderFbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
     m_renderFbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 
@@ -67,7 +67,7 @@ void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath
 
     m_colorBuffer = createColorTex();
     m_postFbo = new glo::FrameBufferObject;
-    m_postFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer.get());
+    m_postFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer.get());
     m_postFbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 }
 

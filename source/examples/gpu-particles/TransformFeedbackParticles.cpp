@@ -83,7 +83,7 @@ void TransformFeedbackParticles::initialize()
     m_color->setParameter(gl::GL_TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
     m_color->setParameter(gl::GL_TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
 
-    m_fbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_color);
+    m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_color);
 
     m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
     m_fbo->unbind();

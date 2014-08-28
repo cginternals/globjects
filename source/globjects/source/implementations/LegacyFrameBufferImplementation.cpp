@@ -39,28 +39,26 @@ void LegacyFrameBufferImplementation::attachTexture(const FrameBufferObject * fb
 {
     fbo->bind(s_workingTarget);
 
-    gl::glFramebufferTexture(s_workingTarget, attachment, texture ? texture->id() : 0, level);
-}
-
-void LegacyFrameBufferImplementation::attachTexture1D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const
-{
-    fbo->bind(s_workingTarget);
-
-    gl::glFramebufferTexture1D(s_workingTarget, attachment, texture ? texture->target() : gl::GL_TEXTURE_1D, texture ? texture->id() : 0, level);
-}
-
-void LegacyFrameBufferImplementation::attachTexture2D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const
-{
-    fbo->bind(s_workingTarget);
-
-    gl::glFramebufferTexture2D(s_workingTarget, attachment, texture ? texture->target() : gl::GL_TEXTURE_2D, texture ? texture->id() : 0, level);
-}
-
-void LegacyFrameBufferImplementation::attachTexture3D(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const
-{
-    fbo->bind(s_workingTarget);
-
-    gl::glFramebufferTexture3D(s_workingTarget, attachment, texture ? texture->target() : gl::GL_TEXTURE_3D, texture ? texture->id() : 0, level, layer);
+    switch (texture->target())
+    {
+    case gl::GL_TEXTURE_1D:
+        gl::glFramebufferTexture1D(s_workingTarget, attachment, texture ? texture->target() : gl::GL_TEXTURE_1D, texture ? texture->id() : 0, level);
+        break;
+    case gl::GL_TEXTURE_2D:
+    case gl::GL_TEXTURE_RECTANGLE:
+    case gl::GL_TEXTURE_CUBE_MAP_POSITIVE_X:
+    case gl::GL_TEXTURE_CUBE_MAP_POSITIVE_Y:
+    case gl::GL_TEXTURE_CUBE_MAP_POSITIVE_Z:
+    case gl::GL_TEXTURE_CUBE_MAP_NEGATIVE_X:
+    case gl::GL_TEXTURE_CUBE_MAP_NEGATIVE_Y:
+    case gl::GL_TEXTURE_CUBE_MAP_NEGATIVE_Z:
+    case gl::GL_TEXTURE_2D_MULTISAMPLE:
+        gl::glFramebufferTexture2D(s_workingTarget, attachment, texture ? texture->target() : gl::GL_TEXTURE_2D, texture ? texture->id() : 0, level);
+        break;
+    default:
+        gl::glFramebufferTexture(s_workingTarget, attachment, texture ? texture->id() : 0, level);
+        break;
+    }
 }
 
 void LegacyFrameBufferImplementation::attachTextureLayer(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const

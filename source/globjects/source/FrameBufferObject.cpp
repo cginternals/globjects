@@ -91,27 +91,6 @@ void FrameBufferObject::attachTexture(gl::GLenum attachment, Texture * texture, 
     addAttachment(new TextureAttachment(this, attachment, texture, level));
 }
 
-void FrameBufferObject::attachTexture1D(gl::GLenum attachment, Texture * texture, gl::GLint level)
-{
-    implementation().attachTexture1D(this, attachment, texture, level);
-
-    addAttachment(new TextureAttachment(this, attachment, texture, level));
-}
-
-void FrameBufferObject::attachTexture2D(gl::GLenum attachment, Texture* texture, gl::GLint level)
-{
-    implementation().attachTexture2D(this, attachment, texture, level);
-
-    addAttachment(new TextureAttachment(this, attachment, texture, level));
-}
-
-void FrameBufferObject::attachTexture3D(gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer)
-{
-    implementation().attachTexture3D(this, attachment, texture, level, layer);
-
-    addAttachment(new TextureAttachment(this, attachment, texture, level, layer));
-}
-
 void FrameBufferObject::attachTextureLayer(gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer)
 {
     implementation().attachTextureLayer(this, attachment, texture, level, layer);

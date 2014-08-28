@@ -32,8 +32,8 @@ void WeightedAverageAlgorithm::initialize(const std::string & transparencyShader
     m_depthComplexityBuffer = new glo::Buffer();
 
     m_renderFbo = new glo::FrameBufferObject();
-    m_renderFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_opaqueBuffer);
-    m_renderFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT1, m_accumulationBuffer);
+    m_renderFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_opaqueBuffer);
+    m_renderFbo->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_accumulationBuffer);
     m_renderFbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depthBuffer);
     m_renderFbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1 });
 
@@ -41,7 +41,7 @@ void WeightedAverageAlgorithm::initialize(const std::string & transparencyShader
 
     m_colorBuffer = createColorTex();
     m_postFbo = new glo::FrameBufferObject;
-    m_postFbo->attachTexture2D(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer);
+    m_postFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer);
     m_postFbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 }
 
