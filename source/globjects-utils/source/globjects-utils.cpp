@@ -27,9 +27,32 @@ void getFiles(const std::string & dirName, bool recursive, std::vector<std::stri
     {
         while ((entry = readdir(dir)))
         {
-            std::string name = entry->d_name;
+            const std::string name = entry->d_name;
+            const std::string path = dirName + "/" + name;
+
+            bool isDir = false;
+            bool isFile = false;
 
             if (entry->d_type == DT_DIR)
+            {
+                isDir = true;
+            }
+            else if (entry->d_type == DT_REG)
+            {
+                isFile = true;
+            }
+            else if (entry->d_type == DT_UNKNOWN)
+            {
+                DIR* subDir = opendir(path.c_str());
+                isDir = (subDir != nullptr);
+                isFile = !isDir;
+                if (subDir != nullptr)
+                    closedir(subDir);
+            }
+
+            assert(!(isDir && isFile));
+
+            if (isDir)
             {
                 if (name == "." || name == "..")
                 {
@@ -38,12 +61,12 @@ void getFiles(const std::string & dirName, bool recursive, std::vector<std::stri
 
                 if (recursive)
                 {
-                    getFiles(dirName + "/" + name, true, files);
+                    getFiles(path, true, files);
                 }
             }
-            else if (entry->d_type == DT_REG)
+            else if (isFile)
             {
-                files.push_back(dirName + "/" + entry->d_name);
+                files.push_back(path);
             }
         }
         closedir(dir);
