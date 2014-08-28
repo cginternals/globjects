@@ -21,7 +21,6 @@ include_directories(
 #
 
 set(libs
-    ${GLEW_LIBRARIES}
     ${GMOCK_LIBRARIES}
     ${GTEST_LIBRARIES}
     globjects-base

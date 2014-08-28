@@ -7,7 +7,6 @@ message(STATUS "Lib ${target}")
 # External libraries
 #
 
-find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(GLBinding REQUIRED)
 find_package(GLFW REQUIRED)
@@ -17,9 +16,8 @@ find_package(GLFW REQUIRED)
 #
 
 include_directories(
-    ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIR}
+    ${GLBINDING_INCLUDES}
     ${GLFW_INCLUDE_DIR}
 )
 
@@ -34,7 +32,6 @@ include_directories(
 #
 
 set(libs
-    ${OPENGL_LIBRARIES}
     ${GLBINDING_LIBRARY}
     ${GLFW_LIBRARY}
     globjects-base
