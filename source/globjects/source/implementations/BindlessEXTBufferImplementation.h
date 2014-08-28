@@ -10,6 +10,9 @@ class Buffer;
 class BindlessEXTBufferImplementation : public AbstractBufferImplementation
 {
 public:
+    virtual gl::GLuint create() const override;
+    virtual void destroy(gl::GLuint id) const override;
+
     virtual void * map(const Buffer * buffer, gl::GLenum access) const override;
     virtual void * mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::BufferAccessMask access) const override;
     virtual bool unmap(const Buffer * buffer) const override;

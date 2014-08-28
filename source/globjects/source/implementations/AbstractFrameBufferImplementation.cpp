@@ -1,4 +1,7 @@
+
 #include "AbstractFrameBufferImplementation.h"
+
+#include <glbinding/gl/enum.h>
 
 #include <globjects/globjects.h>
 
@@ -6,7 +9,13 @@
 #include "BindlessFrameBufferImplementation.h"
 #include "BindlessEXTFrameBufferImplementation.h"
 
-namespace glo {
+
+using namespace gl;
+
+namespace glo 
+{
+    
+GLenum LegacyFrameBufferImplementation::s_workingTarget = GL_FRAMEBUFFER;
 
 AbstractFrameBufferImplementation::AbstractFrameBufferImplementation()
 {
@@ -16,13 +25,13 @@ AbstractFrameBufferImplementation::~AbstractFrameBufferImplementation()
 {
 }
 
-AbstractFrameBufferImplementation * AbstractFrameBufferImplementation::create()
+AbstractFrameBufferImplementation * AbstractFrameBufferImplementation::get()
 {
-    if (hasExtension(gl::GLextension::GL_ARB_direct_state_access))
+    if (hasExtension(GLextension::GL_ARB_direct_state_access))
     {
         return new BindlessFrameBufferImplementation();
     }
-    else if (hasExtension(gl::GLextension::GL_EXT_direct_state_access))
+    else if (hasExtension(GLextension::GL_EXT_direct_state_access))
     {
         return new BindlessEXTFrameBufferImplementation();
     }

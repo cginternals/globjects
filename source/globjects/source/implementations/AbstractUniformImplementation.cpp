@@ -1,3 +1,4 @@
+
 #include "AbstractUniformImplementation.h"
 
 #include <globjects/globjects.h>
@@ -5,7 +6,11 @@
 #include "BindlessUniformImplementation.h"
 #include "LegacyUniformImplementation.h"
 
-namespace glo {
+
+using namespace gl;
+
+namespace glo 
+{
 
 AbstractUniformImplementation::AbstractUniformImplementation()
 {
@@ -15,9 +20,9 @@ AbstractUniformImplementation::~AbstractUniformImplementation()
 {
 }
 
-AbstractUniformImplementation * AbstractUniformImplementation::create()
+AbstractUniformImplementation * AbstractUniformImplementation::get()
 {
-    if (hasExtension(gl::GLextension::GL_ARB_separate_shader_objects))
+    if (hasExtension(GLextension::GL_ARB_separate_shader_objects))
     {
         return new BindlessUniformImplementation();
     }

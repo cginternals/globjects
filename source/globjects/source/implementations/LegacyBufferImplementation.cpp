@@ -1,3 +1,4 @@
+
 #include "LegacyBufferImplementation.h"
 
 #include <glbinding/gl/functions.h>
@@ -5,89 +6,104 @@
 
 #include <globjects/Buffer.h>
 
-namespace glo {
+using namespace gl;
 
-gl::GLenum LegacyBufferImplementation::s_workingTarget = gl::GL_COPY_WRITE_BUFFER;
-
-void * LegacyBufferImplementation::map(const Buffer * buffer, gl::GLenum access) const
+namespace glo 
 {
-    buffer->bind(s_workingTarget);
 
-    return gl::glMapBuffer(s_workingTarget, access);
+GLuint LegacyBufferImplementation::create() const
+{
+    GLuint buffer;
+    glGenBuffers(1, &buffer); // create a handle to a potentially used buffer
+    glBindBuffer(s_workingTarget, buffer); // trigger actual buffer creation
+
+    return buffer;
 }
 
-void * LegacyBufferImplementation::mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::BufferAccessMask access) const
+void LegacyBufferImplementation::destroy(const GLuint id) const
+{
+    glDeleteBuffers(1, &id);
+}
+
+void * LegacyBufferImplementation::map(const Buffer * buffer, GLenum access) const
 {
     buffer->bind(s_workingTarget);
 
-    return gl::glMapBufferRange(s_workingTarget, offset, length, access);
+    return glMapBuffer(s_workingTarget, access);
+}
+
+void * LegacyBufferImplementation::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, BufferAccessMask access) const
+{
+    buffer->bind(s_workingTarget);
+
+    return glMapBufferRange(s_workingTarget, offset, length, access);
 }
 
 bool LegacyBufferImplementation::unmap(const Buffer * buffer) const
 {
     buffer->bind(s_workingTarget);
 
-    return gl::GL_TRUE == gl::glUnmapBuffer(s_workingTarget);
+    return GL_TRUE == glUnmapBuffer(s_workingTarget);
 }
 
-void LegacyBufferImplementation::setData(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLenum usage) const
+void LegacyBufferImplementation::setData(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLenum usage) const
 {
     buffer->bind(s_workingTarget);
 
-    gl::glBufferData(s_workingTarget, size, data, usage);
+    glBufferData(s_workingTarget, size, data, usage);
 }
 
-void LegacyBufferImplementation::setSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, const gl::GLvoid * data) const
+void LegacyBufferImplementation::setSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, const GLvoid * data) const
 {
     buffer->bind(s_workingTarget);
 
-    gl::glBufferSubData(s_workingTarget, offset, size, data);
+    glBufferSubData(s_workingTarget, offset, size, data);
 }
 
-void LegacyBufferImplementation::setStorage(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::MapBufferUsageMask flags) const
+void LegacyBufferImplementation::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, MapBufferUsageMask flags) const
 {
     buffer->bind(s_workingTarget);
 
-    gl::glBufferStorage(s_workingTarget, size, data, flags);
+    glBufferStorage(s_workingTarget, size, data, flags);
 }
 
-void LegacyBufferImplementation::copySubData(const Buffer * buffer, Buffer * other, gl::GLintptr readOffset, gl::GLintptr writeOffset, gl::GLsizeiptr size) const
+void LegacyBufferImplementation::copySubData(const Buffer * buffer, Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
 {
-    gl::GLenum readTarget = gl::GL_COPY_READ_BUFFER;
-    gl::GLenum writeTarget = gl::GL_COPY_WRITE_BUFFER;
+    GLenum readTarget = GL_COPY_READ_BUFFER;
+    GLenum writeTarget = GL_COPY_WRITE_BUFFER;
 
     buffer->bind(readTarget);
     other->bind(writeTarget);
 
-    gl::glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
+    glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
 }
 
-void LegacyBufferImplementation::getParameter(const Buffer * buffer, gl::GLenum pname, gl::GLint * data) const
+void LegacyBufferImplementation::getParameter(const Buffer * buffer, GLenum pname, GLint * data) const
 {
     buffer->bind(s_workingTarget);
 
-    gl::glGetBufferParameteriv(s_workingTarget, pname, data);
+    glGetBufferParameteriv(s_workingTarget, pname, data);
 }
 
-void LegacyBufferImplementation::clearData(const Buffer * buffer, gl::GLenum internalformat, gl::GLenum format, gl::GLenum type, const void * data) const
+void LegacyBufferImplementation::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const
 {
     buffer->bind(s_workingTarget);
 
-    gl::glClearBufferData(s_workingTarget, internalformat, format, type, data);
+    glClearBufferData(s_workingTarget, internalformat, format, type, data);
 }
 
-void LegacyBufferImplementation::clearSubData(const Buffer * buffer, gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data) const
+void LegacyBufferImplementation::clearSubData(const Buffer * buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data) const
 {
     buffer->bind(s_workingTarget);
 
-    gl::glClearBufferSubData(s_workingTarget, internalformat, offset, size, format, type, data);
+    glClearBufferSubData(s_workingTarget, internalformat, offset, size, format, type, data);
 }
 
-void LegacyBufferImplementation::flushMappedRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const
+void LegacyBufferImplementation::flushMappedRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length) const
 {
     buffer->bind(s_workingTarget);
 
-    gl::glFlushMappedBufferRange(s_workingTarget, offset, length);
+    glFlushMappedBufferRange(s_workingTarget, offset, length);
 }
 
 } // namespace glo

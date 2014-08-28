@@ -37,11 +37,12 @@ ImplementationRegistry & ImplementationRegistry::current()
     return Registry::current().implementations();
 }
 
-void ImplementationRegistry::initialize()
+void ImplementationRegistry::initialize() // ToDo: allow for enum parameters with variadic templates for specialization getters..
 {
-    m_uniformImplementation = AbstractUniformImplementation::create();
-    m_bufferImplementation = AbstractBufferImplementation::create();
-    m_frameBufferImplementation = AbstractFrameBufferImplementation::create();
+    m_bufferImplementation      = AbstractBufferImplementation::get();
+    m_frameBufferImplementation = AbstractFrameBufferImplementation::get();
+    m_uniformImplementation     = AbstractUniformImplementation::get();
+
     m_debugImplementation = AbstractDebugImplementation::create();
     m_programBinaryImplementation = AbstractProgramBinaryImplementation::create();
     m_shadingLanguageIncludeImplementation = AbstractShadingLanguageIncludeImplementation::create();

@@ -2,7 +2,14 @@
 
 #include <glbinding/gl/functions.h>
 
-namespace {
+#include "registry/ImplementationRegistry.h"
+
+#include "implementations/AbstractBufferImplementation.h"
+#include "implementations/AbstractFrameBufferImplementation.h"
+
+
+namespace 
+{
 
 template <typename CreateObjectsFunction>
 gl::GLuint createObject(CreateObjectsFunction function)
@@ -73,23 +80,25 @@ ExternalResource::ExternalResource(gl::GLuint id)
 //============================================================
 
 BufferResource::BufferResource()
-: IDResource(createObject(gl::glGenBuffers))
+: IDResource(ImplementationRegistry::current().bufferImplementation().create())
 {
 }
 
 BufferResource::~BufferResource()
 {
-    deleteObject(gl::glDeleteBuffers, id(), hasOwnership());
+    if (hasOwnership())
+        ImplementationRegistry::current().bufferImplementation().destroy(id());
 }
 
 FrameBufferObjectResource::FrameBufferObjectResource()
-: IDResource(createObject(gl::glGenFramebuffers))
+: IDResource(ImplementationRegistry::current().frameBufferImplementation().create())
 {
 }
 
 FrameBufferObjectResource::~FrameBufferObjectResource()
 {
-    deleteObject(gl::glDeleteFramebuffers, id(), hasOwnership());
+    if (hasOwnership())
+        ImplementationRegistry::current().frameBufferImplementation().destroy(id());
 }
 
 ProgramResource::ProgramResource()

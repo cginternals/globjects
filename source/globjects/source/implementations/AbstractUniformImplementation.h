@@ -17,7 +17,7 @@ public:
     AbstractUniformImplementation();
     virtual ~AbstractUniformImplementation();
 
-    static AbstractUniformImplementation * create();
+    static AbstractUniformImplementation * get();
 
     virtual void set(const Program * program, gl::GLint location, const float & value) const = 0;
     virtual void set(const Program * program, gl::GLint location, const int & value) const = 0;

@@ -13,7 +13,10 @@ public:
     AbstractBufferImplementation();
     virtual ~AbstractBufferImplementation();
 
-    static AbstractBufferImplementation * create();
+    static AbstractBufferImplementation * get(); 
+
+    virtual gl::GLuint create() const = 0;
+    virtual void destroy(gl::GLuint id) const = 0;
 
     virtual void * map(const Buffer * buffer, gl::GLenum access) const = 0;
     virtual void * mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::BufferAccessMask access) const = 0;
@@ -31,6 +34,9 @@ public:
     virtual void clearSubData(const Buffer * buffer, gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data) const = 0;
 
     virtual void flushMappedRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const = 0;
+
+public:
+    static gl::GLenum s_workingTarget;
 };
 
 } // namespace glo

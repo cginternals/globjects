@@ -15,7 +15,10 @@ public:
     AbstractFrameBufferImplementation();
     virtual ~AbstractFrameBufferImplementation();
 
-    static AbstractFrameBufferImplementation * create();
+    static AbstractFrameBufferImplementation * get();
+
+    virtual gl::GLuint create() const = 0;
+    virtual void destroy(gl::GLuint id) const = 0;
 
     virtual gl::GLenum checkStatus(const FrameBufferObject * fbo) const = 0;
     virtual void setParameter(const FrameBufferObject * fbo, gl::GLenum pname, gl::GLint param) const = 0;
@@ -26,6 +29,9 @@ public:
     virtual void setReadBuffer(const FrameBufferObject * fbo, gl::GLenum mode) const = 0;
     virtual void setDrawBuffer(const FrameBufferObject * fbo, gl::GLenum mode) const = 0;
     virtual void setDrawBuffers(const FrameBufferObject * fbo, gl::GLsizei n, const gl::GLenum * modes) const = 0;
+
+public:
+    static gl::GLenum s_workingTarget;
 };
 
 } // namespace glo

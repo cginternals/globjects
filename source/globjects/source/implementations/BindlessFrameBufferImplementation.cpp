@@ -1,3 +1,4 @@
+
 #include "BindlessFrameBufferImplementation.h"
 
 #include <glbinding/gl/functions.h>
@@ -6,57 +7,74 @@
 #include <globjects/Texture.h>
 #include <globjects/RenderBufferObject.h>
 
-namespace glo {
 
-gl::GLenum BindlessFrameBufferImplementation::checkStatus(const FrameBufferObject * fbo) const
+using namespace gl;
+
+namespace glo 
 {
-    return gl::glCheckNamedFramebufferStatus(fbo->id(), gl::GL_FRAMEBUFFER);
+
+GLuint BindlessFrameBufferImplementation::create() const
+{
+    GLuint frameBuffer;
+    glCreateFramebuffers(1, &frameBuffer); // create a handle as well as the actual buffer
+
+    return frameBuffer;
 }
 
-void BindlessFrameBufferImplementation::setParameter(const FrameBufferObject * fbo, gl::GLenum pname, gl::GLint param) const
+void BindlessFrameBufferImplementation::destroy(const GLuint id) const
 {
-    gl::glNamedFramebufferParameteri(fbo->id(), pname, param);
+    glDeleteFramebuffers(1, &id);
 }
 
-gl::GLint BindlessFrameBufferImplementation::getAttachmentParameter(const FrameBufferObject * fbo, gl::GLenum attachment, gl::GLenum pname) const
+GLenum BindlessFrameBufferImplementation::checkStatus(const FrameBufferObject * fbo) const
 {
-    gl::GLint result = 0;
+    return glCheckNamedFramebufferStatus(fbo->id(), GL_FRAMEBUFFER);
+}
 
-    gl::glGetNamedFramebufferAttachmentParameteriv(fbo->id(), attachment, pname, &result);
+void BindlessFrameBufferImplementation::setParameter(const FrameBufferObject * fbo, GLenum pname, GLint param) const
+{
+    glNamedFramebufferParameteri(fbo->id(), pname, param);
+}
+
+GLint BindlessFrameBufferImplementation::getAttachmentParameter(const FrameBufferObject * fbo, GLenum attachment, GLenum pname) const
+{
+    GLint result = 0;
+
+    glGetNamedFramebufferAttachmentParameteriv(fbo->id(), attachment, pname, &result);
 
     return result;
 }
 
-void BindlessFrameBufferImplementation::attachTexture(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const
+void BindlessFrameBufferImplementation::attachTexture(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
 {
-    gl::glNamedFramebufferTexture(fbo->id(), attachment, texture ? texture->id() : 0, level);
+    glNamedFramebufferTexture(fbo->id(), attachment, texture ? texture->id() : 0, level);
 }
 
-void BindlessFrameBufferImplementation::attachTextureLayer(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const
+void BindlessFrameBufferImplementation::attachTextureLayer(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const
 {
-    gl::glNamedFramebufferTextureLayer(fbo->id(), attachment, texture ? texture->id() : 0, level, layer);
+    glNamedFramebufferTextureLayer(fbo->id(), attachment, texture ? texture->id() : 0, level, layer);
 }
 
-void BindlessFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject * fbo, gl::GLenum attachment, RenderBufferObject * renderBuffer) const
+void BindlessFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const
 {
-    renderBuffer->bind(gl::GL_RENDERBUFFER); // TODO: is this necessary?
+    renderBuffer->bind(GL_RENDERBUFFER); // TODO: is this necessary?
 
-    gl::glNamedFramebufferRenderbuffer(fbo->id(), attachment, gl::GL_RENDERBUFFER, renderBuffer->id());
+    glNamedFramebufferRenderbuffer(fbo->id(), attachment, GL_RENDERBUFFER, renderBuffer->id());
 }
 
-void BindlessFrameBufferImplementation::setReadBuffer(const FrameBufferObject * fbo, gl::GLenum mode) const
+void BindlessFrameBufferImplementation::setReadBuffer(const FrameBufferObject * fbo, GLenum mode) const
 {
-    gl::glNamedFramebufferReadBuffer(fbo->id(), mode);
+    glNamedFramebufferReadBuffer(fbo->id(), mode);
 }
 
-void BindlessFrameBufferImplementation::setDrawBuffer(const FrameBufferObject * fbo, gl::GLenum mode) const
+void BindlessFrameBufferImplementation::setDrawBuffer(const FrameBufferObject * fbo, GLenum mode) const
 {
-    gl::glNamedFramebufferDrawBuffer(fbo->id(), mode);
+    glNamedFramebufferDrawBuffer(fbo->id(), mode);
 }
 
-void BindlessFrameBufferImplementation::setDrawBuffers(const FrameBufferObject * fbo, gl::GLsizei n, const gl::GLenum * modes) const
+void BindlessFrameBufferImplementation::setDrawBuffers(const FrameBufferObject * fbo, GLsizei n, const GLenum * modes) const
 {
-    gl::glNamedFramebufferDrawBuffers(fbo->id(), n, modes);
+    glNamedFramebufferDrawBuffers(fbo->id(), n, modes);
 }
 
 } // namespace glo

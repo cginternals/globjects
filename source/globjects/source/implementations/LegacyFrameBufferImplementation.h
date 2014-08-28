@@ -8,7 +8,8 @@ namespace glo
 class LegacyFrameBufferImplementation : public AbstractFrameBufferImplementation
 {
 public:
-    static gl::GLenum s_workingTarget;
+    virtual gl::GLuint create() const override;
+    virtual void destroy(gl::GLuint id) const override;
 
     virtual gl::GLenum checkStatus(const FrameBufferObject * fbo) const override;
     virtual void setParameter(const FrameBufferObject * fbo, gl::GLenum pname, gl::GLint param) const override;

@@ -8,6 +8,9 @@ namespace glo
 class BindlessFrameBufferImplementation : public AbstractFrameBufferImplementation
 {
 public:
+    virtual gl::GLuint create() const override;
+    virtual void destroy(gl::GLuint id) const override;
+
     virtual gl::GLenum checkStatus(const FrameBufferObject * fbo) const override;
     virtual void setParameter(const FrameBufferObject * fbo, gl::GLenum pname, gl::GLint param) const override;
     virtual gl::GLint getAttachmentParameter(const FrameBufferObject * fbo, gl::GLenum attachment, gl::GLenum pname) const override;

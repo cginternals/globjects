@@ -1,3 +1,4 @@
+
 #include "BindlessEXTBufferImplementation.h"
 
 #include <glbinding/gl/functions.h>
@@ -5,61 +6,81 @@
 
 #include <globjects/Buffer.h>
 
-namespace glo {
 
-void * BindlessEXTBufferImplementation::map(const Buffer * buffer, gl::GLenum access) const
+using namespace gl;
+
+namespace glo 
 {
-    return gl::glMapNamedBufferEXT(buffer->id(), access);
+
+GLuint BindlessEXTBufferImplementation::create() const
+{
+    // ToDo: use legacy impl. (singleton impls)
+
+    GLuint buffer;
+    glGenBuffers(1, &buffer); // create a handle to a potentially used buffer
+    glBindBuffer(s_workingTarget, buffer); // trigger actual buffer creation
+
+    return buffer;
 }
 
-void * BindlessEXTBufferImplementation::mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::BufferAccessMask access) const
+void BindlessEXTBufferImplementation::destroy(const GLuint id) const
 {
-    return gl::glMapNamedBufferRangeEXT(buffer->id(), offset, length, access);
+    glDeleteBuffers(1, &id);
+}
+
+void * BindlessEXTBufferImplementation::map(const Buffer * buffer, GLenum access) const
+{
+    return glMapNamedBufferEXT(buffer->id(), access);
+}
+
+void * BindlessEXTBufferImplementation::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, BufferAccessMask access) const
+{
+    return glMapNamedBufferRangeEXT(buffer->id(), offset, length, access);
 }
 
 bool BindlessEXTBufferImplementation::unmap(const Buffer * buffer) const
 {
-    return gl::GL_TRUE == gl::glUnmapNamedBufferEXT(buffer->id());
+    return GL_TRUE == glUnmapNamedBufferEXT(buffer->id());
 }
 
-void BindlessEXTBufferImplementation::setData(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLenum usage) const
+void BindlessEXTBufferImplementation::setData(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, GLenum usage) const
 {
-    gl::glNamedBufferDataEXT(buffer->id(), size, data, usage);
+    glNamedBufferDataEXT(buffer->id(), size, data, usage);
 }
 
-void BindlessEXTBufferImplementation::setSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, const gl::GLvoid * data) const
+void BindlessEXTBufferImplementation::setSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, const GLvoid * data) const
 {
-    gl::glNamedBufferSubDataEXT(buffer->id(), offset, size, data);
+    glNamedBufferSubDataEXT(buffer->id(), offset, size, data);
 }
 
-void BindlessEXTBufferImplementation::setStorage(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::MapBufferUsageMask flags) const
+void BindlessEXTBufferImplementation::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, MapBufferUsageMask flags) const
 {
-    gl::glNamedBufferStorageEXT(buffer->id(), size, data, flags);
+    glNamedBufferStorageEXT(buffer->id(), size, data, flags);
 }
 
-void BindlessEXTBufferImplementation::copySubData(const Buffer * buffer, Buffer * other, gl::GLintptr readOffset, gl::GLintptr writeOffset, gl::GLsizeiptr size) const
+void BindlessEXTBufferImplementation::copySubData(const Buffer * buffer, Buffer * other, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
 {
-    gl::glNamedCopyBufferSubDataEXT(buffer->id(), other->id(), readOffset, writeOffset, size);
+    glNamedCopyBufferSubDataEXT(buffer->id(), other->id(), readOffset, writeOffset, size);
 }
 
-void BindlessEXTBufferImplementation::getParameter(const Buffer * buffer, gl::GLenum pname, gl::GLint * data) const
+void BindlessEXTBufferImplementation::getParameter(const Buffer * buffer, GLenum pname, GLint * data) const
 {
-    gl::glGetNamedBufferParameterivEXT(buffer->id(), pname, data);
+    glGetNamedBufferParameterivEXT(buffer->id(), pname, data);
 }
 
-void BindlessEXTBufferImplementation::clearData(const Buffer * buffer, gl::GLenum internalformat, gl::GLenum format, gl::GLenum type, const void * data) const
+void BindlessEXTBufferImplementation::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const
 {
-    gl::glClearNamedBufferDataEXT(buffer->id(), internalformat, format, type, data);
+    glClearNamedBufferDataEXT(buffer->id(), internalformat, format, type, data);
 }
 
-void BindlessEXTBufferImplementation::clearSubData(const Buffer * buffer, gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data) const
+void BindlessEXTBufferImplementation::clearSubData(const Buffer * buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data) const
 {
-    gl::glClearNamedBufferSubDataEXT(buffer->id(), internalformat, offset, size, format, type, data);
+    glClearNamedBufferSubDataEXT(buffer->id(), internalformat, offset, size, format, type, data);
 }
 
-void BindlessEXTBufferImplementation::flushMappedRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const
+void BindlessEXTBufferImplementation::flushMappedRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length) const
 {
-    gl::glFlushMappedNamedBufferRangeEXT(buffer->id(), offset, length);
+    glFlushMappedNamedBufferRangeEXT(buffer->id(), offset, length);
 }
 
 } // namespace glo

@@ -8,6 +8,7 @@ namespace glo
 class LegacyUniformImplementation : public AbstractUniformImplementation
 {
 public:
+
     virtual void set(const Program * program, gl::GLint location, const float & value) const override;
     virtual void set(const Program * program, gl::GLint location, const int & value) const override;
     virtual void set(const Program * program, gl::GLint location, const unsigned int & value) const override;

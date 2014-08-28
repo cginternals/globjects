@@ -1,3 +1,4 @@
+
 #include "BindlessEXTFrameBufferImplementation.h"
 
 #include <glbinding/gl/functions.h>
@@ -6,57 +7,76 @@
 #include <globjects/Texture.h>
 #include <globjects/RenderBufferObject.h>
 
-namespace glo {
+using namespace gl;
 
-gl::GLenum BindlessEXTFrameBufferImplementation::checkStatus(const FrameBufferObject * fbo) const
+namespace glo 
 {
-    return gl::glCheckNamedFramebufferStatusEXT(fbo->id(), gl::GL_FRAMEBUFFER);
+
+GLuint BindlessEXTFrameBufferImplementation::create() const
+{
+    // ToDo: use legacy impl. (singleton impls)
+
+    GLuint framebuffer;
+    glGenFramebuffers(1, &framebuffer); // create a handle to a potentially used framebuffer
+    glBindFramebuffer(s_workingTarget, framebuffer); // trigger actual framebuffer creation
+
+    return framebuffer;
 }
 
-void BindlessEXTFrameBufferImplementation::setParameter(const FrameBufferObject * fbo, gl::GLenum pname, gl::GLint param) const
+void BindlessEXTFrameBufferImplementation::destroy(GLuint id) const
 {
-    gl::glNamedFramebufferParameteriEXT(fbo->id(), pname, param);
+    glDeleteFramebuffers(1, &id);
 }
 
-gl::GLint BindlessEXTFrameBufferImplementation::getAttachmentParameter(const FrameBufferObject * fbo, gl::GLenum attachment, gl::GLenum pname) const
+GLenum BindlessEXTFrameBufferImplementation::checkStatus(const FrameBufferObject * fbo) const
 {
-    gl::GLint result = 0;
+    return glCheckNamedFramebufferStatusEXT(fbo->id(), GL_FRAMEBUFFER);
+}
 
-    gl::glGetNamedFramebufferAttachmentParameterivEXT(fbo->id(), attachment, pname, &result);
+void BindlessEXTFrameBufferImplementation::setParameter(const FrameBufferObject * fbo, GLenum pname, GLint param) const
+{
+    glNamedFramebufferParameteriEXT(fbo->id(), pname, param);
+}
+
+GLint BindlessEXTFrameBufferImplementation::getAttachmentParameter(const FrameBufferObject * fbo, GLenum attachment, GLenum pname) const
+{
+    GLint result = 0;
+
+    glGetNamedFramebufferAttachmentParameterivEXT(fbo->id(), attachment, pname, &result);
 
     return result;
 }
 
-void BindlessEXTFrameBufferImplementation::attachTexture(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const
+void BindlessEXTFrameBufferImplementation::attachTexture(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
 {
-    gl::glNamedFramebufferTextureEXT(fbo->id(), attachment, texture ? texture->id() : 0, level);
+    glNamedFramebufferTextureEXT(fbo->id(), attachment, texture ? texture->id() : 0, level);
 }
 
-void BindlessEXTFrameBufferImplementation::attachTextureLayer(const FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const
+void BindlessEXTFrameBufferImplementation::attachTextureLayer(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const
 {
-    gl::glNamedFramebufferTextureLayerEXT(fbo->id(), attachment, texture ? texture->id() : 0, level, layer);
+    glNamedFramebufferTextureLayerEXT(fbo->id(), attachment, texture ? texture->id() : 0, level, layer);
 }
 
-void BindlessEXTFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject * fbo, gl::GLenum attachment, RenderBufferObject * renderBuffer) const
+void BindlessEXTFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const
 {
-    renderBuffer->bind(gl::GL_RENDERBUFFER); // TODO: is this necessary?
+    renderBuffer->bind(GL_RENDERBUFFER); // TODO: is this necessary?
 
-    gl::glNamedFramebufferRenderbufferEXT(fbo->id(), attachment, gl::GL_RENDERBUFFER, renderBuffer->id());
+    glNamedFramebufferRenderbufferEXT(fbo->id(), attachment, GL_RENDERBUFFER, renderBuffer->id());
 }
 
-void BindlessEXTFrameBufferImplementation::setReadBuffer(const FrameBufferObject * fbo, gl::GLenum mode) const
+void BindlessEXTFrameBufferImplementation::setReadBuffer(const FrameBufferObject * fbo, GLenum mode) const
 {
-    gl::glFramebufferReadBufferEXT(fbo->id(), mode);
+    glFramebufferReadBufferEXT(fbo->id(), mode);
 }
 
-void BindlessEXTFrameBufferImplementation::setDrawBuffer(const FrameBufferObject * fbo, gl::GLenum mode) const
+void BindlessEXTFrameBufferImplementation::setDrawBuffer(const FrameBufferObject * fbo, GLenum mode) const
 {
-    gl::glFramebufferDrawBufferEXT(fbo->id(), mode);
+    glFramebufferDrawBufferEXT(fbo->id(), mode);
 }
 
-void BindlessEXTFrameBufferImplementation::setDrawBuffers(const FrameBufferObject * fbo, gl::GLsizei n, const gl::GLenum * modes) const
+void BindlessEXTFrameBufferImplementation::setDrawBuffers(const FrameBufferObject * fbo, GLsizei n, const GLenum * modes) const
 {
-    gl::glFramebufferDrawBuffersEXT(fbo->id(), n, modes);
+    glFramebufferDrawBuffersEXT(fbo->id(), n, modes);
 }
 
 } // namespace glo

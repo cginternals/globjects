@@ -8,6 +8,9 @@ namespace glo
 class LegacyBufferImplementation : public AbstractBufferImplementation
 {
 public:
+    virtual gl::GLuint create() const override;
+    virtual void destroy(gl::GLuint id) const override;
+
     virtual void * map(const Buffer * buffer, gl::GLenum access) const override;
     virtual void * mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::BufferAccessMask access) const override;
     virtual bool unmap(const Buffer * buffer) const override;
@@ -24,8 +27,6 @@ public:
     virtual void clearSubData(const Buffer * buffer, gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data) const override;
 
     virtual void flushMappedRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const override;
-
-    static gl::GLenum s_workingTarget;
 };
 
 } // namespace glo
