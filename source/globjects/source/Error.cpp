@@ -25,20 +25,20 @@ std::string Error::name() const
 {
     switch(m_errorCode)
     {
-        case gl::GL_NO_ERROR:
-            return "GL_NO_ERROR";
-        case gl::GL_INVALID_ENUM:
-            return "GL_INVALID_ENUM";
-        case gl::GL_INVALID_VALUE:
-            return "GL_INVALID_VALUE";
-        case gl::GL_INVALID_OPERATION:
-            return "GL_INVALID_OPERATION";
-        case gl::GL_INVALID_FRAMEBUFFER_OPERATION:
-            return "GL_INVALID_FRAMEBUFFER_OPERATION";
-        case gl::GL_OUT_OF_MEMORY:
-            return "GL_OUT_OF_MEMORY";
-        default:
-            return "Unknown GLenum.";
+    case gl::GL_NO_ERROR:
+        return "GL_NO_ERROR";
+    case gl::GL_INVALID_ENUM:
+        return "GL_INVALID_ENUM";
+    case gl::GL_INVALID_VALUE:
+        return "GL_INVALID_VALUE";
+    case gl::GL_INVALID_OPERATION:
+        return "GL_INVALID_OPERATION";
+    case gl::GL_INVALID_FRAMEBUFFER_OPERATION:
+        return "GL_INVALID_FRAMEBUFFER_OPERATION";
+    case gl::GL_OUT_OF_MEMORY:
+        return "GL_OUT_OF_MEMORY";
+    default:
+        return "Unknown GLenum.";
     }
 }
 

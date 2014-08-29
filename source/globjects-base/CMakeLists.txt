@@ -88,6 +88,8 @@ set(api_includes
 	${include_path}/Referenced.h
 	${include_path}/ref_ptr.h
 	${include_path}/ref_ptr.hpp
+	${include_path}/Singleton.h
+	${include_path}/Singleton.hpp
 	${include_path}/StaticStringSource.h
 )
 

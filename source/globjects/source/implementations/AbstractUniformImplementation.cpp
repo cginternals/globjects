@@ -3,8 +3,8 @@
 
 #include <globjects/globjects.h>
 
-#include "BindlessUniformImplementation.h"
-#include "LegacyUniformImplementation.h"
+#include "UniformImplementation_SeparateShaderObjectsARB.h"
+#include "UniformImplementation_Legacy.h"
 
 
 using namespace gl;
@@ -20,15 +20,16 @@ AbstractUniformImplementation::~AbstractUniformImplementation()
 {
 }
 
-AbstractUniformImplementation * AbstractUniformImplementation::get()
+AbstractUniformImplementation * AbstractUniformImplementation::get(const AbstractUniform::BindlessImplementation impl)
 {
-    if (hasExtension(GLextension::GL_ARB_separate_shader_objects))
+    if (impl == AbstractUniform::BindlessImplementation::SeparateShaderObjectsARB 
+     && hasExtension(GLextension::GL_ARB_separate_shader_objects))
     {
-        return new BindlessUniformImplementation();
+        return UniformImplementation_SeparateShaderObjectsARB::instance();
     }
     else
     {
-        return new LegacyUniformImplementation();
+        return UniformImplementation_Legacy::instance();
     }
 }
 

@@ -18,10 +18,11 @@
 #include <globjects/ObjectVisitor.h>
 #include <globjects/globjects.h>
 
-#include "registry/ImplementationRegistry.h"
-
-#include "implementations/AbstractShadingLanguageIncludeImplementation.h"
 #include "Resource.h"
+
+#include "registry/ImplementationRegistry.h"
+#include "implementations/AbstractShadingLanguageIncludeImplementation.h"
+
 
 namespace
 {
@@ -35,6 +36,11 @@ const glo::AbstractShadingLanguageIncludeImplementation & shadingLanguageInclude
 
 namespace glo
 {
+void Shader::hintIncludeImplementation(const IncludeImplementation impl)
+{
+    ImplementationRegistry::current().initialize(impl);
+}
+
 
 Shader::Shader(const gl::GLenum type)
 : Object(new ShaderResource(type))
@@ -69,17 +75,7 @@ Shader::~Shader()
 	}
 }
 
-void Shader::forceFallbackIncludeProcessor(bool on)
-{
-    AbstractShadingLanguageIncludeImplementation::forceFallbackIncludeProcessor = on;
-}
-
-bool Shader::forceFallbackIncludeProcessor()
-{
-    return AbstractShadingLanguageIncludeImplementation::forceFallbackIncludeProcessor;
-}
-
-void Shader::accept(ObjectVisitor& visitor)
+void Shader::accept(ObjectVisitor & visitor)
 {
 	visitor.visitShader(this);
 }

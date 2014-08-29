@@ -1,13 +1,13 @@
 
-#include "AbstractFrameBufferImplementation.h"
+#include "AbstractFramebufferImplementation.h"
 
 #include <glbinding/gl/enum.h>
 
 #include <globjects/globjects.h>
 
-#include "LegacyFrameBufferImplementation.h"
-#include "BindlessFrameBufferImplementation.h"
-#include "BindlessEXTFrameBufferImplementation.h"
+#include "FramebufferImplementation_DirectStateAccessARB.h"
+#include "FramebufferImplementation_DirectStateAccessEXT.h"
+#include "FramebufferImplementation_Legacy.h"
 
 
 using namespace gl;
@@ -15,29 +15,31 @@ using namespace gl;
 namespace glo 
 {
     
-GLenum LegacyFrameBufferImplementation::s_workingTarget = GL_FRAMEBUFFER;
+GLenum AbstractFramebufferImplementation::s_workingTarget = GL_FRAMEBUFFER;
 
-AbstractFrameBufferImplementation::AbstractFrameBufferImplementation()
+AbstractFramebufferImplementation::AbstractFramebufferImplementation()
 {
 }
 
-AbstractFrameBufferImplementation::~AbstractFrameBufferImplementation()
+AbstractFramebufferImplementation::~AbstractFramebufferImplementation()
 {
 }
 
-AbstractFrameBufferImplementation * AbstractFrameBufferImplementation::get()
+AbstractFramebufferImplementation * AbstractFramebufferImplementation::get(const FrameBufferObject::BindlessImplementation impl)
 {
-    if (hasExtension(GLextension::GL_ARB_direct_state_access))
+    if (impl == FrameBufferObject::BindlessImplementation::DirectStateAccessARB
+     && hasExtension(GLextension::GL_ARB_direct_state_access))
     {
-        return new BindlessFrameBufferImplementation();
+        return FramebufferImplementation_DirectStateAccessARB::instance();
     }
-    else if (hasExtension(GLextension::GL_EXT_direct_state_access))
+    else if (impl == FrameBufferObject::BindlessImplementation::DirectStateAccessEXT
+     && hasExtension(GLextension::GL_EXT_direct_state_access))
     {
-        return new BindlessEXTFrameBufferImplementation();
+        return FramebufferImplementation_DirectStateAccessEXT::instance();
     }
     else
     {
-        return new LegacyFrameBufferImplementation();
+        return FramebufferImplementation_Legacy::instance();
     }
 }
 

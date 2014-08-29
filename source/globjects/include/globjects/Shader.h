@@ -37,8 +37,18 @@ class Program;
 class GLOBJECTS_API Shader : public Object, protected ChangeListener, public Changeable
 {
     friend class Program;
+
 public:
     using IncludePaths = std::vector<std::string>;
+
+public:
+    enum class IncludeImplementation
+    {
+        ShadingLanguageIncludeARB
+    ,   Fallback
+    };
+
+    static void hintIncludeImplementation(IncludeImplementation impl);
 
 public:
     static Shader * fromString(const gl::GLenum type, const std::string & sourceString, const IncludePaths & includePaths = IncludePaths());
@@ -73,8 +83,6 @@ public:
 
     static std::string typeString(gl::GLenum type);
 
-    static void forceFallbackIncludeProcessor(bool on);
-    static bool forceFallbackIncludeProcessor();
 protected:
     virtual ~Shader();
 

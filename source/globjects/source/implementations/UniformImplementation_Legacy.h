@@ -1,11 +1,15 @@
 #pragma once
 
+#include <globjects-base/Singleton.h>
+
 #include "AbstractUniformImplementation.h"
+
 
 namespace glo
 {
 
-class LegacyUniformImplementation : public AbstractUniformImplementation
+class UniformImplementation_Legacy : public AbstractUniformImplementation
+    , public Singleton<UniformImplementation_Legacy>
 {
 public:
 

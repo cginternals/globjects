@@ -31,6 +31,15 @@ class GLOBJECTS_API AbstractUniform : public Referenced
 	friend class Program; ///< Programs (de)register themselves.
 
 public:
+    enum BindlessImplementation
+    {
+        SeparateShaderObjectsARB
+    ,   Legacy
+    };
+
+    static void hintBindlessImplementation(const BindlessImplementation impl);
+
+public:
     AbstractUniform(gl::GLint location);
 	AbstractUniform(const std::string & name);
 

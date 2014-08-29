@@ -45,6 +45,16 @@ class Buffer;
 class GLOBJECTS_API FrameBufferObject : public Object
 {
 public:
+    enum class BindlessImplementation
+    {
+        DirectStateAccessARB
+    ,   DirectStateAccessEXT
+    ,   Legacy
+    };
+
+    static void hintBindlessImplementation(BindlessImplementation impl);
+
+public:
 	FrameBufferObject();
     static FrameBufferObject * fromId(gl::GLuint id);
 

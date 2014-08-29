@@ -75,45 +75,53 @@ set(sources
 	${source_path}/glbindinglogging.cpp
 	${source_path}/glmlogging.cpp
 	${source_path}/globjects.cpp
-	${source_path}/implementations/AbstractProgramBinaryImplementation.h
-	${source_path}/implementations/BindlessBufferImplementation.cpp
-	${source_path}/implementations/BindlessEXTBufferImplementation.cpp
-	${source_path}/implementations/ShadingLanguageIncludeImplementation.cpp
-	${source_path}/implementations/DebugImplementation.cpp
-	${source_path}/implementations/LegacyUniformImplementation.cpp
-	${source_path}/implementations/ShadingLanguageIncludeImplementation.h
-	${source_path}/implementations/NoProgramBinaryImplementation.cpp
-	${source_path}/implementations/DebugImplementation.h
-	${source_path}/implementations/AbstractFrameBufferImplementation.h
-	${source_path}/implementations/NoShadingLanguageIncludeImplementation.cpp
-	${source_path}/implementations/LegacyFrameBufferImplementation.h
-	${source_path}/implementations/AbstractDebugImplementation.cpp
-	${source_path}/implementations/LegacyBufferImplementation.cpp
-	${source_path}/implementations/FallbackDebugImplementation.cpp
-	${source_path}/implementations/LegacyBufferImplementation.h
-	${source_path}/implementations/AbstractBufferImplementation.h
-	${source_path}/implementations/NoProgramBinaryImplementation.h
-	${source_path}/implementations/BindlessFrameBufferImplementation.cpp
-	${source_path}/implementations/BindlessEXTFrameBufferImplementation.cpp
-	${source_path}/implementations/LegacyUniformImplementation.h
-	${source_path}/implementations/GetProgramBinaryImplementation.cpp
-	${source_path}/implementations/BindlessEXTBufferImplementation.h
-	${source_path}/implementations/NoShadingLanguageIncludeImplementation.h
-	${source_path}/implementations/BindlessUniformImplementation.cpp
-	${source_path}/implementations/AbstractDebugImplementation.h
-	${source_path}/implementations/FallbackDebugImplementation.h
+	
 	${source_path}/implementations/AbstractBufferImplementation.cpp
-	${source_path}/implementations/AbstractProgramBinaryImplementation.cpp
-	${source_path}/implementations/GetProgramBinaryImplementation.h
-	${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.h
-	${source_path}/implementations/BindlessUniformImplementation.h
-	${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.cpp
-	${source_path}/implementations/AbstractUniformImplementation.h
-	${source_path}/implementations/AbstractUniformImplementation.cpp
-	${source_path}/implementations/BindlessFrameBufferImplementation.h
-	${source_path}/implementations/BindlessEXTFrameBufferImplementation.h
+	${source_path}/implementations/AbstractBufferImplementation.h
+	${source_path}/implementations/BufferImplementation_DirectStateAccessARB.cpp
+	${source_path}/implementations/BufferImplementation_DirectStateAccessARB.h
+	${source_path}/implementations/BufferImplementation_DirectStateAccessEXT.cpp
+	${source_path}/implementations/BufferImplementation_DirectStateAccessEXT.h
+	${source_path}/implementations/BufferImplementation_Legacy.cpp
+	${source_path}/implementations/BufferImplementation_Legacy.h
+
+	${source_path}/implementations/AbstractDebugImplementation.cpp
+	${source_path}/implementations/AbstractDebugImplementation.h
+	${source_path}/implementations/DebugImplementation_DebugKHR.cpp
+	${source_path}/implementations/DebugImplementation_DebugKHR.h
+	${source_path}/implementations/DebugImplementation_Legacy.cpp
+	${source_path}/implementations/DebugImplementation_Legacy.h
+
 	${source_path}/implementations/AbstractFrameBufferImplementation.cpp
-	${source_path}/implementations/LegacyFrameBufferImplementation.cpp
+	${source_path}/implementations/AbstractFrameBufferImplementation.h
+	${source_path}/implementations/FramebufferImplementation_DirectStateAccessARB.cpp
+	${source_path}/implementations/FramebufferImplementation_DirectStateAccessARB.h
+	${source_path}/implementations/FramebufferImplementation_DirectStateAccessEXT.cpp
+	${source_path}/implementations/FramebufferImplementation_DirectStateAccessEXT.h
+	${source_path}/implementations/FramebufferImplementation_Legacy.cpp
+	${source_path}/implementations/FramebufferImplementation_Legacy.h
+
+    ${source_path}/implementations/AbstractProgramBinaryImplementation.cpp
+	${source_path}/implementations/AbstractProgramBinaryImplementation.h
+	${source_path}/implementations/ProgramBinaryImplementation_GetProgramBinaryARB.cpp
+	${source_path}/implementations/ProgramBinaryImplementation_GetProgramBinaryARB.h
+	${source_path}/implementations/ProgramBinaryImplementation_None.cpp
+	${source_path}/implementations/ProgramBinaryImplementation_None.h
+
+	${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.cpp
+	${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.h
+	${source_path}/implementations/ShadingLanguageIncludeImplementation_ARB.cpp
+	${source_path}/implementations/ShadingLanguageIncludeImplementation_ARB.h
+	${source_path}/implementations/ShadingLanguageIncludeImplementation_Fallback.cpp
+	${source_path}/implementations/ShadingLanguageIncludeImplementation_Fallback.h
+
+	${source_path}/implementations/AbstractUniformImplementation.cpp
+	${source_path}/implementations/AbstractUniformImplementation.h
+	${source_path}/implementations/UniformImplementation_Legacy.cpp
+	${source_path}/implementations/UniformImplementation_Legacy.h
+	${source_path}/implementations/UniformImplementation_SeparateShaderObjectsARB.cpp
+	${source_path}/implementations/UniformImplementation_SeparateShaderObjectsARB.h
+
 	${source_path}/IncludeProcessor.cpp
 	${source_path}/IncludeProcessor.h
 	${source_path}/LocationIdentity.cpp

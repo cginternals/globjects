@@ -91,14 +91,14 @@ BufferResource::~BufferResource()
 }
 
 FrameBufferObjectResource::FrameBufferObjectResource()
-: IDResource(ImplementationRegistry::current().frameBufferImplementation().create())
+: IDResource(ImplementationRegistry::current().framebufferImplementation().create())
 {
 }
 
 FrameBufferObjectResource::~FrameBufferObjectResource()
 {
     if (hasOwnership())
-        ImplementationRegistry::current().frameBufferImplementation().destroy(id());
+        ImplementationRegistry::current().framebufferImplementation().destroy(id());
 }
 
 ProgramResource::ProgramResource()
