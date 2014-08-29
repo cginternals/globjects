@@ -29,6 +29,9 @@ public:
     void storageMultisample(gl::GLsizei samples, gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height);
 
     gl::GLint getParameter(gl::GLenum pname) const;
+
+    virtual gl::GLenum objectType() const override;
+
 protected:
     virtual ~RenderBufferObject();
 };

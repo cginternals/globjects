@@ -8,6 +8,7 @@
 #include "../implementations/AbstractDebugImplementation.h"
 #include "../implementations/AbstractProgramBinaryImplementation.h"
 #include "../implementations/AbstractShadingLanguageIncludeImplementation.h"
+#include "../implementations/AbstractObjectNameImplementation.h"
 
 namespace glo 
 {
@@ -19,6 +20,7 @@ ImplementationRegistry::ImplementationRegistry()
 , m_debugImplementation(nullptr)
 , m_programBinaryImplementation(nullptr)
 , m_shadingLanguageIncludeImplementation(nullptr)
+, m_objectNameImplementation(nullptr)
 {
 }
 
@@ -30,6 +32,7 @@ ImplementationRegistry::~ImplementationRegistry()
     delete m_debugImplementation;
     delete m_programBinaryImplementation;
     delete m_shadingLanguageIncludeImplementation;
+    delete m_objectNameImplementation;
 }
 
 ImplementationRegistry & ImplementationRegistry::current()
@@ -45,6 +48,7 @@ void ImplementationRegistry::initialize()
     m_debugImplementation = AbstractDebugImplementation::get();
     m_programBinaryImplementation = AbstractProgramBinaryImplementation::get();
     m_shadingLanguageIncludeImplementation = AbstractShadingLanguageIncludeImplementation::get();
+    m_objectNameImplementation = AbstractObjectNameImplementation::get();
 }
 
 void ImplementationRegistry::initialize(const AbstractUniform::BindlessImplementation impl)
@@ -75,6 +79,11 @@ void ImplementationRegistry::initialize(const Program::BinaryImplementation impl
 void ImplementationRegistry::initialize(const Shader::IncludeImplementation impl)
 {
     m_shadingLanguageIncludeImplementation = AbstractShadingLanguageIncludeImplementation::get(impl);
+}
+
+void ImplementationRegistry::initialize(const Object::NameImplementation impl)
+{
+    m_objectNameImplementation = AbstractObjectNameImplementation::get(impl);
 }
 
 AbstractUniformImplementation & ImplementationRegistry::uniformImplementation()
@@ -123,6 +132,11 @@ AbstractShadingLanguageIncludeImplementation & ImplementationRegistry::shadingLa
         m_shadingLanguageIncludeImplementation = AbstractShadingLanguageIncludeImplementation::get();
 
     return *m_shadingLanguageIncludeImplementation;
+}
+
+AbstractObjectNameImplementation & ImplementationRegistry::objectNameImplementation()
+{
+    return *m_objectNameImplementation;
 }
 
 } // namespace glo

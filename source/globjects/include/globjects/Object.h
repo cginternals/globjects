@@ -8,7 +8,8 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo {
+namespace glo 
+{
 
 class ObjectVisitor;
 class IDResource;
@@ -21,16 +22,28 @@ class IDResource;
  */
 class GLOBJECTS_API Object : public Referenced
 {
+    friend class AbstractObjectNameImplementation;
+public:
+    enum class NameImplementation
+    {
+        DebugKHR
+    ,   Legacy
+    };
+
+    static void hintNameImplementation(NameImplementation impl);
+
 public:
     virtual void accept(ObjectVisitor & visitor) = 0;
 
     gl::GLuint id() const;
 
-	const std::string & name() const;
-	void setName(const std::string & name);
+    std::string name() const;
+    void setName(const std::string & name);
     bool hasName() const;
 
     bool isDefault() const;
+
+    virtual gl::GLenum objectType() const = 0;
 
 protected:
     Object(IDResource * resource);
@@ -39,7 +52,7 @@ protected:
 protected:
     IDResource * m_resource;
 
-    std::string m_name;
+    mutable void * m_objectLabelState;
 };
 
 } // namespace glo

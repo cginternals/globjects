@@ -75,9 +75,17 @@ set(sources
 	${source_path}/glbindinglogging.cpp
 	${source_path}/glmlogging.cpp
 	${source_path}/globjects.cpp
-	
-	${source_path}/implementations/AbstractBufferImplementation.cpp
-	${source_path}/implementations/AbstractBufferImplementation.h
+
+    ${source_path}/implementations/AbstractBufferImplementation.cpp
+    ${source_path}/implementations/AbstractBufferImplementation.h
+
+	${source_path}/implementations/AbstractObjectNameImplementation.h
+	${source_path}/implementations/AbstractObjectNameImplementation.cpp
+	${source_path}/implementations/ObjectNameImplementation_KHR_debug.h
+	${source_path}/implementations/ObjectNameImplementation_KHR_debug.cpp
+	${source_path}/implementations/ObjectNameImplementation_Legacy.h
+	${source_path}/implementations/ObjectNameImplementation_Legacy.cpp
+
 	${source_path}/implementations/BufferImplementation_DirectStateAccessARB.cpp
 	${source_path}/implementations/BufferImplementation_DirectStateAccessARB.h
 	${source_path}/implementations/BufferImplementation_DirectStateAccessEXT.cpp
@@ -101,7 +109,7 @@ set(sources
 	${source_path}/implementations/FramebufferImplementation_Legacy.cpp
 	${source_path}/implementations/FramebufferImplementation_Legacy.h
 
-    ${source_path}/implementations/AbstractProgramBinaryImplementation.cpp
+	${source_path}/implementations/AbstractProgramBinaryImplementation.cpp
 	${source_path}/implementations/AbstractProgramBinaryImplementation.h
 	${source_path}/implementations/ProgramBinaryImplementation_GetProgramBinaryARB.cpp
 	${source_path}/implementations/ProgramBinaryImplementation_GetProgramBinaryARB.h

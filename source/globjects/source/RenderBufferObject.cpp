@@ -58,4 +58,9 @@ gl::GLint RenderBufferObject::getParameter(gl::GLenum pname) const
 	return value;
 }
 
+gl::GLenum RenderBufferObject::objectType() const
+{
+    return gl::GL_RENDERBUFFER;
+}
+
 } // namespace glo

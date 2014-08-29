@@ -14,6 +14,7 @@ namespace glo
 
 class GLOBJECTS_API Sync : public Referenced
 {
+    friend class AbstractObjectNameImplementation;
 public:
     static Sync * fence(gl::GLenum condition = gl::GL_SYNC_GPU_COMMANDS_COMPLETE, gl::UnusedMask flags = gl::GL_UNUSED_BIT);
 
@@ -26,8 +27,10 @@ public:
     gl::GLint get(gl::GLenum pname);
 
     gl::GLsync sync() const;
+
 protected:
     gl::GLsync m_sync;
+    mutable void * m_objectLabelState;
 
     Sync(gl::GLsync sync);
 

@@ -71,6 +71,9 @@ public:
     void multiDrawArrays(gl::GLenum mode, const std::vector<MultiDrawArraysRange> & ranges) const;
     void multiDrawElements(gl::GLenum mode, gl::GLenum type, const std::vector<MultiDrawElementsRange> & ranges) const;
     void multiDrawElementsBaseVertex(gl::GLenum mode, gl::GLenum type, const std::vector<MultiDrawElementsBaseVertexRange> & ranges) const;
+
+    virtual gl::GLenum objectType() const override;
+
 protected:
     VertexArrayObject(IDResource * resource);
     virtual ~VertexArrayObject();

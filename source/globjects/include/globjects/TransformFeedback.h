@@ -79,6 +79,8 @@ public:
 
     static bool isTransformFeedback(gl::GLuint id);
 
+    virtual gl::GLenum objectType() const override;
+
 protected:
     virtual ~TransformFeedback();
 };

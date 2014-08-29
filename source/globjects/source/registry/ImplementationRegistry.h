@@ -9,6 +9,7 @@
 #include <globjects/Buffer.h>
 #include <globjects/FrameBufferObject.h>
 #include <globjects/DebugMessage.h>
+#include <globjects/Object.h>
 
 
 namespace glo
@@ -20,6 +21,7 @@ class AbstractFramebufferImplementation;
 class AbstractDebugImplementation;
 class AbstractProgramBinaryImplementation;
 class AbstractShadingLanguageIncludeImplementation;
+class AbstractObjectNameImplementation;
 
 class GLOBJECTS_API ImplementationRegistry
 {
@@ -35,6 +37,7 @@ public:
     void initialize(DebugMessage::Implementation impl);
     void initialize(Program::BinaryImplementation impl);
     void initialize(Shader::IncludeImplementation impl);
+    void initialize(Object::NameImplementation impl);
 
     static ImplementationRegistry & current();
 
@@ -44,6 +47,8 @@ public:
     AbstractDebugImplementation & debugImplementation();
     AbstractProgramBinaryImplementation & programBinaryImplementation();
     AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation();
+    AbstractObjectNameImplementation & objectNameImplementation();
+
 protected:
     AbstractUniformImplementation * m_uniformImplementation;
     AbstractBufferImplementation * m_bufferImplementation;
@@ -51,6 +56,7 @@ protected:
     AbstractDebugImplementation * m_debugImplementation;
     AbstractProgramBinaryImplementation * m_programBinaryImplementation;
     AbstractShadingLanguageIncludeImplementation * m_shadingLanguageIncludeImplementation;
+    AbstractObjectNameImplementation * m_objectNameImplementation;
 };
 
 } // namespace glo

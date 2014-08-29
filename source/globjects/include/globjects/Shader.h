@@ -81,6 +81,8 @@ public:
 
     std::string typeString() const;
 
+    virtual gl::GLenum objectType() const override;
+
     static std::string typeString(gl::GLenum type);
 
 protected:

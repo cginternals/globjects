@@ -194,4 +194,9 @@ bool Query::isQuery(gl::GLuint id)
     return gl::glIsQuery(id) == gl::GL_TRUE;
 }
 
+gl::GLenum Query::objectType() const
+{
+    return gl::GL_QUERY;
+}
+
 } // namespace glo
