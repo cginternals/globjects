@@ -18,7 +18,7 @@
 #include <globjects/logging.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Framebuffer.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 #include <globjects/Texture.h>
 #include <globjects/DebugMessage.h>
 
@@ -74,7 +74,7 @@ public:
         m_normal = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
         m_geom = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
 
-        m_depth = new glo::RenderBufferObject();
+        m_depth = new glo::Renderbuffer();
 
         m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_normal);
         m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_geom);
@@ -215,7 +215,7 @@ protected:
     glo::ref_ptr<glo::Framebuffer> m_fbo;
     glo::ref_ptr<glo::Texture> m_normal;
     glo::ref_ptr<glo::Texture> m_geom;
-    glo::ref_ptr<glo::RenderBufferObject> m_depth;
+    glo::ref_ptr<glo::Renderbuffer> m_depth;
 
     gloutils::Camera m_camera;
     gloutils::Timer m_time;

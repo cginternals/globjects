@@ -12,7 +12,7 @@ class Buffer;
 class Framebuffer;
 class Program;
 class Query;
-class RenderBufferObject;
+class Renderbuffer;
 class Sampler;
 class Shader;
 class Sync;
@@ -29,7 +29,7 @@ GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Buff
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Framebuffer * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Program * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Query * object);
-GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const RenderBufferObject * object);
+GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Renderbuffer * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Sampler * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Shader * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Texture * object);

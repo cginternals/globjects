@@ -9,7 +9,7 @@ class Buffer;
 class Framebuffer;
 class Program;
 class Query;
-class RenderBufferObject;
+class Renderbuffer;
 class Sampler;
 class Shader;
 class Texture;
@@ -34,7 +34,7 @@ public:
 	virtual void visitFrameBufferObject(Framebuffer * fbo);
 	virtual void visitProgram(Program * program);
 	virtual void visitQuery(Query * query);
-	virtual void visitRenderBufferObject(RenderBufferObject * rbo);
+	virtual void visitRenderBufferObject(Renderbuffer * rbo);
     virtual void visitSampler(Sampler * sampler);
 	virtual void visitShader(Shader * shader);
 	virtual void visitTexture(Texture * texture);

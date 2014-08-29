@@ -7,7 +7,7 @@
 #include <globjects/Program.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 
 #include <globjects-base/File.h>
 #include <globjects-utils/Camera.h>
@@ -22,7 +22,7 @@ void GlBlendAlgorithm::initialize(const std::string & transparencyShaderFilePath
 	if (geometryShader != nullptr) m_program->attach(geometryShader);
 
     m_colorTex = createColorTex();
-    m_depthBuffer = new glo::RenderBufferObject();
+    m_depthBuffer = new glo::Renderbuffer();
 
 	m_fbo = new glo::Framebuffer();
     m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorTex);

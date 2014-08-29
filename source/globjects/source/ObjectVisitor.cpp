@@ -38,7 +38,7 @@ void ObjectVisitor::visitQuery(Query* /*query*/)
 {
 }
 
-void ObjectVisitor::visitRenderBufferObject(RenderBufferObject* /*rbo*/)
+void ObjectVisitor::visitRenderBufferObject(Renderbuffer* /*rbo*/)
 {
 }
 

@@ -5,7 +5,7 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/Program.h>
 #include <globjects/Query.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 #include <globjects/Sampler.h>
 #include <globjects/Shader.h>
 #include <globjects/Sync.h>
@@ -55,7 +55,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const Query * object)
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const RenderBufferObject * object)
+LogMessageBuilder operator<<(LogMessageBuilder builder, const Renderbuffer * object)
 {
     logObject(builder, object, "RenderBufferObject");
     return builder;

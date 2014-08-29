@@ -18,7 +18,7 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/Program.h>
 #include <globjects/Query.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 #include <globjects/Sampler.h>
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
@@ -229,7 +229,7 @@ void DebugInfo::visitProgram(Program* program)
 	addInfo("Programs", info);
 }
 
-void DebugInfo::visitRenderBufferObject(RenderBufferObject* rbo)
+void DebugInfo::visitRenderBufferObject(Renderbuffer* rbo)
 {
     assert(rbo != nullptr);
 

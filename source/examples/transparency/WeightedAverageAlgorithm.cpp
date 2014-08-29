@@ -5,7 +5,7 @@
 #include <globjects/Program.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 #include <globjects/Buffer.h>
 
 #include <globjects-base/File.h>
@@ -27,7 +27,7 @@ void WeightedAverageAlgorithm::initialize(const std::string & transparencyShader
 
     m_opaqueBuffer = createColorTex();
     m_accumulationBuffer = createColorTex();
-    m_depthBuffer = new glo::RenderBufferObject();
+    m_depthBuffer = new glo::Renderbuffer();
 
     m_depthComplexityBuffer = new glo::Buffer();
 

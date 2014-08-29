@@ -20,7 +20,7 @@ public:
     virtual gl::GLint getAttachmentParameter(const Framebuffer * fbo, gl::GLenum attachment, gl::GLenum pname) const override;
     virtual void attachTexture(const Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const override;
     virtual void attachTextureLayer(const Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const override;
-    virtual void attachRenderBuffer(const Framebuffer * fbo, gl::GLenum attachment, RenderBufferObject * renderBuffer) const override;
+    virtual void attachRenderBuffer(const Framebuffer * fbo, gl::GLenum attachment, Renderbuffer * renderBuffer) const override;
     virtual void setReadBuffer(const Framebuffer * fbo, gl::GLenum mode) const override;
     virtual void setDrawBuffer(const Framebuffer * fbo, gl::GLenum mode) const override;
     virtual void setDrawBuffers(const Framebuffer * fbo, gl::GLsizei n, const gl::GLenum * modes) const override;

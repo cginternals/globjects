@@ -5,7 +5,7 @@
 #include <globjects/Program.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 #include <globjects/Buffer.h>
 #include <globjects/NamedString.h>
 
@@ -43,7 +43,7 @@ void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath,
 	m_colorProgram->attach(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "hybrid_color.frag"));
 	if (geometryShader != nullptr) m_colorProgram->attach(geometryShader);
 
-	m_depthBuffer = new glo::RenderBufferObject;
+	m_depthBuffer = new glo::Renderbuffer;
     m_opaqueBuffer = createColorTex();
     m_coreBuffer = createColorTex();
     m_accumulationBuffer = createColorTex();

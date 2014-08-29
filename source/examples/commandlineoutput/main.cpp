@@ -18,7 +18,7 @@
 #include <globjects/Buffer.h>
 #include <globjects/Query.h>
 #include <globjects/Framebuffer.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 #include <globjects/Sampler.h>
 #include <globjects/Sync.h>
 #include <globjects/Texture.h>
@@ -64,7 +64,7 @@ public:
         glo::ref_ptr<glo::Query> query(new glo::Query());
         std::cout << "glo::Query = "; glo::info() << query.get();
 
-        glo::ref_ptr<glo::RenderBufferObject> rbo(new glo::RenderBufferObject());
+        glo::ref_ptr<glo::Renderbuffer> rbo(new glo::Renderbuffer());
         std::cout << "glo::RenderBufferObject = "; glo::info() << rbo.get();
 
         glo::ref_ptr<glo::Sampler> sampler(new glo::Sampler());

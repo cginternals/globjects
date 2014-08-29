@@ -10,7 +10,7 @@ namespace glo
 
 class Framebuffer;
 class Texture;
-class RenderBufferObject;
+class Renderbuffer;
 
 class AbstractFramebufferImplementation
 {
@@ -30,7 +30,7 @@ public:
     virtual gl::GLint getAttachmentParameter(const Framebuffer * fbo, gl::GLenum attachment, gl::GLenum pname) const = 0;
     virtual void attachTexture(const Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level) const = 0;
     virtual void attachTextureLayer(const Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer) const = 0;
-    virtual void attachRenderBuffer(const Framebuffer * fbo, gl::GLenum attachment, RenderBufferObject * renderBuffer) const = 0;
+    virtual void attachRenderBuffer(const Framebuffer * fbo, gl::GLenum attachment, Renderbuffer * renderBuffer) const = 0;
     virtual void setReadBuffer(const Framebuffer * fbo, gl::GLenum mode) const = 0;
     virtual void setDrawBuffer(const Framebuffer * fbo, gl::GLenum mode) const = 0;
     virtual void setDrawBuffers(const Framebuffer * fbo, gl::GLsizei n, const gl::GLenum * modes) const = 0;

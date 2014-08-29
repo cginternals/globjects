@@ -4,7 +4,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/FramebufferAttachment.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 
 namespace glo 
 {
@@ -22,13 +22,13 @@ class Framebuffer;
 class GLOBJECTS_API AttachedRenderbuffer : public FramebufferAttachment
 {
 public:
-    AttachedRenderbuffer(Framebuffer * fbo,  gl::GLenum attachment, RenderBufferObject * renderBuffer);
+    AttachedRenderbuffer(Framebuffer * fbo,  gl::GLenum attachment, Renderbuffer * renderBuffer);
 
     virtual bool isRenderBufferAttachment() const override;
-	RenderBufferObject * renderBuffer();
-    const RenderBufferObject * renderBuffer() const;
+	Renderbuffer * renderBuffer();
+    const Renderbuffer * renderBuffer() const;
 protected:
-    ref_ptr<RenderBufferObject> m_renderBuffer;
+    ref_ptr<Renderbuffer> m_renderBuffer;
 };
 
 } // namespace glo

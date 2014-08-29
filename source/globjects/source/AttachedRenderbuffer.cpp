@@ -2,12 +2,12 @@
 
 #include <cassert>
 
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 
 namespace glo
 {
 
-AttachedRenderbuffer::AttachedRenderbuffer(Framebuffer * fbo,  gl::GLenum attachment, RenderBufferObject * renderBuffer)
+AttachedRenderbuffer::AttachedRenderbuffer(Framebuffer * fbo,  gl::GLenum attachment, Renderbuffer * renderBuffer)
 : FramebufferAttachment(fbo, attachment)
 , m_renderBuffer(renderBuffer)
 {
@@ -18,12 +18,12 @@ bool AttachedRenderbuffer::isRenderBufferAttachment() const
 	return true;
 }
 
-RenderBufferObject * AttachedRenderbuffer::renderBuffer()
+Renderbuffer * AttachedRenderbuffer::renderBuffer()
 {
 	return m_renderBuffer;
 }
 
-const RenderBufferObject * AttachedRenderbuffer::renderBuffer() const
+const Renderbuffer * AttachedRenderbuffer::renderBuffer() const
 {
     return m_renderBuffer;
 }

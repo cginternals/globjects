@@ -5,7 +5,7 @@
 
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 
 #include "FramebufferImplementation_Legacy.h"
 
@@ -57,7 +57,7 @@ void FramebufferImplementation_DirectStateAccessARB::attachTextureLayer(const Fr
     glNamedFramebufferTextureLayer(fbo->id(), attachment, texture ? texture->id() : 0, level, layer);
 }
 
-void FramebufferImplementation_DirectStateAccessARB::attachRenderBuffer(const Framebuffer * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const
+void FramebufferImplementation_DirectStateAccessARB::attachRenderBuffer(const Framebuffer * fbo, GLenum attachment, Renderbuffer * renderBuffer) const
 {
     renderBuffer->bind(GL_RENDERBUFFER); // TODO: is this necessary?
 

@@ -13,7 +13,7 @@
 #include <globjects/FramebufferAttachment.h>
 #include <globjects/AttachedRenderbuffer.h>
 #include <globjects/Buffer.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 #include <globjects/Texture.h>
 #include <globjects/constants.h>
 #include "pixelformat.h"
@@ -111,7 +111,7 @@ void Framebuffer::attachTextureLayer(GLenum attachment, Texture * texture, GLint
     addAttachment(new AttachedTexture(this, attachment, texture, level, layer));
 }
 
-void Framebuffer::attachRenderBuffer(GLenum attachment, RenderBufferObject * renderBuffer)
+void Framebuffer::attachRenderBuffer(GLenum attachment, Renderbuffer * renderBuffer)
 {
     implementation().attachRenderBuffer(this, attachment, renderBuffer);
 

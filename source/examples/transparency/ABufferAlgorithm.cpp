@@ -5,7 +5,7 @@
 #include <globjects/Program.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 #include <globjects/Buffer.h>
 #include <globjects/globjects.h>
 #include <globjects/NamedString.h>
@@ -47,7 +47,7 @@ void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath
 	if (geometryShader != nullptr) m_program->attach(geometryShader);
 
     m_opaqueBuffer = createColorTex();
-    m_depthBuffer = new glo::RenderBufferObject();
+    m_depthBuffer = new glo::Renderbuffer();
 
     m_renderFbo = new glo::Framebuffer();
     m_renderFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());

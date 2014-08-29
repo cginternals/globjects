@@ -6,7 +6,7 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/Program.h>
 #include <globjects/Texture.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 
 #include <globjects-utils/ScreenAlignedQuad.h>
 
@@ -36,7 +36,7 @@ public:
 private:
     // shared
     glo::ref_ptr<glo::Framebuffer> m_prepassFbo;
-    glo::ref_ptr<glo::RenderBufferObject> m_depthBuffer;
+    glo::ref_ptr<glo::Renderbuffer> m_depthBuffer;
 
     // opaque geometry pass
     glo::ref_ptr<glo::Program> m_opaqueProgram;

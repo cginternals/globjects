@@ -154,7 +154,7 @@ set(sources
 	${source_path}/registry/Registry.cpp
 	${source_path}/registry/Registry.h
 	${source_path}/AttachedRenderbuffer.cpp
-	${source_path}/RenderBufferObject.cpp
+	${source_path}/Renderbuffer.cpp
 	${source_path}/Resource.cpp
 	${source_path}/Resource.h
 	${source_path}/Sampler.cpp
@@ -205,7 +205,7 @@ set(api_includes
 	${include_path}/Program.hpp
 	${include_path}/Query.h
 	${include_path}/AttachedRenderbuffer.h
-	${include_path}/RenderBufferObject.h
+	${include_path}/Renderbuffer.h
 	${include_path}/Sampler.h
 	${include_path}/Shader.h
 	${include_path}/State.h

@@ -4,7 +4,7 @@
 
 #include <globjects/Program.h>
 #include <globjects/Framebuffer.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 #include <globjects/Texture.h>
 #include <globjects/Buffer.h>
 
@@ -35,7 +35,7 @@ private:
     glo::ref_ptr<glo::Program> m_program;
     glo::ref_ptr<glo::Framebuffer> m_renderFbo;
     glo::ref_ptr<glo::Texture> m_opaqueBuffer;
-    glo::ref_ptr<glo::RenderBufferObject> m_depthBuffer;
+    glo::ref_ptr<glo::Renderbuffer> m_depthBuffer;
 
     // A Buffer
     glo::ref_ptr<glo::Buffer> m_linkedListBuffer;

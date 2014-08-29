@@ -18,7 +18,7 @@ namespace glo
 {
 
 class FramebufferAttachment;
-class RenderBufferObject;
+class Renderbuffer;
 class Texture;
 class Buffer;
 
@@ -70,7 +70,7 @@ public:
 
     void attachTexture(gl::GLenum attachment, Texture * texture, gl::GLint level = 0);
 	void attachTextureLayer(gl::GLenum attachment, Texture * texture, gl::GLint level = 0, gl::GLint layer = 0);
-	void attachRenderBuffer(gl::GLenum attachment, RenderBufferObject * renderBuffer);
+	void attachRenderBuffer(gl::GLenum attachment, Renderbuffer * renderBuffer);
 
     bool detach(gl::GLenum attachment);
 

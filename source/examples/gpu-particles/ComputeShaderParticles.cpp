@@ -11,7 +11,7 @@
 
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 
 #include <globjects-utils/ScreenAlignedQuad.h>
 #include <globjects-utils/Camera.h>

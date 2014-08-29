@@ -15,10 +15,10 @@ class ObjectVisitor;
  
     \see http://www.opengl.org/wiki/Renderbuffer_Objects
  */
-class GLOBJECTS_API RenderBufferObject : public Object
+class GLOBJECTS_API Renderbuffer : public Object
 {
 public:
-    RenderBufferObject();
+    Renderbuffer();
 
     virtual void accept(ObjectVisitor & visitor) override;
 
@@ -33,7 +33,7 @@ public:
     virtual gl::GLenum objectType() const override;
 
 protected:
-    virtual ~RenderBufferObject();
+    virtual ~Renderbuffer();
 };
 
 } // namespace glo

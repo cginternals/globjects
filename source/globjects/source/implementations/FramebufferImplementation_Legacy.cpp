@@ -5,7 +5,7 @@
 
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
-#include <globjects/RenderBufferObject.h>
+#include <globjects/Renderbuffer.h>
 
 
 using namespace gl;
@@ -85,7 +85,7 @@ void FramebufferImplementation_Legacy::attachTextureLayer(const Framebuffer * fb
     glFramebufferTextureLayer(s_workingTarget, attachment, texture ? texture->id() : 0, level, layer);
 }
 
-void FramebufferImplementation_Legacy::attachRenderBuffer(const Framebuffer * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const
+void FramebufferImplementation_Legacy::attachRenderBuffer(const Framebuffer * fbo, GLenum attachment, Renderbuffer * renderBuffer) const
 {
     fbo->bind(s_workingTarget);
     renderBuffer->bind(GL_RENDERBUFFER);
