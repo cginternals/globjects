@@ -7,7 +7,15 @@
 #include <globjects/VertexArray.h>
 #include <globjects/globjects.h>
 
-#include "VertexAttributeBindingImplementation.h"
+#include "registry/ImplementationRegistry.h"
+#include "implementations/AbstractVertexAttributeBindingImplementation.h"
+
+namespace {
+    glo::AbstractVertexAttributeBindingImplementation & attributeImplementation()
+    {
+        return glo::ImplementationRegistry::current().attributeImplementation();
+    }
+}
 
 namespace glo
 {
@@ -19,20 +27,14 @@ VertexAttributeBinding::VertexAttributeBinding(
 , m_bindingIndex(bindingIndex)
 , m_attributeIndex(0)
 , m_vbo(nullptr)
-, m_implementation(nullptr)
 {
     assert(vao != nullptr);
-
-    m_implementation = hasExtension(gl::GLextension::GL_ARB_vertex_attrib_binding)
-        ? static_cast<VertexAttributeBindingImplementation*>(new VertexAttributeBinding_GL_4_3(this))
-        : static_cast<VertexAttributeBindingImplementation*>(new VertexAttributeBinding_GL_3_0(this));
 
 	setAttribute(bindingIndex); // as default
 }
 
 VertexAttributeBinding::~VertexAttributeBinding()
 {
-    delete m_implementation;
 }
 
 const VertexArray * VertexAttributeBinding::vao() const
@@ -48,7 +50,7 @@ VertexArray * VertexAttributeBinding::vao()
 void VertexAttributeBinding::setAttribute(gl::GLint attributeIndex)
 {
     m_attributeIndex = attributeIndex;
-    m_implementation->bindAttribute(attributeIndex);
+    attributeImplementation().bindAttribute(this, attributeIndex);
 }
 
 gl::GLint VertexAttributeBinding::attributeIndex() const
@@ -68,25 +70,23 @@ const Buffer* VertexAttributeBinding::buffer() const
 
 void VertexAttributeBinding::setBuffer(const Buffer* vbo, gl::GLint baseoffset, gl::GLint stride)
 {
-    //assert(vbo != nullptr);
-
     m_vbo = vbo;
-    m_implementation->bindBuffer(vbo, baseoffset, stride);
+    attributeImplementation().bindBuffer(this, vbo, baseoffset, stride);
 }
 
 void VertexAttributeBinding::setFormat(gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeoffset)
 {
-    m_implementation->setFormat(size, type, normalized, relativeoffset);
+    attributeImplementation().setFormat(this, size, type, normalized, relativeoffset);
 }
 
 void VertexAttributeBinding::setIFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset)
 {
-    m_implementation->setIFormat(size, type, relativeoffset);
+    attributeImplementation().setIFormat(this, size, type, relativeoffset);
 }
 
 void VertexAttributeBinding::setLFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset)
 {
-    m_implementation->setLFormat(size, type, relativeoffset);
+    attributeImplementation().setLFormat(this, size, type, relativeoffset);
 }
 
 } // namespace glo

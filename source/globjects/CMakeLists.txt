@@ -129,6 +129,13 @@ set(sources
 	${source_path}/implementations/UniformImplementation_Legacy.h
 	${source_path}/implementations/UniformImplementation_SeparateShaderObjectsARB.cpp
 	${source_path}/implementations/UniformImplementation_SeparateShaderObjectsARB.h
+	
+	${source_path}/implementations/AbstractVertexAttributeBindingImplementation.cpp
+	${source_path}/implementations/AbstractVertexAttributeBindingImplementation.h
+	${source_path}/implementations/VertexAttributeBindingImplementation_VertexAttribBindingARB.cpp
+	${source_path}/implementations/VertexAttributeBindingImplementation_VertexAttribBindingARB.h
+	${source_path}/implementations/VertexAttributeBindingImplementation_Legacy.cpp
+	${source_path}/implementations/VertexAttributeBindingImplementation_Legacy.h
 
 	${source_path}/IncludeProcessor.cpp
 	${source_path}/IncludeProcessor.h
@@ -168,8 +175,6 @@ set(sources
 	${source_path}/UniformBlock.cpp
 	${source_path}/VertexArray.cpp
 	${source_path}/VertexAttributeBinding.cpp
-	${source_path}/VertexAttributeBindingImplementation.cpp
-	${source_path}/VertexAttributeBindingImplementation.h
 )
 
 set(api_includes

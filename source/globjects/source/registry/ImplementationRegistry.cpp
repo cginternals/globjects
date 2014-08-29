@@ -9,6 +9,7 @@
 #include "../implementations/AbstractProgramBinaryImplementation.h"
 #include "../implementations/AbstractShadingLanguageIncludeImplementation.h"
 #include "../implementations/AbstractObjectNameImplementation.h"
+#include "../implementations/AbstractVertexAttributeBindingImplementation.h"
 
 namespace glo 
 {
@@ -21,6 +22,7 @@ ImplementationRegistry::ImplementationRegistry()
 , m_programBinaryImplementation(nullptr)
 , m_shadingLanguageIncludeImplementation(nullptr)
 , m_objectNameImplementation(nullptr)
+, m_attributeImplementation(nullptr)
 {
 }
 
@@ -33,6 +35,7 @@ ImplementationRegistry::~ImplementationRegistry()
     delete m_programBinaryImplementation;
     delete m_shadingLanguageIncludeImplementation;
     delete m_objectNameImplementation;
+    delete m_attributeImplementation;
 }
 
 ImplementationRegistry & ImplementationRegistry::current()
@@ -49,6 +52,7 @@ void ImplementationRegistry::initialize()
     m_programBinaryImplementation = AbstractProgramBinaryImplementation::get();
     m_shadingLanguageIncludeImplementation = AbstractShadingLanguageIncludeImplementation::get();
     m_objectNameImplementation = AbstractObjectNameImplementation::get();
+    m_attributeImplementation = AbstractVertexAttributeBindingImplementation::get();
 }
 
 void ImplementationRegistry::initialize(const AbstractUniform::BindlessImplementation impl)
@@ -84,6 +88,11 @@ void ImplementationRegistry::initialize(const Shader::IncludeImplementation impl
 void ImplementationRegistry::initialize(const Object::NameImplementation impl)
 {
     m_objectNameImplementation = AbstractObjectNameImplementation::get(impl);
+}
+
+void ImplementationRegistry::initialize(const VertexArray::AttributeImplementation impl)
+{
+    m_attributeImplementation = AbstractVertexAttributeBindingImplementation::get(impl);
 }
 
 AbstractUniformImplementation & ImplementationRegistry::uniformImplementation()
@@ -140,6 +149,14 @@ AbstractObjectNameImplementation & ImplementationRegistry::objectNameImplementat
         m_objectNameImplementation = AbstractObjectNameImplementation::get();
 
     return *m_objectNameImplementation;
+}
+
+AbstractVertexAttributeBindingImplementation & ImplementationRegistry::attributeImplementation()
+{
+    if (!m_attributeImplementation)
+        m_attributeImplementation = AbstractVertexAttributeBindingImplementation::get();
+
+    return *m_attributeImplementation;
 }
 
 } // namespace glo

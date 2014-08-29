@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glbinding/gl/types.h>
-#include <glbinding/gl/enum.h>
 #include <glbinding/gl/boolean.h>
 
 #include <globjects-base/Referenced.h>
@@ -13,11 +12,10 @@ namespace glo
 
 class Buffer;
 class VertexArray;
-class VertexAttributeBindingImplementation;
 
 class GLOBJECTS_API VertexAttributeBinding : public Referenced
 {
-	friend class VertexAttributeBindingImplementation;
+    friend class AbstractVertexAttributeBindingImplementation;
 
 public:
 	VertexAttributeBinding(
@@ -61,7 +59,7 @@ protected:
     
     const Buffer * m_vbo;
 
-    VertexAttributeBindingImplementation * m_implementation;
+    mutable void * m_bindingData;
 };
 
 } // namespace glo

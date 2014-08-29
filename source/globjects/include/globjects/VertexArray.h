@@ -19,6 +19,14 @@ class VertexAttributeBinding;
 class GLOBJECTS_API VertexArray : public Object
 {
 public:
+    enum class AttributeImplementation
+    {
+        VertexAttribBindingARB,
+        Legacy
+    };
+
+    static void hintAttributeImplementation(AttributeImplementation impl);
+
     VertexArray();
     static VertexArray * fromId(gl::GLuint id);
 

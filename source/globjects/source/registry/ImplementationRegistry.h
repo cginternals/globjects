@@ -10,6 +10,7 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/DebugMessage.h>
 #include <globjects/Object.h>
+#include <globjects/VertexArray.h>
 
 
 namespace glo
@@ -22,6 +23,7 @@ class AbstractDebugImplementation;
 class AbstractProgramBinaryImplementation;
 class AbstractShadingLanguageIncludeImplementation;
 class AbstractObjectNameImplementation;
+class AbstractVertexAttributeBindingImplementation;
 
 class GLOBJECTS_API ImplementationRegistry
 {
@@ -38,6 +40,7 @@ public:
     void initialize(Program::BinaryImplementation impl);
     void initialize(Shader::IncludeImplementation impl);
     void initialize(Object::NameImplementation impl);
+    void initialize(VertexArray::AttributeImplementation impl);
 
     static ImplementationRegistry & current();
 
@@ -48,6 +51,7 @@ public:
     AbstractProgramBinaryImplementation & programBinaryImplementation();
     AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation();
     AbstractObjectNameImplementation & objectNameImplementation();
+    AbstractVertexAttributeBindingImplementation & attributeImplementation();
 
 protected:
     AbstractUniformImplementation * m_uniformImplementation;
@@ -57,6 +61,7 @@ protected:
     AbstractProgramBinaryImplementation * m_programBinaryImplementation;
     AbstractShadingLanguageIncludeImplementation * m_shadingLanguageIncludeImplementation;
     AbstractObjectNameImplementation * m_objectNameImplementation;
+    AbstractVertexAttributeBindingImplementation * m_attributeImplementation;
 };
 
 } // namespace glo

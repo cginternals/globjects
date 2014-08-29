@@ -3,9 +3,13 @@
 #include <cassert>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/ObjectVisitor.h>
 #include <globjects/VertexAttributeBinding.h>
+
+#include "registry/ImplementationRegistry.h"
+#include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
 #include "container_helpers.hpp"
 #include "registry/ObjectRegistry.h"
@@ -23,6 +27,11 @@ VertexArray::VertexArray()
 VertexArray::VertexArray(IDResource * resource)
 : Object(resource)
 {
+}
+
+void VertexArray::hintAttributeImplementation(AttributeImplementation impl)
+{
+    ImplementationRegistry::current().initialize(impl);
 }
 
 VertexArray * VertexArray::fromId(gl::GLuint id)
