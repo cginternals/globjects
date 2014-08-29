@@ -136,6 +136,9 @@ AbstractShadingLanguageIncludeImplementation & ImplementationRegistry::shadingLa
 
 AbstractObjectNameImplementation & ImplementationRegistry::objectNameImplementation()
 {
+    if (!m_objectNameImplementation)
+        m_objectNameImplementation = AbstractObjectNameImplementation::get();
+
     return *m_objectNameImplementation;
 }
 
