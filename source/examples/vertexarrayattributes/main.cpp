@@ -6,7 +6,7 @@
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/DebugMessage.h>
 
@@ -81,7 +81,7 @@ public:
         gl::glPointSize(10.0);
 
 
-        m_vao = new glo::VertexArrayObject();
+        m_vao = new glo::VertexArray();
         m_buffer = new glo::Buffer();
 
         gloutils::StringTemplate* vertexShaderSource = new gloutils::StringTemplate(new glo::File("data/vertexarrayattributes/test.vert"));
@@ -185,7 +185,7 @@ public:
         window.repaint();
     }
 protected:
-    glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::VertexArray> m_vao;
     glo::ref_ptr<glo::Buffer> m_buffer;
     glo::ref_ptr<glo::Program> m_shaderProgram;
 };

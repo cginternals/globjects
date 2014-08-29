@@ -2,7 +2,7 @@
 
 #include <globjects-base/ref_ptr.h>
 
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/Program.h>
 #include <globjects/Buffer.h>
 #include <globjects/Texture.h>
@@ -37,7 +37,7 @@ protected:
     glo::ref_ptr<glo::Program> m_computeProgram;
     glo::ref_ptr<glo::Program> m_drawProgram;
 
-    glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::VertexArray> m_vao;
 
     glo::ref_ptr<glo::Framebuffer> m_fbo;
     glo::ref_ptr<glo::Texture> m_color;

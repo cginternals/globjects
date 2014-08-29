@@ -15,7 +15,7 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/logging.h>
 #include <globjects/TransformFeedback.h>
@@ -135,7 +135,7 @@ protected:
     glo::ref_ptr<glo::Program> m_shaderProgram;
     glo::ref_ptr<glo::Program> m_transformFeedbackProgram;
 	
-    glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::VertexArray> m_vao;
 
     glo::ref_ptr<glo::TransformFeedback> m_transformFeedback;
 	
@@ -221,7 +221,7 @@ void EventHandler::createAndSetupGeometry()
     m_colorBuffer = new glo::Buffer();
     m_colorBuffer->setData(colorArray);
 
-	m_vao = new glo::VertexArrayObject();
+	m_vao = new glo::VertexArray();
 
     m_vao->binding(0)->setAttribute(0);
     m_vao->binding(0)->setFormat(4, gl::GL_FLOAT);

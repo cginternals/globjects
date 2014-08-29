@@ -23,7 +23,7 @@
 #include <globjects/Shader.h>
 #include <globjects/Texture.h>
 #include <globjects/TransformFeedback.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/TextureAttachment.h>
 #include <globjects/RenderBufferAttachment.h>
@@ -339,7 +339,7 @@ void DebugInfo::visitTransformFeedback(TransformFeedback* transformfeedback)
 	addInfo("TransformFeedbacks", info);
 }
 
-void DebugInfo::visitVertexArrayObject(VertexArrayObject* vao)
+void DebugInfo::visitVertexArray(VertexArray* vao)
 {
     assert(vao != nullptr);
 

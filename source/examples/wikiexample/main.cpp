@@ -3,7 +3,7 @@
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/DebugMessage.h>
 #include <globjects-base/StaticStringSource.h>
@@ -93,7 +93,7 @@ public:
         cornerBuffer->ref();
 		program = new glo::Program();
         program->ref();
-		vao = new glo::VertexArrayObject();
+		vao = new glo::VertexArray();
         vao->ref();
 
 		program->attach(
@@ -135,7 +135,7 @@ public:
     }
 
 private:
-	glo::VertexArrayObject* vao;
+	glo::VertexArray* vao;
 	glo::Buffer* cornerBuffer;
 	glo::Program* program;
 

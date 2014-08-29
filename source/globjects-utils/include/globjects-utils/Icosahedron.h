@@ -11,7 +11,7 @@
 #include <globjects-base/Referenced.h>
 #include <globjects-base/ref_ptr.h>
 
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 
 #include <globjects-utils/globjects-utils_api.h>
@@ -60,7 +60,7 @@ private:
     ,   std::unordered_map<glm::uint, gl::GLushort> & cache);
 
 private:
-    glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::VertexArray> m_vao;
 
     glo::ref_ptr<glo::Buffer> m_vertices;
     glo::ref_ptr<glo::Buffer> m_indices;

@@ -8,7 +8,7 @@ namespace glo
 {
     class Program;
     class Texture;
-    class VertexArrayObject;
+    class VertexArray;
     class Framebuffer;
 }
 namespace gloutils
@@ -47,7 +47,7 @@ protected:
     glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quadUpdate;
 
     // Rendering
-    glo::ref_ptr<glo::VertexArrayObject>      m_vao;
+    glo::ref_ptr<glo::VertexArray>      m_vao;
     glo::ref_ptr<glo::Framebuffer>      m_fbo;
     glo::ref_ptr<glo::Texture>                m_colorBuffer;
     glo::ref_ptr<glo::Program>                m_drawProgram;

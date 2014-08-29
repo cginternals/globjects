@@ -71,7 +71,7 @@ public:
     virtual void visitShader(Shader * shader) override;
     virtual void visitTexture(Texture * texture) override;
     virtual void visitTransformFeedback(TransformFeedback * transformfeedback) override;
-    virtual void visitVertexArrayObject(VertexArrayObject * vao) override;
+    virtual void visitVertexArray(VertexArray * vao) override;
 
 protected:
 	DebugInfo();

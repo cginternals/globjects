@@ -5,7 +5,7 @@
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
 #include <globjects/TransformFeedback.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
@@ -57,7 +57,7 @@ void TransformFeedbackParticles::initialize()
     ,   glo::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
     ,   glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 
-    m_vao = new VertexArrayObject();
+    m_vao = new VertexArray();
     m_vao->bind();
 
     auto positionsBinding = m_vao->binding(0);

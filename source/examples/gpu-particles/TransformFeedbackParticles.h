@@ -7,7 +7,7 @@
 #include <globjects/Program.h>
 #include <globjects/Texture.h>
 #include <globjects/TransformFeedback.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 
 #include <globjects-utils/ScreenAlignedQuad.h>
 
@@ -42,7 +42,7 @@ protected:
 
     glo::ref_ptr<glo::Program> m_drawProgram;
 
-    glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::VertexArray> m_vao;
 
     glo::ref_ptr<glo::Framebuffer> m_fbo;
     glo::ref_ptr<glo::Texture> m_color;

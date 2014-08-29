@@ -6,7 +6,7 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
 #include <globjects/Framebuffer.h>
@@ -79,7 +79,7 @@ void ComputeShaderParticles::initialize()
 
     reset();
 
-    m_vao = new VertexArrayObject();
+    m_vao = new VertexArray();
     m_vao->bind();
 
     auto positionsBinding = m_vao->binding(0);

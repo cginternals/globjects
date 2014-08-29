@@ -58,7 +58,7 @@ void ObjectVisitor::visitTransformFeedback(TransformFeedback* /*transformfeedbac
 {
 }
 
-void ObjectVisitor::visitVertexArrayObject(VertexArrayObject* /*vao*/)
+void ObjectVisitor::visitVertexArray(VertexArray* /*vao*/)
 {
 }
 

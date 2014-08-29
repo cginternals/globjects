@@ -9,7 +9,7 @@ namespace glo
 
 class Object;
 class Framebuffer;
-class VertexArrayObject;
+class VertexArray;
 
 /** \brief Tracks all wrapped OpenGL objects in globjects.
     
@@ -28,7 +28,7 @@ public:
     std::set<Object *>::iterator end();
 
     Framebuffer * defaultFBO();
-    VertexArrayObject * defaultVAO();
+    VertexArray * defaultVAO();
 protected:
     void registerObject(Object * object);
     void deregisterObject(Object * object);
@@ -36,7 +36,7 @@ protected:
 protected:
     std::set<Object *> m_objects;
     Framebuffer * m_defaultFBO;
-    VertexArrayObject * m_defaultVAO;
+    VertexArray * m_defaultVAO;
 };
 
 } // namespace glo

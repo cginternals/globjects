@@ -11,7 +11,7 @@
 #include <globjects/Sync.h>
 #include <globjects/Texture.h>
 #include <globjects/TransformFeedback.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/AbstractUniform.h>
 
 namespace glo {
@@ -85,7 +85,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const TransformFeedback 
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const VertexArrayObject * object)
+LogMessageBuilder operator<<(LogMessageBuilder builder, const VertexArray * object)
 {
     logObject(builder, object, "VertexArrayObject");
     return builder;

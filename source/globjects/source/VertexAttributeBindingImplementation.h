@@ -8,7 +8,7 @@ namespace glo {
 
 class VertexAttributeBinding;
 class Buffer;
-class VertexArrayObject;
+class VertexArray;
 
 class VertexAttributeBindingImplementation
 {
@@ -19,7 +19,7 @@ public:
     gl::GLint attributeIndex() const;
     gl::GLint bindingIndex() const;
 
-    const VertexArrayObject * vao() const;
+    const VertexArray * vao() const;
     const Buffer * vbo() const;
 
     virtual void bindAttribute(gl::GLint attributeIndex) = 0;

@@ -166,7 +166,7 @@ set(sources
 	${source_path}/Texture.cpp
 	${source_path}/TransformFeedback.cpp
 	${source_path}/UniformBlock.cpp
-	${source_path}/VertexArrayObject.cpp
+	${source_path}/VertexArray.cpp
 	${source_path}/VertexAttributeBinding.cpp
 	${source_path}/VertexAttributeBindingImplementation.cpp
 	${source_path}/VertexAttributeBindingImplementation.h
@@ -220,7 +220,7 @@ set(api_includes
 	${include_path}/UniformBlock.h
 	${include_path}/Uniform.h
 	${include_path}/Uniform.hpp
-	${include_path}/VertexArrayObject.h
+	${include_path}/VertexArray.h
 	${include_path}/VertexAttributeBinding.h
 )
 

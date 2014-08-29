@@ -16,7 +16,7 @@
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
 #include <globjects/logging.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/RenderBufferObject.h>
 #include <globjects/Texture.h>

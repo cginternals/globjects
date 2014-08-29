@@ -7,7 +7,7 @@
 
 #include <glm/glm.hpp>
 
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
 
@@ -72,7 +72,7 @@ const std::array<Icosahedron::Face, 20> Icosahedron::indices()
 }
 
 Icosahedron::Icosahedron(const gl::GLsizei iterations, const gl::GLint positionLocation, const gl::GLint normalLocation)
-: m_vao(new VertexArrayObject)
+: m_vao(new VertexArray)
 , m_vertices(new Buffer)
 , m_indices(new Buffer)
 {

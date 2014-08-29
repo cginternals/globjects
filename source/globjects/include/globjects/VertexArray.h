@@ -16,13 +16,13 @@ class Buffer;
 class VertexAttributeBinding;
 
 // http://www.opengl.org/wiki/Vertex_Array_Object
-class GLOBJECTS_API VertexArrayObject : public Object
+class GLOBJECTS_API VertexArray : public Object
 {
 public:
-    VertexArrayObject();
-    static VertexArrayObject * fromId(gl::GLuint id);
+    VertexArray();
+    static VertexArray * fromId(gl::GLuint id);
 
-    static VertexArrayObject * defaultVAO();
+    static VertexArray * defaultVAO();
 
     virtual void accept(ObjectVisitor & visitor) override;
 
@@ -75,8 +75,8 @@ public:
     virtual gl::GLenum objectType() const override;
 
 protected:
-    VertexArrayObject(IDResource * resource);
-    virtual ~VertexArrayObject();
+    VertexArray(IDResource * resource);
+    virtual ~VertexArray();
 
 protected:
     std::map<gl::GLuint, ref_ptr<VertexAttributeBinding >> m_bindings;

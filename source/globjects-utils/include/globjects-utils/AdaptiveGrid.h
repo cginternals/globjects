@@ -8,7 +8,7 @@
 #include <globjects-utils/globjects-utils_api.h>
 
 #include <globjects/Program.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
  
 namespace gloutils 
@@ -78,7 +78,7 @@ private:
 private:
     glo::ref_ptr<glo::Program> m_program;
 
-    glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::VertexArray> m_vao;
     glo::ref_ptr<glo::Buffer> m_buffer;
 
     const Camera * m_camera;

@@ -7,7 +7,7 @@
 
 #include <globjects-base/ref_ptr.h>
 
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/Program.h>
 #include <globjects/Buffer.h>
 
@@ -47,7 +47,7 @@ protected:
     Camera& m_camera;
     CameraPath m_path;
     std::vector<PathSection> m_sections;
-    glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::VertexArray> m_vao;
     glo::ref_ptr<glo::Program> m_program;
     glo::ref_ptr<glo::Buffer> m_buffer;
     int m_bufferSize;

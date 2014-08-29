@@ -13,7 +13,7 @@
 
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/logging.h>
 
@@ -237,7 +237,7 @@ void CameraPathPlayer::createVao()
 
     m_buffer->setData(array);
 
-    m_vao = new glo::VertexArrayObject();
+    m_vao = new glo::VertexArray();
 
     m_vao->binding(0)->setBuffer(m_buffer, 0, sizeof(vec4));
     m_vao->binding(0)->setFormat(4, gl::GL_FLOAT);

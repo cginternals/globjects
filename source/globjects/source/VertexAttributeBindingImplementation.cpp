@@ -5,7 +5,7 @@
 #include <glbinding/gl/functions.h>
 
 #include <globjects/Buffer.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
 namespace glo {
@@ -30,7 +30,7 @@ gl::GLint VertexAttributeBindingImplementation::bindingIndex() const
     return m_binding->m_bindingIndex;
 }
 
-const VertexArrayObject* VertexAttributeBindingImplementation::vao() const
+const VertexArray* VertexAttributeBindingImplementation::vao() const
 {
     return m_binding->m_vao;
 }

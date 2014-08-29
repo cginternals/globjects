@@ -18,7 +18,7 @@ class Shader;
 class Sync;
 class Texture;
 class TransformFeedback;
-class VertexArrayObject;
+class VertexArray;
 class AbstractUniform;
 template <typename T>
 class Uniform;
@@ -34,7 +34,7 @@ GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Samp
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Shader * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Texture * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const TransformFeedback * object);
-GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const VertexArrayObject * object);
+GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const VertexArray * object);
 
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Sync * sync);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const AbstractUniform * uniform);

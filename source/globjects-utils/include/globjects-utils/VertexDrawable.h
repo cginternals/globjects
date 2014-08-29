@@ -11,7 +11,7 @@
 #include <globjects-base/ref_ptr.h>
 #include <globjects-base/Referenced.h>
 
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
 
@@ -68,7 +68,7 @@ public:
 
     void draw() const;
 protected:
-    glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::VertexArray> m_vao;
     glo::ref_ptr<glo::Buffer> m_vbo;
     std::vector<gl::GLint> m_attributeIndices;
     std::vector<AttributeFormat> m_formats;
@@ -84,7 +84,7 @@ GLOBJECTS_UTILS_API VertexDrawable::AttributeFormat FormatL(gl::GLint size, gl::
 
 template <typename T>
 VertexDrawable::VertexDrawable(const std::vector<T> & vertices, gl::GLenum primitiveMode)
-: m_vao(new glo::VertexArrayObject)
+: m_vao(new glo::VertexArray)
 , m_vbo(new glo::Buffer)
 , m_baseOffset(0)
 , m_stride(sizeof(T))
@@ -96,7 +96,7 @@ VertexDrawable::VertexDrawable(const std::vector<T> & vertices, gl::GLenum primi
 
 template <typename T, std::size_t Count>
 VertexDrawable::VertexDrawable(const std::array<T, Count> & vertices, gl::GLenum primitiveMode)
-: m_vao(new glo::VertexArrayObject)
+: m_vao(new glo::VertexArray)
 , m_vbo(new glo::Buffer)
 , m_baseOffset(0)
 , m_stride(sizeof(T))

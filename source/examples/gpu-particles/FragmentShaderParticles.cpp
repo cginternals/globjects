@@ -2,7 +2,7 @@
 #include <glbinding/gl/gl.h>
 
 #include <globjects/Program.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
 
@@ -55,7 +55,7 @@ void FragmentShaderParticles::initialize()
     reset();
 
     // Create empty vertex array object
-    m_vao = new VertexArrayObject();
+    m_vao = new VertexArray();
 
     // Create frame buffer object for update
     m_fboUpdate = new Framebuffer();

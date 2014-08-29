@@ -12,7 +12,7 @@ namespace glo
 {
 
 class Buffer;
-class VertexArrayObject;
+class VertexArray;
 class VertexAttributeBindingImplementation;
 
 class GLOBJECTS_API VertexAttributeBinding : public Referenced
@@ -21,11 +21,11 @@ class GLOBJECTS_API VertexAttributeBinding : public Referenced
 
 public:
 	VertexAttributeBinding(
-        VertexArrayObject * vao
+        VertexArray * vao
     ,   const gl::GLint bindingIndex);
 
-    const VertexArrayObject * vao() const;
-    VertexArrayObject * vao();
+    const VertexArray * vao() const;
+    VertexArray * vao();
 
 	void setAttribute(gl::GLint attributeIndex);
 	void setBuffer(
@@ -54,7 +54,7 @@ public:
 protected:
     ~VertexAttributeBinding();
 
-    VertexArrayObject * m_vao; // TODO: weak_ptr?
+    VertexArray * m_vao; // TODO: weak_ptr?
    
     gl::GLint m_bindingIndex;
     gl::GLint m_attributeIndex;

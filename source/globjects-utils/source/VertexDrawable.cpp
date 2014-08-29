@@ -40,7 +40,7 @@ void VertexDrawable::AttributeFormat::setTo(glo::VertexAttributeBinding * bindin
 }
 
 VertexDrawable::VertexDrawable(gl::GLenum primitiveMode)
-: m_vao(new glo::VertexArrayObject)
+: m_vao(new glo::VertexArray)
 , m_baseOffset(0)
 , m_stride(0)
 , m_size(0)
@@ -49,7 +49,7 @@ VertexDrawable::VertexDrawable(gl::GLenum primitiveMode)
 }
 
 VertexDrawable::VertexDrawable(gl::GLint baseOffset, gl::GLint stride, gl::GLenum primitiveMode)
-: m_vao(new glo::VertexArrayObject)
+: m_vao(new glo::VertexArray)
 , m_baseOffset(baseOffset)
 , m_stride(stride)
 , m_size(0)
@@ -58,7 +58,7 @@ VertexDrawable::VertexDrawable(gl::GLint baseOffset, gl::GLint stride, gl::GLenu
 }
 
 VertexDrawable::VertexDrawable(glo::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size, gl::GLenum primitiveMode)
-: m_vao(new glo::VertexArrayObject)
+: m_vao(new glo::VertexArray)
 , m_vbo(vbo)
 , m_baseOffset(baseOffset)
 , m_stride(stride)

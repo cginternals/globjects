@@ -5,7 +5,7 @@
 
 #include <globjects/Object.h>
 #include <globjects/Framebuffer.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 
 namespace glo 
 {
@@ -67,11 +67,11 @@ Framebuffer * ObjectRegistry::defaultFBO()
     return m_defaultFBO;
 }
 
-VertexArrayObject * ObjectRegistry::defaultVAO()
+VertexArray * ObjectRegistry::defaultVAO()
 {
     if (m_defaultVAO == nullptr)
     {
-        m_defaultVAO = VertexArrayObject::fromId(0);
+        m_defaultVAO = VertexArray::fromId(0);
         m_defaultVAO->ref();
     }
 

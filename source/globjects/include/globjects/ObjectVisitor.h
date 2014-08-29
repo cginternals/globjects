@@ -14,7 +14,7 @@ class Sampler;
 class Shader;
 class Texture;
 class TransformFeedback;
-class VertexArrayObject;
+class VertexArray;
 
 
 /** \brief Implements a Visitor Pattern to iterate over all tracked globjects objects.
@@ -39,7 +39,7 @@ public:
 	virtual void visitShader(Shader * shader);
 	virtual void visitTexture(Texture * texture);
 	virtual void visitTransformFeedback(TransformFeedback * transformfeedback);
-	virtual void visitVertexArrayObject(VertexArrayObject * vao);
+	virtual void visitVertexArray(VertexArray * vao);
 };
 
 } // namespace glo

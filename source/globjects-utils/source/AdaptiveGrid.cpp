@@ -13,7 +13,7 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
 #include <globjects-utils/Plane3.h>
@@ -126,7 +126,7 @@ AdaptiveGrid::AdaptiveGrid(
 
     setupGridLineBuffer(segments);
 
-    m_vao = new VertexArrayObject;
+    m_vao = new VertexArray;
     auto binding = m_vao->binding(0);
 
     binding->setAttribute(0);

@@ -23,7 +23,7 @@
 #include <globjects/Sync.h>
 #include <globjects/Texture.h>
 #include <globjects/TransformFeedback.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/logging.h>
 #include <globjects/DebugMessage.h>
 
@@ -79,8 +79,8 @@ public:
         glo::ref_ptr<glo::TransformFeedback> tf(new glo::TransformFeedback());
         std::cout << "glo::TransformFeedback = "; glo::info() << tf.get();
 
-        glo::ref_ptr<glo::VertexArrayObject> vao(new glo::VertexArrayObject());
-        std::cout << "glo::VertexArrayObject = "; glo::info() << vao.get();
+        glo::ref_ptr<glo::VertexArray> vao(new glo::VertexArray());
+        std::cout << "glo::VertexArray = "; glo::info() << vao.get();
 
         glo::ref_ptr<glo::Uniform<float>> uniform(new glo::Uniform<float>("Pi", 3.14f));
         std::cout << "glo::Uniform = "; glo::info() << uniform.get();

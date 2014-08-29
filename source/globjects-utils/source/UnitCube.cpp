@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
 
@@ -58,7 +58,7 @@ const std::array<glm::vec3, 28> UnitCube::strip()
 
 UnitCube::UnitCube(const gl::GLuint vertexAttribLocation, const gl::GLuint normalAttribLocation)
 : m_strip(new Buffer())
-, m_vao(new VertexArrayObject)
+, m_vao(new VertexArray)
 {
     m_strip->setData(strip(), gl::GL_STATIC_DRAW);
 

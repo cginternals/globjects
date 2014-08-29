@@ -6,7 +6,7 @@
 #include <globjects-base/StaticStringSource.h>
 
 #include <globjects/Program.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/Texture.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
@@ -112,7 +112,7 @@ void ScreenAlignedQuad::initialize()
 	,	glm::vec2( -1.f, +1.f )
     }};
 
-    m_vao = new VertexArrayObject;
+    m_vao = new VertexArray;
     m_buffer = new Buffer();
     m_buffer->setData(raw, gl::GL_STATIC_DRAW); //needed for some drivers
 

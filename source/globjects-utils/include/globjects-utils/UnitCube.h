@@ -9,7 +9,7 @@
 #include <globjects-base/ref_ptr.h>
 #include <globjects-base/Referenced.h>
 
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 
 #include <globjects-utils/globjects-utils_api.h>
@@ -33,7 +33,7 @@ public:
 
 private:
     glo::ref_ptr<glo::Buffer> m_strip;
-    glo::ref_ptr<glo::VertexArrayObject> m_vao;
+    glo::ref_ptr<glo::VertexArray> m_vao;
 };
 
 } // namespace gloutils

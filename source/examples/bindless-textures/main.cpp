@@ -15,7 +15,7 @@
 #include <globjects/Texture.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
 #include <globjects/Extension.h>

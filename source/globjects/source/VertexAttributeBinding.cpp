@@ -4,7 +4,7 @@
 
 #include <glbinding/Version.h>
 
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/globjects.h>
 
 #include "VertexAttributeBindingImplementation.h"
@@ -13,7 +13,7 @@ namespace glo
 {
 
 VertexAttributeBinding::VertexAttributeBinding(
-    VertexArrayObject * vao
+    VertexArray * vao
 ,   const gl::GLint bindingIndex)
 : m_vao(vao)
 , m_bindingIndex(bindingIndex)
@@ -35,12 +35,12 @@ VertexAttributeBinding::~VertexAttributeBinding()
     delete m_implementation;
 }
 
-const VertexArrayObject * VertexAttributeBinding::vao() const
+const VertexArray * VertexAttributeBinding::vao() const
 {
     return m_vao;
 }
 
-VertexArrayObject * VertexAttributeBinding::vao()
+VertexArray * VertexAttributeBinding::vao()
 {
     return m_vao;
 }
