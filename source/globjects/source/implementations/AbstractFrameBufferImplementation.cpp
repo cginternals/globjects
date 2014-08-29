@@ -1,5 +1,5 @@
 
-#include "AbstractFramebufferImplementation.h"
+#include "AbstractFrameBufferImplementation.h"
 
 #include <glbinding/gl/enum.h>
 

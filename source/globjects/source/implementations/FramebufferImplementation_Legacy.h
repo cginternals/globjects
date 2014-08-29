@@ -2,7 +2,7 @@
 
 #include <globjects-base/Singleton.h>
 
-#include "AbstractFramebufferImplementation.h"
+#include "AbstractFrameBufferImplementation.h"
 
 
 namespace glo

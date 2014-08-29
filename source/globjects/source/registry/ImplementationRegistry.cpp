@@ -4,7 +4,7 @@
 
 #include "../implementations/AbstractUniformImplementation.h"
 #include "../implementations/AbstractBufferImplementation.h"
-#include "../implementations/AbstractFramebufferImplementation.h"
+#include "../implementations/AbstractFrameBufferImplementation.h"
 #include "../implementations/AbstractDebugImplementation.h"
 #include "../implementations/AbstractProgramBinaryImplementation.h"
 #include "../implementations/AbstractShadingLanguageIncludeImplementation.h"
