@@ -70,8 +70,8 @@ set(sources
 	${source_path}/DebugInfo.cpp
 	${source_path}/DebugMessage.cpp
 	${source_path}/Error.cpp
-	${source_path}/FrameBufferAttachment.cpp
-	${source_path}/FrameBufferObject.cpp
+	${source_path}/FramebufferAttachment.cpp
+	${source_path}/Framebuffer.cpp
 	${source_path}/glbindinglogging.cpp
 	${source_path}/glmlogging.cpp
 	${source_path}/globjects.cpp
@@ -100,8 +100,8 @@ set(sources
 	${source_path}/implementations/DebugImplementation_Legacy.cpp
 	${source_path}/implementations/DebugImplementation_Legacy.h
 
-	${source_path}/implementations/AbstractFrameBufferImplementation.cpp
-	${source_path}/implementations/AbstractFrameBufferImplementation.h
+	${source_path}/implementations/AbstractFramebufferImplementation.cpp
+	${source_path}/implementations/AbstractFramebufferImplementation.h
 	${source_path}/implementations/FramebufferImplementation_DirectStateAccessARB.cpp
 	${source_path}/implementations/FramebufferImplementation_DirectStateAccessARB.h
 	${source_path}/implementations/FramebufferImplementation_DirectStateAccessEXT.cpp
@@ -185,8 +185,8 @@ set(api_includes
 	${include_path}/DebugMessage.h
 	${include_path}/Error.h
 	${include_path}/Extension.h
-	${include_path}/FrameBufferAttachment.h
-	${include_path}/FrameBufferObject.h
+	${include_path}/FramebufferAttachment.h
+	${include_path}/Framebuffer.h
 	${include_path}/glbindinglogging.h
 	${include_path}/glmlogging.h
 	${include_path}/globjects_api.h

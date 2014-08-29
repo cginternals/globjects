@@ -17,7 +17,7 @@
 namespace glo 
 {
 
-class FrameBufferAttachment;
+class FramebufferAttachment;
 class RenderBufferObject;
 class Texture;
 class Buffer;
@@ -42,7 +42,7 @@ class Buffer;
     \see TextureAttachment
     \see RenderBufferAttachment
  */
-class GLOBJECTS_API FrameBufferObject : public Object
+class GLOBJECTS_API Framebuffer : public Object
 {
 public:
     enum class BindlessImplementation
@@ -55,10 +55,10 @@ public:
     static void hintBindlessImplementation(BindlessImplementation impl);
 
 public:
-	FrameBufferObject();
-    static FrameBufferObject * fromId(gl::GLuint id);
+	Framebuffer();
+    static Framebuffer * fromId(gl::GLuint id);
 
-    static FrameBufferObject * defaultFBO();
+    static Framebuffer * defaultFBO();
 
     virtual void accept(ObjectVisitor& visitor) override;
 
@@ -109,24 +109,24 @@ public:
     std::string statusString() const;
     void printStatus(bool onlyErrors = false) const;
 
-    FrameBufferAttachment * getAttachment(gl::GLenum attachment);
-    std::vector<FrameBufferAttachment*> attachments();
+    FramebufferAttachment * getAttachment(gl::GLenum attachment);
+    std::vector<FramebufferAttachment*> attachments();
 
-    void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, gl::GLenum drawBuffer, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const;
-    void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<gl::GLenum> & drawBuffers, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const;
+    void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, Framebuffer * destFbo, gl::GLenum drawBuffer, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const;
+    void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, Framebuffer * destFbo, const std::vector<gl::GLenum> & drawBuffers, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const;
 
     virtual gl::GLenum objectType() const override;
 
 protected:
-    FrameBufferObject(IDResource * resource);
-    virtual ~FrameBufferObject();
+    Framebuffer(IDResource * resource);
+    virtual ~Framebuffer();
 
-    void addAttachment(FrameBufferAttachment * attachment);
+    void addAttachment(FramebufferAttachment * attachment);
 
     static void blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::ClearBufferMask mask, gl::GLenum filter);
     static void blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter);
 protected:
-	std::map<gl::GLenum, ref_ptr<FrameBufferAttachment>> m_attachments;
+	std::map<gl::GLenum, ref_ptr<FramebufferAttachment>> m_attachments;
 };
 
 } // namespace glo

@@ -3,7 +3,7 @@
 
 #include <globjects/Program.h>
 #include <globjects/VertexArrayObject.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
 
 #include <globjects-utils/Camera.h>
@@ -58,7 +58,7 @@ void FragmentShaderParticles::initialize()
     m_vao = new VertexArrayObject();
 
     // Create frame buffer object for update
-    m_fboUpdate = new FrameBufferObject();
+    m_fboUpdate = new Framebuffer();
     m_fboUpdate->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_texPositions);
     m_fboUpdate->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_texVelocities);
     m_fboUpdate->setDrawBuffers({gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1});
@@ -73,7 +73,7 @@ void FragmentShaderParticles::initialize()
     m_quadUpdate->program()->setUniform("forces",     2);
 
     // Create frame buffer object for rendering
-    m_fbo = new FrameBufferObject();
+    m_fbo = new Framebuffer();
 
     m_colorBuffer = new Texture(gl::GL_TEXTURE_2D);
     m_colorBuffer->setParameter(gl::GL_TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));

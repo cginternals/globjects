@@ -13,7 +13,7 @@ namespace glo
 
 class TextureAttachment;
 class RenderBufferAttachment;
-class FrameBufferObject;
+class Framebuffer;
 
 /** \brief Wraps attachments to a FrameBufferObject.
     
@@ -23,10 +23,10 @@ class FrameBufferObject;
     \see TextureAttachment
     \see RenderBufferAttachment
 */
-class GLOBJECTS_API FrameBufferAttachment : public Referenced
+class GLOBJECTS_API FramebufferAttachment : public Referenced
 {
 public:
-    FrameBufferAttachment(FrameBufferObject * fbo, gl::GLenum attachment);
+    FramebufferAttachment(Framebuffer * fbo, gl::GLenum attachment);
 
 	gl::GLenum attachment() const;
 
@@ -43,7 +43,7 @@ public:
 	std::string attachmentString() const;
 
 protected:
-    FrameBufferObject * m_fbo;
+    Framebuffer * m_fbo;
 	gl::GLenum m_attachment;
 };
 

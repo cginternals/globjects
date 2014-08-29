@@ -3,13 +3,13 @@
 #include <globjects-base/ref_ptr.h>
 
 #include <globjects/globjects_api.h>
-#include <globjects/FrameBufferAttachment.h>
+#include <globjects/FramebufferAttachment.h>
 #include <globjects/RenderBufferObject.h>
 
 namespace glo 
 {
 
-class FrameBufferObject;
+class Framebuffer;
 
 /** \brief Wrapper of render buffer attachments of a frame buffer object.
     
@@ -19,10 +19,10 @@ class FrameBufferObject;
     \see RenderBufferObject
     \see FrameBufferObject
  */
-class GLOBJECTS_API RenderBufferAttachment : public FrameBufferAttachment
+class GLOBJECTS_API RenderBufferAttachment : public FramebufferAttachment
 {
 public:
-    RenderBufferAttachment(FrameBufferObject * fbo,  gl::GLenum attachment, RenderBufferObject * renderBuffer);
+    RenderBufferAttachment(Framebuffer * fbo,  gl::GLenum attachment, RenderBufferObject * renderBuffer);
 
     virtual bool isRenderBufferAttachment() const override;
 	RenderBufferObject * renderBuffer();

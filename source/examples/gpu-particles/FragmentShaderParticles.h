@@ -9,7 +9,7 @@ namespace glo
     class Program;
     class Texture;
     class VertexArrayObject;
-    class FrameBufferObject;
+    class Framebuffer;
 }
 namespace gloutils
 {
@@ -43,12 +43,12 @@ protected:
     int                                         m_height;
 
     // Update of particles
-    glo::ref_ptr<glo::FrameBufferObject>      m_fboUpdate;
+    glo::ref_ptr<glo::Framebuffer>      m_fboUpdate;
     glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quadUpdate;
 
     // Rendering
     glo::ref_ptr<glo::VertexArrayObject>      m_vao;
-    glo::ref_ptr<glo::FrameBufferObject>      m_fbo;
+    glo::ref_ptr<glo::Framebuffer>      m_fbo;
     glo::ref_ptr<glo::Texture>                m_colorBuffer;
     glo::ref_ptr<glo::Program>                m_drawProgram;
     glo::ref_ptr<gloutils::ScreenAlignedQuad> m_clear;

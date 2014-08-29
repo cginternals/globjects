@@ -3,7 +3,7 @@
 #include <glbinding/gl/gl.h>
 
 #include <globjects/Program.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
 #include <globjects/RenderBufferObject.h>
 #include <globjects/Buffer.h>
@@ -31,7 +31,7 @@ void WeightedAverageAlgorithm::initialize(const std::string & transparencyShader
 
     m_depthComplexityBuffer = new glo::Buffer();
 
-    m_renderFbo = new glo::FrameBufferObject();
+    m_renderFbo = new glo::Framebuffer();
     m_renderFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_opaqueBuffer);
     m_renderFbo->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_accumulationBuffer);
     m_renderFbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depthBuffer);
@@ -40,7 +40,7 @@ void WeightedAverageAlgorithm::initialize(const std::string & transparencyShader
 	m_quad = new gloutils::ScreenAlignedQuad(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath + "wavg_post.frag"));
 
     m_colorBuffer = createColorTex();
-    m_postFbo = new glo::FrameBufferObject;
+    m_postFbo = new glo::Framebuffer;
     m_postFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer);
     m_postFbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 }

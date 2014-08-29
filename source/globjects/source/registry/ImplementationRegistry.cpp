@@ -4,7 +4,7 @@
 
 #include "../implementations/AbstractUniformImplementation.h"
 #include "../implementations/AbstractBufferImplementation.h"
-#include "../implementations/AbstractFrameBufferImplementation.h"
+#include "../implementations/AbstractFramebufferImplementation.h"
 #include "../implementations/AbstractDebugImplementation.h"
 #include "../implementations/AbstractProgramBinaryImplementation.h"
 #include "../implementations/AbstractShadingLanguageIncludeImplementation.h"
@@ -61,7 +61,7 @@ void ImplementationRegistry::initialize(const Buffer::BindlessImplementation imp
     m_bufferImplementation = AbstractBufferImplementation::get(impl);
 }
 
-void ImplementationRegistry::initialize(const FrameBufferObject::BindlessImplementation impl)
+void ImplementationRegistry::initialize(const Framebuffer::BindlessImplementation impl)
 {
     m_framebufferImplementation = AbstractFramebufferImplementation::get(impl);
 }

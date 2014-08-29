@@ -6,7 +6,7 @@
 #include <globjects/Program.h>
 #include <globjects/Buffer.h>
 #include <globjects/Texture.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 
 #include <globjects-utils/ScreenAlignedQuad.h>
 
@@ -39,7 +39,7 @@ protected:
 
     glo::ref_ptr<glo::VertexArrayObject> m_vao;
 
-    glo::ref_ptr<glo::FrameBufferObject> m_fbo;
+    glo::ref_ptr<glo::Framebuffer> m_fbo;
     glo::ref_ptr<glo::Texture> m_color;
 
     glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;

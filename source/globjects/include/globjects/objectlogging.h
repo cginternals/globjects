@@ -9,7 +9,7 @@ namespace glo
 
 class Object;
 class Buffer;
-class FrameBufferObject;
+class Framebuffer;
 class Program;
 class Query;
 class RenderBufferObject;
@@ -26,7 +26,7 @@ class Version;
 
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Object * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Buffer * object);
-GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const FrameBufferObject * object);
+GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Framebuffer * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Program * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Query * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const RenderBufferObject * object);

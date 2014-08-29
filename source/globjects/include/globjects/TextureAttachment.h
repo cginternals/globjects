@@ -5,13 +5,13 @@
 #include <globjects-base/ref_ptr.h>
 
 #include <globjects/globjects_api.h>
-#include <globjects/FrameBufferAttachment.h>
+#include <globjects/FramebufferAttachment.h>
 #include <globjects/Texture.h>
 
 namespace glo 
 {
 
-class FrameBufferObject;
+class Framebuffer;
 
 /** \brief Encapsulates texture attachments of a frame buffer object.
     
@@ -20,10 +20,10 @@ class FrameBufferObject;
     \see Texture
     \see FrameBufferObject
  */
-class GLOBJECTS_API TextureAttachment : public FrameBufferAttachment
+class GLOBJECTS_API TextureAttachment : public FramebufferAttachment
 {
 public:
-    TextureAttachment(FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer = -1);
+    TextureAttachment(Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer = -1);
 
     virtual bool isTextureAttachment() const override;
 	Texture * texture();

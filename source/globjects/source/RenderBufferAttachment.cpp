@@ -7,8 +7,8 @@
 namespace glo
 {
 
-RenderBufferAttachment::RenderBufferAttachment(FrameBufferObject * fbo,  gl::GLenum attachment, RenderBufferObject * renderBuffer)
-: FrameBufferAttachment(fbo, attachment)
+RenderBufferAttachment::RenderBufferAttachment(Framebuffer * fbo,  gl::GLenum attachment, RenderBufferObject * renderBuffer)
+: FramebufferAttachment(fbo, attachment)
 , m_renderBuffer(renderBuffer)
 {
 }

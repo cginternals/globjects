@@ -9,7 +9,7 @@
 #include <globjects/VertexArrayObject.h>
 #include <globjects/VertexAttributeBinding.h>
 
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
 #include <globjects/RenderBufferObject.h>
 
@@ -98,7 +98,7 @@ void ComputeShaderParticles::initialize()
 
     // setup fbo
 
-    m_fbo = new FrameBufferObject();
+    m_fbo = new Framebuffer();
 
     m_color = new Texture(gl::GL_TEXTURE_2D);
     m_color->setParameter(gl::GL_TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));

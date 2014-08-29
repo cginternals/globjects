@@ -4,7 +4,7 @@
 #include <cassert>
 
 #include <globjects/Object.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/VertexArrayObject.h>
 
 namespace glo 
@@ -56,11 +56,11 @@ void ObjectRegistry::deregisterObject(Object * object)
     m_objects.erase(object);
 }
 
-FrameBufferObject * ObjectRegistry::defaultFBO()
+Framebuffer * ObjectRegistry::defaultFBO()
 {
     if (m_defaultFBO == nullptr)
     {
-        m_defaultFBO = FrameBufferObject::fromId(0);
+        m_defaultFBO = Framebuffer::fromId(0);
         m_defaultFBO->ref();
     }
 

@@ -3,7 +3,7 @@
 #include <glbinding/gl/gl.h>
 
 #include <globjects/Program.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
 #include <globjects/RenderBufferObject.h>
 #include <globjects/Buffer.h>
@@ -49,7 +49,7 @@ void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath
     m_opaqueBuffer = createColorTex();
     m_depthBuffer = new glo::RenderBufferObject();
 
-    m_renderFbo = new glo::FrameBufferObject();
+    m_renderFbo = new glo::Framebuffer();
     m_renderFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_opaqueBuffer.get());
     m_renderFbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depthBuffer.get());
     m_renderFbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
@@ -66,7 +66,7 @@ void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath
 	m_quad = new gloutils::ScreenAlignedQuad(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, transparencyShaderFilePath +  "abuffer_post.frag"));
 
     m_colorBuffer = createColorTex();
-    m_postFbo = new glo::FrameBufferObject;
+    m_postFbo = new glo::Framebuffer;
     m_postFbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer.get());
     m_postFbo->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 }
@@ -116,7 +116,7 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* 
 }
 
 void ABufferAlgorithm::resize(int width, int height) {
-    int depthBits = glo::FrameBufferObject::defaultFBO()->getAttachmentParameter(gl::GL_DEPTH, gl::GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
+    int depthBits = glo::Framebuffer::defaultFBO()->getAttachmentParameter(gl::GL_DEPTH, gl::GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
     m_opaqueBuffer->image2D(0, gl::GL_RGBA32F, width, height, 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
     m_depthBuffer->storage(depthBits == 16 ? gl::GL_DEPTH_COMPONENT16 : gl::GL_DEPTH_COMPONENT, width, height);
     m_linkedListBuffer->setData(static_cast<gl::GLsizei>(width * height * ABUFFER_SIZE * sizeof(ABufferEntry)), nullptr, gl::GL_DYNAMIC_DRAW);

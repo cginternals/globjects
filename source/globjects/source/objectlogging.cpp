@@ -2,7 +2,7 @@
 
 #include <globjects/Object.h>
 #include <globjects/Buffer.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/Program.h>
 #include <globjects/Query.h>
 #include <globjects/RenderBufferObject.h>
@@ -37,7 +37,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const Buffer * object)
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const FrameBufferObject * object)
+LogMessageBuilder operator<<(LogMessageBuilder builder, const Framebuffer * object)
 {
     logObject(builder, object, "FrameBufferObject");
     return builder;

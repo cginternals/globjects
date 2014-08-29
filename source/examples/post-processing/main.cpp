@@ -17,7 +17,7 @@
 #include <globjects/Buffer.h>
 #include <globjects/logging.h>
 #include <globjects/VertexArrayObject.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/RenderBufferObject.h>
 #include <globjects/Texture.h>
 #include <globjects/DebugMessage.h>
@@ -69,7 +69,7 @@ public:
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-        m_fbo = new glo::FrameBufferObject();
+        m_fbo = new glo::Framebuffer();
 
         m_normal = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
         m_geom = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
@@ -133,7 +133,7 @@ public:
 		m_normal->image2D(0, gl::GL_RGBA32F, width, height, 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
 		m_geom->image2D(0, gl::GL_RGBA32F, width, height, 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
 
-        int result = glo::FrameBufferObject::defaultFBO()->getAttachmentParameter(gl::GL_DEPTH, gl::GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
+        int result = glo::Framebuffer::defaultFBO()->getAttachmentParameter(gl::GL_DEPTH, gl::GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
         m_depth->storage(result == 16 ? gl::GL_DEPTH_COMPONENT16 : gl::GL_DEPTH_COMPONENT, width, height);
 	}
 
@@ -212,7 +212,7 @@ protected:
 
     glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
 
-    glo::ref_ptr<glo::FrameBufferObject> m_fbo;
+    glo::ref_ptr<glo::Framebuffer> m_fbo;
     glo::ref_ptr<glo::Texture> m_normal;
     glo::ref_ptr<glo::Texture> m_geom;
     glo::ref_ptr<glo::RenderBufferObject> m_depth;

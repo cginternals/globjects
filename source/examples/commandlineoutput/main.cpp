@@ -17,7 +17,7 @@
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
 #include <globjects/Query.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/RenderBufferObject.h>
 #include <globjects/Sampler.h>
 #include <globjects/Sync.h>
@@ -56,7 +56,7 @@ public:
         glo::ref_ptr<glo::Buffer> buffer(new glo::Buffer());
         std::cout << "glo::Buffer = "; glo::info() << buffer.get();
 
-        std::cout << "glo::FrameBufferObject = "; glo::info() << glo::FrameBufferObject::defaultFBO();
+        std::cout << "glo::FrameBufferObject = "; glo::info() << glo::Framebuffer::defaultFBO();
 
         glo::ref_ptr<glo::Program> program(new glo::Program());
         std::cout << "glo::Program = "; glo::info() << program.get();

@@ -6,7 +6,7 @@ namespace glo
 {
 class Object;
 class Buffer;
-class FrameBufferObject;
+class Framebuffer;
 class Program;
 class Query;
 class RenderBufferObject;
@@ -31,7 +31,7 @@ public:
 	virtual void visit(Object * object);
 
 	virtual void visitBuffer(Buffer * buffer);
-	virtual void visitFrameBufferObject(FrameBufferObject * fbo);
+	virtual void visitFrameBufferObject(Framebuffer * fbo);
 	virtual void visitProgram(Program * program);
 	virtual void visitQuery(Query * query);
 	virtual void visitRenderBufferObject(RenderBufferObject * rbo);

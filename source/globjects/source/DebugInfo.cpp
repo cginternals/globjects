@@ -15,7 +15,7 @@
 
 #include <globjects/Object.h>
 #include <globjects/Buffer.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/Program.h>
 #include <globjects/Query.h>
 #include <globjects/RenderBufferObject.h>
@@ -174,14 +174,14 @@ void DebugInfo::visitBuffer(Buffer* buffer)
 	addInfo("Buffers", info);
 }
 
-void DebugInfo::visitFrameBufferObject(FrameBufferObject* fbo)
+void DebugInfo::visitFrameBufferObject(Framebuffer* fbo)
 {
     assert(fbo != nullptr);
 
 	InfoUnit info;
 	info.name = name("FrameBufferObject", fbo);
 
-	for (FrameBufferAttachment* attachment: fbo->attachments())
+	for (FramebufferAttachment* attachment: fbo->attachments())
 	{
 		std::string objectName;
 		if (attachment->isTextureAttachment())

@@ -3,7 +3,7 @@
 #include "AbstractTransparencyAlgorithm.h"
 
 #include <globjects/Buffer.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/Program.h>
 #include <globjects/Texture.h>
 #include <globjects/RenderBufferObject.h>
@@ -38,11 +38,11 @@ private:
     glo::ref_ptr<glo::Texture> m_opaqueBuffer;
     glo::ref_ptr<glo::Texture> m_accumulationBuffer;
     glo::ref_ptr<glo::RenderBufferObject> m_depthBuffer;
-    glo::ref_ptr<glo::FrameBufferObject> m_renderFbo;
+    glo::ref_ptr<glo::Framebuffer> m_renderFbo;
     glo::ref_ptr<glo::Buffer> m_depthComplexityBuffer;
 
     // post processing pass
     glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
-    glo::ref_ptr<glo::FrameBufferObject> m_postFbo;
+    glo::ref_ptr<glo::Framebuffer> m_postFbo;
     glo::ref_ptr<glo::Texture> m_colorBuffer;
 };

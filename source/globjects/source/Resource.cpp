@@ -5,7 +5,7 @@
 #include "registry/ImplementationRegistry.h"
 
 #include "implementations/AbstractBufferImplementation.h"
-#include "implementations/AbstractFrameBufferImplementation.h"
+#include "implementations/AbstractFramebufferImplementation.h"
 
 
 namespace 

@@ -26,7 +26,7 @@ void ObjectVisitor::visitBuffer(Buffer* /*buffer*/)
 {
 }
 
-void ObjectVisitor::visitFrameBufferObject(FrameBufferObject* /*fbo*/)
+void ObjectVisitor::visitFrameBufferObject(Framebuffer* /*fbo*/)
 {
 }
 

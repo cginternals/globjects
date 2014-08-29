@@ -3,7 +3,7 @@
 #include "AbstractTransparencyAlgorithm.h"
 
 #include <globjects/Program.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/RenderBufferObject.h>
 #include <globjects/Texture.h>
 
@@ -24,7 +24,7 @@ public:
 
 private:
     glo::ref_ptr<glo::Program> m_program;
-    glo::ref_ptr<glo::FrameBufferObject> m_fbo;
+    glo::ref_ptr<glo::Framebuffer> m_fbo;
     glo::ref_ptr<glo::Texture> m_colorTex;
     glo::ref_ptr<glo::RenderBufferObject> m_depthBuffer;
 };

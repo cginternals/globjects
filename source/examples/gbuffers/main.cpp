@@ -6,7 +6,7 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/VertexArrayObject.h>
 #include <globjects/DebugMessage.h>
 #include <globjects/Texture.h>
@@ -84,7 +84,7 @@ public:
         m_normalTexture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
         m_geometryTexture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
 
-        m_sphereFBO = new glo::FrameBufferObject;
+        m_sphereFBO = new glo::Framebuffer;
         m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorTexture);
         m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_normalTexture);
         m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT2, m_geometryTexture);
@@ -99,7 +99,7 @@ public:
 
         m_postprocessedTexture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
 
-        m_postprocessingFBO = new glo::FrameBufferObject;
+        m_postprocessingFBO = new glo::Framebuffer;
         m_postprocessingFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_postprocessedTexture);
         m_postprocessingFBO->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 
@@ -340,11 +340,11 @@ protected:
     glo::ref_ptr<glo::Texture> m_normalTexture;
     glo::ref_ptr<glo::Texture> m_geometryTexture;
     glo::ref_ptr<glo::Texture> m_depthTexture;
-    glo::ref_ptr<glo::FrameBufferObject> m_sphereFBO;
+    glo::ref_ptr<glo::Framebuffer> m_sphereFBO;
 
     glo::ref_ptr<gloutils::ScreenAlignedQuad> m_postprocessing;
     glo::ref_ptr<glo::Texture> m_postprocessedTexture;
-    glo::ref_ptr<glo::FrameBufferObject> m_postprocessingFBO;
+    glo::ref_ptr<glo::Framebuffer> m_postprocessingFBO;
 
     glo::ref_ptr<gloutils::ScreenAlignedQuad> m_gBufferChoice;
 

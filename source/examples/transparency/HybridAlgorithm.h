@@ -3,7 +3,7 @@
 #include "AbstractTransparencyAlgorithm.h"
 
 #include <globjects/Buffer.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/Program.h>
 #include <globjects/Texture.h>
 #include <globjects/RenderBufferObject.h>
@@ -35,7 +35,7 @@ public:
 
 private:
     // shared
-    glo::ref_ptr<glo::FrameBufferObject> m_prepassFbo;
+    glo::ref_ptr<glo::Framebuffer> m_prepassFbo;
     glo::ref_ptr<glo::RenderBufferObject> m_depthBuffer;
 
     // opaque geometry pass
@@ -52,13 +52,13 @@ private:
 
     // translucent color pass
     glo::ref_ptr<glo::Program> m_colorProgram;
-    glo::ref_ptr<glo::FrameBufferObject> m_colorFbo;
+    glo::ref_ptr<glo::Framebuffer> m_colorFbo;
     glo::ref_ptr<glo::Texture> m_coreBuffer;
     glo::ref_ptr<glo::Texture> m_accumulationBuffer;
     glo::ref_ptr<glo::Buffer> m_depthComplexityBuffer;
 
     // composition pass
-    glo::ref_ptr<glo::FrameBufferObject> m_compositionFbo;
+    glo::ref_ptr<glo::Framebuffer> m_compositionFbo;
     glo::ref_ptr<gloutils::ScreenAlignedQuad> m_compositionQuad;
     glo::ref_ptr<glo::Texture> m_colorBuffer;
 };

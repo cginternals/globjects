@@ -7,7 +7,7 @@
 #include <globjects/Program.h>
 #include <globjects/AbstractUniform.h>
 #include <globjects/Buffer.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 #include <globjects/DebugMessage.h>
 #include <globjects/Object.h>
 
@@ -33,7 +33,7 @@ public:
 
     void initialize(AbstractUniform::BindlessImplementation impl);
     void initialize(Buffer::BindlessImplementation impl);
-    void initialize(FrameBufferObject::BindlessImplementation impl);
+    void initialize(Framebuffer::BindlessImplementation impl);
     void initialize(DebugMessage::Implementation impl);
     void initialize(Program::BinaryImplementation impl);
     void initialize(Shader::IncludeImplementation impl);

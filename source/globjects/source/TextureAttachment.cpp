@@ -7,8 +7,8 @@
 namespace glo
 {
 
-TextureAttachment::TextureAttachment(FrameBufferObject * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer)
-: FrameBufferAttachment(fbo, attachment)
+TextureAttachment::TextureAttachment(Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer)
+: FramebufferAttachment(fbo, attachment)
 , m_texture(texture)
 , m_level(level)
 , m_layer(layer)

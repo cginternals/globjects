@@ -64,7 +64,7 @@ public:
 
 public:
     virtual void visitBuffer(Buffer * buffer) override;
-    virtual void visitFrameBufferObject(FrameBufferObject * fbo) override;
+    virtual void visitFrameBufferObject(Framebuffer * fbo) override;
     virtual void visitProgram(Program * program) override;
     virtual void visitRenderBufferObject(RenderBufferObject * rbo) override;
     virtual void visitSampler(Sampler * sampler) override;

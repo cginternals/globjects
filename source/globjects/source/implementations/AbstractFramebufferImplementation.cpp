@@ -1,5 +1,5 @@
 
-#include "AbstractFrameBufferImplementation.h"
+#include "AbstractFramebufferImplementation.h"
 
 #include <glbinding/gl/enum.h>
 
@@ -25,14 +25,14 @@ AbstractFramebufferImplementation::~AbstractFramebufferImplementation()
 {
 }
 
-AbstractFramebufferImplementation * AbstractFramebufferImplementation::get(const FrameBufferObject::BindlessImplementation impl)
+AbstractFramebufferImplementation * AbstractFramebufferImplementation::get(const Framebuffer::BindlessImplementation impl)
 {
-    if (impl == FrameBufferObject::BindlessImplementation::DirectStateAccessARB
+    if (impl == Framebuffer::BindlessImplementation::DirectStateAccessARB
      && hasExtension(GLextension::GL_ARB_direct_state_access))
     {
         return FramebufferImplementation_DirectStateAccessARB::instance();
     }
-    else if (impl == FrameBufferObject::BindlessImplementation::DirectStateAccessEXT
+    else if (impl == Framebuffer::BindlessImplementation::DirectStateAccessEXT
      && hasExtension(GLextension::GL_EXT_direct_state_access))
     {
         return FramebufferImplementation_DirectStateAccessEXT::instance();
