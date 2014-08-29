@@ -153,7 +153,7 @@ set(sources
 	${source_path}/registry/ImplementationRegistry.h
 	${source_path}/registry/Registry.cpp
 	${source_path}/registry/Registry.h
-	${source_path}/RenderBufferAttachment.cpp
+	${source_path}/AttachedRenderbuffer.cpp
 	${source_path}/RenderBufferObject.cpp
 	${source_path}/Resource.cpp
 	${source_path}/Resource.h
@@ -162,7 +162,7 @@ set(sources
 	${source_path}/State.cpp
 	${source_path}/StateSetting.cpp
 	${source_path}/Sync.cpp
-	${source_path}/TextureAttachment.cpp
+	${source_path}/AttachedTexture.cpp
 	${source_path}/Texture.cpp
 	${source_path}/TransformFeedback.cpp
 	${source_path}/UniformBlock.cpp
@@ -204,7 +204,7 @@ set(api_includes
 	${include_path}/Program.h
 	${include_path}/Program.hpp
 	${include_path}/Query.h
-	${include_path}/RenderBufferAttachment.h
+	${include_path}/AttachedRenderbuffer.h
 	${include_path}/RenderBufferObject.h
 	${include_path}/Sampler.h
 	${include_path}/Shader.h
@@ -212,7 +212,7 @@ set(api_includes
 	${include_path}/StateSetting.h
 	${include_path}/StateSetting.hpp
 	${include_path}/Sync.h
-	${include_path}/TextureAttachment.h
+	${include_path}/AttachedTexture.h
 	${include_path}/Texture.h
 	${include_path}/TextureHandle.h
 	${include_path}/TransformFeedback.h

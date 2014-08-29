@@ -41,24 +41,24 @@ std::string FramebufferAttachment::attachmentString() const
     return glo::enumName(m_attachment);
 }
 
-TextureAttachment * FramebufferAttachment::asTextureAttachment()
+AttachedTexture * FramebufferAttachment::asTextureAttachment()
 {
-    return isTextureAttachment() ? reinterpret_cast<TextureAttachment*>(this) : nullptr;
+    return isTextureAttachment() ? reinterpret_cast<AttachedTexture*>(this) : nullptr;
 }
 
-const TextureAttachment * FramebufferAttachment::asTextureAttachment() const
+const AttachedTexture * FramebufferAttachment::asTextureAttachment() const
 {
-    return isTextureAttachment() ? reinterpret_cast<const TextureAttachment*>(this) : nullptr;
+    return isTextureAttachment() ? reinterpret_cast<const AttachedTexture*>(this) : nullptr;
 }
 
-RenderBufferAttachment * FramebufferAttachment::asRenderBufferAttachment()
+AttachedRenderbuffer * FramebufferAttachment::asRenderBufferAttachment()
 {
-    return isRenderBufferAttachment() ? reinterpret_cast<RenderBufferAttachment*>(this) : nullptr;
+    return isRenderBufferAttachment() ? reinterpret_cast<AttachedRenderbuffer*>(this) : nullptr;
 }
 
-const RenderBufferAttachment * FramebufferAttachment::asRenderBufferAttachment() const
+const AttachedRenderbuffer * FramebufferAttachment::asRenderBufferAttachment() const
 {
-    return isRenderBufferAttachment() ? reinterpret_cast<const RenderBufferAttachment*>(this) : nullptr;
+    return isRenderBufferAttachment() ? reinterpret_cast<const AttachedRenderbuffer*>(this) : nullptr;
 }
 
 } // namespace glo

@@ -25,8 +25,8 @@
 #include <globjects/TransformFeedback.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
-#include <globjects/TextureAttachment.h>
-#include <globjects/RenderBufferAttachment.h>
+#include <globjects/AttachedTexture.h>
+#include <globjects/AttachedRenderbuffer.h>
 
 namespace glo
 {
@@ -186,7 +186,7 @@ void DebugInfo::visitFrameBufferObject(Framebuffer* fbo)
 		std::string objectName;
 		if (attachment->isTextureAttachment())
 		{
-            TextureAttachment* textureAttachment = dynamic_cast<TextureAttachment*>(attachment);
+            AttachedTexture* textureAttachment = dynamic_cast<AttachedTexture*>(attachment);
 
             if (textureAttachment != nullptr)
             {
@@ -195,7 +195,7 @@ void DebugInfo::visitFrameBufferObject(Framebuffer* fbo)
 		}
 		else
 		{
-            RenderBufferAttachment* renderBufferAttachment = dynamic_cast<RenderBufferAttachment*>(attachment);
+            AttachedRenderbuffer* renderBufferAttachment = dynamic_cast<AttachedRenderbuffer*>(attachment);
 
             if (renderBufferAttachment != nullptr)
             {

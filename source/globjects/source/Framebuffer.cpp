@@ -9,9 +9,9 @@
 
 #include <globjects/logging.h>
 #include <globjects/ObjectVisitor.h>
-#include <globjects/TextureAttachment.h>
+#include <globjects/AttachedTexture.h>
 #include <globjects/FramebufferAttachment.h>
-#include <globjects/RenderBufferAttachment.h>
+#include <globjects/AttachedRenderbuffer.h>
 #include <globjects/Buffer.h>
 #include <globjects/RenderBufferObject.h>
 #include <globjects/Texture.h>
@@ -101,21 +101,21 @@ void Framebuffer::attachTexture(GLenum attachment, Texture * texture, GLint leve
 {
     implementation().attachTexture(this, attachment, texture, level);
 
-    addAttachment(new TextureAttachment(this, attachment, texture, level));
+    addAttachment(new AttachedTexture(this, attachment, texture, level));
 }
 
 void Framebuffer::attachTextureLayer(GLenum attachment, Texture * texture, GLint level, GLint layer)
 {
     implementation().attachTextureLayer(this, attachment, texture, level, layer);
 
-    addAttachment(new TextureAttachment(this, attachment, texture, level, layer));
+    addAttachment(new AttachedTexture(this, attachment, texture, level, layer));
 }
 
 void Framebuffer::attachRenderBuffer(GLenum attachment, RenderBufferObject * renderBuffer)
 {
     implementation().attachRenderBuffer(this, attachment, renderBuffer);
 
-    addAttachment(new RenderBufferAttachment(this, attachment, renderBuffer));
+    addAttachment(new AttachedRenderbuffer(this, attachment, renderBuffer));
 }
 
 bool Framebuffer::detach(GLenum attachment)
@@ -127,7 +127,7 @@ bool Framebuffer::detach(GLenum attachment)
 
     if (attachmentObject->isTextureAttachment())
     {
-        TextureAttachment * textureAttachment = attachmentObject->asTextureAttachment();
+        AttachedTexture * textureAttachment = attachmentObject->asTextureAttachment();
 
         if (textureAttachment->hasLayer())
         {

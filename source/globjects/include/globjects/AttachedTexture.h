@@ -20,10 +20,10 @@ class Framebuffer;
     \see Texture
     \see FrameBufferObject
  */
-class GLOBJECTS_API TextureAttachment : public FramebufferAttachment
+class GLOBJECTS_API AttachedTexture : public FramebufferAttachment
 {
 public:
-    TextureAttachment(Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer = -1);
+    AttachedTexture(Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer = -1);
 
     virtual bool isTextureAttachment() const override;
 	Texture * texture();

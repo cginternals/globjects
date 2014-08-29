@@ -11,8 +11,8 @@
 namespace glo 
 {
 
-class TextureAttachment;
-class RenderBufferAttachment;
+class AttachedTexture;
+class AttachedRenderbuffer;
 class Framebuffer;
 
 /** \brief Wraps attachments to a FrameBufferObject.
@@ -35,10 +35,10 @@ public:
 	virtual bool isTextureAttachment() const;
 	virtual bool isRenderBufferAttachment() const;
 
-    TextureAttachment * asTextureAttachment();
-    const TextureAttachment * asTextureAttachment() const;
-    RenderBufferAttachment * asRenderBufferAttachment();
-    const RenderBufferAttachment * asRenderBufferAttachment() const;
+    AttachedTexture * asTextureAttachment();
+    const AttachedTexture * asTextureAttachment() const;
+    AttachedRenderbuffer * asRenderBufferAttachment();
+    const AttachedRenderbuffer * asRenderBufferAttachment() const;
 
 	std::string attachmentString() const;
 

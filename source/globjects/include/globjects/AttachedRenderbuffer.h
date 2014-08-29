@@ -19,10 +19,10 @@ class Framebuffer;
     \see RenderBufferObject
     \see FrameBufferObject
  */
-class GLOBJECTS_API RenderBufferAttachment : public FramebufferAttachment
+class GLOBJECTS_API AttachedRenderbuffer : public FramebufferAttachment
 {
 public:
-    RenderBufferAttachment(Framebuffer * fbo,  gl::GLenum attachment, RenderBufferObject * renderBuffer);
+    AttachedRenderbuffer(Framebuffer * fbo,  gl::GLenum attachment, RenderBufferObject * renderBuffer);
 
     virtual bool isRenderBufferAttachment() const override;
 	RenderBufferObject * renderBuffer();
