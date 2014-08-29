@@ -81,11 +81,15 @@ void BufferImplementation_Legacy::copySubData(const Buffer * buffer, Buffer * ot
     glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
 }
 
-void BufferImplementation_Legacy::getParameter(const Buffer * buffer, GLenum pname, GLint * data) const
+GLint BufferImplementation_Legacy::getParameter(const Buffer * buffer, GLenum pname) const
 {
     buffer->bind(s_workingTarget);
 
-    glGetBufferParameteriv(s_workingTarget, pname, data);
+    GLint value = 0;
+
+    glGetBufferParameteriv(s_workingTarget, pname, &value);
+
+    return value;
 }
 
 void BufferImplementation_Legacy::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const

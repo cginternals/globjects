@@ -32,7 +32,7 @@ public:
 
     virtual void copySubData(const Buffer * buffer, Buffer * other, gl::GLintptr readOffset, gl::GLintptr writeOffset, gl::GLsizeiptr size) const = 0;
 
-    virtual void getParameter(const Buffer * buffer, gl::GLenum pname, gl::GLint * data) const = 0;
+    virtual gl::GLint getParameter(const Buffer * buffer, gl::GLenum pname) const = 0;
 
     virtual void clearData(const Buffer * buffer, gl::GLenum internalformat, gl::GLenum format, gl::GLenum type, const void * data) const = 0;
     virtual void clearSubData(const Buffer * buffer, gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data) const = 0;

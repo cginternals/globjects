@@ -59,9 +59,13 @@ void BufferImplementation_DirectStateAccessEXT::copySubData(const Buffer * buffe
     glNamedCopyBufferSubDataEXT(buffer->id(), other->id(), readOffset, writeOffset, size);
 }
 
-void BufferImplementation_DirectStateAccessEXT::getParameter(const Buffer * buffer, GLenum pname, GLint * data) const
+gl::GLint BufferImplementation_DirectStateAccessEXT::getParameter(const Buffer * buffer, GLenum pname) const
 {
-    glGetNamedBufferParameterivEXT(buffer->id(), pname, data);
+    GLint value = 0;
+
+    glGetNamedBufferParameterivEXT(buffer->id(), pname, &value);
+
+    return value;
 }
 
 void BufferImplementation_DirectStateAccessEXT::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const

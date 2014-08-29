@@ -62,9 +62,13 @@ void BufferImplementation_DirectStateAccessARB::copySubData(const Buffer * buffe
     glCopyNamedBufferSubData(buffer->id(), other->id(), readOffset, writeOffset, static_cast<GLsizei>(size));
 }
 
-void BufferImplementation_DirectStateAccessARB::getParameter(const Buffer * buffer, GLenum pname, GLint * data) const
+GLint BufferImplementation_DirectStateAccessARB::getParameter(const Buffer * buffer, GLenum pname) const
 {
-    glGetNamedBufferParameteriv(buffer->id(), pname, data);
+    GLint value = 0;
+
+    glGetNamedBufferParameteriv(buffer->id(), pname, &value);
+
+    return value;
 }
 
 void BufferImplementation_DirectStateAccessARB::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const

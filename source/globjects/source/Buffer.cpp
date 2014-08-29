@@ -122,11 +122,7 @@ void Buffer::setStorage(GLsizeiptr size, const GLvoid * data, MapBufferUsageMask
 
 GLint Buffer::getParameter(GLenum pname) const
 {
-    GLint value = 0;
-
-    implementation().getParameter(this, pname, &value);
-
-    return value;
+    return implementation().getParameter(this, pname);
 }
 
 void Buffer::bindBase(GLenum target, GLuint index) const
