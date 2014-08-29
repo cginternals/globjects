@@ -2,6 +2,9 @@
 
 #include <glbinding/gl/types.h>
 
+#include <globjects/Program.h>
+
+
 namespace glo
 {
 
@@ -14,10 +17,11 @@ public:
     AbstractProgramBinaryImplementation();
     virtual ~AbstractProgramBinaryImplementation();
 
-    static AbstractProgramBinaryImplementation * create();
+    static AbstractProgramBinaryImplementation * get(Program::BinaryImplementation impl =
+        Program::BinaryImplementation::GetProgramBinaryARB);
 
-    virtual bool updateProgramLinkSource(const Program* program) const = 0;
-    virtual ProgramBinary* getProgramBinary(const Program* program) const = 0;
+    virtual bool updateProgramLinkSource(const Program * program) const = 0;
+    virtual ProgramBinary* getProgramBinary(const Program * program) const = 0;
 };
 
 } // namespace glo

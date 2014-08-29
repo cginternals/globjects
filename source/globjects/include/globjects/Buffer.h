@@ -33,6 +33,15 @@ namespace glo
 class GLOBJECTS_API Buffer : public Object
 {
 public:
+    enum class BindlessImplementation
+    {
+        DirectStateAccessARB
+    ,   DirectStateAccessEXT
+    ,   Legacy
+    };
+
+    static void hintBindlessImplementation(BindlessImplementation impl);
+
     /**
      * Sets the target that is used for binding buffers to call state changing OpenGL functions.
      * This has an effect only when GL_EXT_direct_state_access is not available.
@@ -230,6 +239,7 @@ public:
     void clearSubData(gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data = nullptr);
 
     virtual gl::GLenum objectType() const override;
+
 protected:
     /**
      * Creates a buffer with an external id.

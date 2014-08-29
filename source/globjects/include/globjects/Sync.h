@@ -27,6 +27,7 @@ public:
     gl::GLint get(gl::GLenum pname);
 
     gl::GLsync sync() const;
+
 protected:
     gl::GLsync m_sync;
     mutable void * m_objectLabelState;

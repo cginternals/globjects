@@ -5,15 +5,15 @@
 
 #include <globjects/globjects.h>
 
-#include "LegacyBufferImplementation.h"
-#include "BindlessBufferImplementation.h"
-#include "BindlessEXTBufferImplementation.h"
+#include "BufferImplementation_DirectStateAccessARB.h"
+#include "BufferImplementation_DirectStateAccessEXT.h"
+#include "BufferImplementation_Legacy.h"
+
 
 using namespace gl;
 
-namespace glo {
-
-GLenum AbstractBufferImplementation::s_workingTarget = GL_COPY_WRITE_BUFFER;
+namespace glo 
+{
 
 AbstractBufferImplementation::AbstractBufferImplementation()
 {
@@ -23,19 +23,21 @@ AbstractBufferImplementation::~AbstractBufferImplementation()
 {
 }
 
-AbstractBufferImplementation * AbstractBufferImplementation::get()
-{
-    if (hasExtension(GLextension::GL_ARB_direct_state_access))
+AbstractBufferImplementation * AbstractBufferImplementation::get(const Buffer::BindlessImplementation impl)
+{  
+    if (impl == Buffer::BindlessImplementation::DirectStateAccessARB 
+     && hasExtension(GLextension::GL_ARB_direct_state_access))
     {
-        return new BindlessBufferImplementation();
+        return BufferImplementation_DirectStateAccessARB::instance();
     }
-    else if (hasExtension(GLextension::GL_EXT_direct_state_access))
+    else if (impl >= Buffer::BindlessImplementation::DirectStateAccessEXT 
+      && hasExtension(GLextension::GL_EXT_direct_state_access))
     {
-        return new BindlessEXTBufferImplementation();
+        return BufferImplementation_DirectStateAccessEXT::instance();
     }
     else
     {
-        return new LegacyBufferImplementation();
+        return BufferImplementation_Legacy::instance();
     }
 }
 

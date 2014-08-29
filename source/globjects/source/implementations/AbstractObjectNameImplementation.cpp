@@ -23,16 +23,17 @@ AbstractObjectNameImplementation::~AbstractObjectNameImplementation()
 {
 }
 
-AbstractObjectNameImplementation * AbstractObjectNameImplementation::get()
+AbstractObjectNameImplementation * AbstractObjectNameImplementation::get(const Object::NameImplementation impl)
 {
-    //if (hasExtension(GLextension::GL_KHR_debug))
-    //{
-    //    return new ObjectNameImplementation_KHR_debug();
-    //}
-    //else
-    //{
+    if (impl == Object::NameImplementation::DebugKHR
+     && hasExtension(GLextension::GL_KHR_debug))
+    {
+        return new ObjectNameImplementation_KHR_debug();
+    }
+    else
+    {
         return new ObjectNameImplementation_Legacy();
-    //}
+    }
 }
 
 void * AbstractObjectNameImplementation::objectLabelState(const Object * object) const

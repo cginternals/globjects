@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 
 #include <globjects/TextureHandle.h>
+#include <globjects/AbstractUniform.h>
+
 
 namespace glo
 {
@@ -17,7 +19,8 @@ public:
     AbstractUniformImplementation();
     virtual ~AbstractUniformImplementation();
 
-    static AbstractUniformImplementation * get();
+    static AbstractUniformImplementation * get(AbstractUniform::BindlessImplementation impl = 
+        AbstractUniform::BindlessImplementation::SeparateShaderObjectsARB);
 
     virtual void set(const Program * program, gl::GLint location, const float & value) const = 0;
     virtual void set(const Program * program, gl::GLint location, const int & value) const = 0;

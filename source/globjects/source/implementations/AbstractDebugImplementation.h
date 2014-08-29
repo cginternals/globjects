@@ -4,7 +4,8 @@
 
 #include <globjects/DebugMessage.h>
 
-namespace glo {
+namespace glo 
+{
 
 class AbstractDebugImplementation
 {
@@ -12,7 +13,9 @@ public:
     AbstractDebugImplementation();
     virtual ~AbstractDebugImplementation();
 
-    static AbstractDebugImplementation * create();
+    static AbstractDebugImplementation * get(DebugMessage::Implementation impl = 
+        DebugMessage::Implementation::DebugKHR);
+
 
     void setCallback(DebugMessage::Callback callback);
 

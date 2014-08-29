@@ -1,11 +1,15 @@
 #pragma once
 
+#include <globjects-base/Singleton.h>
+
 #include "AbstractUniformImplementation.h"
+
 
 namespace glo
 {
 
-class BindlessUniformImplementation : public AbstractUniformImplementation
+class UniformImplementation_SeparateShaderObjectsARB : public AbstractUniformImplementation
+    , public Singleton<UniformImplementation_SeparateShaderObjectsARB>
 {
 public:
     virtual void set(const Program * program, gl::GLint location, const float & value) const override;

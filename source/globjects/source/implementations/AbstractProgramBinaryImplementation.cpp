@@ -1,11 +1,16 @@
+
 #include "AbstractProgramBinaryImplementation.h"
 
 #include <globjects/globjects.h>
 
-#include "NoProgramBinaryImplementation.h"
-#include "GetProgramBinaryImplementation.h"
+#include "ProgramBinaryImplementation_GetProgramBinaryARB.h"
+#include "ProgramBinaryImplementation_None.h"
 
-namespace glo {
+
+using namespace gl;
+
+namespace glo 
+{
 
 AbstractProgramBinaryImplementation::AbstractProgramBinaryImplementation()
 {
@@ -15,15 +20,16 @@ AbstractProgramBinaryImplementation::~AbstractProgramBinaryImplementation()
 {
 }
 
-AbstractProgramBinaryImplementation * AbstractProgramBinaryImplementation::create()
+AbstractProgramBinaryImplementation * AbstractProgramBinaryImplementation::get(const Program::BinaryImplementation impl)
 {
-    if (hasExtension(gl::GLextension::GL_ARB_get_program_binary))
+    if (impl == Program::BinaryImplementation::GetProgramBinaryARB 
+     && hasExtension(GLextension::GL_ARB_get_program_binary))
     {
-        return new GetProgramBinaryImplementation();
+        return ProgramBinaryImplementation_GetProgramBinaryARB::instance();
     }
     else
     {
-        return new NoProgramBinaryImplementation();
+        return ProgramBinaryImplementation_None::instance();
     }
 }
 

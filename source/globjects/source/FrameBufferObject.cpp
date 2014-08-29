@@ -1,3 +1,4 @@
+
 #include <globjects/FrameBufferObject.h>
 
 #include <cassert>
@@ -19,21 +20,33 @@
 
 #include "registry/ImplementationRegistry.h"
 #include "registry/ObjectRegistry.h"
+
 #include "implementations/AbstractFrameBufferImplementation.h"
 
 #include "Resource.h"
 
-namespace {
 
-const glo::AbstractFrameBufferImplementation & implementation()
+using namespace gl;
+
+namespace 
 {
-    return glo::ImplementationRegistry::current().frameBufferImplementation();
+
+const glo::AbstractFramebufferImplementation & implementation()
+{
+    return glo::ImplementationRegistry::current().framebufferImplementation();
 }
 
 }
+
 
 namespace glo
 {
+
+void FrameBufferObject::hintBindlessImplementation(BindlessImplementation impl)
+{
+    ImplementationRegistry::current().initialize(impl);
+}
+    
 
 FrameBufferObject::FrameBufferObject()
 : Object(new FrameBufferObjectResource)
@@ -45,7 +58,7 @@ FrameBufferObject::FrameBufferObject(IDResource * resource)
 {
 }
 
-FrameBufferObject * FrameBufferObject::fromId(gl::GLuint id)
+FrameBufferObject * FrameBufferObject::fromId(GLuint id)
 {
     return new FrameBufferObject(new ExternalResource(id));
 }
@@ -64,48 +77,48 @@ void FrameBufferObject::accept(ObjectVisitor& visitor)
 	visitor.visitFrameBufferObject(this);
 }
 
-void FrameBufferObject::bind(gl::GLenum target) const
+void FrameBufferObject::bind(GLenum target) const
 {
-    gl::glBindFramebuffer(target, id());
+    glBindFramebuffer(target, id());
 }
 
-void FrameBufferObject::unbind(gl::GLenum target)
+void FrameBufferObject::unbind(GLenum target)
 {
-    gl::glBindFramebuffer(target, 0);
+    glBindFramebuffer(target, 0);
 }
 
-void FrameBufferObject::setParameter(gl::GLenum pname, gl::GLint param)
+void FrameBufferObject::setParameter(GLenum pname, GLint param)
 {
     implementation().setParameter(this, pname, param);
 }
 
-gl::GLint FrameBufferObject::getAttachmentParameter(gl::GLenum attachment, gl::GLenum pname) const
+GLint FrameBufferObject::getAttachmentParameter(GLenum attachment, GLenum pname) const
 {
     return implementation().getAttachmentParameter(this, attachment, pname);
 }
 
-void FrameBufferObject::attachTexture(gl::GLenum attachment, Texture * texture, gl::GLint level)
+void FrameBufferObject::attachTexture(GLenum attachment, Texture * texture, GLint level)
 {
     implementation().attachTexture(this, attachment, texture, level);
 
     addAttachment(new TextureAttachment(this, attachment, texture, level));
 }
 
-void FrameBufferObject::attachTextureLayer(gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer)
+void FrameBufferObject::attachTextureLayer(GLenum attachment, Texture * texture, GLint level, GLint layer)
 {
     implementation().attachTextureLayer(this, attachment, texture, level, layer);
 
     addAttachment(new TextureAttachment(this, attachment, texture, level, layer));
 }
 
-void FrameBufferObject::attachRenderBuffer(gl::GLenum attachment, RenderBufferObject * renderBuffer)
+void FrameBufferObject::attachRenderBuffer(GLenum attachment, RenderBufferObject * renderBuffer)
 {
     implementation().attachRenderBuffer(this, attachment, renderBuffer);
 
     addAttachment(new RenderBufferAttachment(this, attachment, renderBuffer));
 }
 
-bool FrameBufferObject::detach(gl::GLenum attachment)
+bool FrameBufferObject::detach(GLenum attachment)
 {
     FrameBufferAttachment * attachmentObject = getAttachment(attachment);
 
@@ -135,101 +148,101 @@ bool FrameBufferObject::detach(gl::GLenum attachment)
     return true;
 }
 
-void FrameBufferObject::setReadBuffer(gl::GLenum mode) const
+void FrameBufferObject::setReadBuffer(GLenum mode) const
 {
     implementation().setReadBuffer(this, mode);
 }
 
-void FrameBufferObject::setDrawBuffer(gl::GLenum mode) const
+void FrameBufferObject::setDrawBuffer(GLenum mode) const
 {
     implementation().setDrawBuffer(this, mode);
 }
 
-void FrameBufferObject::setDrawBuffers(gl::GLsizei n, const gl::GLenum * modes) const
+void FrameBufferObject::setDrawBuffers(GLsizei n, const GLenum * modes) const
 {
     assert(modes != nullptr || n == 0);
 
     implementation().setDrawBuffers(this, n, modes);
 }
 
-void FrameBufferObject::setDrawBuffers(const std::vector<gl::GLenum> & modes) const
+void FrameBufferObject::setDrawBuffers(const std::vector<GLenum> & modes) const
 {
     setDrawBuffers(static_cast<int>(modes.size()), modes.data());
 }
 
-void FrameBufferObject::clear(gl::ClearBufferMask mask)
+void FrameBufferObject::clear(ClearBufferMask mask)
 {
-    bind(gl::GL_FRAMEBUFFER);
+    bind(GL_FRAMEBUFFER);
 
-    gl::glClear(mask);
+    glClear(mask);
 }
 
-void FrameBufferObject::clearBufferiv(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLint * value)
+void FrameBufferObject::clearBufferiv(GLenum buffer, GLint drawBuffer, const GLint * value)
 {
-    bind(gl::GL_FRAMEBUFFER);
+    bind(GL_FRAMEBUFFER);
 
-    gl::glClearBufferiv(buffer, drawBuffer, value);
+    glClearBufferiv(buffer, drawBuffer, value);
 }
 
-void FrameBufferObject::clearBufferuiv(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLuint * value)
+void FrameBufferObject::clearBufferuiv(GLenum buffer, GLint drawBuffer, const GLuint * value)
 {
-    bind(gl::GL_FRAMEBUFFER);
+    bind(GL_FRAMEBUFFER);
 
-    gl::glClearBufferuiv(buffer, drawBuffer, value);
+    glClearBufferuiv(buffer, drawBuffer, value);
 }
 
-void FrameBufferObject::clearBufferfv(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLfloat * value)
+void FrameBufferObject::clearBufferfv(GLenum buffer, GLint drawBuffer, const GLfloat * value)
 {
-    bind(gl::GL_FRAMEBUFFER);
+    bind(GL_FRAMEBUFFER);
 
-    gl::glClearBufferfv(buffer, drawBuffer, value);
+    glClearBufferfv(buffer, drawBuffer, value);
 }
 
-void FrameBufferObject::clearBufferfi(gl::GLenum buffer, gl::GLint drawBuffer, gl::GLfloat depth, gl::GLint stencil)
+void FrameBufferObject::clearBufferfi(GLenum buffer, GLint drawBuffer, GLfloat depth, GLint stencil)
 {
-    bind(gl::GL_FRAMEBUFFER);
+    bind(GL_FRAMEBUFFER);
 
-    gl::glClearBufferfi(buffer, drawBuffer, depth, stencil);
+    glClearBufferfi(buffer, drawBuffer, depth, stencil);
 }
 
-void FrameBufferObject::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const glm::ivec4 & value)
+void FrameBufferObject::clearBuffer(GLenum buffer, GLint drawBuffer, const glm::ivec4 & value)
 {
     clearBufferiv(buffer, drawBuffer, glm::value_ptr(value));
 }
 
-void FrameBufferObject::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const glm::uvec4 & value)
+void FrameBufferObject::clearBuffer(GLenum buffer, GLint drawBuffer, const glm::uvec4 & value)
 {
     clearBufferuiv(buffer, drawBuffer, glm::value_ptr(value));
 }
 
-void FrameBufferObject::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const glm::vec4 & value)
+void FrameBufferObject::clearBuffer(GLenum buffer, GLint drawBuffer, const glm::vec4 & value)
 {
     clearBufferfv(buffer, drawBuffer, glm::value_ptr(value));
 }
 
-void FrameBufferObject::colorMask(gl::GLboolean red, gl::GLboolean green, gl::GLboolean blue, gl::GLboolean alpha)
+void FrameBufferObject::colorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
 {
-    gl::glColorMask(red, green, blue, alpha);
+    glColorMask(red, green, blue, alpha);
 }
 
 void FrameBufferObject::colorMask(const glm::bvec4 & mask)
 {
-    colorMask(static_cast<gl::GLboolean>(mask[0]), static_cast<gl::GLboolean>(mask[1]), static_cast<gl::GLboolean>(mask[2]), static_cast<gl::GLboolean>(mask[3]));
+    colorMask(static_cast<GLboolean>(mask[0]), static_cast<GLboolean>(mask[1]), static_cast<GLboolean>(mask[2]), static_cast<GLboolean>(mask[3]));
 }
 
-void FrameBufferObject::colorMaski(gl::GLuint buffer, gl::GLboolean red, gl::GLboolean green, gl::GLboolean blue, gl::GLboolean alpha)
+void FrameBufferObject::colorMaski(GLuint buffer, GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
 {
-    gl::glColorMaski(buffer, red, green, blue, alpha);
+    glColorMaski(buffer, red, green, blue, alpha);
 }
 
-void FrameBufferObject::colorMaski(gl::GLuint buffer, const glm::bvec4 & mask)
+void FrameBufferObject::colorMaski(GLuint buffer, const glm::bvec4 & mask)
 {
-    colorMaski(buffer, static_cast<gl::GLboolean>(mask[0]), static_cast<gl::GLboolean>(mask[1]), static_cast<gl::GLboolean>(mask[2]), static_cast<gl::GLboolean>(mask[3]));
+    colorMaski(buffer, static_cast<GLboolean>(mask[0]), static_cast<GLboolean>(mask[1]), static_cast<GLboolean>(mask[2]), static_cast<GLboolean>(mask[3]));
 }
 
-void FrameBufferObject::clearColor(gl::GLfloat red, gl::GLfloat green, gl::GLfloat blue, gl::GLfloat alpha)
+void FrameBufferObject::clearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
 {
-    gl::glClearColor(red, green, blue, alpha);
+    glClearColor(red, green, blue, alpha);
 }
 
 void FrameBufferObject::clearColor(const glm::vec4 & color)
@@ -237,30 +250,30 @@ void FrameBufferObject::clearColor(const glm::vec4 & color)
     clearColor(color.r, color.g, color.b, color.a);
 }
 
-void FrameBufferObject::clearDepth(gl::GLclampd depth)
+void FrameBufferObject::clearDepth(GLclampd depth)
 {
-    gl::glClearDepth(depth);
+    glClearDepth(depth);
 }
 
-void FrameBufferObject::readPixels(gl::GLint x, gl::GLint y, gl::GLsizei width, gl::GLsizei height, gl::GLenum format, gl::GLenum type, gl::GLvoid * data) const
+void FrameBufferObject::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * data) const
 {
-    bind(gl::GL_READ_FRAMEBUFFER);
+    bind(GL_READ_FRAMEBUFFER);
 
-    gl::glReadPixels(x, y, width, height, format, type, data);
+    glReadPixels(x, y, width, height, format, type, data);
 }
 
-void FrameBufferObject::readPixels(const std::array<gl::GLint, 4> & rect, gl::GLenum format, gl::GLenum type, gl::GLvoid * data) const
+void FrameBufferObject::readPixels(const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data) const
 {
     readPixels(rect[0], rect[1], rect[2], rect[3], format, type, data);
 }
 
-void FrameBufferObject::readPixels(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & rect, gl::GLenum format, gl::GLenum type, gl::GLvoid * data) const
+void FrameBufferObject::readPixels(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data) const
 {
     setReadBuffer(readBuffer);
     readPixels(rect, format, type, data);
 }
 
-std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(const std::array<gl::GLint, 4> & rect, gl::GLenum format, gl::GLenum type) const
+std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(const std::array<GLint, 4> & rect, GLenum format, GLenum type) const
 {
     int size = imageSizeInBytes(rect[2], rect[3], format, type);
     std::vector<unsigned char> data(size);
@@ -270,49 +283,49 @@ std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(const std::a
     return data;
 }
 
-std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & rect, gl::GLenum format, gl::GLenum type) const
+std::vector<unsigned char> FrameBufferObject::readPixelsToByteArray(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type) const
 {
     setReadBuffer(readBuffer);
     return readPixelsToByteArray(rect, format, type);
 }
 
-void FrameBufferObject::readPixelsToBuffer(const std::array<gl::GLint, 4> & rect, gl::GLenum format, gl::GLenum type, Buffer * pbo) const
+void FrameBufferObject::readPixelsToBuffer(const std::array<GLint, 4> & rect, GLenum format, GLenum type, Buffer * pbo) const
 {
     assert(pbo != nullptr);
 
-    pbo->bind(gl::GL_PIXEL_PACK_BUFFER);
+    pbo->bind(GL_PIXEL_PACK_BUFFER);
     readPixels(rect, format, type, nullptr);
-    pbo->unbind(gl::GL_PIXEL_PACK_BUFFER);
+    pbo->unbind(GL_PIXEL_PACK_BUFFER);
 }
 
-void FrameBufferObject::blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, gl::GLenum drawBuffer, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const
+void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, GLenum drawBuffer, const std::array<GLint, 4> & destRect, ClearBufferMask mask, GLenum filter) const
 {
-    blit(readBuffer, srcRect, destFbo, std::vector<gl::GLenum>{ drawBuffer }, destRect, mask, filter);
+    blit(readBuffer, srcRect, destFbo, std::vector<GLenum>{ drawBuffer }, destRect, mask, filter);
 }
 
-void FrameBufferObject::blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<gl::GLenum> & drawBuffers, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const
+void FrameBufferObject::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, ClearBufferMask mask, GLenum filter) const
 {
     setReadBuffer(readBuffer);
     destFbo->setDrawBuffers(drawBuffers);
 
-    bind(gl::GL_READ_FRAMEBUFFER);
-    destFbo->bind(gl::GL_DRAW_FRAMEBUFFER);
+    bind(GL_READ_FRAMEBUFFER);
+    destFbo->bind(GL_DRAW_FRAMEBUFFER);
 
     blit(srcRect, destRect, mask, filter);
 }
 
-void FrameBufferObject::blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::ClearBufferMask mask, gl::GLenum filter)
+void FrameBufferObject::blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, ClearBufferMask mask, GLenum filter)
 {
-    gl::glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, destX0, destY0, destX1, destY1, mask, filter);
+    glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, destX0, destY0, destX1, destY1, mask, filter);
 
 }
 
-void FrameBufferObject::blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter)
+void FrameBufferObject::blit(const std::array<GLint, 4> & srcRect, const std::array<GLint, 4> & destRect, ClearBufferMask mask, GLenum filter)
 {
     blit(srcRect[0], srcRect[1], srcRect[2], srcRect[3], destRect[0], destRect[1], destRect[2], destRect[3], mask, filter);
 }
 
-gl::GLenum FrameBufferObject::checkStatus() const
+GLenum FrameBufferObject::checkStatus() const
 {
     return implementation().checkStatus(this);
 }
@@ -324,13 +337,13 @@ std::string FrameBufferObject::statusString() const
 
 void FrameBufferObject::printStatus(bool onlyErrors) const
 {
-	gl::GLenum status = checkStatus();
+	GLenum status = checkStatus();
 
-	if (onlyErrors && status == gl::GL_FRAMEBUFFER_COMPLETE) return;
+	if (onlyErrors && status == GL_FRAMEBUFFER_COMPLETE) return;
 
-	if (status == gl::GL_FRAMEBUFFER_COMPLETE)
+	if (status == GL_FRAMEBUFFER_COMPLETE)
 	{
-        info() << enumName(gl::GL_FRAMEBUFFER_COMPLETE);
+        info() << enumName(GL_FRAMEBUFFER_COMPLETE);
 	}
 	else
 	{
@@ -349,7 +362,7 @@ void FrameBufferObject::addAttachment(FrameBufferAttachment * attachment)
     m_attachments[attachment->attachment()] = attachment;
 }
 
-FrameBufferAttachment * FrameBufferObject::getAttachment(gl::GLenum attachment)
+FrameBufferAttachment * FrameBufferObject::getAttachment(GLenum attachment)
 {
 	return m_attachments[attachment];
 }
@@ -358,7 +371,7 @@ std::vector<FrameBufferAttachment*> FrameBufferObject::attachments()
 {
 	std::vector<FrameBufferAttachment*> attachments;
 
-    for (std::pair<gl::GLenum, ref_ptr<FrameBufferAttachment>> pair: m_attachments)
+    for (std::pair<GLenum, ref_ptr<FrameBufferAttachment>> pair: m_attachments)
 	{
 		attachments.push_back(pair.second);
 	}

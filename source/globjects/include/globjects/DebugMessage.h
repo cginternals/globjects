@@ -14,6 +14,15 @@ namespace glo
 class GLOBJECTS_API DebugMessage
 {
 public:
+    enum class Implementation
+    {
+        DebugKHR
+    ,   Legacy
+    };
+
+    static void hintImplementation(Implementation impl);
+
+public:
     using Callback = std::function<void(const DebugMessage &)>;
 
     DebugMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, const std::string & message);

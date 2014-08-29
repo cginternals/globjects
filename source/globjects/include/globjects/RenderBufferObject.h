@@ -31,6 +31,7 @@ public:
     gl::GLint getParameter(gl::GLenum pname) const;
 
     virtual gl::GLenum objectType() const override;
+
 protected:
     virtual ~RenderBufferObject();
 };

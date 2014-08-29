@@ -1,3 +1,4 @@
+
 #include "AbstractDebugImplementation.h"
 
 #include <globjects/globjects.h>
@@ -5,17 +6,22 @@
 
 #include <glbinding/gl/enum.h>
 
-#include "DebugImplementation.h"
-#include "FallbackDebugImplementation.h"
+#include "DebugImplementation_DebugKHR.h"
+#include "DebugImplementation_Legacy.h"
 
 #ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
 #include <stdexcept>
 #endif
 
-namespace glo {
 
-DebugMessage::Callback AbstractDebugImplementation::s_defaultCallback = [](const DebugMessage & message) {
-    if (message.type() == gl::GL_DEBUG_TYPE_ERROR_ARB)
+using namespace gl;
+
+namespace glo 
+{
+
+DebugMessage::Callback AbstractDebugImplementation::s_defaultCallback = [](const DebugMessage & message) 
+{
+    if (message.type() == GL_DEBUG_TYPE_ERROR_ARB)
     {
 #ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
         throw std::runtime_error(message.toString());
@@ -38,15 +44,16 @@ AbstractDebugImplementation::~AbstractDebugImplementation()
 {
 }
 
-AbstractDebugImplementation * AbstractDebugImplementation::create()
+AbstractDebugImplementation * AbstractDebugImplementation::get(const DebugMessage::Implementation impl)
 {
-    if (hasExtension(gl::GLextension::GL_KHR_debug))
+    if (impl == DebugMessage::Implementation::DebugKHR 
+     && hasExtension(GLextension::GL_KHR_debug))
     {
-        return new DebugImplementation();
+        return DebugImplementation_DebugKHR::instance();
     }
     else
     {
-        return new FallbackDebugImplementation();
+        return DebugImplementation_Legacy::instance();
     }
 }
 

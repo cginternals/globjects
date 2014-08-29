@@ -2,6 +2,9 @@
 
 #include <glbinding/gl/types.h>
 
+#include <globjects/FrameBufferObject.h>
+
+
 namespace glo
 {
 
@@ -9,13 +12,15 @@ class FrameBufferObject;
 class Texture;
 class RenderBufferObject;
 
-class AbstractFrameBufferImplementation
+class AbstractFramebufferImplementation
 {
 public:
-    AbstractFrameBufferImplementation();
-    virtual ~AbstractFrameBufferImplementation();
+    AbstractFramebufferImplementation();
+    virtual ~AbstractFramebufferImplementation();
 
-    static AbstractFrameBufferImplementation * get();
+    static AbstractFramebufferImplementation * get(FrameBufferObject::BindlessImplementation impl = 
+        FrameBufferObject::BindlessImplementation::DirectStateAccessARB);
+
 
     virtual gl::GLuint create() const = 0;
     virtual void destroy(gl::GLuint id) const = 0;

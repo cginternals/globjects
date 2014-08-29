@@ -1,27 +1,28 @@
 #pragma once
 
-#include <glbinding/gl/types.h>
+#include <globjects-base/Singleton.h>
 
 #include "AbstractDebugImplementation.h"
 
-namespace glo {
 
-class DebugImplementation : public AbstractDebugImplementation
+namespace glo 
+{
+
+class DebugImplementation_Legacy : public AbstractDebugImplementation
+    , public Singleton<DebugImplementation_Legacy>
 {
 public:
-    DebugImplementation();
+    DebugImplementation_Legacy();
+
+    virtual bool isFallback() override;
 
     virtual void enable() override;
     virtual void disable() override;
     virtual void setSynchronous(bool synchronous) override;
     virtual void insertMessage(const DebugMessage & message) override;
     virtual void controlMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids, gl::GLboolean enabled) override;
-
 protected:
-    bool m_isRegistered;
-    void registerCallback();
-
-    static void GL_APIENTRY debugMessageCallback(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message, const void * param);
+    bool m_enabled;
 };
 
 } // namespace glo

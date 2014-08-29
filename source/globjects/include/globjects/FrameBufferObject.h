@@ -45,6 +45,16 @@ class Buffer;
 class GLOBJECTS_API FrameBufferObject : public Object
 {
 public:
+    enum class BindlessImplementation
+    {
+        DirectStateAccessARB
+    ,   DirectStateAccessEXT
+    ,   Legacy
+    };
+
+    static void hintBindlessImplementation(BindlessImplementation impl);
+
+public:
 	FrameBufferObject();
     static FrameBufferObject * fromId(gl::GLuint id);
 
@@ -106,6 +116,7 @@ public:
     void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<gl::GLenum> & drawBuffers, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const;
 
     virtual gl::GLenum objectType() const override;
+
 protected:
     FrameBufferObject(IDResource * resource);
     virtual ~FrameBufferObject();

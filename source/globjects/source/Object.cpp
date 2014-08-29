@@ -1,3 +1,4 @@
+
 #include <globjects/Object.h>
 
 #include "registry/ObjectRegistry.h"
@@ -6,15 +7,22 @@
 
 #include "Resource.h"
 
-namespace {
-    glo::AbstractObjectNameImplementation & nameImplementation()
-    {
-        return glo::ImplementationRegistry::current().objectNameImplementation();
-    }
+namespace 
+{
+glo::AbstractObjectNameImplementation & nameImplementation()
+{
+    return glo::ImplementationRegistry::current().objectNameImplementation();
+}
 }
 
 namespace glo
 {
+
+void Object::hintNameImplementation(NameImplementation impl)
+{
+    ImplementationRegistry::current().initialize(impl);
+}
+
 
 Object::Object(IDResource * resource)
 : m_resource(resource)

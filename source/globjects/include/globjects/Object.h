@@ -8,7 +8,8 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo {
+namespace glo 
+{
 
 class ObjectVisitor;
 class IDResource;
@@ -23,6 +24,15 @@ class GLOBJECTS_API Object : public Referenced
 {
     friend class AbstractObjectNameImplementation;
 public:
+    enum class NameImplementation
+    {
+        DebugKHR
+    ,   Legacy
+    };
+
+    static void hintNameImplementation(NameImplementation impl);
+
+public:
     virtual void accept(ObjectVisitor & visitor) = 0;
 
     gl::GLuint id() const;
@@ -34,6 +44,7 @@ public:
     bool isDefault() const;
 
     virtual gl::GLenum objectType() const = 0;
+
 protected:
     Object(IDResource * resource);
     virtual ~Object();

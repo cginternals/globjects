@@ -69,8 +69,18 @@ namespace glo
 class GLOBJECTS_API Program : public Object, protected ChangeListener
 {
     friend class UniformBlock;
-    friend class GetProgramBinaryImplementation;
-    friend class NoProgramBinaryImplementation;
+    friend class ProgramBinaryImplementation_GetProgramBinaryARB;
+    friend class ProgramBinaryImplementation_None;
+
+public:
+    enum class BinaryImplementation
+    {
+        GetProgramBinaryARB
+    ,   None
+    };
+
+    static void hintBinaryImplementation(BinaryImplementation impl);
+
 public:
 	Program();
     Program(ProgramBinary * binary);
@@ -155,6 +165,7 @@ public:
     void dispatchComputeGroupSize(const glm::uvec3 & numGroups, const glm::uvec3 & groupSizes);
 
     virtual gl::GLenum objectType() const override;
+
 protected:
     virtual ~Program();
 

@@ -1,11 +1,15 @@
 #pragma once
 
-#include "AbstractFrameBufferImplementation.h"
+#include <globjects-base/Singleton.h>
+
+#include "AbstractFramebufferImplementation.h"
+
 
 namespace glo
 {
 
-class BindlessFrameBufferImplementation : public AbstractFrameBufferImplementation
+class FramebufferImplementation_DirectStateAccessEXT : public AbstractFramebufferImplementation
+    , public Singleton<FramebufferImplementation_DirectStateAccessEXT>
 {
 public:
     virtual gl::GLuint create() const override;

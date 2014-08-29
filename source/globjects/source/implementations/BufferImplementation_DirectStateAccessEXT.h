@@ -1,13 +1,17 @@
 #pragma once
 
+#include <globjects-base/Singleton.h>
+
 #include "AbstractBufferImplementation.h"
+
 
 namespace glo
 {
 
 class Buffer;
 
-class BindlessEXTBufferImplementation : public AbstractBufferImplementation
+class BufferImplementation_DirectStateAccessEXT : public AbstractBufferImplementation
+    , public Singleton<BufferImplementation_DirectStateAccessEXT>
 {
 public:
     virtual gl::GLuint create() const override;

@@ -4,6 +4,9 @@
 
 #include <glbinding/gl/types.h>
 
+#include <globjects/Object.h>
+
+
 namespace glo
 {
 
@@ -16,7 +19,8 @@ public:
     AbstractObjectNameImplementation();
     virtual ~AbstractObjectNameImplementation();
 
-    static AbstractObjectNameImplementation * get();
+    static AbstractObjectNameImplementation * get(Object::NameImplementation impl = 
+        Object::NameImplementation::Legacy);
 
     virtual std::string getLabel(const Object * object) const = 0;
     virtual std::string getLabel(const Sync * sync) const = 0;
@@ -26,6 +30,7 @@ public:
 
     virtual void setLabel(const Object * object, const std::string & label) const = 0;
     virtual void setLabel(const Sync * sync, const std::string & label) const = 0;
+
 protected:
     void * objectLabelState(const Object * object) const;
     void * objectLabelState(const Sync * sync) const;

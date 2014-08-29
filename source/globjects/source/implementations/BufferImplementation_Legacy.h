@@ -1,13 +1,15 @@
 #pragma once
 
+#include <globjects-base/Singleton.h>
+
 #include "AbstractBufferImplementation.h"
+
 
 namespace glo
 {
 
-class Buffer;
-
-class BindlessBufferImplementation : public AbstractBufferImplementation
+class BufferImplementation_Legacy : public AbstractBufferImplementation
+    , public Singleton<BufferImplementation_Legacy>
 {
 public:
     virtual gl::GLuint create() const override;
@@ -29,6 +31,9 @@ public:
     virtual void clearSubData(const Buffer * buffer, gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data) const override;
 
     virtual void flushMappedRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const override;
+
+public:
+    static gl::GLenum s_workingTarget;
 };
 
 } // namespace glo

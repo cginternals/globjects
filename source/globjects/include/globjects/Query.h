@@ -102,6 +102,7 @@ public:
     void counter(gl::GLenum target = gl::GL_TIMESTAMP) const;
 
     virtual gl::GLenum objectType() const override;
+
 protected:
 	
     Query(IDResource * resource);

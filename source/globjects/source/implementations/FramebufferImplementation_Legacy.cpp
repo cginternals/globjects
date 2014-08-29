@@ -1,5 +1,5 @@
 
-#include "LegacyFrameBufferImplementation.h"
+#include "FramebufferImplementation_Legacy.h"
 
 #include <glbinding/gl/functions.h>
 
@@ -13,10 +13,8 @@ using namespace gl;
 namespace glo 
 {
 
-GLuint LegacyFrameBufferImplementation::create() const
+GLuint FramebufferImplementation_Legacy::create() const
 {
-    // ToDo: use legacy impl. (singleton impls)
-
     GLuint framebuffer;
     glGenFramebuffers(1, &framebuffer); // create a handle to a potentially used framebuffer
     glBindFramebuffer(s_workingTarget, framebuffer); // trigger actual framebuffer creation
@@ -24,26 +22,26 @@ GLuint LegacyFrameBufferImplementation::create() const
     return framebuffer;
 }
 
-void LegacyFrameBufferImplementation::destroy(GLuint id) const
+void FramebufferImplementation_Legacy::destroy(GLuint id) const
 {
     glDeleteFramebuffers(1, &id);
 }
 
-GLenum LegacyFrameBufferImplementation::checkStatus(const FrameBufferObject * fbo) const
+GLenum FramebufferImplementation_Legacy::checkStatus(const FrameBufferObject * fbo) const
 {
     fbo->bind(s_workingTarget);
 
     return glCheckFramebufferStatus(s_workingTarget);
 }
 
-void LegacyFrameBufferImplementation::setParameter(const FrameBufferObject * fbo, GLenum pname, GLint param) const
+void FramebufferImplementation_Legacy::setParameter(const FrameBufferObject * fbo, GLenum pname, GLint param) const
 {
     fbo->bind(s_workingTarget);
 
     glFramebufferParameteri(s_workingTarget, pname, param);
 }
 
-GLint LegacyFrameBufferImplementation::getAttachmentParameter(const FrameBufferObject * fbo, GLenum attachment, GLenum pname) const
+GLint FramebufferImplementation_Legacy::getAttachmentParameter(const FrameBufferObject * fbo, GLenum attachment, GLenum pname) const
 {
     fbo->bind(s_workingTarget);
 
@@ -54,7 +52,7 @@ GLint LegacyFrameBufferImplementation::getAttachmentParameter(const FrameBufferO
     return result;
 }
 
-void LegacyFrameBufferImplementation::attachTexture(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
+void FramebufferImplementation_Legacy::attachTexture(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level) const
 {
     fbo->bind(s_workingTarget);
 
@@ -80,14 +78,14 @@ void LegacyFrameBufferImplementation::attachTexture(const FrameBufferObject * fb
     }
 }
 
-void LegacyFrameBufferImplementation::attachTextureLayer(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const
+void FramebufferImplementation_Legacy::attachTextureLayer(const FrameBufferObject * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer) const
 {
     fbo->bind(s_workingTarget);
 
     glFramebufferTextureLayer(s_workingTarget, attachment, texture ? texture->id() : 0, level, layer);
 }
 
-void LegacyFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const
+void FramebufferImplementation_Legacy::attachRenderBuffer(const FrameBufferObject * fbo, GLenum attachment, RenderBufferObject * renderBuffer) const
 {
     fbo->bind(s_workingTarget);
     renderBuffer->bind(GL_RENDERBUFFER);
@@ -95,21 +93,21 @@ void LegacyFrameBufferImplementation::attachRenderBuffer(const FrameBufferObject
     glFramebufferRenderbuffer(s_workingTarget, attachment, GL_RENDERBUFFER, renderBuffer->id());
 }
 
-void LegacyFrameBufferImplementation::setReadBuffer(const FrameBufferObject * fbo, GLenum mode) const
+void FramebufferImplementation_Legacy::setReadBuffer(const FrameBufferObject * fbo, GLenum mode) const
 {
     fbo->bind(GL_READ_FRAMEBUFFER);
 
     glReadBuffer(mode);
 }
 
-void LegacyFrameBufferImplementation::setDrawBuffer(const FrameBufferObject * fbo, GLenum mode) const
+void FramebufferImplementation_Legacy::setDrawBuffer(const FrameBufferObject * fbo, GLenum mode) const
 {
     fbo->bind(GL_DRAW_FRAMEBUFFER);
 
     glDrawBuffer(mode);
 }
 
-void LegacyFrameBufferImplementation::setDrawBuffers(const FrameBufferObject * fbo, GLsizei n, const GLenum * modes) const
+void FramebufferImplementation_Legacy::setDrawBuffers(const FrameBufferObject * fbo, GLsizei n, const GLenum * modes) const
 {
     fbo->bind(GL_DRAW_FRAMEBUFFER);
 

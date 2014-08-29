@@ -30,6 +30,7 @@ public:
     gl::GLfloat getParameterf(gl::GLenum pname) const;
 
     virtual gl::GLenum objectType() const override;
+
 protected:
     Sampler(IDResource * resource);
     virtual ~Sampler();

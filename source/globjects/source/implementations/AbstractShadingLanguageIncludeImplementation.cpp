@@ -1,15 +1,18 @@
+
 #include "AbstractShadingLanguageIncludeImplementation.h"
 
 #include <globjects/globjects.h>
 
 #include <glbinding/gl/extension.h>
 
-#include "NoShadingLanguageIncludeImplementation.h"
-#include "ShadingLanguageIncludeImplementation.h"
+#include "ShadingLanguageIncludeImplementation_ARB.h"
+#include "ShadingLanguageIncludeImplementation_Fallback.h"
 
-namespace glo {
 
-bool AbstractShadingLanguageIncludeImplementation::forceFallbackIncludeProcessor = false;
+using namespace gl;
+
+namespace glo 
+{
 
 AbstractShadingLanguageIncludeImplementation::AbstractShadingLanguageIncludeImplementation()
 {
@@ -19,21 +22,22 @@ AbstractShadingLanguageIncludeImplementation::~AbstractShadingLanguageIncludeImp
 {
 }
 
-AbstractShadingLanguageIncludeImplementation * AbstractShadingLanguageIncludeImplementation::create()
+AbstractShadingLanguageIncludeImplementation * AbstractShadingLanguageIncludeImplementation::get(const Shader::IncludeImplementation impl)
 {
-    if (hasExtension(gl::GLextension::GL_ARB_shading_language_include) && !forceFallbackIncludeProcessor)
+    if (impl == Shader::IncludeImplementation::ShadingLanguageIncludeARB 
+     && hasExtension(GLextension::GL_ARB_shading_language_include))
     {
-        return new ShadingLanguageIncludeImplementation();
+        return ShadingLanguageIncludeImplementation_ARB::instance();
     }
     else
     {
-        return new NoShadingLanguageIncludeImplementation();
+        return ShadingLanguageIncludeImplementation_Fallback::instance();
     }
 }
 
-std::vector<const char*> AbstractShadingLanguageIncludeImplementation::collectCStrings(const std::vector<std::string> & strings)
+std::vector<const char *> AbstractShadingLanguageIncludeImplementation::collectCStrings(const std::vector<std::string> & strings)
 {
-    std::vector<const char*> cStrings;
+    std::vector<const char *> cStrings;
 
     for (const std::string & str : strings)
     {
