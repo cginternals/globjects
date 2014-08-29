@@ -1,6 +1,7 @@
 #include <globjects/Sampler.h>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/ObjectVisitor.h>
 
@@ -67,6 +68,11 @@ gl::GLfloat Sampler::getParameterf(gl::GLenum pname) const
     gl::glGetSamplerParameterfv(id(), pname, &value);
 
 	return value;
+}
+
+gl::GLenum Sampler::objectType() const
+{
+    return gl::GL_SAMPLER;
 }
 
 } // namespace glo

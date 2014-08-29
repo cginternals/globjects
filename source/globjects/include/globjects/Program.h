@@ -153,6 +153,8 @@ public:
     void dispatchCompute(const glm::uvec3 & numGroups);
     void dispatchComputeGroupSize(gl::GLuint numGroupsX, gl::GLuint numGroupsY, gl::GLuint numGroupsZ, gl::GLuint groupSizeX, gl::GLuint groupSizeY, gl::GLuint groupSizeZ);
     void dispatchComputeGroupSize(const glm::uvec3 & numGroups, const glm::uvec3 & groupSizes);
+
+    virtual gl::GLenum objectType() const override;
 protected:
     virtual ~Program();
 

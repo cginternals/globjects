@@ -75,6 +75,12 @@ set(sources
 	${source_path}/glbindinglogging.cpp
 	${source_path}/glmlogging.cpp
 	${source_path}/globjects.cpp
+	${source_path}/implementations/AbstractObjectNameImplementation.h
+	${source_path}/implementations/AbstractObjectNameImplementation.cpp
+	${source_path}/implementations/ObjectNameImplementation_KHR_debug.h
+	${source_path}/implementations/ObjectNameImplementation_KHR_debug.cpp
+	${source_path}/implementations/ObjectNameImplementation_Legacy.h
+	${source_path}/implementations/ObjectNameImplementation_Legacy.cpp
 	${source_path}/implementations/AbstractProgramBinaryImplementation.h
 	${source_path}/implementations/BindlessBufferImplementation.cpp
 	${source_path}/implementations/BindlessEXTBufferImplementation.cpp

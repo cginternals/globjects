@@ -248,4 +248,9 @@ void VertexArrayObject::multiDrawElementsBaseVertex(gl::GLenum mode, gl::GLenum 
     multiDrawElementsBaseVertex(mode, counts.data(), type, indices.data(), static_cast<gl::GLsizei>(ranges.size()), baseVertices.data());
 }
 
+gl::GLenum VertexArrayObject::objectType() const
+{
+    return gl::GL_VERTEX_ARRAY;
+}
+
 } // namespace glo

@@ -229,6 +229,7 @@ public:
      */
     void clearSubData(gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data = nullptr);
 
+    virtual gl::GLenum objectType() const override;
 protected:
     /**
      * Creates a buffer with an external id.

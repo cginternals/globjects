@@ -253,4 +253,9 @@ std::string Shader::typeString(gl::GLenum type)
 	}
 }
 
+gl::GLenum Shader::objectType() const
+{
+    return gl::GL_SHADER;
+}
+
 } // namespace glo

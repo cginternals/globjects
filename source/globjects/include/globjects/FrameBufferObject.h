@@ -104,6 +104,8 @@ public:
 
     void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, gl::GLenum drawBuffer, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const;
     void blit(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & srcRect, FrameBufferObject * destFbo, const std::vector<gl::GLenum> & drawBuffers, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter) const;
+
+    virtual gl::GLenum objectType() const override;
 protected:
     FrameBufferObject(IDResource * resource);
     virtual ~FrameBufferObject();

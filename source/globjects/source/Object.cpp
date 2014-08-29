@@ -1,14 +1,24 @@
 #include <globjects/Object.h>
 
 #include "registry/ObjectRegistry.h"
+#include "registry/ImplementationRegistry.h"
+#include "implementations/AbstractObjectNameImplementation.h"
 
 #include "Resource.h"
+
+namespace {
+    glo::AbstractObjectNameImplementation & nameImplementation()
+    {
+        return glo::ImplementationRegistry::current().objectNameImplementation();
+    }
+}
 
 namespace glo
 {
 
 Object::Object(IDResource * resource)
 : m_resource(resource)
+, m_objectLabelState(nullptr)
 {
     ObjectRegistry::current().registerObject(this);
 }
@@ -29,19 +39,19 @@ bool Object::isDefault() const
     return id() == 0;
 }
 
-const std::string& Object::name() const
+std::string Object::name() const
 {
-	return m_name;
+    return nameImplementation().getLabel(this);
 }
 
 void Object::setName(const std::string & name)
 {
-	m_name = name;
+    nameImplementation().setLabel(this, name);
 }
 
 bool Object::hasName() const
 {
-    return !m_name.empty();
+    return nameImplementation().hasLabel(this);
 }
 
 } // namespace glo

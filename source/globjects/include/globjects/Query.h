@@ -100,6 +100,8 @@ public:
     gl::GLuint64 waitAndGet64(gl::GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const;
 	
     void counter(gl::GLenum target = gl::GL_TIMESTAMP) const;
+
+    virtual gl::GLenum objectType() const override;
 protected:
 	
     Query(IDResource * resource);

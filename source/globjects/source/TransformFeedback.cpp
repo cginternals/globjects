@@ -85,4 +85,9 @@ bool TransformFeedback::isTransformFeedback(gl::GLuint id)
     return gl::glIsTransformFeedback(id) == gl::GL_TRUE;
 }
 
+gl::GLenum TransformFeedback::objectType() const
+{
+    return gl::GL_TRANSFORM_FEEDBACK;
+}
+
 } // namespace glo

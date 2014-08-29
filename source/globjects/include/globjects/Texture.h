@@ -119,6 +119,7 @@ public:
     void pageCommitment(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLboolean commit) const;
     void pageCommitment(gl::GLint level, const glm::ivec3& offset, const glm::ivec3& size, gl::GLboolean commit) const;
 
+    virtual gl::GLenum objectType() const override;
 protected:
     Texture(IDResource * resource, gl::GLenum target);
     virtual ~Texture();

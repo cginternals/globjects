@@ -21,17 +21,19 @@ class IDResource;
  */
 class GLOBJECTS_API Object : public Referenced
 {
+    friend class AbstractObjectNameImplementation;
 public:
     virtual void accept(ObjectVisitor & visitor) = 0;
 
     gl::GLuint id() const;
 
-	const std::string & name() const;
-	void setName(const std::string & name);
+    std::string name() const;
+    void setName(const std::string & name);
     bool hasName() const;
 
     bool isDefault() const;
 
+    virtual gl::GLenum objectType() const = 0;
 protected:
     Object(IDResource * resource);
     virtual ~Object();
@@ -39,7 +41,7 @@ protected:
 protected:
     IDResource * m_resource;
 
-    std::string m_name;
+    mutable void * m_objectLabelState;
 };
 
 } // namespace glo

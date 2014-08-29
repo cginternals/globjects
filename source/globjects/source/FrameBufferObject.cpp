@@ -366,4 +366,9 @@ std::vector<FrameBufferAttachment*> FrameBufferObject::attachments()
 	return attachments;
 }
 
+gl::GLenum FrameBufferObject::objectType() const
+{
+    return gl::GL_FRAMEBUFFER;
+}
+
 } // namespace glo

@@ -159,4 +159,9 @@ void Buffer::clearSubData(gl::GLenum internalformat, gl::GLintptr offset, gl::GL
     implementation().clearSubData(this, internalformat, offset, size, format, type, data);
 }
 
+gl::GLenum Buffer::objectType() const
+{
+    return gl::GL_BUFFER;
+}
+
 } // namespace glo

@@ -457,4 +457,9 @@ void Texture::pageCommitment(gl::GLint level, const glm::ivec3& offset, const gl
     pageCommitment(level, offset.x, offset.y, offset.z, size.x, size.y, size.z, commit);
 }
 
+gl::GLenum Texture::objectType() const
+{
+    return gl::GL_TEXTURE;
+}
+
 } // namespace glo

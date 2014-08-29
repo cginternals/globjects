@@ -8,6 +8,7 @@
 #include "../implementations/AbstractDebugImplementation.h"
 #include "../implementations/AbstractProgramBinaryImplementation.h"
 #include "../implementations/AbstractShadingLanguageIncludeImplementation.h"
+#include "../implementations/AbstractObjectNameImplementation.h"
 
 namespace glo {
 
@@ -18,6 +19,7 @@ ImplementationRegistry::ImplementationRegistry()
 , m_debugImplementation(nullptr)
 , m_programBinaryImplementation(nullptr)
 , m_shadingLanguageIncludeImplementation(nullptr)
+, m_objectNameImplementation(nullptr)
 {
     initialize();
 }
@@ -30,6 +32,7 @@ ImplementationRegistry::~ImplementationRegistry()
     delete m_debugImplementation;
     delete m_programBinaryImplementation;
     delete m_shadingLanguageIncludeImplementation;
+    delete m_objectNameImplementation;
 }
 
 ImplementationRegistry & ImplementationRegistry::current()
@@ -42,6 +45,7 @@ void ImplementationRegistry::initialize() // ToDo: allow for enum parameters wit
     m_bufferImplementation      = AbstractBufferImplementation::get();
     m_frameBufferImplementation = AbstractFrameBufferImplementation::get();
     m_uniformImplementation     = AbstractUniformImplementation::get();
+    m_objectNameImplementation = AbstractObjectNameImplementation::get();
 
     m_debugImplementation = AbstractDebugImplementation::create();
     m_programBinaryImplementation = AbstractProgramBinaryImplementation::create();
@@ -78,5 +82,9 @@ AbstractShadingLanguageIncludeImplementation & ImplementationRegistry::shadingLa
     return *m_shadingLanguageIncludeImplementation;
 }
 
-} // namespace glo
+AbstractObjectNameImplementation & ImplementationRegistry::objectNameImplementation()
+{
+    return *m_objectNameImplementation;
+}
 
+} // namespace glo
