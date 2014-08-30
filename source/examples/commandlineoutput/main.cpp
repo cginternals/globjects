@@ -56,7 +56,7 @@ public:
         glo::ref_ptr<glo::Buffer> buffer(new glo::Buffer());
         std::cout << "glo::Buffer = "; glo::info() << buffer.get();
 
-        std::cout << "glo::FrameBufferObject = "; glo::info() << glo::Framebuffer::defaultFBO();
+        std::cout << "glo::Framebuffer = "; glo::info() << glo::Framebuffer::defaultFBO();
 
         glo::ref_ptr<glo::Program> program(new glo::Program());
         std::cout << "glo::Program = "; glo::info() << program.get();
@@ -65,7 +65,7 @@ public:
         std::cout << "glo::Query = "; glo::info() << query.get();
 
         glo::ref_ptr<glo::Renderbuffer> rbo(new glo::Renderbuffer());
-        std::cout << "glo::RenderBufferObject = "; glo::info() << rbo.get();
+        std::cout << "glo::Renderbuffer = "; glo::info() << rbo.get();
 
         glo::ref_ptr<glo::Sampler> sampler(new glo::Sampler());
         std::cout << "glo::Sampler = "; glo::info() << sampler.get();
