@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/globjects.h>
 #include <globjects/ObjectVisitor.h>
@@ -168,6 +169,16 @@ void Buffer::clearData(GLenum internalformat, GLenum format, GLenum type, const 
 void Buffer::clearSubData(GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data)
 {
     implementation().clearSubData(this, internalformat, offset, size, format, type, data);
+}
+
+const void * Buffer::getPointer() const
+{
+    return getPointer(gl::GL_BUFFER_MAP_POINTER);
+}
+
+void * Buffer::getPointer()
+{
+    return getPointer(gl::GL_BUFFER_MAP_POINTER);
 }
 
 const void * Buffer::getPointer(gl::GLenum pname) const

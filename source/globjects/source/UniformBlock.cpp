@@ -3,6 +3,7 @@
 #include <globjects/Buffer.h>
 
 #include <glbinding/gl/values.h>
+#include <glbinding/gl/enum.h>
 
 namespace glo {
 

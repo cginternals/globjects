@@ -4,6 +4,7 @@
 
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/boolean.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/ObjectVisitor.h>
 #include <globjects/Program.h>
@@ -25,6 +26,16 @@ TransformFeedback::~TransformFeedback()
 void TransformFeedback::accept(ObjectVisitor& visitor)
 {
 	visitor.visitTransformFeedback(this);
+}
+
+void TransformFeedback::bind() const
+{
+    bind(gl::GL_TRANSFORM_FEEDBACK);
+}
+
+void TransformFeedback::unbind()
+{
+    unbind(gl::GL_TRANSFORM_FEEDBACK);
 }
 
 void TransformFeedback::bind(gl::GLenum target) const

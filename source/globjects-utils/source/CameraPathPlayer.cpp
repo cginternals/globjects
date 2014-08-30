@@ -9,6 +9,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include <glbinding/gl/enum.h>
+
 #include <globjects-base/StaticStringSource.h>
 
 #include <globjects/Buffer.h>
@@ -235,7 +237,7 @@ void CameraPathPlayer::createVao()
         array.emplace_back(pos, t);
     }
 
-    m_buffer->setData(array);
+    m_buffer->setData(array, gl::GL_STATIC_DRAW);
 
     m_vao = new glo::VertexArray();
 

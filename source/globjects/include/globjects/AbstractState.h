@@ -67,5 +67,4 @@ public:
 
 } // namespace glo
 
-
 #include <globjects/AbstractState.hpp>

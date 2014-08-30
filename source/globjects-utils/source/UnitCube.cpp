@@ -1,6 +1,7 @@
 #include <globjects-utils/UnitCube.h>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <glm/glm.hpp>
 

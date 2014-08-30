@@ -191,7 +191,6 @@ set(api_includes
 	${include_path}/DebugInfo.h
 	${include_path}/DebugMessage.h
 	${include_path}/Error.h
-	${include_path}/Extension.h
 	${include_path}/FramebufferAttachment.h
 	${include_path}/Framebuffer.h
 	${include_path}/glbindinglogging.h

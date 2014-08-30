@@ -2,6 +2,7 @@
 #include "FramebufferImplementation_Legacy.h"
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
@@ -88,7 +89,7 @@ void FramebufferImplementation_Legacy::attachTextureLayer(const Framebuffer * fb
 void FramebufferImplementation_Legacy::attachRenderBuffer(const Framebuffer * fbo, GLenum attachment, Renderbuffer * renderBuffer) const
 {
     fbo->bind(s_workingTarget);
-    renderBuffer->bind(GL_RENDERBUFFER);
+    renderBuffer->bind();
 
     glFramebufferRenderbuffer(s_workingTarget, attachment, GL_RENDERBUFFER, renderBuffer->id());
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glbinding/gl/types.h>
-#include <glbinding/gl/enum.h>
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/values.h>
 
@@ -16,12 +15,12 @@ class GLOBJECTS_API Sync : public Referenced
 {
     friend class AbstractObjectNameImplementation;
 public:
-    static Sync * fence(gl::GLenum condition = gl::GL_SYNC_GPU_COMMANDS_COMPLETE, gl::UnusedMask flags = gl::GL_UNUSED_BIT);
+    static Sync * fence(gl::GLenum condition);
 
     virtual ~Sync();
 
-    gl::GLenum clientWait(gl::SyncObjectMask flags = gl::GL_SYNC_FLUSH_COMMANDS_BIT, gl::GLuint64 timeout = gl::GL_TIMEOUT_IGNORED);
-    void wait(gl::UnusedMask flags = gl::GL_UNUSED_BIT, gl::GLuint64 timeout = gl::GL_TIMEOUT_IGNORED);
+    gl::GLenum clientWait(gl::SyncObjectMask flags, gl::GLuint64 timeout);
+    void wait(gl::GLuint64 timeout);
 
     void get(gl::GLenum pname, gl::GLsizei bufsize, gl::GLsizei * length, gl::GLint * values);
     gl::GLint get(gl::GLenum pname);
@@ -34,7 +33,10 @@ protected:
 
     Sync(gl::GLsync sync);
 
+    void wait(gl::UnusedMask flags, gl::GLuint64 timeout);
+
     static gl::GLsync fenceSync(gl::GLenum condition, gl::UnusedMask flags);
+    static Sync * fence(gl::GLenum condition, gl::UnusedMask flags);
 };
 
 } // namespace glo

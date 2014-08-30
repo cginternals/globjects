@@ -7,6 +7,8 @@
 
 #include "registry/ObjectRegistry.h"
 
+#include <glbinding/gl/enum.h>
+
 #include <globjects-base/AbstractStringSource.h>
 
 #include <globjects/logging.h>

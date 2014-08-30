@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/Buffer.h>
 #include <globjects/VertexArray.h>

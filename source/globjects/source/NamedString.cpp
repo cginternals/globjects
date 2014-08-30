@@ -2,12 +2,23 @@
 
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/boolean.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects-base/StaticStringSource.h>
 
 #include "registry/NamedStringRegistry.h"
 
 namespace glo {
+
+NamedString * NamedString::create(const std::string & name, AbstractStringSource * source)
+{
+    return create(name, source, gl::GL_SHADER_INCLUDE_ARB);
+}
+
+NamedString * NamedString::create(const std::string & name, const std::string & string)
+{
+    return create(name, string, gl::GL_SHADER_INCLUDE_ARB);
+}
 
 NamedString * NamedString::create(const std::string & name, AbstractStringSource * source, gl::GLenum type)
 {

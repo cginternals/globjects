@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glbinding/gl/types.h>
-#include <glbinding/gl/enum.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
@@ -22,8 +21,8 @@ public:
 
     virtual void accept(ObjectVisitor & visitor) override;
 
-    void bind(gl::GLenum target = gl::GL_RENDERBUFFER) const;
-    static void unbind(gl::GLenum target = gl::GL_RENDERBUFFER);
+    void bind() const;
+    static void unbind();
 
     void storage(gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height);
     void storageMultisample(gl::GLsizei samples, gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height);
@@ -34,6 +33,9 @@ public:
 
 protected:
     virtual ~Renderbuffer();
+
+    void bind(gl::GLenum target) const;
+    static void unbind(gl::GLenum target);
 };
 
 } // namespace glo

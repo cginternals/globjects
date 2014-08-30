@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <glbinding/gl/enum.h>
+#include <glbinding/gl/types.h>
 
 #include <globjects-base/ChangeListener.h>
 #include <globjects-base/ref_ptr.h>
@@ -16,8 +16,8 @@ namespace glo {
 class GLOBJECTS_API NamedString : public Referenced, protected ChangeListener
 {
 public:
-    static NamedString * create(const std::string & name, AbstractStringSource * string, gl::GLenum type = gl::GL_SHADER_INCLUDE_ARB);
-    static NamedString * create(const std::string & name, const std::string & string, gl::GLenum type = gl::GL_SHADER_INCLUDE_ARB);
+    static NamedString * create(const std::string & name, AbstractStringSource * string);
+    static NamedString * create(const std::string & name, const std::string & string);
 
     static bool isNamedString(const std::string & name);
     static NamedString * obtain(const std::string & name);
@@ -43,7 +43,10 @@ protected:
     void createNamedString();
     void deleteNamedString();
 
-    NamedString(const std::string & name, AbstractStringSource * source, gl::GLenum type = gl::GL_SHADER_INCLUDE_ARB);
+    static NamedString * create(const std::string & name, AbstractStringSource * string, gl::GLenum type);
+    static NamedString * create(const std::string & name, const std::string & string, gl::GLenum type);
+
+    NamedString(const std::string & name, AbstractStringSource * source, gl::GLenum type);
 
     virtual ~NamedString();
 

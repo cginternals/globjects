@@ -8,6 +8,7 @@
 #include <random>
 
 #include <glbinding/gl/gl.h>
+#include <glbinding/gl/extension.h>
 
 #include <globjects/logging.h>
 #include <globjects/State.h>
@@ -18,7 +19,6 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
-#include <globjects/Extension.h>
 #include <globjects/DebugMessage.h>
 #include <globjects/globjects.h>
 
@@ -78,7 +78,7 @@ public:
 
         glo::DebugMessage::enable();
 
-        if (!glo::hasExtension(glo::Extension::GL_NV_bindless_texture))
+        if (!glo::hasExtension(gl::GLextension::GL_NV_bindless_texture))
         {
             glo::critical() << "Blindess textures are not supported";
 

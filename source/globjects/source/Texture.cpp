@@ -17,6 +17,11 @@
 namespace glo
 {
 
+Texture::Texture()
+: Texture(gl::GL_TEXTURE_2D)
+{
+}
+
 Texture::Texture(gl::GLenum  target)
 : Object(new TextureResource)
 , m_target(target)
@@ -37,6 +42,11 @@ Texture * Texture::fromId(gl::GLuint id, gl::GLenum target)
 
 Texture::~Texture()
 {
+}
+
+Texture * Texture::createDefault()
+{
+    return createDefault(gl::GL_TEXTURE_2D);
 }
 
 Texture * Texture::createDefault(gl::GLenum target)

@@ -7,6 +7,7 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/extension.h>
 #include <glbinding/gl/boolean.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/logging.h>
 #include <globjects/globjects.h>

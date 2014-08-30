@@ -4,6 +4,7 @@
 #include <cassert>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -74,7 +75,7 @@ Framebuffer::~Framebuffer()
 
 void Framebuffer::accept(ObjectVisitor& visitor)
 {
-	visitor.visitFrameBufferObject(this);
+    visitor.visitFrameBufferObject(this);
 }
 
 void Framebuffer::bind(GLenum target) const

@@ -3,6 +3,7 @@
 #include <iterator>
 #include <algorithm>
 
+#include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 
 #include <glm/glm.hpp>
@@ -116,6 +117,11 @@ Icosahedron::Icosahedron(const gl::GLsizei iterations, const gl::GLint positionL
 
 Icosahedron::~Icosahedron()
 {
+}
+
+void Icosahedron::draw()
+{
+    draw(gl::GL_TRIANGLES);
 }
 
 void Icosahedron::draw(const gl::GLenum mode)

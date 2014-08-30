@@ -18,7 +18,7 @@ class Framebuffer;
     This class is a link between a Texture and the FrameBufferObject it is attached to.
     
     \see Texture
-    \see FrameBufferObject
+    \see Framebuffer
  */
 class GLOBJECTS_API AttachedTexture : public FramebufferAttachment
 {

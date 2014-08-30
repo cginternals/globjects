@@ -107,9 +107,10 @@ void ComputeShaderParticles::initialize()
     m_color->setParameter(gl::GL_TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
     m_color->setParameter(gl::GL_TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
 
+    m_fbo->bind(gl::GL_FRAMEBUFFER);
     m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_color);
     m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
-    m_fbo->unbind();
+    m_fbo->unbind(gl::GL_FRAMEBUFFER);
 
     m_quad = new gloutils::ScreenAlignedQuad(m_color);
     m_clear = new gloutils::ScreenAlignedQuad(
@@ -147,7 +148,7 @@ void ComputeShaderParticles::draw(const float elapsed)
 {
     gl::glDisable(gl::GL_DEPTH_TEST);
 
-    m_fbo->bind();
+    m_fbo->bind(gl::GL_FRAMEBUFFER);
 
     gl::glEnable(gl::GL_BLEND);
     gl::glBlendFunc(gl::GL_ZERO, gl::GL_ONE_MINUS_SRC_COLOR);
@@ -168,7 +169,7 @@ void ComputeShaderParticles::draw(const float elapsed)
 
     gl::glDisable(gl::GL_BLEND);
 
-    m_fbo->unbind();
+    m_fbo->unbind(gl::GL_FRAMEBUFFER);
 
     m_quad->draw();
 
@@ -181,9 +182,9 @@ void ComputeShaderParticles::resize()
 
     m_color->image2D(0, gl::GL_RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, gl::GL_RGB, gl::GL_FLOAT, nullptr);
 
-    m_fbo->bind();
+    m_fbo->bind(gl::GL_FRAMEBUFFER);
 
     gl::glClear(gl::GL_COLOR_BUFFER_BIT);
 
-    m_fbo->unbind();
+    m_fbo->unbind(gl::GL_FRAMEBUFFER);
 }

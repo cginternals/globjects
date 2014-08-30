@@ -4,7 +4,6 @@
 #include <set>
 
 #include <glbinding/gl/types.h>
-#include <glbinding/gl/enum.h>
 
 #include <globjects/globjects_api.h>
 

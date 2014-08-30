@@ -1,6 +1,7 @@
 #include <globjects/Renderbuffer.h>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/ObjectVisitor.h>
 
@@ -21,6 +22,16 @@ Renderbuffer::~Renderbuffer()
 void Renderbuffer::accept(ObjectVisitor& visitor)
 {
 	visitor.visitRenderBufferObject(this);
+}
+
+void Renderbuffer::bind() const
+{
+    bind(gl::GL_RENDERBUFFER);
+}
+
+void Renderbuffer::unbind()
+{
+    unbind(gl::GL_RENDERBUFFER);
 }
 
 void Renderbuffer::bind(gl::GLenum target) const

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glbinding/gl/types.h>
-#include <glbinding/gl/enum.h>
 
 #include <vector>
 
@@ -28,10 +27,12 @@ class Buffer;
 class GLOBJECTS_API Texture : public Object
 {
 public:
-    Texture(gl::GLenum target = gl::GL_TEXTURE_2D);
+    Texture();
+    Texture(gl::GLenum target);
     static Texture * fromId(gl::GLuint id, gl::GLenum  target);
 
-    static Texture * createDefault(gl::GLenum target = gl::GL_TEXTURE_2D);
+    static Texture * createDefault();
+    static Texture * createDefault(gl::GLenum target);
 
     virtual void accept(ObjectVisitor & visitor) override;
 

@@ -5,8 +5,6 @@
 #include <vector>
 #include <array>
 
-#include <glbinding/gl/enum.h>
-
 #include <glm/vec4.hpp>
 
 #include <globjects-base/ref_ptr.h>
@@ -55,22 +53,22 @@ public:
     static void hintBindlessImplementation(BindlessImplementation impl);
 
 public:
-	Framebuffer();
+    Framebuffer();
     static Framebuffer * fromId(gl::GLuint id);
 
     static Framebuffer * defaultFBO();
 
     virtual void accept(ObjectVisitor& visitor) override;
 
-    void bind(gl::GLenum target = gl::GL_FRAMEBUFFER) const;
-    static void unbind(gl::GLenum target = gl::GL_FRAMEBUFFER);
+    void bind(gl::GLenum target) const;
+    static void unbind(gl::GLenum target);
 
-	void setParameter(gl::GLenum pname, gl::GLint param);
+    void setParameter(gl::GLenum pname, gl::GLint param);
     gl::GLint getAttachmentParameter(gl::GLenum attachment, gl::GLenum pname) const;
 
     void attachTexture(gl::GLenum attachment, Texture * texture, gl::GLint level = 0);
-	void attachTextureLayer(gl::GLenum attachment, Texture * texture, gl::GLint level = 0, gl::GLint layer = 0);
-	void attachRenderBuffer(gl::GLenum attachment, Renderbuffer * renderBuffer);
+    void attachTextureLayer(gl::GLenum attachment, Texture * texture, gl::GLint level = 0, gl::GLint layer = 0);
+    void attachRenderBuffer(gl::GLenum attachment, Renderbuffer * renderBuffer);
 
     bool detach(gl::GLenum attachment);
 

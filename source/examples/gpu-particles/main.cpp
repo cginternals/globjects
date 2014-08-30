@@ -1,6 +1,8 @@
 #include <map>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/extension.h>
+#include <glbinding/gl/enum.h>
 
 #include <algorithm>
 #include <vector>
@@ -16,7 +18,6 @@
 #include <globjects/Texture.h>
 #include <globjects/NamedString.h>
 #include <globjects/DebugMessage.h>
-#include <globjects/Extension.h>
 
 #include <globjects-utils/Timer.h>
 #include <globjects-utils/Camera.h>
@@ -108,11 +109,11 @@ public:
         
         // initialize techniques
 
-        if (glo::hasExtension(glo::Extension::GL_ARB_compute_shader)) {
+        if (glo::hasExtension(gl::GLextension::GL_ARB_compute_shader)) {
             m_techniques[ComputeShaderTechnique] = new ComputeShaderParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         }
-        if (glo::hasExtension(glo::Extension::GL_ARB_transform_feedback3)) {
+        if (glo::hasExtension(gl::GLextension::GL_ARB_transform_feedback3)) {
             m_techniques[TransformFeedbackTechnique] = new TransformFeedbackParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         }

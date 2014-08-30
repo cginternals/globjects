@@ -1,9 +1,15 @@
 #include <globjects/Sync.h>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 namespace glo
 {
+
+Sync * Sync::fence(gl::GLenum condition)
+{
+    return fence(condition, gl::GL_UNUSED_BIT);
+}
 
 Sync * Sync::fence(gl::GLenum condition, gl::UnusedMask flags)
 {
@@ -33,6 +39,11 @@ gl::GLsync Sync::sync() const
 gl::GLenum Sync::clientWait(gl::SyncObjectMask flags, gl::GLuint64 timeout)
 {
     return gl::glClientWaitSync(m_sync, flags, timeout);
+}
+
+void Sync::wait(gl::GLuint64 timeout)
+{
+    wait(gl::GL_UNUSED_BIT, timeout);
 }
 
 void Sync::wait(gl::UnusedMask flags, gl::GLuint64 timeout)

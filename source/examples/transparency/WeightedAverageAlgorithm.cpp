@@ -47,7 +47,7 @@ void WeightedAverageAlgorithm::initialize(const std::string & transparencyShader
 
 void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* camera, int width, int height) {
     static float clearDepth = 1.0f;
-    m_renderFbo->bind();
+    m_renderFbo->bind(gl::GL_FRAMEBUFFER);
     m_renderFbo->clearBuffer(gl::GL_COLOR, 0, glm::vec4(1.0f)); // clear opaque buffer with background
     m_renderFbo->clearBuffer(gl::GL_COLOR, 1, glm::vec4(0.0f)); // clear accumulation buffer with 0
     m_renderFbo->clearBufferfv(gl::GL_DEPTH, 0, &clearDepth);
@@ -84,9 +84,9 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, gloutils::
 
     drawFunction(m_accumulationProgram.get());
 
-    m_renderFbo->unbind();
+    m_renderFbo->unbind(gl::GL_FRAMEBUFFER);
 
-    m_postFbo->bind();
+    m_postFbo->bind(gl::GL_FRAMEBUFFER);
     m_postFbo->clear(gl::GL_COLOR_BUFFER_BIT);
 
     gl::glDepthMask(gl::GL_TRUE);
@@ -111,7 +111,7 @@ void WeightedAverageAlgorithm::draw(const DrawFunction& drawFunction, gloutils::
     gl::glEnable(gl::GL_DEPTH_TEST);
 
 
-    m_postFbo->unbind();
+    m_postFbo->unbind(gl::GL_FRAMEBUFFER);
 }
 
 void WeightedAverageAlgorithm::resize(int width, int height) {

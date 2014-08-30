@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

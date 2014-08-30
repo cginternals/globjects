@@ -1,12 +1,12 @@
 
-
-
 #include <iostream>
 #include <iomanip>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
+
+#include <glbinding/gl/enum.h>
 
 #include <globjects-base/ref_ptr.h>
 #include <globjects-base/formatString.h>

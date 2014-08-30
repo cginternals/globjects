@@ -155,7 +155,7 @@ public:
     {
         // Sphere Pass
 
-        m_sphereFBO->bind();
+        m_sphereFBO->bind(gl::GL_FRAMEBUFFER);
 
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
@@ -163,11 +163,11 @@ public:
         m_icosahedron->draw();
         m_sphere->release();
 
-        m_sphereFBO->unbind();
+        m_sphereFBO->unbind(gl::GL_FRAMEBUFFER);
 
         // Postprocessing Pass
 
-        m_postprocessingFBO->bind();
+        m_postprocessingFBO->bind(gl::GL_FRAMEBUFFER);
 
         gl::glClear(gl::GL_COLOR_BUFFER_BIT);
 
@@ -183,7 +183,7 @@ public:
         m_geometryTexture->unbindActive(gl::GL_TEXTURE2);
         m_depthTexture->unbindActive(gl::GL_TEXTURE3);
 
-        m_postprocessingFBO->unbind();
+        m_postprocessingFBO->unbind(gl::GL_FRAMEBUFFER);
 
         // GBuffer Choice Pass (including blitting)
 
@@ -306,11 +306,11 @@ public:
 
     virtual float depthAt(const ivec2 & windowCoordinates) const override
     {
-        m_sphereFBO->bind();
+        m_sphereFBO->bind(gl::GL_FRAMEBUFFER);
 
         float depth = AbstractCoordinateProvider::depthAt(m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
 
-        m_sphereFBO->unbind();
+        m_sphereFBO->unbind(gl::GL_FRAMEBUFFER);
 
         return depth;
     }

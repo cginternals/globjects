@@ -215,11 +215,11 @@ void EventHandler::createAndSetupGeometry()
     });
 
     m_vertexBuffer1 = new glo::Buffer();
-    m_vertexBuffer1->setData(vertexArray);
+    m_vertexBuffer1->setData(vertexArray, gl::GL_STATIC_DRAW);
     m_vertexBuffer2 = new glo::Buffer();
-    m_vertexBuffer2->setData(vertexArray);
+    m_vertexBuffer2->setData(vertexArray, gl::GL_STATIC_DRAW);
     m_colorBuffer = new glo::Buffer();
-    m_colorBuffer->setData(colorArray);
+    m_colorBuffer->setData(colorArray, gl::GL_STATIC_DRAW);
 
 	m_vao = new glo::VertexArray();
 

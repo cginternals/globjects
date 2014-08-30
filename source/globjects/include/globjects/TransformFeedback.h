@@ -4,7 +4,6 @@
 #include <array>
 
 #include <glbinding/gl/types.h>
-#include <glbinding/gl/enum.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
@@ -61,8 +60,8 @@ public:
 
     virtual void accept(ObjectVisitor & visitor) override;
 
-    void bind(gl::GLenum target = gl::GL_TRANSFORM_FEEDBACK) const;
-    static void unbind(gl::GLenum target = gl::GL_TRANSFORM_FEEDBACK);
+    void bind() const;
+    static void unbind();
 
 	void begin(gl::GLenum primitiveMode);
 	void pause();
@@ -83,6 +82,9 @@ public:
 
 protected:
     virtual ~TransformFeedback();
+
+    void bind(gl::GLenum target) const;
+    static void unbind(gl::GLenum target);
 };
 
 } // namespace glo

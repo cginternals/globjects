@@ -4,7 +4,6 @@
 #include <array>
 
 #include <glbinding/gl/types.h>
-#include <glbinding/gl/enum.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
@@ -95,17 +94,17 @@ public:
      * @param usage used as a performance hint on how the buffer is used
      * \see https://www.opengl.org/sdk/docs/man4/xhtml/glBufferData.xml
      */
-    void setData(gl::GLsizeiptr size, const gl::GLvoid * data = nullptr, gl::GLenum usage = gl::GL_STATIC_DRAW);
+    void setData(gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLenum usage);
     /**
      * Convenience method to simplify passing of data in form of an std::vector.
      */
     template <typename T>
-    void setData(const std::vector<T> & data, gl::GLenum usage = gl::GL_STATIC_DRAW);
+    void setData(const std::vector<T> & data, gl::GLenum usage);
     /**
      * Convenience method to simplify passing of data in form of an std::array.
      */
     template <typename T, std::size_t Count>
-    void setData(const std::array<T, Count> & data, gl::GLenum usage = gl::GL_STATIC_DRAW);
+    void setData(const std::array<T, Count> & data, gl::GLenum usage);
     /**
      * Wraps the OpenGL function glBufferSubData.
      * Writes data only to a defined area of the memory.
@@ -174,7 +173,7 @@ public:
      * @param access specifies reading/writing access
      * @return a pointer to the mapped memory
      */
-    void * map(gl::GLenum access = gl::GL_READ_ONLY);
+    void * map(gl::GLenum access);
     /**
      * Wraps the OpenGL function glMapBufferRange.
      * Maps only a range of the buffers memory.
@@ -230,7 +229,7 @@ public:
      * @param size size of the data to be copied
      * @param usage buffer usage
      */
-    void copyData(Buffer * buffer, gl::GLsizeiptr size, gl::GLenum usage = gl::GL_STATIC_DRAW) const;
+    void copyData(Buffer * buffer, gl::GLsizeiptr size, gl::GLenum usage) const;
 
     /**
      * Wraps the OpenGL function gl::glClearBufferData.
@@ -247,8 +246,10 @@ public:
      */
     void clearSubData(gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data = nullptr);
 
-    const void * getPointer(gl::GLenum pname = gl::GL_BUFFER_MAP_POINTER) const;
-    void * getPointer(gl::GLenum pname = gl::GL_BUFFER_MAP_POINTER);
+    const void * getPointer() const;
+    void * getPointer();
+    const void * getPointer(gl::GLenum pname) const;
+    void * getPointer(gl::GLenum pname);
 
     void getSubData(gl::GLintptr offset, gl::GLsizeiptr size, void * data) const;
 

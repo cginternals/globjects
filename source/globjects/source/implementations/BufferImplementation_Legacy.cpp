@@ -3,6 +3,7 @@
 
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/boolean.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/Buffer.h>
 

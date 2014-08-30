@@ -80,7 +80,7 @@ public:
         m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_geom);
         m_fbo->attachRenderBuffer(gl::GL_DEPTH_ATTACHMENT, m_depth);
 
-        m_fbo->bind();
+        m_fbo->bind(gl::GL_FRAMEBUFFER);
         // ToDo: this could be done automatically by default..
         m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1 });
 
@@ -147,7 +147,7 @@ public:
         m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
 
 
-		m_fbo->bind();
+        m_fbo->bind(gl::GL_FRAMEBUFFER);
 		gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
 
@@ -155,7 +155,7 @@ public:
 		m_icosahedron->draw();
 		m_sphere->release();
 
-		m_fbo->unbind();
+        m_fbo->unbind(gl::GL_FRAMEBUFFER);
 
 		gl::glDisable(gl::GL_DEPTH_TEST);
 

@@ -11,12 +11,12 @@
 #include <glm/gtx/constants.hpp>
 
 #include <glbinding/gl/gl.h>
+#include <glbinding/gl/extension.h>
 
 #include <globjects/Uniform.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
-#include <globjects/Extension.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/logging.h>
@@ -62,7 +62,7 @@ public:
 
         glo::DebugMessage::enable();
 
-        if (!glo::hasExtension(glo::Extension::GL_ARB_compute_shader))
+        if (!glo::hasExtension(gl::GLextension::GL_ARB_compute_shader))
         {
             glo::critical() << "Compute shaders are not supported";
 

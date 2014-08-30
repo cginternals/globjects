@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-#include <glbinding/gl/enum.h>
+#include <glbinding/gl/types.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
@@ -28,7 +28,7 @@ namespace glo
     An example time measurement:
     \code{.cpp}
 
-        Query * query = new Query(gl::glTIME_ELAPSED);
+        Query * query = new Query(gl::GL_TIME_ELAPSED);
         query->begin();
     
         // more GL calls
@@ -83,32 +83,34 @@ public:
 	
     static bool isQuery(gl::GLuint id);
 
-    gl::GLuint get(gl::GLenum pname = gl::GL_QUERY_RESULT) const;
-    gl::GLuint64 get64(gl::GLenum pname = gl::GL_QUERY_RESULT) const;
+    gl::GLuint get(gl::GLenum pname) const;
+    gl::GLuint64 get64(gl::GLenum pname) const;
 	
 	bool resultAvailable() const;
     void wait() const;
     void wait(const std::chrono::duration<int, std::nano> & timeout) const;
 	
-    gl::GLuint waitAndGet(gl::GLenum pname = gl::GL_QUERY_RESULT) const;
-    gl::GLuint64 waitAndGet64(gl::GLenum pname = gl::GL_QUERY_RESULT) const;
+    gl::GLuint waitAndGet(gl::GLenum pname) const;
+    gl::GLuint64 waitAndGet64(gl::GLenum pname) const;
 
-    gl::GLuint waitAndGet(const std::chrono::duration<int, std::nano> & timeout, gl::GLenum pname = gl::GL_QUERY_RESULT) const;
-    gl::GLuint64 waitAndGet64(const std::chrono::duration<int, std::nano> & timeout, gl::GLenum pname = gl::GL_QUERY_RESULT) const;
+    gl::GLuint waitAndGet(const std::chrono::duration<int, std::nano> & timeout, gl::GLenum pname) const;
+    gl::GLuint64 waitAndGet64(const std::chrono::duration<int, std::nano> & timeout, gl::GLenum pname) const;
 
     gl::GLuint waitAndGet(gl::GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const;
     gl::GLuint64 waitAndGet64(gl::GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const;
 	
-    void counter(gl::GLenum target = gl::GL_TIMESTAMP) const;
+    void counter() const;
 
     virtual gl::GLenum objectType() const override;
 
 protected:
-	
+
     Query(IDResource * resource);
     virtual ~Query();
 
-	static gl::GLuint genQuery();
+    static gl::GLuint genQuery();
+
+    void counter(gl::GLenum target) const;
 };
 
 } // namespace glo

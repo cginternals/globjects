@@ -2,6 +2,7 @@
 #include "FramebufferImplementation_DirectStateAccessEXT.h"
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
@@ -56,7 +57,7 @@ void FramebufferImplementation_DirectStateAccessEXT::attachTextureLayer(const Fr
 
 void FramebufferImplementation_DirectStateAccessEXT::attachRenderBuffer(const Framebuffer * fbo, GLenum attachment, Renderbuffer * renderBuffer) const
 {
-    renderBuffer->bind(GL_RENDERBUFFER); // TODO: is this necessary?
+    renderBuffer->bind(); // TODO: is this necessary?
 
     glNamedFramebufferRenderbufferEXT(fbo->id(), attachment, GL_RENDERBUFFER, renderBuffer->id());
 }

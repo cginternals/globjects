@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glbinding/gl/types.h>
+
 #include <globjects-base/ref_ptr.h>
 
 #include <globjects/globjects_api.h>
@@ -16,8 +18,8 @@ class Framebuffer;
     This class is a link between a RenderBufferObject and the FrameBufferObject
     it is attached to. To get the attached render buffer, call renderBuffer().
     
-    \see RenderBufferObject
-    \see FrameBufferObject
+    \see Renderbuffer
+    \see Framebuffer
  */
 class GLOBJECTS_API AttachedRenderbuffer : public FramebufferAttachment
 {

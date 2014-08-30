@@ -72,7 +72,7 @@ void ABufferAlgorithm::initialize(const std::string & transparencyShaderFilePath
 }
 
 void ABufferAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* camera, int width, int height) {
-    m_renderFbo->bind();
+    m_renderFbo->bind(gl::GL_FRAMEBUFFER);
     m_renderFbo->clear(gl::GL_DEPTH_BUFFER_BIT);
     m_renderFbo->clearBuffer(gl::GL_COLOR, 0, glm::vec4(1.0f, 1.0f, 1.0f, std::numeric_limits<float>::max()));
 
@@ -96,12 +96,12 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* 
 
     drawFunction(m_program);
 
-    m_renderFbo->unbind();
+    m_renderFbo->unbind(gl::GL_FRAMEBUFFER);
 
     gl::glMemoryBarrier(gl::GL_SHADER_STORAGE_BARRIER_BIT);
 
 
-    m_postFbo->bind();
+    m_postFbo->bind(gl::GL_FRAMEBUFFER);
     m_postFbo->clear(gl::GL_COLOR_BUFFER_BIT);
 
     m_opaqueBuffer->bindActive(gl::GL_TEXTURE0);
@@ -112,7 +112,7 @@ void ABufferAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* 
 
     m_opaqueBuffer->unbindActive(gl::GL_TEXTURE0);
 
-    m_postFbo->unbind();
+    m_postFbo->unbind(gl::GL_FRAMEBUFFER);
 }
 
 void ABufferAlgorithm::resize(int width, int height) {

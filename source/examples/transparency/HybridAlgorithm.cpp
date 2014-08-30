@@ -69,7 +69,7 @@ void HybridAlgorithm::initialize(const std::string & transparencyShaderFilePath,
 }
 
 void HybridAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* camera, int width, int height) {
-    m_prepassFbo->bind();
+    m_prepassFbo->bind(gl::GL_FRAMEBUFFER);
 
     //
     // render opaque geometry
@@ -110,7 +110,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* c
     gl::glDepthMask(gl::GL_TRUE);
 
 
-    m_prepassFbo->unbind();
+    m_prepassFbo->unbind(gl::GL_FRAMEBUFFER);
 
     gl::glMemoryBarrier(gl::GL_SHADER_STORAGE_BARRIER_BIT);
 
@@ -137,7 +137,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* c
     //
     // render translucent colors
     //
-    m_colorFbo->bind();
+    m_colorFbo->bind(gl::GL_FRAMEBUFFER);
     m_colorFbo->clearBuffer(gl::GL_COLOR, 0, glm::vec4(0.0f));
     m_colorFbo->clearBuffer(gl::GL_COLOR, 1, glm::vec4(0.0f));
 
@@ -166,12 +166,12 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* c
     gl::glDisable(gl::GL_BLEND);
 
 
-    m_colorFbo->unbind();
+    m_colorFbo->unbind(gl::GL_FRAMEBUFFER);
 
     //
     // compose core and tail
     //
-    m_compositionFbo->bind();
+    m_compositionFbo->bind(gl::GL_FRAMEBUFFER);
     m_compositionFbo->clear(gl::GL_COLOR_BUFFER_BIT);
 
     m_opaqueBuffer->bindActive(gl::GL_TEXTURE0);
@@ -188,7 +188,7 @@ void HybridAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* c
     m_coreBuffer->unbindActive(gl::GL_TEXTURE1);
     m_accumulationBuffer->unbindActive(gl::GL_TEXTURE2);
 
-    m_compositionFbo->unbind();
+    m_compositionFbo->unbind(gl::GL_FRAMEBUFFER);
 }
 
 void HybridAlgorithm::resize(int width, int height) {

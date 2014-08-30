@@ -2,6 +2,7 @@
 
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/boolean.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/ObjectVisitor.h>
 
@@ -182,6 +183,11 @@ gl::GLuint64 Query::waitAndGet64(gl::GLenum pname, const std::chrono::duration<i
     wait(timeout);
 
     return get64(pname);
+}
+
+void Query::counter() const
+{
+    counter(gl::GL_TIMESTAMP);
 }
 
 void Query::counter(gl::GLenum target) const

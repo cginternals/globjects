@@ -59,10 +59,11 @@ void FragmentShaderParticles::initialize()
 
     // Create frame buffer object for update
     m_fboUpdate = new Framebuffer();
+    m_fboUpdate->bind(gl::GL_FRAMEBUFFER);
     m_fboUpdate->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_texPositions);
     m_fboUpdate->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_texVelocities);
     m_fboUpdate->setDrawBuffers({gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1});
-    m_fboUpdate->unbind();
+    m_fboUpdate->unbind(gl::GL_FRAMEBUFFER);
 
     // Create screen aligned quad for particle update
     m_quadUpdate = new ScreenAlignedQuad(
@@ -82,9 +83,10 @@ void FragmentShaderParticles::initialize()
     m_colorBuffer->setParameter(gl::GL_TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
     m_colorBuffer->setParameter(gl::GL_TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
 
+    m_fbo->bind(gl::GL_FRAMEBUFFER);
     m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer);
     m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
-    m_fbo->unbind();
+    m_fbo->unbind(gl::GL_FRAMEBUFFER);
 
     // Create screen aligned quads for clear and rendering
     m_clear = new ScreenAlignedQuad(
@@ -118,7 +120,7 @@ void FragmentShaderParticles::step(const float elapsed)
     // Simulate particles via fragment shader
     // Use positions and velocities textures for both input and output at the same time
 
-    m_fboUpdate->bind();
+    m_fboUpdate->bind(gl::GL_FRAMEBUFFER);
     m_texPositions->bindActive(gl::GL_TEXTURE0);
     m_texVelocities->bindActive(gl::GL_TEXTURE1);
     m_forces.bindActive(gl::GL_TEXTURE2);
@@ -128,7 +130,7 @@ void FragmentShaderParticles::step(const float elapsed)
     m_quadUpdate->draw();
     gl::glViewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
 
-    m_fboUpdate->unbind();
+    m_fboUpdate->unbind(gl::GL_FRAMEBUFFER);
 }
 
 void FragmentShaderParticles::draw(const float elapsed)
@@ -137,7 +139,7 @@ void FragmentShaderParticles::draw(const float elapsed)
     gl::glDisable(gl::GL_DEPTH_TEST);
 
     // Activate FBO
-    m_fbo->bind();
+    m_fbo->bind(gl::GL_FRAMEBUFFER);
 
     // Clear color buffer
     gl::glEnable(gl::GL_BLEND);
@@ -166,7 +168,7 @@ void FragmentShaderParticles::draw(const float elapsed)
 
     gl::glDisable(gl::GL_BLEND);
 
-    m_fbo->unbind();
+    m_fbo->unbind(gl::GL_FRAMEBUFFER);
 
     m_quad->draw();
 
@@ -182,7 +184,7 @@ void FragmentShaderParticles::resize()
 
     m_colorBuffer->image2D(0, gl::GL_RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, gl::GL_RGB, gl::GL_FLOAT, nullptr);
 
-    m_fbo->bind();
+    m_fbo->bind(gl::GL_FRAMEBUFFER);
     gl::glClear(gl::GL_COLOR_BUFFER_BIT);
-    m_fbo->unbind();
+    m_fbo->unbind(gl::GL_FRAMEBUFFER);
 }

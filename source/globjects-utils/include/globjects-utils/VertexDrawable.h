@@ -1,12 +1,11 @@
 #pragma once
 
-
-
 #include <vector>
 #include <array>
 #include <string>
 
 #include <glbinding/gl/boolean.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects-base/ref_ptr.h>
 #include <globjects-base/Referenced.h>
@@ -103,13 +102,13 @@ VertexDrawable::VertexDrawable(const std::array<T, Count> & vertices, gl::GLenum
 , m_size(static_cast<gl::GLint>(vertices.size()))
 , m_primitiveMode(primitiveMode)
 {
-    m_vbo->setData(vertices);
+    m_vbo->setData(vertices, gl::GL_STATIC_DRAW);
 }
 
 template <typename T>
 void VertexDrawable::setVertices(const std::vector<T> & vertices)
 {
-    m_vbo->setData(vertices);
+    m_vbo->setData(vertices, gl::GL_STATIC_DRAW);
 }
 
 } // namespace gloutils

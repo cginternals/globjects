@@ -43,7 +43,7 @@ public:
 	std::string attachmentString() const;
 
 protected:
-    Framebuffer * m_fbo;
+    Framebuffer * m_fbo; // TODO: weak pointer?
 	gl::GLenum m_attachment;
 };
 

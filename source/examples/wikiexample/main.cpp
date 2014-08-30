@@ -97,16 +97,16 @@ public:
         vao->ref();
 
 		program->attach(
-                        new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
-                        new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
-                        );
+            new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
+            new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
+        );
 
         cornerBuffer->setData(std::array<glm::vec2, 4>{ {
 			glm::vec2(0, 0),
 			glm::vec2(1, 0),
 			glm::vec2(0, 1),
 			glm::vec2(1, 1)
-        } });
+        } }, gl::GL_STATIC_DRAW);
 
         vao->binding(0)->setAttribute(0);
 		vao->binding(0)->setBuffer(cornerBuffer, 0, sizeof(glm::vec2));

@@ -31,7 +31,7 @@ void GlBlendAlgorithm::initialize(const std::string & transparencyShaderFilePath
 }
 
 void GlBlendAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* camera, int width, int height) {
-    m_fbo->bind();
+    m_fbo->bind(gl::GL_FRAMEBUFFER);
 
     gl::glViewport(0, 0, width, height);
 
@@ -56,7 +56,7 @@ void GlBlendAlgorithm::draw(const DrawFunction& drawFunction, gloutils::Camera* 
     gl::glDisable(gl::GL_BLEND);
 
 
-    m_fbo->unbind();
+    m_fbo->unbind(gl::GL_FRAMEBUFFER);
 }
 
 void GlBlendAlgorithm::resize(int width, int height) {
