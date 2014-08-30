@@ -61,6 +61,27 @@ VertexAttributeBindingImplementation_Legacy::~VertexAttributeBindingImplementati
 {
 }
 
+void VertexAttributeBindingImplementation_Legacy::enable(const VertexArray * vertexArray, gl::GLint attributeIndex) const
+{
+    vertexArray->bind();
+
+    gl::glEnableVertexAttribArray(attributeIndex);
+}
+
+void VertexAttributeBindingImplementation_Legacy::disable(const VertexArray * vertexArray, gl::GLint attributeIndex) const
+{
+    vertexArray->bind();
+
+    gl::glDisableVertexAttribArray(attributeIndex);
+}
+
+void VertexAttributeBindingImplementation_Legacy::setAttributeDivisor(const VertexAttributeBinding *binding, gl::GLuint divisor) const
+{
+    vao(binding)->bind();
+
+    gl::glVertexBindingDivisor(bindingIndex(binding), divisor);
+}
+
 BindingData * & VertexAttributeBindingImplementation_Legacy::bindingData(const VertexAttributeBinding * binding) const
 {
     return reinterpret_cast<BindingData * &>(AbstractVertexAttributeBindingImplementation::bindingData(binding));

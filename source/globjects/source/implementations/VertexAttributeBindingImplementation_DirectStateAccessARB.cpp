@@ -20,6 +20,21 @@ VertexAttributeBindingImplementation_DirectStateAccessARB::~VertexAttributeBindi
 
 }
 
+void VertexAttributeBindingImplementation_DirectStateAccessARB::enable(const VertexArray * vertexArray, gl::GLint attributeIndex) const
+{
+    gl::glEnableVertexArrayAttrib(vertexArray->id(), attributeIndex);
+}
+
+void VertexAttributeBindingImplementation_DirectStateAccessARB::disable(const VertexArray * vertexArray, gl::GLint attributeIndex) const
+{
+    gl::glDisableVertexArrayAttrib(vertexArray->id(), attributeIndex);
+}
+
+void VertexAttributeBindingImplementation_DirectStateAccessARB::setAttributeDivisor(const VertexAttributeBinding * binding, gl::GLuint divisor) const
+{
+    gl::glVertexArrayBindingDivisor(vao(binding)->id(), bindingIndex(binding), divisor);
+}
+
 void VertexAttributeBindingImplementation_DirectStateAccessARB::bindAttribute(const VertexAttributeBinding * binding, gl::GLint attributeIndex) const
 {
     gl::glVertexArrayAttribBinding(vao(binding)->id(), attributeIndex, bindingIndex(binding));

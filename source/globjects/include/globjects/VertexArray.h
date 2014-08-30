@@ -44,8 +44,6 @@ public:
     void enable(gl::GLint attributeIndex);
     void disable(gl::GLint attributeIndex);
 
-    void setAttributeDivisor(gl::GLint attributeIndex, gl::GLuint divisor);
-
     std::vector<VertexAttributeBinding *> bindings();
     std::vector<const VertexAttributeBinding *> bindings() const;
 

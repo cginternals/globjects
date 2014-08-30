@@ -8,6 +8,7 @@
 
 namespace glo {
 
+class VertexArray;
 class VertexAttributeBinding;
 class Buffer;
 
@@ -19,6 +20,11 @@ public:
 
     static AbstractVertexAttributeBindingImplementation * get(VertexArray::AttributeImplementation impl =
         VertexArray::AttributeImplementation::VertexAttribBindingARB);
+
+    virtual void enable(const VertexArray * vertexArray, gl::GLint attributeIndex) const = 0;
+    virtual void disable(const VertexArray * vertexArray, gl::GLint attributeIndex) const = 0;
+
+    virtual void setAttributeDivisor(const VertexAttributeBinding * binding, gl::GLuint divisor) const = 0;
 
     virtual void bindAttribute(const VertexAttributeBinding * binding, gl::GLint attributeIndex) const = 0;
     virtual void bindBuffer(const VertexAttributeBinding * binding, const Buffer * vbo, gl::GLint baseoffset, gl::GLint stride) const = 0;

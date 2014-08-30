@@ -8,16 +8,31 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
+#include "VertexAttributeBindingImplementation_Legacy.h"
+
 namespace glo {
 
 VertexAttributeBindingImplementation_VertexAttribBindingARB::VertexAttributeBindingImplementation_VertexAttribBindingARB()
 {
-
 }
 
 VertexAttributeBindingImplementation_VertexAttribBindingARB::~VertexAttributeBindingImplementation_VertexAttribBindingARB()
 {
+}
 
+void VertexAttributeBindingImplementation_VertexAttribBindingARB::enable(const VertexArray * vertexArray, gl::GLint attributeIndex) const
+{
+    VertexAttributeBindingImplementation_Legacy::instance()->enable(vertexArray, attributeIndex);
+}
+
+void VertexAttributeBindingImplementation_VertexAttribBindingARB::disable(const VertexArray * vertexArray, gl::GLint attributeIndex) const
+{
+    VertexAttributeBindingImplementation_Legacy::instance()->disable(vertexArray, attributeIndex);
+}
+
+void VertexAttributeBindingImplementation_VertexAttribBindingARB::setAttributeDivisor(const VertexAttributeBinding * binding, gl::GLuint divisor) const
+{
+    VertexAttributeBindingImplementation_Legacy::instance()->setAttributeDivisor(binding, divisor);
 }
 
 void VertexAttributeBindingImplementation_VertexAttribBindingARB::bindAttribute(const VertexAttributeBinding * binding, gl::GLint attributeIndex) const

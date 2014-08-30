@@ -25,6 +25,8 @@ public:
     const VertexArray * vao() const;
     VertexArray * vao();
 
+    void setDivisor(gl::GLint divisor);
+
 	void setAttribute(gl::GLint attributeIndex);
 	void setBuffer(
         const Buffer * vbo

@@ -17,6 +17,11 @@ public:
     VertexAttributeBindingImplementation_DirectStateAccessARB();
     virtual ~VertexAttributeBindingImplementation_DirectStateAccessARB();
 
+    virtual void enable(const VertexArray * vertexArray, gl::GLint attributeIndex) const override;
+    virtual void disable(const VertexArray * vertexArray, gl::GLint attributeIndex) const override;
+
+    virtual void setAttributeDivisor(const VertexAttributeBinding * binding, gl::GLuint divisor) const override;
+
     virtual void bindAttribute(const VertexAttributeBinding * binding, gl::GLint attributeIndex) const override;
     virtual void bindBuffer(const VertexAttributeBinding * binding, const Buffer * vbo, gl::GLint baseoffset, gl::GLint stride) const override;
 

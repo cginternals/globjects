@@ -47,6 +47,11 @@ VertexArray * VertexAttributeBinding::vao()
     return m_vao;
 }
 
+void VertexAttributeBinding::setDivisor(gl::GLint divisor)
+{
+    attributeImplementation().setAttributeDivisor(this, divisor);
+}
+
 void VertexAttributeBinding::setAttribute(gl::GLint attributeIndex)
 {
     m_attributeIndex = attributeIndex;

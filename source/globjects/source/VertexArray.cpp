@@ -16,6 +16,13 @@
 
 #include "Resource.h"
 
+namespace {
+    glo::AbstractVertexAttributeBindingImplementation & implementation()
+    {
+        return glo::ImplementationRegistry::current().attributeImplementation();
+    }
+}
+
 namespace glo
 {
 
@@ -85,23 +92,12 @@ const VertexAttributeBinding* VertexArray::binding(gl::GLuint bindingIndex) cons
 
 void VertexArray::enable(gl::GLint attributeIndex)
 {
-	bind();
-
-    gl::glEnableVertexAttribArray(attributeIndex);
+    implementation().enable(this, attributeIndex);
 }
 
 void VertexArray::disable(gl::GLint attributeIndex)
 {
-    bind();
-
-    gl::glDisableVertexAttribArray(attributeIndex);
-}
-
-void VertexArray::setAttributeDivisor(gl::GLint attributeIndex, gl::GLuint divisor)
-{
-    bind();
-
-    gl::glVertexAttribDivisor(attributeIndex, divisor);
+    implementation().disable(this, attributeIndex);
 }
 
 std::vector<VertexAttributeBinding*> VertexArray::bindings()
