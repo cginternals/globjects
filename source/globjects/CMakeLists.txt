@@ -132,6 +132,8 @@ set(sources
 	
 	${source_path}/implementations/AbstractVertexAttributeBindingImplementation.cpp
 	${source_path}/implementations/AbstractVertexAttributeBindingImplementation.h
+	${source_path}/implementations/VertexAttributeBindingImplementation_DirectStateAccessARB.cpp
+	${source_path}/implementations/VertexAttributeBindingImplementation_DirectStateAccessARB.h
 	${source_path}/implementations/VertexAttributeBindingImplementation_VertexAttribBindingARB.cpp
 	${source_path}/implementations/VertexAttributeBindingImplementation_VertexAttribBindingARB.h
 	${source_path}/implementations/VertexAttributeBindingImplementation_Legacy.cpp

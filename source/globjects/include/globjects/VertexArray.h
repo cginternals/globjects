@@ -21,6 +21,7 @@ class GLOBJECTS_API VertexArray : public Object
 public:
     enum class AttributeImplementation
     {
+        DirectStateAccessARB,
         VertexAttribBindingARB,
         Legacy
     };

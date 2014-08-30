@@ -5,6 +5,7 @@
 
 #include <globjects/globjects.h>
 
+#include "VertexAttributeBindingImplementation_DirectStateAccessARB.h"
 #include "VertexAttributeBindingImplementation_VertexAttribBindingARB.h"
 #include "VertexAttributeBindingImplementation_Legacy.h"
 
@@ -24,7 +25,12 @@ AbstractVertexAttributeBindingImplementation::~AbstractVertexAttributeBindingImp
 
 AbstractVertexAttributeBindingImplementation * AbstractVertexAttributeBindingImplementation::get(const VertexArray::AttributeImplementation impl)
 {
-    if (impl == VertexArray::AttributeImplementation::VertexAttribBindingARB
+    if (impl == VertexArray::AttributeImplementation::DirectStateAccessARB
+     && hasExtension(GLextension::GL_ARB_direct_state_access))
+    {
+        return VertexAttributeBindingImplementation_DirectStateAccessARB::instance();
+    }
+    else if (impl == VertexArray::AttributeImplementation::VertexAttribBindingARB
      && hasExtension(GLextension::GL_ARB_vertex_attrib_binding))
     {
         return VertexAttributeBindingImplementation_VertexAttribBindingARB::instance();
