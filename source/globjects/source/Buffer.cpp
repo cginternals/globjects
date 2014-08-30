@@ -125,6 +125,11 @@ GLint Buffer::getParameter(GLenum pname) const
     return implementation().getParameter(this, pname);
 }
 
+GLint64 Buffer::getParameter64(GLenum pname) const
+{
+    return implementation().getParameter64(this, pname);
+}
+
 void Buffer::bindBase(GLenum target, GLuint index) const
 {
     glBindBufferBase(target, index, id());
@@ -163,6 +168,21 @@ void Buffer::clearData(GLenum internalformat, GLenum format, GLenum type, const 
 void Buffer::clearSubData(GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data)
 {
     implementation().clearSubData(this, internalformat, offset, size, format, type, data);
+}
+
+const void * Buffer::getPointer(gl::GLenum pname) const
+{
+    return implementation().getPointer(this, pname);
+}
+
+void * Buffer::getPointer(gl::GLenum pname)
+{
+    return implementation().getPointer(this, pname);
+}
+
+void Buffer::getSubData(gl::GLintptr offset, gl::GLsizeiptr size, void * data) const
+{
+    implementation().getBufferSubData(this, offset, size, data);
 }
 
 gl::GLenum Buffer::objectType() const

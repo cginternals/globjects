@@ -148,11 +148,20 @@ public:
     /**
      * Wraps the OpenGL function gl::glGetBufferParameter.
      * Queries OpenGL for internal state of the buffer.
-     * @param pname name of the parameter, e.g. gl::glBUFFER_SIZE
+     * @param pname name of the parameter, e.g. gl::GL_BUFFER_SIZE
      * @return integer value for the parameter
      * \see http://www.opengl.org/sdk/docs/man/xhtml/gl::glGetBufferParameter.xml
      */
     gl::GLint getParameter(gl::GLenum pname) const;
+
+    /**
+     * Wraps the OpenGL function gl::glGetBufferParameter for 64 bit data types.
+     * Queries OpenGL for internal state of the buffer.
+     * @param pname name of the parameter, e.g. gl::GL_BUFFER_SIZE
+     * @return integer value for the parameter
+     * \see http://www.opengl.org/sdk/docs/man/xhtml/gl::glGetBufferParameter.xml
+     */
+    gl::GLint64 getParameter64(gl::GLenum pname) const;
 
     /**
      * Maps the Buffer's memory read only.
@@ -237,6 +246,19 @@ public:
      * \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glClearBufferSubData.xml
      */
     void clearSubData(gl::GLenum internalformat, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLenum format, gl::GLenum type, const void * data = nullptr);
+
+    const void * getPointer(gl::GLenum pname = gl::GL_BUFFER_MAP_POINTER) const;
+    void * getPointer(gl::GLenum pname = gl::GL_BUFFER_MAP_POINTER);
+
+    void getSubData(gl::GLintptr offset, gl::GLsizeiptr size, void * data) const;
+
+    template <typename T>
+    const std::vector<T> getSubData(gl::GLsizeiptr size, gl::GLintptr offset = 0) const;
+    /**
+     * Convenience method to simplify passing of data in form of an std::array.
+     */
+    template <typename T, std::size_t Count>
+    const std::array<T, Count> getSubData(gl::GLintptr offset = 0) const;
 
     virtual gl::GLenum objectType() const override;
 

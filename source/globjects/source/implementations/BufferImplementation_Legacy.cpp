@@ -92,6 +92,28 @@ GLint BufferImplementation_Legacy::getParameter(const Buffer * buffer, GLenum pn
     return value;
 }
 
+GLint64 BufferImplementation_Legacy::getParameter64(const Buffer * buffer, GLenum pname) const
+{
+    buffer->bind(s_workingTarget);
+
+    GLint64 value = 0;
+
+    glGetBufferParameteri64v(s_workingTarget, pname, &value);
+
+    return value;
+}
+
+void * BufferImplementation_Legacy::getPointer(const Buffer * buffer, GLenum pname) const
+{
+    buffer->bind(s_workingTarget);
+
+    void * data = nullptr;
+
+    glGetBufferPointerv(s_workingTarget, pname, &data);
+
+    return data;
+}
+
 void BufferImplementation_Legacy::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const
 {
     buffer->bind(s_workingTarget);
@@ -111,6 +133,13 @@ void BufferImplementation_Legacy::flushMappedRange(const Buffer * buffer, GLintp
     buffer->bind(s_workingTarget);
 
     glFlushMappedBufferRange(s_workingTarget, offset, length);
+}
+
+void BufferImplementation_Legacy::getBufferSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLvoid * data) const
+{
+    buffer->bind(s_workingTarget);
+
+    glGetBufferSubData(s_workingTarget, offset, size, data);
 }
 
 } // namespace glo

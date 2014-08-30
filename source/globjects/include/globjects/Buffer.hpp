@@ -40,4 +40,24 @@ void Buffer::setStorage(const std::array<T, Count> & data, gl::MapBufferUsageMas
     setStorage(static_cast<gl::GLsizei>(Count * sizeof(T)), data.data(), flags);
 }
 
+template <typename T>
+const std::vector<T> Buffer::getSubData(gl::GLsizeiptr size, gl::GLintptr offset) const
+{
+    std::vector<T> data(size);
+
+    getSubData(offset, size, data.data());
+
+    return data;
+}
+
+template <typename T, std::size_t Count>
+const std::array<T, Count> Buffer::getSubData(gl::GLintptr offset) const
+{
+    std::array<T, Count> data;
+
+    getSubData(offset, Count, data.data());
+
+    return data;
+}
+
 } // namespace glo

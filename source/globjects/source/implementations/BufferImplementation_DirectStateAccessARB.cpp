@@ -71,6 +71,24 @@ GLint BufferImplementation_DirectStateAccessARB::getParameter(const Buffer * buf
     return value;
 }
 
+GLint64 BufferImplementation_DirectStateAccessARB::getParameter64(const Buffer * buffer, GLenum pname) const
+{
+    GLint64 value = 0;
+
+    glGetNamedBufferParameteri64v(buffer->id(), pname, &value);
+
+    return value;
+}
+
+void * BufferImplementation_DirectStateAccessARB::getPointer(const Buffer * buffer, GLenum pname) const
+{
+    void * data = nullptr;
+
+    glGetNamedBufferPointerv(buffer->id(), pname, &data);
+
+    return data;
+}
+
 void BufferImplementation_DirectStateAccessARB::clearData(const Buffer * buffer, GLenum internalformat, GLenum format, GLenum type, const void * data) const
 {
     glClearNamedBufferData(buffer->id(), internalformat, format, type, data);
@@ -84,6 +102,11 @@ void BufferImplementation_DirectStateAccessARB::clearSubData(const Buffer * buff
 void BufferImplementation_DirectStateAccessARB::flushMappedRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length) const
 {
     glFlushMappedNamedBufferRange(buffer->id(), offset, static_cast<GLsizei>(length));
+}
+
+void BufferImplementation_DirectStateAccessARB::getBufferSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLvoid * data) const
+{
+    glGetNamedBufferSubData(buffer->id(), offset, static_cast<GLsizei>(size), data);
 }
 
 } // namespace glo
