@@ -86,43 +86,51 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
 
         if (trimmedLine.size() > 0)
         {
-            if (trimmedLine[0] == '#')
+            if (contains(trimmedLine, "/*"))
             {
-                if (contains(trimmedLine, "/*"))
-                {
-                    inMultiLineComment = true;
-                }
+                inMultiLineComment = true;
+            }
 
-                if (contains(trimmedLine, "*/"))
-                {
-                    inMultiLineComment = false;
-                }
+            if (contains(trimmedLine, "*/"))
+            {
+                inMultiLineComment = false;
+            }
 
-                if (!inMultiLineComment && contains(trimmedLine, "extension"))
+            if (!inMultiLineComment)
+            {
+                if (trimmedLine[0] == '#')
                 {
-                    // #extension GL_ARB_shading_language_include : require
-                    if (contains(trimmedLine, "GL_ARB_shading_language_include"))
+                    if (contains(trimmedLine, "#extension"))
                     {
-                        // drop line
+                        // #extension GL_ARB_shading_language_include : require
+                        if (contains(trimmedLine, "GL_ARB_shading_language_include"))
+                        {
+                            destinationstream << "/*" << trimmedLine.substr(trimmedLine.find("GL_ARB_shading_language_include"), std::string("GL_ARB_shading_language_include").size()) << "*/" << trimmedLine.substr(trimmedLine.find("GL_ARB_shading_language_include") + std::string("GL_ARB_shading_language_include").size()) << '\n';
+                        }
+                        else
+                        {
+                            destinationstream << line << '\n';
+                        }
+                    }
+                    else if (contains(trimmedLine, "#include"))
+                    {
+                        parseInclude(trimmedLine, compositeSource, destinationstream);
                     }
                     else
                     {
+                        // other macro
                         destinationstream << line << '\n';
                     }
                 }
-                else if (!inMultiLineComment && contains(trimmedLine, "include"))
-                {
-                    parseInclude(trimmedLine, compositeSource, destinationstream);
-                }
                 else
                 {
-                    // other macro
+                    // normal line
                     destinationstream << line << '\n';
                 }
             }
             else
             {
-                // normal line
+                // commented line
                 destinationstream << line << '\n';
             }
         }
