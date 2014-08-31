@@ -11,6 +11,8 @@ class Window;
 class WindowEvent;
 class KeyEvent;
 class MouseEvent;
+class MouseEnterEvent;
+class MouseLeaveEvent;
 class ScrollEvent;
 class ResizeEvent;
 class PaintEvent;
@@ -62,6 +64,9 @@ protected:
     virtual void mousePressEvent(MouseEvent & event);
     virtual void mouseMoveEvent(MouseEvent & event);
     virtual void mouseReleaseEvent(MouseEvent & event);
+
+    virtual void mouseEnterEvent(MouseEnterEvent & event);
+    virtual void mouseLeaveEvent(MouseLeaveEvent & event);
 
     virtual void scrollEvent(ScrollEvent & event);
 

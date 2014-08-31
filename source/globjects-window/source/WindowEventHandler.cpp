@@ -56,6 +56,14 @@ void WindowEventHandler::handleEvent(WindowEvent & event)
             mouseMoveEvent(static_cast<MouseEvent&>(event));
             break;
 
+        case WindowEvent::MouseEnter:
+
+            break;
+
+        case WindowEvent::MouseLeave:
+
+            break;
+
         case WindowEvent::Scroll:
             scrollEvent(static_cast<ScrollEvent&>(event));
             break;
@@ -122,6 +130,14 @@ void WindowEventHandler::mouseMoveEvent(MouseEvent &)
 }
 
 void WindowEventHandler::mouseReleaseEvent(MouseEvent &)
+{
+}
+
+void WindowEventHandler::mouseEnterEvent(MouseEnterEvent &)
+{
+}
+
+void WindowEventHandler::mouseLeaveEvent(MouseLeaveEvent &)
 {
 }
 

@@ -22,6 +22,8 @@ public:
     ,   MousePress
     ,   MouseRelease
     ,   MouseMove
+    ,   MouseEnter
+    ,   MouseLeave
     ,   Scroll
     ,   Resize
     ,   FrameBufferResize
@@ -96,6 +98,18 @@ protected:
     int m_modifiers;
 
     glm::ivec2 m_pos;
+};
+
+class GLOBJECTS_WINDOW_API MouseEnterEvent : public WindowEvent
+{
+public:
+    MouseEnterEvent();
+};
+
+class GLOBJECTS_WINDOW_API MouseLeaveEvent : public WindowEvent
+{
+public:
+    MouseLeaveEvent();
 };
 
 class GLOBJECTS_WINDOW_API ScrollEvent : public WindowEvent

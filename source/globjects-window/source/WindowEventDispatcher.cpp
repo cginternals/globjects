@@ -218,9 +218,16 @@ void WindowEventDispatcher::handleCursorPos(GLFWwindow* glfwWindow, double xPos,
     dispatchEvent(glfwWindow, new MouseEvent(glm::ivec2(std::floor(xPos), std::floor(yPos))));
 }
 
-void WindowEventDispatcher::handleCursorEnter(GLFWwindow* /*glfwWindow*/, int /*entered*/)
+void WindowEventDispatcher::handleCursorEnter(GLFWwindow* glfwWindow, int entered)
 {
-    // TODO: implement
+    if (entered == GL_TRUE)
+    {
+        dispatchEvent(glfwWindow, new MouseEnterEvent);
+    }
+    else
+    {
+        dispatchEvent(glfwWindow, new MouseLeaveEvent);
+    }
 }
 
 void WindowEventDispatcher::handleScroll(GLFWwindow* glfwWindow, double xOffset, double yOffset)

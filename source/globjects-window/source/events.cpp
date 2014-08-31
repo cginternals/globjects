@@ -172,6 +172,16 @@ const glm::ivec2 & MouseEvent::pos() const
     return m_pos;
 }
 
+MouseEnterEvent::MouseEnterEvent()
+: WindowEvent(MouseEnter)
+{
+}
+
+MouseLeaveEvent::MouseLeaveEvent()
+: WindowEvent(MouseLeave)
+{
+}
+
 ScrollEvent::ScrollEvent(const glm::vec2 & offset, const glm::ivec2 & pos)
 : WindowEvent(Scroll)
 , m_offset(offset)
