@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <cctype>
 
-#include <glbinding/Version.h>
 #include <globjects-base/AbstractStringSource.h>
 #include <globjects-base/StaticStringSource.h>
 #include <globjects-base/CompositeStringSource.h>
@@ -113,75 +112,7 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                 }
                 else if (!inMultiLineComment && contains(trimmedLine, "include"))
                 {
-                    size_t leftBracketPosition = trimmedLine.find_first_of('<');
-                    size_t rightBracketPosition = trimmedLine.find_last_of('>');
-                    size_t leftQuotePosition = trimmedLine.find_first_of('"');
-                    size_t rightQuotePosition = trimmedLine.find_last_of('"');
-
-                    size_t leftDelimiter = std::string::npos;
-                    size_t rightDelimiter = std::string::npos;
-
-                    if (leftBracketPosition != std::string::npos && rightBracketPosition != std::string::npos)
-                    {
-                        leftDelimiter = leftBracketPosition;
-                        rightDelimiter = rightBracketPosition;
-                    }
-                    else if (leftQuotePosition != std::string::npos && rightQuotePosition != std::string::npos && leftQuotePosition < rightQuotePosition)
-                    {
-                        leftDelimiter = leftQuotePosition;
-                        rightDelimiter = rightQuotePosition;
-                    }
-
-                    if (leftDelimiter != std::string::npos && rightDelimiter != std::string::npos)
-                    {
-                        std::string include = trimmedLine.substr(leftDelimiter+1, rightDelimiter - leftDelimiter - 1);
-
-                        if (include.size() == 0 || endsWith(include, '/'))
-                        {
-                            warning() << "Malformed #include " << include;
-                        }
-                        else
-                        {
-                            if (m_includes.count(include) == 0)
-                            {
-                                m_includes.insert(include);
-                                compositeSource->appendSource(new StaticStringSource(destinationstream.str()));
-
-                                NamedString * namedString = nullptr;
-                                if (startsWith(include, '/'))
-                                {
-                                    namedString = NamedString::obtain(include);
-                                }
-                                else
-                                {
-                                    for (const std::string& prefix : m_includePaths)
-                                    {
-                                        std::string fullPath = expandPath(include, prefix);
-                                        namedString = NamedString::obtain(fullPath);
-                                        if (namedString)
-                                        {
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                if (namedString)
-                                {
-                                    compositeSource->appendSource(processComposite(namedString->stringSource()));
-                                }
-                                else
-                                {
-                                    warning() << "Did not find include " << include;
-                                }
-
-                                destinationstream.str("");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        warning() << "Malformed #include " << trimmedLine;
-                    }
+                    parseInclude(trimmedLine, compositeSource, destinationstream);
                 }
                 else
                 {
@@ -209,6 +140,83 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
     }
 
     return compositeSource;
+}
+
+void IncludeProcessor::parseInclude(std::string & trimmedLine, CompositeStringSource * compositeSource, std::stringstream & destinationstream)
+{
+    size_t leftBracketPosition = trimmedLine.find_first_of('<');
+    size_t rightBracketPosition = trimmedLine.find_last_of('>');
+    size_t leftQuotePosition = trimmedLine.find_first_of('"');
+    size_t rightQuotePosition = trimmedLine.find_last_of('"');
+
+    size_t leftDelimiter = std::string::npos;
+    size_t rightDelimiter = std::string::npos;
+
+    if (leftBracketPosition != std::string::npos && rightBracketPosition != std::string::npos)
+    {
+        leftDelimiter = leftBracketPosition;
+        rightDelimiter = rightBracketPosition;
+    }
+    else if (leftQuotePosition != std::string::npos && rightQuotePosition != std::string::npos && leftQuotePosition < rightQuotePosition)
+    {
+        leftDelimiter = leftQuotePosition;
+        rightDelimiter = rightQuotePosition;
+    }
+
+    if (leftDelimiter != std::string::npos && rightDelimiter != std::string::npos)
+    {
+        std::string include = trimmedLine.substr(leftDelimiter+1, rightDelimiter - leftDelimiter - 1);
+
+        if (include.size() != 0 && !endsWith(include, '/'))
+        {
+            processInclude(include, compositeSource, destinationstream);
+        }
+        else
+        {
+            warning() << "Malformed #include " << include;
+        }
+    }
+    else
+    {
+        warning() << "Malformed #include " << trimmedLine;
+    }
+}
+
+void IncludeProcessor::processInclude(std::string & include, CompositeStringSource * compositeSource, std::stringstream & destinationstream)
+{
+    if (m_includes.count(include) == 0)
+    {
+        m_includes.insert(include);
+        compositeSource->appendSource(new StaticStringSource(destinationstream.str()));
+
+        NamedString * namedString = nullptr;
+        if (startsWith(include, '/'))
+        {
+            namedString = NamedString::obtain(include);
+        }
+        else
+        {
+            for (const std::string & prefix : m_includePaths)
+            {
+                namedString = NamedString::obtain(expandPath(include, prefix));
+                if (namedString)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (namedString)
+        {
+            compositeSource->appendSource(processComposite(namedString->stringSource()));
+        }
+        else
+        {
+            warning() << "Did not find include " << include;
+        }
+
+        destinationstream.str("");
+    }
 }
 
 std::string IncludeProcessor::expandPath(const std::string& include, const std::string includePath)
