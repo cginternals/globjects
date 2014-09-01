@@ -39,7 +39,6 @@ private:
     static bool isContextRegistered(glbinding::ContextHandle contextId);
     static void setCurrentRegistry(glbinding::ContextHandle contextId);
 
-    static Registry * s_currentRegistry;
     static std::unordered_map<glbinding::ContextHandle, Registry *> s_registries;
 private:
     bool m_initialized;

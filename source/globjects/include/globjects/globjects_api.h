@@ -1,9 +1,5 @@
 #pragma once
 
-// NOTE: don't export stl stuff (e.g. containers):
-// http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
-// don't do it: http://support.microsoft.com/kb/q168958/
-
 #ifdef _MSC_VER
 #	define GLOBJECTS_API_EXPORT_DECLARATION __declspec(dllexport)
 #	define GLOBJECTS_API_IMPORT_DECLARATION __declspec(dllimport)
@@ -40,4 +36,10 @@
 #	else
 #		define NOEXCEPT noexcept
 #	endif
+#endif
+
+#ifdef _MSC_VER
+#define THREAD_LOCAL  __declspec(thread)
+#else
+#define THREAD_LOCAL __thread
 #endif

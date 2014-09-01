@@ -17,8 +17,7 @@ namespace glo
 
 class AbstractStringSource;
 
-GLOBJECTS_API bool isInitialized();
-GLOBJECTS_API bool init(bool showWarnings = false);
+GLOBJECTS_API void init();
 
 GLOBJECTS_API void registerCurrentContext();
 GLOBJECTS_API void setContext(glbinding::ContextHandle contextId);

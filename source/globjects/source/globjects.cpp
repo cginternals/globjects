@@ -1,6 +1,7 @@
 #include <globjects/globjects.h>
 
 #include <unordered_map>
+#include <mutex>
 
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/functions.h>
@@ -18,6 +19,12 @@
 #include <globjects/logging.h>
 
 #include <globjects/NamedString.h>
+
+namespace
+{
+    bool globjectsIsInitialized = false;
+    std::mutex mutex;
+}
 
 namespace glo
 {
@@ -44,44 +51,22 @@ void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
     DebugMessage::insertMessage(gl::GL_DEBUG_SOURCE_API_ARB, gl::GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), gl::GL_DEBUG_SEVERITY_HIGH_ARB, stream.str());
 }
 
-
-bool globjectsIsInitialized = false;
-
-bool initializeGLBinding(long long contextId)
+void init()
 {
-    glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
-
-    glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
-        manualErrorCheckAfter(functionCall.function);
-    });
-
-    glbinding::Binding::useContext(contextId);
-
-    return true;
-}
-
-bool isInitialized()
-{
-    return globjectsIsInitialized;
-}
-
-bool init(bool showWarnings)
-{
+    mutex.lock();
     if (globjectsIsInitialized)
     {
-        if (showWarnings)
-        {
-            warning() << "globjects is already initialized";
-        }
+        glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
 
-        return true;
+        glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
+            manualErrorCheckAfter(functionCall.function);
+        });
+
+        globjectsIsInitialized = true;
     }
+    mutex.unlock();
 
     registerCurrentContext();
-
-    globjectsIsInitialized = true;
-
-    return true;
 }
 
 void registerCurrentContext()

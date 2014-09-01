@@ -1,5 +1,7 @@
 #include "Registry.h"
 
+#include <mutex>
+
 #include <globjects/logging.h>
 
 #include "ObjectRegistry.h"
@@ -7,10 +9,16 @@
 #include "ImplementationRegistry.h"
 #include "NamedStringRegistry.h"
 
+namespace
+{
+    THREAD_LOCAL glo::Registry * g_currentRegistry;
+
+    std::recursive_mutex mutex;
+}
+
 namespace glo
 {
 
-Registry * Registry::s_currentRegistry = nullptr;
 std::unordered_map<glbinding::ContextHandle, Registry *> Registry::s_registries;
 
 void Registry::registerContext(glbinding::ContextHandle contextId)
@@ -42,38 +50,55 @@ void Registry::deregisterContext(glbinding::ContextHandle contextId)
         return;
     }
 
+    mutex.lock();
     delete s_registries[contextId];
+    mutex.unlock();
 
+    mutex.lock();
     s_registries[contextId] = nullptr;
-    s_currentRegistry = nullptr;
+    mutex.unlock();
+
+    g_currentRegistry = nullptr;
 }
 
 Registry & Registry::current()
 {
-    assert(s_currentRegistry != nullptr);
+    assert(g_currentRegistry != nullptr);
 
-    return *s_currentRegistry;
+    return *g_currentRegistry;
 }
 
 bool Registry::isContextRegistered(glbinding::ContextHandle contextId)
 {
-    return s_registries.find(contextId) != s_registries.end();
+    mutex.lock();
+    bool found = s_registries.find(contextId) != s_registries.end();
+    mutex.unlock();
+
+    return found;
 }
 
 void Registry::setCurrentRegistry(glbinding::ContextHandle contextId)
 {
+    mutex.lock();
     auto it = s_registries.find(contextId);
 
     if (it != s_registries.end())
     {
-        s_currentRegistry = it->second;
+        g_currentRegistry = it->second;
+
+        mutex.unlock();
     }
     else
     {
-        Registry * registry = new Registry();
-        s_registries[contextId] = registry;
+        mutex.unlock();
 
-        s_currentRegistry = registry;
+        Registry * registry = new Registry();
+
+        mutex.lock();
+        s_registries[contextId] = registry;
+        mutex.unlock();
+
+        g_currentRegistry = registry;
         registry->initialize();
     }
 }
