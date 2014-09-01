@@ -11,7 +11,7 @@
 
 namespace
 {
-    THREAD_LOCAL glo::Registry * g_currentRegistry;
+    THREAD_LOCAL glo::Registry * t_currentRegistry;
 
     std::recursive_mutex mutex;
 }
@@ -58,14 +58,14 @@ void Registry::deregisterContext(glbinding::ContextHandle contextId)
     s_registries[contextId] = nullptr;
     mutex.unlock();
 
-    g_currentRegistry = nullptr;
+    t_currentRegistry = nullptr;
 }
 
 Registry & Registry::current()
 {
-    assert(g_currentRegistry != nullptr);
+    assert(t_currentRegistry != nullptr);
 
-    return *g_currentRegistry;
+    return *t_currentRegistry;
 }
 
 bool Registry::isContextRegistered(glbinding::ContextHandle contextId)
@@ -84,7 +84,7 @@ void Registry::setCurrentRegistry(glbinding::ContextHandle contextId)
 
     if (it != s_registries.end())
     {
-        g_currentRegistry = it->second;
+        t_currentRegistry = it->second;
 
         mutex.unlock();
     }
@@ -98,7 +98,7 @@ void Registry::setCurrentRegistry(glbinding::ContextHandle contextId)
         s_registries[contextId] = registry;
         mutex.unlock();
 
-        g_currentRegistry = registry;
+        t_currentRegistry = registry;
         registry->initialize();
     }
 }
