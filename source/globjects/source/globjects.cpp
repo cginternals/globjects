@@ -14,6 +14,7 @@
 
 #include "registry/Registry.h"
 #include "registry/ExtensionRegistry.h"
+#include "registry/ImplementationRegistry.h"
 
 #include <globjects/DebugMessage.h>
 #include <globjects/logging.h>
@@ -301,6 +302,46 @@ bool isEnabled(gl::GLenum capability, int index)
 void setEnabled(gl::GLenum capability, int index, bool enabled)
 {
     enabled ? enable(capability, index) : disable(capability, index);
+}
+
+void initializeStrategy(AbstractUniform::BindlessImplementation impl)
+{
+    Registry::current().implementations().initialize(impl);
+}
+
+void initializeStrategy(Buffer::BindlessImplementation impl)
+{
+    Registry::current().implementations().initialize(impl);
+}
+
+void initializeStrategy(Framebuffer::BindlessImplementation impl)
+{
+    Registry::current().implementations().initialize(impl);
+}
+
+void initializeStrategy(DebugMessage::Implementation impl)
+{
+    Registry::current().implementations().initialize(impl);
+}
+
+void initializeStrategy(Program::BinaryImplementation impl)
+{
+    Registry::current().implementations().initialize(impl);
+}
+
+void initializeStrategy(Shader::IncludeImplementation impl)
+{
+    Registry::current().implementations().initialize(impl);
+}
+
+void initializeStrategy(Object::NameImplementation impl)
+{
+    Registry::current().implementations().initialize(impl);
+}
+
+void initializeStrategy(VertexArray::AttributeImplementation impl)
+{
+    Registry::current().implementations().initialize(impl);
 }
 
 } // namespace glo

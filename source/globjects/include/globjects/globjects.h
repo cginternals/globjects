@@ -12,12 +12,24 @@
 
 #include <globjects/globjects_api.h>
 
+#include <globjects/AbstractUniform.h>
+#include <globjects/Buffer.h>
+#include <globjects/Framebuffer.h>
+#include <globjects/DebugMessage.h>
+#include <globjects/Program.h>
+#include <globjects/Shader.h>
+#include <globjects/Object.h>
+#include <globjects/VertexArray.h>
+
 namespace glo 
 {
 
 class AbstractStringSource;
 
 GLOBJECTS_API void init();
+
+template <typename T, typename... Args>
+void init(T strategy, Args... args);
 
 GLOBJECTS_API void registerCurrentContext();
 GLOBJECTS_API void setContext(glbinding::ContextHandle contextId);
@@ -70,6 +82,15 @@ GLOBJECTS_API void enable(gl::GLenum capability, int index);
 GLOBJECTS_API void disable(gl::GLenum capability, int index);
 GLOBJECTS_API bool isEnabled(gl::GLenum capability, int index);
 GLOBJECTS_API void setEnabled(gl::GLenum capability, int index, bool enabled);
+
+GLOBJECTS_API void initializeStrategy(AbstractUniform::BindlessImplementation impl);
+GLOBJECTS_API void initializeStrategy(Buffer::BindlessImplementation impl);
+GLOBJECTS_API void initializeStrategy(Framebuffer::BindlessImplementation impl);
+GLOBJECTS_API void initializeStrategy(DebugMessage::Implementation impl);
+GLOBJECTS_API void initializeStrategy(Program::BinaryImplementation impl);
+GLOBJECTS_API void initializeStrategy(Shader::IncludeImplementation impl);
+GLOBJECTS_API void initializeStrategy(Object::NameImplementation impl);
+GLOBJECTS_API void initializeStrategy(VertexArray::AttributeImplementation impl);
 
 } // namespace glo
 

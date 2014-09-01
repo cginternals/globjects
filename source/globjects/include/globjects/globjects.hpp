@@ -2,6 +2,8 @@
 
 #include <globjects/globjects.h>
 
+#include <utility>
+
 #include <glbinding/gl/types.h>
 #include <glbinding/gl/functions.h>
 
@@ -46,6 +48,14 @@ std::array<gl::GLboolean, Count> getBooleans(gl::GLenum pname)
     gl::glGetBooleanv(pname, reinterpret_cast<gl::GLboolean*>(&values));
 
     return values;
+}
+
+template <typename T, typename... Args>
+void init(T strategy, Args... args)
+{
+    init(args...);
+
+    initializeStrategy(strategy);
 }
 
 } // namespace glo
