@@ -23,7 +23,7 @@
 namespace
 {
     bool g_globjectsIsInitialized = false;
-    std::mutex mutex;
+    std::mutex g_mutex;
 }
 
 namespace glo
@@ -53,7 +53,7 @@ void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
 
 void init()
 {
-    mutex.lock();
+    g_mutex.lock();
     if (g_globjectsIsInitialized)
     {
         glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
@@ -64,7 +64,7 @@ void init()
 
         g_globjectsIsInitialized = true;
     }
-    mutex.unlock();
+    g_mutex.unlock();
 
     registerCurrentContext();
 }
