@@ -70,12 +70,38 @@ void init()
     registerCurrentContext();
 }
 
+void init(glbinding::ContextHandle sharedContextId)
+{
+    g_mutex.lock();
+    if (g_globjectsIsInitialized)
+    {
+        glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
+
+        glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
+            manualErrorCheckAfter(functionCall.function);
+        });
+
+        g_globjectsIsInitialized = true;
+    }
+    g_mutex.unlock();
+
+    registerCurrentContext(sharedContextId);
+}
+
 void registerCurrentContext()
 {
     glbinding::ContextHandle contextId = glbinding::getCurrentContext();
 
     glbinding::Binding::useContext(contextId);
     Registry::registerContext(contextId);
+}
+
+void registerCurrentContext(glbinding::ContextHandle sharedContextId)
+{
+    glbinding::ContextHandle contextId = glbinding::getCurrentContext();
+
+    glbinding::Binding::useContext(contextId);
+    Registry::registerContext(contextId, sharedContextId);
 }
 
 void setContext(glbinding::ContextHandle contextId)
