@@ -1,4 +1,4 @@
-#include <globjects-window/Context.h>
+#include <common/Context.h>
 
 #include <cassert>
 
@@ -10,9 +10,6 @@
 
 
 using namespace glo;
-
-namespace glowindow
-{
 
 Context::Context()
 : m_swapInterval(VerticalSyncronization)
@@ -286,5 +283,3 @@ glbinding::Version Context::validateVersion(const glbinding::Version & version)
 
     return version;
 }
-
-} // namespace glowindow

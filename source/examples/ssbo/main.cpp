@@ -9,15 +9,15 @@
 #include <globjects-utils/ScreenAlignedQuad.h>
 #include <globjects-utils/globjects-utils.h>
 
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Context.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <common/ContextFormat.h>
+#include <common/Context.h>
+#include <common/Window.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowindow;
+
 
 class EventHandler : public ExampleWindowEventHandler
 {

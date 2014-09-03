@@ -1,4 +1,4 @@
-#include <globjects-window/Window.h>
+#include <common/Window.h>
 
 #include <cassert>
 
@@ -8,14 +8,11 @@
 
 #include <globjects-base/baselogging.h>
 
-#include <globjects-window/Context.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <common/Context.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
-#include "WindowEventDispatcher.h"
-
-namespace glowindow
-{
+#include <common/WindowEventDispatcher.h>
 
 std::set<Window*> Window::s_instances;
 
@@ -466,5 +463,3 @@ void Window::removeTimer(int id)
 {
     WindowEventDispatcher::removeTimer(this, id);
 }
-
-} // namespace glowindow

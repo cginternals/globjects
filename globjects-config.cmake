@@ -19,11 +19,6 @@
 # GLOBJECTS_UTILS_LIBRARY_DEBUG
 # GLOBJECTS_UTILS_INCLUDE_DIR
 
-# GLOBJECTS_WINDOW_LIBRARY
-# GLOBJECTS_WINDOW_LIBRARY_RELEASE
-# GLOBJECTS_WINDOW_LIBRARY_DEBUG
-# GLOBJECTS_WINDOW_INCLUDE_DIR
-
 include(FindPackageHandleStandardArgs)
 
 if(CMAKE_CURRENT_LIST_FILE)
@@ -70,15 +65,13 @@ if (globjects_FIND_COMPONENTS)
     LIST_CONTAINS(INCLUDE_GLOBJECTS_BASE base ${globjects_FIND_COMPONENTS})
     LIST_CONTAINS(INCLUDE_GLOBJECTS_CORE core ${globjects_FIND_COMPONENTS})
     LIST_CONTAINS(INCLUDE_GLOBJECTS_UTILS utils ${globjects_FIND_COMPONENTS})
-    LIST_CONTAINS(INCLUDE_GLOBJECTS_WINDOW window ${globjects_FIND_COMPONENTS})
 else ()
     set (INCLUDE_GLOBJECTS_BASE FALSE)
     set (INCLUDE_GLOBJECTS_CORE FALSE)
     set (INCLUDE_GLOBJECTS_UTILS FALSE)
-    set (INCLUDE_GLOBJECTS_WINDOW FALSE)
 endif ()
 
-if (NOT ${INCLUDE_GLOBJECTS_BASE} AND NOT ${INCLUDE_GLOBJECTS_CORE} AND NOT ${INCLUDE_GLOBJECTS_UTILS} AND NOT ${INCLUDE_GLOBJECTS_WINDOW})
+if (NOT ${INCLUDE_GLOBJECTS_BASE} AND NOT ${INCLUDE_GLOBJECTS_CORE} AND NOT ${INCLUDE_GLOBJECTS_UTILS})
     message (WARNING "No components for globjects selected")
     
     return()
@@ -134,9 +127,6 @@ macro (find LIB_NAME HEADER)
     list(APPEND GLOBJECTS_LIBRARIES ${${LIB_NAME_UPPER}_LIBRARY})
 endmacro()
 
-if (${INCLUDE_GLOBJECTS_WINDOW})
-    set (INCLUDE_GLOBJECTS_BASE TRUE)
-endif ()
 if (${INCLUDE_GLOBJECTS_UTILS})
     set (INCLUDE_GLOBJECTS_CORE TRUE)
 endif ()
@@ -153,9 +143,6 @@ endif ()
 if (${INCLUDE_GLOBJECTS_UTILS})
     find(utils     globjects-utils/globjects-utils_api.h   ${LIB_PATHS})
 endif ()
-if (${INCLUDE_GLOBJECTS_WINDOW})
-    find(window    globjects-window/globjects-window_api.h ${LIB_PATHS})
-endif ()
 
 # add dependencies
 if (${INCLUDE_GLOBJECTS_CORE})
@@ -171,15 +158,6 @@ if (${INCLUDE_GLOBJECTS_UTILS})
     if(NOT GLOBJECTS_CORE_LIBRARY)
         message(WARNING "Required globjects-core not found")
     endif()
-endif ()
-if (${INCLUDE_GLOBJECTS_WINDOW})
-    if(NOT GLOBJECTS_BASE_LIBRARY)
-        message(WARNING "Required globjects-base not found")
-    endif()
-
-    find_package(GLFW REQUIRED)
-    list(APPEND GLOBJECTS_INCLUDES ${GLFW_INCLUDE_DIR})
-    list(APPEND GLOBJECTS_LIBRARIES ${GLFW_LIBRARY})
 endif ()
 
 # DEBUG

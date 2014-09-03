@@ -15,11 +15,3 @@
  * TODO: Detailed documentation for globjects-utils here.
  */
  
- /**
- * \namespace glowindow
- *
- * \brief Simple context and window creation and event handling based on GLFW.
- *
- * TODO: Detailed documentation for glowwindow here.
- */
- 

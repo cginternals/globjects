@@ -27,10 +27,10 @@
 #include <globjects/logging.h>
 #include <globjects/DebugMessage.h>
 
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Context.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
+#include <common/ContextFormat.h>
+#include <common/Context.h>
+#include <common/Window.h>
+#include <common/WindowEventHandler.h>
 
 #include <ExampleWindowEventHandler.h>
 
@@ -45,7 +45,7 @@ public:
     {
     }
 
-    virtual void initialize(glowindow::Window & window) override
+    virtual void initialize(Window & window) override
     {
         ExampleWindowEventHandler::initialize(window);
 
@@ -99,11 +99,11 @@ public:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glowindow::ContextFormat format;
+    ContextFormat format;
     format.setVersion(3, 2);
-    format.setProfile(glowindow::ContextFormat::CoreProfile);
+    format.setProfile(ContextFormat::CoreProfile);
 
-    glowindow::Window window;
+    Window window;
 
     window.setEventHandler(new EventHandler());
 
@@ -145,5 +145,5 @@ int main(int /*argc*/, char* /*argv*/[])
 
     window.show();
 
-    return glowindow::MainLoop::run();
+    return MainLoop::run();
 }

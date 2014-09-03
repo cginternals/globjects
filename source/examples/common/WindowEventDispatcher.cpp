@@ -9,12 +9,9 @@
 
 #include <GLFW/glfw3.h>
 
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
-
-namespace glowindow
-{
+#include <common/Window.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
 WindowEventDispatcher::Timer::Timer()
 : interval(0)
@@ -264,5 +261,3 @@ void WindowEventDispatcher::handleClose(GLFWwindow* glfwWindow)
 {
     dispatchEvent(glfwWindow, new CloseEvent);
 }
-
-} // namespace glowindow

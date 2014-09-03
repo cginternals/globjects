@@ -8,12 +8,12 @@
 #include <globjects/Texture.h>
 #include <globjects/DebugMessage.h>
 
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/MainLoop.h>
-#include <globjects-window/Context.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <common/ContextFormat.h>
+#include <common/Window.h>
+#include <common/MainLoop.h>
+#include <common/Context.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
 #include <globjects-utils/UnitCube.h>
 #include <globjects-base/File.h>
@@ -50,7 +50,7 @@ private:
     std::vector<AbstractTransparencyAlgorithm*> m_algos;
 	
 public:
-    virtual void initialize(glowindow::Window & window) override {
+    virtual void initialize(Window & window) override {
 
 		window.addTimer(0, 0);
 
@@ -89,7 +89,7 @@ public:
         m_nav.setBoundaryHint(m_aabb);
 	}
 
-    virtual void paintEvent(glowindow::PaintEvent& event) override {
+    virtual void paintEvent(PaintEvent& event) override {
 		int width = event.window()->width();
 		int height = event.window()->height();
 
@@ -135,7 +135,7 @@ public:
 
 	}
 
-    virtual void framebufferResizeEvent(glowindow::ResizeEvent & event) override {
+    virtual void framebufferResizeEvent(ResizeEvent & event) override {
 		int width = event.width();
 		int height = event.height();
 
@@ -167,7 +167,7 @@ public:
 		return unproject(*m_camera, viewProjectionInverted, depth, windowCoordinates);
 	}
 
-	virtual void mousePressEvent(glowindow::MouseEvent & event) override
+	virtual void mousePressEvent(MouseEvent & event) override
 	{
 		switch (event.button())
 		{
@@ -183,7 +183,7 @@ public:
 		}
 	}
 
-	virtual void mouseMoveEvent(glowindow::MouseEvent & event) override
+	virtual void mouseMoveEvent(MouseEvent & event) override
 	{
 		switch (m_nav.mode())
 		{
@@ -201,7 +201,7 @@ public:
 		}
 	}
 
-	virtual void mouseReleaseEvent(glowindow::MouseEvent & event) override
+	virtual void mouseReleaseEvent(MouseEvent & event) override
 	{
 		switch (event.button())
 		{
@@ -217,7 +217,7 @@ public:
 		}
 	}
 
-	virtual void keyPressEvent(glowindow::KeyEvent & event) override
+	virtual void keyPressEvent(KeyEvent & event) override
 	{
         //const float d = 0.08f;
 
@@ -229,7 +229,7 @@ public:
 		}
 	}
 
-	virtual void timerEvent(glowindow::TimerEvent & event) override
+	virtual void timerEvent(TimerEvent & event) override
 	{
 		event.window()->repaint();
 	}
@@ -246,16 +246,16 @@ int main(int /*argc*/, char* /*argv*/[])
     glo::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
     glo::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
 
-    glowindow::ContextFormat format;
+    ContextFormat format;
     format.setVersion(4, 3);
     format.setDepthBufferSize(16);
     //format.setSamples(4);
 
-    glowindow::Window window;
+    Window window;
 
     if (!window.create(format, "Transparency")) return 1;
-    window.context()->setSwapInterval(glowindow::Context::NoVerticalSyncronization);
+    window.context()->setSwapInterval(Context::NoVerticalSyncronization);
     window.setEventHandler(new EventHandler());
     window.show();
-    return glowindow::MainLoop::run();
+    return MainLoop::run();
 }

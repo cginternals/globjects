@@ -28,6 +28,9 @@ set(libs
     ${GLOBJECTS_EXAMPLES_LIBRARIES}
 )
 
+# for compatibility between glm 0.9.4 and 0.9.5
+add_definitions("-DGLM_FORCE_RADIANS")
+
 #
 # Sources
 #
@@ -37,10 +40,25 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(api_includes
     ${include_path}/ExampleWindowEventHandler.h
+    ${include_path}/Context.h
+    ${include_path}/ContextFormat.h
+    ${include_path}/events.h
+    ${include_path}/keys.h
+    ${include_path}/MainLoop.h
+    ${include_path}/Window.h
+    ${include_path}/WindowEventHandler.h
 )
 
 set(sources
     ${source_path}/ExampleWindowEventHandler.cpp
+    ${source_path}/Context.cpp
+    ${source_path}/ContextFormat.cpp
+    ${source_path}/events.cpp
+    ${source_path}/MainLoop.cpp
+    ${source_path}/Window.cpp
+    ${source_path}/WindowEventDispatcher.h
+    ${source_path}/WindowEventDispatcher.cpp
+    ${source_path}/WindowEventHandler.cpp
 )
 
 # Group source files

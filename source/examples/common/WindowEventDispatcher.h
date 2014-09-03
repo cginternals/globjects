@@ -7,9 +7,6 @@
 
 struct GLFWwindow;
 
-namespace glowindow
-{
-    
 class Window;
 class WindowEvent;
 
@@ -69,5 +66,3 @@ protected:
     static void handleIconify(GLFWwindow* glfwWindow, int iconified);
     static void handleClose(GLFWwindow* glfwWindow);
 };
-
-} // namespace glowindow

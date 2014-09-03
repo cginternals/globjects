@@ -1,9 +1,6 @@
-#include <globjects-window/events.h>
+#include <common/events.h>
 
 #include <GLFW/glfw3.h>
-
-namespace glowindow
-{
 
 WindowEvent::WindowEvent(Type type)
 : m_type(type)
@@ -263,5 +260,3 @@ int TimerEvent::id() const
 {
     return m_id;
 }
-
-} // namespace glowindow

@@ -19,7 +19,7 @@ if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOBJECTS_UTILS AND OPTION_BUILD_GLOBJ
 		${CMAKE_SOURCE_DIR}/source/globjects-base/include
 		${CMAKE_SOURCE_DIR}/source/globjects/include
 		${CMAKE_SOURCE_DIR}/source/globjects-utils/include
-		${CMAKE_SOURCE_DIR}/source/globjects-window/include
+		${CMAKE_SOURCE_DIR}/source/examples
 	)
 	
 	set(GLOBJECTS_EXAMPLES_LIBRARIES
@@ -28,7 +28,6 @@ if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOBJECTS_UTILS AND OPTION_BUILD_GLOBJ
 		globjects-base
 		globjects
 		globjects-utils
-		globjects-window
 	)
 	
 	add_subdirectory("common")

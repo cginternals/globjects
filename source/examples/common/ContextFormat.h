@@ -5,12 +5,7 @@
 
 #include <glbinding/Version.h>
 
-#include <globjects-window/globjects-window_api.h>
-
-namespace glowindow
-{
-
-class GLOBJECTS_WINDOW_API ContextFormat
+class ContextFormat
 {
 public:
 	
@@ -138,5 +133,3 @@ protected:
 	SwapBehavior m_swapBehavior;
 	unsigned int m_samples;
 };
-
-} // namespace glowindow
