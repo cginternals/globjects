@@ -1,6 +1,6 @@
 #pragma once
 
-#include <globjects-window/WindowEventHandler.h>
+#include <common/WindowEventHandler.h>
 
 #include <common/Timer.h>
 #include <common/events.h>
