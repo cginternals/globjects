@@ -19,7 +19,7 @@ option(OPTION_LIMIT_CONFIGS       "Generate limited configs (Release; Debug)" ON
 option(OPTION_PORTABLE_INSTALL    "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC        "Build static libraries" OFF)
 option(OPTION_BUILD_TESTS         "Build tests (if gmock and gtest are found)" ON)
-option(OPTION_BUILD_EXAMPLES      "Build examples (requires optional module globjects-window)" ON)
+option(OPTION_BUILD_EXAMPLES      "Build examples (requires GLFW)" ON)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
 
 
