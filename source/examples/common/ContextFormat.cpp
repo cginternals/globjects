@@ -1,4 +1,4 @@
-#include <globjects-window/ContextFormat.h>
+#include <common/ContextFormat.h>
 
 #include <cassert>
 #include <sstream>
@@ -6,10 +6,6 @@
 #include <globjects-base/baselogging.h>
 
 using namespace glo;
-
-
-namespace glowindow
-{
 
 ContextFormat::ContextFormat()
 : m_profile(AnyProfile)
@@ -315,5 +311,3 @@ bool ContextFormat::verifyPixelFormat(
 
 	return false;
 }
-
-} // namespace glowindow

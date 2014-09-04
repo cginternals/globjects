@@ -1,9 +1,6 @@
-#include <globjects-window/WindowEventHandler.h>
+#include <common/WindowEventHandler.h>
 
-#include <globjects-window/events.h>
-
-namespace glowindow
-{
+#include <common/events.h>
 
 WindowEventHandler::WindowEventHandler()
 {
@@ -156,5 +153,3 @@ void WindowEventHandler::iconifyEvent(IconifyEvent &)
 void WindowEventHandler::timerEvent(TimerEvent &)
 {
 }
-
-} // namespace glowindow

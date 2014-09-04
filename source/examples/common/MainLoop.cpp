@@ -1,12 +1,9 @@
-#include <globjects-window/MainLoop.h>
+#include <common/MainLoop.h>
 
 #include <GLFW/glfw3.h>
 
-#include <globjects-window/Window.h>
-#include "WindowEventDispatcher.h"
-
-namespace glowindow
-{
+#include <common/Window.h>
+#include <common/WindowEventDispatcher.h>
 
 MainLoop MainLoop::s_mainLoop;
 
@@ -78,5 +75,3 @@ void MainLoop::processEvents()
             window->idle();
     }
 }
-
-} // namespace glowindow

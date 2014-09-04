@@ -58,4 +58,12 @@ void init(T strategy, Args... args)
     initializeStrategy(strategy);
 }
 
+template <typename T, typename... Args>
+void init(glbinding::ContextHandle sharedContextId, T strategy, Args... args)
+{
+    init(sharedContextId, args...);
+
+    initializeStrategy(strategy);
+}
+
 } // namespace glo

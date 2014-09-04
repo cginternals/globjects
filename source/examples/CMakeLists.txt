@@ -1,5 +1,5 @@
 
-if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOBJECTS_WINDOW)
+if(OPTION_BUILD_EXAMPLES)
 	set(EXAMPLE_COMMON examplecommon)
 
         # for compatibility between glm 0.9.4 and 0.9.5
@@ -18,7 +18,6 @@ if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOBJECTS_WINDOW)
 	set(GLOBJECTS_EXAMPLE_INCLUDES
 		${CMAKE_SOURCE_DIR}/source/globjects-base/include
 		${CMAKE_SOURCE_DIR}/source/globjects/include
-		${CMAKE_SOURCE_DIR}/source/globjects-window/include
 		${CMAKE_SOURCE_DIR}/source/examples
 	)
 	
@@ -27,7 +26,6 @@ if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOBJECTS_WINDOW)
 		${GLFW_LIBRARY}
 		globjects-base
 		globjects
-		globjects-window
 	)
 	
 	add_subdirectory("common")
@@ -56,7 +54,4 @@ if(OPTION_BUILD_EXAMPLES AND OPTION_BUILD_GLOBJECTS_WINDOW)
 	
 	add_subdirectory("osgexample")
 	add_subdirectory("qtexample")
-	
-elseif(OPTION_BUILD_EXAMPLES)
-	message(STATUS "Examples can't be build because globjects-window is not build")
 endif()

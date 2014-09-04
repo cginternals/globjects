@@ -2,17 +2,14 @@
 
 #include <string>
 
-#include <globjects-window/globjects-window_api.h>
-#include <globjects-window/ContextFormat.h>
+#include <common/ContextFormat.h>
 
 struct GLFWwindow;
 struct GLFWmonitor;
 
-namespace glowindow {
-
 class AbstractNativeContext;
 
-class GLOBJECTS_WINDOW_API Context {
+class Context {
 
 public:
 
@@ -73,5 +70,3 @@ private:
 
     static void handleError(int errorCode, const char* errorMessage);
 };
-
-} // namespace glowindow

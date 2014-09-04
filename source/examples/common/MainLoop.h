@@ -1,11 +1,6 @@
 #pragma once
 
-#include <globjects-window/globjects-window_api.h>
-
-namespace glowindow
-{
-
-class GLOBJECTS_WINDOW_API MainLoop
+class MainLoop
 {
 protected:
     MainLoop();
@@ -32,5 +27,3 @@ protected:
 protected:
     static MainLoop s_mainLoop;
 };
-
-} // namespace glowindow

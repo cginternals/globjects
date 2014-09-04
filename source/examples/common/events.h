@@ -1,17 +1,12 @@
 #pragma once
 
-#include <globjects-window/keys.h>
+#include <common/keys.h>
 
 #include <glm/glm.hpp>
 
-#include <globjects-window/globjects-window_api.h>
-
-namespace glowindow
-{
-
 class Window;
 
-class GLOBJECTS_WINDOW_API WindowEvent
+class WindowEvent
 {
 public:
     enum Type
@@ -57,7 +52,7 @@ protected:
     WindowEvent(Type type);
 };
 
-class GLOBJECTS_WINDOW_API KeyEvent : public WindowEvent
+class KeyEvent : public WindowEvent
 {
 public:
     KeyEvent(int key, int scanCode, int action, int modifiers);
@@ -77,7 +72,7 @@ protected:
     unsigned int m_character;
 };
 
-class GLOBJECTS_WINDOW_API MouseEvent : public WindowEvent
+class MouseEvent : public WindowEvent
 {
 public:
     MouseEvent(const glm::ivec2 & pos);
@@ -100,19 +95,19 @@ protected:
     glm::ivec2 m_pos;
 };
 
-class GLOBJECTS_WINDOW_API MouseEnterEvent : public WindowEvent
+class MouseEnterEvent : public WindowEvent
 {
 public:
     MouseEnterEvent();
 };
 
-class GLOBJECTS_WINDOW_API MouseLeaveEvent : public WindowEvent
+class MouseLeaveEvent : public WindowEvent
 {
 public:
     MouseLeaveEvent();
 };
 
-class GLOBJECTS_WINDOW_API ScrollEvent : public WindowEvent
+class ScrollEvent : public WindowEvent
 {
 public:
     ScrollEvent(const glm::vec2 & offset, const glm::ivec2 & pos);
@@ -125,7 +120,7 @@ protected:
     glm::ivec2 m_pos;
 };
 
-class GLOBJECTS_WINDOW_API MoveEvent : public WindowEvent
+class MoveEvent : public WindowEvent
 {
 public:
     MoveEvent(const glm::ivec2 & pos);
@@ -139,7 +134,7 @@ protected:
     glm::ivec2 m_pos;
 };
 
-class GLOBJECTS_WINDOW_API ResizeEvent : public WindowEvent
+class ResizeEvent : public WindowEvent
 {
 public:
     ResizeEvent(const glm::ivec2 & size, bool framebuffer = false);
@@ -153,19 +148,19 @@ protected:
     glm::ivec2 m_size;
 };
 
-class GLOBJECTS_WINDOW_API PaintEvent : public WindowEvent
+class PaintEvent : public WindowEvent
 {
 public:
     PaintEvent();
 };
 
-class GLOBJECTS_WINDOW_API CloseEvent : public WindowEvent
+class CloseEvent : public WindowEvent
 {
 public:
     CloseEvent();
 };
 
-class GLOBJECTS_WINDOW_API FocusEvent : public WindowEvent
+class FocusEvent : public WindowEvent
 {
 public:
     FocusEvent(bool hasFocus);
@@ -175,7 +170,7 @@ protected:
     bool m_hasFocus;
 };
 
-class GLOBJECTS_WINDOW_API IconifyEvent : public WindowEvent
+class IconifyEvent : public WindowEvent
 {
 public:
     IconifyEvent(bool isIconified);
@@ -185,7 +180,7 @@ protected:
     bool m_isIconified;
 };
 
-class GLOBJECTS_WINDOW_API TimerEvent : public WindowEvent
+class TimerEvent : public WindowEvent
 {
 public:
     TimerEvent(int id);
@@ -194,5 +189,3 @@ public:
 protected:
     int m_id;
 };
-
-} // namespace glowindow

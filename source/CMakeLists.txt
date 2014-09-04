@@ -9,9 +9,6 @@ include_directories(
 set(IDE_FOLDER "")
 add_subdirectory(globjects)
 add_subdirectory(globjects-base)
-if (OPTION_BUILD_GLOBJECTS_WINDOW)
-	add_subdirectory(globjects-window)
-endif()
 
 # Examples
 set(IDE_FOLDER "Examples")

@@ -2,11 +2,6 @@
 
 #include <globjects-base/Referenced.h>
 
-#include <globjects-window/globjects-window_api.h>
-
-namespace glowindow
-{
-
 class Window;
 class WindowEvent;
 class KeyEvent;
@@ -27,7 +22,7 @@ class TimerEvent;
     The window's context is made current before calling any methods and done current afterwards.
 
 */
-class GLOBJECTS_WINDOW_API WindowEventHandler : public glo::Referenced
+class WindowEventHandler : public glo::Referenced
 {
 public:
     WindowEventHandler();
@@ -75,5 +70,3 @@ protected:
 
     virtual void timerEvent(TimerEvent & event);
 };
-
-} // namespace glowindow

@@ -8,15 +8,11 @@
 
 #include <globjects-base/ref_ptr.h>
 
-#include <globjects-window/globjects-window_api.h>
-#include <globjects-window/MainLoop.h>
-#include <globjects-window/WindowEventHandler.h>
+#include <common/MainLoop.h>
+#include <common/WindowEventHandler.h>
 
 struct GLFWwindow;
 struct GLFWmonitor;
-
-namespace glowindow 
-{
 
 class WindowEvent;
 class ContextFormat;
@@ -25,7 +21,7 @@ class Context;
 /**
  * Attach a WindowEventHandler specialization for event handling.
  */
-class GLOBJECTS_WINDOW_API Window
+class Window
 {
 public:
     Window();
@@ -125,5 +121,3 @@ protected:
 private:
     static std::set<Window*> s_instances;
 };
-
-} // namespace glowindow
