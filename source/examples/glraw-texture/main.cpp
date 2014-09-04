@@ -5,7 +5,7 @@
 #include <globjects/Texture.h>
 #include <globjects/DebugMessage.h>
 
-#include <globjects-utils/ScreenAlignedQuad.h>
+#include <common/ScreenAlignedQuad.h>
 #include <globjects-window/ContextFormat.h>
 #include <globjects-window/Context.h>
 #include <globjects-window/Window.h>
@@ -70,7 +70,7 @@ public:
 
 protected:
     glo::ref_ptr<glo::Texture> m_texture;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<ScreenAlignedQuad> m_quad;
 };
 
 
@@ -117,6 +117,6 @@ void EventHandler::createAndSetupTexture()
 
 void EventHandler::createAndSetupGeometry()
 {
-	m_quad = new gloutils::ScreenAlignedQuad(m_texture);
+	m_quad = new ScreenAlignedQuad(m_texture);
     m_quad->setSamplerUniform(0);
 }

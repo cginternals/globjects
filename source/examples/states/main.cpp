@@ -13,8 +13,7 @@
 #include <globjects/globjects.h>
 
 #include <globjects-base/File.h>
-#include <globjects-utils/globjects-utils.h>
-#include <globjects-utils/StringTemplate.h>
+#include <common/StringTemplate.h>
 
 #include <globjects-window/Context.h>
 #include <globjects-window/ContextFormat.h>
@@ -66,8 +65,8 @@ public:
         m_vao = new glo::VertexArray();
         m_buffer = new glo::Buffer();
 
-        gloutils::StringTemplate* vertexShaderSource = new gloutils::StringTemplate(new glo::File("data/states/standard.vert"));
-        gloutils::StringTemplate* fragmentShaderSource = new gloutils::StringTemplate(new glo::File("data/states/standard.frag"));
+        StringTemplate* vertexShaderSource = new StringTemplate(new glo::File("data/states/standard.vert"));
+        StringTemplate* fragmentShaderSource = new StringTemplate(new glo::File("data/states/standard.frag"));
         
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");

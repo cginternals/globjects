@@ -10,10 +10,9 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
 
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/Camera.h>
+#include <common/ScreenAlignedQuad.h>
+#include <common/Camera.h>
 #include <globjects-base/File.h>
-#include <globjects-utils/globjects-utils.h>
 
 #include "TransformFeedbackParticles.h"
 
@@ -25,7 +24,7 @@ TransformFeedbackParticles::TransformFeedbackParticles(
     const std::vector<vec4> & positions
 ,   const std::vector<vec4> & velocities
 ,   const Texture & forces
-,   const gloutils::Camera & camera)
+,   const Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
 {
 }
@@ -89,8 +88,8 @@ void TransformFeedbackParticles::initialize()
     m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
     m_fbo->unbind(gl::GL_FRAMEBUFFER);
 
-    m_quad = new gloutils::ScreenAlignedQuad(m_color);
-    m_clear = new gloutils::ScreenAlignedQuad(
+    m_quad = new ScreenAlignedQuad(m_color);
+    m_clear = new ScreenAlignedQuad(
         glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 

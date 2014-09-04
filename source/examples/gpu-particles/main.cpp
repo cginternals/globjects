@@ -19,12 +19,12 @@
 #include <globjects/NamedString.h>
 #include <globjects/DebugMessage.h>
 
-#include <globjects-utils/Timer.h>
-#include <globjects-utils/Camera.h>
+#include <common/Timer.h>
+#include <common/Camera.h>
 #include <globjects-base/File.h>
 #include <globjects-base/File.h>
-#include <globjects-utils/AbstractCoordinateProvider.h>
-#include <globjects-utils/WorldInHandNavigation.h>
+#include <common/AbstractCoordinateProvider.h>
+#include <common/WorldInHandNavigation.h>
 
 #include <globjects-window/Context.h>
 #include <globjects-window/ContextFormat.h>
@@ -45,7 +45,7 @@ using namespace glowindow;
 using namespace glm;
 
 
-class EventHandler : public ExampleWindowEventHandler, gloutils::AbstractCoordinateProvider
+class EventHandler : public ExampleWindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler()
@@ -99,11 +99,11 @@ public:
         
         // initialize camera
 
-        m_camera = new gloutils::Camera(vec3(0.f, 1.f, -3.f));
+        m_camera = new Camera(vec3(0.f, 1.f, -3.f));
         m_camera->setZNear(0.1f);
         m_camera->setZFar(16.f);
 
-        m_nav = new  gloutils::WorldInHandNavigation();
+        m_nav = new  WorldInHandNavigation();
         m_nav->setCamera(m_camera);
         m_nav->setCoordinateProvider(this);
         
@@ -271,12 +271,12 @@ public:
     {
         switch (m_nav->mode())
         {
-        case gloutils::WorldInHandNavigation::RotateInteraction:
+        case WorldInHandNavigation::RotateInteraction:
             m_nav->rotateProcess(event.pos());
             event.accept();
             break;
-        case gloutils::WorldInHandNavigation::PanInteraction:
-        case gloutils::WorldInHandNavigation::NoInteraction:
+        case WorldInHandNavigation::PanInteraction:
+        case WorldInHandNavigation::NoInteraction:
             break;
         }
     }
@@ -293,7 +293,7 @@ public:
 
     virtual void scrollEvent(ScrollEvent & event) override
     {
-        if (gloutils::WorldInHandNavigation::NoInteraction != m_nav->mode())
+        if (WorldInHandNavigation::NoInteraction != m_nav->mode())
             return;
 
         m_nav->scaleAtCenter(-event.offset().y * 0.1f);
@@ -332,17 +332,17 @@ protected:
     ParticleTechnique m_technique;
     std::map<ParticleTechnique, AbstractParticleTechnique *> m_techniques;
 
-    gloutils::Timer m_timer;
+    Timer m_timer;
 
     int m_numParticles;
-    gloutils::Camera * m_camera;
+    Camera * m_camera;
 
     std::vector<vec4> m_positions;
     std::vector<vec4> m_velocities;
 
     int m_steps;
 
-    gloutils::WorldInHandNavigation * m_nav;
+    WorldInHandNavigation * m_nav;
 
     struct Attribute
     {

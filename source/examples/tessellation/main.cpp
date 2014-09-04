@@ -16,13 +16,11 @@
 #include <globjects/logging.h>
 #include <globjects/DebugMessage.h>
 
-#include <globjects-utils/Timer.h>
-#include <globjects-utils/Icosahedron.h>
-#include <globjects-utils/AdaptiveGrid.h>
-#include <globjects-utils/Camera.h>
+#include <common/Timer.h>
+#include <common/Icosahedron.h>
+#include <common/Camera.h>
 #include <globjects-base/File.h>
 #include <globjects-base/File.h>
-#include <globjects-utils/globjects-utils.h>
 
 #include <globjects-window/ContextFormat.h>
 #include <globjects-window/Context.h>
@@ -66,16 +64,13 @@ public:
         ,   glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
         ,   glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/common/phong.frag"));
 
-        m_icosahedron = new gloutils::Icosahedron();
-        m_agrid = new gloutils::AdaptiveGrid(16U);
+        m_icosahedron = new Icosahedron();
 
         m_time.reset();
         m_time.start();
 
         m_camera.setZNear(0.1f);
         m_camera.setZFar(16.f);
-
-        m_agrid->setCamera(&m_camera);
     }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -93,9 +88,6 @@ public:
     {
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
-
-        m_agrid->update();
-
         float t = static_cast<float>(m_time.elapsed().count()) * 4e-10f;
         mat4 R = glm::rotate(t * 10.f, vec3(sin(t * 0.321), cos(t * 0.234), sin(t * 0.123)));
 
@@ -109,8 +101,6 @@ public:
         gl::glPatchParameteri(gl::GL_PATCH_VERTICES, 3);
         m_icosahedron->draw(gl::GL_PATCHES);
         m_sphere->release();
-
-        m_agrid->draw();
     }
 
     virtual void idle(Window & window) override
@@ -131,11 +121,10 @@ public:
 protected:
     glo::ref_ptr<glo::Program> m_sphere;
 
-    glo::ref_ptr<gloutils::Icosahedron> m_icosahedron;
-    glo::ref_ptr<gloutils::AdaptiveGrid> m_agrid;
+    glo::ref_ptr<Icosahedron> m_icosahedron;
 
-    gloutils::Camera m_camera;
-    gloutils::Timer m_time;
+    Camera m_camera;
+    Timer m_time;
 
     vec3 m_rand;
 };

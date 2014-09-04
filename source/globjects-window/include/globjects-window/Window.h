@@ -15,11 +15,6 @@
 struct GLFWwindow;
 struct GLFWmonitor;
 
-namespace gloutils
-{
-    class Timer;
-}
-
 namespace glowindow 
 {
 

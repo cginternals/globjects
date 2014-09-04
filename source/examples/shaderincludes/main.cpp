@@ -6,9 +6,8 @@
 #include <globjects/Shader.h>
 #include <globjects/DebugMessage.h>
 
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/globjects-utils.h>
-#include <globjects-utils/StringTemplate.h>
+#include <common/ScreenAlignedQuad.h>
+#include <common/StringTemplate.h>
 
 #include <globjects-window/ContextFormat.h>
 #include <globjects-window/Context.h>
@@ -41,13 +40,13 @@ public:
 
         glo::NamedString::create("/shaderincludes/color.glsl", new glo::File("data/shaderincludes/color.glsl"));
 
-        gloutils::StringTemplate* fragmentShaderString = new gloutils::StringTemplate(new glo::File("data/shaderincludes/test.frag"));
+        StringTemplate* fragmentShaderString = new StringTemplate(new glo::File("data/shaderincludes/test.frag"));
 
 #ifdef MAC_OS
         fragmentShaderString->replace("#version 140", "#version 150");
 #endif
 
-        m_quad = new gloutils::ScreenAlignedQuad(new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderString));
+        m_quad = new ScreenAlignedQuad(new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderString));
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -78,7 +77,7 @@ public:
     }
 
 protected:
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<ScreenAlignedQuad> m_quad;
 };
 
 

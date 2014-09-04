@@ -12,7 +12,7 @@
 #include <globjects-window/ContextFormat.h>
 #include <globjects-window/Context.h>
 #include <globjects-window/WindowEventHandler.h>
-#include <globjects-utils/StringTemplate.h>
+#include <common/StringTemplate.h>
 #include <globjects-window/events.h>
 
 #include <ExampleWindowEventHandler.h>
@@ -78,8 +78,8 @@ public:
 
 
         
-        gloutils::StringTemplate* vertexShaderSource = new gloutils::StringTemplate(new glo::StaticStringSource(vertexShaderCode));
-        gloutils::StringTemplate* fragmentShaderSource = new gloutils::StringTemplate(new glo::StaticStringSource(fragmentShaderCode));
+        StringTemplate* vertexShaderSource = new StringTemplate(new glo::StaticStringSource(vertexShaderCode));
+        StringTemplate* fragmentShaderSource = new StringTemplate(new glo::StaticStringSource(fragmentShaderCode));
         
         
 #ifdef MAC_OS

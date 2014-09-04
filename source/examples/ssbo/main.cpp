@@ -6,8 +6,7 @@
 #include <globjects/Program.h>
 
 #include <globjects-base/File.h>
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/globjects-utils.h>
+#include <common/ScreenAlignedQuad.h>
 
 #include <globjects-window/ContextFormat.h>
 #include <globjects-window/Context.h>
@@ -39,7 +38,7 @@ public:
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
-        m_quad = new gloutils::ScreenAlignedQuad(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
+        m_quad = new ScreenAlignedQuad(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
 
         m_quad->program()->setUniform("maximum", 10);
         m_quad->program()->setUniform("rowCount", 10);
@@ -94,7 +93,7 @@ public:
     }
 
 protected:
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<ScreenAlignedQuad> m_quad;
     glo::ref_ptr<glo::Buffer> m_buffer;
 };
 

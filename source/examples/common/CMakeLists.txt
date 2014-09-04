@@ -36,11 +36,33 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(api_includes
+    ${include_path}/AbstractCoordinateProvider.h
+    ${include_path}/AxisAlignedBoundingBox.h
+    ${include_path}/Camera.h
     ${include_path}/ExampleWindowEventHandler.h
+    ${include_path}/Icosahedron.h
+    ${include_path}/navigationmath.h
+    ${include_path}/ScreenAlignedQuad.h
+    ${include_path}/StringSourceDecorator.h
+    ${include_path}/StringTemplate.h
+    ${include_path}/Timer.h
+    ${include_path}/VertexDrawable.h
+    ${include_path}/WorldInHandNavigation.h
 )
 
 set(sources
+    ${source_path}/AbstractCoordinateProvider.cpp
+    ${source_path}/AxisAlignedBoundingBox.cpp
+    ${source_path}/Camera.cpp
     ${source_path}/ExampleWindowEventHandler.cpp
+    ${source_path}/Icosahedron.cpp
+    ${source_path}/navigationmath.cpp
+    ${source_path}/ScreenAlignedQuad.cpp
+    ${source_path}/StringSourceDecorator.cpp
+    ${source_path}/StringTemplate.cpp
+    ${source_path}/Timer.cpp
+    ${source_path}/VertexDrawable.cpp
+    ${source_path}/WorldInHandNavigation.cpp
 )
 
 # Group source files

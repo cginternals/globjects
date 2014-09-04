@@ -11,10 +11,8 @@ namespace glo
     class VertexArray;
     class Framebuffer;
 }
-namespace gloutils
-{
-    class ScreenAlignedQuad;
-}
+
+class ScreenAlignedQuad;
 
 
 class FragmentShaderParticles : public AbstractParticleTechnique
@@ -24,7 +22,7 @@ public:
         const std::vector<glm::vec4> & positions
     ,   const std::vector<glm::vec4> & velocities
     ,   const glo::Texture & forces
-    ,   const gloutils::Camera & camera);
+    ,   const Camera & camera);
     virtual ~FragmentShaderParticles();
 
     virtual void initialize() override;
@@ -44,13 +42,13 @@ protected:
 
     // Update of particles
     glo::ref_ptr<glo::Framebuffer>      m_fboUpdate;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quadUpdate;
+    glo::ref_ptr<ScreenAlignedQuad> m_quadUpdate;
 
     // Rendering
     glo::ref_ptr<glo::VertexArray>      m_vao;
     glo::ref_ptr<glo::Framebuffer>      m_fbo;
     glo::ref_ptr<glo::Texture>                m_colorBuffer;
     glo::ref_ptr<glo::Program>                m_drawProgram;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_clear;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<ScreenAlignedQuad> m_clear;
+    glo::ref_ptr<ScreenAlignedQuad> m_quad;
 };

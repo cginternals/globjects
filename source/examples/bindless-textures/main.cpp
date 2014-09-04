@@ -24,14 +24,12 @@
 
 #include <globjects-base/File.h>
 
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/globjects-utils.h>
-#include <globjects-utils/Camera.h>
-#include <globjects-utils/AxisAlignedBoundingBox.h>
-#include <globjects-utils/AdaptiveGrid.h>
-#include <globjects-utils/AbstractCoordinateProvider.h>
-#include <globjects-utils/WorldInHandNavigation.h>
-#include <globjects-utils/VertexDrawable.h>
+#include <common/ScreenAlignedQuad.h>
+#include <common/Camera.h>
+#include <common/AxisAlignedBoundingBox.h>
+#include <common/AbstractCoordinateProvider.h>
+#include <common/WorldInHandNavigation.h>
+#include <common/VertexDrawable.h>
 
 #include <globjects-window/ContextFormat.h>
 #include <globjects-window/Context.h>
@@ -43,7 +41,7 @@
 
 using namespace glowindow;
 
-class EventHandler : public ExampleWindowEventHandler, gloutils::AbstractCoordinateProvider
+class EventHandler : public ExampleWindowEventHandler, AbstractCoordinateProvider
 {
 public:
     struct Vertex
@@ -58,7 +56,7 @@ public:
         m_aabb.extend(glm::vec3(-8.f, -1.f, -8.f));
         m_aabb.extend(glm::vec3(8.f, 1.f, 8.f));
 
-        m_camera = gloutils::Camera(glm::vec3(0.0, 1.0, -1.0)*2.f, glm::vec3(), glm::vec3(0.0, 1.0, 0.0));
+        m_camera = Camera(glm::vec3(0.0, 1.0, -1.0)*2.f, glm::vec3(), glm::vec3(0.0, 1.0, 0.0));
 
         m_nav.setCamera(&m_camera);
         m_nav.setCoordinateProvider(this);
@@ -168,12 +166,12 @@ public:
     {
         switch (m_nav.mode())
         {
-            case gloutils::WorldInHandNavigation::PanInteraction:
+            case WorldInHandNavigation::PanInteraction:
                 m_nav.panProcess(event.pos());
                 event.accept();
                 break;
 
-            case gloutils::WorldInHandNavigation::RotateInteraction:
+            case WorldInHandNavigation::RotateInteraction:
                 m_nav.rotateProcess(event.pos());
                 event.accept();
 
@@ -199,7 +197,7 @@ public:
 
     virtual void scrollEvent(ScrollEvent & event) override
     {
-        if (gloutils::WorldInHandNavigation::NoInteraction != m_nav.mode())
+        if (WorldInHandNavigation::NoInteraction != m_nav.mode())
             return;
 
         m_nav.scaleAtMouse(event.pos(), -event.offset().y * 0.1f);
@@ -230,14 +228,14 @@ public:
     }
 
 protected:
-    gloutils::Camera m_camera;
+    Camera m_camera;
 
-    gloutils::WorldInHandNavigation m_nav;
-    gloutils::AxisAlignedBoundingBox m_aabb;
+    WorldInHandNavigation m_nav;
+    AxisAlignedBoundingBox m_aabb;
 
     std::array<glo::ref_ptr<glo::Texture>, 4> m_textures;
     glo::ref_ptr<glo::Program> m_program;
-    glo::ref_ptr<gloutils::VertexDrawable> m_drawable;
+    glo::ref_ptr<VertexDrawable> m_drawable;
 };
 
 
@@ -336,12 +334,12 @@ void EventHandler::createGeometry()
         Vertex{ points[1], glm::vec2(0.5, 1.0), 3 }
     } };
 
-    m_drawable = new gloutils::VertexDrawable(vertices, gl::GL_TRIANGLE_STRIP);
+    m_drawable = new VertexDrawable(vertices, gl::GL_TRIANGLE_STRIP);
 
     m_drawable->setFormats({
-        gloutils::Format(3, gl::GL_FLOAT, offsetof(Vertex, position)),
-        gloutils::Format(2, gl::GL_FLOAT, offsetof(Vertex, texCoord)),
-        gloutils::FormatI(1, gl::GL_INT, offsetof(Vertex, side))
+        Format(3, gl::GL_FLOAT, offsetof(Vertex, position)),
+        Format(2, gl::GL_FLOAT, offsetof(Vertex, texCoord)),
+        FormatI(1, gl::GL_INT, offsetof(Vertex, side))
     });
     m_drawable->enableAll();
 }

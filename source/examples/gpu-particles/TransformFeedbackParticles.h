@@ -9,7 +9,7 @@
 #include <globjects/TransformFeedback.h>
 #include <globjects/VertexArray.h>
 
-#include <globjects-utils/ScreenAlignedQuad.h>
+#include <common/ScreenAlignedQuad.h>
 
 #include "AbstractParticleTechnique.h"
 
@@ -20,7 +20,7 @@ public:
         const std::vector<glm::vec4> & positions
     ,   const std::vector<glm::vec4> & velocities
     ,   const glo::Texture & forces
-    ,   const gloutils::Camera & camera);
+    ,   const Camera & camera);
     virtual ~TransformFeedbackParticles();
 
     virtual void initialize() override;
@@ -47,6 +47,6 @@ protected:
     glo::ref_ptr<glo::Framebuffer> m_fbo;
     glo::ref_ptr<glo::Texture> m_color;
 
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_clear;
+    glo::ref_ptr<ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<ScreenAlignedQuad> m_clear;
 };

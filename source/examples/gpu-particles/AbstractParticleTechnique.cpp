@@ -1,6 +1,6 @@
 
 #include <globjects/Texture.h>
-#include <globjects-utils/Camera.h>
+#include <common/Camera.h>
 
 #include "AbstractParticleTechnique.h"
 
@@ -10,7 +10,7 @@ AbstractParticleTechnique::AbstractParticleTechnique(
     const std::vector<glm::vec4> & positions
 ,   const std::vector<glm::vec4> & velocities
 ,   const glo::Texture & forces
-,   const gloutils::Camera & camera)
+,   const Camera & camera)
 : m_positions(positions)
 , m_velocities(velocities)
 , m_forces(forces)

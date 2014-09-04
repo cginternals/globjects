@@ -11,14 +11,13 @@
 #include <globjects/DebugMessage.h>
 #include <globjects/Texture.h>
 
-#include <globjects-utils/AxisAlignedBoundingBox.h>
-#include <globjects-utils/Icosahedron.h>
-#include <globjects-utils/Camera.h>
-#include <globjects-utils/AbstractCoordinateProvider.h>
-#include <globjects-utils/WorldInHandNavigation.h>
-#include <globjects-utils/globjects-utils.h>
-#include <globjects-utils/StringTemplate.h>
-#include <globjects-utils/ScreenAlignedQuad.h>
+#include <common/AxisAlignedBoundingBox.h>
+#include <common/Icosahedron.h>
+#include <common/Camera.h>
+#include <common/AbstractCoordinateProvider.h>
+#include <common/WorldInHandNavigation.h>
+#include <common/StringTemplate.h>
+#include <common/ScreenAlignedQuad.h>
 
 #include <globjects-window/ContextFormat.h>
 #include <globjects-window/Context.h>
@@ -32,7 +31,7 @@ using namespace glowindow;
 using namespace glm;
 
 
-class EventHandler : public ExampleWindowEventHandler, gloutils::AbstractCoordinateProvider
+class EventHandler : public ExampleWindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler()
@@ -58,10 +57,10 @@ public:
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-        auto vertexShaderSource = new gloutils::StringTemplate(new glo::File("data/gbuffers/sphere.vert"));
-        auto fragmentShaderSource = new gloutils::StringTemplate(new glo::File("data/gbuffers/sphere.frag"));
-        auto postprocessingSource = new gloutils::StringTemplate(new glo::File("data/gbuffers/postprocessing.frag"));
-        auto gBufferChoiceSource = new gloutils::StringTemplate(new glo::File("data/gbuffers/gbufferchoice.frag"));
+        auto vertexShaderSource = new StringTemplate(new glo::File("data/gbuffers/sphere.vert"));
+        auto fragmentShaderSource = new StringTemplate(new glo::File("data/gbuffers/sphere.frag"));
+        auto postprocessingSource = new StringTemplate(new glo::File("data/gbuffers/postprocessing.frag"));
+        auto gBufferChoiceSource = new StringTemplate(new glo::File("data/gbuffers/gbufferchoice.frag"));
 
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");
@@ -70,7 +69,7 @@ public:
         gBufferChoiceSource->replace("#version 140", "#version 150");
 #endif
 
-        m_icosahedron = new gloutils::Icosahedron(2);
+        m_icosahedron = new Icosahedron(2);
 
         m_sphere = new glo::Program();
 
@@ -91,7 +90,7 @@ public:
         m_sphereFBO->attachTexture(gl::GL_DEPTH_ATTACHMENT, m_depthTexture);
         m_sphereFBO->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1, gl::GL_COLOR_ATTACHMENT2 });
 
-        m_postprocessing = new gloutils::ScreenAlignedQuad(new glo::Shader(gl::GL_FRAGMENT_SHADER, postprocessingSource));
+        m_postprocessing = new ScreenAlignedQuad(new glo::Shader(gl::GL_FRAGMENT_SHADER, postprocessingSource));
         m_postprocessing->program()->setUniform<gl::GLint>("colorSource", 0);
         m_postprocessing->program()->setUniform<gl::GLint>("normalSource", 1);
         m_postprocessing->program()->setUniform<gl::GLint>("worldCoordSource", 2);
@@ -103,7 +102,7 @@ public:
         m_postprocessingFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_postprocessedTexture);
         m_postprocessingFBO->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 
-        m_gBufferChoice = new gloutils::ScreenAlignedQuad(new glo::Shader(gl::GL_FRAGMENT_SHADER, gBufferChoiceSource));
+        m_gBufferChoice = new ScreenAlignedQuad(new glo::Shader(gl::GL_FRAGMENT_SHADER, gBufferChoiceSource));
         m_gBufferChoice->program()->setUniform<gl::GLint>("postprocessedSource", 0);
         m_gBufferChoice->program()->setUniform<gl::GLint>("colorSource", 1);
         m_gBufferChoice->program()->setUniform<gl::GLint>("normalSource", 2);
@@ -262,18 +261,18 @@ public:
     {
         switch (m_nav.mode())
         {
-        case gloutils::WorldInHandNavigation::PanInteraction:
+        case WorldInHandNavigation::PanInteraction:
             m_nav.panProcess(event.pos());
             event.accept();
             cameraChanged();
             break;
 
-        case gloutils::WorldInHandNavigation::RotateInteraction:
+        case WorldInHandNavigation::RotateInteraction:
             m_nav.rotateProcess(event.pos());
             event.accept();
             cameraChanged();
             break;
-        case gloutils::WorldInHandNavigation::NoInteraction:
+        case WorldInHandNavigation::NoInteraction:
             break;
         }
     }
@@ -296,7 +295,7 @@ public:
 
     virtual void scrollEvent(ScrollEvent & event) override
     {
-        if (gloutils::WorldInHandNavigation::NoInteraction != m_nav.mode())
+        if (WorldInHandNavigation::NoInteraction != m_nav.mode())
             return;
 
         m_nav.scaleAtMouse(event.pos(), -event.offset().y * 0.1f);
@@ -334,7 +333,7 @@ public:
     }
 
 protected:
-    glo::ref_ptr<gloutils::Icosahedron> m_icosahedron;
+    glo::ref_ptr<Icosahedron> m_icosahedron;
     glo::ref_ptr<glo::Program> m_sphere;
     glo::ref_ptr<glo::Texture> m_colorTexture;
     glo::ref_ptr<glo::Texture> m_normalTexture;
@@ -342,17 +341,17 @@ protected:
     glo::ref_ptr<glo::Texture> m_depthTexture;
     glo::ref_ptr<glo::Framebuffer> m_sphereFBO;
 
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_postprocessing;
+    glo::ref_ptr<ScreenAlignedQuad> m_postprocessing;
     glo::ref_ptr<glo::Texture> m_postprocessedTexture;
     glo::ref_ptr<glo::Framebuffer> m_postprocessingFBO;
 
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_gBufferChoice;
+    glo::ref_ptr<ScreenAlignedQuad> m_gBufferChoice;
 
-    gloutils::Camera m_camera;
-    gloutils::WorldInHandNavigation m_nav;
+    Camera m_camera;
+    WorldInHandNavigation m_nav;
     glm::ivec2 m_lastMousePos;
 
-    gloutils::AxisAlignedBoundingBox m_aabb;
+    AxisAlignedBoundingBox m_aabb;
 };
 
 

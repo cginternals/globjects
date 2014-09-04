@@ -21,10 +21,9 @@
 #include <globjects/TransformFeedback.h>
 #include <globjects/DebugMessage.h>
 
-#include <globjects-utils/Timer.h>
+#include <common/Timer.h>
 #include <globjects-base/File.h>
 #include <globjects-base/File.h>
-#include <globjects-utils/globjects-utils.h>
 
 #include <globjects-window/Window.h>
 #include <globjects-window/ContextFormat.h>
@@ -143,7 +142,7 @@ protected:
     glo::ref_ptr<glo::Buffer> m_vertexBuffer2;
     glo::ref_ptr<glo::Buffer> m_colorBuffer;
 
-    gloutils::Timer m_timer;
+    Timer m_timer;
 };
 
 
