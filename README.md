@@ -26,7 +26,7 @@ The following dev-libraries and programs need to be provided for correct CMake c
 * CMake (>=2.8.9, better 2.8.12): http://www.cmake.org/
 * OpenGL C++ Bindings (glbinding >=1.0.0): https://github.com/hpicgs/glbinding
 * OpenGL Mathematics (GLM >=0.9.4): http://glm.g-truc.net/, https://github.com/g-truc/glm
-* Window and Context creation (GLFW 3.0): http://www.glfw.org/ (optional, needed for globjects-window module and examples)
+* Window and Context creation (GLFW 3.0): http://www.glfw.org/ (optional, needed for examples)
 
 
 ### Development Notes

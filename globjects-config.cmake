@@ -45,31 +45,6 @@ set(LIB_PATHS
     /opt/local/lib64
 )
 
-macro (LIST_CONTAINS var value)
-    set (${var} FALSE)
-    string(TOUPPER ${value} VALUE_UPPER)
-    foreach (value2 ${ARGN})
-        string(TOUPPER ${value2} VALUE2_UPPER)
-        if (${VALUE_UPPER} STREQUAL ${VALUE2_UPPER})
-            set (${var} TRUE)
-        endif ()
-    endforeach ()
-endmacro ()
-
-if (globjects_FIND_COMPONENTS)
-    LIST_CONTAINS(INCLUDE_GLOBJECTS_BASE base ${globjects_FIND_COMPONENTS})
-    LIST_CONTAINS(INCLUDE_GLOBJECTS_CORE core ${globjects_FIND_COMPONENTS})
-else ()
-    set (INCLUDE_GLOBJECTS_BASE FALSE)
-    set (INCLUDE_GLOBJECTS_CORE FALSE)
-endif ()
-
-if (NOT ${INCLUDE_GLOBJECTS_BASE} AND NOT ${INCLUDE_GLOBJECTS_CORE})
-    message (WARNING "No components for globjects selected")
-    
-    return()
-endif ()
-
 macro (find LIB_NAME HEADER)
     set(HINT_PATHS ${ARGN})
 
@@ -120,27 +95,13 @@ macro (find LIB_NAME HEADER)
     list(APPEND GLOBJECTS_LIBRARIES ${${LIB_NAME_UPPER}_LIBRARY})
 endmacro()
 
-if (${INCLUDE_GLOBJECTS_CORE})
-    set (INCLUDE_GLOBJECTS_BASE TRUE)
-endif ()
-
-if (${INCLUDE_GLOBJECTS_BASE})
-    find(base      globjects-base/globjects-base_api.h     ${LIB_PATHS})
-endif ()
-if (${INCLUDE_GLOBJECTS_CORE})
-    find(globjects globjects/globjects_api.h               ${LIB_PATHS})
-endif ()
+find(base      globjects-base/globjects-base_api.h     ${LIB_PATHS})
+find(globjects globjects/globjects_api.h               ${LIB_PATHS})
 
 # add dependencies
-if (${INCLUDE_GLOBJECTS_CORE})
-    if(NOT GLOBJECTS_BASE_LIBRARY)
-        message(WARNING "Required globjects-base not found")
-    endif()
-    
-    find_package(glbinding REQUIRED)
-    list(APPEND GLOBJECTS_INCLUDES ${GLBINDING_INCLUDES})
-    list(APPEND GLOBJECTS_LIBRARIES ${GLBINDING_LIBRARIES})
-endif ()
+find_package(glbinding REQUIRED)
+list(APPEND GLOBJECTS_INCLUDES ${GLBINDING_INCLUDES})
+list(APPEND GLOBJECTS_LIBRARIES ${GLBINDING_LIBRARIES})
 
 # DEBUG
 # message("GLOBJECTS_INCLUDES  = ${GLOBJECTS_INCLUDES}")
