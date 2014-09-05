@@ -50,7 +50,7 @@ TEST_F(ref_ptr_test, ReferencesSameInstanceWhenPassedOn)
 
 TEST_F(ref_ptr_test, ReferenceComparisonConstComparisonsCompile)
 {
-    exit(0); // Just test compilation, not actual behavior
+    return; // Just test compilation, not actual behavior
 
     ReferencedMock * t = new ReferencedMock;
     const ReferencedMock * const_t = new ReferencedMock;
