@@ -1,4 +1,7 @@
+
 #include <globjects/Capability.h>
+
+#include <glbinding/gl/enum.h>
 
 #include <globjects/State.h>
 #include <globjects/globjects.h>

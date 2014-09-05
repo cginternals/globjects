@@ -26,6 +26,7 @@ public:
     bool isEnabled(int index) const;
 
     void apply();
+
 protected:
     gl::GLenum m_capability;
     bool m_enabled;

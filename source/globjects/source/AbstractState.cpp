@@ -1,10 +1,13 @@
+
 #include <globjects/AbstractState.h>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/StateSetting.h>
 
-namespace glo {
+namespace glo 
+{
 
 void AbstractState::setEnabled(gl::GLenum capability, bool enabled)
 {
