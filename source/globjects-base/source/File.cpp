@@ -77,4 +77,4 @@ void File::loadFileContent() const
     }
 }
 
-} // namespace gloutils
+} // namespace glo

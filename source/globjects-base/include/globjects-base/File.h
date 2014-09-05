@@ -38,4 +38,4 @@ protected:
     void loadFileContent() const;
 };
 
-} // namespace gloutils
+} // namespace glo

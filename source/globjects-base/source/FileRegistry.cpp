@@ -40,4 +40,4 @@ void FileRegistry::reloadAll()
     }
 }
 
-} // namespace gloutils
+} // namespace glo

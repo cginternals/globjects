@@ -6,16 +6,14 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
 
-#include <globjects-utils/Camera.h>
+#include <common/Camera.h>
 #include <globjects-base/File.h>
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/globjects-utils.h>
+#include <common/ScreenAlignedQuad.h>
 
 #include "FragmentShaderParticles.h"
 
 
 using namespace glo;
-using namespace gloutils;
 using namespace glm;
 
 

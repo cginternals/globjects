@@ -1,3 +1,4 @@
+
 #include "VertexAttributeBindingImplementation_DirectStateAccessARB.h"
 
 #include <cassert>
@@ -8,7 +9,9 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
-namespace glo {
+
+namespace glo 
+{
 
 VertexAttributeBindingImplementation_DirectStateAccessARB::VertexAttributeBindingImplementation_DirectStateAccessARB()
 {

@@ -11,8 +11,8 @@
 #include <globjects/Shader.h>
 #include <globjects/FrameBufferObject.h>
 
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/StringTemplate.h>
+#include <common/ScreenAlignedQuad.h>
+#include <common/StringTemplate.h>
 
 #include <array>
 
@@ -40,7 +40,7 @@ void main()
 struct PrivateGlobjectsInterface
 {
     ivec2 size;
-    ref_ptr<gloutils::ScreenAlignedQuad> quad;
+    ref_ptr<ScreenAlignedQuad> quad;
     ref_ptr<Texture> texture;
 
     ref_ptr<Texture> osgTexture;
@@ -75,7 +75,7 @@ void GlobjectsInterface::initialize()
 
     impl->texture->image2D(0, GL_RGB8, ivec2(2), 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-    impl->quad = new gloutils::ScreenAlignedQuad(Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderSource), impl->texture);
+    impl->quad = new ScreenAlignedQuad(Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderSource), impl->texture);
     impl->quad->setSamplerUniform(0);
 
     impl->quad->program()->setUniform("source2", 1);

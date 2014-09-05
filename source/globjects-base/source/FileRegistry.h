@@ -21,4 +21,4 @@ protected:
     static FileRegistry* s_instance;
 };
 
-} // namespace gloutils
+} // namespace glo

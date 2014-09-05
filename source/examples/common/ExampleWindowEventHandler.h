@@ -1,27 +1,28 @@
 #pragma once
 
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-utils/Timer.h>
-#include <globjects-window/events.h>
+#include <common/WindowEventHandler.h>
+
+#include <common/Timer.h>
+#include <common/events.h>
 
 #include <string>
 
-class ExampleWindowEventHandler : public glowindow::WindowEventHandler
+class ExampleWindowEventHandler : public WindowEventHandler
 {
 public:
     ExampleWindowEventHandler();
     virtual ~ExampleWindowEventHandler();
 
-    virtual void initialize(glowindow::Window & window) override;
+    virtual void initialize(Window & window) override;
 
-    virtual void handleEvent(glowindow::WindowEvent & event) override;
+    virtual void handleEvent(WindowEvent & event) override;
 protected:
-    gloutils::Timer m_timer;
+    Timer m_timer;
     long double m_swapElapsedTime;
     unsigned int m_swapCount;
     std::string m_baseTitle;
 
-    void setViewport(glowindow::ResizeEvent & event);
-    void computeFps(glowindow::PaintEvent & event);
-    void handleDefaultKeys(glowindow::KeyEvent & event);
+    void setViewport(ResizeEvent & event);
+    void computeFps(PaintEvent & event);
+    void handleDefaultKeys(KeyEvent & event);
 };

@@ -14,10 +14,7 @@ namespace glo
     class Texture;
 }
 
-namespace gloutils
-{
-    class Camera;
-}
+class Camera;
 
 class AbstractParticleTechnique
 {
@@ -26,7 +23,7 @@ public:
         const std::vector<glm::vec4> & postions
     ,   const std::vector<glm::vec4> & velocities
     ,   const glo::Texture & forces
-    ,   const gloutils::Camera & camera);
+    ,   const Camera & camera);
 
     virtual ~AbstractParticleTechnique();
 
@@ -43,7 +40,7 @@ protected:
     const std::vector<glm::vec4> & m_velocities;
 
     const glo::Texture & m_forces;
-    const gloutils::Camera & m_camera;
+    const Camera & m_camera;
 
     const unsigned int m_numParticles;
 };

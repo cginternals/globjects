@@ -28,6 +28,9 @@ set(libs
     ${GLOBJECTS_EXAMPLES_LIBRARIES}
 )
 
+# for compatibility between glm 0.9.4 and 0.9.5
+add_definitions("-DGLM_FORCE_RADIANS")
+
 #
 # Sources
 #
@@ -36,11 +39,50 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(api_includes
+    ${include_path}/AbstractCoordinateProvider.h
+    ${include_path}/AxisAlignedBoundingBox.h
+    ${include_path}/Camera.h
     ${include_path}/ExampleWindowEventHandler.h
+    ${include_path}/Icosahedron.h
+    ${include_path}/navigationmath.h
+    ${include_path}/ScreenAlignedQuad.h
+    ${include_path}/StringSourceDecorator.h
+    ${include_path}/StringTemplate.h
+    ${include_path}/Timer.h
+    ${include_path}/VertexDrawable.h
+    ${include_path}/WorldInHandNavigation.h
+
+    ${include_path}/Context.h
+    ${include_path}/ContextFormat.h
+    ${include_path}/events.h
+    ${include_path}/keys.h
+    ${include_path}/MainLoop.h
+    ${include_path}/Window.h
+    ${include_path}/WindowEventHandler.h
 )
 
 set(sources
+    ${source_path}/AbstractCoordinateProvider.cpp
+    ${source_path}/AxisAlignedBoundingBox.cpp
+    ${source_path}/Camera.cpp
     ${source_path}/ExampleWindowEventHandler.cpp
+    ${source_path}/Icosahedron.cpp
+    ${source_path}/navigationmath.cpp
+    ${source_path}/ScreenAlignedQuad.cpp
+    ${source_path}/StringSourceDecorator.cpp
+    ${source_path}/StringTemplate.cpp
+    ${source_path}/Timer.cpp
+    ${source_path}/VertexDrawable.cpp
+    ${source_path}/WorldInHandNavigation.cpp
+
+    ${source_path}/Context.cpp
+    ${source_path}/ContextFormat.cpp
+    ${source_path}/events.cpp
+    ${source_path}/MainLoop.cpp
+    ${source_path}/Window.cpp
+    ${source_path}/WindowEventDispatcher.h
+    ${source_path}/WindowEventDispatcher.cpp
+    ${source_path}/WindowEventHandler.cpp
 )
 
 # Group source files

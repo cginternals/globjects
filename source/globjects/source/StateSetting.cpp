@@ -1,4 +1,8 @@
+
 #include <globjects/StateSetting.h>
+
+#include <glbinding/gl/enum.h>
+
 
 namespace glo
 {

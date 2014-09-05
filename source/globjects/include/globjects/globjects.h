@@ -27,11 +27,16 @@ namespace glo
 class AbstractStringSource;
 
 GLOBJECTS_API void init();
+GLOBJECTS_API void init(glbinding::ContextHandle sharedContextId);
 
 template <typename T, typename... Args>
 void init(T strategy, Args... args);
 
+template <typename T, typename... Args>
+void init(glbinding::ContextHandle sharedContextId, T strategy, Args... args);
+
 GLOBJECTS_API void registerCurrentContext();
+GLOBJECTS_API void registerCurrentContext(glbinding::ContextHandle sharedContextId);
 GLOBJECTS_API void setContext(glbinding::ContextHandle contextId);
 GLOBJECTS_API void setCurrentContext();
 

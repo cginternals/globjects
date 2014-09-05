@@ -9,7 +9,8 @@
 #include <globjects/logging.h>
 #include <globjects/constants.h>
 
-namespace glo {
+namespace glo 
+{
 
 State::State(Mode mode)
 : m_mode(mode)

@@ -8,10 +8,11 @@
 
 #include "AbstractVertexAttributeBindingImplementation.h"
 
-namespace glo {
+namespace glo 
+{
 
 class VertexAttributeBindingImplementation_DirectStateAccessARB : public AbstractVertexAttributeBindingImplementation
-        , public Singleton<VertexAttributeBindingImplementation_DirectStateAccessARB>
+, public Singleton<VertexAttributeBindingImplementation_DirectStateAccessARB>
 {
 public:
     VertexAttributeBindingImplementation_DirectStateAccessARB();

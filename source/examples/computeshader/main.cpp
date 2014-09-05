@@ -1,6 +1,4 @@
 
-
-
 #include <algorithm>
 #include <random>
 
@@ -26,19 +24,18 @@
 
 #include <globjects-base/File.h>
 #include <globjects-base/File.h>
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/globjects-utils.h>
+#include <common/ScreenAlignedQuad.h>
 
-#include <globjects-window/Context.h>
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <common/Context.h>
+#include <common/ContextFormat.h>
+#include <common/Window.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
 
-using namespace glowindow;
+
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -121,7 +118,7 @@ protected:
     glo::ref_ptr<glo::Texture> m_texture;
 
     glo::ref_ptr<glo::Program> m_computeProgram;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
+    glo::ref_ptr<ScreenAlignedQuad> m_quad;
 
     unsigned int m_frame;
 };
@@ -177,6 +174,6 @@ void EventHandler::createAndSetupShaders()
 
 void EventHandler::createAndSetupGeometry()
 {
-    m_quad = new gloutils::ScreenAlignedQuad(m_texture);
+    m_quad = new ScreenAlignedQuad(m_texture);
     m_quad->setSamplerUniform(0);
 }
