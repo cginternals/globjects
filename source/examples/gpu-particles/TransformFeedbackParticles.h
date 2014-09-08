@@ -19,7 +19,7 @@ public:
     TransformFeedbackParticles(
         const std::vector<glm::vec4> & positions
     ,   const std::vector<glm::vec4> & velocities
-    ,   const glo::Texture & forces
+    ,   const globjects::Texture & forces
     ,   const Camera & camera);
     virtual ~TransformFeedbackParticles();
 
@@ -32,21 +32,21 @@ public:
     virtual void resize() override;
 
 protected:
-    glo::ref_ptr<glo::TransformFeedback> m_transformFeedback;
-    glo::ref_ptr<glo::Program> m_transformFeedbackProgram;
+    globjects::ref_ptr<globjects::TransformFeedback> m_transformFeedback;
+    globjects::ref_ptr<globjects::Program> m_transformFeedbackProgram;
 
-    glo::ref_ptr<glo::Buffer> m_sourcePositions;
-    glo::ref_ptr<glo::Buffer> m_sourceVelocities;
-    glo::ref_ptr<glo::Buffer> m_targetPositions;
-    glo::ref_ptr<glo::Buffer> m_targetVelocities;
+    globjects::ref_ptr<globjects::Buffer> m_sourcePositions;
+    globjects::ref_ptr<globjects::Buffer> m_sourceVelocities;
+    globjects::ref_ptr<globjects::Buffer> m_targetPositions;
+    globjects::ref_ptr<globjects::Buffer> m_targetVelocities;
 
-    glo::ref_ptr<glo::Program> m_drawProgram;
+    globjects::ref_ptr<globjects::Program> m_drawProgram;
 
-    glo::ref_ptr<glo::VertexArray> m_vao;
+    globjects::ref_ptr<globjects::VertexArray> m_vao;
 
-    glo::ref_ptr<glo::Framebuffer> m_fbo;
-    glo::ref_ptr<glo::Texture> m_color;
+    globjects::ref_ptr<globjects::Framebuffer> m_fbo;
+    globjects::ref_ptr<globjects::Texture> m_color;
 
-    glo::ref_ptr<ScreenAlignedQuad> m_quad;
-    glo::ref_ptr<ScreenAlignedQuad> m_clear;
+    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
+    globjects::ref_ptr<ScreenAlignedQuad> m_clear;
 };

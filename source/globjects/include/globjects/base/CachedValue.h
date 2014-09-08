@@ -1,6 +1,6 @@
 #pragma once
 
-namespace glo
+namespace globjects
 {
 
 /** \brief Extends a value of arbitrary type by an invalidation flag.
@@ -46,6 +46,6 @@ protected:
 	mutable T m_value;
 };
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/base/CachedValue.hpp>

@@ -115,7 +115,7 @@ int bytesPerPixel(gl::GLenum format, gl::GLenum type)
 
 }
 
-namespace glo {
+namespace globjects {
 
 int imageSizeInBytes(int width, int height, gl::GLenum format, gl::GLenum type)
 {
@@ -137,4 +137,4 @@ int imageSizeInBytes(int width, int height, gl::GLenum format, gl::GLenum type)
     return rowSize * height;
 }
 
-} // namespace glo
+} // namespace globjects

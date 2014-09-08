@@ -8,7 +8,7 @@
 #include <globjects/FramebufferAttachment.h>
 #include <globjects/Renderbuffer.h>
 
-namespace glo 
+namespace globjects 
 {
 
 class Framebuffer;
@@ -33,4 +33,4 @@ protected:
     ref_ptr<Renderbuffer> m_renderBuffer;
 };
 
-} // namespace glo
+} // namespace globjects

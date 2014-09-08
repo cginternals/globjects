@@ -14,7 +14,7 @@
 #include "pixelformat.h"
 #include "Resource.h"
 
-namespace glo
+namespace globjects
 {
 
 Texture::Texture()
@@ -472,4 +472,4 @@ gl::GLenum Texture::objectType() const
     return gl::GL_TEXTURE;
 }
 
-} // namespace glo
+} // namespace globjects

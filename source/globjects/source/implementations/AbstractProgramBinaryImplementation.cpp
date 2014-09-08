@@ -9,7 +9,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 AbstractProgramBinaryImplementation::AbstractProgramBinaryImplementation()
@@ -33,4 +33,4 @@ AbstractProgramBinaryImplementation * AbstractProgramBinaryImplementation::get(c
     }
 }
 
-} // namespace glo
+} // namespace globjects

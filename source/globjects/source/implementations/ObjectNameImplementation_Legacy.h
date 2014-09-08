@@ -2,7 +2,7 @@
 
 #include "AbstractObjectNameImplementation.h"
 
-namespace glo
+namespace globjects
 {
 
 class ObjectNameImplementation_Legacy : public AbstractObjectNameImplementation
@@ -21,4 +21,4 @@ public:
     virtual void setLabel(const Sync * sync, const std::string & label) const override;
 };
 
-} // namespace glo
+} // namespace globjects

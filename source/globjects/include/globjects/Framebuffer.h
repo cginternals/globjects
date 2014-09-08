@@ -12,7 +12,7 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
-namespace glo 
+namespace globjects 
 {
 
 class FramebufferAttachment;
@@ -127,4 +127,4 @@ protected:
 	std::map<gl::GLenum, ref_ptr<FramebufferAttachment>> m_attachments;
 };
 
-} // namespace glo
+} // namespace globjects

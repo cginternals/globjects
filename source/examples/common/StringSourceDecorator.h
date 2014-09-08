@@ -4,10 +4,10 @@
 #include <globjects/base/ref_ptr.h>
 #include <globjects/base/AbstractStringSource.h>
 
-class StringSourceDecorator : public glo::AbstractStringSource, protected glo::ChangeListener
+class StringSourceDecorator : public globjects::AbstractStringSource, protected globjects::ChangeListener
 {
 public:
-    StringSourceDecorator(glo::AbstractStringSource * source);
+    StringSourceDecorator(globjects::AbstractStringSource * source);
 
     virtual void update();
 protected:
@@ -15,5 +15,5 @@ protected:
 
     virtual void notifyChanged(const Changeable * changeable) override;
 protected:
-    glo::ref_ptr<glo::AbstractStringSource> m_internal;
+    globjects::ref_ptr<globjects::AbstractStringSource> m_internal;
 };

@@ -13,7 +13,7 @@
 
 using namespace gl;
 
-namespace glo {
+namespace globjects {
 
 AbstractVertexAttributeBindingImplementation::AbstractVertexAttributeBindingImplementation()
 {
@@ -66,4 +66,4 @@ void * & AbstractVertexAttributeBindingImplementation::bindingData(const VertexA
     return binding->m_bindingData;
 }
 
-} // namespace glo
+} // namespace globjects

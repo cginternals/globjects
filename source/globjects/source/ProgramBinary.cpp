@@ -3,7 +3,7 @@
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/base/AbstractStringSource.h>
 
-namespace glo
+namespace globjects
 {
 
 ProgramBinary::ProgramBinary(gl::GLenum binaryFormat, const std::vector<char> & binaryData)
@@ -72,4 +72,4 @@ void ProgramBinary::validate() const
     m_valid = true;
 }
 
-} // namespace glo
+} // namespace globjects

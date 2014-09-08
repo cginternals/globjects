@@ -12,7 +12,7 @@
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 
-class Icosahedron : public glo::Referenced
+class Icosahedron : public globjects::Referenced
 {
 public:
     using Face = std::array<gl::GLushort, 3>;
@@ -54,10 +54,10 @@ private:
     ,   std::unordered_map<glm::uint, gl::GLushort> & cache);
 
 private:
-    glo::ref_ptr<glo::VertexArray> m_vao;
+    globjects::ref_ptr<globjects::VertexArray> m_vao;
 
-    glo::ref_ptr<glo::Buffer> m_vertices;
-    glo::ref_ptr<glo::Buffer> m_indices;
+    globjects::ref_ptr<globjects::Buffer> m_vertices;
+    globjects::ref_ptr<globjects::Buffer> m_indices;
 
     gl::GLsizei m_size;
 protected:

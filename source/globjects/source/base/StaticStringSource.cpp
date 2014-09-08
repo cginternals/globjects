@@ -1,6 +1,6 @@
 #include <globjects/base/StaticStringSource.h>
 
-namespace glo
+namespace globjects
 {
 
 StaticStringSource::StaticStringSource(const std::string& string)
@@ -30,4 +30,4 @@ void StaticStringSource::setString(const std::string& string)
     changed();
 }
 
-} // namespace glo
+} // namespace globjects

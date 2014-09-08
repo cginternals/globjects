@@ -17,7 +17,7 @@
 #include "TransformFeedbackParticles.h"
 
 
-using namespace glo;
+using namespace globjects;
 using namespace glm;
 
 TransformFeedbackParticles::TransformFeedbackParticles(
@@ -35,26 +35,26 @@ TransformFeedbackParticles::~TransformFeedbackParticles()
 
 void TransformFeedbackParticles::initialize()
 {
-    m_sourcePositions = new glo::Buffer();
-    m_sourceVelocities = new glo::Buffer();
-    m_targetPositions = new glo::Buffer();
-    m_targetVelocities = new glo::Buffer();
+    m_sourcePositions = new globjects::Buffer();
+    m_sourceVelocities = new globjects::Buffer();
+    m_targetPositions = new globjects::Buffer();
+    m_targetVelocities = new globjects::Buffer();
 
     reset();
 
-    m_transformFeedbackProgram = new glo::Program();
-    m_transformFeedbackProgram->attach(glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
+    m_transformFeedbackProgram = new globjects::Program();
+    m_transformFeedbackProgram->attach(globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
 
     m_transformFeedbackProgram->link();
 
-    m_transformFeedback = new glo::TransformFeedback();
+    m_transformFeedback = new globjects::TransformFeedback();
     m_transformFeedback->setVaryings(m_transformFeedbackProgram, std::array<const char*, 2>{ { "out_position", "out_velocity" } }, gl::GL_SEPARATE_ATTRIBS);
 
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
-    ,   glo::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-    ,   glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
+    ,   globjects::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+    ,   globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 
     m_vao = new VertexArray();
     m_vao->bind();
@@ -90,7 +90,7 @@ void TransformFeedbackParticles::initialize()
 
     m_quad = new ScreenAlignedQuad(m_color);
     m_clear = new ScreenAlignedQuad(
-        glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
+        globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 
 void TransformFeedbackParticles::reset()

@@ -11,7 +11,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo {
+namespace globjects {
 
 class GLOBJECTS_API NamedString : public Referenced, protected ChangeListener
 {
@@ -54,4 +54,4 @@ protected:
     void deregisterNamedString();
 };
 
-} // namespace glo
+} // namespace globjects

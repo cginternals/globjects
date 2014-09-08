@@ -2,8 +2,8 @@
 
 #include <glbinding/gl/types.h>
 
-namespace glo {
+namespace globjects {
 
 int imageSizeInBytes(int width, int height, gl::GLenum format, gl::GLenum type);
 
-} // namespace glo
+} // namespace globjects

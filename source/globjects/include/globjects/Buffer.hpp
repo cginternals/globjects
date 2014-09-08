@@ -2,7 +2,7 @@
 
 #include <globjects/Buffer.h>
 
-namespace glo {
+namespace globjects {
 
 template <typename T>
 void Buffer::setData(const std::vector<T> & data, gl::GLenum usage)
@@ -60,4 +60,4 @@ const std::array<T, Count> Buffer::getSubData(gl::GLintptr offset) const
     return data;
 }
 
-} // namespace glo
+} // namespace globjects

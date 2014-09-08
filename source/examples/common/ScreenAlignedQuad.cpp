@@ -16,7 +16,7 @@
 
 #include <common/StringTemplate.h>
 
-using namespace glo;
+using namespace globjects;
 
 const char * ScreenAlignedQuad::s_defaultVertexShaderSource = R"(
 #version 140

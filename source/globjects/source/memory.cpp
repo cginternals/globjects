@@ -9,15 +9,15 @@ namespace {
 
 gl::GLint getMemoryInformation(gl::GLenum pname)
 {
-    if (!glo::hasExtension(gl::GLextension::GL_NVX_gpu_memory_info))
+    if (!globjects::hasExtension(gl::GLextension::GL_NVX_gpu_memory_info))
         return -1;
 
-    return glo::getInteger(pname);
+    return globjects::getInteger(pname);
 }
 
 }
 
-namespace glo
+namespace globjects
 {
 
 namespace memory
@@ -49,4 +49,4 @@ gl::GLint evictionCount()
 }
 
 } // namespace memory
-} // namespace glo
+} // namespace globjects

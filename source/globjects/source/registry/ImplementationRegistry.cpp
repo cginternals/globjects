@@ -11,7 +11,7 @@
 #include "../implementations/AbstractObjectNameImplementation.h"
 #include "../implementations/AbstractVertexAttributeBindingImplementation.h"
 
-namespace glo 
+namespace globjects 
 {
 
 ImplementationRegistry::ImplementationRegistry()
@@ -159,4 +159,4 @@ AbstractVertexAttributeBindingImplementation & ImplementationRegistry::attribute
     return *m_attributeImplementation;
 }
 
-} // namespace glo
+} // namespace globjects

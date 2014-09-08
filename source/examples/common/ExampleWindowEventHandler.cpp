@@ -20,7 +20,7 @@ ExampleWindowEventHandler::~ExampleWindowEventHandler()
 
 void ExampleWindowEventHandler::initialize(Window & /*window*/)
 {
-    glo::init();
+    globjects::init();
 }
 
 void ExampleWindowEventHandler::handleEvent(WindowEvent & event)

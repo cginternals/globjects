@@ -31,7 +31,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(1.f, 1.f, 1.f, 1.f);
 
@@ -68,10 +68,10 @@ public:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);

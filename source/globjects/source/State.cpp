@@ -9,7 +9,7 @@
 #include <globjects/logging.h>
 #include <globjects/constants.h>
 
-namespace glo 
+namespace globjects 
 {
 
 State::State(Mode mode)
@@ -57,7 +57,7 @@ State* State::currentState()
         gl::GL_STENCIL_TEST
     };
 
-    if (glo::version() >= glbinding::Version(3, 1))
+    if (globjects::version() >= glbinding::Version(3, 1))
     {
         capabilities.push_back(gl::GL_PRIMITIVE_RESTART);
         if (hasExtension(gl::GLextension::GL_ARB_ES3_compatibility))
@@ -88,7 +88,7 @@ State* State::currentState()
 
     for (gl::GLenum capability : capabilities)
     {
-        state->setEnabled(capability, glo::isEnabled(capability));
+        state->setEnabled(capability, globjects::isEnabled(capability));
     }
 
     state->blendColor(getFloats<4>(gl::GL_BLEND_COLOR));
@@ -319,4 +319,4 @@ void State::add(StateSetting * setting)
         setting->apply();
 }
 
-} // namespace glo
+} // namespace globjects

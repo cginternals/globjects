@@ -5,7 +5,7 @@
 #include "AbstractUniformImplementation.h"
 
 
-namespace glo
+namespace globjects
 {
 
 class UniformImplementation_SeparateShaderObjectsARB : public AbstractUniformImplementation
@@ -73,4 +73,4 @@ public:
     virtual void set(const Program * program, gl::GLint location, const std::vector<TextureHandle> & value) const override;
 };
 
-} // namespace glo
+} // namespace globjects

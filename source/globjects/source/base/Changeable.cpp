@@ -4,7 +4,7 @@
 
 #include <globjects/base/ChangeListener.h>
 
-namespace glo
+namespace globjects
 {
 
 void Changeable::changed() const
@@ -34,4 +34,4 @@ void Changeable::deregisterListener(ChangeListener * listener)
     listener->removeSubject(this);
 }
 
-} // namespace glo
+} // namespace globjects

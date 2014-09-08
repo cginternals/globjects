@@ -20,7 +20,7 @@ VertexDrawable::AttributeFormat::AttributeFormat(gl::GLint size, gl::GLenum type
 {
 }
 
-void VertexDrawable::AttributeFormat::setTo(glo::VertexAttributeBinding * binding) const
+void VertexDrawable::AttributeFormat::setTo(globjects::VertexAttributeBinding * binding) const
 {
     switch (formatType)
     {
@@ -37,7 +37,7 @@ void VertexDrawable::AttributeFormat::setTo(glo::VertexAttributeBinding * bindin
 }
 
 VertexDrawable::VertexDrawable(gl::GLenum primitiveMode)
-: m_vao(new glo::VertexArray)
+: m_vao(new globjects::VertexArray)
 , m_baseOffset(0)
 , m_stride(0)
 , m_size(0)
@@ -46,7 +46,7 @@ VertexDrawable::VertexDrawable(gl::GLenum primitiveMode)
 }
 
 VertexDrawable::VertexDrawable(gl::GLint baseOffset, gl::GLint stride, gl::GLenum primitiveMode)
-: m_vao(new glo::VertexArray)
+: m_vao(new globjects::VertexArray)
 , m_baseOffset(baseOffset)
 , m_stride(stride)
 , m_size(0)
@@ -54,8 +54,8 @@ VertexDrawable::VertexDrawable(gl::GLint baseOffset, gl::GLint stride, gl::GLenu
 {
 }
 
-VertexDrawable::VertexDrawable(glo::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size, gl::GLenum primitiveMode)
-: m_vao(new glo::VertexArray)
+VertexDrawable::VertexDrawable(globjects::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size, gl::GLenum primitiveMode)
+: m_vao(new globjects::VertexArray)
 , m_vbo(vbo)
 , m_baseOffset(baseOffset)
 , m_stride(stride)
@@ -64,7 +64,7 @@ VertexDrawable::VertexDrawable(glo::Buffer* vbo, gl::GLint baseOffset, gl::GLint
 {
 }
 
-void VertexDrawable::setBuffer(glo::Buffer* vbo, gl::GLint size)
+void VertexDrawable::setBuffer(globjects::Buffer* vbo, gl::GLint size)
 {
     m_size = size;
     m_vbo = vbo;
@@ -75,7 +75,7 @@ void VertexDrawable::setBuffer(glo::Buffer* vbo, gl::GLint size)
     }
 }
 
-void VertexDrawable::setBuffer(glo::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size)
+void VertexDrawable::setBuffer(globjects::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size)
 {
     m_baseOffset = baseOffset;
     m_stride = stride;

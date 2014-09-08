@@ -8,7 +8,7 @@
 #include <globjects/FramebufferAttachment.h>
 #include <globjects/Texture.h>
 
-namespace glo 
+namespace globjects 
 {
 
 class Framebuffer;
@@ -39,4 +39,4 @@ protected:
     gl::GLint m_layer;
 };
 
-} // namespace glo
+} // namespace globjects

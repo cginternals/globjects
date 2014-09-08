@@ -2,7 +2,7 @@
 
 #include <globjects/base/LogMessageBuilder.h>
 
-namespace glo
+namespace globjects
 {
 
 template <typename T>
@@ -47,4 +47,4 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const std::array<T, Count> & ar
     return *this;
 }
 
-} // namespace glo
+} // namespace globjects

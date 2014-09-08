@@ -9,7 +9,7 @@
                         // which requires APIENTRY in windows..
 
 
-using namespace glo;
+using namespace globjects;
 
 Context::Context()
 : m_swapInterval(VerticalSyncronization)
@@ -29,20 +29,20 @@ GLFWwindow * Context::window()
 
 void Context::handleError(int errorCode, const char* errorMessage)
 {
-    glo::fatal("GLFW error 0x%x;: %;", errorCode, errorMessage);
+    globjects::fatal("GLFW error 0x%x;: %;", errorCode, errorMessage);
 }
 
 bool Context::create(const ContextFormat & format, const int width, const int height, GLFWmonitor * monitor)
 {
     if (isValid())
     {
-        glo::warning() << "Context is already valid. Create was probably called before.";
+        globjects::warning() << "Context is already valid. Create was probably called before.";
         return true;
     }
 
     if (!glfwInit())
     {
-        glo::fatal() << "Could not initialize GLFW.";
+        globjects::fatal() << "Could not initialize GLFW.";
         return false;
     }
 
@@ -56,7 +56,7 @@ bool Context::create(const ContextFormat & format, const int width, const int he
 
     if (!m_window)
     {
-        glo::fatal() << "Context creation failed (GLFW).";
+        globjects::fatal() << "Context creation failed (GLFW).";
         release();
         return false;
     }
@@ -79,7 +79,7 @@ void Context::prepareFormat(const ContextFormat & format)
 
     if (!format.version().isNull() && format.version() != version)
     {
-        glo::warning() << "Changed unsupported OpenGL version from " << format.version().toString() << " to " << version.toString() << ".";
+        globjects::warning() << "Changed unsupported OpenGL version from " << format.version().toString() << " to " << version.toString() << ".";
     }
     
     /*

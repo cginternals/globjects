@@ -1,6 +1,6 @@
 #include <globjects/base/AbstractFunctionCall.h>
 
-namespace glo
+namespace globjects
 {
 
 AbstractFunctionCall::AbstractFunctionCall() 
@@ -11,4 +11,4 @@ AbstractFunctionCall::~AbstractFunctionCall()
 {
 }
 
-} // namespace glo
+} // namespace globjects

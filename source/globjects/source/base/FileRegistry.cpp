@@ -4,7 +4,7 @@
 
 #include <globjects/base/File.h>
 
-namespace glo
+namespace globjects
 {
 
 FileRegistry* FileRegistry::s_instance = new FileRegistry;
@@ -40,4 +40,4 @@ void FileRegistry::reloadAll()
     }
 }
 
-} // namespace glo
+} // namespace globjects

@@ -6,7 +6,7 @@
 
 #include "FileRegistry.h"
 
-namespace glo
+namespace globjects
 {
 
 File::File(const std::string & filePath)
@@ -69,7 +69,7 @@ void File::loadFileContent() const
     }
     else
     {
-        glo::warning() << "Reading from file \"" << m_filePath << "\" failed.";
+        globjects::warning() << "Reading from file \"" << m_filePath << "\" failed.";
 
         m_source = "";
 
@@ -77,4 +77,4 @@ void File::loadFileContent() const
     }
 }
 
-} // namespace glo
+} // namespace globjects

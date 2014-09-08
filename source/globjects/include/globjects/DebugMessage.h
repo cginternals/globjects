@@ -8,7 +8,7 @@
 #include <globjects/globjects_api.h>
 
 
-namespace glo
+namespace globjects
 {
 
 class GLOBJECTS_API DebugMessage
@@ -71,4 +71,4 @@ public:
     static bool isFallbackImplementation();
 };
 
-} // namespace glo
+} // namespace globjects

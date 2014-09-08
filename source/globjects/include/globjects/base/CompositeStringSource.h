@@ -9,7 +9,7 @@
 #include <globjects/base/ChangeListener.h>
 #include <globjects/base/AbstractStringSource.h>
 
-namespace glo
+namespace globjects
 {
 
 class GLOBJECTS_API CompositeStringSource : public AbstractStringSource, protected ChangeListener
@@ -35,4 +35,4 @@ protected:
     mutable std::vector<std::string> m_strings;
 };
 
-} // namespace glo
+} // namespace globjects

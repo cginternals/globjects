@@ -2,11 +2,11 @@
 
 #include <glbinding/Meta.h>
 
-namespace glo {
+namespace globjects {
 
 std::string enumName(gl::GLenum param)
 {
     return glbinding::Meta::getString(param);
 }
 
-} // namespace glo
+} // namespace globjects

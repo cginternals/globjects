@@ -50,19 +50,19 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
 
-        m_sphere = new glo::Program();
+        m_sphere = new globjects::Program();
         m_sphere->attach(
-            glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/tessellation/sphere.vert")
-        ,   glo::Shader::fromFile(gl::GL_TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
-        ,   glo::Shader::fromFile(gl::GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
-        ,   glo::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/tessellation/sphere.geom")
-        ,   glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
-        ,   glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/common/phong.frag"));
+            globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/tessellation/sphere.vert")
+        ,   globjects::Shader::fromFile(gl::GL_TESS_CONTROL_SHADER, "data/tessellation/sphere.tcs")
+        ,   globjects::Shader::fromFile(gl::GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
+        ,   globjects::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/tessellation/sphere.geom")
+        ,   globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/tessellation/sphere.frag")
+        ,   globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/common/phong.frag"));
 
         m_icosahedron = new Icosahedron();
 
@@ -113,15 +113,15 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_F5:
-            glo::File::reloadAll();
+            globjects::File::reloadAll();
             break;
         }
     }
 
 protected:
-    glo::ref_ptr<glo::Program> m_sphere;
+    globjects::ref_ptr<globjects::Program> m_sphere;
 
-    glo::ref_ptr<Icosahedron> m_icosahedron;
+    globjects::ref_ptr<Icosahedron> m_icosahedron;
 
     Camera m_camera;
     Timer m_time;
@@ -134,11 +134,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 0);

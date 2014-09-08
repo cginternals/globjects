@@ -3,7 +3,7 @@
 #include <sstream>
 #include <cassert>
 
-namespace glo
+namespace globjects
 {
 
 CompositeStringSource::CompositeStringSource()
@@ -96,4 +96,4 @@ std::string CompositeStringSource::shortInfo() const
     return info.str();
 }
 
-} // namespace glo
+} // namespace globjects

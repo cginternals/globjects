@@ -6,7 +6,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class StateSetting;
@@ -65,6 +65,6 @@ public:
     void set(void (*function)(Arguments...), Arguments... arguments);
 };
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/AbstractState.hpp>

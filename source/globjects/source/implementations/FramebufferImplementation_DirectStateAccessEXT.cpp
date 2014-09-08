@@ -13,7 +13,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 GLuint FramebufferImplementation_DirectStateAccessEXT::create() const
@@ -77,4 +77,4 @@ void FramebufferImplementation_DirectStateAccessEXT::setDrawBuffers(const Frameb
     glFramebufferDrawBuffersEXT(fbo->id(), n, modes);
 }
 
-} // namespace glo
+} // namespace globjects

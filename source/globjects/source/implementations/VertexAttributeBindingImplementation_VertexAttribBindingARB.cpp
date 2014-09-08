@@ -10,7 +10,7 @@
 
 #include "VertexAttributeBindingImplementation_Legacy.h"
 
-namespace glo {
+namespace globjects {
 
 VertexAttributeBindingImplementation_VertexAttribBindingARB::VertexAttributeBindingImplementation_VertexAttribBindingARB()
 {
@@ -70,4 +70,4 @@ void VertexAttributeBindingImplementation_VertexAttribBindingARB::setLFormat(con
     gl::glVertexAttribLFormat(attributeIndex(binding), size, type, relativeoffset);
 }
 
-} // namespace glo
+} // namespace globjects

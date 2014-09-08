@@ -2,7 +2,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo {
+namespace globjects {
 
 /**
  * @brief The HeapOnly class
@@ -21,4 +21,4 @@ protected:
     virtual ~HeapOnly();
 };
 
-} // namespace glo
+} // namespace globjects

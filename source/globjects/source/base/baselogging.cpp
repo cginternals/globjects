@@ -8,11 +8,11 @@
 
 namespace
 {
-    glo::LogMessage::Level l_verbosityLevel = glo::LogMessage::Info;
-    glo::AbstractLogHandler * l_logHandler = new glo::ConsoleLogger();
+    globjects::LogMessage::Level l_verbosityLevel = globjects::LogMessage::Info;
+    globjects::AbstractLogHandler * l_logHandler = new globjects::ConsoleLogger();
 }
 
-namespace glo
+namespace globjects
 {
 
 LogMessageBuilder info(LogMessage::Level level)
@@ -61,4 +61,4 @@ LogMessage::Level verbosityLevel()
     return l_verbosityLevel;
 }
 
-} // namespace glo
+} // namespace globjects

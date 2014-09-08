@@ -4,7 +4,7 @@
 
 #include <globjects/base/HeapOnly.h>
 
-namespace glo
+namespace globjects
 {
 
 /** \brief Superclass for all classes that use reference counting in globjects.
@@ -37,4 +37,4 @@ private:
     mutable int m_refCounter;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -17,13 +17,13 @@
 #include "Resource.h"
 
 namespace {
-    glo::AbstractVertexAttributeBindingImplementation & implementation()
+    globjects::AbstractVertexAttributeBindingImplementation & implementation()
     {
-        return glo::ImplementationRegistry::current().attributeImplementation();
+        return globjects::ImplementationRegistry::current().attributeImplementation();
     }
 }
 
-namespace glo
+namespace globjects
 {
 
 VertexArray::VertexArray()
@@ -258,4 +258,4 @@ gl::GLenum VertexArray::objectType() const
     return gl::GL_VERTEX_ARRAY;
 }
 
-} // namespace glo
+} // namespace globjects

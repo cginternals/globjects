@@ -11,7 +11,7 @@
 
 using namespace gl;
 
-namespace glo
+namespace globjects
 {
 
 void UniformImplementation_SeparateShaderObjectsARB::set(const Program * program, const GLint location, const float & value) const
@@ -251,4 +251,4 @@ void UniformImplementation_SeparateShaderObjectsARB::set(const Program * program
     glProgramUniformHandleui64vARB(program->id(), location, static_cast<GLint>(value.size()), handle);
 }
 
-} // namespace glo
+} // namespace globjects

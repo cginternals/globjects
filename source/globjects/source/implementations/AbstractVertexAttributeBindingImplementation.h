@@ -6,7 +6,7 @@
 
 #include <globjects/VertexArray.h>
 
-namespace glo {
+namespace globjects {
 
 class VertexArray;
 class VertexAttributeBinding;
@@ -42,4 +42,4 @@ protected:
     void * & bindingData(const VertexAttributeBinding * binding) const;
 };
 
-} // namespace glo
+} // namespace globjects

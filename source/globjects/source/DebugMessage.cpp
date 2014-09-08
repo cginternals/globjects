@@ -13,7 +13,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 AbstractDebugImplementation & implementation()
@@ -213,4 +213,4 @@ void DebugMessage::controlMessages(GLenum source, GLenum type, GLenum severity, 
     implementation().controlMessages(source, type, severity, count, ids, enabled);
 }
 
-} // namespace glo
+} // namespace globjects

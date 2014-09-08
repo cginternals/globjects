@@ -1,6 +1,6 @@
 #include <globjects/base/Referenced.h>
 
-namespace glo
+namespace globjects
 {
 
 Referenced::Referenced()
@@ -32,4 +32,4 @@ int Referenced::refCounter() const
 	return m_refCounter;
 }
 
-} // namespace glo
+} // namespace globjects

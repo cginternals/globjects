@@ -4,7 +4,7 @@
 
 #include <globjects/base/Referenced.h>
 
-namespace glo {
+namespace globjects {
 
 template<typename T>
 ref_ptr<T>::ref_ptr()
@@ -145,4 +145,4 @@ ref_ptr<T> make_ref(T * object)
     return ref_ptr<T>(object);
 }
 
-} // namespace glo
+} // namespace globjects

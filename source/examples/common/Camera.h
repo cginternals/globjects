@@ -78,11 +78,11 @@ protected:
 
     glm::ivec2 m_viewport;
 
-    glo::CachedValue<glm::mat4> m_view;
-    glo::CachedValue<glm::mat4> m_viewInverted;
-    glo::CachedValue<glm::mat4> m_projection;
-    glo::CachedValue<glm::mat4> m_projectionInverted;
-    glo::CachedValue<glm::mat4> m_viewProjection;
-    glo::CachedValue<glm::mat4> m_viewProjectionInverted;
-    glo::CachedValue<glm::mat3> m_normal;
+    globjects::CachedValue<glm::mat4> m_view;
+    globjects::CachedValue<glm::mat4> m_viewInverted;
+    globjects::CachedValue<glm::mat4> m_projection;
+    globjects::CachedValue<glm::mat4> m_projectionInverted;
+    globjects::CachedValue<glm::mat4> m_viewProjection;
+    globjects::CachedValue<glm::mat4> m_viewProjectionInverted;
+    globjects::CachedValue<glm::mat3> m_normal;
 };

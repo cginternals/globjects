@@ -9,7 +9,7 @@
 AbstractParticleTechnique::AbstractParticleTechnique(
     const std::vector<glm::vec4> & positions
 ,   const std::vector<glm::vec4> & velocities
-,   const glo::Texture & forces
+,   const globjects::Texture & forces
 ,   const Camera & camera)
 : m_positions(positions)
 , m_velocities(velocities)

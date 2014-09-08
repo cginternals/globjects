@@ -10,7 +10,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 GLenum BufferImplementation_Legacy::s_workingTarget = GL_COPY_WRITE_BUFFER;
@@ -143,4 +143,4 @@ void BufferImplementation_Legacy::getBufferSubData(const Buffer * buffer, gl::GL
     glGetBufferSubData(s_workingTarget, offset, size, data);
 }
 
-} // namespace glo
+} // namespace globjects

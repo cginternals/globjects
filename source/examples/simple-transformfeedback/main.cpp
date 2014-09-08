@@ -55,7 +55,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -85,8 +85,8 @@ public:
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
 
-        glo::Buffer* drawBuffer = m_vertexBuffer1;
-        glo::Buffer* writeBuffer = m_vertexBuffer2;
+        globjects::Buffer* drawBuffer = m_vertexBuffer1;
+        globjects::Buffer* writeBuffer = m_vertexBuffer2;
 
         m_vao->bind();
 
@@ -127,20 +127,20 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glo::File::reloadAll();
+            globjects::File::reloadAll();
     }
 
 protected:
-    glo::ref_ptr<glo::Program> m_shaderProgram;
-    glo::ref_ptr<glo::Program> m_transformFeedbackProgram;
+    globjects::ref_ptr<globjects::Program> m_shaderProgram;
+    globjects::ref_ptr<globjects::Program> m_transformFeedbackProgram;
 	
-    glo::ref_ptr<glo::VertexArray> m_vao;
+    globjects::ref_ptr<globjects::VertexArray> m_vao;
 
-    glo::ref_ptr<glo::TransformFeedback> m_transformFeedback;
+    globjects::ref_ptr<globjects::TransformFeedback> m_transformFeedback;
 	
-    glo::ref_ptr<glo::Buffer> m_vertexBuffer1;
-    glo::ref_ptr<glo::Buffer> m_vertexBuffer2;
-    glo::ref_ptr<glo::Buffer> m_colorBuffer;
+    globjects::ref_ptr<globjects::Buffer> m_vertexBuffer1;
+    globjects::ref_ptr<globjects::Buffer> m_vertexBuffer2;
+    globjects::ref_ptr<globjects::Buffer> m_colorBuffer;
 
     Timer m_timer;
 };
@@ -150,11 +150,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 0);
@@ -180,14 +180,14 @@ int main(int /*argc*/, char* /*argv*/[])
 
 void EventHandler::createAndSetupShaders()
 {
-	m_shaderProgram = new glo::Program();
+	m_shaderProgram = new globjects::Program();
     m_shaderProgram->attach(
-        glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/simple.vert")
-    ,   glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
+        globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/simple.vert")
+    ,   globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
 
-    m_transformFeedbackProgram = new glo::Program();
+    m_transformFeedbackProgram = new globjects::Program();
     m_transformFeedbackProgram->attach(
-        glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
+        globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
     m_transformFeedbackProgram->setUniform("deltaT", 0.0f);
 }
 
@@ -213,14 +213,14 @@ void EventHandler::createAndSetupGeometry()
         , glm::vec4(0, 1, 0, 1)
     });
 
-    m_vertexBuffer1 = new glo::Buffer();
+    m_vertexBuffer1 = new globjects::Buffer();
     m_vertexBuffer1->setData(vertexArray, gl::GL_STATIC_DRAW);
-    m_vertexBuffer2 = new glo::Buffer();
+    m_vertexBuffer2 = new globjects::Buffer();
     m_vertexBuffer2->setData(vertexArray, gl::GL_STATIC_DRAW);
-    m_colorBuffer = new glo::Buffer();
+    m_colorBuffer = new globjects::Buffer();
     m_colorBuffer->setData(colorArray, gl::GL_STATIC_DRAW);
 
-	m_vao = new glo::VertexArray();
+	m_vao = new globjects::VertexArray();
 
     m_vao->binding(0)->setAttribute(0);
     m_vao->binding(0)->setFormat(4, gl::GL_FLOAT);
@@ -235,6 +235,6 @@ void EventHandler::createAndSetupGeometry()
 
 void EventHandler::createAndSetupTransformFeedback()
 {
-    m_transformFeedback = new glo::TransformFeedback();
+    m_transformFeedback = new globjects::TransformFeedback();
     m_transformFeedback->setVaryings(m_transformFeedbackProgram, std::array<const char*, 1>{ { "next_position" } }, gl::GL_INTERLEAVED_ATTRIBS);
 }

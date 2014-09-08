@@ -30,7 +30,7 @@
 #include <globjects/AttachedTexture.h>
 #include <globjects/AttachedRenderbuffer.h>
 
-namespace glo
+namespace globjects
 {
 
 DebugInfo::DebugInfo()
@@ -435,4 +435,4 @@ void DebugInfo::InfoGroup::addInfoUnit(const InfoUnit& unit)
 	units.push_back(unit);
 }
 
-} // namespace glo
+} // namespace globjects

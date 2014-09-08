@@ -70,14 +70,14 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
         
-        StringTemplate* vertexShaderSource = new StringTemplate(new glo::StaticStringSource(vertexShaderCode));
-        StringTemplate* fragmentShaderSource = new StringTemplate(new glo::StaticStringSource(fragmentShaderCode));
+        StringTemplate* vertexShaderSource = new StringTemplate(new globjects::StaticStringSource(vertexShaderCode));
+        StringTemplate* fragmentShaderSource = new StringTemplate(new globjects::StaticStringSource(fragmentShaderCode));
         
         
 #ifdef MAC_OS
@@ -87,16 +87,16 @@ public:
         
         
         
-        cornerBuffer = new glo::Buffer();
+        cornerBuffer = new globjects::Buffer();
         cornerBuffer->ref();
-		program = new glo::Program();
+		program = new globjects::Program();
         program->ref();
-		vao = new glo::VertexArray();
+		vao = new globjects::VertexArray();
         vao->ref();
 
 		program->attach(
-            new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
-            new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
+            new globjects::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
+            new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
         );
 
         cornerBuffer->setData(std::array<glm::vec2, 4>{ {
@@ -133,18 +133,18 @@ public:
     }
 
 private:
-	glo::VertexArray* vao;
-	glo::Buffer* cornerBuffer;
-	glo::Program* program;
+	globjects::VertexArray* vao;
+	globjects::Buffer* cornerBuffer;
+	globjects::Program* program;
 
 };
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);

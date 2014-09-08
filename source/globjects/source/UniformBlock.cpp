@@ -5,7 +5,7 @@
 #include <glbinding/gl/values.h>
 #include <glbinding/gl/enum.h>
 
-namespace glo {
+namespace globjects {
 
 UniformBlock::UniformBlock()
 : m_program(nullptr)
@@ -88,4 +88,4 @@ std::string UniformBlock::getName() const
     return std::string(name.data(), length);
 }
 
-} // namespace glo
+} // namespace globjects

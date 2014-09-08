@@ -2,7 +2,7 @@
 
 #include <glbinding/gl/types.h>
 
-namespace glo {
+namespace globjects {
 
 class AbstractResource
 {
@@ -111,4 +111,4 @@ public:
     ~VertexArrayObjectResource();
 };
 
-} // namespace glo
+} // namespace globjects

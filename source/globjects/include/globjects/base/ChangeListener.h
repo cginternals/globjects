@@ -4,7 +4,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class Changeable;
@@ -31,4 +31,4 @@ private:
     void removeSubject(Changeable * subject);
 };
 
-} // namespace glo
+} // namespace globjects

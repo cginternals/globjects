@@ -4,7 +4,7 @@
 
 #include <globjects/ObjectVisitor.h>
 
-namespace glo
+namespace globjects
 {
 
 ObjectVisitor::ObjectVisitor()
@@ -62,4 +62,4 @@ void ObjectVisitor::visitVertexArray(VertexArray* /*vao*/)
 {
 }
 
-} // namespace glo
+} // namespace globjects

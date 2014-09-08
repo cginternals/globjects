@@ -4,7 +4,7 @@
 
 #include <globjects/base/FunctionCall.h>
 
-namespace glo
+namespace globjects
 {
 
 template <typename... Arguments>
@@ -13,4 +13,4 @@ StateSetting::StateSetting(void (*function)(Arguments...), Arguments... argument
 {
 }
 
-} // namespace glo
+} // namespace globjects

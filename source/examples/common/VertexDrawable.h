@@ -14,7 +14,7 @@
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
 
-class VertexDrawable : public glo::Referenced
+class VertexDrawable : public globjects::Referenced
 {
 public:
     class AttributeFormat
@@ -30,7 +30,7 @@ public:
         AttributeFormat();
         AttributeFormat(gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeOffset, FormatType formatType);
 
-        void setTo(glo::VertexAttributeBinding * binding) const;
+        void setTo(globjects::VertexAttributeBinding * binding) const;
     protected:
         gl::GLint size;
         gl::GLenum type;
@@ -42,14 +42,14 @@ public:
 
     VertexDrawable(gl::GLenum primitiveMode = gl::GL_TRIANGLES);
     VertexDrawable(gl::GLint baseOffset, gl::GLint stride, gl::GLenum primitiveMode = gl::GL_TRIANGLES);
-    VertexDrawable(glo::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size, gl::GLenum primitiveMode = gl::GL_TRIANGLES);
+    VertexDrawable(globjects::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size, gl::GLenum primitiveMode = gl::GL_TRIANGLES);
     template <typename T>
     VertexDrawable(const std::vector<T> & vertices, gl::GLenum primitiveMode = gl::GL_TRIANGLES);
     template <typename T, std::size_t Count>
     VertexDrawable(const std::array<T, Count> & vertices, gl::GLenum primitiveMode = gl::GL_TRIANGLES);
 
-    void setBuffer(glo::Buffer* vbo, gl::GLint size);
-    void setBuffer(glo::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size);
+    void setBuffer(globjects::Buffer* vbo, gl::GLint size);
+    void setBuffer(globjects::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size);
     void setPrimitiveMode(gl::GLenum primitiveMode);
 
     template <typename T>
@@ -62,8 +62,8 @@ public:
 
     void draw() const;
 protected:
-    glo::ref_ptr<glo::VertexArray> m_vao;
-    glo::ref_ptr<glo::Buffer> m_vbo;
+    globjects::ref_ptr<globjects::VertexArray> m_vao;
+    globjects::ref_ptr<globjects::Buffer> m_vbo;
     std::vector<gl::GLint> m_attributeIndices;
     std::vector<AttributeFormat> m_formats;
     gl::GLint m_baseOffset;
@@ -78,8 +78,8 @@ VertexDrawable::AttributeFormat FormatL(gl::GLint size, gl::GLenum type, gl::GLu
 
 template <typename T>
 VertexDrawable::VertexDrawable(const std::vector<T> & vertices, gl::GLenum primitiveMode)
-: m_vao(new glo::VertexArray)
-, m_vbo(new glo::Buffer)
+: m_vao(new globjects::VertexArray)
+, m_vbo(new globjects::Buffer)
 , m_baseOffset(0)
 , m_stride(sizeof(T))
 , m_size(static_cast<gl::GLint>(vertices.size()))
@@ -90,8 +90,8 @@ VertexDrawable::VertexDrawable(const std::vector<T> & vertices, gl::GLenum primi
 
 template <typename T, std::size_t Count>
 VertexDrawable::VertexDrawable(const std::array<T, Count> & vertices, gl::GLenum primitiveMode)
-: m_vao(new glo::VertexArray)
-, m_vbo(new glo::Buffer)
+: m_vao(new globjects::VertexArray)
+, m_vbo(new globjects::Buffer)
 , m_baseOffset(0)
 , m_stride(sizeof(T))
 , m_size(static_cast<gl::GLint>(vertices.size()))

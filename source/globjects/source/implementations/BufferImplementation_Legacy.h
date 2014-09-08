@@ -5,7 +5,7 @@
 #include "AbstractBufferImplementation.h"
 
 
-namespace glo
+namespace globjects
 {
 
 class BufferImplementation_Legacy : public AbstractBufferImplementation
@@ -40,4 +40,4 @@ public:
     static gl::GLenum s_workingTarget;
 };
 
-} // namespace glo
+} // namespace globjects

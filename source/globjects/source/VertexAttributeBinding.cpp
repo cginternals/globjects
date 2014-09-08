@@ -11,13 +11,13 @@
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
 namespace {
-    glo::AbstractVertexAttributeBindingImplementation & attributeImplementation()
+    globjects::AbstractVertexAttributeBindingImplementation & attributeImplementation()
     {
-        return glo::ImplementationRegistry::current().attributeImplementation();
+        return globjects::ImplementationRegistry::current().attributeImplementation();
     }
 }
 
-namespace glo
+namespace globjects
 {
 
 VertexAttributeBinding::VertexAttributeBinding(
@@ -94,4 +94,4 @@ void VertexAttributeBinding::setLFormat(gl::GLint size, gl::GLenum type, gl::GLu
     attributeImplementation().setLFormat(this, size, type, relativeoffset);
 }
 
-} // namespace glo
+} // namespace globjects

@@ -1,6 +1,6 @@
 #include <globjects/base/HeapOnly.h>
 
-namespace glo {
+namespace globjects {
 
 HeapOnly::HeapOnly()
 {
@@ -15,4 +15,4 @@ HeapOnly::~HeapOnly()
 {
 }
 
-} // namespace glo
+} // namespace globjects

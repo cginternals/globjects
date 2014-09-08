@@ -9,7 +9,7 @@
 #include <glm/mat4x4.hpp>
 
 
-namespace glo 
+namespace globjects 
 {
 
 LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::vec2 & vector)
@@ -111,4 +111,4 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::mat4 & matrix
     return builder;
 }
 
-} // namespace glo
+} // namespace globjects

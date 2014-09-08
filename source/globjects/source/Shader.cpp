@@ -27,14 +27,14 @@
 namespace
 {
 
-const glo::AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation()
+const globjects::AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation()
 {
-    return glo::ImplementationRegistry::current().shadingLanguageIncludeImplementation();
+    return globjects::ImplementationRegistry::current().shadingLanguageIncludeImplementation();
 }
 
 }
 
-namespace glo
+namespace globjects
 {
 void Shader::hintIncludeImplementation(const IncludeImplementation impl)
 {
@@ -254,4 +254,4 @@ gl::GLenum Shader::objectType() const
     return gl::GL_SHADER;
 }
 
-} // namespace glo
+} // namespace globjects

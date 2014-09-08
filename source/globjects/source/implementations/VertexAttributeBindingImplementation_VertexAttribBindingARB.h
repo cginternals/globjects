@@ -8,7 +8,7 @@
 
 #include "AbstractVertexAttributeBindingImplementation.h"
 
-namespace glo {
+namespace globjects {
 
 class VertexAttributeBindingImplementation_VertexAttribBindingARB : public AbstractVertexAttributeBindingImplementation
         , public Singleton<VertexAttributeBindingImplementation_VertexAttribBindingARB>
@@ -30,4 +30,4 @@ public:
     virtual void setLFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset) const override;
 };
 
-} // namespace glo
+} // namespace globjects

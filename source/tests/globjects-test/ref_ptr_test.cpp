@@ -9,7 +9,7 @@ class ref_ptr_test : public testing::Test
 public:
 };
 
-class ReferencedMock : public glo::Referenced
+class ReferencedMock : public globjects::Referenced
 {
 public:
     MOCK_METHOD0(Die, void());
@@ -20,15 +20,15 @@ TEST_F(ref_ptr_test, DeletesItsReferenced)
 {
     // the ReferencedMock instance should be deleted on function exit
 
-    glo::ref_ptr<ReferencedMock> ref = new ReferencedMock;
+    globjects::ref_ptr<ReferencedMock> ref = new ReferencedMock;
     EXPECT_CALL(*ref, Die()).Times(1);
 }
 
 TEST_F(ref_ptr_test, SurvivesWhenReferenced)
 {
-    glo::ref_ptr<ReferencedMock> owned;
+    globjects::ref_ptr<ReferencedMock> owned;
     {
-        glo::ref_ptr<ReferencedMock> ref = new ReferencedMock;
+        globjects::ref_ptr<ReferencedMock> ref = new ReferencedMock;
         EXPECT_CALL(*ref, Die()).Times(1);
         owned = ref;
         EXPECT_EQ(owned->refCounter(), 2);
@@ -38,11 +38,11 @@ TEST_F(ref_ptr_test, SurvivesWhenReferenced)
 
 TEST_F(ref_ptr_test, ReferencesSameInstanceWhenPassedOn)
 {
-    glo::ref_ptr<ReferencedMock> ref = new ReferencedMock;
+    globjects::ref_ptr<ReferencedMock> ref = new ReferencedMock;
     EXPECT_CALL(*ref, Die()).Times(1);
 
-    glo::ref_ptr<ReferencedMock> a = ref;
-    glo::ref_ptr<ReferencedMock> b = ref;
+    globjects::ref_ptr<ReferencedMock> a = ref;
+    globjects::ref_ptr<ReferencedMock> b = ref;
 
     EXPECT_EQ(ref->refCounter(), 3);
     EXPECT_TRUE(a == b);
@@ -55,10 +55,10 @@ TEST_F(ref_ptr_test, ReferenceComparisonConstComparisonsCompile)
     ReferencedMock * t = new ReferencedMock;
     const ReferencedMock * const_t = new ReferencedMock;
 
-    glo::ref_ptr<ReferencedMock> ref_t = new ReferencedMock;
-    const glo::ref_ptr<ReferencedMock> const_ref_t = new ReferencedMock;
-    glo::ref_ptr<const ReferencedMock> ref_const_t = new ReferencedMock;
-    const glo::ref_ptr<const ReferencedMock> const_ref_const_t = new ReferencedMock;
+    globjects::ref_ptr<ReferencedMock> ref_t = new ReferencedMock;
+    const globjects::ref_ptr<ReferencedMock> const_ref_t = new ReferencedMock;
+    globjects::ref_ptr<const ReferencedMock> ref_const_t = new ReferencedMock;
+    const globjects::ref_ptr<const ReferencedMock> const_ref_const_t = new ReferencedMock;
 
     bool success1 = true;
     bool success2 = true;

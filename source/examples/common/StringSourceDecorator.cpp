@@ -17,7 +17,7 @@ StringSourceDecorator::~StringSourceDecorator()
 	m_internal->deregisterListener(this);
 }
 
-void StringSourceDecorator::notifyChanged(const glo::Changeable *)
+void StringSourceDecorator::notifyChanged(const globjects::Changeable *)
 {
 	update();
     changed();

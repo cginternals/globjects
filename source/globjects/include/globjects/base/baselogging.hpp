@@ -6,7 +6,7 @@
 
 #include <globjects/base/formatString.h>
 
-namespace glo
+namespace globjects
 {
 
 template <typename... Arguments> void info(const char* format, Arguments... arguments)
@@ -44,4 +44,4 @@ template <typename... Arguments> void fatal(const char* format, Arguments... arg
     fatal() << formatString(format, arguments...);
 }
 
-} // namespace glo
+} // namespace globjects

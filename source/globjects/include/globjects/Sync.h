@@ -8,7 +8,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class GLOBJECTS_API Sync : public Referenced
@@ -39,4 +39,4 @@ protected:
     static Sync * fence(gl::GLenum condition, gl::UnusedMask flags);
 };
 
-} // namespace glo
+} // namespace globjects

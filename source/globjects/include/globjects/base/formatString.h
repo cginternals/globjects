@@ -5,7 +5,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 GLOBJECTS_API int readInt(const char* str, int& number);
@@ -80,6 +80,6 @@ void streamprintf(std::ostream& stream, const char* format, const T& value, Args
 template <typename... Args>
 std::string formatString(const char* format, Args... args);
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/base/formatString.hpp>

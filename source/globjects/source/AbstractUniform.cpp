@@ -16,14 +16,14 @@ using namespace gl;
 namespace 
 {
 
-const glo::AbstractUniformImplementation & implementation()
+const globjects::AbstractUniformImplementation & implementation()
 {
-    return glo::ImplementationRegistry::current().uniformImplementation();
+    return globjects::ImplementationRegistry::current().uniformImplementation();
 }
 
 }
 
-namespace glo
+namespace globjects
 {
 
 void AbstractUniform::hintBindlessImplementation(BindlessImplementation impl)
@@ -331,4 +331,4 @@ void AbstractUniform::setValue(const Program * program, GLint location, const st
     implementation().set(program, location, value);
 }
 
-} // namespace glo
+} // namespace globjects

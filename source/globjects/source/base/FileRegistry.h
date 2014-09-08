@@ -2,7 +2,7 @@
 
 #include <set>
 
-namespace glo
+namespace globjects
 {
 class File;
 
@@ -21,4 +21,4 @@ protected:
     static FileRegistry* s_instance;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -6,7 +6,7 @@
 #include <globjects/globjects_api.h>
 #include <glbinding/ContextHandle.h>
 
-namespace glo
+namespace globjects
 {
 
 class ObjectRegistry;
@@ -50,4 +50,4 @@ private:
     std::shared_ptr<NamedStringRegistry> m_namedStrings;
 };
 
-} // namespace glo
+} // namespace globjects

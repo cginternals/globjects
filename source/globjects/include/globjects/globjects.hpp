@@ -7,7 +7,7 @@
 #include <glbinding/gl/types.h>
 #include <glbinding/gl/functions.h>
 
-namespace glo 
+namespace globjects 
 {
 
 template <int Count>
@@ -66,4 +66,4 @@ void init(glbinding::ContextHandle sharedContextId, T strategy, Args... args)
     initializeStrategy(strategy);
 }
 
-} // namespace glo
+} // namespace globjects

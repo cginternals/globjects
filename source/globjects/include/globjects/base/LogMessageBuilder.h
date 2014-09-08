@@ -12,7 +12,7 @@
 #include <globjects/base/ref_ptr.h>
 
 
-namespace glo
+namespace globjects
 {
 
 class AbstractLogHandler;
@@ -96,6 +96,6 @@ protected:
     std::shared_ptr<std::stringstream> m_stream;
 };
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/base/LogMessageBuilder.hpp>

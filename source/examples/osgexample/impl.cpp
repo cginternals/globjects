@@ -20,7 +20,7 @@
 
 using namespace gl;
 using namespace glm;
-using namespace glo;
+using namespace globjects;
 
 const char * fragmentShaderSource = R"(
 #version 140

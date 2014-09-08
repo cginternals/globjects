@@ -27,7 +27,7 @@ namespace
     std::mutex g_mutex;
 }
 
-namespace glo
+namespace globjects
 {
 
 void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
@@ -370,4 +370,4 @@ void initializeStrategy(VertexArray::AttributeImplementation impl)
     Registry::current().implementations().initialize(impl);
 }
 
-} // namespace glo
+} // namespace globjects

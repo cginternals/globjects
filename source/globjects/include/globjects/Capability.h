@@ -6,7 +6,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class GLOBJECTS_API Capability
@@ -33,4 +33,4 @@ protected:
     std::map<int, bool> m_indexEnabled;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -5,7 +5,7 @@
 #include "AbstractFramebufferImplementation.h"
 
 
-namespace glo
+namespace globjects
 {
 
 class FramebufferImplementation_DirectStateAccessEXT : public AbstractFramebufferImplementation
@@ -26,4 +26,4 @@ public:
     virtual void setDrawBuffers(const Framebuffer * fbo, gl::GLsizei n, const gl::GLenum * modes) const override;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -11,7 +11,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 AbstractShadingLanguageIncludeImplementation::AbstractShadingLanguageIncludeImplementation()
@@ -47,4 +47,4 @@ std::vector<const char *> AbstractShadingLanguageIncludeImplementation::collectC
     return cStrings;
 }
 
-} // namespace glo
+} // namespace globjects

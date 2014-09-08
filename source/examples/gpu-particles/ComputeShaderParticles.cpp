@@ -21,7 +21,7 @@
 #include "ComputeShaderParticles.h"
 
 
-using namespace glo;
+using namespace globjects;
 using namespace glm;
 
 
@@ -61,7 +61,7 @@ void ComputeShaderParticles::initialize()
     m_computeProgram = new Program();
     
     StringTemplate * stringTemplate = new StringTemplate(
-        new glo::File("data/gpu-particles/particle.comp"));
+        new globjects::File("data/gpu-particles/particle.comp"));
     stringTemplate->replace("MAX_INVOCATION", max_invocations);
     stringTemplate->update();
 
@@ -69,9 +69,9 @@ void ComputeShaderParticles::initialize()
 
     m_drawProgram = new Program();
     m_drawProgram->attach(
-        glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
-        , glo::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-        , glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+        globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gpu-particles/points.vert")
+        , globjects::Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
+        , globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
 
     m_positionsSSBO = new Buffer();
     m_velocitiesSSBO = new Buffer();
@@ -113,7 +113,7 @@ void ComputeShaderParticles::initialize()
 
     m_quad = new ScreenAlignedQuad(m_color);
     m_clear = new ScreenAlignedQuad(
-        glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
+        globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag"));
 }
 
 void ComputeShaderParticles::reset()

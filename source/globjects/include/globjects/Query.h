@@ -7,7 +7,7 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
-namespace glo
+namespace globjects
 {
 
 /** \brief Encapsulates a GL Query object
@@ -113,4 +113,4 @@ protected:
     void counter(gl::GLenum target) const;
 };
 
-} // namespace glo
+} // namespace globjects

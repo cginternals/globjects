@@ -8,7 +8,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo 
+namespace globjects 
 {
 
 class ObjectVisitor;
@@ -55,4 +55,4 @@ protected:
     mutable void * m_objectLabelState;
 };
 
-} // namespace glo
+} // namespace globjects

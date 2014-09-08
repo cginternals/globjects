@@ -8,7 +8,7 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
-namespace glo
+namespace globjects
 {
 
 /** \brief Wrapper for OpenGL buffer objects.
@@ -278,6 +278,6 @@ protected:
     virtual ~Buffer();
 };
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/Buffer.hpp>

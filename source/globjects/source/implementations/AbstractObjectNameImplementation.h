@@ -7,7 +7,7 @@
 #include <globjects/Object.h>
 
 
-namespace glo
+namespace globjects
 {
 
 class Object;
@@ -39,4 +39,4 @@ protected:
     void setObjectLabelState(const Sync * sync, void * state) const;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -8,7 +8,7 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
-namespace glo
+namespace globjects
 {
 
 class ObjectVisitor;
@@ -87,6 +87,6 @@ protected:
     static void unbind(gl::GLenum target);
 };
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/TransformFeedback.hpp>

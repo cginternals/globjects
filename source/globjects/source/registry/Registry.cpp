@@ -11,12 +11,12 @@
 
 namespace
 {
-    THREAD_LOCAL glo::Registry * t_currentRegistry;
+    THREAD_LOCAL globjects::Registry * t_currentRegistry;
 
     std::recursive_mutex g_mutex;
 }
 
-namespace glo
+namespace globjects
 {
 
 std::unordered_map<glbinding::ContextHandle, Registry *> Registry::s_registries;
@@ -25,7 +25,7 @@ void Registry::registerContext(glbinding::ContextHandle contextId)
 {
     if (isContextRegistered(contextId))
     {
-        glo::debug() << "OpenGL context " << contextId << " is already registered";
+        globjects::debug() << "OpenGL context " << contextId << " is already registered";
     }
 
     setCurrentRegistry(contextId);
@@ -35,7 +35,7 @@ void Registry::registerContext(glbinding::ContextHandle contextId, glbinding::Co
 {
     if (isContextRegistered(contextId))
     {
-        glo::debug() << "OpenGL context " << contextId << " is already registered";
+        globjects::debug() << "OpenGL context " << contextId << " is already registered";
     }
 
     g_mutex.lock();
@@ -57,7 +57,7 @@ void Registry::setCurrentContext(glbinding::ContextHandle contextId)
 {
     if (!isContextRegistered(contextId))
     {
-        glo::debug() << "Requesting OpenGL context " << contextId << " but it isn't registered yet";
+        globjects::debug() << "Requesting OpenGL context " << contextId << " but it isn't registered yet";
     }
 
     setCurrentRegistry(contextId);
@@ -67,7 +67,7 @@ void Registry::deregisterContext(glbinding::ContextHandle contextId)
 {
     if (!isContextRegistered(contextId))
     {
-        glo::debug() << "OpenGL context " << contextId << " is not registered";
+        globjects::debug() << "OpenGL context " << contextId << " is not registered";
 
         return;
     }
@@ -178,4 +178,4 @@ NamedStringRegistry & Registry::namedStrings()
     return *m_namedStrings;
 }
 
-} // namespace glo
+} // namespace globjects

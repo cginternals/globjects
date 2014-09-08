@@ -138,7 +138,7 @@ bool Window::create(const ContextFormat & format, int width, int height)
 
     if (!createContext(format, width, height))
     {
-        glo::fatal() << "Creating native window with OpenGL context failed.";
+        globjects::fatal() << "Creating native window with OpenGL context failed.";
         return false;
     }
 

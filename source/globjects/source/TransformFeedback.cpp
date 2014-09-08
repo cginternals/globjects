@@ -11,7 +11,7 @@
 
 #include "Resource.h"
 
-namespace glo
+namespace globjects
 {
 
 TransformFeedback::TransformFeedback()
@@ -101,4 +101,4 @@ gl::GLenum TransformFeedback::objectType() const
     return gl::GL_TRANSFORM_FEEDBACK;
 }
 
-} // namespace glo
+} // namespace globjects

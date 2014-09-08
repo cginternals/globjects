@@ -5,7 +5,7 @@
 #include "AbstractProgramBinaryImplementation.h"
 
 
-namespace glo
+namespace globjects
 {
 
 class ProgramBinaryImplementation_None : public AbstractProgramBinaryImplementation
@@ -16,4 +16,4 @@ public:
     virtual ProgramBinary * getProgramBinary(const Program * program) const override;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -9,13 +9,13 @@
 
 namespace 
 {
-glo::AbstractObjectNameImplementation & nameImplementation()
+globjects::AbstractObjectNameImplementation & nameImplementation()
 {
-    return glo::ImplementationRegistry::current().objectNameImplementation();
+    return globjects::ImplementationRegistry::current().objectNameImplementation();
 }
 }
 
-namespace glo
+namespace globjects
 {
 
 void Object::hintNameImplementation(NameImplementation impl)
@@ -62,4 +62,4 @@ bool Object::hasName() const
     return nameImplementation().hasLabel(this);
 }
 
-} // namespace glo
+} // namespace globjects

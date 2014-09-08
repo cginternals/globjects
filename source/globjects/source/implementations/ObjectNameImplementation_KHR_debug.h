@@ -2,7 +2,7 @@
 
 #include "AbstractObjectNameImplementation.h"
 
-namespace glo
+namespace globjects
 {
 
 class ObjectNameImplementation_KHR_debug : public AbstractObjectNameImplementation
@@ -23,4 +23,4 @@ protected:
     unsigned int m_maxLabelLength;
 };
 
-} // namespace glo
+} // namespace globjects

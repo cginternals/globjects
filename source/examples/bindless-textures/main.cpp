@@ -74,31 +74,31 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
-        if (!glo::hasExtension(gl::GLextension::GL_NV_bindless_texture))
+        if (!globjects::hasExtension(gl::GLextension::GL_NV_bindless_texture))
         {
-            glo::critical() << "Blindess textures are not supported";
+            globjects::critical() << "Blindess textures are not supported";
 
             window.close();
 
             return;
         }
 
-        glo::ref_ptr<glo::State> state = new glo::State;
+        globjects::ref_ptr<globjects::State> state = new globjects::State;
         state->enable(gl::GL_CULL_FACE);
         state->clearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         createGeometry();
         createTextures();
 
-        m_program = new glo::Program;
+        m_program = new globjects::Program;
         m_program->attach(
-            glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/bindless-textures/shader.vert"),
-            glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag")
+            globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/bindless-textures/shader.vert"),
+            globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag")
         );
 
-        std::array<glo::TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
+        std::array<globjects::TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
         for (unsigned i = 0; i < m_textures.size(); ++i)
         {
             handles[i] = m_textures[i]->makeResident();
@@ -139,7 +139,7 @@ public:
     virtual void keyPressEvent(KeyEvent & event) override
     {
         if (event.key()==GLFW_KEY_F5)
-            glo::File::reloadAll();
+            globjects::File::reloadAll();
         else if (event.key()==GLFW_KEY_SPACE)
         {
             m_nav.reset();
@@ -233,9 +233,9 @@ protected:
     WorldInHandNavigation m_nav;
     AxisAlignedBoundingBox m_aabb;
 
-    std::array<glo::ref_ptr<glo::Texture>, 4> m_textures;
-    glo::ref_ptr<glo::Program> m_program;
-    glo::ref_ptr<VertexDrawable> m_drawable;
+    std::array<globjects::ref_ptr<globjects::Texture>, 4> m_textures;
+    globjects::ref_ptr<globjects::Program> m_program;
+    globjects::ref_ptr<VertexDrawable> m_drawable;
 };
 
 
@@ -243,15 +243,15 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    glo::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-    glo::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    glo::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-    glo::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    globjects::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    globjects::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    globjects::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    globjects::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
 
     ContextFormat format;
     format.setVersion(3, 0);
@@ -285,7 +285,7 @@ void EventHandler::createTextures()
 
     for (unsigned i = 0; i < m_textures.size(); ++i)
     {
-        glo::Texture* texture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
+        globjects::Texture* texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 
         static const int w = 512;
         static const int h = 512;

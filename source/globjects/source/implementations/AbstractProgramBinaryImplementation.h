@@ -5,7 +5,7 @@
 #include <globjects/Program.h>
 
 
-namespace glo
+namespace globjects
 {
 
 class Program;
@@ -24,4 +24,4 @@ public:
     virtual ProgramBinary* getProgramBinary(const Program * program) const = 0;
 };
 
-} // namespace glo
+} // namespace globjects

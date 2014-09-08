@@ -6,7 +6,7 @@
 
 #include <glm/fwd.hpp>
 
-namespace glo 
+namespace globjects 
 {
 
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::vec2 & vector);
@@ -25,4 +25,4 @@ GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const glm:
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::mat3 & matrix);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::mat4 & matrix);
 
-} // namespace glo
+} // namespace globjects

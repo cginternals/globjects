@@ -8,7 +8,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class Version;
@@ -37,4 +37,4 @@ protected:
     void initialize();
 };
 
-} // namespace glo
+} // namespace globjects

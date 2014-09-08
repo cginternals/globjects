@@ -34,19 +34,19 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        glo::NamedString::create("/shaderincludes/color.glsl", new glo::File("data/shaderincludes/color.glsl"));
+        globjects::NamedString::create("/shaderincludes/color.glsl", new globjects::File("data/shaderincludes/color.glsl"));
 
-        StringTemplate* fragmentShaderString = new StringTemplate(new glo::File("data/shaderincludes/test.frag"));
+        StringTemplate* fragmentShaderString = new StringTemplate(new globjects::File("data/shaderincludes/test.frag"));
 
 #ifdef MAC_OS
         fragmentShaderString->replace("#version 140", "#version 150");
 #endif
 
-        m_quad = new ScreenAlignedQuad(new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderString));
+        m_quad = new ScreenAlignedQuad(new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderString));
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -73,11 +73,11 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glo::File::reloadAll();
+            globjects::File::reloadAll();
     }
 
 protected:
-    glo::ref_ptr<ScreenAlignedQuad> m_quad;
+    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
 };
 
 
@@ -85,11 +85,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(3, 0);

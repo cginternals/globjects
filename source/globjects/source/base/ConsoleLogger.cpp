@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace glo
+namespace globjects
 {
 
 void ConsoleLogger::handle(const LogMessage& message)
@@ -28,4 +28,4 @@ std::string ConsoleLogger::levelString(LogMessage::Level level)
 	}
 }
 
-} // namespace glo
+} // namespace globjects

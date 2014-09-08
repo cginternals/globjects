@@ -4,7 +4,7 @@
 
 #include <globjects/Texture.h>
 
-namespace glo
+namespace globjects
 {
 
 AttachedTexture::AttachedTexture(Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer)
@@ -45,4 +45,4 @@ gl::GLint AttachedTexture::layer() const
     return m_layer;
 }
 
-} // namespace glo
+} // namespace globjects

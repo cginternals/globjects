@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-namespace glo
+namespace globjects
 {
 
 template <typename T>
@@ -59,4 +59,4 @@ void CachedValue<T>::invalidate() const
 	m_valid = false;
 }
 
-} // namespace glo
+} // namespace globjects

@@ -2,7 +2,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class GLOBJECTS_API AbstractFunctionCall
@@ -16,4 +16,4 @@ public:
 
 };
 
-} // namespace glo
+} // namespace globjects

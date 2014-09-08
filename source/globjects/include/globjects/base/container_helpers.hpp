@@ -3,7 +3,7 @@
 #include <functional>
 #include <type_traits>
 
-namespace glo {
+namespace globjects {
 
 template <typename T, class InputIterator, class Function>
 std::vector<T> collect(InputIterator first, InputIterator last, Function mapper)
@@ -27,4 +27,4 @@ std::vector<T> collect(Container container, Function mapper)
 #define collect_member(container, Class, member) collect<decltype(Class::member)>(container, [](const Class & object) { return object.member; })
 #define collect_type_member(T, container, Class, member) collect<T>(container, [](const Class & object) { return object.member; })
 
-} // namespace glo
+} // namespace globjects

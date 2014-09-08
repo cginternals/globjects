@@ -11,7 +11,7 @@
 
 using namespace gl;
 
-namespace glo
+namespace globjects
 {
 
 void GL_APIENTRY DebugImplementation_DebugKHR::debugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, const void * param)
@@ -41,14 +41,14 @@ void DebugImplementation_DebugKHR::registerCallback()
 
 void DebugImplementation_DebugKHR::enable()
 {
-    glo::enable(GL_DEBUG_OUTPUT);
+    globjects::enable(GL_DEBUG_OUTPUT);
 
     registerCallback();
 }
 
 void DebugImplementation_DebugKHR::disable()
 {
-    glo::disable(GL_DEBUG_OUTPUT);
+    globjects::disable(GL_DEBUG_OUTPUT);
 }
 
 void DebugImplementation_DebugKHR::setSynchronous(bool synchronous)
@@ -66,4 +66,4 @@ void DebugImplementation_DebugKHR::controlMessages(GLenum source, GLenum type, G
     glDebugMessageControl(source, type, severity, count, ids, enabled);
 }
 
-} // namespace glo
+} // namespace globjects

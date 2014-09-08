@@ -6,7 +6,7 @@
 #include <globjects/globjects_api.h>
 #include <globjects/base/AbstractFunctionCall.h>
 
-namespace glo
+namespace globjects
 {
 
 template <typename... Arguments>
@@ -27,6 +27,6 @@ protected:
     std::tuple<Arguments...> m_arguments;
 };
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/base/FunctionCall.hpp>

@@ -4,7 +4,7 @@
 
 #include <globjects/base/Singleton.h>
 
-namespace glo 
+namespace globjects 
 {
 
 template<class T>
@@ -32,4 +32,4 @@ Singleton<T>::~Singleton()
     delete s_instance;
 }
 
-} // namespace glo
+} // namespace globjects

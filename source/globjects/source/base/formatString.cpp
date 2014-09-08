@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-namespace glo
+namespace globjects
 {
 
 int readInt(const char* str, int& number)
@@ -156,4 +156,4 @@ void streamprintf(std::ostream& stream, const char* format)
 	stream << format;
 }
 
-} // namespace glo
+} // namespace globjects

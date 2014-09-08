@@ -17,7 +17,7 @@
 #include <globjects/ProgramBinary.h>
 #include <globjects/AbstractUniform.h>
 
-namespace glo
+namespace globjects
 {
 
 /** \brief Wraps an OpenGL program.
@@ -205,6 +205,6 @@ protected:
     mutable bool m_dirty;
 };
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/Program.hpp>

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace glo
+namespace globjects
 {
 
 template<class T>
@@ -17,6 +17,6 @@ protected:
     static T * s_instance;
 };
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/base/Singleton.hpp>

@@ -1,6 +1,6 @@
 #include <globjects/base/LogMessage.h>
 
-namespace glo
+namespace globjects
 {
 
 LogMessage::LogMessage(Level level, const std::string& message)
@@ -19,4 +19,4 @@ const std::string& LogMessage::message() const
 	return m_message;
 }
 
-} // namespace glo
+} // namespace globjects

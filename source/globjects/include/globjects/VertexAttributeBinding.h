@@ -7,7 +7,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo 
+namespace globjects 
 {
 
 class Buffer;
@@ -64,4 +64,4 @@ protected:
     mutable void * m_bindingData;
 };
 
-} // namespace glo
+} // namespace globjects

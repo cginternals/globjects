@@ -5,7 +5,7 @@
 #include <sstream>
 #include <cassert>
 
-namespace glo
+namespace globjects
 {
 
 template <typename T, typename... Args>
@@ -39,4 +39,4 @@ std::string formatString(const char* format, Args... args)
 	return ss.str();
 }
 
-} // namespace glo
+} // namespace globjects

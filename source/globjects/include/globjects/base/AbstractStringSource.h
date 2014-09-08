@@ -8,7 +8,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class CompositeStringSource;
@@ -30,4 +30,4 @@ public:
     virtual std::string shortInfo() const;
 };
 
-} // namespace glo
+} // namespace globjects

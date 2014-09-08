@@ -52,7 +52,7 @@ struct BindingData {
     bool m_hasAttribute;
 };
 
-namespace glo {
+namespace globjects {
 
 VertexAttributeBindingImplementation_Legacy::VertexAttributeBindingImplementation_Legacy()
 {
@@ -200,4 +200,4 @@ void VertexAttributeBindingImplementation_Legacy::finish(const VertexAttributeBi
     }
 }
 
-} // namespace glo
+} // namespace globjects

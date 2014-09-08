@@ -4,7 +4,7 @@
 #include <glbinding/gl/enum.h>
 
 
-namespace glo
+namespace globjects
 {
 
 StateSettingType::StateSettingType()
@@ -58,11 +58,11 @@ StateSettingType & StateSetting::type()
     return m_type;
 }
 
-} // namespace glo
+} // namespace globjects
 
 namespace std {
 
-size_t hash<glo::StateSettingType>::operator()(const glo::StateSettingType & type) const
+size_t hash<globjects::StateSettingType>::operator()(const globjects::StateSettingType & type) const
 {
     return type.hash();
 }

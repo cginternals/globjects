@@ -4,7 +4,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class ChangeListener;
@@ -28,4 +28,4 @@ private:
     std::set<ChangeListener *> m_listeners;
 };
 
-} // namespace glo
+} // namespace globjects

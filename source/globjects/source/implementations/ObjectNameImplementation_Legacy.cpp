@@ -3,7 +3,7 @@
 
 #include <globjects/globjects.h>
 
-namespace glo {
+namespace globjects {
 
 ObjectNameImplementation_Legacy::ObjectNameImplementation_Legacy()
 {
@@ -85,4 +85,4 @@ void ObjectNameImplementation_Legacy::setLabel(const Sync * sync, const std::str
     *state = label;
 }
 
-} // namespace glo
+} // namespace globjects

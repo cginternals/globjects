@@ -5,7 +5,7 @@
 
 #include <globjects/globjects.h>
 
-namespace glo {
+namespace globjects {
 
 ExtensionRegistry::ExtensionRegistry()
 : m_initialized(false)
@@ -106,8 +106,8 @@ bool ExtensionRegistry::isInCoreProfile(gl::GLextension extension, const glbindi
 
 bool ExtensionRegistry::isInCoreProfile(gl::GLextension extension)
 {
-    return isInCoreProfile(extension, glo::version());
+    return isInCoreProfile(extension, globjects::version());
 }
 
-} // namespace glo
+} // namespace globjects
 

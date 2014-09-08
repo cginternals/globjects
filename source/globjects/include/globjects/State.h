@@ -11,7 +11,7 @@
 #include <globjects/AbstractState.h>
 #include <globjects/StateSetting.h>
 
-namespace glo
+namespace globjects
 {
 
 class Capability;
@@ -64,4 +64,4 @@ protected:
     const Capability* getCapability(gl::GLenum capability) const;
 };
 
-} // namespace glo
+} // namespace globjects

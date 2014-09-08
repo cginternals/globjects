@@ -2,7 +2,7 @@
 
 #include <globjects/base/Changeable.h>
 
-namespace glo
+namespace globjects
 {
 
 ChangeListener::~ChangeListener()
@@ -27,4 +27,4 @@ void ChangeListener::removeSubject(Changeable * subject)
     m_subjects.erase(subject);
 }
 
-} // namespace glo
+} // namespace globjects

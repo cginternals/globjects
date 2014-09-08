@@ -13,7 +13,7 @@
 #include <globjects/Buffer.h>
 
 using namespace glm;
-using namespace glo;
+using namespace globjects;
 
 const std::array<vec3, 12> Icosahedron::vertices()
 {

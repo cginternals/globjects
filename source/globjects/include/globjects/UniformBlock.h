@@ -5,7 +5,7 @@
 #include <globjects/globjects_api.h>
 #include <globjects/LocationIdentity.h>
 
-namespace glo {
+namespace globjects {
 
 class Program;
 class Buffer;
@@ -37,4 +37,4 @@ protected:
     void updateBinding() const;
 };
 
-} // namespace glo
+} // namespace globjects

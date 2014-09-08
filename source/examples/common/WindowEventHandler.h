@@ -22,7 +22,7 @@ class TimerEvent;
     The window's context is made current before calling any methods and done current afterwards.
 
 */
-class WindowEventHandler : public glo::Referenced
+class WindowEventHandler : public globjects::Referenced
 {
 public:
     WindowEventHandler();

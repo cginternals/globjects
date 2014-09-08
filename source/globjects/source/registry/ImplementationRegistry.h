@@ -13,7 +13,7 @@
 #include <globjects/VertexArray.h>
 
 
-namespace glo
+namespace globjects
 {
 
 class AbstractUniformImplementation;
@@ -64,4 +64,4 @@ protected:
     AbstractVertexAttributeBindingImplementation * m_attributeImplementation;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace glo
+namespace globjects
 {
 
 class Referenced;
@@ -66,6 +66,6 @@ protected:
 template <typename T>
 ref_ptr<T> make_ref(T * object);
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/base/ref_ptr.hpp>

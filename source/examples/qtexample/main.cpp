@@ -65,15 +65,15 @@ public:
 
     virtual void initializeGL() override
     {
-        glo::init();
+        globjects::init();
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-        m_sphere = new glo::Program();
-        StringTemplate* vertexShaderSource = new StringTemplate(new glo::File("data/adaptive-grid/sphere.vert"));
-        StringTemplate* fragmentShaderSource = new StringTemplate(new glo::File("data/adaptive-grid/sphere.frag"));
+        m_sphere = new globjects::Program();
+        StringTemplate* vertexShaderSource = new StringTemplate(new globjects::File("data/adaptive-grid/sphere.vert"));
+        StringTemplate* fragmentShaderSource = new StringTemplate(new globjects::File("data/adaptive-grid/sphere.frag"));
 
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");
@@ -81,8 +81,8 @@ public:
 #endif
 
         m_sphere->attach(
-            new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
-        ,   new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
+            new globjects::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
+        ,   new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
 
 
         m_icosahedron = new Icosahedron(2);
@@ -119,7 +119,7 @@ public:
         switch (event->key())
         {
             case Qt::Key_F5:
-                glo::File::reloadAll();
+                globjects::File::reloadAll();
                 break;
             case Qt::Key_Space:
                 m_camera.setCenter(glm::vec3());
@@ -231,9 +231,9 @@ public:
     }
 
 protected:
-    glo::ref_ptr<glo::Program> m_sphere;
+    globjects::ref_ptr<globjects::Program> m_sphere;
 
-    glo::ref_ptr<Icosahedron> m_icosahedron;
+    globjects::ref_ptr<Icosahedron> m_icosahedron;
 
     Camera m_camera;
     WorldInHandNavigation m_nav;

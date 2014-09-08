@@ -7,7 +7,7 @@
 
 #include "Resource.h"
 
-namespace glo
+namespace globjects
 {
 
 Sampler::Sampler()
@@ -75,4 +75,4 @@ gl::GLenum Sampler::objectType() const
     return gl::GL_SAMPLER;
 }
 
-} // namespace glo
+} // namespace globjects

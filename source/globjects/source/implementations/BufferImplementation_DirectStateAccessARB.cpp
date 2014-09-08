@@ -11,7 +11,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 GLuint BufferImplementation_DirectStateAccessARB::create() const
@@ -109,4 +109,4 @@ void BufferImplementation_DirectStateAccessARB::getBufferSubData(const Buffer * 
     glGetNamedBufferSubData(buffer->id(), offset, static_cast<GLsizei>(size), data);
 }
 
-} // namespace glo
+} // namespace globjects

@@ -53,14 +53,14 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-        auto vertexShaderSource = new StringTemplate(new glo::File("data/gbuffers/sphere.vert"));
-        auto fragmentShaderSource = new StringTemplate(new glo::File("data/gbuffers/sphere.frag"));
-        auto postprocessingSource = new StringTemplate(new glo::File("data/gbuffers/postprocessing.frag"));
-        auto gBufferChoiceSource = new StringTemplate(new glo::File("data/gbuffers/gbufferchoice.frag"));
+        auto vertexShaderSource = new StringTemplate(new globjects::File("data/gbuffers/sphere.vert"));
+        auto fragmentShaderSource = new StringTemplate(new globjects::File("data/gbuffers/sphere.frag"));
+        auto postprocessingSource = new StringTemplate(new globjects::File("data/gbuffers/postprocessing.frag"));
+        auto gBufferChoiceSource = new StringTemplate(new globjects::File("data/gbuffers/gbufferchoice.frag"));
 
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");
@@ -71,38 +71,38 @@ public:
 
         m_icosahedron = new Icosahedron(2);
 
-        m_sphere = new glo::Program();
+        m_sphere = new globjects::Program();
 
         m_sphere->attach(
-            new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
-            new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
+            new globjects::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
+            new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
         );
 
-        m_colorTexture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
-        m_depthTexture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
-        m_normalTexture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
-        m_geometryTexture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_colorTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_depthTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_normalTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_geometryTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 
-        m_sphereFBO = new glo::Framebuffer;
+        m_sphereFBO = new globjects::Framebuffer;
         m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorTexture);
         m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_normalTexture);
         m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT2, m_geometryTexture);
         m_sphereFBO->attachTexture(gl::GL_DEPTH_ATTACHMENT, m_depthTexture);
         m_sphereFBO->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1, gl::GL_COLOR_ATTACHMENT2 });
 
-        m_postprocessing = new ScreenAlignedQuad(new glo::Shader(gl::GL_FRAGMENT_SHADER, postprocessingSource));
+        m_postprocessing = new ScreenAlignedQuad(new globjects::Shader(gl::GL_FRAGMENT_SHADER, postprocessingSource));
         m_postprocessing->program()->setUniform<gl::GLint>("colorSource", 0);
         m_postprocessing->program()->setUniform<gl::GLint>("normalSource", 1);
         m_postprocessing->program()->setUniform<gl::GLint>("worldCoordSource", 2);
         m_postprocessing->program()->setUniform<gl::GLint>("depthSource", 3);
 
-        m_postprocessedTexture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_postprocessedTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 
-        m_postprocessingFBO = new glo::Framebuffer;
+        m_postprocessingFBO = new globjects::Framebuffer;
         m_postprocessingFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_postprocessedTexture);
         m_postprocessingFBO->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
 
-        m_gBufferChoice = new ScreenAlignedQuad(new glo::Shader(gl::GL_FRAGMENT_SHADER, gBufferChoiceSource));
+        m_gBufferChoice = new ScreenAlignedQuad(new globjects::Shader(gl::GL_FRAGMENT_SHADER, gBufferChoiceSource));
         m_gBufferChoice->program()->setUniform<gl::GLint>("postprocessedSource", 0);
         m_gBufferChoice->program()->setUniform<gl::GLint>("colorSource", 1);
         m_gBufferChoice->program()->setUniform<gl::GLint>("normalSource", 2);
@@ -215,7 +215,7 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_F5:
-            glo::File::reloadAll();
+            globjects::File::reloadAll();
             break;
         case GLFW_KEY_1:
             m_gBufferChoice->program()->setUniform<gl::GLint>("choice", 0);
@@ -333,19 +333,19 @@ public:
     }
 
 protected:
-    glo::ref_ptr<Icosahedron> m_icosahedron;
-    glo::ref_ptr<glo::Program> m_sphere;
-    glo::ref_ptr<glo::Texture> m_colorTexture;
-    glo::ref_ptr<glo::Texture> m_normalTexture;
-    glo::ref_ptr<glo::Texture> m_geometryTexture;
-    glo::ref_ptr<glo::Texture> m_depthTexture;
-    glo::ref_ptr<glo::Framebuffer> m_sphereFBO;
+    globjects::ref_ptr<Icosahedron> m_icosahedron;
+    globjects::ref_ptr<globjects::Program> m_sphere;
+    globjects::ref_ptr<globjects::Texture> m_colorTexture;
+    globjects::ref_ptr<globjects::Texture> m_normalTexture;
+    globjects::ref_ptr<globjects::Texture> m_geometryTexture;
+    globjects::ref_ptr<globjects::Texture> m_depthTexture;
+    globjects::ref_ptr<globjects::Framebuffer> m_sphereFBO;
 
-    glo::ref_ptr<ScreenAlignedQuad> m_postprocessing;
-    glo::ref_ptr<glo::Texture> m_postprocessedTexture;
-    glo::ref_ptr<glo::Framebuffer> m_postprocessingFBO;
+    globjects::ref_ptr<ScreenAlignedQuad> m_postprocessing;
+    globjects::ref_ptr<globjects::Texture> m_postprocessedTexture;
+    globjects::ref_ptr<globjects::Framebuffer> m_postprocessingFBO;
 
-    glo::ref_ptr<ScreenAlignedQuad> m_gBufferChoice;
+    globjects::ref_ptr<ScreenAlignedQuad> m_gBufferChoice;
 
     Camera m_camera;
     WorldInHandNavigation m_nav;
@@ -359,22 +359,22 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    glo::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-    glo::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    glo::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-    glo::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    globjects::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    globjects::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    globjects::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    globjects::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
 
-    glo::info() << "\nSwitch between G-Buffers";
-    glo::info() << "\t" << "1" << "\t" << "Postprocessed";
-    glo::info() << "\t" << "2" << "\t" << "Color";
-    glo::info() << "\t" << "3" << "\t" << "Normal";
-    glo::info() << "\t" << "4" << "\t" << "Geometry";
-    glo::info() << "\t" << "5" << "\t" << "Depth";
+    globjects::info() << "\nSwitch between G-Buffers";
+    globjects::info() << "\t" << "1" << "\t" << "Postprocessed";
+    globjects::info() << "\t" << "2" << "\t" << "Color";
+    globjects::info() << "\t" << "3" << "\t" << "Normal";
+    globjects::info() << "\t" << "4" << "\t" << "Geometry";
+    globjects::info() << "\t" << "5" << "\t" << "Depth";
 
 
     ContextFormat format;

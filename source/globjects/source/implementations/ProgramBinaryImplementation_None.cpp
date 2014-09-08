@@ -7,7 +7,7 @@
 #include <globjects/Program.h>
 
 
-namespace glo 
+namespace globjects 
 {
 
 bool ProgramBinaryImplementation_None::updateProgramLinkSource(const Program * program) const
@@ -20,4 +20,4 @@ ProgramBinary * ProgramBinaryImplementation_None::getProgramBinary(const Program
     return nullptr;
 }
 
-} // namespace glo
+} // namespace globjects

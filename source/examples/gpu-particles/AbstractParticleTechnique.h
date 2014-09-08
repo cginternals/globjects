@@ -9,7 +9,7 @@
 #include <glm/glm.hpp>
 
 
-namespace glo
+namespace globjects
 {
     class Texture;
 }
@@ -22,7 +22,7 @@ public:
     AbstractParticleTechnique(
         const std::vector<glm::vec4> & postions
     ,   const std::vector<glm::vec4> & velocities
-    ,   const glo::Texture & forces
+    ,   const globjects::Texture & forces
     ,   const Camera & camera);
 
     virtual ~AbstractParticleTechnique();
@@ -39,7 +39,7 @@ protected:
     const std::vector<glm::vec4> & m_positions;
     const std::vector<glm::vec4> & m_velocities;
 
-    const glo::Texture & m_forces;
+    const globjects::Texture & m_forces;
     const Camera & m_camera;
 
     const unsigned int m_numParticles;

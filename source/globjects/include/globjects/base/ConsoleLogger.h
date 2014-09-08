@@ -4,7 +4,7 @@
 #include <globjects/base/AbstractLogHandler.h>
 #include <globjects/base/LogMessage.h>
 
-namespace glo
+namespace globjects
 {
 
 /** \brief Writes LogMessages to stdout.
@@ -23,4 +23,4 @@ protected:
     static std::string levelString(LogMessage::Level level);
 };
 
-} // namespace glo
+} // namespace globjects

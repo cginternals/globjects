@@ -5,7 +5,7 @@
 #include <globjects/base/AbstractStringSource.h>
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 /** \brief String source associated to a file.
@@ -15,7 +15,7 @@ namespace glo
 
     \see StringSource
  */
-class GLOBJECTS_API File : public glo::AbstractStringSource
+class GLOBJECTS_API File : public globjects::AbstractStringSource
 {
 public:
     File(const std::string & filePath);
@@ -38,4 +38,4 @@ protected:
     void loadFileContent() const;
 };
 
-} // namespace glo
+} // namespace globjects

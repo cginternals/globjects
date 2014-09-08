@@ -4,7 +4,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 /**
@@ -21,4 +21,4 @@ namespace memory
     GLOBJECTS_API gl::GLint evictionCount();
 }
 
-} // namespace glo
+} // namespace globjects

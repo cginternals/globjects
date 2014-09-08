@@ -4,7 +4,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 /** \brief Encapsulates a simple log message and its severity level.
@@ -37,4 +37,4 @@ protected:
 	std::string m_message;
 };
 
-} // namespace glo
+} // namespace globjects

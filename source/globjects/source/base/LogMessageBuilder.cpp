@@ -7,7 +7,7 @@
 #include <globjects/base/AbstractLogHandler.h>
 
 
-namespace glo
+namespace globjects
 {
 
 LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, AbstractLogHandler * handler)
@@ -146,4 +146,4 @@ LogMessageBuilder & LogMessageBuilder::operator<<(LogMessageBuilder::WidthManipu
 }
 #endif
 
-} // namespace glo
+} // namespace globjects

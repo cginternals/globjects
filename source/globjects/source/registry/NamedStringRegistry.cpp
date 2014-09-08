@@ -6,7 +6,7 @@
 
 #include <globjects/globjects.h>
 
-namespace glo {
+namespace globjects {
 
 NamedStringRegistry::NamedStringRegistry()
 {
@@ -50,4 +50,4 @@ bool NamedStringRegistry::hasNativeSupport()
     return hasExtension(gl::GLextension::GL_ARB_shading_language_include);
 }
 
-} // namespace glo
+} // namespace globjects

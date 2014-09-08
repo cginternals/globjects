@@ -12,7 +12,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 /**
@@ -44,4 +44,4 @@ protected:
     void validate() const;
 };
 
-} // namespace glo
+} // namespace globjects
