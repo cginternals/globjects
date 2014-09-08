@@ -6,7 +6,7 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/DebugMessage.h>
-#include <globjects-base/StaticStringSource.h>
+#include <globjects/base/StaticStringSource.h>
 
 #include <common/StringTemplate.h>
 #include <common/Window.h>

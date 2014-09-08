@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 
-#include <globjects-base/CachedValue.h>
+#include <globjects/base/CachedValue.h>
 
 #include <common/StringSourceDecorator.h>
 

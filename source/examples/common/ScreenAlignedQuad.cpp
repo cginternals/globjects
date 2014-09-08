@@ -5,7 +5,7 @@
 
 #include <glbinding/gl/enum.h>
 
-#include <globjects-base/StaticStringSource.h>
+#include <globjects/base/StaticStringSource.h>
 
 #include <globjects/Program.h>
 #include <globjects/VertexArray.h>

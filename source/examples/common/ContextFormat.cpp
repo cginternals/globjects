@@ -3,7 +3,7 @@
 #include <cassert>
 #include <sstream>
 
-#include <globjects-base/baselogging.h>
+#include <globjects/base/baselogging.h>
 
 using namespace glo;
 

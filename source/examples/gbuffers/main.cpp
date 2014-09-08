@@ -1,6 +1,6 @@
 #include <glbinding/gl/gl.h>
 
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
 
 #include <globjects/Uniform.h>
 #include <globjects/Program.h>

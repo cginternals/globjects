@@ -1,6 +1,6 @@
 #pragma once
 
-#include <globjects-base/baselogging.h>
+#include <globjects/base/baselogging.h>
 
 #include <globjects/glbindinglogging.h>
 #include <globjects/glmlogging.h>

@@ -6,7 +6,7 @@
 
 #include <glm/glm.hpp>
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 
 #include <common/MainLoop.h>
 #include <common/WindowEventHandler.h>

@@ -4,15 +4,10 @@
 # GLOBJECTS_LIBRARIES
 # GLOBJECTS_INCLUDES
 
-# GLOBJECTS_BASE_LIBRARY
-# GLOBJECTS_BASE_LIBRARY_RELEASE
-# GLOBJECTS_BASE_LIBRARY_DEBUG
-# GLOBJECTS_BASE_INCLUDE_DIR
-
-# GLOBJECTS_CORE_LIBRARY
-# GLOBJECTS_CORE_LIBRARY_RELEASE
-# GLOBJECTS_CORE_LIBRARY_DEBUG
-# GLOBJECTS_CORE_INCLUDE_DIR
+# GLOBJECTS_LIBRARY
+# GLOBJECTS_LIBRARY_RELEASE
+# GLOBJECTS_LIBRARY_DEBUG
+# GLOBJECTS_INCLUDE_DIR
 
 include(FindPackageHandleStandardArgs)
 
@@ -47,20 +42,14 @@ set(LIB_PATHS
 
 macro (find LIB_NAME HEADER)
     set(HINT_PATHS ${ARGN})
-
-    if (${LIB_NAME} STREQUAL "globjects")
-        set(LIB_NAME_UPPER GLOBJECTS_CORE)
-        set(LIBNAME globjects)
-    else()
-        string(TOUPPER GLOBJECTS_${LIB_NAME} LIB_NAME_UPPER)
-        set(LIBNAME "globjects-${LIB_NAME}")
-    endif()
     
+    string(TOUPPER ${LIB_NAME} LIB_NAME_UPPER)
+
     find_path(${LIB_NAME_UPPER}_INCLUDE_DIR ${HEADER}
         ${ENVGLOBJECTS_DIR}/include
-        ${ENVGLOBJECTS_DIR}/source/${LIBNAME}/include
+        ${ENVGLOBJECTS_DIR}/source/${LIB_NAME}/include
         ${GLOBJECTS_DIR}/include
-        ${GLOBJECTS_DIR}/source/${LIBNAME}/include
+        ${GLOBJECTS_DIR}/source/${LIB_NAME}/include
         ${ENVPROGRAMFILES}/globjects/include
         /usr/include
         /usr/local/include
@@ -69,11 +58,11 @@ macro (find LIB_NAME HEADER)
         DOC "The directory where ${header} resides")
 
     find_library(${LIB_NAME_UPPER}_LIBRARY_RELEASE
-        NAMES ${LIBNAME}
+        NAMES ${LIB_NAME}
         PATHS ${HINT_PATHS}
         DOC "The ${LIB_NAME} library")
     find_library(${LIB_NAME_UPPER}_LIBRARY_DEBUG
-        NAMES ${LIBNAME}d
+        NAMES ${LIB_NAME}d
         PATHS ${HINT_PATHS}
         DOC "The ${LIB_NAME} debug library")
     
@@ -95,8 +84,7 @@ macro (find LIB_NAME HEADER)
     list(APPEND GLOBJECTS_LIBRARIES ${${LIB_NAME_UPPER}_LIBRARY})
 endmacro()
 
-find(base      globjects-base/globjects-base_api.h     ${LIB_PATHS})
-find(globjects globjects/globjects_api.h               ${LIB_PATHS})
+find(globjects globjects/globjects_api.h ${LIB_PATHS})
 
 # add dependencies
 find_package(glbinding REQUIRED)

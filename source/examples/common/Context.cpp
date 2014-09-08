@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include <globjects-base/baselogging.h>
+#include <globjects/base/baselogging.h>
 #include <glbinding/Version.h>
 
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,

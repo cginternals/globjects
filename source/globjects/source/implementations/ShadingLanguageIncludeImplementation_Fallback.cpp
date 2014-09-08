@@ -3,8 +3,8 @@
 
 #include <glbinding/gl/functions.h>
 
-#include <globjects-base/AbstractStringSource.h>
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/AbstractStringSource.h>
+#include <globjects/base/ref_ptr.h>
 
 #include <globjects/Shader.h>
 

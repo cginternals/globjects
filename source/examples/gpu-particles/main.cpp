@@ -21,8 +21,8 @@
 
 #include <common/Timer.h>
 #include <common/Camera.h>
-#include <globjects-base/File.h>
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
+#include <globjects/base/File.h>
 #include <common/AbstractCoordinateProvider.h>
 #include <common/WorldInHandNavigation.h>
 

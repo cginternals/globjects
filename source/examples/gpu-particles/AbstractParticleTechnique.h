@@ -4,7 +4,7 @@
 
 
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 
 #include <glm/glm.hpp>
 

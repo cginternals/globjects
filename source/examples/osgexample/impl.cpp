@@ -2,8 +2,8 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects-base/ref_ptr.h>
-#include <globjects-base/StaticStringSource.h>
+#include <globjects/base/ref_ptr.h>
+#include <globjects/base/StaticStringSource.h>
 
 #include <globjects/globjects.h>
 #include <globjects/logging.h>

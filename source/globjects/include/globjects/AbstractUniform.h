@@ -7,7 +7,7 @@
 
 #include <glm/fwd.hpp>
 
-#include <globjects-base/Referenced.h>
+#include <globjects/base/Referenced.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/LocationIdentity.h>

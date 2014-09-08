@@ -1,8 +1,8 @@
 #pragma once
 
-#include <globjects-base/ChangeListener.h>
-#include <globjects-base/ref_ptr.h>
-#include <globjects-base/AbstractStringSource.h>
+#include <globjects/base/ChangeListener.h>
+#include <globjects/base/ref_ptr.h>
+#include <globjects/base/AbstractStringSource.h>
 
 class StringSourceDecorator : public glo::AbstractStringSource, protected glo::ChangeListener
 {

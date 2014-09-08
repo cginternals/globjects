@@ -22,8 +22,8 @@
 #include <globjects/DebugMessage.h>
 
 #include <common/Timer.h>
-#include <globjects-base/File.h>
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
+#include <globjects/base/File.h>
 
 #include <common/Window.h>
 #include <common/ContextFormat.h>

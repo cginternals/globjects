@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include <globjects-base/CachedValue.h>
+#include <globjects/base/CachedValue.h>
 
 /** \brief Represents matrices for a typical 3d look at camera with perspective.
 

@@ -36,7 +36,7 @@
 #include <common/Camera.h>
 #include <common/AbstractCoordinateProvider.h>
 #include <common/WorldInHandNavigation.h>
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
 #include <common/StringTemplate.h>
 
 class Window : public QtOpenGLWindow, AbstractCoordinateProvider

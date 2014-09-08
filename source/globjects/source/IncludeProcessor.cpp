@@ -4,9 +4,9 @@
 #include <algorithm>
 #include <cctype>
 
-#include <globjects-base/AbstractStringSource.h>
-#include <globjects-base/StaticStringSource.h>
-#include <globjects-base/CompositeStringSource.h>
+#include <globjects/base/AbstractStringSource.h>
+#include <globjects/base/StaticStringSource.h>
+#include <globjects/base/CompositeStringSource.h>
 
 #include <globjects/logging.h>
 #include <globjects/globjects.h>

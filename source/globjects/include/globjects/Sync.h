@@ -4,7 +4,7 @@
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/values.h>
 
-#include <globjects-base/Referenced.h>
+#include <globjects/base/Referenced.h>
 
 #include <globjects/globjects_api.h>
 

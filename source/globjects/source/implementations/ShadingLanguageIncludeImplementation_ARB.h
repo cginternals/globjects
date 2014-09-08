@@ -1,6 +1,6 @@
 #pragma once
 
-#include <globjects-base/Singleton.h>
+#include <globjects/base/Singleton.h>
 
 #include "AbstractShadingLanguageIncludeImplementation.h"
 

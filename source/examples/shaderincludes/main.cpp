@@ -1,6 +1,6 @@
 #include <glbinding/gl/gl.h>
 
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
 
 #include <globjects/NamedString.h>
 #include <globjects/Shader.h>

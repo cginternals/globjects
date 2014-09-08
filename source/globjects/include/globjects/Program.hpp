@@ -6,7 +6,7 @@
 
 #include <glbinding/gl/functions.h>
 
-#include <globjects-base/baselogging.h>
+#include <globjects/base/baselogging.h>
 
 #include <globjects/Uniform.h>
 #include <globjects/Shader.h>

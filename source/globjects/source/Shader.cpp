@@ -7,11 +7,11 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/boolean.h>
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 #include <glbinding/Version.h>
-#include <globjects-base/AbstractStringSource.h>
-#include <globjects-base/StaticStringSource.h>
-#include <globjects-base/File.h>
+#include <globjects/base/AbstractStringSource.h>
+#include <globjects/base/StaticStringSource.h>
+#include <globjects/base/File.h>
 
 #include <globjects/Program.h>
 #include <globjects/logging.h>

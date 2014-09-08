@@ -8,8 +8,8 @@
 
 #include <glbinding/gl/enum.h>
 
-#include <globjects-base/ref_ptr.h>
-#include <globjects-base/formatString.h>
+#include <globjects/base/ref_ptr.h>
+#include <globjects/base/formatString.h>
 
 #include <globjects/globjects.h>
 #include <globjects/Uniform.h>

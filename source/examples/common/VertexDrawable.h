@@ -7,8 +7,8 @@
 #include <glbinding/gl/boolean.h>
 #include <glbinding/gl/enum.h>
 
-#include <globjects-base/ref_ptr.h>
-#include <globjects-base/Referenced.h>
+#include <globjects/base/ref_ptr.h>
+#include <globjects/base/Referenced.h>
 
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>

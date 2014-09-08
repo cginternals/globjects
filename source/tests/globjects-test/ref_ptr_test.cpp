@@ -2,7 +2,7 @@
 #include <gmock/gmock.h>
 
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 
 class ref_ptr_test : public testing::Test
 {

@@ -7,7 +7,7 @@
 #include <globjects/Texture.h>
 
 #include <common/Camera.h>
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
 #include <common/ScreenAlignedQuad.h>
 
 #include "FragmentShaderParticles.h"

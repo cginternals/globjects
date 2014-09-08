@@ -1,7 +1,7 @@
 #pragma once
 
-#include <globjects-base/Referenced.h>
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/Referenced.h>
+#include <globjects/base/ref_ptr.h>
 
 #include <globjects/VertexArray.h>
 #include <globjects/Program.h>

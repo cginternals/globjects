@@ -2,7 +2,7 @@
 
 #include <globjects/globjects_api.h>
 
-#include <globjects-base/LogMessageBuilder.h>
+#include <globjects/base/LogMessageBuilder.h>
 
 #include <glm/fwd.hpp>
 

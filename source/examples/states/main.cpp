@@ -1,7 +1,7 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
@@ -12,7 +12,7 @@
 #include <globjects/State.h>
 #include <globjects/globjects.h>
 
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
 #include <common/StringTemplate.h>
 
 #include <common/Context.h>

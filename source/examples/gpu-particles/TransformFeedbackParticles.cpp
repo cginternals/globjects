@@ -12,7 +12,7 @@
 
 #include <common/ScreenAlignedQuad.h>
 #include <common/Camera.h>
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
 
 #include "TransformFeedbackParticles.h"
 

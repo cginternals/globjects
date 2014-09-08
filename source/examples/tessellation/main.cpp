@@ -19,8 +19,8 @@
 #include <common/Timer.h>
 #include <common/Icosahedron.h>
 #include <common/Camera.h>
-#include <globjects-base/File.h>
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
+#include <globjects/base/File.h>
 
 #include <common/ContextFormat.h>
 #include <common/Context.h>

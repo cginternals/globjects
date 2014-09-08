@@ -8,7 +8,6 @@ include_directories(
 # Libraries
 set(IDE_FOLDER "")
 add_subdirectory(globjects)
-add_subdirectory(globjects-base)
 
 # Examples
 set(IDE_FOLDER "Examples")

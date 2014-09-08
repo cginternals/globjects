@@ -16,7 +16,6 @@ if(OPTION_BUILD_EXAMPLES)
 	)
 
 	set(GLOBJECTS_EXAMPLE_INCLUDES
-		${CMAKE_SOURCE_DIR}/source/globjects-base/include
 		${CMAKE_SOURCE_DIR}/source/globjects/include
 		${CMAKE_SOURCE_DIR}/source/examples
 	)
@@ -24,7 +23,6 @@ if(OPTION_BUILD_EXAMPLES)
 	set(GLOBJECTS_EXAMPLES_LIBRARIES
 		${GLBINDING_LIBRARIES}
 		${GLFW_LIBRARY}
-		globjects-base
 		globjects
 	)
 	

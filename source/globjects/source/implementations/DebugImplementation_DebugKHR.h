@@ -2,7 +2,7 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects-base/Singleton.h>
+#include <globjects/base/Singleton.h>
 
 #include "AbstractDebugImplementation.h"
 

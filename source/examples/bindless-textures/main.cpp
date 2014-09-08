@@ -22,7 +22,7 @@
 #include <globjects/DebugMessage.h>
 #include <globjects/globjects.h>
 
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
 
 #include <common/ScreenAlignedQuad.h>
 #include <common/Camera.h>

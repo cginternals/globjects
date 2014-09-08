@@ -1,6 +1,6 @@
 #pragma once
 
-#include <globjects-base/Referenced.h>
+#include <globjects/base/Referenced.h>
 
 class Window;
 class WindowEvent;

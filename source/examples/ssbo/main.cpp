@@ -5,7 +5,7 @@
 #include <globjects/DebugMessage.h>
 #include <globjects/Program.h>
 
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
 #include <common/ScreenAlignedQuad.h>
 
 #include <common/ContextFormat.h>

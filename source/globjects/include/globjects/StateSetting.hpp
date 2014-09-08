@@ -2,7 +2,7 @@
 
 #include <globjects/StateSetting.h>
 
-#include <globjects-base/FunctionCall.h>
+#include <globjects/base/FunctionCall.h>
 
 namespace glo
 {

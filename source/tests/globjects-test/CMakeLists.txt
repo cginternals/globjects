@@ -12,7 +12,6 @@ include_directories(
 
 include_directories(
     BEFORE
-    ${CMAKE_SOURCE_DIR}/source/globjects-base/include
     ${CMAKE_SOURCE_DIR}/source/globjects/include
 )
 
@@ -23,7 +22,6 @@ include_directories(
 set(libs
     ${GMOCK_LIBRARIES}
     ${GTEST_LIBRARIES}
-    globjects-base
     globjects
 )
 

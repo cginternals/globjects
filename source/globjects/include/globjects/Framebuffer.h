@@ -7,7 +7,7 @@
 
 #include <glm/vec4.hpp>
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>

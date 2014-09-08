@@ -1,7 +1,7 @@
 #include <globjects/ProgramBinary.h>
 
-#include <globjects-base/StaticStringSource.h>
-#include <globjects-base/AbstractStringSource.h>
+#include <globjects/base/StaticStringSource.h>
+#include <globjects/base/AbstractStringSource.h>
 
 namespace glo
 {

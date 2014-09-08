@@ -5,7 +5,7 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects-base/Referenced.h>
+#include <globjects/base/Referenced.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/AbstractState.h>

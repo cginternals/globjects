@@ -2,7 +2,7 @@
 #include <gmock/gmock.h>
 
 
-#include <globjects-base/Referenced.h>
+#include <globjects/base/Referenced.h>
 
 class Referenced_test : public testing::Test
 {

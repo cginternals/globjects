@@ -9,7 +9,7 @@
 
 #include <glbinding/gl/enum.h>
 
-#include <globjects-base/AbstractStringSource.h>
+#include <globjects/base/AbstractStringSource.h>
 
 #include <globjects/logging.h>
 #include <globjects/globjects.h>

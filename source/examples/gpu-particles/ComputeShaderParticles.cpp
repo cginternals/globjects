@@ -1,6 +1,6 @@
 #include <glbinding/gl/gl.h>
 
-#include <globjects-base/AbstractStringSource.h>
+#include <globjects/base/AbstractStringSource.h>
 
 #include <globjects/globjects.h>
 #include <globjects/Program.h>
@@ -15,7 +15,7 @@
 
 #include <common/ScreenAlignedQuad.h>
 #include <common/Camera.h>
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
 #include <common/StringTemplate.h>
 
 #include "ComputeShaderParticles.h"
