@@ -60,7 +60,7 @@ GlobjectsInterface::~GlobjectsInterface()
 
 void GlobjectsInterface::initialize()
 {
-    glo::init();
+    globjects::init();
 
     info() << versionString();
 
