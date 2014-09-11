@@ -252,18 +252,14 @@ bool isCoreProfile()
     return (getInteger(gl::GL_CONTEXT_PROFILE_MASK) & static_cast<unsigned>(gl::GL_CONTEXT_CORE_PROFILE_BIT)) > 0;
 }
 
-std::vector<std::string> getExtensions()
+const std::set<gl::GLextension> & availableExtensions()
 {
-    int count = getInteger(gl::GL_NUM_EXTENSIONS);
+    return ExtensionRegistry::current().availableExtensions();
+}
 
-    std::vector<std::string> extensions(count);
-
-    for (int i=0; i<count; ++i)
-    {
-        extensions[i] = getString(gl::GL_EXTENSIONS, i);
-    }
-
-    return extensions;
+const std::set<std::string> & unknownAvailableExtensions()
+{
+    return ExtensionRegistry::current().unknownAvailableExtensions();
 }
 
 bool hasExtension(gl::GLextension extension)

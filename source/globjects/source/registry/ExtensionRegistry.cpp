@@ -2,6 +2,7 @@
 #include "Registry.h"
 
 #include <glbinding/Meta.h>
+#include <glbinding/ContextInfo.h>
 
 #include <globjects/globjects.h>
 
@@ -45,19 +46,7 @@ void ExtensionRegistry::initialize()
     if (m_initialized)
         return;
 
-    for (const std::string & extensionName : getExtensions())
-    {
-        gl::GLextension extension = glbinding::Meta::getExtension(extensionName);
-
-        if (extension != gl::GLextension::UNKNOWN)
-        {
-            m_availableExtensions.insert(extension);
-        }
-        else
-        {
-            m_unknownAvailableExtensions.insert(extensionName);
-        }
-    }
+    m_availableExtensions = glbinding::ContextInfo::extensions(&m_unknownAvailableExtensions);
 
     m_initialized = true;
 }

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <set>
 
 #include <glbinding/gl/types.h>
 #include <glbinding/gl/extension.h>
@@ -63,8 +64,6 @@ GLOBJECTS_API gl::GLint minorVersion();
 GLOBJECTS_API glbinding::Version version();
 GLOBJECTS_API bool isCoreProfile();
 
-GLOBJECTS_API std::vector<std::string> getExtensions();
-
 template <int Count>
 std::array<gl::GLint, Count> getIntegers(gl::GLenum pname);
 template <int Count>
@@ -73,6 +72,9 @@ template <int Count>
 std::array<gl::GLdouble, Count> getDoubles(gl::GLenum pname);
 template <int Count>
 std::array<gl::GLboolean, Count> getBooleans(gl::GLenum pname);
+
+GLOBJECTS_API const std::set<gl::GLextension> & availableExtensions();
+GLOBJECTS_API const std::set<std::string> & unknownAvailableExtensions();
 
 GLOBJECTS_API bool hasExtension(gl::GLextension extension);
 GLOBJECTS_API bool hasExtension(const std::string & extensionName);
