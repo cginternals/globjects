@@ -4,7 +4,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo 
+namespace globjects 
 {
 
 class Object;
@@ -39,4 +39,4 @@ protected:
     VertexArray * m_defaultVAO;
 };
 
-} // namespace glo
+} // namespace globjects

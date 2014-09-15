@@ -31,18 +31,15 @@
 #include <globjects/VertexArray.h>
 #include <globjects/DebugMessage.h>
 
-#include <globjects-utils/AxisAlignedBoundingBox.h>
-#include <globjects-utils/Icosahedron.h>
-#include <globjects-utils/Camera.h>
-#include <globjects-utils/AdaptiveGrid.h>
-#include <globjects-utils/AbstractCoordinateProvider.h>
-#include <globjects-utils/WorldInHandNavigation.h>
-#include <globjects-utils/FlightNavigation.h>
-#include <globjects-base/File.h>
-#include <globjects-utils/globjects-utils.h>
-#include <globjects-utils/StringTemplate.h>
+#include <common/AxisAlignedBoundingBox.h>
+#include <common/Icosahedron.h>
+#include <common/Camera.h>
+#include <common/AbstractCoordinateProvider.h>
+#include <common/WorldInHandNavigation.h>
+#include <globjects/base/File.h>
+#include <common/StringTemplate.h>
 
-class Window : public QtOpenGLWindow, gloutils::AbstractCoordinateProvider
+class Window : public QtOpenGLWindow, AbstractCoordinateProvider
 {
 public:
     Window()
@@ -68,15 +65,15 @@ public:
 
     virtual void initializeGL() override
     {
-        glo::init();
+        globjects::init();
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-        m_sphere = new glo::Program();
-        gloutils::StringTemplate* vertexShaderSource = new gloutils::StringTemplate(new glo::File("data/adaptive-grid/sphere.vert"));
-        gloutils::StringTemplate* fragmentShaderSource = new gloutils::StringTemplate(new glo::File("data/adaptive-grid/sphere.frag"));
+        m_sphere = new globjects::Program();
+        StringTemplate* vertexShaderSource = new StringTemplate(new globjects::File("data/adaptive-grid/sphere.vert"));
+        StringTemplate* fragmentShaderSource = new StringTemplate(new globjects::File("data/adaptive-grid/sphere.frag"));
 
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");
@@ -84,17 +81,14 @@ public:
 #endif
 
         m_sphere->attach(
-            new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
-        ,   new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
+            new globjects::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
+        ,   new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
 
 
-        m_icosahedron = new gloutils::Icosahedron(2);
-        m_agrid = new gloutils::AdaptiveGrid(16U);
+        m_icosahedron = new Icosahedron(2);
 
         m_camera.setZNear(0.1f);
         m_camera.setZFar(1024.f);
-
-        m_agrid->setCamera(&m_camera);
 
         m_timer->start();
     }
@@ -110,14 +104,11 @@ public:
     {
         gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
-        m_agrid->update();
         m_sphere->setUniform("transform", m_camera.viewProjection());
 
         m_sphere->use();
         m_icosahedron->draw();
         m_sphere->release();
-
-        m_agrid->draw();
     }
 
 
@@ -128,7 +119,7 @@ public:
         switch (event->key())
         {
             case Qt::Key_F5:
-                glo::File::reloadAll();
+                globjects::File::reloadAll();
                 break;
             case Qt::Key_Space:
                 m_camera.setCenter(glm::vec3());
@@ -171,14 +162,14 @@ public:
 
         switch (m_nav.mode())
         {
-            case gloutils::WorldInHandNavigation::PanInteraction:
+            case WorldInHandNavigation::PanInteraction:
                 m_nav.panProcess(pos);
                 break;
 
-            case gloutils::WorldInHandNavigation::RotateInteraction:
+            case WorldInHandNavigation::RotateInteraction:
                 m_nav.rotateProcess(pos);
                 break;
-            case gloutils::WorldInHandNavigation::NoInteraction:
+            case WorldInHandNavigation::NoInteraction:
                 break;
         }
 
@@ -207,7 +198,7 @@ public:
 
     virtual void wheelEvent(QWheelEvent * event) override
     {
-        if (gloutils::WorldInHandNavigation::NoInteraction != m_nav.mode())
+        if (WorldInHandNavigation::NoInteraction != m_nav.mode())
             return;
 
         makeCurrent();
@@ -240,17 +231,16 @@ public:
     }
 
 protected:
-    glo::ref_ptr<glo::Program> m_sphere;
+    globjects::ref_ptr<globjects::Program> m_sphere;
 
-    glo::ref_ptr<gloutils::Icosahedron> m_icosahedron;
-    glo::ref_ptr<gloutils::AdaptiveGrid> m_agrid;
+    globjects::ref_ptr<Icosahedron> m_icosahedron;
 
-    gloutils::Camera m_camera;
-    gloutils::WorldInHandNavigation m_nav;
+    Camera m_camera;
+    WorldInHandNavigation m_nav;
 
     QTimer * m_timer;
 
-    gloutils::AxisAlignedBoundingBox m_aabb;
+    AxisAlignedBoundingBox m_aabb;
 };
 
 int main(int argc, char* argv[])

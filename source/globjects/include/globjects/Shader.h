@@ -7,14 +7,14 @@
 
 #include <globjects/globjects_api.h>
 
-#include <globjects-base/Changeable.h>
-#include <globjects-base/ChangeListener.h>
-#include <globjects-base/ref_ptr.h>
-#include <globjects-base/AbstractStringSource.h>
+#include <globjects/base/Changeable.h>
+#include <globjects/base/ChangeListener.h>
+#include <globjects/base/ref_ptr.h>
+#include <globjects/base/AbstractStringSource.h>
 
 #include <globjects/Object.h>
 
-namespace glo 
+namespace globjects 
 {
 
 class Program;
@@ -102,4 +102,4 @@ protected:
     mutable bool m_compilationFailed;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -32,15 +32,15 @@ using namespace gl;
 namespace 
 {
 
-const glo::AbstractFramebufferImplementation & implementation()
+const globjects::AbstractFramebufferImplementation & implementation()
 {
-    return glo::ImplementationRegistry::current().framebufferImplementation();
+    return globjects::ImplementationRegistry::current().framebufferImplementation();
 }
 
 }
 
 
-namespace glo
+namespace globjects
 {
 
 void Framebuffer::hintBindlessImplementation(BindlessImplementation impl)
@@ -385,4 +385,4 @@ gl::GLenum Framebuffer::objectType() const
     return gl::GL_FRAMEBUFFER;
 }
 
-} // namespace glo
+} // namespace globjects

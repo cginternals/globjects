@@ -5,13 +5,13 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects-base/Referenced.h>
+#include <globjects/base/Referenced.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/AbstractState.h>
 #include <globjects/StateSetting.h>
 
-namespace glo
+namespace globjects
 {
 
 class Capability;
@@ -64,4 +64,4 @@ protected:
     const Capability* getCapability(gl::GLenum capability) const;
 };
 
-} // namespace glo
+} // namespace globjects

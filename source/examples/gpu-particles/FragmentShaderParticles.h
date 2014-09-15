@@ -4,17 +4,15 @@
 #include "AbstractParticleTechnique.h"
 
 
-namespace glo
+namespace globjects
 {
     class Program;
     class Texture;
     class VertexArray;
     class Framebuffer;
 }
-namespace gloutils
-{
-    class ScreenAlignedQuad;
-}
+
+class ScreenAlignedQuad;
 
 
 class FragmentShaderParticles : public AbstractParticleTechnique
@@ -23,8 +21,8 @@ public:
     FragmentShaderParticles(
         const std::vector<glm::vec4> & positions
     ,   const std::vector<glm::vec4> & velocities
-    ,   const glo::Texture & forces
-    ,   const gloutils::Camera & camera);
+    ,   const globjects::Texture & forces
+    ,   const Camera & camera);
     virtual ~FragmentShaderParticles();
 
     virtual void initialize() override;
@@ -37,20 +35,20 @@ public:
 
 protected:
     // Particle data
-    glo::ref_ptr<glo::Texture>                m_texPositions;
-    glo::ref_ptr<glo::Texture>                m_texVelocities;
+    globjects::ref_ptr<globjects::Texture>                m_texPositions;
+    globjects::ref_ptr<globjects::Texture>                m_texVelocities;
     int                                         m_width;
     int                                         m_height;
 
     // Update of particles
-    glo::ref_ptr<glo::Framebuffer>      m_fboUpdate;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quadUpdate;
+    globjects::ref_ptr<globjects::Framebuffer>      m_fboUpdate;
+    globjects::ref_ptr<ScreenAlignedQuad> m_quadUpdate;
 
     // Rendering
-    glo::ref_ptr<glo::VertexArray>      m_vao;
-    glo::ref_ptr<glo::Framebuffer>      m_fbo;
-    glo::ref_ptr<glo::Texture>                m_colorBuffer;
-    glo::ref_ptr<glo::Program>                m_drawProgram;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_clear;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
+    globjects::ref_ptr<globjects::VertexArray>      m_vao;
+    globjects::ref_ptr<globjects::Framebuffer>      m_fbo;
+    globjects::ref_ptr<globjects::Texture>                m_colorBuffer;
+    globjects::ref_ptr<globjects::Program>                m_drawProgram;
+    globjects::ref_ptr<ScreenAlignedQuad> m_clear;
+    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
 };

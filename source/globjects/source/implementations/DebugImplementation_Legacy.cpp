@@ -4,7 +4,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 DebugImplementation_Legacy::DebugImplementation_Legacy()
@@ -46,4 +46,4 @@ void DebugImplementation_Legacy::controlMessages(GLenum , GLenum , GLenum , GLsi
     // TODO: emulate OpenGL's filtering functionality
 }
 
-} // namespace glo
+} // namespace globjects

@@ -6,8 +6,8 @@
 
 #include <glm/vec3.hpp>
 
-#include <globjects-base/ChangeListener.h>
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ChangeListener.h>
+#include <globjects/base/ref_ptr.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
@@ -17,7 +17,7 @@
 #include <globjects/ProgramBinary.h>
 #include <globjects/AbstractUniform.h>
 
-namespace glo
+namespace globjects
 {
 
 /** \brief Wraps an OpenGL program.
@@ -205,6 +205,6 @@ protected:
     mutable bool m_dirty;
 };
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/Program.hpp>

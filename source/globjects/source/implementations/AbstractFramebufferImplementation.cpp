@@ -12,7 +12,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
     
 GLenum AbstractFramebufferImplementation::s_workingTarget = GL_FRAMEBUFFER;
@@ -43,4 +43,4 @@ AbstractFramebufferImplementation * AbstractFramebufferImplementation::get(const
     }
 }
 
-} // namespace glo
+} // namespace globjects

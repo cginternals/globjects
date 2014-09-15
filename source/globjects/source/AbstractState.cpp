@@ -1,10 +1,13 @@
+
 #include <globjects/AbstractState.h>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/StateSetting.h>
 
-namespace glo {
+namespace globjects 
+{
 
 void AbstractState::setEnabled(gl::GLenum capability, bool enabled)
 {
@@ -197,4 +200,4 @@ void AbstractState::stencilOpSeparate(gl::GLenum face, gl::GLenum stencilFail, g
     add(setting);
 }
 
-} // namespace glo
+} // namespace globjects

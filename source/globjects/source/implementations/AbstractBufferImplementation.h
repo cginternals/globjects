@@ -5,7 +5,7 @@
 #include <globjects/Buffer.h>
 
 
-namespace glo
+namespace globjects
 {
 
 class Buffer;
@@ -44,4 +44,4 @@ public:
     virtual void getBufferSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLvoid * data) const = 0;
 };
 
-} // namespace glo
+} // namespace globjects

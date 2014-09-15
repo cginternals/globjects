@@ -2,7 +2,7 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects-base/Singleton.h>
+#include <globjects/base/Singleton.h>
 
 #include <globjects/globjects_api.h>
 
@@ -10,7 +10,7 @@
 
 struct BindingData;
 
-namespace glo {
+namespace globjects {
 
 class VertexAttributeBindingImplementation_Legacy : public AbstractVertexAttributeBindingImplementation
         , public Singleton<VertexAttributeBindingImplementation_Legacy>
@@ -37,4 +37,4 @@ protected:
     void finish(const VertexAttributeBinding * binding) const;
 };
 
-} // namespace glo
+} // namespace globjects

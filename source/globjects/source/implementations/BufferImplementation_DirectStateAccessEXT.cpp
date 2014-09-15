@@ -11,7 +11,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 GLuint BufferImplementation_DirectStateAccessEXT::create() const
@@ -102,4 +102,4 @@ void BufferImplementation_DirectStateAccessEXT::getBufferSubData(const Buffer * 
     glGetNamedBufferSubDataEXT(buffer->id(), offset, size, data);
 }
 
-} // namespace glo
+} // namespace globjects

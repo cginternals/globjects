@@ -4,7 +4,7 @@
 
 #include <globjects/Program.h>
 
-namespace glo
+namespace globjects
 {
 
 template<typename T>
@@ -57,4 +57,4 @@ void Uniform<T>::set(const T & value)
 	changed();
 }
 
-} // namespace glo
+} // namespace globjects

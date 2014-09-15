@@ -14,7 +14,7 @@
 #include <globjects/VertexArray.h>
 #include <globjects/AbstractUniform.h>
 
-namespace glo {
+namespace globjects {
 
 void logObject(LogMessageBuilder & builder, const Object * object, const std::string & typeName)
 {
@@ -110,4 +110,4 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const AbstractUniform * 
     return builder;
 }
 
-} // namespace glo
+} // namespace globjects

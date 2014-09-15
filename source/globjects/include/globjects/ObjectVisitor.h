@@ -2,7 +2,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 class Object;
 class Buffer;
@@ -42,4 +42,4 @@ public:
 	virtual void visitVertexArray(VertexArray * vao);
 };
 
-} // namespace glo
+} // namespace globjects

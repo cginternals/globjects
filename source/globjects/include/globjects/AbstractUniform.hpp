@@ -2,7 +2,7 @@
 
 #include <globjects/AbstractUniform.h>
 
-namespace glo 
+namespace globjects 
 {
 
 template<typename T>
@@ -24,4 +24,4 @@ void AbstractUniform::setValue(const Program * program, gl::GLint location, cons
     setValue(program, location, std::vector<T>(value.data(), value.data()+Count));
 }
 
-} // namespace glo
+} // namespace globjects

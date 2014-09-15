@@ -1,3 +1,4 @@
+
 #include "VertexAttributeBindingImplementation_DirectStateAccessARB.h"
 
 #include <cassert>
@@ -8,7 +9,9 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
-namespace glo {
+
+namespace globjects 
+{
 
 VertexAttributeBindingImplementation_DirectStateAccessARB::VertexAttributeBindingImplementation_DirectStateAccessARB()
 {
@@ -60,4 +63,4 @@ void VertexAttributeBindingImplementation_DirectStateAccessARB::setLFormat(const
     gl::glVertexArrayAttribLFormat(vao(binding)->id(), attributeIndex(binding), size, type, relativeoffset);
 }
 
-} // namespace glo
+} // namespace globjects

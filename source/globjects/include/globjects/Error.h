@@ -6,7 +6,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 /** \brief Wrapper for OpenGL errors.
@@ -33,4 +33,4 @@ protected:
 	gl::GLenum m_errorCode;
 };
 
-} // namespace glo
+} // namespace globjects

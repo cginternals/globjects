@@ -5,19 +5,18 @@
 #include <globjects/DebugMessage.h>
 #include <globjects/Program.h>
 
-#include <globjects-base/File.h>
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/globjects-utils.h>
+#include <globjects/base/File.h>
+#include <common/ScreenAlignedQuad.h>
 
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Context.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <common/ContextFormat.h>
+#include <common/Context.h>
+#include <common/Window.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowindow;
+
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -34,12 +33,12 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
-        m_quad = new gloutils::ScreenAlignedQuad(glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
+        m_quad = new ScreenAlignedQuad(globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
 
         m_quad->program()->setUniform("maximum", 10);
         m_quad->program()->setUniform("rowCount", 10);
@@ -58,7 +57,7 @@ public:
             2,3,4,5,6,7,8,9,10,1
         };
 
-        m_buffer = new glo::Buffer();
+        m_buffer = new globjects::Buffer();
         m_buffer->setData(sizeof(data), data, gl::GL_STATIC_DRAW);
 
         m_buffer->bindBase(gl::GL_SHADER_STORAGE_BUFFER, 1);
@@ -90,12 +89,12 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glo::File::reloadAll();
+            globjects::File::reloadAll();
     }
 
 protected:
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
-    glo::ref_ptr<glo::Buffer> m_buffer;
+    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
+    globjects::ref_ptr<globjects::Buffer> m_buffer;
 };
 
 
@@ -103,11 +102,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 3);

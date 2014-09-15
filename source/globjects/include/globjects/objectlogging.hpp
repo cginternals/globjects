@@ -4,7 +4,7 @@
 
 #include <globjects/Uniform.h>
 
-namespace glo {
+namespace globjects {
 
 template <typename T>
 LogMessageBuilder operator<<(LogMessageBuilder builder, const Uniform<T> * uniform)
@@ -26,4 +26,4 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, Uniform<T> * uniform)
 	return operator<<(builder, const_cast<const Uniform<T>*>(uniform));
 }
 
-} // namespace glo
+} // namespace globjects

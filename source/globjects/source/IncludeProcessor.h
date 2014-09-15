@@ -6,7 +6,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class AbstractStringSource;
@@ -35,4 +35,4 @@ protected:
     std::vector<std::string> m_includePaths;
 };
 
-} // namespace glo
+} // namespace globjects

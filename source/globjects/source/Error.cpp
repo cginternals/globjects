@@ -3,7 +3,7 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 
-namespace glo
+namespace globjects
 {
 
 Error::Error(gl::GLenum errorCode)
@@ -62,4 +62,4 @@ Error::operator bool() const
     return isError();
 }
 
-} // namespace glo
+} // namespace globjects

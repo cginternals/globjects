@@ -2,9 +2,9 @@
 
 #include <glbinding/gl/types.h>
 
-namespace glo 
+namespace globjects 
 {
 
 using TextureHandle = gl::GLuint64;
 
-} // namespace glo
+} // namespace globjects

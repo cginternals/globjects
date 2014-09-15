@@ -9,7 +9,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 AbstractUniformImplementation::AbstractUniformImplementation()
@@ -33,4 +33,4 @@ AbstractUniformImplementation * AbstractUniformImplementation::get(const Abstrac
     }
 }
 
-} // namespace glo
+} // namespace globjects

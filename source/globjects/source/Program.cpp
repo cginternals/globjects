@@ -27,14 +27,14 @@ using namespace gl;
 namespace 
 {
 
-const glo::AbstractProgramBinaryImplementation & binaryImplementation()
+const globjects::AbstractProgramBinaryImplementation & binaryImplementation()
 {
-    return glo::ImplementationRegistry::current().programBinaryImplementation();
+    return globjects::ImplementationRegistry::current().programBinaryImplementation();
 }
 
 }
 
-namespace glo
+namespace globjects
 {
 
 void Program::hintBinaryImplementation(const BinaryImplementation impl)
@@ -454,4 +454,4 @@ gl::GLenum Program::objectType() const
     return gl::GL_PROGRAM;
 }
 
-} // namespace glo
+} // namespace globjects

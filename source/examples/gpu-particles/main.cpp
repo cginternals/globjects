@@ -19,18 +19,18 @@
 #include <globjects/NamedString.h>
 #include <globjects/DebugMessage.h>
 
-#include <globjects-utils/Timer.h>
-#include <globjects-utils/Camera.h>
-#include <globjects-base/File.h>
-#include <globjects-base/File.h>
-#include <globjects-utils/AbstractCoordinateProvider.h>
-#include <globjects-utils/WorldInHandNavigation.h>
+#include <common/Timer.h>
+#include <common/Camera.h>
+#include <globjects/base/File.h>
+#include <globjects/base/File.h>
+#include <common/AbstractCoordinateProvider.h>
+#include <common/WorldInHandNavigation.h>
 
-#include <globjects-window/Context.h>
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <common/Context.h>
+#include <common/ContextFormat.h>
+#include <common/Window.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
 #include "AbstractParticleTechnique.h"
 
@@ -41,11 +41,11 @@
 #include <ExampleWindowEventHandler.h>
 
 
-using namespace glowindow;
+
 using namespace glm;
 
 
-class EventHandler : public ExampleWindowEventHandler, gloutils::AbstractCoordinateProvider
+class EventHandler : public ExampleWindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler()
@@ -89,31 +89,31 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
-        m_forces = glo::Texture::createDefault(gl::GL_TEXTURE_3D);
+        m_forces = globjects::Texture::createDefault(gl::GL_TEXTURE_3D);
 
         // Initialize shader includes
 
-        glo::NamedString::create("/data/gpu-particles/particleMovement.inc", new glo::File("data/gpu-particles/particleMovement.inc"));
+        globjects::NamedString::create("/data/gpu-particles/particleMovement.inc", new globjects::File("data/gpu-particles/particleMovement.inc"));
         
         // initialize camera
 
-        m_camera = new gloutils::Camera(vec3(0.f, 1.f, -3.f));
+        m_camera = new Camera(vec3(0.f, 1.f, -3.f));
         m_camera->setZNear(0.1f);
         m_camera->setZFar(16.f);
 
-        m_nav = new  gloutils::WorldInHandNavigation();
+        m_nav = new  WorldInHandNavigation();
         m_nav->setCamera(m_camera);
         m_nav->setCoordinateProvider(this);
         
         // initialize techniques
 
-        if (glo::hasExtension(gl::GLextension::GL_ARB_compute_shader)) {
+        if (globjects::hasExtension(gl::GLextension::GL_ARB_compute_shader)) {
             m_techniques[ComputeShaderTechnique] = new ComputeShaderParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         }
-        if (glo::hasExtension(gl::GLextension::GL_ARB_transform_feedback3)) {
+        if (globjects::hasExtension(gl::GLextension::GL_ARB_transform_feedback3)) {
             m_techniques[TransformFeedbackTechnique] = new TransformFeedbackParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         }
@@ -209,30 +209,30 @@ public:
         {
         case GLFW_KEY_C:
             if (m_techniques[ComputeShaderTechnique]) {
-                glo::debug() << "switch to compute shader technique";
+                globjects::debug() << "switch to compute shader technique";
                 m_technique = ComputeShaderTechnique;
-            } else glo::debug() << "compute shader technique not available";
+            } else globjects::debug() << "compute shader technique not available";
             break;
         case GLFW_KEY_T:
             if (m_techniques[TransformFeedbackTechnique]) {
-                glo::debug() << "switch to transform feedback technique";
+                globjects::debug() << "switch to transform feedback technique";
                 m_technique = TransformFeedbackTechnique;
-            } else glo::debug() << "transform feedback technique not available";
+            } else globjects::debug() << "transform feedback technique not available";
             break;
         case GLFW_KEY_F:
-            glo::debug() << "switch to fragment shader technique";
+            globjects::debug() << "switch to fragment shader technique";
             m_technique = FragmentShaderTechnique;
             break;
 
         case GLFW_KEY_P:       
             if (m_timer.paused())
             {
-                glo::debug() << "timer continue";
+                globjects::debug() << "timer continue";
                 m_timer.start();
             }
             else
             {
-                glo::debug() << "timer pause";
+                globjects::debug() << "timer pause";
                 m_timer.pause();
             }
             break;
@@ -243,16 +243,16 @@ public:
 
         case GLFW_KEY_MINUS:
             m_steps = max(1, m_steps - 1);
-            glo::debug() << "steps = " << m_steps;
+            globjects::debug() << "steps = " << m_steps;
             break;
 
         case GLFW_KEY_EQUAL: // bug? this is plus/add on my keyboard
             ++m_steps;
-            glo::debug() << "steps = " << m_steps;
+            globjects::debug() << "steps = " << m_steps;
             break;
 
         case GLFW_KEY_F5:
-            glo::File::reloadAll();
+            globjects::File::reloadAll();
             break;
         }
     }
@@ -271,12 +271,12 @@ public:
     {
         switch (m_nav->mode())
         {
-        case gloutils::WorldInHandNavigation::RotateInteraction:
+        case WorldInHandNavigation::RotateInteraction:
             m_nav->rotateProcess(event.pos());
             event.accept();
             break;
-        case gloutils::WorldInHandNavigation::PanInteraction:
-        case gloutils::WorldInHandNavigation::NoInteraction:
+        case WorldInHandNavigation::PanInteraction:
+        case WorldInHandNavigation::NoInteraction:
             break;
         }
     }
@@ -293,7 +293,7 @@ public:
 
     virtual void scrollEvent(ScrollEvent & event) override
     {
-        if (gloutils::WorldInHandNavigation::NoInteraction != m_nav->mode())
+        if (WorldInHandNavigation::NoInteraction != m_nav->mode())
             return;
 
         m_nav->scaleAtCenter(-event.offset().y * 0.1f);
@@ -332,17 +332,17 @@ protected:
     ParticleTechnique m_technique;
     std::map<ParticleTechnique, AbstractParticleTechnique *> m_techniques;
 
-    gloutils::Timer m_timer;
+    Timer m_timer;
 
     int m_numParticles;
-    gloutils::Camera * m_camera;
+    Camera * m_camera;
 
     std::vector<vec4> m_positions;
     std::vector<vec4> m_velocities;
 
     int m_steps;
 
-    gloutils::WorldInHandNavigation * m_nav;
+    WorldInHandNavigation * m_nav;
 
     struct Attribute
     {
@@ -350,7 +350,7 @@ protected:
     };
     std::vector<Attribute> m_attributes;
 
-    glo::ref_ptr<glo::Texture> m_forces;
+    globjects::ref_ptr<globjects::Texture> m_forces;
 };
 
 
@@ -360,20 +360,20 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "Left Mouse" << "\t" << "Rotate scene";
-    glo::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
-    glo::info() << "\t" << "-" << "\t\t" << "Reduce steps per frame";
-    glo::info() << "\t" << "=" << "\t\t" << "Increase steps per frame";
-    glo::info() << "\t" << "R" << "\t\t" << "Compute new forces";
-    glo::info() << "\t" << "Shift + R" << "\t" << "Compute new forces and reset particles";
-    glo::info() << "\t" << "P" << "\t\t" << "Toggle pause";
-    glo::info() << "\t" << "F" << "\t\t" << "Particle computation using fragment shader";
-    glo::info() << "\t" << "T" << "\t\t" << "Particle computation using transform feedback";
-    glo::info() << "\t" << "C" << "\t\t" << "Particle computation using compute shader";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "Left Mouse" << "\t" << "Rotate scene";
+    globjects::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    globjects::info() << "\t" << "-" << "\t\t" << "Reduce steps per frame";
+    globjects::info() << "\t" << "=" << "\t\t" << "Increase steps per frame";
+    globjects::info() << "\t" << "R" << "\t\t" << "Compute new forces";
+    globjects::info() << "\t" << "Shift + R" << "\t" << "Compute new forces and reset particles";
+    globjects::info() << "\t" << "P" << "\t\t" << "Toggle pause";
+    globjects::info() << "\t" << "F" << "\t\t" << "Particle computation using fragment shader";
+    globjects::info() << "\t" << "T" << "\t\t" << "Particle computation using transform feedback";
+    globjects::info() << "\t" << "C" << "\t\t" << "Particle computation using compute shader";
 
     ContextFormat format;
     format.setVersion(3, 3); // minimum required version is 3.3 due to particle drawing using geometry shader.

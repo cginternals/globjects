@@ -6,7 +6,7 @@
 #include <globjects/Shader.h>
 
 
-namespace glo
+namespace globjects
 {
 
 class Shader;
@@ -26,4 +26,4 @@ public:
     static std::vector<const char*> collectCStrings(const std::vector<std::string> & strings);
 };
 
-} // namespace glo
+} // namespace globjects

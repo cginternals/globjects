@@ -8,7 +8,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class AbstractFunctionCall;
@@ -46,16 +46,16 @@ protected:
     StateSettingType m_type;
 };
 
-} // namespace glo
+} // namespace globjects
 
 namespace std {
 
 template <>
-struct GLOBJECTS_API hash<glo::StateSettingType>
+struct GLOBJECTS_API hash<globjects::StateSettingType>
 {
-    size_t operator()(const glo::StateSettingType & type) const;
+    size_t operator()(const globjects::StateSettingType & type) const;
 };
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/StateSetting.hpp>

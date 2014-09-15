@@ -21,14 +21,14 @@ using namespace gl;
 namespace 
 {
 
-const glo::AbstractBufferImplementation & implementation()
+const globjects::AbstractBufferImplementation & implementation()
 {
-    return glo::ImplementationRegistry::current().bufferImplementation();
+    return globjects::ImplementationRegistry::current().bufferImplementation();
 }
 
 }
 
-namespace glo
+namespace globjects
 {
 
 void Buffer::hintBindlessImplementation(BindlessImplementation impl)
@@ -201,4 +201,4 @@ gl::GLenum Buffer::objectType() const
     return gl::GL_BUFFER;
 }
 
-} // namespace glo
+} // namespace globjects

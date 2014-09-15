@@ -1,11 +1,11 @@
 #pragma once
 
-#include <globjects-base/Singleton.h>
+#include <globjects/base/Singleton.h>
 
 #include "AbstractProgramBinaryImplementation.h"
 
 
-namespace glo
+namespace globjects
 {
 
 class ProgramBinaryImplementation_GetProgramBinaryARB : public AbstractProgramBinaryImplementation
@@ -16,4 +16,4 @@ public:
     virtual ProgramBinary * getProgramBinary(const Program * program) const override;
 };
 
-} // namespace glo
+} // namespace globjects

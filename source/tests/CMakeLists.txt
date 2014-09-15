@@ -1,16 +1,19 @@
 
-# Macro: Build test and add command to execute it via target 'test'
-macro(add_test_without_ctest target)
+# This policy was introduced in 3.0.0 and does not allow targets named "test" or "help" ...
+# Since we do not rely on cmake testing we stick to the old policy for now.
+if(POLICY CMP0037)
+    cmake_policy(SET CMP0037 OLD)
+endif()
+
+# Function: Build test and add command to execute it via target 'test'
+function(add_test_without_ctest target)
 
     add_subdirectory(${target})
-
     add_dependencies(test ${target})
     add_custom_command(TARGET test POST_BUILD 
-        COMMAND cmake -E echo
-        COMMAND cmake -E echo run $<TARGET_FILE:${target}>:
-        COMMAND $<TARGET_FILE:${target}>)
+        COMMAND $<TARGET_FILE:${target}> --gtest_output=xml:gtests.xml)
 
-endmacro()
+endfunction()
 
 # Design decision: tests are enabled by default. If the required components are not found,
 # tests are disabled and a warning is printed, but configuration is still valid.
@@ -34,11 +37,6 @@ if(OPTION_BUILD_TESTS AND GMOCK_FOUND AND GTEST_FOUND)
 	add_custom_target(test)
 	set_target_properties(test PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD 1)
 
+    # Add tests
 	add_test_without_ctest(globjects-test)
-        if (OPTION_BUILD_GLOBJECTS_UTILS)
-		add_test_without_ctest(globjects-utils-test)
-	endif ()
-        if (OPTION_BUILD_GLOBJECTS_WINDOW)
-		add_test_without_ctest(globjects-window-test)
-	endif()
 endif()

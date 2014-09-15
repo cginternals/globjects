@@ -1,6 +1,6 @@
 #include <globjects/LocationIdentity.h>
 
-namespace glo {
+namespace globjects {
 
 LocationIdentity::LocationIdentity()
 : m_invalid(true)
@@ -92,4 +92,4 @@ std::size_t LocationIdentity::hash() const
     }
 }
 
-} // namespace glo
+} // namespace globjects

@@ -1,24 +1,26 @@
 #include "impl.h"
 
-#include <globjects-base/ref_ptr.h>
-#include <globjects-base/StaticStringSource.h>
+#include <glbinding/gl/gl.h>
 
-#include <globjects/bjects.h>
+#include <globjects/base/ref_ptr.h>
+#include <globjects/base/StaticStringSource.h>
+
+#include <globjects/globjects.h>
 #include <globjects/logging.h>
-#include <globjects/VertexArrayObject.h>
+#include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
-#include <globjects/FrameBufferObject.h>
+#include <globjects/Framebuffer.h>
 
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/StringTemplate.h>
+#include <common/ScreenAlignedQuad.h>
+#include <common/StringTemplate.h>
 
 #include <array>
 
-using namespace globjects;
 using namespace gl;
 using namespace glm;
+using namespace globjects;
 
 const char * fragmentShaderSource = R"(
 #version 140
@@ -40,7 +42,7 @@ void main()
 struct PrivateGlobjectsInterface
 {
     ivec2 size;
-    ref_ptr<gloutils::ScreenAlignedQuad> quad;
+    ref_ptr<ScreenAlignedQuad> quad;
     ref_ptr<Texture> texture;
 
     ref_ptr<Texture> osgTexture;
@@ -58,11 +60,7 @@ GlobjectsInterface::~GlobjectsInterface()
 
 void GlobjectsInterface::initialize()
 {
-    if (!init())
-    {
-        fatal() << "error";
-        return;
-    }
+    globjects::init();
 
     info() << versionString();
 
@@ -75,12 +73,12 @@ void GlobjectsInterface::initialize()
 
     impl->texture->image2D(0, GL_RGB8, ivec2(2), 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-    impl->quad = new gloutils::ScreenAlignedQuad(Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderSource), impl->texture);
+    impl->quad = new ScreenAlignedQuad(Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderSource), impl->texture);
     impl->quad->setSamplerUniform(0);
 
     impl->quad->program()->setUniform("source2", 1);
 
-    VertexArrayObject::unbind();
+    VertexArray::unbind();
 }
 
 void GlobjectsInterface::setupTexture(unsigned id, unsigned target)
@@ -99,7 +97,7 @@ void GlobjectsInterface::resize(int x, int y)
 
 void GlobjectsInterface::paint()
 {
-    FrameBufferObject::unbind();
+//    Framebuffer::unbind();
 
     glViewport(0,0,impl->size.x, impl->size.y);
 
@@ -109,5 +107,5 @@ void GlobjectsInterface::paint()
 
     impl->texture->unbindActive(GL_TEXTURE1);
 
-    VertexArrayObject::unbind();
+    VertexArray::unbind();
 }

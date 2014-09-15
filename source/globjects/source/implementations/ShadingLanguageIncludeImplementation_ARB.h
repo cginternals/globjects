@@ -1,11 +1,11 @@
 #pragma once
 
-#include <globjects-base/Singleton.h>
+#include <globjects/base/Singleton.h>
 
 #include "AbstractShadingLanguageIncludeImplementation.h"
 
 
-namespace glo
+namespace globjects
 {
 
 class ShadingLanguageIncludeImplementation_ARB : public AbstractShadingLanguageIncludeImplementation
@@ -16,4 +16,4 @@ public:
     virtual void compile(const Shader * shader) const override;
 };
 
-} // namespace glo
+} // namespace globjects

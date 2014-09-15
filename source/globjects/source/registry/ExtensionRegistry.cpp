@@ -2,10 +2,11 @@
 #include "Registry.h"
 
 #include <glbinding/Meta.h>
+#include <glbinding/ContextInfo.h>
 
 #include <globjects/globjects.h>
 
-namespace glo {
+namespace globjects {
 
 ExtensionRegistry::ExtensionRegistry()
 : m_initialized(false)
@@ -45,19 +46,7 @@ void ExtensionRegistry::initialize()
     if (m_initialized)
         return;
 
-    for (const std::string & extensionName : getExtensions())
-    {
-        gl::GLextension extension = glbinding::Meta::getExtension(extensionName);
-
-        if (extension != gl::GLextension::UNKNOWN)
-        {
-            m_availableExtensions.insert(extension);
-        }
-        else
-        {
-            m_unknownAvailableExtensions.insert(extensionName);
-        }
-    }
+    m_availableExtensions = glbinding::ContextInfo::extensions(&m_unknownAvailableExtensions);
 
     m_initialized = true;
 }
@@ -106,8 +95,8 @@ bool ExtensionRegistry::isInCoreProfile(gl::GLextension extension, const glbindi
 
 bool ExtensionRegistry::isInCoreProfile(gl::GLextension extension)
 {
-    return isInCoreProfile(extension, glo::version());
+    return isInCoreProfile(extension, globjects::version());
 }
 
-} // namespace glo
+} // namespace globjects
 

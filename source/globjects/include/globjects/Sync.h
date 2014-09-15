@@ -4,11 +4,11 @@
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/values.h>
 
-#include <globjects-base/Referenced.h>
+#include <globjects/base/Referenced.h>
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class GLOBJECTS_API Sync : public Referenced
@@ -39,4 +39,4 @@ protected:
     static Sync * fence(gl::GLenum condition, gl::UnusedMask flags);
 };
 
-} // namespace glo
+} // namespace globjects

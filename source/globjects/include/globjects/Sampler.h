@@ -5,7 +5,7 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
-namespace glo 
+namespace globjects 
 {
 
 /** \brief Wraps OpenGL sampler objects.
@@ -36,4 +36,4 @@ protected:
     virtual ~Sampler();
 };
 
-} // namespace glo
+} // namespace globjects

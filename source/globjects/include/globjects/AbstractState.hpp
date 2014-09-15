@@ -4,7 +4,7 @@
 
 #include <globjects/StateSetting.h>
 
-namespace glo {
+namespace globjects {
 
 template <typename... Arguments>
 void AbstractState::set(void (*function)(Arguments...), Arguments... arguments)
@@ -12,4 +12,4 @@ void AbstractState::set(void (*function)(Arguments...), Arguments... arguments)
     add(new StateSetting(function, arguments...));
 }
 
-} // namespace glo
+} // namespace globjects

@@ -27,7 +27,7 @@ namespace
     std::mutex g_mutex;
 }
 
-namespace glo
+namespace globjects
 {
 
 void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
@@ -70,12 +70,38 @@ void init()
     registerCurrentContext();
 }
 
+void init(glbinding::ContextHandle sharedContextId)
+{
+    g_mutex.lock();
+    if (g_globjectsIsInitialized)
+    {
+        glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
+
+        glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
+            manualErrorCheckAfter(functionCall.function);
+        });
+
+        g_globjectsIsInitialized = true;
+    }
+    g_mutex.unlock();
+
+    registerCurrentContext(sharedContextId);
+}
+
 void registerCurrentContext()
 {
     glbinding::ContextHandle contextId = glbinding::getCurrentContext();
 
     glbinding::Binding::useContext(contextId);
     Registry::registerContext(contextId);
+}
+
+void registerCurrentContext(glbinding::ContextHandle sharedContextId)
+{
+    glbinding::ContextHandle contextId = glbinding::getCurrentContext();
+
+    glbinding::Binding::useContext(contextId);
+    Registry::registerContext(contextId, sharedContextId);
 }
 
 void setContext(glbinding::ContextHandle contextId)
@@ -226,18 +252,14 @@ bool isCoreProfile()
     return (getInteger(gl::GL_CONTEXT_PROFILE_MASK) & static_cast<unsigned>(gl::GL_CONTEXT_CORE_PROFILE_BIT)) > 0;
 }
 
-std::vector<std::string> getExtensions()
+const std::set<gl::GLextension> & availableExtensions()
 {
-    int count = getInteger(gl::GL_NUM_EXTENSIONS);
+    return ExtensionRegistry::current().availableExtensions();
+}
 
-    std::vector<std::string> extensions(count);
-
-    for (int i=0; i<count; ++i)
-    {
-        extensions[i] = getString(gl::GL_EXTENSIONS, i);
-    }
-
-    return extensions;
+const std::set<std::string> & unknownAvailableExtensions()
+{
+    return ExtensionRegistry::current().unknownAvailableExtensions();
 }
 
 bool hasExtension(gl::GLextension extension)
@@ -344,4 +366,4 @@ void initializeStrategy(VertexArray::AttributeImplementation impl)
     Registry::current().implementations().initialize(impl);
 }
 
-} // namespace glo
+} // namespace globjects

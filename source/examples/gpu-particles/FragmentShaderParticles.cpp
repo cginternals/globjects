@@ -6,16 +6,14 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
 
-#include <globjects-utils/Camera.h>
-#include <globjects-base/File.h>
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/globjects-utils.h>
+#include <common/Camera.h>
+#include <globjects/base/File.h>
+#include <common/ScreenAlignedQuad.h>
 
 #include "FragmentShaderParticles.h"
 
 
-using namespace glo;
-using namespace gloutils;
+using namespace globjects;
 using namespace glm;
 
 
@@ -37,14 +35,14 @@ FragmentShaderParticles::~FragmentShaderParticles()
 void FragmentShaderParticles::initialize()
 {
     // Create textures to store the particle data
-    m_texPositions = new glo::Texture(gl::GL_TEXTURE_2D);
+    m_texPositions = new globjects::Texture(gl::GL_TEXTURE_2D);
     m_texPositions->setParameter(gl::GL_TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
     m_texPositions->setParameter(gl::GL_TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
     m_texPositions->setParameter(gl::GL_TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
     m_texPositions->setParameter(gl::GL_TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
     m_texPositions->setParameter(gl::GL_TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
 
-    m_texVelocities = new glo::Texture(gl::GL_TEXTURE_2D);
+    m_texVelocities = new globjects::Texture(gl::GL_TEXTURE_2D);
     m_texVelocities->setParameter(gl::GL_TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
     m_texVelocities->setParameter(gl::GL_TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
     m_texVelocities->setParameter(gl::GL_TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 
 #include <globjects/VertexArray.h>
 #include <globjects/Program.h>
@@ -8,7 +8,7 @@
 #include <globjects/Texture.h>
 #include <globjects/Framebuffer.h>
 
-#include <globjects-utils/ScreenAlignedQuad.h>
+#include <common/ScreenAlignedQuad.h>
 
 #include "AbstractParticleTechnique.h"
 
@@ -18,8 +18,8 @@ public:
     ComputeShaderParticles(
         const std::vector<glm::vec4> & positions
     ,   const std::vector<glm::vec4> & velocities
-    ,   const glo::Texture & forces
-    ,   const gloutils::Camera & camera);
+    ,   const globjects::Texture & forces
+    ,   const Camera & camera);
     virtual ~ComputeShaderParticles();
 
     virtual void initialize() override;
@@ -31,19 +31,19 @@ public:
     virtual void resize() override;
 
 protected:
-    glo::ref_ptr<glo::Buffer> m_positionsSSBO;
-    glo::ref_ptr<glo::Buffer> m_velocitiesSSBO;
+    globjects::ref_ptr<globjects::Buffer> m_positionsSSBO;
+    globjects::ref_ptr<globjects::Buffer> m_velocitiesSSBO;
 
-    glo::ref_ptr<glo::Program> m_computeProgram;
-    glo::ref_ptr<glo::Program> m_drawProgram;
+    globjects::ref_ptr<globjects::Program> m_computeProgram;
+    globjects::ref_ptr<globjects::Program> m_drawProgram;
 
-    glo::ref_ptr<glo::VertexArray> m_vao;
+    globjects::ref_ptr<globjects::VertexArray> m_vao;
 
-    glo::ref_ptr<glo::Framebuffer> m_fbo;
-    glo::ref_ptr<glo::Texture> m_color;
+    globjects::ref_ptr<globjects::Framebuffer> m_fbo;
+    globjects::ref_ptr<globjects::Texture> m_color;
 
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_clear;
+    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
+    globjects::ref_ptr<ScreenAlignedQuad> m_clear;
 
     glm::uvec3 m_workGroupSize;
 };

@@ -12,7 +12,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 AbstractBufferImplementation::AbstractBufferImplementation()
@@ -41,4 +41,4 @@ AbstractBufferImplementation * AbstractBufferImplementation::get(const Buffer::B
     }
 }
 
-} // namespace glo
+} // namespace globjects

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <globjects-base/Singleton.h>
+#include <globjects/base/Singleton.h>
 
 #include "AbstractFramebufferImplementation.h"
 
 
-namespace glo
+namespace globjects
 {
 
 class FramebufferImplementation_DirectStateAccessARB : public AbstractFramebufferImplementation
@@ -26,4 +26,4 @@ public:
     virtual void setDrawBuffers(const Framebuffer * fbo, gl::GLsizei n, const gl::GLenum * modes) const override;
 };
 
-} // namespace glo
+} // namespace globjects

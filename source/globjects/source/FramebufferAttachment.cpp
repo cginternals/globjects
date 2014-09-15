@@ -7,7 +7,7 @@
 
 #include <globjects/Framebuffer.h>
 
-namespace glo
+namespace globjects
 {
 
 FramebufferAttachment::FramebufferAttachment(Framebuffer * fbo, gl::GLenum attachment)
@@ -38,7 +38,7 @@ bool FramebufferAttachment::isRenderBufferAttachment() const
 
 std::string FramebufferAttachment::attachmentString() const
 {
-    return glo::enumName(m_attachment);
+    return globjects::enumName(m_attachment);
 }
 
 AttachedTexture * FramebufferAttachment::asTextureAttachment()
@@ -61,4 +61,4 @@ const AttachedRenderbuffer * FramebufferAttachment::asRenderBufferAttachment() c
     return isRenderBufferAttachment() ? reinterpret_cast<const AttachedRenderbuffer*>(this) : nullptr;
 }
 
-} // namespace glo
+} // namespace globjects

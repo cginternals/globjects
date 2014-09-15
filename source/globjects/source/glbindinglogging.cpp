@@ -4,7 +4,7 @@
 #include <glbinding/Version.h>
 
 
-namespace glo 
+namespace globjects 
 {
 
 LogMessageBuilder operator<<(LogMessageBuilder builder, const glbinding::Version & version)
@@ -14,4 +14,4 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const glbinding::Version
     return builder;
 }
 
-} // namespace glo
+} // namespace globjects

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <globjects-base/Singleton.h>
+#include <globjects/base/Singleton.h>
 
 #include "AbstractDebugImplementation.h"
 
 
-namespace glo 
+namespace globjects 
 {
 
 class DebugImplementation_Legacy : public AbstractDebugImplementation
@@ -25,4 +25,4 @@ protected:
     bool m_enabled;
 };
 
-} // namespace glo
+} // namespace globjects

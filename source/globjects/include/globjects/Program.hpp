@@ -6,12 +6,12 @@
 
 #include <glbinding/gl/functions.h>
 
-#include <globjects-base/baselogging.h>
+#include <globjects/base/baselogging.h>
 
 #include <globjects/Uniform.h>
 #include <globjects/Shader.h>
 
-namespace glo
+namespace globjects
 {
 
 template<typename T>
@@ -112,4 +112,4 @@ void Program::attach(Shader * shader, Shaders... shaders)
     attach(std::forward<Shaders>(shaders)...);
 }
 
-} // namespace glo
+} // namespace globjects

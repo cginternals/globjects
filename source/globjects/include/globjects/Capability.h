@@ -6,7 +6,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 class GLOBJECTS_API Capability
@@ -26,10 +26,11 @@ public:
     bool isEnabled(int index) const;
 
     void apply();
+
 protected:
     gl::GLenum m_capability;
     bool m_enabled;
     std::map<int, bool> m_indexEnabled;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -9,16 +9,14 @@
 #include <globjects/Texture.h>
 #include <globjects/DebugMessage.h>
 
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Context.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <common/ScreenAlignedQuad.h>
+#include <common/ContextFormat.h>
+#include <common/Context.h>
+#include <common/Window.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
 #include <ExampleWindowEventHandler.h>
-
-using namespace glowindow;
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -38,7 +36,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -71,8 +69,8 @@ public:
     }
 
 protected:
-    glo::ref_ptr<glo::Texture> m_texture;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
+    globjects::ref_ptr<globjects::Texture> m_texture;
+    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
 };
 
 
@@ -80,10 +78,10 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);
@@ -120,7 +118,7 @@ void EventHandler::createAndSetupTexture()
     for (int i = 0; i < w * h * 4; ++i)
         data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
 
-    m_texture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
+    m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 
 	m_texture->image2D(0, gl::GL_RGBA8, w, h, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, data);
 
@@ -128,6 +126,6 @@ void EventHandler::createAndSetupTexture()
 
 void EventHandler::createAndSetupGeometry()
 {
-	m_quad = new gloutils::ScreenAlignedQuad(m_texture);
+	m_quad = new ScreenAlignedQuad(m_texture);
     m_quad->setSamplerUniform(0);
 }

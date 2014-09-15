@@ -5,7 +5,7 @@
 #include <globjects/Framebuffer.h>
 
 
-namespace glo
+namespace globjects
 {
 
 class Framebuffer;
@@ -39,4 +39,4 @@ public:
     static gl::GLenum s_workingTarget;
 };
 
-} // namespace glo
+} // namespace globjects

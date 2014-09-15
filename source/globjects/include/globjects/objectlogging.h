@@ -2,9 +2,9 @@
 
 #include <globjects/globjects_api.h>
 
-#include <globjects-base/LogMessageBuilder.h>
+#include <globjects/base/LogMessageBuilder.h>
 
-namespace glo
+namespace globjects
 {
 
 class Object;
@@ -44,6 +44,6 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const Uniform<T> * unifo
 template <typename T>
 LogMessageBuilder operator<<(LogMessageBuilder builder, Uniform<T> * uniform);
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/objectlogging.hpp>

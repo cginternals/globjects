@@ -10,7 +10,7 @@
 #include <globjects/ObjectVisitor.h>
 
 
-namespace glo
+namespace globjects
 {
 
 /** \brief Collects various debug information of all current registered globjects Objects.
@@ -90,4 +90,4 @@ protected:
 	std::map<std::string, unsigned> m_memoryUsage;
 };
 
-} // namespace glo
+} // namespace globjects

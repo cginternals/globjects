@@ -7,7 +7,7 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/VertexArray.h>
 
-namespace glo 
+namespace globjects 
 {
 
 ObjectRegistry::ObjectRegistry()
@@ -78,4 +78,4 @@ VertexArray * ObjectRegistry::defaultVAO()
     return m_defaultVAO;
 }
 
-} // namespace glo
+} // namespace globjects

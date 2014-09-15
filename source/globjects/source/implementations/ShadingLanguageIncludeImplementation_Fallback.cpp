@@ -3,8 +3,8 @@
 
 #include <glbinding/gl/functions.h>
 
-#include <globjects-base/AbstractStringSource.h>
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/AbstractStringSource.h>
+#include <globjects/base/ref_ptr.h>
 
 #include <globjects/Shader.h>
 
@@ -13,7 +13,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 void ShadingLanguageIncludeImplementation_Fallback::updateSources(const Shader * shader) const
@@ -37,4 +37,4 @@ void ShadingLanguageIncludeImplementation_Fallback::compile(const Shader * shade
     glCompileShader(shader->id());
 }
 
-} // namespace glo
+} // namespace globjects

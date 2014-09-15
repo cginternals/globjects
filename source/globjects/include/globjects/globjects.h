@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <set>
 
 #include <glbinding/gl/types.h>
 #include <glbinding/gl/extension.h>
@@ -21,17 +22,22 @@
 #include <globjects/Object.h>
 #include <globjects/VertexArray.h>
 
-namespace glo 
+namespace globjects 
 {
 
 class AbstractStringSource;
 
 GLOBJECTS_API void init();
+GLOBJECTS_API void init(glbinding::ContextHandle sharedContextId);
 
 template <typename T, typename... Args>
 void init(T strategy, Args... args);
 
+template <typename T, typename... Args>
+void init(glbinding::ContextHandle sharedContextId, T strategy, Args... args);
+
 GLOBJECTS_API void registerCurrentContext();
+GLOBJECTS_API void registerCurrentContext(glbinding::ContextHandle sharedContextId);
 GLOBJECTS_API void setContext(glbinding::ContextHandle contextId);
 GLOBJECTS_API void setCurrentContext();
 
@@ -58,8 +64,6 @@ GLOBJECTS_API gl::GLint minorVersion();
 GLOBJECTS_API glbinding::Version version();
 GLOBJECTS_API bool isCoreProfile();
 
-GLOBJECTS_API std::vector<std::string> getExtensions();
-
 template <int Count>
 std::array<gl::GLint, Count> getIntegers(gl::GLenum pname);
 template <int Count>
@@ -68,6 +72,9 @@ template <int Count>
 std::array<gl::GLdouble, Count> getDoubles(gl::GLenum pname);
 template <int Count>
 std::array<gl::GLboolean, Count> getBooleans(gl::GLenum pname);
+
+GLOBJECTS_API const std::set<gl::GLextension> & availableExtensions();
+GLOBJECTS_API const std::set<std::string> & unknownAvailableExtensions();
 
 GLOBJECTS_API bool hasExtension(gl::GLextension extension);
 GLOBJECTS_API bool hasExtension(const std::string & extensionName);
@@ -92,6 +99,6 @@ GLOBJECTS_API void initializeStrategy(Shader::IncludeImplementation impl);
 GLOBJECTS_API void initializeStrategy(Object::NameImplementation impl);
 GLOBJECTS_API void initializeStrategy(VertexArray::AttributeImplementation impl);
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/globjects.hpp>

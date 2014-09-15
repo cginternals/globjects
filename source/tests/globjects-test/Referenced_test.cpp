@@ -2,14 +2,14 @@
 #include <gmock/gmock.h>
 
 
-#include <globjects-base/Referenced.h>
+#include <globjects/base/Referenced.h>
 
 class Referenced_test : public testing::Test
 {
 public:
 };
 
-class ReferencedMock : public glo::Referenced
+class ReferencedMock : public globjects::Referenced
 {
 public:
     MOCK_METHOD0(Die, void());
@@ -18,7 +18,7 @@ public:
 
 TEST_F(Referenced_test, CountsReferences)
 {
-    glo::Referenced * ref = new glo::Referenced;
+    globjects::Referenced * ref = new globjects::Referenced;
 
     EXPECT_EQ(ref->refCounter(), 0);
     ref->ref();

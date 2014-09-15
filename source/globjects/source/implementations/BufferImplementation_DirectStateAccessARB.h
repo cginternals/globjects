@@ -1,11 +1,11 @@
 #pragma once
 
-#include <globjects-base/Singleton.h>
+#include <globjects/base/Singleton.h>
 
 #include "AbstractBufferImplementation.h"
 
 
-namespace glo
+namespace globjects
 {
 
 class Buffer;
@@ -39,4 +39,4 @@ public:
     virtual void getBufferSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLvoid * data) const override;
 };
 
-} // namespace glo
+} // namespace globjects

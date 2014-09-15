@@ -8,7 +8,7 @@
 
 #include "Resource.h"
 
-namespace glo
+namespace globjects
 {
 
 Query::Query()
@@ -205,4 +205,4 @@ gl::GLenum Query::objectType() const
     return gl::GL_QUERY;
 }
 
-} // namespace glo
+} // namespace globjects

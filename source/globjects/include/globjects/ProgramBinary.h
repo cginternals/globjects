@@ -4,15 +4,15 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects-base/Referenced.h>
-#include <globjects-base/ChangeListener.h>
-#include <globjects-base/Changeable.h>
-#include <globjects-base/ref_ptr.h>
-#include <globjects-base/AbstractStringSource.h>
+#include <globjects/base/Referenced.h>
+#include <globjects/base/ChangeListener.h>
+#include <globjects/base/Changeable.h>
+#include <globjects/base/ref_ptr.h>
+#include <globjects/base/AbstractStringSource.h>
 
 #include <globjects/globjects_api.h>
 
-namespace glo
+namespace globjects
 {
 
 /**
@@ -44,4 +44,4 @@ protected:
     void validate() const;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -1,7 +1,7 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
@@ -12,21 +12,20 @@
 #include <globjects/State.h>
 #include <globjects/globjects.h>
 
-#include <globjects-base/File.h>
-#include <globjects-utils/globjects-utils.h>
-#include <globjects-utils/StringTemplate.h>
+#include <globjects/base/File.h>
+#include <common/StringTemplate.h>
 
-#include <globjects-window/Context.h>
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <common/Context.h>
+#include <common/ContextFormat.h>
+#include <common/Window.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
 #include <globjects/logging.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowindow;
+
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -43,40 +42,40 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
-        m_defaultPointSizeState = new glo::State();
-        m_defaultPointSizeState->pointSize(glo::getFloat(gl::GL_POINT_SIZE));
-        m_thinnestPointSizeState = new glo::State();
+        m_defaultPointSizeState = new globjects::State();
+        m_defaultPointSizeState->pointSize(globjects::getFloat(gl::GL_POINT_SIZE));
+        m_thinnestPointSizeState = new globjects::State();
         m_thinnestPointSizeState->pointSize(2.0f);
-        m_thinPointSizeState = new glo::State();
+        m_thinPointSizeState = new globjects::State();
         m_thinPointSizeState->pointSize(5.0f);
-        m_normalPointSizeState = new glo::State();
+        m_normalPointSizeState = new globjects::State();
         m_normalPointSizeState->pointSize(10.0f);
-        m_thickPointSizeState = new glo::State();
+        m_thickPointSizeState = new globjects::State();
         m_thickPointSizeState->pointSize(20.0f);
-        m_disableRasterizerState = new glo::State();
+        m_disableRasterizerState = new globjects::State();
         m_disableRasterizerState->enable(gl::GL_RASTERIZER_DISCARD);
-        m_enableRasterizerState = new glo::State();
+        m_enableRasterizerState = new globjects::State();
         m_enableRasterizerState->disable(gl::GL_RASTERIZER_DISCARD);
 
-        m_vao = new glo::VertexArray();
-        m_buffer = new glo::Buffer();
+        m_vao = new globjects::VertexArray();
+        m_buffer = new globjects::Buffer();
 
-        gloutils::StringTemplate* vertexShaderSource = new gloutils::StringTemplate(new glo::File("data/states/standard.vert"));
-        gloutils::StringTemplate* fragmentShaderSource = new gloutils::StringTemplate(new glo::File("data/states/standard.frag"));
+        StringTemplate* vertexShaderSource = new StringTemplate(new globjects::File("data/states/standard.vert"));
+        StringTemplate* fragmentShaderSource = new StringTemplate(new globjects::File("data/states/standard.frag"));
         
 #ifdef MAC_OS
         vertexShaderSource->replace("#version 140", "#version 150");
         fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
         
-        m_shaderProgram = new glo::Program();
-        m_shaderProgram->attach(new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
-                                new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
+        m_shaderProgram = new globjects::Program();
+        m_shaderProgram->attach(new globjects::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
+                                new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
         
         m_buffer->setData(std::vector<glm::vec2>({
               glm::vec2(-0.8, 0.8), glm::vec2(-0.4, 0.8), glm::vec2(0.0, 0.8), glm::vec2(0.4, 0.8), glm::vec2(0.8, 0.8)
@@ -155,25 +154,25 @@ public:
         window.repaint();
     }
 protected:
-    glo::ref_ptr<glo::VertexArray> m_vao;
-    glo::ref_ptr<glo::Buffer> m_buffer;
-    glo::ref_ptr<glo::Program> m_shaderProgram;
+    globjects::ref_ptr<globjects::VertexArray> m_vao;
+    globjects::ref_ptr<globjects::Buffer> m_buffer;
+    globjects::ref_ptr<globjects::Program> m_shaderProgram;
 
-    glo::ref_ptr<glo::State> m_defaultPointSizeState;
-    glo::ref_ptr<glo::State> m_thinnestPointSizeState;
-    glo::ref_ptr<glo::State> m_thinPointSizeState;
-    glo::ref_ptr<glo::State> m_normalPointSizeState;
-    glo::ref_ptr<glo::State> m_thickPointSizeState;
-    glo::ref_ptr<glo::State> m_disableRasterizerState;
-    glo::ref_ptr<glo::State> m_enableRasterizerState;
+    globjects::ref_ptr<globjects::State> m_defaultPointSizeState;
+    globjects::ref_ptr<globjects::State> m_thinnestPointSizeState;
+    globjects::ref_ptr<globjects::State> m_thinPointSizeState;
+    globjects::ref_ptr<globjects::State> m_normalPointSizeState;
+    globjects::ref_ptr<globjects::State> m_thickPointSizeState;
+    globjects::ref_ptr<globjects::State> m_disableRasterizerState;
+    globjects::ref_ptr<globjects::State> m_enableRasterizerState;
 };
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);

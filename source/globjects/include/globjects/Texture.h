@@ -12,7 +12,7 @@
 #include <globjects/Object.h>
 #include <globjects/TextureHandle.h>
 
-namespace glo {
+namespace globjects {
 
 class Buffer;
 
@@ -130,4 +130,4 @@ protected:
     gl::GLenum m_target;
 };
 
-} // namespace glo
+} // namespace globjects

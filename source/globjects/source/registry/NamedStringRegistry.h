@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace glo {
+namespace globjects {
 
 class NamedString;
 
@@ -24,4 +24,4 @@ protected:
     std::unordered_map<std::string, NamedString*> m_namedStrings;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -4,9 +4,9 @@
 #include <algorithm>
 #include <cctype>
 
-#include <globjects-base/AbstractStringSource.h>
-#include <globjects-base/StaticStringSource.h>
-#include <globjects-base/CompositeStringSource.h>
+#include <globjects/base/AbstractStringSource.h>
+#include <globjects/base/StaticStringSource.h>
+#include <globjects/base/CompositeStringSource.h>
 
 #include <globjects/logging.h>
 #include <globjects/globjects.h>
@@ -37,7 +37,7 @@ namespace {
     }
 }
 
-namespace glo {
+namespace globjects {
 
 IncludeProcessor::IncludeProcessor()
 {
@@ -232,4 +232,4 @@ std::string IncludeProcessor::expandPath(const std::string& include, const std::
     return endsWith(includePath, '/') ? includePath + include : includePath + "/" + include;
 }
 
-} // namespace glo
+} // namespace globjects

@@ -30,7 +30,7 @@ void deleteObject(DeleteObjectsFunction function, gl::GLuint id, bool hasOwnersh
 
 }
 
-namespace glo {
+namespace globjects {
 
 AbstractResource::AbstractResource(bool hasOwnership)
 : m_hasOwnership(hasOwnership)
@@ -187,4 +187,4 @@ VertexArrayObjectResource::~VertexArrayObjectResource()
     deleteObject(gl::glDeleteVertexArrays, id(), hasOwnership());
 }
 
-} // namespace glo
+} // namespace globjects

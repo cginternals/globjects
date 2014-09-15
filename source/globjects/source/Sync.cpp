@@ -3,7 +3,7 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 
-namespace glo
+namespace globjects
 {
 
 Sync * Sync::fence(gl::GLenum condition)
@@ -64,4 +64,4 @@ gl::GLint Sync::get(gl::GLenum pname)
     return result;
 }
 
-} // namespace glo
+} // namespace globjects

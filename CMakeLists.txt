@@ -19,10 +19,8 @@ option(OPTION_LIMIT_CONFIGS       "Generate limited configs (Release; Debug)" ON
 option(OPTION_PORTABLE_INSTALL    "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC        "Build static libraries" OFF)
 option(OPTION_BUILD_TESTS         "Build tests (if gmock and gtest are found)" ON)
-option(OPTION_BUILD_EXAMPLES      "Build examples (requires optional modules globjects-utils and globjects-window)" ON)
+option(OPTION_BUILD_EXAMPLES      "Build examples (requires GLFW)" ON)
 option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions" OFF)
-option(OPTION_BUILD_GLOBJECTS_UTILS    "Build globjects-utils (required for examples)" ON)
-option(OPTION_BUILD_GLOBJECTS_WINDOW   "Build globjects-window (required for examples)" ON)
 
 
 if(OPTION_BUILD_STATIC)
@@ -77,6 +75,13 @@ include(cmake/GitRevision.cmake)
 set(X64 OFF)
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(X64 ON)
+endif()
+
+# This policy was introduced in 3.0.0 and does not allow for COMPILER_DEFINITIONS_<Config>,
+# anymore, but instead requires generator expressions like $<CONFIG:Debug> ... 
+# For now the current compile-flag, -definitions, and linker-flags setup shall remain as is.
+if(POLICY CMP0043)
+    cmake_policy(SET CMP0043 OLD)
 endif()
 
 # Setup platform specifics (compile flags, etc., ...)

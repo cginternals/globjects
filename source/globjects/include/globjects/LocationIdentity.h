@@ -7,7 +7,7 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo {
+namespace globjects {
 
 class GLOBJECTS_API LocationIdentity
 {
@@ -35,18 +35,18 @@ protected:
     std::string m_name;
 };
 
-} // namespace glo
+} // namespace globjects
 
 namespace std {
 
 template <>
-struct hash<glo::LocationIdentity>
+struct hash<globjects::LocationIdentity>
 {
-    std::size_t operator()(const glo::LocationIdentity & identity) const
+    std::size_t operator()(const globjects::LocationIdentity & identity) const
     {
         return identity.hash();
     }
 };
 
-} // namespace glo
+} // namespace globjects
 

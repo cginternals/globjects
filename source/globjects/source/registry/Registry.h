@@ -6,7 +6,7 @@
 #include <globjects/globjects_api.h>
 #include <glbinding/ContextHandle.h>
 
-namespace glo
+namespace globjects
 {
 
 class ObjectRegistry;
@@ -18,6 +18,7 @@ class GLOBJECTS_API Registry
 {
 public:
     static void registerContext(glbinding::ContextHandle contextId);
+    static void registerContext(glbinding::ContextHandle contextId, glbinding::ContextHandle sharedContextId);
     static void deregisterContext(glbinding::ContextHandle contextId);
 
     static void setCurrentContext(glbinding::ContextHandle contextId);
@@ -32,6 +33,7 @@ public:
     bool isInitialized() const;
 private:
     Registry();
+    Registry(Registry * sharedRegistry);
     ~Registry();
 
     void initialize();
@@ -42,10 +44,10 @@ private:
     static std::unordered_map<glbinding::ContextHandle, Registry *> s_registries;
 private:
     bool m_initialized;
-    std::unique_ptr<ObjectRegistry> m_objects;
-    std::unique_ptr<ExtensionRegistry> m_extensions;
-    std::unique_ptr<ImplementationRegistry> m_implementations;
-    std::unique_ptr<NamedStringRegistry> m_namedStrings;
+    std::shared_ptr<ObjectRegistry> m_objects;
+    std::shared_ptr<ExtensionRegistry> m_extensions;
+    std::shared_ptr<ImplementationRegistry> m_implementations;
+    std::shared_ptr<NamedStringRegistry> m_namedStrings;
 };
 
-} // namespace glo
+} // namespace globjects

@@ -7,13 +7,13 @@
 
 #include <glm/fwd.hpp>
 
-#include <globjects-base/Referenced.h>
+#include <globjects/base/Referenced.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/LocationIdentity.h>
 #include <globjects/TextureHandle.h>
 
-namespace glo
+namespace globjects
 {
 
 class Program;
@@ -148,6 +148,6 @@ protected:
     void setValue(const Program * program, gl::GLint location, const std::array<T, Count> & value) const;
 };
 
-} // namespace glo
+} // namespace globjects
 
 #include <globjects/AbstractUniform.hpp>

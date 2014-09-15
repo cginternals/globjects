@@ -4,11 +4,11 @@
 #include <glbinding/gl/boolean.h>
 #include <glbinding/gl/enum.h>
 
-#include <globjects-base/StaticStringSource.h>
+#include <globjects/base/StaticStringSource.h>
 
 #include "registry/NamedStringRegistry.h"
 
-namespace glo {
+namespace globjects {
 
 NamedString * NamedString::create(const std::string & name, AbstractStringSource * source)
 {
@@ -182,4 +182,4 @@ void NamedString::notifyChanged(const Changeable *)
 }
 
 
-} // namespace glo
+} // namespace globjects

@@ -4,7 +4,7 @@
 
 #include <globjects/Renderbuffer.h>
 
-namespace glo
+namespace globjects
 {
 
 AttachedRenderbuffer::AttachedRenderbuffer(Framebuffer * fbo,  gl::GLenum attachment, Renderbuffer * renderBuffer)
@@ -28,4 +28,4 @@ const Renderbuffer * AttachedRenderbuffer::renderBuffer() const
     return m_renderBuffer;
 }
 
-} // namespace glo
+} // namespace globjects

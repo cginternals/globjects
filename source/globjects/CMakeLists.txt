@@ -21,7 +21,6 @@ include_directories(
 
 include_directories(
     BEFORE
-    ${CMAKE_SOURCE_DIR}/source/globjects-base/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -31,7 +30,6 @@ include_directories(
 
 set(libs
     ${GLBINDING_LIBRARIES}
-    globjects-base
 )
 
 #
@@ -75,9 +73,26 @@ set(sources
 	${source_path}/glbindinglogging.cpp
 	${source_path}/glmlogging.cpp
 	${source_path}/globjects.cpp
+	
+	${source_path}/base/AbstractFunctionCall.cpp
+	${source_path}/base/AbstractStringSource.cpp
+	${source_path}/base/baselogging.cpp
+	${source_path}/base/Changeable.cpp
+	${source_path}/base/ChangeListener.cpp
+	${source_path}/base/CompositeStringSource.cpp
+	${source_path}/base/ConsoleLogger.cpp
+	${source_path}/base/File.cpp
+	${source_path}/base/FileRegistry.cpp
+	${source_path}/base/FileRegistry.h
+	${source_path}/base/formatString.cpp
+	${source_path}/base/HeapOnly.cpp
+	${source_path}/base/LogMessageBuilder.cpp
+	${source_path}/base/LogMessage.cpp
+	${source_path}/base/Referenced.cpp
+	${source_path}/base/StaticStringSource.cpp
 
-    ${source_path}/implementations/AbstractBufferImplementation.cpp
-    ${source_path}/implementations/AbstractBufferImplementation.h
+	${source_path}/implementations/AbstractBufferImplementation.cpp
+	${source_path}/implementations/AbstractBufferImplementation.h
 
 	${source_path}/implementations/AbstractObjectNameImplementation.h
 	${source_path}/implementations/AbstractObjectNameImplementation.cpp
@@ -228,6 +243,34 @@ set(api_includes
 	${include_path}/Uniform.hpp
 	${include_path}/VertexArray.h
 	${include_path}/VertexAttributeBinding.h
+	
+	${include_path}/base/AbstractStringSource.h
+	${include_path}/base/AbstractFunctionCall.h
+	${include_path}/base/AbstractLogHandler.h
+	${include_path}/base/baselogging.h
+	${include_path}/base/baselogging.hpp
+	${include_path}/base/CachedValue.h
+	${include_path}/base/CachedValue.hpp
+	${include_path}/base/Changeable.h
+	${include_path}/base/ChangeListener.h
+	${include_path}/base/CompositeStringSource.h
+	${include_path}/base/ConsoleLogger.h
+	${include_path}/base/container_helpers.hpp
+	${include_path}/base/File.h
+	${include_path}/base/formatString.h
+	${include_path}/base/formatString.hpp
+	${include_path}/base/FunctionCall.h
+	${include_path}/base/FunctionCall.hpp
+	${include_path}/base/HeapOnly.h
+	${include_path}/base/LogMessageBuilder.h
+	${include_path}/base/LogMessageBuilder.hpp
+	${include_path}/base/LogMessage.h
+	${include_path}/base/Referenced.h
+	${include_path}/base/ref_ptr.h
+	${include_path}/base/ref_ptr.hpp
+	${include_path}/base/Singleton.h
+	${include_path}/base/Singleton.hpp
+	${include_path}/base/StaticStringSource.h
 )
 
 # Group source files

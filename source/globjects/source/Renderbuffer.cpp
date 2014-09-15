@@ -7,7 +7,7 @@
 
 #include "Resource.h"
 
-namespace glo
+namespace globjects
 {
 
 Renderbuffer::Renderbuffer()
@@ -74,4 +74,4 @@ gl::GLenum Renderbuffer::objectType() const
     return gl::GL_RENDERBUFFER;
 }
 
-} // namespace glo
+} // namespace globjects

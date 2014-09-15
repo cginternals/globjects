@@ -4,7 +4,7 @@
 
 #include <globjects/DebugMessage.h>
 
-namespace glo 
+namespace globjects 
 {
 
 class AbstractDebugImplementation
@@ -36,4 +36,4 @@ protected:
     virtual void handleMessage(const DebugMessage & message) const;
 };
 
-} // namespace glo
+} // namespace globjects

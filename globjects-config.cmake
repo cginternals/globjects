@@ -4,25 +4,10 @@
 # GLOBJECTS_LIBRARIES
 # GLOBJECTS_INCLUDES
 
-# GLOBJECTS_BASE_LIBRARY
-# GLOBJECTS_BASE_LIBRARY_RELEASE
-# GLOBJECTS_BASE_LIBRARY_DEBUG
-# GLOBJECTS_BASE_INCLUDE_DIR
-
-# GLOBJECTS_CORE_LIBRARY
-# GLOBJECTS_CORE_LIBRARY_RELEASE
-# GLOBJECTS_CORE_LIBRARY_DEBUG
-# GLOBJECTS_CORE_INCLUDE_DIR
-
-# GLOBJECTS_UTILS_LIBRARY
-# GLOBJECTS_UTILS_LIBRARY_RELEASE
-# GLOBJECTS_UTILS_LIBRARY_DEBUG
-# GLOBJECTS_UTILS_INCLUDE_DIR
-
-# GLOBJECTS_WINDOW_LIBRARY
-# GLOBJECTS_WINDOW_LIBRARY_RELEASE
-# GLOBJECTS_WINDOW_LIBRARY_DEBUG
-# GLOBJECTS_WINDOW_INCLUDE_DIR
+# GLOBJECTS_LIBRARY
+# GLOBJECTS_LIBRARY_RELEASE
+# GLOBJECTS_LIBRARY_DEBUG
+# GLOBJECTS_INCLUDE_DIR
 
 include(FindPackageHandleStandardArgs)
 
@@ -55,51 +40,16 @@ set(LIB_PATHS
     /opt/local/lib64
 )
 
-macro (LIST_CONTAINS var value)
-    set (${var} FALSE)
-    string(TOUPPER ${value} VALUE_UPPER)
-    foreach (value2 ${ARGN})
-        string(TOUPPER ${value2} VALUE2_UPPER)
-        if (${VALUE_UPPER} STREQUAL ${VALUE2_UPPER})
-            set (${var} TRUE)
-        endif ()
-    endforeach ()
-endmacro ()
-
-if (globjects_FIND_COMPONENTS)
-    LIST_CONTAINS(INCLUDE_GLOBJECTS_BASE base ${globjects_FIND_COMPONENTS})
-    LIST_CONTAINS(INCLUDE_GLOBJECTS_CORE core ${globjects_FIND_COMPONENTS})
-    LIST_CONTAINS(INCLUDE_GLOBJECTS_UTILS utils ${globjects_FIND_COMPONENTS})
-    LIST_CONTAINS(INCLUDE_GLOBJECTS_WINDOW window ${globjects_FIND_COMPONENTS})
-else ()
-    set (INCLUDE_GLOBJECTS_BASE FALSE)
-    set (INCLUDE_GLOBJECTS_CORE FALSE)
-    set (INCLUDE_GLOBJECTS_UTILS FALSE)
-    set (INCLUDE_GLOBJECTS_WINDOW FALSE)
-endif ()
-
-if (NOT ${INCLUDE_GLOBJECTS_BASE} AND NOT ${INCLUDE_GLOBJECTS_CORE} AND NOT ${INCLUDE_GLOBJECTS_UTILS} AND NOT ${INCLUDE_GLOBJECTS_WINDOW})
-    message (WARNING "No components for globjects selected")
-    
-    return()
-endif ()
-
 macro (find LIB_NAME HEADER)
     set(HINT_PATHS ${ARGN})
-
-    if (${LIB_NAME} STREQUAL "globjects")
-        set(LIB_NAME_UPPER GLOBJECTS_CORE)
-        set(LIBNAME globjects)
-    else()
-        string(TOUPPER GLOBJECTS_${LIB_NAME} LIB_NAME_UPPER)
-        set(LIBNAME "globjects-${LIB_NAME}")
-    endif()
     
+    string(TOUPPER ${LIB_NAME} LIB_NAME_UPPER)
+
     find_path(${LIB_NAME_UPPER}_INCLUDE_DIR ${HEADER}
         ${ENVGLOBJECTS_DIR}/include
-        ${ENVGLOBJECTS_DIR}/source/${LIBNAME}/include
+        ${ENVGLOBJECTS_DIR}/source/${LIB_NAME}/include
         ${GLOBJECTS_DIR}/include
-        ${GLOBJECTS_DIR}/source/${LIBNAME}/include
+        ${GLOBJECTS_DIR}/source/${LIB_NAME}/include
         ${ENVPROGRAMFILES}/globjects/include
         /usr/include
         /usr/local/include
@@ -108,11 +58,11 @@ macro (find LIB_NAME HEADER)
         DOC "The directory where ${header} resides")
 
     find_library(${LIB_NAME_UPPER}_LIBRARY_RELEASE
-        NAMES ${LIBNAME}
+        NAMES ${LIB_NAME}
         PATHS ${HINT_PATHS}
         DOC "The ${LIB_NAME} library")
     find_library(${LIB_NAME_UPPER}_LIBRARY_DEBUG
-        NAMES ${LIBNAME}d
+        NAMES ${LIB_NAME}d
         PATHS ${HINT_PATHS}
         DOC "The ${LIB_NAME} debug library")
     
@@ -134,53 +84,12 @@ macro (find LIB_NAME HEADER)
     list(APPEND GLOBJECTS_LIBRARIES ${${LIB_NAME_UPPER}_LIBRARY})
 endmacro()
 
-if (${INCLUDE_GLOBJECTS_WINDOW})
-    set (INCLUDE_GLOBJECTS_BASE TRUE)
-endif ()
-if (${INCLUDE_GLOBJECTS_UTILS})
-    set (INCLUDE_GLOBJECTS_CORE TRUE)
-endif ()
-if (${INCLUDE_GLOBJECTS_CORE})
-    set (INCLUDE_GLOBJECTS_BASE TRUE)
-endif ()
-
-if (${INCLUDE_GLOBJECTS_BASE})
-    find(base      globjects-base/globjects-base_api.h     ${LIB_PATHS})
-endif ()
-if (${INCLUDE_GLOBJECTS_CORE})
-    find(globjects globjects/globjects_api.h               ${LIB_PATHS})
-endif ()
-if (${INCLUDE_GLOBJECTS_UTILS})
-    find(utils     globjects-utils/globjects-utils_api.h   ${LIB_PATHS})
-endif ()
-if (${INCLUDE_GLOBJECTS_WINDOW})
-    find(window    globjects-window/globjects-window_api.h ${LIB_PATHS})
-endif ()
+find(globjects globjects/globjects_api.h ${LIB_PATHS})
 
 # add dependencies
-if (${INCLUDE_GLOBJECTS_CORE})
-    if(NOT GLOBJECTS_BASE_LIBRARY)
-        message(WARNING "Required globjects-base not found")
-    endif()
-    
-    find_package(glbinding REQUIRED)
-    list(APPEND GLOBJECTS_INCLUDES ${GLBINDING_INCLUDES})
-    list(APPEND GLOBJECTS_LIBRARIES ${GLBINDING_LIBRARIES})
-endif ()
-if (${INCLUDE_GLOBJECTS_UTILS})
-    if(NOT GLOBJECTS_CORE_LIBRARY)
-        message(WARNING "Required globjects-core not found")
-    endif()
-endif ()
-if (${INCLUDE_GLOBJECTS_WINDOW})
-    if(NOT GLOBJECTS_BASE_LIBRARY)
-        message(WARNING "Required globjects-base not found")
-    endif()
-
-    find_package(GLFW REQUIRED)
-    list(APPEND GLOBJECTS_INCLUDES ${GLFW_INCLUDE_DIR})
-    list(APPEND GLOBJECTS_LIBRARIES ${GLFW_LIBRARY})
-endif ()
+find_package(glbinding REQUIRED)
+list(APPEND GLOBJECTS_INCLUDES ${GLBINDING_INCLUDES})
+list(APPEND GLOBJECTS_LIBRARIES ${GLBINDING_LIBRARIES})
 
 # DEBUG
 # message("GLOBJECTS_INCLUDES  = ${GLOBJECTS_INCLUDES}")

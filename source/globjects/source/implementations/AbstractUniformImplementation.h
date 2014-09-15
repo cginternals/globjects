@@ -8,7 +8,7 @@
 #include <globjects/AbstractUniform.h>
 
 
-namespace glo
+namespace globjects
 {
 
 class Program;
@@ -83,4 +83,4 @@ public:
     virtual void set(const Program * program, gl::GLint location, const std::vector<TextureHandle> & value) const = 0;
 };
 
-} // namespace glo
+} // namespace globjects

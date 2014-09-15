@@ -7,11 +7,11 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/boolean.h>
 
-#include <globjects-base/ref_ptr.h>
+#include <globjects/base/ref_ptr.h>
 #include <glbinding/Version.h>
-#include <globjects-base/AbstractStringSource.h>
-#include <globjects-base/StaticStringSource.h>
-#include <globjects-base/File.h>
+#include <globjects/base/AbstractStringSource.h>
+#include <globjects/base/StaticStringSource.h>
+#include <globjects/base/File.h>
 
 #include <globjects/Program.h>
 #include <globjects/logging.h>
@@ -27,14 +27,14 @@
 namespace
 {
 
-const glo::AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation()
+const globjects::AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation()
 {
-    return glo::ImplementationRegistry::current().shadingLanguageIncludeImplementation();
+    return globjects::ImplementationRegistry::current().shadingLanguageIncludeImplementation();
 }
 
 }
 
-namespace glo
+namespace globjects
 {
 void Shader::hintIncludeImplementation(const IncludeImplementation impl)
 {
@@ -254,4 +254,4 @@ gl::GLenum Shader::objectType() const
     return gl::GL_SHADER;
 }
 
-} // namespace glo
+} // namespace globjects

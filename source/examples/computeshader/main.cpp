@@ -1,6 +1,4 @@
 
-
-
 #include <algorithm>
 #include <random>
 
@@ -24,21 +22,20 @@
 #include <globjects/Texture.h>
 #include <globjects/globjects.h>
 
-#include <globjects-base/File.h>
-#include <globjects-base/File.h>
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/globjects-utils.h>
+#include <globjects/base/File.h>
+#include <globjects/base/File.h>
+#include <common/ScreenAlignedQuad.h>
 
-#include <globjects-window/Context.h>
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <common/Context.h>
+#include <common/ContextFormat.h>
+#include <common/Window.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
 
-using namespace glowindow;
+
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -60,11 +57,11 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
-        if (!glo::hasExtension(gl::GLextension::GL_ARB_compute_shader))
+        if (!globjects::hasExtension(gl::GLextension::GL_ARB_compute_shader))
         {
-            glo::critical() << "Compute shaders are not supported";
+            globjects::critical() << "Compute shaders are not supported";
 
             window.close();
 
@@ -114,14 +111,14 @@ public:
     virtual void keyReleaseEvent(KeyEvent & event) override
     {
         if (GLFW_KEY_F5 == event.key())
-            glo::File::reloadAll();
+            globjects::File::reloadAll();
     }
 
 protected:
-    glo::ref_ptr<glo::Texture> m_texture;
+    globjects::ref_ptr<globjects::Texture> m_texture;
 
-    glo::ref_ptr<glo::Program> m_computeProgram;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
+    globjects::ref_ptr<globjects::Program> m_computeProgram;
+    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
 
     unsigned int m_frame;
 };
@@ -131,11 +128,11 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 3);
@@ -161,7 +158,7 @@ int main(int /*argc*/, char* /*argv*/[])
 
 void EventHandler::createAndSetupTexture()
 {
-    m_texture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
+    m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 
     m_texture->image2D(0, gl::GL_R32F, 512, 512, 0, gl::GL_RED, gl::GL_FLOAT, nullptr);
     m_texture->bindImageTexture(0, 0, gl::GL_FALSE, 0, gl::GL_WRITE_ONLY, gl::GL_R32F);
@@ -169,14 +166,14 @@ void EventHandler::createAndSetupTexture()
 
 void EventHandler::createAndSetupShaders()
 {
-    m_computeProgram = new glo::Program();
-    m_computeProgram->attach(glo::Shader::fromFile(gl::GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+    m_computeProgram = new globjects::Program();
+    m_computeProgram->attach(globjects::Shader::fromFile(gl::GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
 
     m_computeProgram->setUniform("destTex", 0);
 }
 
 void EventHandler::createAndSetupGeometry()
 {
-    m_quad = new gloutils::ScreenAlignedQuad(m_texture);
+    m_quad = new ScreenAlignedQuad(m_texture);
     m_quad->setSamplerUniform(0);
 }

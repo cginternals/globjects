@@ -6,8 +6,8 @@
 
 #include <globjects/globjects_api.h>
 
-namespace glo {
+namespace globjects {
 
 GLOBJECTS_API std::string enumName(gl::GLenum param);
 	
-} // namespace glo
+} // namespace globjects

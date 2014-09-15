@@ -22,28 +22,26 @@
 #include <globjects/DebugMessage.h>
 #include <globjects/globjects.h>
 
-#include <globjects-base/File.h>
+#include <globjects/base/File.h>
 
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-utils/globjects-utils.h>
-#include <globjects-utils/Camera.h>
-#include <globjects-utils/AxisAlignedBoundingBox.h>
-#include <globjects-utils/AdaptiveGrid.h>
-#include <globjects-utils/AbstractCoordinateProvider.h>
-#include <globjects-utils/WorldInHandNavigation.h>
-#include <globjects-utils/VertexDrawable.h>
+#include <common/ScreenAlignedQuad.h>
+#include <common/Camera.h>
+#include <common/AxisAlignedBoundingBox.h>
+#include <common/AbstractCoordinateProvider.h>
+#include <common/WorldInHandNavigation.h>
+#include <common/VertexDrawable.h>
 
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Context.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <common/ContextFormat.h>
+#include <common/Context.h>
+#include <common/Window.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-using namespace glowindow;
 
-class EventHandler : public ExampleWindowEventHandler, gloutils::AbstractCoordinateProvider
+
+class EventHandler : public ExampleWindowEventHandler, AbstractCoordinateProvider
 {
 public:
     struct Vertex
@@ -58,7 +56,7 @@ public:
         m_aabb.extend(glm::vec3(-8.f, -1.f, -8.f));
         m_aabb.extend(glm::vec3(8.f, 1.f, 8.f));
 
-        m_camera = gloutils::Camera(glm::vec3(0.0, 1.0, -1.0)*2.f, glm::vec3(), glm::vec3(0.0, 1.0, 0.0));
+        m_camera = Camera(glm::vec3(0.0, 1.0, -1.0)*2.f, glm::vec3(), glm::vec3(0.0, 1.0, 0.0));
 
         m_nav.setCamera(&m_camera);
         m_nav.setCoordinateProvider(this);
@@ -76,31 +74,31 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
-        if (!glo::hasExtension(gl::GLextension::GL_NV_bindless_texture))
+        if (!globjects::hasExtension(gl::GLextension::GL_NV_bindless_texture))
         {
-            glo::critical() << "Blindess textures are not supported";
+            globjects::critical() << "Blindess textures are not supported";
 
             window.close();
 
             return;
         }
 
-        glo::ref_ptr<glo::State> state = new glo::State;
+        globjects::ref_ptr<globjects::State> state = new globjects::State;
         state->enable(gl::GL_CULL_FACE);
         state->clearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         createGeometry();
         createTextures();
 
-        m_program = new glo::Program;
+        m_program = new globjects::Program;
         m_program->attach(
-            glo::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/bindless-textures/shader.vert"),
-            glo::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag")
+            globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/bindless-textures/shader.vert"),
+            globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag")
         );
 
-        std::array<glo::TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
+        std::array<globjects::TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
         for (unsigned i = 0; i < m_textures.size(); ++i)
         {
             handles[i] = m_textures[i]->makeResident();
@@ -141,7 +139,7 @@ public:
     virtual void keyPressEvent(KeyEvent & event) override
     {
         if (event.key()==GLFW_KEY_F5)
-            glo::File::reloadAll();
+            globjects::File::reloadAll();
         else if (event.key()==GLFW_KEY_SPACE)
         {
             m_nav.reset();
@@ -168,12 +166,12 @@ public:
     {
         switch (m_nav.mode())
         {
-            case gloutils::WorldInHandNavigation::PanInteraction:
+            case WorldInHandNavigation::PanInteraction:
                 m_nav.panProcess(event.pos());
                 event.accept();
                 break;
 
-            case gloutils::WorldInHandNavigation::RotateInteraction:
+            case WorldInHandNavigation::RotateInteraction:
                 m_nav.rotateProcess(event.pos());
                 event.accept();
 
@@ -199,7 +197,7 @@ public:
 
     virtual void scrollEvent(ScrollEvent & event) override
     {
-        if (gloutils::WorldInHandNavigation::NoInteraction != m_nav.mode())
+        if (WorldInHandNavigation::NoInteraction != m_nav.mode())
             return;
 
         m_nav.scaleAtMouse(event.pos(), -event.offset().y * 0.1f);
@@ -230,14 +228,14 @@ public:
     }
 
 protected:
-    gloutils::Camera m_camera;
+    Camera m_camera;
 
-    gloutils::WorldInHandNavigation m_nav;
-    gloutils::AxisAlignedBoundingBox m_aabb;
+    WorldInHandNavigation m_nav;
+    AxisAlignedBoundingBox m_aabb;
 
-    std::array<glo::ref_ptr<glo::Texture>, 4> m_textures;
-    glo::ref_ptr<glo::Program> m_program;
-    glo::ref_ptr<gloutils::VertexDrawable> m_drawable;
+    std::array<globjects::ref_ptr<globjects::Texture>, 4> m_textures;
+    globjects::ref_ptr<globjects::Program> m_program;
+    globjects::ref_ptr<VertexDrawable> m_drawable;
 };
 
 
@@ -245,15 +243,15 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    glo::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-    glo::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    glo::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-    glo::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    globjects::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+    globjects::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+    globjects::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+    globjects::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
 
     ContextFormat format;
     format.setVersion(3, 0);
@@ -287,7 +285,7 @@ void EventHandler::createTextures()
 
     for (unsigned i = 0; i < m_textures.size(); ++i)
     {
-        glo::Texture* texture = glo::Texture::createDefault(gl::GL_TEXTURE_2D);
+        globjects::Texture* texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
 
         static const int w = 512;
         static const int h = 512;
@@ -336,12 +334,12 @@ void EventHandler::createGeometry()
         Vertex{ points[1], glm::vec2(0.5, 1.0), 3 }
     } };
 
-    m_drawable = new gloutils::VertexDrawable(vertices, gl::GL_TRIANGLE_STRIP);
+    m_drawable = new VertexDrawable(vertices, gl::GL_TRIANGLE_STRIP);
 
     m_drawable->setFormats({
-        gloutils::Format(3, gl::GL_FLOAT, offsetof(Vertex, position)),
-        gloutils::Format(2, gl::GL_FLOAT, offsetof(Vertex, texCoord)),
-        gloutils::FormatI(1, gl::GL_INT, offsetof(Vertex, side))
+        Format(3, gl::GL_FLOAT, offsetof(Vertex, position)),
+        Format(2, gl::GL_FLOAT, offsetof(Vertex, texCoord)),
+        FormatI(1, gl::GL_INT, offsetof(Vertex, side))
     });
     m_drawable->enableAll();
 }

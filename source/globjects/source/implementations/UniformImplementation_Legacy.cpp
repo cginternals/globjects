@@ -11,7 +11,7 @@
 
 using namespace gl;
 
-namespace glo
+namespace globjects
 {
 
 void UniformImplementation_Legacy::set(const Program * program, const GLint location, const float & value) const
@@ -296,4 +296,4 @@ void UniformImplementation_Legacy::set(const Program * program, const GLint loca
     glUniformHandleui64vARB(location, static_cast<GLint>(value.size()), value.data());
 }
 
-} // namespace glo
+} // namespace globjects

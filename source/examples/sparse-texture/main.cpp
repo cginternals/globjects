@@ -9,16 +9,14 @@
 #include <globjects/Texture.h>
 #include <globjects/DebugMessage.h>
 
-#include <globjects-utils/ScreenAlignedQuad.h>
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Context.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <common/ScreenAlignedQuad.h>
+#include <common/ContextFormat.h>
+#include <common/Context.h>
+#include <common/Window.h>
+#include <common/WindowEventHandler.h>
+#include <common/events.h>
 
 #include <ExampleWindowEventHandler.h>
-
-using namespace glowindow;
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -42,7 +40,7 @@ public:
     {
         ExampleWindowEventHandler::initialize(window);
 
-        glo::DebugMessage::enable();
+        globjects::DebugMessage::enable();
 
         gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -77,8 +75,8 @@ public:
     }
 
 protected:
-    glo::ref_ptr<glo::Texture> m_texture;
-    glo::ref_ptr<gloutils::ScreenAlignedQuad> m_quad;
+    globjects::ref_ptr<globjects::Texture> m_texture;
+    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
     glm::ivec2 m_textureSize;
     glm::ivec2 m_pageSize;
     glm::ivec2 m_numPages;
@@ -94,10 +92,10 @@ protected:
  */
 int main(int /*argc*/, char* /*argv*/[])
 {
-    glo::info() << "Usage:";
-    glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "Usage:";
+    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);
@@ -125,30 +123,30 @@ void EventHandler::createAndSetupTexture()
     // Get available page sizes
     int numPageSizes;
     gl::glGetInternalformativ(gl::GL_TEXTURE_2D, gl::GL_RGBA8, gl::GL_NUM_VIRTUAL_PAGE_SIZES_ARB, sizeof(int), &numPageSizes);
-    glo::info("gl::GL_NUM_VIRTUAL_PAGE_SIZES_ARB = %d;", numPageSizes);
+    globjects::info("gl::GL_NUM_VIRTUAL_PAGE_SIZES_ARB = %d;", numPageSizes);
     if (numPageSizes == 0) {
-        glo::fatal("Sparse Texture not supported for gl::GL_RGBA8");
+        globjects::fatal("Sparse Texture not supported for gl::GL_RGBA8");
         return;
     }
 
     std::vector<int> pageSizesX(numPageSizes);
     gl::glGetInternalformativ(gl::GL_TEXTURE_2D, gl::GL_RGBA8, gl::GL_VIRTUAL_PAGE_SIZE_X_ARB, static_cast<gl::GLsizei>(numPageSizes * sizeof(int)), pageSizesX.data());
     for (int i = 0; i < numPageSizes; ++i) {
-        glo::info("gl::GL_VIRTUAL_PAGE_SIZE_X_ARB[%;] = %;", i, pageSizesX[i]);
+        globjects::info("gl::GL_VIRTUAL_PAGE_SIZE_X_ARB[%;] = %;", i, pageSizesX[i]);
     }
 
 
     std::vector<int> pageSizesY(numPageSizes);
     gl::glGetInternalformativ(gl::GL_TEXTURE_2D, gl::GL_RGBA8, gl::GL_VIRTUAL_PAGE_SIZE_Y_ARB, static_cast<gl::GLsizei>(numPageSizes * sizeof(int)), pageSizesY.data());
     for (int i = 0; i < numPageSizes; ++i) {
-        glo::info("gl::GL_VIRTUAL_PAGE_SIZE_Y_ARB[%;] = %;", i, pageSizesY[i]);
+        globjects::info("gl::GL_VIRTUAL_PAGE_SIZE_Y_ARB[%;] = %;", i, pageSizesY[i]);
     }
 
 
     std::vector<int> pageSizesZ(numPageSizes);
     gl::glGetInternalformativ(gl::GL_TEXTURE_2D, gl::GL_RGBA8, gl::GL_VIRTUAL_PAGE_SIZE_Z_ARB, static_cast<gl::GLsizei>(numPageSizes * sizeof(int)), pageSizesZ.data());
     for (int i = 0; i < numPageSizes; ++i) {
-        glo::info("gl::GL_VIRTUAL_PAGE_SIZE_Z_ARB[%;] = %;", i, pageSizesZ[i]);
+        globjects::info("gl::GL_VIRTUAL_PAGE_SIZE_Z_ARB[%;] = %;", i, pageSizesZ[i]);
     }
 
 
@@ -159,10 +157,10 @@ void EventHandler::createAndSetupTexture()
     // Get maximum sparse texture size
     int maxSparseTextureSize;
     gl::glGetIntegerv(gl::GL_MAX_SPARSE_TEXTURE_SIZE_ARB, &maxSparseTextureSize);
-    glo::info("gl::GL_MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
+    globjects::info("gl::GL_MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
 
 
-	m_texture = new glo::Texture(gl::GL_TEXTURE_2D);
+	m_texture = new globjects::Texture(gl::GL_TEXTURE_2D);
 
     // make texture sparse
     m_texture->setParameter(gl::GL_TEXTURE_SPARSE_ARB, static_cast<gl::GLint>(gl::GL_TRUE));
@@ -182,7 +180,7 @@ void EventHandler::createAndSetupTexture()
 
 void EventHandler::createAndSetupGeometry()
 {
-	m_quad = new gloutils::ScreenAlignedQuad(m_texture);
+	m_quad = new ScreenAlignedQuad(m_texture);
     m_quad->setSamplerUniform(0);
 }
 

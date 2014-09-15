@@ -2,12 +2,12 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects-base/Singleton.h>
+#include <globjects/base/Singleton.h>
 
 #include "AbstractDebugImplementation.h"
 
 
-namespace glo 
+namespace globjects 
 {
 
 class DebugImplementation_DebugKHR : public AbstractDebugImplementation
@@ -29,4 +29,4 @@ protected:
     static void GL_APIENTRY debugMessageCallback(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message, const void * param);
 };
 
-} // namespace glo
+} // namespace globjects

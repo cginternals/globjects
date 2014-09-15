@@ -16,7 +16,7 @@
 
 using namespace gl;
 
-namespace glo 
+namespace globjects 
 {
 
 DebugMessage::Callback AbstractDebugImplementation::s_defaultCallback = [](const DebugMessage & message) 
@@ -72,4 +72,4 @@ void AbstractDebugImplementation::handleMessage(const DebugMessage & message) co
     m_messageCallback(message);
 }
 
-} // namespace glo
+} // namespace globjects
