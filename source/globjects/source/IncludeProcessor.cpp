@@ -105,7 +105,7 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                         // #extension GL_ARB_shading_language_include : require
                         if (contains(trimmedLine, "GL_ARB_shading_language_include"))
                         {
-                            destinationstream << "/*" << trimmedLine.substr(trimmedLine.find("GL_ARB_shading_language_include"), std::string("GL_ARB_shading_language_include").size()) << "*/" << trimmedLine.substr(trimmedLine.find("GL_ARB_shading_language_include") + std::string("GL_ARB_shading_language_include").size()) << '\n';
+                            destinationstream << "//" << trimmedLine << '\n';
                         }
                         else
                         {
