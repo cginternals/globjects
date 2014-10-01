@@ -14,8 +14,8 @@ struct Format
     enum Method
     {
         O = 0
-        , I = 1
-        , L = 2
+    ,   I = 1
+    ,   L = 2
     };
 
     Format()
@@ -52,7 +52,8 @@ struct BindingData {
     bool m_hasAttribute;
 };
 
-namespace globjects {
+namespace globjects 
+{
 
 VertexAttributeBindingImplementation_Legacy::VertexAttributeBindingImplementation_Legacy()
 {

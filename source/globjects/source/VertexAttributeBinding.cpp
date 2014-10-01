@@ -10,7 +10,8 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
-namespace {
+namespace 
+{
     globjects::AbstractVertexAttributeBindingImplementation & attributeImplementation()
     {
         return globjects::ImplementationRegistry::current().attributeImplementation();
@@ -27,6 +28,7 @@ VertexAttributeBinding::VertexAttributeBinding(
 , m_bindingIndex(bindingIndex)
 , m_attributeIndex(0)
 , m_vbo(nullptr)
+, m_bindingData(nullptr)
 {
     assert(vao != nullptr);
 

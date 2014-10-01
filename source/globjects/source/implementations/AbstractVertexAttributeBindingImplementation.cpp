@@ -13,7 +13,8 @@
 
 using namespace gl;
 
-namespace globjects {
+namespace globjects 
+{
 
 AbstractVertexAttributeBindingImplementation::AbstractVertexAttributeBindingImplementation()
 {
