@@ -16,6 +16,9 @@
 
 #include <common/StringTemplate.h>
 
+
+using namespace gl;
+using namespace glm;
 using namespace globjects;
 
 const char * ScreenAlignedQuad::s_defaultVertexShaderSource = R"(
@@ -32,7 +35,7 @@ void main()
 }
 )";
 
-const char* ScreenAlignedQuad::s_defaultFagmentShaderSource = R"(
+const char * ScreenAlignedQuad::s_defaultFagmentShaderSource = R"(
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
 
@@ -58,19 +61,18 @@ ScreenAlignedQuad::ScreenAlignedQuad(
 ,   m_samplerIndex(0)
 {
     
-    StringTemplate* vertexShaderSource = new StringTemplate(new StaticStringSource(s_defaultVertexShaderSource));
-    StringTemplate* fragmentShaderSource = new StringTemplate(new StaticStringSource(s_defaultFagmentShaderSource));
-    
+    StringTemplate * vertexShaderSource   = new StringTemplate(new StaticStringSource(s_defaultVertexShaderSource));
+    StringTemplate * fragmentShaderSource = new StringTemplate(new StaticStringSource(s_defaultFagmentShaderSource));
     
 #ifdef MAC_OS
     vertexShaderSource->replace("#version 140", "#version 150");
     fragmentShaderSource->replace("#version 140", "#version 150");
 #endif
     
-    m_vertexShader   = new Shader(gl::GL_VERTEX_SHADER, vertexShaderSource);
+    m_vertexShader   = new Shader(GL_VERTEX_SHADER, vertexShaderSource);
     
     if (!m_fragmentShader)
-        m_fragmentShader = new Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource);
+        m_fragmentShader = new Shader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 
     m_program->attach(m_vertexShader, m_fragmentShader);
 
@@ -104,21 +106,17 @@ void ScreenAlignedQuad::initialize()
 	// By default, counterclockwise polygons are taken to be front-facing.
 	// http://www.opengl.org/sdk/docs/man/xhtml/glFrontFace.xml
 
-    static const std::array<glm::vec2, 4> raw{{
-		glm::vec2( +1.f, -1.f )
-	,	glm::vec2( +1.f, +1.f )
-	,	glm::vec2( -1.f, -1.f )
-	,	glm::vec2( -1.f, +1.f )
-    }};
+    static const std::array<vec2, 4> raw { { vec2(+1.f,-1.f), vec2(+1.f,+1.f), vec2(-1.f,-1.f), vec2(-1.f,+1.f) } };
 
     m_vao = new VertexArray;
+
     m_buffer = new Buffer();
-    m_buffer->setData(raw, gl::GL_STATIC_DRAW); //needed for some drivers
+    m_buffer->setData(raw, GL_STATIC_DRAW); //needed for some drivers
 
 	auto binding = m_vao->binding(0);
 	binding->setAttribute(0);
-	binding->setBuffer(m_buffer, 0, sizeof(glm::vec2));
-	binding->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
+	binding->setBuffer(m_buffer, 0, sizeof(vec2));
+	binding->setFormat(2, GL_FLOAT, GL_FALSE, 0);
 	m_vao->enable(0);
 
     setSamplerUniform(0);
@@ -128,14 +126,12 @@ void ScreenAlignedQuad::draw()
 {
     if (m_texture)
 	{
-        gl::glActiveTexture(gl::GL_TEXTURE0 + m_samplerIndex);
-
-
+        glActiveTexture(GL_TEXTURE0 + m_samplerIndex);
         m_texture->bind();
 	}
 
     m_program->use();
-    m_vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
+    m_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
     m_program->release();
 
 	if (m_texture)

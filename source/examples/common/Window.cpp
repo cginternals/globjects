@@ -1,7 +1,10 @@
 #include <common/Window.h>
 
 #include <cassert>
+#include <iostream>
 
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -14,9 +17,10 @@
 
 #include <common/WindowEventDispatcher.h>
 
-std::set<Window*> Window::s_instances;
 
-const std::set<Window*>& Window::instances()
+std::set<Window *> Window::s_instances;
+
+const std::set<Window *> & Window::instances()
 {
     return s_instances;
 }
@@ -168,6 +172,13 @@ bool Window::createContext(const ContextFormat & format, int width, int height, 
 
         return false;
     }
+
+    m_context->makeCurrent();
+    std::cout << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
+    m_context->doneCurrent();
 
     return true;
 }

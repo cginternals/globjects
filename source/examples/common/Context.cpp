@@ -2,9 +2,12 @@
 
 #include <cassert>
 
-#include <globjects/base/baselogging.h>
+#include <glbinding/Binding.h>
 #include <glbinding/Version.h>
 
+#include <globjects/base/baselogging.h>
+
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
 
@@ -62,9 +65,8 @@ bool Context::create(const ContextFormat & format, const int width, const int he
     }
 
     makeCurrent();
-
+    glbinding::Binding::initialize(false);
     glfwSwapInterval(m_swapInterval);
-
     doneCurrent();
 
     // TODO: gather actual context format information and verify
@@ -118,7 +120,6 @@ void Context::prepareFormat(const ContextFormat & format)
     }
   
 #endif
-
 
     glfwWindowHint(GLFW_DEPTH_BITS, format.depthBufferSize());
     glfwWindowHint(GLFW_STENCIL_BITS, format.stencilBufferSize());

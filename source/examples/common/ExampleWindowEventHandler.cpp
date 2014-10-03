@@ -8,6 +8,9 @@
 #include <sstream>
 #include <iomanip>
 
+
+using namespace gl;
+
 ExampleWindowEventHandler::ExampleWindowEventHandler()
 :   m_swapElapsedTime(0.0)
 ,   m_swapCount(0)
@@ -32,20 +35,20 @@ void ExampleWindowEventHandler::handleEvent(WindowEvent & event)
 
     switch (event.type())
     {
-        case WindowEvent::FrameBufferResize:
-            setViewport(static_cast<ResizeEvent&>(event));
-            break;
+    case WindowEvent::FrameBufferResize:
+        setViewport(static_cast<ResizeEvent&>(event));
+        break;
 
-        case WindowEvent::Paint:
-            computeFps(static_cast<PaintEvent&>(event));
-            break;
+    case WindowEvent::Paint:
+        computeFps(static_cast<PaintEvent&>(event));
+        break;
 
-        case WindowEvent::KeyPress:
-            handleDefaultKeys(static_cast<KeyEvent&>(event));
-            break;
+    case WindowEvent::KeyPress:
+        handleDefaultKeys(static_cast<KeyEvent&>(event));
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -54,39 +57,38 @@ void ExampleWindowEventHandler::setViewport(ResizeEvent & event)
     gl::glViewport(0, 0, event.width(), event.height());
 }
 
-namespace {
-
-bool startsWith(const std::string & str, const std::string str2)
+namespace 
 {
-    return str.compare(0, str2.length(), str2) == 0;
-}
+
+    bool startsWith(const std::string & str, const std::string str2)
+    {
+        return str.compare(0, str2.length(), str2) == 0;
+    }
 
 }
 
 void ExampleWindowEventHandler::computeFps(PaintEvent & event)
 {
-       m_timer.update();
+    m_timer.update();
 
-       ++m_swapCount;
+    ++m_swapCount;
 
-       if (m_timer.elapsed().count() - m_swapElapsedTime >= 1e+9)
-       {
-           const float fps = 1e+9f * static_cast<float>(static_cast<long double>(m_swapCount) / (m_timer.elapsed().count() - m_swapElapsedTime));
+    if (m_timer.elapsed().count() - m_swapElapsedTime >= 1e+9)
+    {
+        const float fps = 1e+9f * static_cast<float>(static_cast<long double>(m_swapCount) / (m_timer.elapsed().count() - m_swapElapsedTime));
 
-           std::string title = event.window()->title();
-           if (!startsWith(title, m_baseTitle) || m_baseTitle.length() == 0)
-           {
-               m_baseTitle = title;
-           }
+        std::string title = event.window()->title();
+        if (!startsWith(title, m_baseTitle) || m_baseTitle.length() == 0)
+            m_baseTitle = title;
 
-           std::stringstream stream;
-           stream << m_baseTitle << " (" << std::fixed << std::setprecision(2) << fps << " fps)";
+        std::stringstream stream;
+        stream << m_baseTitle << " (" << std::fixed << std::setprecision(2) << fps << " fps)";
 
-           event.window()->setTitle(stream.str());
+        event.window()->setTitle(stream.str());
 
-           m_swapElapsedTime = static_cast<long double>(m_timer.elapsed().count());
-           m_swapCount = 0;
-       }
+        m_swapElapsedTime = static_cast<long double>(m_timer.elapsed().count());
+        m_swapCount = 0;
+    }
 }
 
 void ExampleWindowEventHandler::handleDefaultKeys(KeyEvent & event)
