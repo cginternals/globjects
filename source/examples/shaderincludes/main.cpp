@@ -1,10 +1,11 @@
+
 #include <glbinding/gl/gl.h>
 
-#include <globjects/base/File.h>
-
+#include <globjects/DebugMessage.h>
 #include <globjects/NamedString.h>
 #include <globjects/Shader.h>
-#include <globjects/DebugMessage.h>
+
+#include <globjects/base/File.h>
 
 #include <common/ScreenAlignedQuad.h>
 #include <common/StringTemplate.h>
@@ -18,6 +19,7 @@
 #include <ExampleWindowEventHandler.h>
 
 
+using namespace gl;
 
 class EventHandler : public ExampleWindowEventHandler
 {
@@ -36,32 +38,25 @@ public:
 
         globjects::DebugMessage::enable();
 
-        gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        globjects::NamedString::create("/shaderincludes/color.glsl", new globjects::File("data/shaderincludes/color.glsl"));
+        globjects::NamedString::create("/color.glsl", new globjects::File("data/shaderincludes/color.glsl"));
 
-        StringTemplate* fragmentShaderString = new StringTemplate(new globjects::File("data/shaderincludes/test.frag"));
-
-#ifdef MAC_OS
-        fragmentShaderString->replace("#version 140", "#version 150");
-#endif
-
-        m_quad = new ScreenAlignedQuad(new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderString));
+        m_quad = new ScreenAlignedQuad(globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        int width = event.width();
-        int height = event.height();
-        int side = std::min<int>(width, height);
+        const int width  = event.width();
+        const int height = event.height();
+        const int side   = std::min<int>(width, height);
 
-        gl::glViewport((width - side) / 2, (height - side) / 2, side, side);
+        glViewport((width - side) / 2, (height - side) / 2, side, side);
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
-
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         m_quad->draw();
     }
 
@@ -81,33 +76,25 @@ protected:
 };
 
 
-/** This example shows ... .
-*/
 int main(int /*argc*/, char* /*argv*/[])
 {
     globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
     globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    globjects::info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(3, 0);
 
     Window window;
-
     window.setEventHandler(new EventHandler());
 
-    if (window.create(format, "Shading Language Include Example"))
-    {
-        window.context()->setSwapInterval(Context::VerticalSyncronization);
-
-        window.show();
-
-        return MainLoop::run();
-    }
-    else
-    {
+    if (!window.create(format, "Shading Language Include Example"))
         return 1;
-    }
+
+    window.context()->setSwapInterval(Context::VerticalSyncronization);
+    window.show();
+
+    return MainLoop::run();
 }

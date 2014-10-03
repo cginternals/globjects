@@ -1,3 +1,4 @@
+
 #include <glbinding/gl/gl.h>
 
 #include <globjects/Buffer.h>
@@ -17,8 +18,13 @@
 
 #include <ExampleWindowEventHandler.h>
 
-namespace {
-    const char* vertexShaderCode = R"(
+
+using namespace gl;
+using namespace glm;
+
+namespace 
+{
+    const char * vertexShaderCode = R"(
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
 
@@ -33,7 +39,7 @@ void main()
 }
 
 )";
-    const char* fragmentShaderCode = R"(
+    const char * fragmentShaderCode = R"(
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
 
@@ -52,18 +58,19 @@ void main()
 class EventHandler : public ExampleWindowEventHandler
 {
 public:
-	EventHandler()
-    : vao(nullptr)
-    , cornerBuffer(nullptr)
-    , program(nullptr)
+
+    EventHandler()
+    : m_vao(nullptr)
+    , m_cornerBuffer(nullptr)
+    , m_program(nullptr)
     {
     }
 
     virtual ~EventHandler()
     {
-        vao->destroy();
-        cornerBuffer->destroy();
-        program->destroy();
+        m_vao->destroy();
+        m_cornerBuffer->destroy();
+        m_program->destroy();
     }
 
     virtual void initialize(Window & window) override
@@ -72,59 +79,36 @@ public:
 
         globjects::DebugMessage::enable();
 
-        gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
+        m_cornerBuffer = new globjects::Buffer();
+		m_program = new globjects::Program();
+		m_vao = new globjects::VertexArray();
 
-        
-        StringTemplate* vertexShaderSource = new StringTemplate(new globjects::StaticStringSource(vertexShaderCode));
-        StringTemplate* fragmentShaderSource = new StringTemplate(new globjects::StaticStringSource(fragmentShaderCode));
-        
-        
-#ifdef MAC_OS
-        vertexShaderSource->replace("#version 140", "#version 150");
-        fragmentShaderSource->replace("#version 140", "#version 150");
-#endif
-        
-        
-        
-        cornerBuffer = new globjects::Buffer();
-        cornerBuffer->ref();
-		program = new globjects::Program();
-        program->ref();
-		vao = new globjects::VertexArray();
-        vao->ref();
+		m_program->attach(
+            globjects::Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode),
+            globjects::Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
 
-		program->attach(
-            new globjects::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
-            new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
-        );
+        m_cornerBuffer->setData(std::array<vec2, 4>{ {
+			vec2(0, 0), vec2(1, 0), vec2(0, 1), vec2(1, 1) } }, GL_STATIC_DRAW);
 
-        cornerBuffer->setData(std::array<glm::vec2, 4>{ {
-			glm::vec2(0, 0),
-			glm::vec2(1, 0),
-			glm::vec2(0, 1),
-			glm::vec2(1, 1)
-        } }, gl::GL_STATIC_DRAW);
-
-        vao->binding(0)->setAttribute(0);
-		vao->binding(0)->setBuffer(cornerBuffer, 0, sizeof(glm::vec2));
-        vao->binding(0)->setFormat(2, gl::GL_FLOAT);
-        vao->enable(0);
+        m_vao->binding(0)->setAttribute(0);
+		m_vao->binding(0)->setBuffer(m_cornerBuffer, 0, sizeof(vec2));
+        m_vao->binding(0)->setFormat(2, GL_FLOAT);
+        m_vao->enable(0);
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        gl::glViewport(0, 0, event.width(), event.height());
-
+        glViewport(0, 0, event.width(), event.height());
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-		program->use();
-        vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 4);
+        m_program->use();
+        m_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
 
     virtual void idle(Window & window) override
@@ -133,36 +117,30 @@ public:
     }
 
 private:
-	globjects::VertexArray* vao;
-	globjects::Buffer* cornerBuffer;
-	globjects::Program* program;
-
+	globjects::VertexArray * m_vao;
+	globjects::Buffer * m_cornerBuffer;
+	globjects::Program * m_program;
 };
 
-int main(int /*argc*/, char* /*argv*/[])
+
+int main(int /*argc*/, char * /*argv*/[])
 {
     globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
     globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);
 
     Window window;
-
     window.setEventHandler(new EventHandler());
 
-    if (window.create(format, "Wiki Example"))
-    {
-        window.context()->setSwapInterval(Context::VerticalSyncronization);
-
-        window.show();
-
-        return MainLoop::run();
-    }
-    else
-    {
+    if (!window.create(format, "Wiki Example"))
         return 1;
-    }
+
+    window.context()->setSwapInterval(Context::VerticalSyncronization);
+    window.show();
+
+    return MainLoop::run();
 }

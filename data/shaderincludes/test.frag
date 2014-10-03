@@ -10,7 +10,7 @@ void main()
 {
 	vec4 color = vec4(0.6, 0.3, 0.3, 1.0);
 	
-	#include </shaderincludes/color.glsl>
+	#include </color.glsl>
 	
 	fragColor = color;
 }

@@ -2,6 +2,7 @@
 #include <glbinding/gl/gl.h>
 
 #include <globjects/logging.h>
+
 #include <globjects/Texture.h>
 #include <globjects/DebugMessage.h>
 
@@ -16,6 +17,10 @@
 
 #include <ExampleWindowEventHandler.h>
 
+
+using namespace gl;
+using namespace glm;
+
 class EventHandler : public ExampleWindowEventHandler
 {
 public:
@@ -27,8 +32,23 @@ public:
     {
     }
 
-    void createAndSetupTexture();
-	void createAndSetupGeometry();
+    void createAndSetupTexture()
+    {
+        RawFile raw("data/glraw-texture/dog-on-pillow.raw");
+        if (!raw.isValid())
+            return;
+
+        m_texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
+
+        m_texture->compressedImage2D(0, GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, 
+            ivec2(256, 256), 0, static_cast<GLsizei>(raw.size()), raw.data());
+    }
+
+    void createAndSetupGeometry()
+    {
+        m_quad = new ScreenAlignedQuad(m_texture);
+        m_quad->setSamplerUniform(0);
+    }
 
     virtual void initialize(Window & window) override
     {
@@ -36,8 +56,7 @@ public:
 
         globjects::DebugMessage::enable();
 
-        gl::glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-
+        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         createAndSetupTexture();
 	    createAndSetupGeometry();
@@ -45,19 +64,17 @@ public:
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        int width = event.width();
-        int height = event.height();
-    	int side = std::min<int>(width, height);
+        const int width  = event.width();
+        const int height = event.height();
+        const int side = std::min<int>(width, height);
 
-        gl::glViewport((width - side) / 2, (height - side) / 2, side, side);
+        glViewport((width - side) / 2, (height - side) / 2, side, side);
 
     }
 
     virtual void paintEvent(PaintEvent &) override
     {
-        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
-
-
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         m_quad->draw();
     }
 
@@ -72,49 +89,24 @@ protected:
 };
 
 
-/** This example shows ... .
-*/
 int main(int /*argc*/, char* /*argv*/[])
 {
     globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
     globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);
 
     Window window;
-
     window.setEventHandler(new EventHandler());
 
-    if (window.create(format, "glraw Texture Example"))
-    {
-        window.context()->setSwapInterval(Context::VerticalSyncronization);
-
-        window.show();
-
-        return MainLoop::run();
-    }
-    else
-    {
+    if (!window.create(format, "glraw Texture Example"))
         return 1;
-    }
-}
 
-void EventHandler::createAndSetupTexture()
-{
-    RawFile raw("data/glraw-texture/dog-on-pillow.raw");
-    if (!raw.isValid())
-        return;
+    window.context()->setSwapInterval(Context::VerticalSyncronization);
+    window.show();
 
-    m_texture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-
-    m_texture->compressedImage2D(0, gl::GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, glm::ivec2(256, 256), 0, static_cast<gl::GLsizei>(raw.size()), raw.data());
-}
-
-void EventHandler::createAndSetupGeometry()
-{
-	m_quad = new ScreenAlignedQuad(m_texture);
-    m_quad->setSamplerUniform(0);
+    return MainLoop::run();
 }

@@ -1,6 +1,5 @@
-#include <glbinding/gl/gl.h>
 
-#include <globjects/base/File.h>
+#include <glbinding/gl/gl.h>
 
 #include <globjects/Uniform.h>
 #include <globjects/Program.h>
@@ -10,6 +9,8 @@
 #include <globjects/VertexArray.h>
 #include <globjects/DebugMessage.h>
 #include <globjects/Texture.h>
+
+#include <globjects/base/File.h>
 
 #include <common/AxisAlignedBoundingBox.h>
 #include <common/Icosahedron.h>
@@ -28,17 +29,17 @@
 #include <ExampleWindowEventHandler.h>
 
 
+using namespace gl;
 using namespace glm;
-
 
 class EventHandler : public ExampleWindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler()
-    : m_camera(vec3(0.f, 1.f, 4.0f))
+    : m_camera(vec3(0.f, 1.f, 4.f))
     {
         m_aabb.extend(vec3(-8.f, -1.f, -8.f));
-        m_aabb.extend(vec3(8.f, 1.f, 8.f));
+        m_aabb.extend(vec3( 8.f,  1.f,  8.f));
 
         m_nav.setCamera(&m_camera);
         m_nav.setCoordinateProvider(this);
@@ -55,65 +56,55 @@ public:
 
         globjects::DebugMessage::enable();
 
-        gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
+        glClearColor(1.f, 1.f, 1.f, 0.f);
 
-        auto vertexShaderSource = new StringTemplate(new globjects::File("data/gbuffers/sphere.vert"));
-        auto fragmentShaderSource = new StringTemplate(new globjects::File("data/gbuffers/sphere.frag"));
-        auto postprocessingSource = new StringTemplate(new globjects::File("data/gbuffers/postprocessing.frag"));
-        auto gBufferChoiceSource = new StringTemplate(new globjects::File("data/gbuffers/gbufferchoice.frag"));
-
-#ifdef MAC_OS
-        vertexShaderSource->replace("#version 140", "#version 150");
-        fragmentShaderSource->replace("#version 140", "#version 150");
-        postprocessingSource->replace("#version 140", "#version 150");
-        gBufferChoiceSource->replace("#version 140", "#version 150");
-#endif
 
         m_icosahedron = new Icosahedron(2);
 
         m_sphere = new globjects::Program();
 
         m_sphere->attach(
-            new globjects::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource),
-            new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource)
-        );
+            globjects::Shader::fromFile(GL_VERTEX_SHADER,   "data/gbuffers/sphere.vert"),
+            globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/gbuffers/sphere.frag"));
 
-        m_colorTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-        m_depthTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-        m_normalTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
-        m_geometryTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_colorTexture    = globjects::Texture::createDefault(GL_TEXTURE_2D);
+        m_depthTexture    = globjects::Texture::createDefault(GL_TEXTURE_2D);
+        m_normalTexture   = globjects::Texture::createDefault(GL_TEXTURE_2D);
+        m_geometryTexture = globjects::Texture::createDefault(GL_TEXTURE_2D);
 
         m_sphereFBO = new globjects::Framebuffer;
-        m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorTexture);
-        m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_normalTexture);
-        m_sphereFBO->attachTexture(gl::GL_COLOR_ATTACHMENT2, m_geometryTexture);
-        m_sphereFBO->attachTexture(gl::GL_DEPTH_ATTACHMENT, m_depthTexture);
-        m_sphereFBO->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1, gl::GL_COLOR_ATTACHMENT2 });
+        m_sphereFBO->attachTexture(GL_COLOR_ATTACHMENT0, m_colorTexture);
+        m_sphereFBO->attachTexture(GL_COLOR_ATTACHMENT1, m_normalTexture);
+        m_sphereFBO->attachTexture(GL_COLOR_ATTACHMENT2, m_geometryTexture);
+        m_sphereFBO->attachTexture(GL_DEPTH_ATTACHMENT,  m_depthTexture);
+        m_sphereFBO->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 });
 
-        m_postprocessing = new ScreenAlignedQuad(new globjects::Shader(gl::GL_FRAGMENT_SHADER, postprocessingSource));
-        m_postprocessing->program()->setUniform<gl::GLint>("colorSource", 0);
-        m_postprocessing->program()->setUniform<gl::GLint>("normalSource", 1);
-        m_postprocessing->program()->setUniform<gl::GLint>("worldCoordSource", 2);
-        m_postprocessing->program()->setUniform<gl::GLint>("depthSource", 3);
+        m_postprocessing = new ScreenAlignedQuad(
+            globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/gbuffers/postprocessing.frag"));
+        m_postprocessing->program()->setUniform<GLint>("colorSource",      0);
+        m_postprocessing->program()->setUniform<GLint>("normalSource",     1);
+        m_postprocessing->program()->setUniform<GLint>("worldCoordSource", 2);
+        m_postprocessing->program()->setUniform<GLint>("depthSource",      3);
 
-        m_postprocessedTexture = globjects::Texture::createDefault(gl::GL_TEXTURE_2D);
+        m_postprocessedTexture = globjects::Texture::createDefault(GL_TEXTURE_2D);
 
         m_postprocessingFBO = new globjects::Framebuffer;
-        m_postprocessingFBO->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_postprocessedTexture);
-        m_postprocessingFBO->setDrawBuffer(gl::GL_COLOR_ATTACHMENT0);
+        m_postprocessingFBO->attachTexture(GL_COLOR_ATTACHMENT0, m_postprocessedTexture);
+        m_postprocessingFBO->setDrawBuffer(GL_COLOR_ATTACHMENT0);
 
-        m_gBufferChoice = new ScreenAlignedQuad(new globjects::Shader(gl::GL_FRAGMENT_SHADER, gBufferChoiceSource));
-        m_gBufferChoice->program()->setUniform<gl::GLint>("postprocessedSource", 0);
-        m_gBufferChoice->program()->setUniform<gl::GLint>("colorSource", 1);
-        m_gBufferChoice->program()->setUniform<gl::GLint>("normalSource", 2);
-        m_gBufferChoice->program()->setUniform<gl::GLint>("worldCoordSource", 3);
-        m_gBufferChoice->program()->setUniform<gl::GLint>("depthSource", 4);
-        
-        m_camera.setZNear(0.1f);
-        m_camera.setZFar(1024.f);
+        m_gBufferChoice = new ScreenAlignedQuad(
+            globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/gbuffers/gbufferchoice.frag"));
+        m_gBufferChoice->program()->setUniform<GLint>("postprocessedSource", 0);
+        m_gBufferChoice->program()->setUniform<GLint>("colorSource",         1);
+        m_gBufferChoice->program()->setUniform<GLint>("normalSource",        2);
+        m_gBufferChoice->program()->setUniform<GLint>("worldCoordSource",    3);
+        m_gBufferChoice->program()->setUniform<GLint>("depthSource",         4);
 
-        m_gBufferChoice->program()->setUniform<gl::GLfloat>("nearZ", m_camera.zNear());
-        m_gBufferChoice->program()->setUniform<gl::GLfloat>("farZ", m_camera.zFar());
+        m_camera.setZNear( 1.f);
+        m_camera.setZFar (16.f);
+
+        m_gBufferChoice->program()->setUniform<GLfloat>("nearZ", m_camera.zNear());
+        m_gBufferChoice->program()->setUniform<GLfloat>("farZ",  m_camera.zFar());
 
         window.addTimer(0, 0, false);
 
@@ -128,19 +119,18 @@ public:
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        gl::glViewport(0, 0, event.width(), event.height());
-
-        m_postprocessing->program()->setUniform<glm::vec2>("screenSize", glm::vec2(event.size()));
-
+        glViewport(0, 0, event.width(), event.height());
         m_camera.setViewport(event.width(), event.height());
+
+        m_postprocessing->program()->setUniform<vec2>("screenSize", vec2(event.size()));
 
         cameraChanged();
 
-        m_colorTexture->image2D(0, gl::GL_RGBA8, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
-        m_normalTexture->image2D(0, gl::GL_RGBA16F, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
-        m_geometryTexture->image2D(0, gl::GL_RGBA16F, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_FLOAT, nullptr);
-        m_depthTexture->image2D(0, gl::GL_DEPTH_COMPONENT, event.width(), event.height(), 0, gl::GL_DEPTH_COMPONENT, gl::GL_FLOAT, nullptr);
-        m_postprocessedTexture->image2D(0, gl::GL_RGBA8, event.width(), event.height(), 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, nullptr);
+        m_colorTexture->image2D(        0, GL_RGBA8,   event.width(), event.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        m_normalTexture->image2D(       0, GL_RGBA16F, event.width(), event.height(), 0, GL_RGBA, GL_FLOAT, nullptr);
+        m_geometryTexture->image2D(     0, GL_RGBA16F, event.width(), event.height(), 0, GL_RGBA, GL_FLOAT, nullptr);
+        m_depthTexture->image2D(0, GL_DEPTH_COMPONENT, event.width(), event.height(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+        m_postprocessedTexture->image2D(0, GL_RGBA8,   event.width(), event.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     }
 
     void cameraChanged()
@@ -154,55 +144,55 @@ public:
     {
         // Sphere Pass
 
-        m_sphereFBO->bind(gl::GL_FRAMEBUFFER);
+        m_sphereFBO->bind(GL_FRAMEBUFFER);
 
-        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_sphere->use();
         m_icosahedron->draw();
         m_sphere->release();
 
-        m_sphereFBO->unbind(gl::GL_FRAMEBUFFER);
+        m_sphereFBO->unbind(GL_FRAMEBUFFER);
 
         // Postprocessing Pass
 
-        m_postprocessingFBO->bind(gl::GL_FRAMEBUFFER);
+        m_postprocessingFBO->bind(GL_FRAMEBUFFER);
 
-        gl::glClear(gl::GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-        m_colorTexture->bindActive(gl::GL_TEXTURE0);
-        m_normalTexture->bindActive(gl::GL_TEXTURE1);
-        m_geometryTexture->bindActive(gl::GL_TEXTURE2);
-        m_depthTexture->bindActive(gl::GL_TEXTURE3);
+        m_colorTexture->bindActive(GL_TEXTURE0);
+        m_normalTexture->bindActive(GL_TEXTURE1);
+        m_geometryTexture->bindActive(GL_TEXTURE2);
+        m_depthTexture->bindActive(GL_TEXTURE3);
 
         m_postprocessing->draw();
 
-        m_colorTexture->unbindActive(gl::GL_TEXTURE0);
-        m_normalTexture->unbindActive(gl::GL_TEXTURE1);
-        m_geometryTexture->unbindActive(gl::GL_TEXTURE2);
-        m_depthTexture->unbindActive(gl::GL_TEXTURE3);
+        m_colorTexture->unbindActive(GL_TEXTURE0);
+        m_normalTexture->unbindActive(GL_TEXTURE1);
+        m_geometryTexture->unbindActive(GL_TEXTURE2);
+        m_depthTexture->unbindActive(GL_TEXTURE3);
 
-        m_postprocessingFBO->unbind(gl::GL_FRAMEBUFFER);
+        m_postprocessingFBO->unbind(GL_FRAMEBUFFER);
 
         // GBuffer Choice Pass (including blitting)
 
         // If no FBO is bound to GL_FRAMEBUFFER the default FBO is bound to GL_FRAMEBUFFER
 
-        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        m_postprocessedTexture->bindActive(gl::GL_TEXTURE0);
-        m_colorTexture->bindActive(gl::GL_TEXTURE1);
-        m_normalTexture->bindActive(gl::GL_TEXTURE2);
-        m_geometryTexture->bindActive(gl::GL_TEXTURE3);
-        m_depthTexture->bindActive(gl::GL_TEXTURE4);
+        m_postprocessedTexture->bindActive(GL_TEXTURE0);
+        m_colorTexture->bindActive(GL_TEXTURE1);
+        m_normalTexture->bindActive(GL_TEXTURE2);
+        m_geometryTexture->bindActive(GL_TEXTURE3);
+        m_depthTexture->bindActive(GL_TEXTURE4);
 
         m_gBufferChoice->draw();
 
-        m_postprocessedTexture->unbindActive(gl::GL_TEXTURE0);
-        m_colorTexture->unbindActive(gl::GL_TEXTURE1);
-        m_normalTexture->unbindActive(gl::GL_TEXTURE2);
-        m_geometryTexture->unbindActive(gl::GL_TEXTURE3);
-        m_depthTexture->unbindActive(gl::GL_TEXTURE4);
+        m_postprocessedTexture->unbindActive(GL_TEXTURE0);
+        m_colorTexture->unbindActive(GL_TEXTURE1);
+        m_normalTexture->unbindActive(GL_TEXTURE2);
+        m_geometryTexture->unbindActive(GL_TEXTURE3);
+        m_depthTexture->unbindActive(GL_TEXTURE4);
     }
 
     virtual void timerEvent(TimerEvent & event) override
@@ -217,25 +207,19 @@ public:
         case GLFW_KEY_F5:
             globjects::File::reloadAll();
             break;
+
         case GLFW_KEY_1:
-            m_gBufferChoice->program()->setUniform<gl::GLint>("choice", 0);
-            break;
         case GLFW_KEY_2:
-            m_gBufferChoice->program()->setUniform<gl::GLint>("choice", 1);
-            break;
         case GLFW_KEY_3:
-            m_gBufferChoice->program()->setUniform<gl::GLint>("choice", 2);
-            break;
         case GLFW_KEY_4:
-            m_gBufferChoice->program()->setUniform<gl::GLint>("choice", 3);
-            break;
         case GLFW_KEY_5:
-            m_gBufferChoice->program()->setUniform<gl::GLint>("choice", 4);
+            m_gBufferChoice->program()->setUniform<GLint>("choice", GLFW_KEY_1 - 49);
             break;
+
         case GLFW_KEY_SPACE:
-            m_camera.setCenter(vec3());
-            m_camera.setEye(vec3(0.f, 1.f, 4.0f));
-            m_camera.setUp(vec3(0,1,0));
+            m_camera.setCenter(vec3( 0.f, 0.f, 0.f));
+            m_camera.setEye   (vec3( 0.f, 1.f, 4.f));
+            m_camera.setUp    (vec3( 0.f, 1.f, 0.f));
             cameraChanged();
             break;
         }
@@ -245,15 +229,15 @@ public:
     {
         switch (event.button())
         {
-            case GLFW_MOUSE_BUTTON_LEFT:
-                m_nav.panBegin(event.pos());
-                event.accept();
-                break;
+        case GLFW_MOUSE_BUTTON_LEFT:
+            m_nav.panBegin(event.pos());
+            event.accept();
+            break;
 
-            case GLFW_MOUSE_BUTTON_RIGHT:
-                m_nav.rotateBegin(event.pos());
-                event.accept();
-                break;
+        case GLFW_MOUSE_BUTTON_RIGHT:
+            m_nav.rotateBegin(event.pos());
+            event.accept();
+            break;
         }
     }
 
@@ -281,15 +265,15 @@ public:
     {
         switch (event.button())
         {
-            case GLFW_MOUSE_BUTTON_LEFT:
-                m_nav.panEnd();
-                event.accept();
-                break;
+        case GLFW_MOUSE_BUTTON_LEFT:
+            m_nav.panEnd();
+            event.accept();
+            break;
 
-            case GLFW_MOUSE_BUTTON_RIGHT:
-                m_nav.rotateEnd();
-                event.accept();
-                break;
+        case GLFW_MOUSE_BUTTON_RIGHT:
+            m_nav.rotateEnd();
+            event.accept();
+            break;
         }
     }
 
@@ -305,18 +289,18 @@ public:
 
     virtual float depthAt(const ivec2 & windowCoordinates) const override
     {
-        m_sphereFBO->bind(gl::GL_FRAMEBUFFER);
+        m_sphereFBO->bind(GL_FRAMEBUFFER);
 
-        float depth = AbstractCoordinateProvider::depthAt(m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
+        float depth = AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
 
-        m_sphereFBO->unbind(gl::GL_FRAMEBUFFER);
+        m_sphereFBO->unbind(GL_FRAMEBUFFER);
 
         return depth;
     }
 
     virtual vec3 objAt(const ivec2 & windowCoordinates) const override
     {
-        return unproject(m_camera, static_cast<gl::GLenum>(gl::GL_DEPTH_COMPONENT), windowCoordinates);
+        return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
     }
 
     virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override
@@ -324,7 +308,7 @@ public:
         return unproject(m_camera, depth, windowCoordinates);
     }
 
-    virtual glm::vec3 objAt(
+    virtual vec3 objAt(
         const ivec2 & windowCoordinates
     ,   const float depth
     ,   const mat4 & viewProjectionInverted) const override
@@ -349,25 +333,23 @@ protected:
 
     Camera m_camera;
     WorldInHandNavigation m_nav;
-    glm::ivec2 m_lastMousePos;
+    ivec2 m_lastMousePos;
 
     AxisAlignedBoundingBox m_aabb;
 };
 
 
-/** This example shows ... .
-*/
-int main(int /*argc*/, char* /*argv*/[])
+int main(int /*argc*/, char * /*argv*/[])
 {
     globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-    globjects::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-    globjects::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-    globjects::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-    globjects::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    globjects::info() << "\t" << "ESC" << "\t\t"        << "Close example";
+    globjects::info() << "\t" << "ALT + Enter"          << "\t" << "Toggle fullscreen";
+    globjects::info() << "\t" << "F11" << "\t\t"        << "Toggle fullscreen";
+    globjects::info() << "\t" << "F5" << "\t\t"         << "Reload shaders";
+    globjects::info() << "\t" << "Space" << "\t\t"      << "Reset camera";
+    globjects::info() << "\t" << "Left Mouse" << "\t"   << "Pan scene";
+    globjects::info() << "\t" << "Right Mouse" << "\t"  << "Rotate scene";
+    globjects::info() << "\t" << "Mouse Wheel" << "\t"  << "Zoom scene";
 
     globjects::info() << "\nSwitch between G-Buffers";
     globjects::info() << "\t" << "1" << "\t" << "Postprocessed";
@@ -376,24 +358,18 @@ int main(int /*argc*/, char* /*argv*/[])
     globjects::info() << "\t" << "4" << "\t" << "Geometry";
     globjects::info() << "\t" << "5" << "\t" << "Depth";
 
-
     ContextFormat format;
-    format.setVersion(3, 1);
+    format.setVersion(3, 2);
 
     Window window;
 
     window.setEventHandler(new EventHandler());
 
-    if (window.create(format, "GBuffers Example"))
-    {
-        window.context()->setSwapInterval(Context::VerticalSyncronization);
-
-        window.show();
-
-        return MainLoop::run();
-    }
-    else
-    {
+    if (!window.create(format, "GBuffers Example"))
         return 1;
-    }
+
+    window.context()->setSwapInterval(Context::VerticalSyncronization);
+    window.show();
+
+    return MainLoop::run();
 }
