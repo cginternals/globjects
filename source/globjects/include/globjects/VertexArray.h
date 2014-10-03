@@ -10,7 +10,9 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
-namespace globjects {
+namespace globjects 
+{
+
 class ObjectVisitor;
 class Buffer;
 class VertexAttributeBinding;
@@ -28,9 +30,10 @@ public:
 
     static void hintAttributeImplementation(AttributeImplementation impl);
 
+public:
     VertexArray();
-    static VertexArray * fromId(gl::GLuint id);
 
+    static VertexArray * fromId(gl::GLuint id);
     static VertexArray * defaultVAO();
 
     virtual void accept(ObjectVisitor & visitor) override;
@@ -38,8 +41,8 @@ public:
     void bind() const;
     static void unbind();
 
-    VertexAttributeBinding* binding(gl::GLuint bindingIndex);
-    const VertexAttributeBinding* binding(gl::GLuint bindingIndex) const;
+    VertexAttributeBinding * binding(gl::GLuint bindingIndex);
+    const VertexAttributeBinding * binding(gl::GLuint bindingIndex) const;
 
     void enable(gl::GLint attributeIndex);
     void disable(gl::GLint attributeIndex);
@@ -48,6 +51,7 @@ public:
     std::vector<const VertexAttributeBinding *> bindings() const;
 
     // drawing
+
     void drawArrays(gl::GLenum mode, gl::GLint first, gl::GLsizei count) const;
     void drawArraysInstanced(gl::GLenum mode, gl::GLint first, gl::GLsizei count, gl::GLsizei instanceCount) const;
     void drawArraysInstancedBaseInstance(gl::GLenum mode, gl::GLint first, gl::GLsizei count, gl::GLsizei instanceCount, gl::GLuint baseInstance) const;
@@ -71,9 +75,24 @@ public:
     void drawRangeElementsBaseVertex(gl::GLenum mode, gl::GLuint start, gl::GLuint end, gl::GLsizei count, gl::GLenum type, const void * indices, gl::GLint baseVertex) const;
 
     // convenience
-    struct MultiDrawArraysRange { gl::GLint first; gl::GLsizei count; };
-    struct MultiDrawElementsRange { gl::GLsizei count; void * indices; };
-    struct MultiDrawElementsBaseVertexRange { gl::GLsizei count; void * indices; gl::GLint baseVertex; };
+    struct MultiDrawArraysRange 
+    { 
+        gl::GLint first; 
+        gl::GLsizei count; 
+    };
+
+    struct MultiDrawElementsRange 
+    { 
+        gl::GLsizei count; 
+        void * indices; 
+    };
+
+    struct MultiDrawElementsBaseVertexRange 
+    { 
+        gl::GLsizei count;
+        void * indices; 
+        gl::GLint baseVertex; 
+    };
 
     void multiDrawArrays(gl::GLenum mode, const std::vector<MultiDrawArraysRange> & ranges) const;
     void multiDrawElements(gl::GLenum mode, gl::GLenum type, const std::vector<MultiDrawElementsRange> & ranges) const;

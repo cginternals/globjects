@@ -10,6 +10,9 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
+
+using namespace gl;
+
 namespace 
 {
     globjects::AbstractVertexAttributeBindingImplementation & attributeImplementation()
@@ -23,7 +26,7 @@ namespace globjects
 
 VertexAttributeBinding::VertexAttributeBinding(
     VertexArray * vao
-,   const gl::GLint bindingIndex)
+,   const GLint bindingIndex)
 : m_vao(vao)
 , m_bindingIndex(bindingIndex)
 , m_attributeIndex(0)
@@ -32,7 +35,7 @@ VertexAttributeBinding::VertexAttributeBinding(
 {
     assert(vao != nullptr);
 
-	setAttribute(bindingIndex); // as default
+	// setAttribute(bindingIndex); // as default - this leads to errors when binding unknown type 
 }
 
 VertexAttributeBinding::~VertexAttributeBinding()
@@ -49,49 +52,49 @@ VertexArray * VertexAttributeBinding::vao()
     return m_vao;
 }
 
-void VertexAttributeBinding::setDivisor(gl::GLint divisor)
+void VertexAttributeBinding::setDivisor(GLint divisor)
 {
     attributeImplementation().setAttributeDivisor(this, divisor);
 }
 
-void VertexAttributeBinding::setAttribute(gl::GLint attributeIndex)
+void VertexAttributeBinding::setAttribute(GLint attributeIndex)
 {
     m_attributeIndex = attributeIndex;
     attributeImplementation().bindAttribute(this, attributeIndex);
 }
 
-gl::GLint VertexAttributeBinding::attributeIndex() const
+GLint VertexAttributeBinding::attributeIndex() const
 {
     return m_attributeIndex;
 }
 
-gl::GLint VertexAttributeBinding::bindingIndex() const
+GLint VertexAttributeBinding::bindingIndex() const
 {
     return m_bindingIndex;
 }
 
-const Buffer* VertexAttributeBinding::buffer() const
+const Buffer * VertexAttributeBinding::buffer() const
 {
     return m_vbo;
 }
 
-void VertexAttributeBinding::setBuffer(const Buffer* vbo, gl::GLint baseoffset, gl::GLint stride)
+void VertexAttributeBinding::setBuffer(const Buffer * vbo, GLint baseoffset, GLint stride)
 {
     m_vbo = vbo;
     attributeImplementation().bindBuffer(this, vbo, baseoffset, stride);
 }
 
-void VertexAttributeBinding::setFormat(gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeoffset)
+void VertexAttributeBinding::setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset)
 {
     attributeImplementation().setFormat(this, size, type, normalized, relativeoffset);
 }
 
-void VertexAttributeBinding::setIFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset)
+void VertexAttributeBinding::setIFormat(GLint size, GLenum type, GLuint relativeoffset)
 {
     attributeImplementation().setIFormat(this, size, type, relativeoffset);
 }
 
-void VertexAttributeBinding::setLFormat(gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset)
+void VertexAttributeBinding::setLFormat(GLint size, GLenum type, GLuint relativeoffset)
 {
     attributeImplementation().setLFormat(this, size, type, relativeoffset);
 }

@@ -8,9 +8,9 @@
 
 #include "AbstractVertexAttributeBindingImplementation.h"
 
-struct BindingData;
 
-namespace globjects {
+namespace globjects 
+{
 
 class VertexAttributeBindingImplementation_Legacy : public AbstractVertexAttributeBindingImplementation
         , public Singleton<VertexAttributeBindingImplementation_Legacy>
@@ -30,7 +30,40 @@ public:
     virtual void setFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeoffset) const override;
     virtual void setIFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset) const override;
     virtual void setLFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset) const override;
+
 protected:
+
+    struct Format
+    {
+        enum class Method
+        {
+            O = 0
+        ,   I = 1
+        ,   L = 2
+        };
+
+        Format();
+        Format(Method method, gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeoffset);
+
+        Method        method;
+        gl::GLint     size;
+        gl::GLenum    type;
+        gl::GLboolean normalized;
+        gl::GLuint    relativeoffset;
+    };
+
+    struct BindingData
+    {
+        BindingData();
+
+        Format    format;
+        gl::GLint baseoffset;
+        gl::GLint stride;
+        bool      hasFormat;
+        bool      hasBuffer;
+        bool      hasAttribute;
+    };
+
     BindingData * & bindingData(const VertexAttributeBinding * binding) const;
 
     void finishIfComplete(const VertexAttributeBinding * binding) const;
