@@ -1,5 +1,6 @@
 #version 330
 
+uniform float alpha;
 uniform mat4 viewProjection;
 uniform sampler2D vertices;
 uniform sampler2D velocities;
@@ -17,7 +18,7 @@ void main()
 	vec4 vertex   = texelFetch(vertices,   ivec2(x, y), 0);
 	vec4 velocity = texelFetch(velocities, ivec2(x, y), 0);
 
-	v_scale = 0.006;
-	v_color = vec4(normalize(velocity.xyz) * 0.5 + 0.5, 0.02);
+	v_scale = 0.008;
+	v_color = vec4(normalize(velocity.xyz) * 0.5 + 0.5, alpha);
 	gl_Position = viewProjection * vertex;
 }

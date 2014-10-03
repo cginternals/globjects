@@ -9,7 +9,7 @@ uniform float elapsed; // time delta
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragVelocity;
 
-#include </data/gpu-particles/particleMovement.inc>
+#include </particle-step.inc>
 
 void main()
 {

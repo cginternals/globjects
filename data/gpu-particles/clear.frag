@@ -7,5 +7,5 @@ in vec2 v_uv;
 
 void main()
 {
-	fragColor = vec4(vec3(8.0 * elapsed), 0.0);
+	fragColor = vec4(vec3(16.0 * elapsed), 0.0);
 }

@@ -10,7 +10,7 @@ layout (location = 1) in vec4 in_velocity;
 out vec4 out_position;
 out vec4 out_velocity;
 
-#include </data/gpu-particles/particleMovement.inc>
+#include </particle-step.inc>
 
 void main()
 {

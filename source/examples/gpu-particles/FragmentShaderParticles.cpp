@@ -1,4 +1,6 @@
 
+#include "FragmentShaderParticles.h"
+
 #include <glbinding/gl/gl.h>
 
 #include <globjects/Program.h>
@@ -6,25 +8,22 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>
 
-#include <common/Camera.h>
 #include <globjects/base/File.h>
-#include <common/ScreenAlignedQuad.h>
 
-#include "FragmentShaderParticles.h"
+#include <common/Camera.h>
 
 
-using namespace globjects;
+using namespace gl;
 using namespace glm;
-
 
 FragmentShaderParticles::FragmentShaderParticles(
     const std::vector<vec4> & positions
 ,   const std::vector<vec4> & velocities
-,   const Texture & forces
+,   const globjects::Texture & forces
 ,   const Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
-, m_width(10)
-, m_height(10)
+, m_positionsFilled(m_positions)
+, m_velocitiesFilled(m_velocities)
 {
 }
 
@@ -34,155 +33,104 @@ FragmentShaderParticles::~FragmentShaderParticles()
 
 void FragmentShaderParticles::initialize()
 {
-    // Create textures to store the particle data
-    m_texPositions = new globjects::Texture(gl::GL_TEXTURE_2D);
-    m_texPositions->setParameter(gl::GL_TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
-    m_texPositions->setParameter(gl::GL_TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
-    m_texPositions->setParameter(gl::GL_TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
-    m_texPositions->setParameter(gl::GL_TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
-    m_texPositions->setParameter(gl::GL_TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
+    // use 2d texture for pseudo compute invocations
 
-    m_texVelocities = new globjects::Texture(gl::GL_TEXTURE_2D);
-    m_texVelocities->setParameter(gl::GL_TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
-    m_texVelocities->setParameter(gl::GL_TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
-    m_texVelocities->setParameter(gl::GL_TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
-    m_texVelocities->setParameter(gl::GL_TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
-    m_texVelocities->setParameter(gl::GL_TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
+    const int size = static_cast<int>(m_positions.size());
 
-    // Fill buffers with data
+    m_workGroupSize.x = static_cast<int>(std::sqrt(static_cast<float>(size)));
+    m_workGroupSize.y = m_workGroupSize.x;
+
+    const int remain = size - (m_workGroupSize.x * m_workGroupSize.y);
+    m_workGroupSize.y += remain / m_workGroupSize.x + (remain % m_workGroupSize.x == 0 ? 0 : 1);
+
+    // inject some null data to fill texture
+
+    const int nullsize = m_workGroupSize.x * m_workGroupSize.y - size;
+
+    m_positionsFilled.resize(m_workGroupSize.x * m_workGroupSize.y);
+    m_velocitiesFilled.resize(m_workGroupSize.x * m_workGroupSize.y);
+
+    for (int i = 0; i < nullsize; ++i)
+    {
+        m_positionsFilled[size + i] = glm::vec4(0.f, 0.f, 0.f, 0.f);
+        m_velocitiesFilled[size + i] = glm::vec4(0.f, 0.f, 0.f, 0.f);
+    }
+
+    m_positionsTex = new globjects::Texture(GL_TEXTURE_2D);
+    m_positionsTex->setParameter(GL_TEXTURE_MIN_FILTER, static_cast<GLint>(GL_NEAREST));
+    m_positionsTex->setParameter(GL_TEXTURE_MAG_FILTER, static_cast<GLint>(GL_NEAREST));
+    m_positionsTex->setParameter(GL_TEXTURE_WRAP_S, static_cast<GLint>(GL_CLAMP_TO_EDGE));
+    m_positionsTex->setParameter(GL_TEXTURE_WRAP_T, static_cast<GLint>(GL_CLAMP_TO_EDGE));
+    m_positionsTex->setParameter(GL_TEXTURE_WRAP_R, static_cast<GLint>(GL_CLAMP_TO_EDGE));
+
+    m_velocitiesTex = new globjects::Texture(GL_TEXTURE_2D);
+    m_velocitiesTex->setParameter(GL_TEXTURE_MIN_FILTER, static_cast<GLint>(GL_NEAREST));
+    m_velocitiesTex->setParameter(GL_TEXTURE_MAG_FILTER, static_cast<GLint>(GL_NEAREST));
+    m_velocitiesTex->setParameter(GL_TEXTURE_WRAP_S, static_cast<GLint>(GL_CLAMP_TO_EDGE));
+    m_velocitiesTex->setParameter(GL_TEXTURE_WRAP_T, static_cast<GLint>(GL_CLAMP_TO_EDGE));
+    m_velocitiesTex->setParameter(GL_TEXTURE_WRAP_R, static_cast<GLint>(GL_CLAMP_TO_EDGE));
+
     reset();
 
-    // Create empty vertex array object
-    m_vao = new VertexArray();
+    m_vao = new globjects::VertexArray();
 
-    // Create frame buffer object for update
-    m_fboUpdate = new Framebuffer();
-    m_fboUpdate->bind(gl::GL_FRAMEBUFFER);
-    m_fboUpdate->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_texPositions);
-    m_fboUpdate->attachTexture(gl::GL_COLOR_ATTACHMENT1, m_texVelocities);
-    m_fboUpdate->setDrawBuffers({gl::GL_COLOR_ATTACHMENT0, gl::GL_COLOR_ATTACHMENT1});
-    m_fboUpdate->unbind(gl::GL_FRAMEBUFFER);
+    m_updateFbo = new globjects::Framebuffer();
+    m_updateFbo->bind(GL_FRAMEBUFFER);
+    m_updateFbo->attachTexture(GL_COLOR_ATTACHMENT0, m_positionsTex);
+    m_updateFbo->attachTexture(GL_COLOR_ATTACHMENT1, m_velocitiesTex);
+    m_updateFbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
+    m_updateFbo->unbind(GL_FRAMEBUFFER);
 
-    // Create screen aligned quad for particle update
-    m_quadUpdate = new ScreenAlignedQuad(
-        Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/particle.frag"),
-        m_texPositions );
-    m_quadUpdate->program()->setUniform("vertices",   0);
-    m_quadUpdate->program()->setUniform("velocities", 1);
-    m_quadUpdate->program()->setUniform("forces",     2);
+    m_updateQuad = new ScreenAlignedQuad(
+        globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/particle.frag"), m_positionsTex);
+    m_updateQuad->program()->setUniform("vertices",   0);
+    m_updateQuad->program()->setUniform("velocities", 1);
+    m_updateQuad->program()->setUniform("forces",     2);
 
-    // Create frame buffer object for rendering
-    m_fbo = new Framebuffer();
 
-    m_colorBuffer = new Texture(gl::GL_TEXTURE_2D);
-    m_colorBuffer->setParameter(gl::GL_TEXTURE_MIN_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
-    m_colorBuffer->setParameter(gl::GL_TEXTURE_MAG_FILTER, static_cast<gl::GLint>(gl::GL_NEAREST));
-    m_colorBuffer->setParameter(gl::GL_TEXTURE_WRAP_S, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
-    m_colorBuffer->setParameter(gl::GL_TEXTURE_WRAP_T, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
-    m_colorBuffer->setParameter(gl::GL_TEXTURE_WRAP_R, static_cast<gl::GLint>(gl::GL_CLAMP_TO_EDGE));
-
-    m_fbo->bind(gl::GL_FRAMEBUFFER);
-    m_fbo->attachTexture(gl::GL_COLOR_ATTACHMENT0, m_colorBuffer);
-    m_fbo->setDrawBuffers({ gl::GL_COLOR_ATTACHMENT0 });
-    m_fbo->unbind(gl::GL_FRAMEBUFFER);
-
-    // Create screen aligned quads for clear and rendering
-    m_clear = new ScreenAlignedQuad(
-        Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/clear.frag") );
-    m_quad  = new ScreenAlignedQuad(m_colorBuffer);
-
-    // Create draw program
-    m_drawProgram = new Program();
-    m_drawProgram->attach(
-        Shader::fromFile(gl::GL_VERTEX_SHADER,   "data/gpu-particles/points_fragment.vert")
-    ,   Shader::fromFile(gl::GL_GEOMETRY_SHADER, "data/gpu-particles/points.geom")
-    ,   Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gpu-particles/points.frag"));
+    AbstractParticleTechnique::initialize("data/gpu-particles/points_fragment.vert");
 }
 
 void FragmentShaderParticles::reset()
 {
-    // Choose appropriate width and height for the current number of particles
-    int size = static_cast<int>(m_positions.size());
-    m_width  = static_cast<int>(std::sqrt(static_cast<float>(size)));
-    m_height = m_width;
-    int remain = size - (m_height * m_width);
-    m_height += remain / m_width + (remain % m_width == 0 ? 0 : 1);
+    m_positionsTex->image2D(0, GL_RGBA32F, m_workGroupSize, 0, GL_RGBA, GL_FLOAT, m_positionsFilled.data());
+    m_velocitiesTex->image2D(0, GL_RGBA32F, m_workGroupSize, 0, GL_RGBA, GL_FLOAT, m_velocitiesFilled.data());
 
-    // Read positions and velocities into textures
-    m_texPositions ->image2D(0, gl::GL_RGBA32F, m_width, m_height, 0, gl::GL_RGBA, gl::GL_FLOAT, m_positions .data());
-    m_texVelocities->image2D(0, gl::GL_RGBA32F, m_width, m_height, 0, gl::GL_RGBA, gl::GL_FLOAT, m_velocities.data());
+    AbstractParticleTechnique::reset();
 }
 
 void FragmentShaderParticles::step(const float elapsed)
 {
-    // Simulate particles via fragment shader
     // Use positions and velocities textures for both input and output at the same time
 
-    m_fboUpdate->bind(gl::GL_FRAMEBUFFER);
-    m_texPositions->bindActive(gl::GL_TEXTURE0);
-    m_texVelocities->bindActive(gl::GL_TEXTURE1);
-    m_forces.bindActive(gl::GL_TEXTURE2);
-    m_quadUpdate->program()->setUniform("elapsed", elapsed);
+    m_updateFbo->bind(GL_FRAMEBUFFER);
 
-    gl::glViewport(0, 0, m_width, m_height);
-    m_quadUpdate->draw();
-    gl::glViewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
+    m_positionsTex->bindActive(GL_TEXTURE0);
+    m_velocitiesTex->bindActive(GL_TEXTURE1);
+    m_forces.bindActive(GL_TEXTURE2);
 
-    m_fboUpdate->unbind(gl::GL_FRAMEBUFFER);
+    m_updateQuad->program()->setUniform("elapsed", elapsed);
+
+    glViewport(0, 0, m_workGroupSize.x, m_workGroupSize.y);
+    m_updateQuad->draw();
+    glViewport(0, 0, m_camera.viewport().x, m_camera.viewport().y);
+
+    m_updateFbo->unbind(GL_FRAMEBUFFER);
 }
 
-void FragmentShaderParticles::draw(const float elapsed)
+void FragmentShaderParticles::draw_impl()
 {
-    // Disable depth buffer
-    gl::glDisable(gl::GL_DEPTH_TEST);
-
-    // Activate FBO
-    m_fbo->bind(gl::GL_FRAMEBUFFER);
-
-    // Clear color buffer
-    gl::glEnable(gl::GL_BLEND);
-    gl::glBlendFunc(gl::GL_ZERO, gl::GL_ONE_MINUS_SRC_COLOR);
-    m_clear->program()->setUniform("elapsed", elapsed);
-    m_clear->draw();
-
-    // Draw particles
-    gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE);
-
-    m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
-    m_texPositions->bindActive(gl::GL_TEXTURE0);
+    m_positionsTex->bindActive(GL_TEXTURE0);
     m_drawProgram->setUniform("vertices", 0);
-    m_texVelocities->bindActive(gl::GL_TEXTURE1);
+    m_velocitiesTex->bindActive(GL_TEXTURE1);
     m_drawProgram->setUniform("velocities", 1);
-    m_drawProgram->setUniform("texWidth", m_width);
+    m_drawProgram->setUniform("texWidth", m_workGroupSize.x);
     m_drawProgram->use();
 
     m_vao->bind();
-    m_vao->drawArrays(gl::GL_POINTS, 0, m_numParticles);
+    m_vao->drawArrays(GL_POINTS, 0, m_numParticles);
     m_vao->unbind();
 
-    m_texPositions->unbind();
-
+    m_positionsTex->unbind();
     m_drawProgram->release();
-
-    gl::glDisable(gl::GL_BLEND);
-
-    m_fbo->unbind(gl::GL_FRAMEBUFFER);
-
-    m_quad->draw();
-
-    // Re-enable depth buffer
-    gl::glEnable(gl::GL_DEPTH_TEST);
-}
-
-void FragmentShaderParticles::resize()
-{
-    // Update size of color buffer and ascept ratio
-
-    m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
-
-    m_colorBuffer->image2D(0, gl::GL_RGB16F, m_camera.viewport().x, m_camera.viewport().y, 0, gl::GL_RGB, gl::GL_FLOAT, nullptr);
-
-    m_fbo->bind(gl::GL_FRAMEBUFFER);
-    gl::glClear(gl::GL_COLOR_BUFFER_BIT);
-    m_fbo->unbind(gl::GL_FRAMEBUFFER);
 }
