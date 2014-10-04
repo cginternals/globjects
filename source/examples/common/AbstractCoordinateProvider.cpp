@@ -7,24 +7,26 @@
 
 #include <common/Camera.h>
 
+
+using namespace gl;
 using namespace glm;
 
 float AbstractCoordinateProvider::depthAt(
     const Camera & camera
-,   const gl::GLenum format
+,   const GLenum format
 ,   const ivec2 & windowCoordinates)
 {
-    const gl::GLint x(windowCoordinates.x);
-    const gl::GLint y(windowCoordinates.y);
+    const GLint x(windowCoordinates.x);
+    const GLint y(windowCoordinates.y);
 
-    const gl::GLint w(static_cast<gl::GLint>(camera.viewport().x));
-    const gl::GLint h(static_cast<gl::GLint>(camera.viewport().y));
+    const GLint w(static_cast<GLint>(camera.viewport().x));
+    const GLint h(static_cast<GLint>(camera.viewport().y));
 
     if (x >= w || y >= h)
         return 1.f;
 
-    gl::GLfloat z;
-    gl::glReadPixels(x, h - y - 1, 1, 1, format, gl::GL_FLOAT, reinterpret_cast<void*>(&z));
+    GLfloat z;
+    glReadPixels(x, h - y - 1, 1, 1, format, GL_FLOAT, reinterpret_cast<void*>(&z));
 
 
     return z;
@@ -37,7 +39,7 @@ bool AbstractCoordinateProvider::validDepth(const float depth)
 
 const vec3 AbstractCoordinateProvider::unproject(
     const Camera & camera
-,   const gl::GLenum depthFormat
+,   const GLenum depthFormat
 ,   const ivec2 & windowCoordinates)
 {
     const glm::mat4 viewProjectionInverted = camera.viewProjectionInverted();
