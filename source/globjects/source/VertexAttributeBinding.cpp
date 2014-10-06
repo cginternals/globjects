@@ -32,6 +32,7 @@ VertexAttributeBinding::VertexAttributeBinding(
 , m_attributeIndex(0)
 , m_vbo(nullptr)
 , m_bindingData(nullptr)
+, m_bindingData(nullptr)
 {
     assert(vao != nullptr);
 
