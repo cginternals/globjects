@@ -86,11 +86,6 @@ endmacro()
 
 find(globjects globjects/globjects_api.h ${LIB_PATHS})
 
-# add dependencies
-find_package(glbinding REQUIRED)
-list(APPEND GLOBJECTS_INCLUDES ${GLBINDING_INCLUDES})
-list(APPEND GLOBJECTS_LIBRARIES ${GLBINDING_LIBRARIES})
-
 # DEBUG
 # message("GLOBJECTS_INCLUDES  = ${GLOBJECTS_INCLUDES}")
 # message("GLOBJECTS_LIBRARIES = ${GLOBJECTS_LIBRARIES}")
