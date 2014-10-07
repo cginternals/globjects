@@ -1,6 +1,8 @@
 #include <common/VertexDrawable.h>
 
 #include <globjects/VertexAttributeBinding.h>
+#include <globjects/VertexArray.h>
+#include <globjects/Buffer.h>
 
 
 using namespace gl;

@@ -9,18 +9,19 @@
 #include <globjects/base/ref_ptr.h>
 
 #include <common/MainLoop.h>
-#include <common/WindowEventHandler.h>
+
 
 struct GLFWwindow;
 struct GLFWmonitor;
 
+class WindowEventHandler;
 class WindowEvent;
 class ContextFormat;
 class Context;
 
-/**
- * Attach a WindowEventHandler specialization for event handling.
- */
+
+/** Attach a WindowEventHandler specialization for event handling.
+*/
 class Window
 {
 public:
@@ -91,6 +92,7 @@ public:
 
     void swap();
     void destroy();
+
 protected:
     bool createContext(const ContextFormat & format, int width, int height, GLFWmonitor* monitor = nullptr);
     void destroyContext();
@@ -101,12 +103,13 @@ protected:
     void clearEventQueue();
     void processEvent(WindowEvent & event);
     void postprocessEvent(WindowEvent & event);
+
 protected:
     Context * m_context;
     GLFWwindow * m_window;
 
     globjects::ref_ptr<WindowEventHandler> m_eventHandler;
-    std::queue<WindowEvent*> m_eventQueue;
+    std::queue<WindowEvent *> m_eventQueue;
 
     glm::ivec2 m_windowedModeSize;
     std::string m_title;
@@ -120,6 +123,7 @@ protected:
     };
 
     Mode m_mode;
+
 private:
-    static std::set<Window*> s_instances;
+    static std::set<Window *> s_instances;
 };

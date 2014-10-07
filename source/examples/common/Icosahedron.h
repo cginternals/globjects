@@ -6,11 +6,20 @@
 
 #include <glm/glm.hpp>
 
+#include <glbinding/gl/gl.h>
+
 #include <globjects/base/Referenced.h>
 #include <globjects/base/ref_ptr.h>
 
-#include <globjects/VertexArray.h>
-#include <globjects/Buffer.h>
+
+namespace globjects
+{
+
+class VertexArray;
+class Buffer;
+
+}
+
 
 class Icosahedron : public globjects::Referenced
 {
@@ -34,15 +43,12 @@ public:
     ,   const gl::GLint positionLocation = 0
     ,   const gl::GLint normalLocation = 1);
 
-
-
-
     /** draws the icosahedron as single triangles (TODO: generate set of triangle strips?)
     */
     void draw();
     void draw(gl::GLenum mode);
 
-private:
+protected:
     /** Splits a triangle edge by adding an appropriate new point (normalized
         on sphere) to the points (if not already cached) and returns the index
         to this point.
@@ -53,13 +59,14 @@ private:
     ,   std::vector<glm::vec3> & points
     ,   std::unordered_map<glm::uint, gl::GLushort> & cache);
 
-private:
+protected:
+    virtual ~Icosahedron();
+
+protected:
     globjects::ref_ptr<globjects::VertexArray> m_vao;
 
     globjects::ref_ptr<globjects::Buffer> m_vertices;
     globjects::ref_ptr<globjects::Buffer> m_indices;
 
     gl::GLsizei m_size;
-protected:
-    virtual ~Icosahedron();
 };

@@ -4,6 +4,7 @@
 #include <globjects/base/ref_ptr.h>
 #include <globjects/base/AbstractStringSource.h>
 
+
 class StringSourceDecorator : public globjects::AbstractStringSource, protected globjects::ChangeListener
 {
 public:
@@ -14,6 +15,7 @@ protected:
     virtual ~StringSourceDecorator();
 
     virtual void notifyChanged(const Changeable * changeable) override;
+
 protected:
     globjects::ref_ptr<globjects::AbstractStringSource> m_internal;
 };

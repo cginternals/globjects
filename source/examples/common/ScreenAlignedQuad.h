@@ -3,11 +3,17 @@
 #include <globjects/base/Referenced.h>
 #include <globjects/base/ref_ptr.h>
 
-#include <globjects/VertexArray.h>
-#include <globjects/Program.h>
-#include <globjects/Buffer.h>
-#include <globjects/Texture.h>
-#include <globjects/Shader.h>
+namespace globjects
+{
+
+class VertexArray;
+class Program;
+class Buffer;
+class Texture;
+class Shader;
+
+}
+
 
 class ScreenAlignedQuad : public globjects::Referenced
 {

@@ -7,6 +7,7 @@
 
 #include <common/StringSourceDecorator.h>
 
+
 class StringTemplate : public StringSourceDecorator
 {
 public:

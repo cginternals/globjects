@@ -4,6 +4,7 @@
 #include <globjects/NamedString.h>
 #include <globjects/Shader.h>
 
+#include <globjects/logging.h>
 #include <globjects/base/File.h>
 
 #include <common/ScreenAlignedQuad.h>

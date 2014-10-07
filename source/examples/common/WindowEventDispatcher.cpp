@@ -45,7 +45,7 @@ WindowEventDispatcher::WindowTimerMap WindowEventDispatcher::s_timers;
 std::chrono::high_resolution_clock::time_point WindowEventDispatcher::s_time;
 std::chrono::high_resolution_clock WindowEventDispatcher::s_clock;
 
-void WindowEventDispatcher::registerWindow(Window* window)
+void WindowEventDispatcher::registerWindow(Window * window)
 {
     assert(window != nullptr);
 
@@ -152,7 +152,7 @@ void WindowEventDispatcher::checkForTimerEvents()
 
 Window * WindowEventDispatcher::fromGLFW(GLFWwindow * glfwWindow)
 {
-    return glfwWindow ? static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow)) : nullptr;
+    return glfwWindow ? static_cast<Window *>(glfwGetWindowUserPointer(glfwWindow)) : nullptr;
 }
 
 ivec2 WindowEventDispatcher::mousePosition(GLFWwindow * glfwWindow)
@@ -171,7 +171,7 @@ void WindowEventDispatcher::dispatchEvent(GLFWwindow * glfwWindow, WindowEvent *
     dispatchEvent(fromGLFW(glfwWindow), event);
 }
 
-void WindowEventDispatcher::dispatchEvent(Window* window, WindowEvent* event)
+void WindowEventDispatcher::dispatchEvent(Window * window, WindowEvent* event)
 {
     if (!window)
     {

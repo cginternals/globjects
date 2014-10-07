@@ -18,6 +18,8 @@
 #include <common/WindowEventDispatcher.h>
 
 
+using namespace glm;
+
 std::set<Window *> Window::s_instances;
 
 const std::set<Window *> & Window::instances()
@@ -46,9 +48,7 @@ Window::~Window()
     }
 
     if (s_instances.empty())
-    {
         MainLoop::quit(0);
-    }
 }
 
 WindowEventHandler * Window::eventHandler()
@@ -76,34 +76,34 @@ int Window::height() const
     return size().y;
 }
 
-glm::ivec2 Window::size() const
+ivec2 Window::size() const
 {
     if (!m_window)
-        return glm::ivec2();
+        return ivec2();
 
     int w, h;
     glfwGetWindowSize(m_window, &w, &h);
-    return glm::ivec2(w, h);
+    return ivec2(w, h);
 }
 
-glm::ivec2 Window::position() const
+ivec2 Window::position() const
 {
     if (!m_window)
-        return glm::ivec2();
+        return ivec2();
 
     int x, y;
     glfwGetWindowPos(m_window, &x, &y);
-    return glm::ivec2(x, y);
+    return ivec2(x, y);
 }
 
-glm::ivec2 Window::framebufferSize() const
+ivec2 Window::framebufferSize() const
 {
     if (!m_window)
-        return glm::ivec2();
+        return ivec2();
 
     int w, h;
     glfwGetFramebufferSize(m_window, &w, &h);
-    return glm::ivec2(w, h);
+    return ivec2(w, h);
 }
 
 void Window::setTitle(const std::string & title)
@@ -149,7 +149,7 @@ bool Window::create(const ContextFormat & format, int width, int height)
     WindowEventDispatcher::registerWindow(this);
     initializeEventHandler();
 
-    m_windowedModeSize = glm::ivec2(width, height);
+    m_windowedModeSize = ivec2(width, height);
 
     return true;
 }

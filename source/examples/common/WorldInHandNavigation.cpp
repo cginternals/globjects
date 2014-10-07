@@ -13,6 +13,7 @@
 #include <common/Camera.h>
 #include <common/navigationmath.h>
 
+
 using namespace glm;
 
 namespace
@@ -26,14 +27,14 @@ namespace
     static const float DEFAULT_DIST_MIN   = 0.1f;
     static const float DEFAULT_DIST_MAX   = 4.0f;
 
-    static const float ROTATION_HOR_DOF   = 0.8f * glm::pi<float>();
-    static const float ROTATION_VER_DOF   = 0.8f * glm::pi<float>();
+    static const float ROTATION_HOR_DOF   = 0.8f * pi<float>();
+    static const float ROTATION_VER_DOF   = 0.8f * pi<float>();
 
 //  static const float ROTATION_KEY_SCALE = 1.0f;
 
     //static const float NAV_CONSTRAINT_PAN_CIRCLE_R = 2.83;
-    static const float CONSTRAINT_ROT_MAX_V_UP = 0.02f * glm::pi<float>();
-    static const float CONSTRAINT_ROT_MAX_V_LO = 0.98f * glm::pi<float>();
+    static const float CONSTRAINT_ROT_MAX_V_UP = 0.02f * pi<float>();
+    static const float CONSTRAINT_ROT_MAX_V_LO = 0.98f * pi<float>();
 }
 
 WorldInHandNavigation::WorldInHandNavigation()
@@ -193,8 +194,8 @@ void WorldInHandNavigation::panProcess(const ivec2 & mouse)
 
     // constrain mouse interaction to viewport (if disabled, could lead to mishaps)
     const ivec2 clamped(
-        glm::clamp(mouse.x, 0, m_camera->viewport().x)
-    ,   glm::clamp(mouse.y, 0, m_camera->viewport().y));
+        clamp(mouse.x, 0, m_camera->viewport().x)
+    ,   clamp(mouse.y, 0, m_camera->viewport().y));
 
     bool intersects;
     m_i1 = mouseRayPlaneIntersection(intersects, clamped, m_i0, m_viewProjectionInverted);
@@ -209,9 +210,8 @@ void WorldInHandNavigation::pan(vec3 t)
         return;
 
     //enforceTranslationConstraints(t);
-	if (glm::isinf(t.x) || glm::isinf(t.y) || glm::isinf(t.z)) {
+	if (glm::isinf(t.x) || glm::isinf(t.y) || glm::isinf(t.z))
 		return;
-	}
 	
     m_camera->setEye(t + m_eye);
     m_camera->setCenter(t + m_center);
@@ -280,7 +280,7 @@ void WorldInHandNavigation::rotate(
     mat4 transform = translate(mat4(), t);
     transform = glm::rotate(transform, hAngle, up);
     transform = glm::rotate(transform, vAngle, rotAxis);
-    transform = translate(transform, -t);
+    transform = glm::translate(transform, -t);
 
     m_camera->setEye(vec3(transform * vec4(m_eye, 0.f)));
     m_camera->setCenter(vec3(transform * vec4(m_center, 0.f)));
@@ -387,7 +387,7 @@ void WorldInHandNavigation::enforceRotationConstraints(float & /*hAngle*/, float
     // to up/down it can be rotated and clamp if required.
 
     static const vec3 up(0.f, 1.f, 0.f);
-    const float va = glm::acos(dot(normalize(m_eye - m_center), up));
+    const float va = acos(dot(normalize(m_eye - m_center), up));
 
     if (vAngle <= 0.f)
         vAngle = std::max(vAngle, CONSTRAINT_ROT_MAX_V_UP - va);

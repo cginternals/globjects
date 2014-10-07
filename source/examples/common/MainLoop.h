@@ -14,8 +14,10 @@ public:
 public:
     void start();
     void stop(int code = 0);
-    int exitCode();
+
     bool isRunning() const;
+
+    int exitCode();
 
 protected:
     int m_exitCode;

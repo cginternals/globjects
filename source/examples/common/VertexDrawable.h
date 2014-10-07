@@ -10,9 +10,16 @@
 #include <globjects/base/ref_ptr.h>
 #include <globjects/base/Referenced.h>
 
-#include <globjects/VertexArray.h>
-#include <globjects/Buffer.h>
-#include <globjects/Program.h>
+
+namespace globjects
+{
+
+class VertexArray;
+class Buffer;
+class VertexAttributeBinding;
+
+}
+
 
 class VertexDrawable : public globjects::Referenced
 {
@@ -31,6 +38,7 @@ public:
         AttributeFormat(gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeOffset, FormatType formatType);
 
         void setTo(globjects::VertexAttributeBinding * binding) const;
+
     protected:
         gl::GLint size;
         gl::GLenum type;
@@ -61,11 +69,14 @@ public:
     void enableAll();
 
     void draw() const;
+
 protected:
     globjects::ref_ptr<globjects::VertexArray> m_vao;
     globjects::ref_ptr<globjects::Buffer> m_vbo;
+
     std::vector<gl::GLint> m_attributeIndices;
     std::vector<AttributeFormat> m_formats;
+
     gl::GLint m_baseOffset;
     gl::GLint m_stride;
     gl::GLint m_size;

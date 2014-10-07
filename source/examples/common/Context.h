@@ -9,7 +9,8 @@ struct GLFWmonitor;
 
 class AbstractNativeContext;
 
-class Context {
+class Context 
+{
 
 public:
 
