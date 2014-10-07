@@ -20,7 +20,6 @@
 #include <globjects/logging.h>
 #include <globjects/Texture.h>
 #include <globjects/NamedString.h>
-#include <globjects/DebugMessage.h>
 
 #include <globjects/base/File.h>
 
@@ -40,13 +39,11 @@
 #include "FragmentShaderParticles.h"
 #include "TransformFeedbackParticles.h"
 
-#include <ExampleWindowEventHandler.h>
-
 
 using namespace gl;
 using namespace glm;
 
-class EventHandler : public ExampleWindowEventHandler, AbstractCoordinateProvider
+class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler(int numParticles)
@@ -68,9 +65,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        ExampleWindowEventHandler::initialize(window);
-
-        globjects::DebugMessage::enable();
+        WindowEventHandler::initialize(window);
 
         // Initialize Particle Positions and Attributes
 
@@ -131,13 +126,10 @@ public:
             technique.second->resize();
     }
 
-    virtual void idle(Window & window) override
+    virtual void paintEvent(PaintEvent & event) override
     {
-        window.repaint();
-    }
+        WindowEventHandler::paintEvent(event);
 
-    virtual void paintEvent(PaintEvent &) override
-    {
         draw();
     }
 
@@ -197,6 +189,8 @@ public:
 
     virtual void keyPressEvent(KeyEvent & event) override
     {
+        WindowEventHandler::keyPressEvent(event);
+
         switch (event.key())
         {
         case GLFW_KEY_C:
@@ -249,10 +243,6 @@ public:
         case GLFW_KEY_EQUAL: // bug? this is plus/add on my keyboard
             ++m_steps;
             globjects::debug() << "steps = " << m_steps;
-            break;
-
-        case GLFW_KEY_F5:
-            globjects::File::reloadAll();
             break;
         }
     }

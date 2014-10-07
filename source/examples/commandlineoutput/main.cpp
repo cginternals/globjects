@@ -25,12 +25,10 @@
 #include <common/Window.h>
 #include <common/WindowEventHandler.h>
 
-#include <ExampleWindowEventHandler.h>
-
 
 using namespace gl;
 
-class EventHandler : public ExampleWindowEventHandler
+class EventHandler : public WindowEventHandler
 {
 public:
     EventHandler()
@@ -43,9 +41,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        ExampleWindowEventHandler::initialize(window);
-
-        globjects::DebugMessage::enable();
+        WindowEventHandler::initialize(window);
 
         std::cout << "Testing globjects objects:" << std::endl;
 

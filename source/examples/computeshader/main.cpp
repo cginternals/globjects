@@ -4,9 +4,6 @@
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/extension.h>
 
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
-
 #include <globjects/logging.h>
 #include <globjects/globjects.h>
 
@@ -16,10 +13,7 @@
 #include <globjects/Buffer.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
-#include <globjects/DebugMessage.h>
 #include <globjects/Texture.h>
-
-#include <globjects/base/File.h>
 
 #include <common/ScreenAlignedQuad.h>
 #include <common/Context.h>
@@ -28,13 +22,11 @@
 #include <common/WindowEventHandler.h>
 #include <common/events.h>
 
-#include <ExampleWindowEventHandler.h>
-
 
 using namespace gl;
 using namespace glm;
 
-class EventHandler : public ExampleWindowEventHandler
+class EventHandler : public WindowEventHandler
 {
 public:
     EventHandler()
@@ -70,9 +62,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        ExampleWindowEventHandler::initialize(window);
-
-        globjects::DebugMessage::enable();
+        WindowEventHandler::initialize(window);
 
         if (!globjects::hasExtension(GLextension::GL_ARB_compute_shader))
         {
@@ -88,19 +78,11 @@ public:
 	    createAndSetupShaders();
 	    createAndSetupGeometry();
     }
-    
-    virtual void framebufferResizeEvent(ResizeEvent & event) override
+
+    virtual void paintEvent(PaintEvent & event) override
     {
-        int width = event.width();
-        int height = event.height();
+        WindowEventHandler::paintEvent(event);
 
-        int side = std::min<int>(width, height);
-
-        glViewport((width - side) / 2, (height - side) / 2, side, side);
-    }
-
-    virtual void paintEvent(PaintEvent &) override
-    {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         ++m_frame %= static_cast<int>(200 * pi<double>());
@@ -114,18 +96,7 @@ public:
 
         m_quad->draw();
     }
-
-    virtual void idle(Window & window) override
-    {
-        window.repaint();
-    }
-
-    virtual void keyReleaseEvent(KeyEvent & event) override
-    {
-        if (GLFW_KEY_F5 == event.key())
-            globjects::File::reloadAll();
-    }
-
+    
 protected:
     globjects::ref_ptr<globjects::Texture> m_texture;
 

@@ -1,9 +1,27 @@
 #include <common/WindowEventHandler.h>
 
-#include <common/events.h>
+#include <sstream>
+#include <iomanip>
 
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
+#include <glbinding/gl/gl.h>
+
+#include <globjects/globjects.h>
+#include <globjects/DebugMessage.h>
+
+#include <globjects/base/File.h>
+
+#include <common/events.h>
+#include <common/Window.h>
+
+
+using namespace gl;
 
 WindowEventHandler::WindowEventHandler()
+: m_swapElapsedTime(0.0)
+, m_swapCount(0)
 {
 }
 
@@ -85,38 +103,63 @@ void WindowEventHandler::handleEvent(WindowEvent & event)
 
 void WindowEventHandler::initialize(Window &)
 {
+    globjects::init();
+    globjects::DebugMessage::enable();
 }
 
 void WindowEventHandler::finalize(Window &)
 {
 }
 
-void WindowEventHandler::idle(Window &)
+void WindowEventHandler::idle(Window & window)
 {
+    window.repaint();
 }
 
 void WindowEventHandler::resizeEvent(ResizeEvent &)
 {
 }
 
-void WindowEventHandler::framebufferResizeEvent(ResizeEvent &)
+void WindowEventHandler::framebufferResizeEvent(ResizeEvent & event)
 {
+    glViewport(0, 0, event.width(), event.height());
 }
 
 void WindowEventHandler::moveEvent(MoveEvent &)
 {
 }
 
-void WindowEventHandler::paintEvent(PaintEvent &)
+void WindowEventHandler::paintEvent(PaintEvent & event)
 {
+    computeFps(static_cast<PaintEvent &>(event));
 }
 
-void WindowEventHandler::keyPressEvent(KeyEvent &)
+void WindowEventHandler::keyPressEvent(KeyEvent & event)
 {
+    switch (event.key())
+    {
+    case GLFW_KEY_ESCAPE:
+        event.window()->close();
+        break;
+
+    case GLFW_KEY_ENTER:
+        if ((event.modifiers() & GLFW_MOD_ALT) == 0)
+            break;
+        // fall through
+    
+    case GLFW_KEY_F11:
+        event.window()->toggleMode();
+        break;
+
+    default:
+        break;
+    }
 }
 
-void WindowEventHandler::keyReleaseEvent(KeyEvent &)
+void WindowEventHandler::keyReleaseEvent(KeyEvent & event)
 {
+    if (GLFW_KEY_F5 == event.key())
+        globjects::File::reloadAll();
 }
 
 void WindowEventHandler::mousePressEvent(MouseEvent &)
@@ -151,6 +194,39 @@ void WindowEventHandler::iconifyEvent(IconifyEvent &)
 {
 }
 
-void WindowEventHandler::timerEvent(TimerEvent &)
+void WindowEventHandler::timerEvent(TimerEvent & event)
 {
+    event.window()->repaint();
+}
+
+namespace
+{
+    bool startsWith(const std::string & str, const std::string str2)
+    {
+        return str.compare(0, str2.length(), str2) == 0;
+    }
+}
+
+void WindowEventHandler::computeFps(PaintEvent & event)
+{
+    m_timer.update();
+
+    ++m_swapCount;
+
+    if (m_timer.elapsed().count() - m_swapElapsedTime >= 1e+9)
+    {
+        const float fps = 1e+9f * static_cast<float>(static_cast<long double>(m_swapCount) / (m_timer.elapsed().count() - m_swapElapsedTime));
+
+        std::string title = event.window()->title();
+        if (!startsWith(title, m_baseTitle) || m_baseTitle.length() == 0)
+            m_baseTitle = title;
+
+        std::stringstream stream;
+        stream << m_baseTitle << " (" << std::fixed << std::setprecision(2) << fps << " fps)";
+
+        event.window()->setTitle(stream.str());
+
+        m_swapElapsedTime = static_cast<long double>(m_timer.elapsed().count());
+        m_swapCount = 0;
+    }
 }

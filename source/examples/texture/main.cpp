@@ -1,8 +1,10 @@
 
+#include <algorithm>
+#include <random>
+
 #include <glbinding/gl/gl.h>
 
 #include <globjects/logging.h>
-
 #include <globjects/Texture.h>
 
 #include <common/ScreenAlignedQuad.h>
@@ -12,11 +14,8 @@
 #include <common/WindowEventHandler.h>
 #include <common/events.h>
 
-#include "RawFile.h"
-
 
 using namespace gl;
-using namespace glm;
 
 class EventHandler : public WindowEventHandler
 {
@@ -27,24 +26,6 @@ public:
 
     virtual ~EventHandler()
     {
-    }
-
-    void createAndSetupTexture()
-    {
-        RawFile raw("data/glraw-texture/dog-on-pillow.raw");
-        if (!raw.isValid())
-            return;
-
-        m_texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
-
-        m_texture->compressedImage2D(0, GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, 
-            ivec2(256, 256), 0, static_cast<GLsizei>(raw.size()), raw.data());
-    }
-
-    void createAndSetupGeometry()
-    {
-        m_quad = new ScreenAlignedQuad(m_texture);
-        m_quad->setSamplerUniform(0);
     }
 
     virtual void initialize(Window & window) override
@@ -62,7 +43,33 @@ public:
         WindowEventHandler::paintEvent(event);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         m_quad->draw();
+    }
+
+    void createAndSetupTexture()
+    {
+        static const int w(256);
+        static const int h(256);
+
+        unsigned char data[w * h * 4];
+
+        std::random_device rd;
+        std::mt19937 generator(rd());
+
+        std::poisson_distribution<> r(0.2);
+
+        for (int i = 0; i < w * h * 4; ++i)
+            data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
+
+        m_texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
+        m_texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    }
+
+    void createAndSetupGeometry()
+    {
+        m_quad = new ScreenAlignedQuad(m_texture);
+        m_quad->setSamplerUniform(0);
     }
 
 protected:
@@ -71,7 +78,7 @@ protected:
 };
 
 
-int main(int /*argc*/, char* /*argv*/[])
+int main(int /*argc*/, char * /*argv*/[])
 {
     globjects::info() << "Usage:";
     globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
@@ -84,7 +91,7 @@ int main(int /*argc*/, char* /*argv*/[])
     Window window;
     window.setEventHandler(new EventHandler());
 
-    if (!window.create(format, "glraw Texture Example"))
+    if (!window.create(format, "Texture Example"))
         return 1;
 
     window.context()->setSwapInterval(Context::VerticalSyncronization);

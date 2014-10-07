@@ -7,9 +7,7 @@
 
 #include <globjects/globjects.h>
 #include <globjects/logging.h>
-
 #include <globjects/Texture.h>
-#include <globjects/DebugMessage.h>
 
 #include <common/ScreenAlignedQuad.h>
 #include <common/ContextFormat.h>
@@ -18,13 +16,11 @@
 #include <common/WindowEventHandler.h>
 #include <common/events.h>
 
-#include <ExampleWindowEventHandler.h>
-
 
 using namespace gl;
 using namespace glm;
 
-class EventHandler : public ExampleWindowEventHandler
+class EventHandler : public WindowEventHandler
 {
 public:
     EventHandler()
@@ -40,9 +36,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        ExampleWindowEventHandler::initialize(window);
-
-        globjects::DebugMessage::enable();
+        WindowEventHandler::initialize(window);
 
         if (!globjects::hasExtension(GLextension::GL_ARB_sparse_texture))
         {
@@ -153,27 +147,15 @@ public:
         currentPage = (currentPage + 1) % m_totalPages;
     }
 
-    virtual void framebufferResizeEvent(ResizeEvent & event) override
+    virtual void paintEvent(PaintEvent & event) override
     {
-        const int width  = event.width();
-        const int height = event.height();
-    	const int side   = std::min<int>(width, height);
+        WindowEventHandler::paintEvent(event);
 
-        glViewport((width - side) / 2, (height - side) / 2, side, side);
-    }
-
-    virtual void paintEvent(PaintEvent &) override
-    {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         mapNextPage();
 
         m_quad->draw();
-    }
-
-    virtual void idle(Window & window) override
-    {
-        window.repaint();
     }
 
 protected:

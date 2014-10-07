@@ -6,7 +6,6 @@
 #include <globjects/Shader.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
-#include <globjects/DebugMessage.h>
 #include <globjects/base/StaticStringSource.h>
 
 #include <common/StringTemplate.h>
@@ -15,8 +14,6 @@
 #include <common/Context.h>
 #include <common/WindowEventHandler.h>
 #include <common/events.h>
-
-#include <ExampleWindowEventHandler.h>
 
 
 using namespace gl;
@@ -55,7 +52,7 @@ void main()
 )";
 }
 
-class EventHandler : public ExampleWindowEventHandler
+class EventHandler : public WindowEventHandler
 {
 public:
 
@@ -75,9 +72,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        ExampleWindowEventHandler::initialize(window);
-
-        globjects::DebugMessage::enable();
+        WindowEventHandler::initialize(window);
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -98,22 +93,14 @@ public:
         m_vao->enable(0);
     }
     
-    virtual void framebufferResizeEvent(ResizeEvent & event) override
+    virtual void paintEvent(PaintEvent & event) override
     {
-        glViewport(0, 0, event.width(), event.height());
-    }
+        WindowEventHandler::paintEvent(event);
 
-    virtual void paintEvent(PaintEvent &) override
-    {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_program->use();
         m_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    }
-
-    virtual void idle(Window & window) override
-    {
-        window.repaint();
     }
 
 private:

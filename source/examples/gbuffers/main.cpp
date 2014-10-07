@@ -10,10 +10,7 @@
 #include <globjects/Buffer.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/VertexArray.h>
-#include <globjects/DebugMessage.h>
 #include <globjects/Texture.h>
-
-#include <globjects/base/File.h>
 
 #include <common/AxisAlignedBoundingBox.h>
 #include <common/Icosahedron.h>
@@ -29,13 +26,11 @@
 #include <common/WindowEventHandler.h>
 #include <common/events.h>
 
-#include <ExampleWindowEventHandler.h>
-
 
 using namespace gl;
 using namespace glm;
 
-class EventHandler : public ExampleWindowEventHandler, AbstractCoordinateProvider
+class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler()
@@ -55,9 +50,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        ExampleWindowEventHandler::initialize(window);
-
-        globjects::DebugMessage::enable();
+        WindowEventHandler::initialize(window);
 
         glClearColor(1.f, 1.f, 1.f, 0.f);
 
@@ -143,8 +136,10 @@ public:
         m_sphere->setUniform("normalMatrix", m_camera.normal());
     }
 
-    virtual void paintEvent(PaintEvent &) override
+    virtual void paintEvent(PaintEvent & event) override
     {
+        WindowEventHandler::paintEvent(event);
+
         // Sphere Pass
 
         m_sphereFBO->bind(GL_FRAMEBUFFER);
@@ -198,19 +193,12 @@ public:
         m_depthTexture->unbindActive(GL_TEXTURE4);
     }
 
-    virtual void timerEvent(TimerEvent & event) override
-    {
-        event.window()->repaint();
-    }
-
     virtual void keyPressEvent(KeyEvent & event) override
     {
+        WindowEventHandler::keyPressEvent(event);
+
         switch (event.key())
         {
-        case GLFW_KEY_F5:
-            globjects::File::reloadAll();
-            break;
-
         case GLFW_KEY_1:
         case GLFW_KEY_2:
         case GLFW_KEY_3:

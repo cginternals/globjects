@@ -4,18 +4,12 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
-
 #include <globjects/logging.h>
 
 #include <globjects/Uniform.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Buffer.h>
-#include <globjects/DebugMessage.h>
-
-#include <globjects/base/File.h>
 
 #include <common/Timer.h>
 #include <common/Icosahedron.h>
@@ -26,13 +20,11 @@
 #include <common/WindowEventHandler.h>
 #include <common/events.h>
 
-#include <ExampleWindowEventHandler.h>
-
 
 using namespace gl;
 using namespace glm;
 
-class EventHandler : public ExampleWindowEventHandler
+class EventHandler : public WindowEventHandler
 {
 public:
     EventHandler()
@@ -46,9 +38,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        ExampleWindowEventHandler::initialize(window);
-
-        globjects::DebugMessage::enable();
+        WindowEventHandler::initialize(window);
 
         glClearColor(1.f, 1.f, 1.f, 0.f);
 
@@ -73,16 +63,15 @@ public:
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        const int width  = event.width();
-        const int height = event.height();
+        WindowEventHandler::framebufferResizeEvent(event);
 
-        glViewport(0, 0, width, height);
-
-        m_camera.setViewport(width, height);
+        m_camera.setViewport(event.width(), event.height());
     }
 
-    virtual void paintEvent(PaintEvent &) override
+    virtual void paintEvent(PaintEvent & event) override
     {
+        WindowEventHandler::paintEvent(event);
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         float t = static_cast<float>(m_time.elapsed().count()) * 4e-10f;
@@ -99,21 +88,6 @@ public:
         m_icosahedron->draw(GL_PATCHES);
 
         m_sphere->release();
-    }
-
-    virtual void idle(Window & window) override
-    {
-        window.repaint();
-    }
-
-    virtual void keyPressEvent(KeyEvent & event) override
-    {
-        switch (event.key())
-        {
-        case GLFW_KEY_F5:
-            globjects::File::reloadAll();
-            break;
-        }
     }
 
 protected:

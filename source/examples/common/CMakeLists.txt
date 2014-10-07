@@ -42,7 +42,6 @@ set(api_includes
     ${include_path}/AbstractCoordinateProvider.h
     ${include_path}/AxisAlignedBoundingBox.h
     ${include_path}/Camera.h
-    ${include_path}/WindowEventHandler.h
     ${include_path}/Icosahedron.h
     ${include_path}/navigationmath.h
     ${include_path}/ScreenAlignedQuad.h
@@ -65,7 +64,6 @@ set(sources
     ${source_path}/AbstractCoordinateProvider.cpp
     ${source_path}/AxisAlignedBoundingBox.cpp
     ${source_path}/Camera.cpp
-    ${source_path}/ExampleWindowEventHandler.cpp
     ${source_path}/Icosahedron.cpp
     ${source_path}/navigationmath.cpp
     ${source_path}/ScreenAlignedQuad.cpp

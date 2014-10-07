@@ -19,7 +19,6 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
-#include <globjects/DebugMessage.h>
 
 #include <globjects/base/File.h>
 
@@ -36,13 +35,11 @@
 #include <common/WindowEventHandler.h>
 #include <common/events.h>
 
-#include <ExampleWindowEventHandler.h>
-
 
 using namespace gl;
 using namespace glm;
 
-class EventHandler : public ExampleWindowEventHandler, AbstractCoordinateProvider
+class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
 {
 public:
     struct Vertex
@@ -136,9 +133,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        ExampleWindowEventHandler::initialize(window);
-
-        globjects::DebugMessage::enable();
+        WindowEventHandler::initialize(window);
 
         if (!globjects::hasExtension(GLextension::GL_NV_bindless_texture))
         {
@@ -171,16 +166,15 @@ public:
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
     {
-        int width = event.width();
-        int height = event.height();
+        WindowEventHandler::framebufferResizeEvent(event);
 
-        glViewport(0, 0, width, height);
-
-        m_camera.setViewport(width, height);
+        m_camera.setViewport(event.width(), event.height());
     }
 
-    virtual void paintEvent(PaintEvent &) override
+    virtual void paintEvent(PaintEvent & event) override
     {
+        WindowEventHandler::paintEvent(event);
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_program->setUniform("projection", m_camera.viewProjection());
@@ -190,19 +184,12 @@ public:
         m_program->release();
     }
 
-    virtual void timerEvent(TimerEvent & event) override
-    {        
-        event.window()->repaint();
-    }
-
     virtual void keyPressEvent(KeyEvent & event) override
     {
+        WindowEventHandler::keyPressEvent(event);
+
         switch (event.key())
         {
-        case GLFW_KEY_F5:
-            globjects::File::reloadAll();
-            break;
-
         case GLFW_KEY_SPACE:
             m_nav.reset();
             event.window()->repaint();

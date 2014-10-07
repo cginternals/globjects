@@ -1,6 +1,6 @@
 
 if(OPTION_BUILD_EXAMPLES)
-	set(EXAMPLE_COMMON examplecommon)
+	set(EXAMPLE_COMMON common)
 
         # for compatibility between glm 0.9.4 and 0.9.5
         add_definitions("-DGLM_FORCE_RADIANS")
@@ -42,8 +42,8 @@ if(OPTION_BUILD_EXAMPLES)
 	add_subdirectory("glraw-texture")
 	add_subdirectory("multiple-contexts")
 	add_subdirectory("states")
-	add_subdirectory("simple-texture")
-	add_subdirectory("simple-transformfeedback")
+	add_subdirectory("texture")
+	add_subdirectory("transformfeedback")
 	add_subdirectory("shaderincludes")
 	add_subdirectory("ssbo")
 	add_subdirectory("tessellation")

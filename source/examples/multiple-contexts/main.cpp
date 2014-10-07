@@ -3,7 +3,6 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/DebugMessage.h>
 #include <globjects/logging.h>
 
 #include <common/Window.h>
@@ -12,12 +11,10 @@
 #include <common/WindowEventHandler.h>
 #include <common/events.h>
 
-#include <ExampleWindowEventHandler.h>
-
 
 using namespace gl;
 
-class EventHandler : public ExampleWindowEventHandler
+class EventHandler : public WindowEventHandler
 {
 public:
     EventHandler()
@@ -28,20 +25,10 @@ public:
     {
     }
 
-    virtual void initialize(Window & window) override
+    virtual void paintEvent(PaintEvent & event) override
     {
-        ExampleWindowEventHandler::initialize(window);
+        WindowEventHandler::paintEvent(event);
 
-        globjects::DebugMessage::enable();
-    }
-
-    virtual void framebufferResizeEvent(ResizeEvent & event) override
-    {
-        glViewport(0, 0, event.width(), event.height());
-    }
-
-    virtual void paintEvent(PaintEvent &) override
-    {
         glClearColor(
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
             static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
@@ -49,11 +36,6 @@ public:
             1.f);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
-
-    virtual void idle(Window & window) override
-    {
-        window.repaint();
     }
 };
 

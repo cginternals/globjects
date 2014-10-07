@@ -8,10 +8,7 @@
 #include <globjects/globjects.h>
 
 #include <globjects/Buffer.h>
-#include <globjects/DebugMessage.h>
 #include <globjects/Program.h>
-
-#include <globjects/base/File.h>
 
 #include <common/ScreenAlignedQuad.h>
 #include <common/ContextFormat.h>
@@ -20,12 +17,10 @@
 #include <common/WindowEventHandler.h>
 #include <common/events.h>
 
-#include <ExampleWindowEventHandler.h>
-
 
 using namespace gl;
 
-class EventHandler : public ExampleWindowEventHandler
+class EventHandler : public WindowEventHandler
 {
 public:
     EventHandler()
@@ -38,9 +33,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        ExampleWindowEventHandler::initialize(window);
-
-        globjects::DebugMessage::enable();
+        WindowEventHandler::initialize(window);
 
         if (!globjects::hasExtension(GLextension::GL_ARB_shader_storage_buffer_object))
         {
@@ -76,32 +69,14 @@ public:
 
         m_buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
     }
-    
-    virtual void framebufferResizeEvent(ResizeEvent & event) override
-    {
-        const int width  = event.width();
-        const int height = event.height();
-        const int side   = std::min<int>(width, height);
 
-        glViewport((width - side) / 2, (height - side) / 2, side, side);
-    }
-
-    virtual void paintEvent(PaintEvent &) override
+    virtual void paintEvent(PaintEvent & event) override
     {
+        WindowEventHandler::paintEvent(event);
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_quad->draw();
-    }
-
-    virtual void idle(Window & window) override
-    {
-        window.repaint();
-    }
-
-    virtual void keyReleaseEvent(KeyEvent & event) override
-    {
-        if (GLFW_KEY_F5 == event.key())
-            globjects::File::reloadAll();
     }
 
 protected:

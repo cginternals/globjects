@@ -1,9 +1,6 @@
 
 #include <glbinding/gl/gl.h>
 
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
-
 #include <globjects/DebugMessage.h>
 #include <globjects/NamedString.h>
 #include <globjects/Shader.h>
@@ -19,12 +16,10 @@
 #include <common/WindowEventHandler.h>
 #include <common/events.h>
 
-#include <ExampleWindowEventHandler.h>
-
 
 using namespace gl;
 
-class EventHandler : public ExampleWindowEventHandler
+class EventHandler : public WindowEventHandler
 {
 public:
     EventHandler()
@@ -37,7 +32,7 @@ public:
 
     virtual void initialize(Window & window) override
     {
-        ExampleWindowEventHandler::initialize(window);
+        WindowEventHandler::initialize(window);
 
         globjects::DebugMessage::enable();
 
@@ -48,30 +43,12 @@ public:
         m_quad = new ScreenAlignedQuad(globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
     }
     
-    virtual void framebufferResizeEvent(ResizeEvent & event) override
+    virtual void paintEvent(PaintEvent & event) override
     {
-        const int width  = event.width();
-        const int height = event.height();
-        const int side   = std::min<int>(width, height);
+        WindowEventHandler::paintEvent(event);
 
-        glViewport((width - side) / 2, (height - side) / 2, side, side);
-    }
-
-    virtual void paintEvent(PaintEvent &) override
-    {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         m_quad->draw();
-    }
-
-    virtual void idle(Window & window) override
-    {
-        window.repaint();
-    }
-
-    virtual void keyReleaseEvent(KeyEvent & event) override
-    {
-        if (GLFW_KEY_F5 == event.key())
-            globjects::File::reloadAll();
     }
 
 protected:
@@ -79,7 +56,7 @@ protected:
 };
 
 
-int main(int /*argc*/, char* /*argv*/[])
+int main(int /*argc*/, char * /*argv*/[])
 {
     globjects::info() << "Usage:";
     globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";

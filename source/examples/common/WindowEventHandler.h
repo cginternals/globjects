@@ -1,6 +1,11 @@
 #pragma once
 
+#include <string>
+
 #include <globjects/base/Referenced.h>
+
+#include <common/Timer.h>
+
 
 class Window;
 class WindowEvent;
@@ -16,11 +21,8 @@ class IconifyEvent;
 class MoveEvent;
 class TimerEvent;
 
-/**
-
-    Can be attached to a Window to handle events.
+/** \brief Can be attached to a Window to handle events.
     The window's context is made current before calling any methods and done current afterwards.
-
 */
 class WindowEventHandler : public globjects::Referenced
 {
@@ -69,4 +71,15 @@ protected:
     virtual void iconifyEvent(IconifyEvent & event);
 
     virtual void timerEvent(TimerEvent & event);
+
+protected:
+    void computeFps(PaintEvent & event);
+
+protected:
+    Timer m_timer;
+
+    long double m_swapElapsedTime;
+    unsigned int m_swapCount;
+
+    std::string m_baseTitle;
 };
