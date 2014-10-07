@@ -2,16 +2,19 @@
 
 #include <globjects/VertexAttributeBinding.h>
 
+
+using namespace gl;
+
 VertexDrawable::AttributeFormat::AttributeFormat()
 : size(0)
-, type(gl::GL_FLOAT)
-, normalized(gl::GL_FALSE)
+, type(GL_FLOAT)
+, normalized(GL_FALSE)
 , relativeOffset(0)
 , formatType(Float)
 {
 }
 
-VertexDrawable::AttributeFormat::AttributeFormat(gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeOffset, FormatType formatType)
+VertexDrawable::AttributeFormat::AttributeFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeOffset, FormatType formatType)
 : size(size)
 , type(type)
 , normalized(normalized)
@@ -24,19 +27,19 @@ void VertexDrawable::AttributeFormat::setTo(globjects::VertexAttributeBinding * 
 {
     switch (formatType)
     {
-        case Float:
-            binding->setFormat(size, type, normalized, relativeOffset);
-            break;
-        case Integer:
-            binding->setIFormat(size, type, relativeOffset);
-            break;
-        case Long:
-            binding->setLFormat(size, type, relativeOffset);
-            break;
+    case Float:
+        binding->setFormat(size, type, normalized, relativeOffset);
+        break;
+    case Integer:
+        binding->setIFormat(size, type, relativeOffset);
+        break;
+    case Long:
+        binding->setLFormat(size, type, relativeOffset);
+        break;
     }
 }
 
-VertexDrawable::VertexDrawable(gl::GLenum primitiveMode)
+VertexDrawable::VertexDrawable(GLenum primitiveMode)
 : m_vao(new globjects::VertexArray)
 , m_baseOffset(0)
 , m_stride(0)
@@ -45,7 +48,7 @@ VertexDrawable::VertexDrawable(gl::GLenum primitiveMode)
 {
 }
 
-VertexDrawable::VertexDrawable(gl::GLint baseOffset, gl::GLint stride, gl::GLenum primitiveMode)
+VertexDrawable::VertexDrawable(GLint baseOffset, GLint stride, GLenum primitiveMode)
 : m_vao(new globjects::VertexArray)
 , m_baseOffset(baseOffset)
 , m_stride(stride)
@@ -54,7 +57,7 @@ VertexDrawable::VertexDrawable(gl::GLint baseOffset, gl::GLint stride, gl::GLenu
 {
 }
 
-VertexDrawable::VertexDrawable(globjects::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size, gl::GLenum primitiveMode)
+VertexDrawable::VertexDrawable(globjects::Buffer* vbo, GLint baseOffset, GLint stride, GLint size, GLenum primitiveMode)
 : m_vao(new globjects::VertexArray)
 , m_vbo(vbo)
 , m_baseOffset(baseOffset)
@@ -64,7 +67,7 @@ VertexDrawable::VertexDrawable(globjects::Buffer* vbo, gl::GLint baseOffset, gl:
 {
 }
 
-void VertexDrawable::setBuffer(globjects::Buffer* vbo, gl::GLint size)
+void VertexDrawable::setBuffer(globjects::Buffer* vbo, GLint size)
 {
     m_size = size;
     m_vbo = vbo;
@@ -75,14 +78,14 @@ void VertexDrawable::setBuffer(globjects::Buffer* vbo, gl::GLint size)
     }
 }
 
-void VertexDrawable::setBuffer(globjects::Buffer* vbo, gl::GLint baseOffset, gl::GLint stride, gl::GLint size)
+void VertexDrawable::setBuffer(globjects::Buffer* vbo, GLint baseOffset, GLint stride, GLint size)
 {
     m_baseOffset = baseOffset;
     m_stride = stride;
     setBuffer(vbo, size);
 }
 
-void VertexDrawable::setPrimitiveMode(gl::GLenum primitiveMode)
+void VertexDrawable::setPrimitiveMode(GLenum primitiveMode)
 {
     m_primitiveMode = primitiveMode;
 }
@@ -104,13 +107,13 @@ void VertexDrawable::setFormats(const std::vector<AttributeFormat> & formats)
     }
 }
 
-void VertexDrawable::bindAttributes(const std::vector<gl::GLint> & attributeIndices)
+void VertexDrawable::bindAttributes(const std::vector<GLint> & attributeIndices)
 {
     m_attributeIndices = attributeIndices;
 
     for (unsigned i = 0; i<m_attributeIndices.size(); ++i)
     {
-        gl::GLint index = m_attributeIndices[i];
+        GLint index = m_attributeIndices[i];
         if (index>=0)
             m_vao->binding(i)->setAttribute(index);
     }
@@ -133,17 +136,17 @@ void VertexDrawable::draw() const
     m_vao->drawArrays(m_primitiveMode, 0, m_size);
 }
 
-VertexDrawable::AttributeFormat Format(gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset, gl::GLboolean normalized)
+VertexDrawable::AttributeFormat Format(GLint size, GLenum type, GLuint relativeOffset, GLboolean normalized)
 {
     return VertexDrawable::AttributeFormat(size, type, normalized, relativeOffset, VertexDrawable::AttributeFormat::Float);
 }
 
-VertexDrawable::AttributeFormat FormatI(gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset)
+VertexDrawable::AttributeFormat FormatI(GLint size, GLenum type, GLuint relativeOffset)
 {
-    return VertexDrawable::AttributeFormat(size, type, gl::GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Integer);
+    return VertexDrawable::AttributeFormat(size, type, GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Integer);
 }
 
-VertexDrawable::AttributeFormat FormatL(gl::GLint size, gl::GLenum type, gl::GLuint relativeOffset)
+VertexDrawable::AttributeFormat FormatL(GLint size, GLenum type, GLuint relativeOffset)
 {
-    return VertexDrawable::AttributeFormat(size, type, gl::GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Long);
+    return VertexDrawable::AttributeFormat(size, type, GL_FALSE, relativeOffset, VertexDrawable::AttributeFormat::Long);
 }

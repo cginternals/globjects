@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+
 StringSourceDecorator::StringSourceDecorator(AbstractStringSource * source)
 : m_internal(source)
 {

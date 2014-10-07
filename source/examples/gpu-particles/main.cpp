@@ -1,3 +1,4 @@
+
 #include <map>
 #include <algorithm>
 #include <vector>
@@ -11,6 +12,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/random.hpp>
+
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
 #include <globjects/globjects.h>
 #include <globjects/logging.h>

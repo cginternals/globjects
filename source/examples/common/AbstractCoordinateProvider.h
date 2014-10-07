@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 
+
 class Camera;
 
 /** \brief Provides a mapping from screen coordinates to world coordinates.

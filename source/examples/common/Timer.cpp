@@ -1,5 +1,6 @@
 #include <common/Timer.h>
 
+
 Timer::Timer(bool _start, bool autoUpdate)
 :   m_paused(true)
 ,   m_auto(autoUpdate)

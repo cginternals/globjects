@@ -11,7 +11,6 @@
 #include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
                         // which requires APIENTRY in windows..
 
-
 using namespace globjects;
 
 Context::Context()

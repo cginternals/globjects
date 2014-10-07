@@ -4,6 +4,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
 #include <globjects/logging.h>
 
 #include <globjects/Uniform.h>

@@ -29,7 +29,7 @@ Window::Window()
 :   m_context(nullptr)
 ,   m_window(nullptr)
 ,   m_quitOnDestroy(true)
-,   m_mode(WindowMode)
+,   m_mode(Mode::WindowMode)
 {
     s_instances.insert(this);
 }
@@ -238,7 +238,7 @@ void Window::hide()
 
 void Window::fullScreen()
 {
-    if (WindowMode != m_mode)
+    if (Mode::WindowMode != m_mode)
         return;
 
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
@@ -262,13 +262,13 @@ void Window::fullScreen()
         WindowEventDispatcher::registerWindow(this);
         initializeEventHandler();
 
-        m_mode = FullScreenMode;
+        m_mode = Mode::FullScreenMode;
     }
 }
 
 void Window::windowed()
 {
-    if (FullScreenMode != m_mode)
+    if (Mode::FullScreenMode != m_mode)
         return;
 
     int w = m_windowedModeSize.x;
@@ -286,30 +286,30 @@ void Window::windowed()
         WindowEventDispatcher::registerWindow(this);
         initializeEventHandler();
 
-        m_mode = WindowMode;
+        m_mode = Mode::WindowMode;
     }
 }
 
 bool Window::isFullScreen() const
 {
-    return FullScreenMode == m_mode;
+    return Mode::FullScreenMode == m_mode;
 }
 
 bool Window::isWindowed() const
 {
-    return WindowMode == m_mode;
+    return Mode::WindowMode == m_mode;
 }
 
 void Window::toggleMode()
 {
     switch (m_mode)
     {
-        case FullScreenMode:
-            windowed();
-            return;
-        case WindowMode:
-            fullScreen();
-            return;
+    case Mode::FullScreenMode:
+        windowed();
+        return;
+    case Mode::WindowMode:
+        fullScreen();
+        return;
     }
 }
 
@@ -444,15 +444,17 @@ void Window::postprocessEvent(WindowEvent & event)
 {
     switch (event.type())
     {
-        case WindowEvent::Paint:
-            swap();
-            break;
-        case WindowEvent::Close:
-            if (!event.isAccepted())
-                destroy();
-            break;
-        default:
-            break;
+    case WindowEvent::Type::Paint:
+        swap();
+        break;
+
+    case WindowEvent::Type::Close:
+        if (!event.isAccepted())
+            destroy();
+        break;
+
+    default:
+        break;
     }
 }
 

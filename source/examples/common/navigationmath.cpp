@@ -4,6 +4,7 @@
 
 #include <common/AxisAlignedBoundingBox.h>
 
+
 using namespace glm;
 
 namespace navigationmath

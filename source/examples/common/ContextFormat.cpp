@@ -5,6 +5,7 @@
 
 #include <globjects/base/baselogging.h>
 
+
 using namespace globjects;
 
 ContextFormat::ContextFormat()

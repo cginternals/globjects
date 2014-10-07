@@ -1,12 +1,15 @@
 #include <common/ExampleWindowEventHandler.h>
 
+#include <sstream>
+#include <iomanip>
+
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
 #include <globjects/globjects.h>
 
 #include <common/events.h>
 #include <common/Window.h>
-
-#include <sstream>
-#include <iomanip>
 
 
 using namespace gl;
@@ -35,15 +38,15 @@ void ExampleWindowEventHandler::handleEvent(WindowEvent & event)
 
     switch (event.type())
     {
-    case WindowEvent::FrameBufferResize:
+    case WindowEvent::Type::FrameBufferResize:
         setViewport(static_cast<ResizeEvent&>(event));
         break;
 
-    case WindowEvent::Paint:
+    case WindowEvent::Type::Paint:
         computeFps(static_cast<PaintEvent&>(event));
         break;
 
-    case WindowEvent::KeyPress:
+    case WindowEvent::Type::KeyPress:
         handleDefaultKeys(static_cast<KeyEvent&>(event));
         break;
 
@@ -54,7 +57,7 @@ void ExampleWindowEventHandler::handleEvent(WindowEvent & event)
 
 void ExampleWindowEventHandler::setViewport(ResizeEvent & event)
 {
-    gl::glViewport(0, 0, event.width(), event.height());
+    glViewport(0, 0, event.width(), event.height());
 }
 
 namespace 

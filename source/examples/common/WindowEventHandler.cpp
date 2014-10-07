@@ -2,6 +2,7 @@
 
 #include <common/events.h>
 
+
 WindowEventHandler::WindowEventHandler()
 {
 }
@@ -17,68 +18,68 @@ void WindowEventHandler::handleEvent(WindowEvent & event)
 
     switch (event.type())
     {
-        case WindowEvent::Resize:
-            resizeEvent(static_cast<ResizeEvent&>(event));
-            break;
+    case WindowEvent::Type::Resize:
+        resizeEvent(static_cast<ResizeEvent &>(event));
+        break;
 
-        case WindowEvent::FrameBufferResize:
-            framebufferResizeEvent(static_cast<ResizeEvent&>(event));
-            break;
+    case WindowEvent::Type::FrameBufferResize:
+        framebufferResizeEvent(static_cast<ResizeEvent &>(event));
+        break;
 
-        case WindowEvent::Move:
-            moveEvent(static_cast<MoveEvent&>(event));
-            break;
+    case WindowEvent::Type::Move:
+        moveEvent(static_cast<MoveEvent &>(event));
+        break;
 
-        case WindowEvent::Paint:
-            paintEvent(static_cast<PaintEvent&>(event));
-            break;
+    case WindowEvent::Type::Paint:
+        paintEvent(static_cast<PaintEvent &>(event));
+        break;
 
-        case WindowEvent::KeyPress:
-            keyPressEvent(static_cast<KeyEvent&>(event));
-            break;
+    case WindowEvent::Type::KeyPress:
+        keyPressEvent(static_cast<KeyEvent &>(event));
+        break;
 
-        case WindowEvent::KeyRelease:
-            keyReleaseEvent(static_cast<KeyEvent&>(event));
-            break;
+    case WindowEvent::Type::KeyRelease:
+        keyReleaseEvent(static_cast<KeyEvent &>(event));
+        break;
 
-        case WindowEvent::MousePress:
-            mousePressEvent(static_cast<MouseEvent&>(event));
-            break;
+    case WindowEvent::Type::MousePress:
+        mousePressEvent(static_cast<MouseEvent &>(event));
+        break;
 
-        case WindowEvent::MouseRelease:
-            mouseReleaseEvent(static_cast<MouseEvent&>(event));
-            break;
+    case WindowEvent::Type::MouseRelease:
+        mouseReleaseEvent(static_cast<MouseEvent &>(event));
+        break;
 
-        case WindowEvent::MouseMove:
-            mouseMoveEvent(static_cast<MouseEvent&>(event));
-            break;
+    case WindowEvent::Type::MouseMove:
+        mouseMoveEvent(static_cast<MouseEvent &>(event));
+        break;
 
-        case WindowEvent::MouseEnter:
+    case WindowEvent::Type::MouseEnter:
+        mouseEnterEvent(static_cast<MouseEnterEvent &>(event));
+        break;
 
-            break;
+    case WindowEvent::Type::MouseLeave:
+        mouseLeaveEvent(static_cast<MouseLeaveEvent &>(event));
+        break;
 
-        case WindowEvent::MouseLeave:
+    case WindowEvent::Type::Scroll:
+        scrollEvent(static_cast<ScrollEvent &>(event));
+        break;
 
-            break;
+    case WindowEvent::Type::Focus:
+        focusEvent(static_cast<FocusEvent &>(event));
+        break;
 
-        case WindowEvent::Scroll:
-            scrollEvent(static_cast<ScrollEvent&>(event));
-            break;
+    case WindowEvent::Type::Iconify:
+        iconifyEvent(static_cast<IconifyEvent &>(event));
+        break;
 
-        case WindowEvent::Focus:
-            focusEvent(static_cast<FocusEvent&>(event));
-            break;
+    case WindowEvent::Type::Timer:
+        timerEvent(static_cast<TimerEvent &>(event));
+        break;
 
-        case WindowEvent::Iconify:
-            iconifyEvent(static_cast<IconifyEvent&>(event));
-            break;
-
-        case WindowEvent::Timer:
-            timerEvent(static_cast<TimerEvent&>(event));
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 }
 

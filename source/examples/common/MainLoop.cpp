@@ -6,6 +6,7 @@
 #include <common/Window.h>
 #include <common/WindowEventDispatcher.h>
 
+
 MainLoop MainLoop::s_mainLoop;
 
 MainLoop::MainLoop()

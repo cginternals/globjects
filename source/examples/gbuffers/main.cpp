@@ -1,6 +1,9 @@
 
 #include <glbinding/gl/gl.h>
 
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
 #include <globjects/Uniform.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>

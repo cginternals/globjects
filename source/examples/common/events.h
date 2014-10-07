@@ -1,15 +1,17 @@
 #pragma once
 
-#include <common/keys.h>
+#include <chrono>
 
 #include <glm/glm.hpp>
 
+
 class Window;
+
 
 class WindowEvent
 {
 public:
-    enum Type
+    enum class Type
     {
         KeyPress
     ,   KeyRelease
@@ -41,16 +43,19 @@ public:
     void accept();
     void ignore();
 
-    Window* window() const;
-    void setWindow(Window* window);
-protected:
-    Type m_type;
-    bool m_accepted;
-    Window* m_window;
+    Window * window() const;
+    void setWindow(Window * window);
 
 protected:
     WindowEvent(Type type);
+
+protected:
+    Type m_type;
+    bool m_accepted;
+
+    Window * m_window;
 };
+
 
 class KeyEvent : public WindowEvent
 {
@@ -71,6 +76,7 @@ protected:
     int m_modifiers;
     unsigned int m_character;
 };
+
 
 class MouseEvent : public WindowEvent
 {
@@ -95,17 +101,20 @@ protected:
     glm::ivec2 m_pos;
 };
 
+
 class MouseEnterEvent : public WindowEvent
 {
 public:
     MouseEnterEvent();
 };
 
+
 class MouseLeaveEvent : public WindowEvent
 {
 public:
     MouseLeaveEvent();
 };
+
 
 class ScrollEvent : public WindowEvent
 {
@@ -119,6 +128,7 @@ protected:
     glm::vec2 m_offset;
     glm::ivec2 m_pos;
 };
+
 
 class MoveEvent : public WindowEvent
 {
@@ -134,6 +144,7 @@ protected:
     glm::ivec2 m_pos;
 };
 
+
 class ResizeEvent : public WindowEvent
 {
 public:
@@ -148,11 +159,13 @@ protected:
     glm::ivec2 m_size;
 };
 
+
 class PaintEvent : public WindowEvent
 {
 public:
     PaintEvent();
 };
+
 
 class CloseEvent : public WindowEvent
 {
@@ -166,9 +179,11 @@ public:
     FocusEvent(bool hasFocus);
 
     bool hasFocus() const;
+
 protected:
     bool m_hasFocus;
 };
+
 
 class IconifyEvent : public WindowEvent
 {
@@ -176,16 +191,23 @@ public:
     IconifyEvent(bool isIconified);
 
     bool isIconified() const;
+
 protected:
     bool m_isIconified;
 };
 
+
 class TimerEvent : public WindowEvent
 {
 public:
-    TimerEvent(int id);
+    using Duration = std::chrono::duration<double, std::milli>;
+
+    TimerEvent(int id, const Duration & elapsed);
 
     int id() const;
+    const Duration & elapsed() const;
+
 protected:
     int m_id;
+    Duration m_elapsed;
 };

@@ -5,6 +5,7 @@
 
 #include <glm/glm.hpp>
 
+
 struct GLFWwindow;
 
 class Window;

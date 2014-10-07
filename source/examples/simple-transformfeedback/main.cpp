@@ -5,6 +5,9 @@
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/extension.h>
 
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
 #include <globjects/globjects.h>
 #include <globjects/logging.h>
 

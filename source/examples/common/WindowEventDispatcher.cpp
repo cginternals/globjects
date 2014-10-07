@@ -123,37 +123,31 @@ void WindowEventDispatcher::checkForTimerEvents()
     Timer::Duration delta = std::chrono::duration_cast<Timer::Duration>(now - s_time);
     s_time = now;
 
-    std::vector<std::pair<Window*, int>> discarded;
+    std::vector<std::pair<Window *, int>> discarded;
 
-    for (auto& timerMapPair : s_timers)
+    for (auto & timerMapPair : s_timers)
     {
-        Window* window = timerMapPair.first;
-        for (auto& timerPair : timerMapPair.second)
+        Window * window = timerMapPair.first;
+        for (auto & timerPair : timerMapPair.second)
         {
             int id = timerPair.first;
-            Timer& timer = timerPair.second;
+            Timer & timer = timerPair.second;
 
             timer.elapsed += delta;
 
-            if (timer.ready())
-            {
-                dispatchEvent(window, new TimerEvent(id));
-                if (timer.singleShot)
-                {
-                    discarded.emplace_back(window, id);
-                }
-                else
-                {
-                    timer.reset();
-                }
-            }
+            if (!timer.ready())
+                continue;
+
+            dispatchEvent(window, new TimerEvent(id, timer.elapsed));
+            if (timer.singleShot)
+                discarded.emplace_back(window, id);
+            else
+                timer.reset();
         }
     }
 
-    for (const auto& pair : discarded)
-    {
+    for (const auto & pair : discarded)
         removeTimer(pair.first, pair.second);
-    }
 }
 
 Window * WindowEventDispatcher::fromGLFW(GLFWwindow * glfwWindow)
@@ -163,17 +157,13 @@ Window * WindowEventDispatcher::fromGLFW(GLFWwindow * glfwWindow)
 
 ivec2 WindowEventDispatcher::mousePosition(GLFWwindow * glfwWindow)
 {
-    if (glfwWindow)
-    {
-        double xd, yd;
-        glfwGetCursorPos(glfwWindow, &xd, &yd);
-
-        return ivec2(std::floor(xd), std::floor(yd));
-    }
-    else
-    {
+    if (!glfwWindow)
         return ivec2();
-    }
+
+    double xd, yd;
+    glfwGetCursorPos(glfwWindow, &xd, &yd);
+
+    return ivec2(std::floor(xd), std::floor(yd));
 }
 
 void WindowEventDispatcher::dispatchEvent(GLFWwindow * glfwWindow, WindowEvent * event)

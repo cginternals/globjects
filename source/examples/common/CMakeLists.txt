@@ -1,6 +1,6 @@
 
 set(target ${EXAMPLE_COMMON})
-message(STATUS "Helper ${target}")
+message(STATUS "Library ${target}")
 
 #
 # External libraries
@@ -42,7 +42,7 @@ set(api_includes
     ${include_path}/AbstractCoordinateProvider.h
     ${include_path}/AxisAlignedBoundingBox.h
     ${include_path}/Camera.h
-    ${include_path}/ExampleWindowEventHandler.h
+    ${include_path}/WindowEventHandler.h
     ${include_path}/Icosahedron.h
     ${include_path}/navigationmath.h
     ${include_path}/ScreenAlignedQuad.h
@@ -55,9 +55,9 @@ set(api_includes
     ${include_path}/Context.h
     ${include_path}/ContextFormat.h
     ${include_path}/events.h
-    ${include_path}/keys.h
     ${include_path}/MainLoop.h
     ${include_path}/Window.h
+    ${include_path}/WindowEventDispatcher.h
     ${include_path}/WindowEventHandler.h
 )
 
@@ -80,7 +80,6 @@ set(sources
     ${source_path}/events.cpp
     ${source_path}/MainLoop.cpp
     ${source_path}/Window.cpp
-    ${source_path}/WindowEventDispatcher.h
     ${source_path}/WindowEventDispatcher.cpp
     ${source_path}/WindowEventHandler.cpp
 )
