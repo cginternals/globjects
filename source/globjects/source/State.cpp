@@ -5,6 +5,7 @@
 
 #include <globjects/globjects.h>
 #include <globjects/Capability.h>
+#include <globjects/StateSetting.h>
 
 #include <globjects/logging.h>
 #include <globjects/constants.h>

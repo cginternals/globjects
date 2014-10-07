@@ -30,7 +30,8 @@ class Referenced;
 template<typename T>
 class ref_ptr
 {
-    static_assert(std::is_base_of<Referenced, T>::value, "T is not a subclass of Referenced");
+//    static_assert(std::is_base_of<Referenced, T>::value, "T is not a subclass of Referenced");
+
 public:
 	ref_ptr();
 	ref_ptr(T * referenced);
@@ -55,6 +56,7 @@ public:
     bool operator>(T * pointer) const;
     bool operator==(T * pointer) const;
     bool operator!=(T * pointer) const;
+
 protected:
 	void increaseRef();
 	void decreaseRef();

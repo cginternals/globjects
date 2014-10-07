@@ -48,6 +48,7 @@ public:
     using PrecisionManipulator = decltype(std::setprecision(0));
     using FillManipulator = decltype(std::setfill('0'));
     using WidthManipulator = decltype(std::setw(0));
+
 public:
     LogMessageBuilder(LogMessage::Level level, AbstractLogHandler * handler);
     LogMessageBuilder(const LogMessageBuilder & builder);
@@ -90,6 +91,7 @@ public:
     LogMessageBuilder & operator<<(const std::vector<T> & vector);
     template <typename T, std::size_t Count>
     LogMessageBuilder & operator<<(const std::array<T, Count> & array);
+
 protected:
 	LogMessage::Level m_level;
     AbstractLogHandler * m_handler;

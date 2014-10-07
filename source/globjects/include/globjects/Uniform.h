@@ -46,6 +46,7 @@ protected:
     virtual ~Uniform();
 
     virtual void updateAt(const Program * program, gl::GLint location) const override;
+
 protected:
     T m_value; ///< The uniforms value, explictly required when relinking programs.
 };

@@ -13,6 +13,7 @@ namespace globjects
 class Buffer;
 class VertexArray;
 
+
 class GLOBJECTS_API VertexAttributeBinding : public Referenced
 {
     friend class AbstractVertexAttributeBindingImplementation;
@@ -54,6 +55,7 @@ public:
 protected:
     ~VertexAttributeBinding();
 
+protected:
     VertexArray * m_vao; // TODO: weak_ptr?
    
     gl::GLint m_bindingIndex;

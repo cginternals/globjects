@@ -5,6 +5,8 @@
 
 #include <globjects/Shader.h>
 
+#include <globjects/base/AbstractStringSource.h>
+
 
 using namespace gl;
 

@@ -4,7 +4,9 @@
 
 #include <globjects/base/Referenced.h>
 
-namespace globjects {
+
+namespace globjects 
+{
 
 template<typename T>
 ref_ptr<T>::ref_ptr()
@@ -125,18 +127,14 @@ template<typename T>
 void ref_ptr<T>::increaseRef()
 {
 	if (m_referenced)
-	{
 		m_referenced->ref();
-	}
 }
 
 template<typename T>
 void ref_ptr<T>::decreaseRef()
 {
 	if (m_referenced)
-	{
 		m_referenced->unref();
-	}
 }
 
 template <typename T>

@@ -9,12 +9,13 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/AbstractState.h>
-#include <globjects/StateSetting.h>
 
 namespace globjects
 {
 
+    class StateSetting;
 class Capability;
+
 
 class GLOBJECTS_API State : public AbstractState, public Referenced
 {
@@ -46,22 +47,24 @@ public:
 
     Capability * capability(gl::GLenum capability);
     const Capability * capability(gl::GLenum capability) const;
-    std::vector<Capability*> capabilities() const;
+    std::vector<Capability *> capabilities() const;
 
     StateSetting * setting(const StateSettingType & type);
     const StateSetting * setting(const StateSettingType & type) const;
-    std::vector<StateSetting*> settings();
-    std::vector<const StateSetting*> settings() const;
+    std::vector<StateSetting *> settings();
+    std::vector<const StateSetting *> settings() const;
+
+protected:
+    void addCapability(Capability * capability);
+    Capability * getCapability(gl::GLenum capability);
+    const Capability * getCapability(gl::GLenum capability) const;
+
 protected:
     virtual ~State();
 
     Mode m_mode;
-    std::unordered_map<gl::GLenum, Capability*> m_capabilities;
-    std::unordered_map<StateSettingType, StateSetting*> m_settings;
-
-    void addCapability(Capability * capability);
-    Capability* getCapability(gl::GLenum capability);
-    const Capability* getCapability(gl::GLenum capability) const;
+    std::unordered_map<gl::GLenum, Capability *> m_capabilities;
+    std::unordered_map<StateSettingType, StateSetting *> m_settings;
 };
 
 } // namespace globjects

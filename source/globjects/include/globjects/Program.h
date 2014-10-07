@@ -10,15 +10,19 @@
 #include <globjects/base/ref_ptr.h>
 
 #include <globjects/globjects_api.h>
+
 #include <globjects/Object.h>
 #include <globjects/LocationIdentity.h>
 #include <globjects/UniformBlock.h>
-#include <globjects/Shader.h>
-#include <globjects/ProgramBinary.h>
 #include <globjects/AbstractUniform.h>
 
 namespace globjects
 {
+
+class ObjectVisitor;
+class ProgramBinary;
+class Shader;
+
 
 /** \brief Wraps an OpenGL program.
     
@@ -85,7 +89,7 @@ public:
 	Program();
     Program(ProgramBinary * binary);
 
-    virtual void accept(ObjectVisitor& visitor) override;
+    virtual void accept(ObjectVisitor & visitor) override;
 
     void use() const;
     void release() const;
@@ -198,6 +202,7 @@ protected:
 protected:
     std::set<ref_ptr<Shader>> m_shaders;
     ref_ptr<ProgramBinary> m_binary;
+
     std::unordered_map<LocationIdentity, ref_ptr<AbstractUniform>> m_uniforms;
     std::unordered_map<LocationIdentity, UniformBlock> m_uniformBlocks;
 

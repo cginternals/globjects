@@ -17,15 +17,16 @@ class ObjectVisitor;
 class Buffer;
 class VertexAttributeBinding;
 
+
 // http://www.opengl.org/wiki/Vertex_Array_Object
 class GLOBJECTS_API VertexArray : public Object
 {
 public:
     enum class AttributeImplementation
     {
-        DirectStateAccessARB,
-        VertexAttribBindingARB,
-        Legacy
+        DirectStateAccessARB
+    ,   VertexAttribBindingARB
+    ,   Legacy
     };
 
     static void hintAttributeImplementation(AttributeImplementation impl);

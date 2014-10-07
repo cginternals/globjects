@@ -12,9 +12,11 @@
 #include <globjects/Object.h>
 #include <globjects/TextureHandle.h>
 
-namespace globjects {
+namespace globjects 
+{
 
 class Buffer;
+
 
 /** \brief Wraps OpenGL texture objects.
  * A Texture provides both interfaces to bind them for the OpenGL pipeline:

@@ -20,17 +20,17 @@ class GLOBJECTS_API LogMessage
 public:
 	enum Level
 	{
-		Fatal,
-		Critical,
-		Warning,
-		Debug,
-		Info
+		Fatal
+    ,   Critical
+    ,   Warning
+    ,   Debug
+    ,   Info
 	};
 
-	LogMessage(Level level, const std::string& message);
+	LogMessage(Level level, const std::string & message);
 
 	Level level() const;
-	const std::string& message() const;
+	const std::string & message() const;
 
 protected:
 	Level m_level;

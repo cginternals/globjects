@@ -6,11 +6,10 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/FramebufferAttachment.h>
-#include <globjects/Renderbuffer.h>
 
 namespace globjects 
 {
-
+class Renderbuffer;
 class Framebuffer;
 
 /** \brief Wrapper of render buffer attachments of a frame buffer object.
@@ -29,6 +28,7 @@ public:
     virtual bool isRenderBufferAttachment() const override;
 	Renderbuffer * renderBuffer();
     const Renderbuffer * renderBuffer() const;
+
 protected:
     ref_ptr<Renderbuffer> m_renderBuffer;
 };

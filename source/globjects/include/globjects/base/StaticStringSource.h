@@ -17,13 +17,14 @@ namespace globjects
 class GLOBJECTS_API StaticStringSource : public AbstractStringSource
 {
 public:
-    StaticStringSource(const std::string& string);
+    StaticStringSource(const std::string & string);
     StaticStringSource(const char * data, size_t length);
 
     virtual std::string shortInfo() const override;
     virtual std::string string() const override;
 
-    void setString(const std::string& string);
+    void setString(const std::string & string);
+
 protected:
     std::string m_string;
 };

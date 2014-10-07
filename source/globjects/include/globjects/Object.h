@@ -23,6 +23,7 @@ class IDResource;
 class GLOBJECTS_API Object : public Referenced
 {
     friend class AbstractObjectNameImplementation;
+
 public:
     enum class NameImplementation
     {

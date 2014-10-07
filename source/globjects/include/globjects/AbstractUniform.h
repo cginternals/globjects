@@ -10,6 +10,7 @@
 #include <globjects/base/Referenced.h>
 
 #include <globjects/globjects_api.h>
+
 #include <globjects/LocationIdentity.h>
 #include <globjects/TextureHandle.h>
 
@@ -79,9 +80,6 @@ protected:
     virtual void updateAt(const Program * program, gl::GLint location) const = 0;
 
     gl::GLint locationFor(const Program * program) const;
-protected:
-    LocationIdentity m_identity;
-	std::set<Program *> m_programs;
 
 protected:
     void setValue(const Program * program, gl::GLint location, const float & value) const;
@@ -146,6 +144,10 @@ protected:
 
     template <typename T, std::size_t Count>
     void setValue(const Program * program, gl::GLint location, const std::array<T, Count> & value) const;
+
+protected:
+    LocationIdentity m_identity;
+    std::set<Program *> m_programs;
 };
 
 } // namespace globjects

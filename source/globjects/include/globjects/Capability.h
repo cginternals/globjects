@@ -29,6 +29,7 @@ public:
 
 protected:
     gl::GLenum m_capability;
+
     bool m_enabled;
     std::map<int, bool> m_indexEnabled;
 };

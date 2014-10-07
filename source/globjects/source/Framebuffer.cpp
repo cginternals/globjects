@@ -78,9 +78,19 @@ void Framebuffer::accept(ObjectVisitor& visitor)
     visitor.visitFrameBufferObject(this);
 }
 
+void Framebuffer::bind() const
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, id());
+}
+
 void Framebuffer::bind(GLenum target) const
 {
     glBindFramebuffer(target, id());
+}
+
+void Framebuffer::unbind()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Framebuffer::unbind(GLenum target)
@@ -173,35 +183,35 @@ void Framebuffer::setDrawBuffers(const std::vector<GLenum> & modes) const
 
 void Framebuffer::clear(ClearBufferMask mask)
 {
-    bind(GL_FRAMEBUFFER);
+    bind();
 
     glClear(mask);
 }
 
 void Framebuffer::clearBufferiv(GLenum buffer, GLint drawBuffer, const GLint * value)
 {
-    bind(GL_FRAMEBUFFER);
+    bind();
 
     glClearBufferiv(buffer, drawBuffer, value);
 }
 
 void Framebuffer::clearBufferuiv(GLenum buffer, GLint drawBuffer, const GLuint * value)
 {
-    bind(GL_FRAMEBUFFER);
+    bind();
 
     glClearBufferuiv(buffer, drawBuffer, value);
 }
 
 void Framebuffer::clearBufferfv(GLenum buffer, GLint drawBuffer, const GLfloat * value)
 {
-    bind(GL_FRAMEBUFFER);
+    bind();
 
     glClearBufferfv(buffer, drawBuffer, value);
 }
 
 void Framebuffer::clearBufferfi(GLenum buffer, GLint drawBuffer, GLfloat depth, GLint stencil)
 {
-    bind(GL_FRAMEBUFFER);
+    bind();
 
     glClearBufferfi(buffer, drawBuffer, depth, stencil);
 }

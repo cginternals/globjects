@@ -4,6 +4,7 @@
 #include <glbinding/gl/boolean.h>
 #include <glbinding/gl/enum.h>
 
+#include <globjects/base/AbstractStringSource.h>
 #include <globjects/base/StaticStringSource.h>
 
 #include "registry/NamedStringRegistry.h"

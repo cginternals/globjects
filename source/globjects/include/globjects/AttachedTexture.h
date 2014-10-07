@@ -6,11 +6,11 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/FramebufferAttachment.h>
-#include <globjects/Texture.h>
 
 namespace globjects 
 {
 
+class Texture;
 class Framebuffer;
 
 /** \brief Encapsulates texture attachments of a frame buffer object.
@@ -26,13 +26,15 @@ public:
     AttachedTexture(Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer = -1);
 
     virtual bool isTextureAttachment() const override;
-	Texture * texture();
+
+    Texture * texture();
     const Texture * texture() const;
 
     gl::GLint level() const;
 
     bool hasLayer() const;
     gl::GLint layer() const;
+
 protected:
     ref_ptr<Texture> m_texture;
     gl::GLint m_level;

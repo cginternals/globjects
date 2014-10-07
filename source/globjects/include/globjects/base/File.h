@@ -2,8 +2,9 @@
 
 #include <string>
 
-#include <globjects/base/AbstractStringSource.h>
 #include <globjects/globjects_api.h>
+
+#include <globjects/base/AbstractStringSource.h>
 
 namespace globjects
 {
@@ -28,6 +29,7 @@ public:
     void reload();
 
     static void reloadAll();
+
 protected:
     std::string m_filePath;
     mutable std::string m_source;

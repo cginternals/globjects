@@ -10,13 +10,12 @@
 #include <globjects/base/Changeable.h>
 #include <globjects/base/ChangeListener.h>
 #include <globjects/base/ref_ptr.h>
-#include <globjects/base/AbstractStringSource.h>
 
 #include <globjects/Object.h>
 
 namespace globjects 
 {
-
+class AbstractStringSource;
 class Program;
 
 /** \brief Encapsulates OpenGL shaders.

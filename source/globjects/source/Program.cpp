@@ -11,11 +11,13 @@
 
 #include <globjects/logging.h>
 #include <globjects/globjects.h>
+
 #include <globjects/Uniform.h>
 #include <globjects/ObjectVisitor.h>
-#include <globjects/Shader.h>
 #include <globjects/ProgramBinary.h>
+#include <globjects/Shader.h>
 #include <globjects/Buffer.h>
+#include <globjects/AbstractUniform.h>
 
 #include "Resource.h"
 #include "registry/ImplementationRegistry.h"
@@ -69,7 +71,7 @@ Program::~Program()
     }
 }
 
-void Program::accept(ObjectVisitor& visitor)
+void Program::accept(ObjectVisitor & visitor)
 {
 	visitor.visitProgram(this);
 }

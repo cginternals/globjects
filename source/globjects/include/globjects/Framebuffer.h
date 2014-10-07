@@ -61,7 +61,14 @@ public:
 
     virtual void accept(ObjectVisitor& visitor) override;
 
+    /** uses GL_FRAMEBUFFER as target
+    */
+    void bind() const;
     void bind(gl::GLenum target) const;
+
+    /** uses GL_FRAMEBUFFER as target
+    */
+    static void unbind();
     static void unbind(gl::GLenum target);
 
     void setParameter(gl::GLenum pname, gl::GLint param);
@@ -124,6 +131,7 @@ protected:
 
     static void blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::ClearBufferMask mask, gl::GLenum filter);
     static void blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter);
+
 protected:
 	std::map<gl::GLenum, ref_ptr<FramebufferAttachment>> m_attachments;
 };

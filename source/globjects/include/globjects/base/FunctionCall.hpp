@@ -6,7 +6,8 @@
 #include <type_traits>
 #include <utility>
 
-namespace {
+namespace 
+{
 
 // http://stackoverflow.com/questions/687490/how-do-i-expand-a-tuple-into-variadic-template-functions-arguments
 

@@ -7,7 +7,8 @@
 
 #include <globjects/globjects_api.h>
 
-namespace globjects {
+namespace globjects 
+{
 
 class GLOBJECTS_API LocationIdentity
 {
@@ -28,16 +29,21 @@ public:
     bool operator<(const LocationIdentity & identity) const;
 
     std::size_t hash() const;
+
 protected:
     bool m_invalid;
-    bool m_hasName;
+
     gl::GLint m_location;
+
     std::string m_name;
+    bool m_hasName;
 };
 
 } // namespace globjects
 
-namespace std {
+
+namespace std 
+{
 
 template <>
 struct hash<globjects::LocationIdentity>

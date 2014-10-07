@@ -5,7 +5,8 @@
 #include <globjects/globjects_api.h>
 #include <globjects/LocationIdentity.h>
 
-namespace globjects {
+namespace globjects 
+{
 
 class Program;
 class Buffer;
@@ -28,6 +29,7 @@ public:
     std::vector<gl::GLint> getActiveUniformIndices() const;
 
     std::string getName() const;
+
 protected:
     const Program * m_program;
     LocationIdentity m_identity;

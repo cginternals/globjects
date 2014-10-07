@@ -8,23 +8,23 @@ namespace globjects
 
 LocationIdentity::LocationIdentity()
 : m_invalid(true)
-, m_hasName(false)
 , m_location(-1)
+, m_hasName(false)
 {
 }
 
 LocationIdentity::LocationIdentity(GLint location)
 : m_invalid(false)
-, m_hasName(false)
 , m_location(location)
+, m_hasName(false)
 {
 }
 
 LocationIdentity::LocationIdentity(const std::string & name)
 : m_invalid(false)
-, m_hasName(true)
 , m_location(-1)
 , m_name(name)
+, m_hasName(true)
 {
 }
 
