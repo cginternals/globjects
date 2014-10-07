@@ -19,6 +19,7 @@
 
 using namespace gl;
 using namespace glm;
+using namespace globjects;
 
 class EventHandler : public WindowEventHandler
 {
@@ -38,9 +39,9 @@ public:
     {
         WindowEventHandler::initialize(window);
 
-        if (!globjects::hasExtension(GLextension::GL_ARB_sparse_texture))
+        if (!hasExtension(GLextension::GL_ARB_sparse_texture))
         {
-            globjects::critical() << "Sparse textues not supported.";
+            critical() << "Sparse textues not supported.";
 
             window.close();
             return;
@@ -58,11 +59,11 @@ public:
 
         int numPageSizes;
         glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_NUM_VIRTUAL_PAGE_SIZES_ARB, sizeof(int), &numPageSizes);
-        globjects::info("GL_NUM_VIRTUAL_PAGE_SIZES_ARB = %d;", numPageSizes);
+        info("GL_NUM_VIRTUAL_PAGE_SIZES_ARB = %d;", numPageSizes);
 
         if (numPageSizes == 0) 
         {
-            globjects::fatal("Sparse Texture not supported for GL_RGBA8");
+            fatal("Sparse Texture not supported for GL_RGBA8");
             return;
         }
 
@@ -70,19 +71,19 @@ public:
         glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_X_ARB
             , static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesX.data());
         for (int i = 0; i < numPageSizes; ++i)
-            globjects::info("GL_VIRTUAL_PAGE_SIZE_X_ARB[%;] = %;", i, pageSizesX[i]);
+            info("GL_VIRTUAL_PAGE_SIZE_X_ARB[%;] = %;", i, pageSizesX[i]);
 
         std::vector<int> pageSizesY(numPageSizes);
         glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Y_ARB
             , static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesY.data());
         for (int i = 0; i < numPageSizes; ++i)
-            globjects::info("GL_VIRTUAL_PAGE_SIZE_Y_ARB[%;] = %;", i, pageSizesY[i]);
+            info("GL_VIRTUAL_PAGE_SIZE_Y_ARB[%;] = %;", i, pageSizesY[i]);
 
         std::vector<int> pageSizesZ(numPageSizes);
         glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Z_ARB
             , static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesZ.data());
         for (int i = 0; i < numPageSizes; ++i)
-            globjects::info("GL_VIRTUAL_PAGE_SIZE_Z_ARB[%;] = %;", i, pageSizesZ[i]);
+            info("GL_VIRTUAL_PAGE_SIZE_Z_ARB[%;] = %;", i, pageSizesZ[i]);
 
         m_pageSize   = ivec2(pageSizesX[0], pageSizesY[0]);
         m_numPages   = m_textureSize / m_pageSize;
@@ -92,9 +93,9 @@ public:
 
         int maxSparseTextureSize;
         glGetIntegerv(GL_MAX_SPARSE_TEXTURE_SIZE_ARB, &maxSparseTextureSize);
-        globjects::info("GL_MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
+        info("GL_MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
 
-        m_texture = new globjects::Texture(GL_TEXTURE_2D);
+        m_texture = new Texture(GL_TEXTURE_2D);
 
         // make texture sparse
         m_texture->setParameter(GL_TEXTURE_SPARSE_ARB, static_cast<GLint>(GL_TRUE));
@@ -159,8 +160,8 @@ public:
     }
 
 protected:
-    globjects::ref_ptr<globjects::Texture> m_texture;
-    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
+    ref_ptr<Texture> m_texture;
+    ref_ptr<ScreenAlignedQuad> m_quad;
 
     ivec2 m_textureSize;
     ivec2 m_pageSize;
@@ -178,10 +179,10 @@ protected:
  */
 int main(int /*argc*/, char * /*argv*/[])
 {
-    globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "Usage:";
+    info() << "\t" << "ESC" << "\t\t"       << "Close example";
+    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);

@@ -2,14 +2,15 @@
 
 #include <globjects/base/ref_ptr.h>
 
-#include <globjects/VertexArray.h>
-#include <globjects/Program.h>
-#include <globjects/Buffer.h>
-
-#include <common/ScreenAlignedQuad.h>
-
 #include "AbstractParticleTechnique.h"
 
+
+namespace globjects
+{
+class Buffer;
+class Program;
+class VertexArray;
+}
 
 class ComputeShaderParticles : public AbstractParticleTechnique
 {

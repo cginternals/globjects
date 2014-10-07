@@ -18,6 +18,7 @@
 
 using namespace gl;
 using namespace glm;
+using namespace globjects;
 
 namespace 
 {
@@ -65,9 +66,6 @@ public:
 
     virtual ~EventHandler()
     {
-        m_vao->destroy();
-        m_cornerBuffer->destroy();
-        m_program->destroy();
     }
 
     virtual void initialize(Window & window) override
@@ -76,13 +74,13 @@ public:
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        m_cornerBuffer = new globjects::Buffer();
-		m_program = new globjects::Program();
-		m_vao = new globjects::VertexArray();
+        m_cornerBuffer = new Buffer();
+		m_program = new Program();
+		m_vao = new VertexArray();
 
 		m_program->attach(
-            globjects::Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode),
-            globjects::Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
+            Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode),
+            Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
 
         m_cornerBuffer->setData(std::array<vec2, 4>{ {
 			vec2(0, 0), vec2(1, 0), vec2(0, 1), vec2(1, 1) } }, GL_STATIC_DRAW);
@@ -104,18 +102,18 @@ public:
     }
 
 private:
-	globjects::VertexArray * m_vao;
-	globjects::Buffer * m_cornerBuffer;
-	globjects::Program * m_program;
+    ref_ptr<VertexArray> m_vao;
+    ref_ptr<Buffer> m_cornerBuffer;
+    ref_ptr<Program> m_program;
 };
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "Usage:";
+    info() << "\t" << "ESC" << "\t\t"       << "Close example";
+    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);

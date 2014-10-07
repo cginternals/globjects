@@ -42,12 +42,13 @@
 
 using namespace gl;
 using namespace glm;
+using namespace globjects;
 
 class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
 {
 public:
     EventHandler(int numParticles)
-    : m_technique(FragmentShaderTechnique)
+    : m_technique(ParticleTechnique::FragmentShaderTechnique)
     , m_numParticles(numParticles)
     , m_camera(nullptr)
     , m_steps(1)
@@ -78,9 +79,9 @@ public:
             m_velocities[i] = vec4(0.f);
 
 
-        m_forces = globjects::Texture::createDefault(GL_TEXTURE_3D);
+        m_forces = Texture::createDefault(GL_TEXTURE_3D);
         
-        globjects::NamedString::create("/particle-step.inc", new globjects::File("data/gpu-particles/particle-step.inc"));
+        NamedString::create("/particle-step.inc", new File("data/gpu-particles/particle-step.inc"));
 
         // initialize camera
 
@@ -94,19 +95,19 @@ public:
         
         // initialize techniques
 
-        if (globjects::hasExtension(GLextension::GL_ARB_compute_shader))
-            m_techniques[ComputeShaderTechnique] = new ComputeShaderParticles(
+        if (hasExtension(GLextension::GL_ARB_compute_shader))
+            m_techniques[ParticleTechnique::ComputeShaderTechnique] = new ComputeShaderParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         else
-            globjects::warning() << "Compute shader based implementation not supported.";
+            warning() << "Compute shader based implementation not supported.";
 
-        if (globjects::hasExtension(GLextension::GL_ARB_transform_feedback3)) 
-            m_techniques[TransformFeedbackTechnique] = new TransformFeedbackParticles(
+        if (hasExtension(GLextension::GL_ARB_transform_feedback3)) 
+            m_techniques[ParticleTechnique::TransformFeedbackTechnique] = new TransformFeedbackParticles(
                 m_positions, m_velocities, *m_forces, *m_camera);
         else
-            globjects::warning() << "Transform feedback based implementation not supported.";
+            warning() << "Transform feedback based implementation not supported.";
 
-        m_techniques[FragmentShaderTechnique] = new FragmentShaderParticles(
+        m_techniques[ParticleTechnique::FragmentShaderTechnique] = new FragmentShaderParticles(
             m_positions, m_velocities, *m_forces, *m_camera);
 
         for (auto technique : m_techniques)
@@ -194,35 +195,35 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_C:
-            if (m_techniques[ComputeShaderTechnique]) 
+            if (m_techniques[ParticleTechnique::ComputeShaderTechnique])
             {
-                globjects::debug() << "switch to compute shader technique";
-                m_technique = ComputeShaderTechnique;
+                debug() << "switch to compute shader technique";
+                m_technique = ParticleTechnique::ComputeShaderTechnique;
             };
             break;
 
         case GLFW_KEY_T:
-            if (m_techniques[TransformFeedbackTechnique]) 
+            if (m_techniques[ParticleTechnique::TransformFeedbackTechnique])
             {
-                globjects::debug() << "switch to transform feedback technique";
-                m_technique = TransformFeedbackTechnique;
+                debug() << "switch to transform feedback technique";
+                m_technique = ParticleTechnique::TransformFeedbackTechnique;
             }
             break;
 
         case GLFW_KEY_F:
-            globjects::debug() << "switch to fragment shader technique";
-            m_technique = FragmentShaderTechnique;
+            debug() << "switch to fragment shader technique";
+            m_technique = ParticleTechnique::FragmentShaderTechnique;
             break;
 
         case GLFW_KEY_P:
             if (m_timer.paused())
             {
-                globjects::debug() << "timer continue";
+                debug() << "timer continue";
                 m_timer.start();
             }
             else
             {
-                globjects::debug() << "timer pause";
+                debug() << "timer pause";
                 m_timer.pause();
             }
             for (auto technique : m_techniques)
@@ -237,12 +238,12 @@ public:
 
         case GLFW_KEY_MINUS:
             m_steps = max(1, m_steps - 1);
-            globjects::debug() << "steps = " << m_steps;
+            debug() << "steps = " << m_steps;
             break;
 
         case GLFW_KEY_EQUAL: // bug? this is plus/add on my keyboard
             ++m_steps;
-            globjects::debug() << "steps = " << m_steps;
+            debug() << "steps = " << m_steps;
             break;
         }
     }
@@ -311,7 +312,7 @@ public:
 
 protected:
     
-    enum ParticleTechnique
+    enum class ParticleTechnique
     {
         ComputeShaderTechnique
     ,   FragmentShaderTechnique
@@ -339,26 +340,26 @@ protected:
     };
     std::vector<Attribute> m_attributes;
 
-    globjects::ref_ptr<globjects::Texture> m_forces;
+    ref_ptr<Texture> m_forces;
 };
 
 
 int main(int argc, char * argv[])
 {
-    globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    globjects::info() << "\t" << "Left Mouse" << "\t"  << "Rotate scene";
-    globjects::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
-    globjects::info() << "\t" << "-" << "\t\t"         << "Reduce steps per frame";
-    globjects::info() << "\t" << "=" << "\t\t"         << "Increase steps per frame";
-    globjects::info() << "\t" << "R" << "\t\t"         << "Compute new forces";
-    globjects::info() << "\t" << "Shift + R" << "\t"   << "Compute new forces and reset particles";
-    globjects::info() << "\t" << "P" << "\t\t"         << "Toggle pause";
-    globjects::info() << "\t" << "F" << "\t\t"         << "Particle computation using fragment shader";
-    globjects::info() << "\t" << "T" << "\t\t"         << "Particle computation using transform feedback";
-    globjects::info() << "\t" << "C" << "\t\t"         << "Particle computation using compute shader";
+    info() << "Usage:";
+    info() << "\t" << "ESC" << "\t\t"       << "Close example";
+    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "\t" << "Left Mouse" << "\t"  << "Rotate scene";
+    info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+    info() << "\t" << "-" << "\t\t"         << "Reduce steps per frame";
+    info() << "\t" << "=" << "\t\t"         << "Increase steps per frame";
+    info() << "\t" << "R" << "\t\t"         << "Compute new forces";
+    info() << "\t" << "Shift + R" << "\t"   << "Compute new forces and reset particles";
+    info() << "\t" << "P" << "\t\t"         << "Toggle pause";
+    info() << "\t" << "F" << "\t\t"         << "Particle computation using fragment shader";
+    info() << "\t" << "T" << "\t\t"         << "Particle computation using transform feedback";
+    info() << "\t" << "C" << "\t\t"         << "Particle computation using compute shader";
 
     ContextFormat format;
     format.setVersion(3, 3); // minimum required version is 3.3 due to particle drawing using geometry shader.

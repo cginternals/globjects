@@ -38,6 +38,7 @@
 
 using namespace gl;
 using namespace glm;
+using namespace globjects;
 
 class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
 {
@@ -75,7 +76,7 @@ public:
 
         for (unsigned i = 0; i < m_textures.size(); ++i)
         {
-            globjects::Texture * texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
+            Texture * texture = Texture::createDefault(GL_TEXTURE_2D);
 
             static const int w(256);
             static const int h(256);
@@ -135,27 +136,27 @@ public:
     {
         WindowEventHandler::initialize(window);
 
-        if (!globjects::hasExtension(GLextension::GL_NV_bindless_texture))
+        if (!hasExtension(GLextension::GL_NV_bindless_texture))
         {
-            globjects::critical() << "Blindess textures are not supported";
+            critical() << "Blindess textures are not supported";
 
             window.close();
             return;
         }
 
-        globjects::ref_ptr<globjects::State> state = new globjects::State;
+        ref_ptr<State> state = new State;
         state->enable(GL_CULL_FACE);
         state->clearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         createGeometry();
         createTextures();
 
-        m_program = new globjects::Program;
+        m_program = new Program;
         m_program->attach(
-            globjects::Shader::fromFile(GL_VERTEX_SHADER,   "data/bindless-textures/shader.vert"),
-            globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag"));
+            Shader::fromFile(GL_VERTEX_SHADER,   "data/bindless-textures/shader.vert"),
+            Shader::fromFile(GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag"));
 
-        std::array<globjects::TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
+        std::array<TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
         for (unsigned i = 0; i < m_textures.size(); ++i)
             handles[i] = m_textures[i]->makeResident();
 
@@ -283,23 +284,23 @@ protected:
     WorldInHandNavigation m_nav;
     AxisAlignedBoundingBox m_aabb;
 
-    std::array<globjects::ref_ptr<globjects::Texture>, 4> m_textures;
-    globjects::ref_ptr<globjects::Program> m_program;
-    globjects::ref_ptr<VertexDrawable> m_drawable;
+    std::array<ref_ptr<Texture>, 4> m_textures;
+    ref_ptr<Program> m_program;
+    ref_ptr<VertexDrawable> m_drawable;
 };
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t"        << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t"  << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t"        << "Toggle fullscreen";
-    globjects::info() << "\t" << "F5" << "\t\t"         << "Reload shaders";
-    globjects::info() << "\t" << "Space" << "\t\t"      << "Reset camera";
-    globjects::info() << "\t" << "Left Mouse" << "\t"   << "Pan scene";
-    globjects::info() << "\t" << "Right Mouse" << "\t"  << "Rotate scene";
-    globjects::info() << "\t" << "Mouse Wheel" << "\t"  << "Zoom scene";
+    info() << "Usage:";
+    info() << "\t" << "ESC" << "\t\t"        << "Close example";
+    info() << "\t" << "ALT + Enter" << "\t"  << "Toggle fullscreen";
+    info() << "\t" << "F11" << "\t\t"        << "Toggle fullscreen";
+    info() << "\t" << "F5" << "\t\t"         << "Reload shaders";
+    info() << "\t" << "Space" << "\t\t"      << "Reset camera";
+    info() << "\t" << "Left Mouse" << "\t"   << "Pan scene";
+    info() << "\t" << "Right Mouse" << "\t"  << "Rotate scene";
+    info() << "\t" << "Mouse Wheel" << "\t"  << "Zoom scene";
 
     ContextFormat format;
     format.setVersion(3, 0);

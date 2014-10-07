@@ -5,6 +5,11 @@
 
 #include <globjects/Shader.h>
 #include <globjects/VertexAttributeBinding.h>
+#include <globjects/TransformFeedback.h>
+#include <globjects/VertexArray.h>
+#include <globjects/Program.h>
+#include <globjects/Buffer.h>
+#include <globjects/Texture.h>
 
 #include <globjects/base/File.h>
 
@@ -13,12 +18,12 @@
 
 using namespace gl;
 using namespace glm;
-
+using namespace globjects;
 
 TransformFeedbackParticles::TransformFeedbackParticles(
     const std::vector<vec4> & positions
 ,   const std::vector<vec4> & velocities
-,   const globjects::Texture & forces
+,   const Texture & forces
 ,   const Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
 {
@@ -30,22 +35,22 @@ TransformFeedbackParticles::~TransformFeedbackParticles()
 
 void TransformFeedbackParticles::initialize()
 {
-    m_sourcePositions  = new globjects::Buffer();
-    m_sourceVelocities = new globjects::Buffer();
-    m_targetPositions  = new globjects::Buffer();
-    m_targetVelocities = new globjects::Buffer();
+    m_sourcePositions  = new Buffer();
+    m_sourceVelocities = new Buffer();
+    m_targetPositions  = new Buffer();
+    m_targetVelocities = new Buffer();
 
     reset();
 
-    m_transformFeedbackProgram = new globjects::Program();
-    m_transformFeedbackProgram->attach(globjects::Shader::fromFile(GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
+    m_transformFeedbackProgram = new Program();
+    m_transformFeedbackProgram->attach(Shader::fromFile(GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
 
     m_transformFeedbackProgram->link();
 
-    m_transformFeedback = new globjects::TransformFeedback();
+    m_transformFeedback = new TransformFeedback();
     m_transformFeedback->setVaryings(m_transformFeedbackProgram, std::array<const char *, 2>{ { "out_position", "out_velocity" } }, GL_SEPARATE_ATTRIBS);
 
-    m_vao = new globjects::VertexArray();
+    m_vao = new VertexArray();
     m_vao->bind();
 
     auto positionsBinding = m_vao->binding(0);

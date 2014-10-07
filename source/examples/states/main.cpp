@@ -21,6 +21,7 @@
 
 using namespace gl;
 using namespace glm;
+using namespace globjects;
 
 class EventHandler : public WindowEventHandler
 {
@@ -39,28 +40,28 @@ public:
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        m_defaultPointSizeState  = new globjects::State();
-        m_defaultPointSizeState->pointSize(globjects::getFloat(GL_POINT_SIZE));
-        m_thinnestPointSizeState = new globjects::State();
+        m_defaultPointSizeState  = new State();
+        m_defaultPointSizeState->pointSize(getFloat(GL_POINT_SIZE));
+        m_thinnestPointSizeState = new State();
         m_thinnestPointSizeState->pointSize(2.0f);
-        m_thinPointSizeState     = new globjects::State();
+        m_thinPointSizeState     = new State();
         m_thinPointSizeState->pointSize(5.0f);
-        m_normalPointSizeState   = new globjects::State();
+        m_normalPointSizeState   = new State();
         m_normalPointSizeState->pointSize(10.0f);
-        m_thickPointSizeState    = new globjects::State();
+        m_thickPointSizeState    = new State();
         m_thickPointSizeState->pointSize(20.0f);
-        m_disableRasterizerState = new globjects::State();
+        m_disableRasterizerState = new State();
         m_disableRasterizerState->enable(GL_RASTERIZER_DISCARD);
-        m_enableRasterizerState  = new globjects::State();
+        m_enableRasterizerState  = new State();
         m_enableRasterizerState->disable(GL_RASTERIZER_DISCARD);
 
-        m_vao = new globjects::VertexArray();
-        m_buffer = new globjects::Buffer();
+        m_vao = new VertexArray();
+        m_buffer = new Buffer();
 
-        m_shaderProgram = new globjects::Program();
+        m_shaderProgram = new Program();
         m_shaderProgram->attach(
-            globjects::Shader::fromFile(GL_VERTEX_SHADER, "data/states/standard.vert")
-          , globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/states/standard.frag"));
+            Shader::fromFile(GL_VERTEX_SHADER, "data/states/standard.vert")
+          , Shader::fromFile(GL_FRAGMENT_SHADER, "data/states/standard.frag"));
         
         m_buffer->setData(std::vector<vec2>({
             vec2(-0.8f, 0.8f), vec2(-0.4f, 0.8f), vec2( 0.0f, 0.8f), vec2( 0.4f, 0.8f), vec2( 0.8f, 0.8f)
@@ -128,26 +129,26 @@ public:
     }
 
 protected:
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
-    globjects::ref_ptr<globjects::Buffer> m_buffer;
-    globjects::ref_ptr<globjects::Program> m_shaderProgram;
+    ref_ptr<VertexArray> m_vao;
+    ref_ptr<Buffer> m_buffer;
+    ref_ptr<Program> m_shaderProgram;
 
-    globjects::ref_ptr<globjects::State> m_defaultPointSizeState;
-    globjects::ref_ptr<globjects::State> m_thinnestPointSizeState;
-    globjects::ref_ptr<globjects::State> m_thinPointSizeState;
-    globjects::ref_ptr<globjects::State> m_normalPointSizeState;
-    globjects::ref_ptr<globjects::State> m_thickPointSizeState;
-    globjects::ref_ptr<globjects::State> m_disableRasterizerState;
-    globjects::ref_ptr<globjects::State> m_enableRasterizerState;
+    ref_ptr<State> m_defaultPointSizeState;
+    ref_ptr<State> m_thinnestPointSizeState;
+    ref_ptr<State> m_thinPointSizeState;
+    ref_ptr<State> m_normalPointSizeState;
+    ref_ptr<State> m_thickPointSizeState;
+    ref_ptr<State> m_disableRasterizerState;
+    ref_ptr<State> m_enableRasterizerState;
 };
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "Usage:";
+    info() << "\t" << "ESC" << "\t\t"       << "Close example";
+    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);

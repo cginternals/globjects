@@ -2,14 +2,15 @@
 
 #include <globjects/base/ref_ptr.h>
 
-#include <globjects/VertexArray.h>
-#include <globjects/Texture.h>
-#include <globjects/Framebuffer.h>
-
-#include <common/ScreenAlignedQuad.h>
-
 #include "AbstractParticleTechnique.h"
 
+
+namespace globjects
+{
+class Texture;
+class Framebuffer;
+class VertexArray;
+}
 
 class FragmentShaderParticles : public AbstractParticleTechnique
 {

@@ -23,6 +23,7 @@
 
 using namespace gl;
 using namespace glm;
+using namespace globjects;
 
 class EventHandler : public WindowEventHandler
 {
@@ -42,15 +43,14 @@ public:
 
         glClearColor(1.f, 1.f, 1.f, 0.f);
 
-
-        m_sphere = new globjects::Program();
+        m_sphere = new Program();
         m_sphere->attach(
-            globjects::Shader::fromFile(GL_VERTEX_SHADER,          "data/tessellation/sphere.vert")
-        ,   globjects::Shader::fromFile(GL_TESS_CONTROL_SHADER,    "data/tessellation/sphere.tcs")
-        ,   globjects::Shader::fromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
-        ,   globjects::Shader::fromFile(GL_GEOMETRY_SHADER,        "data/tessellation/sphere.geom")
-        ,   globjects::Shader::fromFile(GL_FRAGMENT_SHADER,        "data/tessellation/sphere.frag")
-        ,   globjects::Shader::fromFile(GL_FRAGMENT_SHADER,        "data/common/phong.frag"));
+            Shader::fromFile(GL_VERTEX_SHADER,          "data/tessellation/sphere.vert")
+        ,   Shader::fromFile(GL_TESS_CONTROL_SHADER,    "data/tessellation/sphere.tcs")
+        ,   Shader::fromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
+        ,   Shader::fromFile(GL_GEOMETRY_SHADER,        "data/tessellation/sphere.geom")
+        ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/tessellation/sphere.frag")
+        ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/common/phong.frag"));
 
         m_icosahedron = new Icosahedron();
 
@@ -91,9 +91,9 @@ public:
     }
 
 protected:
-    globjects::ref_ptr<globjects::Program> m_sphere;
+    ref_ptr<Program> m_sphere;
 
-    globjects::ref_ptr<Icosahedron> m_icosahedron;
+    ref_ptr<Icosahedron> m_icosahedron;
 
     Camera m_camera;
     Timer m_time;
@@ -104,11 +104,11 @@ protected:
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    globjects::info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
+    info() << "Usage:";
+    info() << "\t" << "ESC" << "\t\t"       << "Close example";
+    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 0);

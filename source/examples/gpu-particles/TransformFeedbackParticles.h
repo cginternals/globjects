@@ -2,15 +2,16 @@
 
 #include <globjects/base/ref_ptr.h>
 
-#include <globjects/TransformFeedback.h>
-#include <globjects/VertexArray.h>
-#include <globjects/Program.h>
-#include <globjects/Buffer.h>
-
-#include <common/ScreenAlignedQuad.h>
-
 #include "AbstractParticleTechnique.h"
 
+
+namespace globjects
+{
+class TransformFeedback;
+class VertexArray;
+class Program;
+class Buffer;
+}
 
 class TransformFeedbackParticles : public AbstractParticleTechnique
 {

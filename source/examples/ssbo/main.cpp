@@ -19,6 +19,7 @@
 
 
 using namespace gl;
+using namespace globjects;
 
 class EventHandler : public WindowEventHandler
 {
@@ -35,9 +36,9 @@ public:
     {
         WindowEventHandler::initialize(window);
 
-        if (!globjects::hasExtension(GLextension::GL_ARB_shader_storage_buffer_object))
+        if (!hasExtension(GLextension::GL_ARB_shader_storage_buffer_object))
         {
-            globjects::critical() << "Shader storage buffer objects not supported.";
+            critical() << "Shader storage buffer objects not supported.";
 
             window.close();
             return;
@@ -46,7 +47,7 @@ public:
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
-        m_quad = new ScreenAlignedQuad(globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
+        m_quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
 
         m_quad->program()->setUniform("maximum",     10);
         m_quad->program()->setUniform("rowCount",    10);
@@ -64,7 +65,7 @@ public:
             3,4,5,6,7,8,9,10,1,2,
             2,3,4,5,6,7,8,9,10,1 };
 
-        m_buffer = new globjects::Buffer();
+        m_buffer = new Buffer();
         m_buffer->setData(sizeof(data), data, GL_STATIC_DRAW);
 
         m_buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
@@ -80,18 +81,18 @@ public:
     }
 
 protected:
-    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
-    globjects::ref_ptr<globjects::Buffer> m_buffer;
+    ref_ptr<ScreenAlignedQuad> m_quad;
+    ref_ptr<Buffer> m_buffer;
 };
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    globjects::info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
+    info() << "Usage:";
+    info() << "\t" << "ESC" << "\t\t"       << "Close example";
+    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 3);

@@ -1,7 +1,6 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/DebugMessage.h>
 #include <globjects/NamedString.h>
 #include <globjects/Shader.h>
 
@@ -18,6 +17,7 @@
 
 
 using namespace gl;
+using namespace globjects;
 
 class EventHandler : public WindowEventHandler
 {
@@ -34,13 +34,11 @@ public:
     {
         WindowEventHandler::initialize(window);
 
-        globjects::DebugMessage::enable();
-
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        globjects::NamedString::create("/color.glsl", new globjects::File("data/shaderincludes/color.glsl"));
+        NamedString::create("/color.glsl", new File("data/shaderincludes/color.glsl"));
 
-        m_quad = new ScreenAlignedQuad(globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
+        m_quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
     }
     
     virtual void paintEvent(PaintEvent & event) override
@@ -52,17 +50,17 @@ public:
     }
 
 protected:
-    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
+    ref_ptr<ScreenAlignedQuad> m_quad;
 };
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    globjects::info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
+    info() << "Usage:";
+    info() << "\t" << "ESC" << "\t\t"       << "Close example";
+    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(3, 0);

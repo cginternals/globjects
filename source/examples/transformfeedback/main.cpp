@@ -31,6 +31,7 @@
 
 using namespace gl;
 using namespace glm;
+using namespace globjects;
 
 class EventHandler : public WindowEventHandler
 {
@@ -48,9 +49,9 @@ public:
     {
         WindowEventHandler::initialize(window);
 
-        if (!globjects::hasExtension(GLextension::GL_ARB_transform_feedback3))
+        if (!hasExtension(GLextension::GL_ARB_transform_feedback3))
         {
-            globjects::critical() << "Transform feedback not supported.";
+            critical() << "Transform feedback not supported.";
 
             window.close();
             return;
@@ -67,14 +68,14 @@ public:
 
     void createAndSetupShaders()
     {
-        m_shaderProgram = new globjects::Program();
+        m_shaderProgram = new Program();
         m_shaderProgram->attach(
-            globjects::Shader::fromFile(GL_VERTEX_SHADER,   "data/transformfeedback/simple.vert")
-          , globjects::Shader::fromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
+            Shader::fromFile(GL_VERTEX_SHADER,   "data/transformfeedback/simple.vert")
+          , Shader::fromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
 
-        m_transformFeedbackProgram = new globjects::Program();
+        m_transformFeedbackProgram = new Program();
         m_transformFeedbackProgram->attach(
-            globjects::Shader::fromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
+            Shader::fromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
 
         m_transformFeedbackProgram->setUniform("deltaT", 0.0f);
     }
@@ -97,14 +98,14 @@ public:
           , vec4(0, 0, 1, 1)
           , vec4(0, 1, 0, 1) });
 
-        m_vertexBuffer1 = new globjects::Buffer();
+        m_vertexBuffer1 = new Buffer();
         m_vertexBuffer1->setData(vertexArray, GL_STATIC_DRAW);
-        m_vertexBuffer2 = new globjects::Buffer();
+        m_vertexBuffer2 = new Buffer();
         m_vertexBuffer2->setData(vertexArray, GL_STATIC_DRAW);
-        m_colorBuffer = new globjects::Buffer();
+        m_colorBuffer = new Buffer();
         m_colorBuffer->setData(colorArray, GL_STATIC_DRAW);
 
-        m_vao = new globjects::VertexArray();
+        m_vao = new VertexArray();
 
         m_vao->binding(0)->setAttribute(0);
         m_vao->binding(0)->setFormat(4, GL_FLOAT);
@@ -119,7 +120,7 @@ public:
 
     void createAndSetupTransformFeedback()
     {
-        m_transformFeedback = new globjects::TransformFeedback();
+        m_transformFeedback = new TransformFeedback();
         m_transformFeedback->setVaryings(m_transformFeedbackProgram
             , std::array<const char*, 1>{ { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
     }
@@ -142,8 +143,8 @@ public:
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        globjects::Buffer * drawBuffer  = m_vertexBuffer1;
-        globjects::Buffer * writeBuffer = m_vertexBuffer2;
+        Buffer * drawBuffer  = m_vertexBuffer1;
+        Buffer * writeBuffer = m_vertexBuffer2;
 
         m_vao->bind();
 
@@ -177,16 +178,16 @@ public:
     }
 
 protected:
-    globjects::ref_ptr<globjects::Program> m_shaderProgram;
-    globjects::ref_ptr<globjects::Program> m_transformFeedbackProgram;
+    ref_ptr<Program> m_shaderProgram;
+    ref_ptr<Program> m_transformFeedbackProgram;
 	
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
+    ref_ptr<VertexArray> m_vao;
 
-    globjects::ref_ptr<globjects::TransformFeedback> m_transformFeedback;
+    ref_ptr<TransformFeedback> m_transformFeedback;
 	
-    globjects::ref_ptr<globjects::Buffer> m_vertexBuffer1;
-    globjects::ref_ptr<globjects::Buffer> m_vertexBuffer2;
-    globjects::ref_ptr<globjects::Buffer> m_colorBuffer;
+    ref_ptr<Buffer> m_vertexBuffer1;
+    ref_ptr<Buffer> m_vertexBuffer2;
+    ref_ptr<Buffer> m_colorBuffer;
 
     Timer m_timer;
 };
@@ -194,11 +195,11 @@ protected:
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    globjects::info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
+    info() << "Usage:";
+    info() << "\t" << "ESC" << "\t\t"       << "Close example";
+    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 0);

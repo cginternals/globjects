@@ -16,6 +16,7 @@
 
 
 using namespace gl;
+using namespace globjects;
 
 class EventHandler : public WindowEventHandler
 {
@@ -62,7 +63,7 @@ public:
         for (int i = 0; i < w * h * 4; ++i)
             data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
 
-        m_texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
+        m_texture = Texture::createDefault(GL_TEXTURE_2D);
         m_texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     }
 
@@ -73,17 +74,17 @@ public:
     }
 
 protected:
-    globjects::ref_ptr<globjects::Texture> m_texture;
-    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
+    ref_ptr<Texture> m_texture;
+    ref_ptr<ScreenAlignedQuad> m_quad;
 };
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "Usage:";
+    info() << "\t" << "ESC" << "\t\t"       << "Close example";
+    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
 
     ContextFormat format;
     format.setVersion(3, 0);

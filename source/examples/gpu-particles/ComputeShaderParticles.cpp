@@ -6,6 +6,9 @@
 #include <globjects/base/AbstractStringSource.h>
 
 #include <globjects/globjects.h>
+#include <globjects/Buffer.h>
+#include <globjects/Program.h>
+#include <globjects/VertexArray.h>
 #include <globjects/Shader.h>
 #include <globjects/VertexAttributeBinding.h>
 
@@ -18,12 +21,12 @@
 
 using namespace gl;
 using namespace glm;
-
+using namespace globjects;
 
 ComputeShaderParticles::ComputeShaderParticles(
     const std::vector<vec4> & positions
 ,   const std::vector<vec4> & velocities
-,   const globjects::Texture & forces
+,   const Texture & forces
 ,   const Camera & camera)
 : AbstractParticleTechnique(positions, velocities, forces, camera)
 {
@@ -35,11 +38,11 @@ ComputeShaderParticles::~ComputeShaderParticles()
 
 void ComputeShaderParticles::initialize()
 {
-    static const int max_invocations = globjects::getInteger(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS);
+    static const int max_invocations = getInteger(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS);
     static const ivec3 max_count = ivec3(
-        globjects::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0)
-      , globjects::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1)
-      , globjects::getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2));
+        getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0)
+      , getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1)
+      , getInteger(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2));
 
     const int groups = static_cast<int>(ceil(static_cast<float>(m_numParticles) / static_cast<float>(max_invocations)));
 
@@ -53,21 +56,21 @@ void ComputeShaderParticles::initialize()
     assert(m_workGroupSize.x * m_workGroupSize.y * m_workGroupSize.z * max_invocations >= m_numParticles);
     assert(m_workGroupSize.x * m_workGroupSize.y * m_workGroupSize.z * max_invocations < m_numParticles + max_invocations);
 
-    m_computeProgram = new globjects::Program();
+    m_computeProgram = new Program();
     
     StringTemplate * stringTemplate = new StringTemplate(
-        new globjects::File("data/gpu-particles/particle.comp"));
+        new File("data/gpu-particles/particle.comp"));
     stringTemplate->replace("MAX_INVOCATION", max_invocations);
     stringTemplate->update();
 
-    m_computeProgram->attach(new globjects::Shader(GL_COMPUTE_SHADER, stringTemplate));
+    m_computeProgram->attach(new Shader(GL_COMPUTE_SHADER, stringTemplate));
 
-    m_positionsSSBO = new globjects::Buffer();
-    m_velocitiesSSBO = new globjects::Buffer();
+    m_positionsSSBO = new Buffer();
+    m_velocitiesSSBO = new Buffer();
 
     reset();
 
-    m_vao = new globjects::VertexArray();
+    m_vao = new VertexArray();
     m_vao->bind();
 
     auto positionsBinding = m_vao->binding(0);

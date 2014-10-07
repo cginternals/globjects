@@ -25,6 +25,7 @@
 
 using namespace gl;
 using namespace glm;
+using namespace globjects;
 
 class EventHandler : public WindowEventHandler
 {
@@ -40,7 +41,7 @@ public:
 
     void createAndSetupTexture()
     {
-        m_texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
+        m_texture = Texture::createDefault(GL_TEXTURE_2D);
 
         m_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
         m_texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
@@ -48,8 +49,8 @@ public:
 
     void createAndSetupShaders()
     {
-        m_computeProgram = new globjects::Program();
-        m_computeProgram->attach(globjects::Shader::fromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+        m_computeProgram = new Program();
+        m_computeProgram->attach(Shader::fromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
 
         m_computeProgram->setUniform("destTex", 0);
     }
@@ -64,9 +65,9 @@ public:
     {
         WindowEventHandler::initialize(window);
 
-        if (!globjects::hasExtension(GLextension::GL_ARB_compute_shader))
+        if (!hasExtension(GLextension::GL_ARB_compute_shader))
         {
-            globjects::critical() << "Compute shaders are not supported";
+            critical() << "Compute shaders are not supported";
 
             window.close();
             return;
@@ -98,10 +99,10 @@ public:
     }
     
 protected:
-    globjects::ref_ptr<globjects::Texture> m_texture;
+    ref_ptr<Texture> m_texture;
 
-    globjects::ref_ptr<globjects::Program> m_computeProgram;
-    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
+    ref_ptr<Program> m_computeProgram;
+    ref_ptr<ScreenAlignedQuad> m_quad;
 
     unsigned int m_frame;
 };
@@ -109,11 +110,11 @@ protected:
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    globjects::info() << "Usage:";
-    globjects::info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    globjects::info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    globjects::info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
+    info() << "Usage:";
+    info() << "\t" << "ESC" << "\t\t"       << "Close example";
+    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 3);

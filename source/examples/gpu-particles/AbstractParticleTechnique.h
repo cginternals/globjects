@@ -5,11 +5,17 @@
 #include <glm/glm.hpp>
 
 #include <globjects/base/ref_ptr.h>
-#include <globjects/Framebuffer.h>
-#include <globjects/Program.h>
-#include <globjects/Buffer.h>
 
-#include <common/ScreenAlignedQuad.h>
+
+namespace globjects
+{
+class Framebuffer;
+class Program;
+class Buffer;
+class Texture;
+}
+
+class ScreenAlignedQuad;
 
 class Camera;
 
