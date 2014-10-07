@@ -42,12 +42,12 @@ AbstractVertexAttributeBindingImplementation * AbstractVertexAttributeBindingImp
     }
 }
 
-gl::GLint AbstractVertexAttributeBindingImplementation::attributeIndex(const VertexAttributeBinding * binding) const
+GLint AbstractVertexAttributeBindingImplementation::attributeIndex(const VertexAttributeBinding * binding) const
 {
     return binding->attributeIndex();
 }
 
-gl::GLint AbstractVertexAttributeBindingImplementation::bindingIndex(const VertexAttributeBinding * binding) const
+GLint AbstractVertexAttributeBindingImplementation::bindingIndex(const VertexAttributeBinding * binding) const
 {
     return binding->bindingIndex();
 }

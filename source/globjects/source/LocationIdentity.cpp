@@ -1,6 +1,10 @@
 #include <globjects/LocationIdentity.h>
 
-namespace globjects {
+
+using namespace gl;
+
+namespace globjects 
+{
 
 LocationIdentity::LocationIdentity()
 : m_invalid(true)
@@ -9,7 +13,7 @@ LocationIdentity::LocationIdentity()
 {
 }
 
-LocationIdentity::LocationIdentity(gl::GLint location)
+LocationIdentity::LocationIdentity(GLint location)
 : m_invalid(false)
 , m_hasName(false)
 , m_location(location)
@@ -34,7 +38,7 @@ bool LocationIdentity::isName() const
     return m_hasName && !m_invalid;
 }
 
-gl::GLint LocationIdentity::location() const
+GLint LocationIdentity::location() const
 {
     return m_location;
 }
@@ -88,7 +92,7 @@ std::size_t LocationIdentity::hash() const
     }
     else
     {
-        return std::hash<gl::GLint>()(m_location);
+        return std::hash<GLint>()(m_location);
     }
 }
 

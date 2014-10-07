@@ -8,19 +8,21 @@
 #include "implementations/AbstractFramebufferImplementation.h"
 
 
+using namespace gl;
+
 namespace 
 {
 
 template <typename CreateObjectsFunction>
-gl::GLuint createObject(CreateObjectsFunction function)
+GLuint createObject(CreateObjectsFunction function)
 {
-    gl::GLuint id;
+    GLuint id;
     function(1, &id);
     return id;
 }
 
 template <typename DeleteObjectsFunction>
-void deleteObject(DeleteObjectsFunction function, gl::GLuint id, bool hasOwnership)
+void deleteObject(DeleteObjectsFunction function, GLuint id, bool hasOwnership)
 {
     if (hasOwnership)
     {
@@ -30,7 +32,8 @@ void deleteObject(DeleteObjectsFunction function, gl::GLuint id, bool hasOwnersh
 
 }
 
-namespace globjects {
+namespace globjects 
+{
 
 AbstractResource::AbstractResource(bool hasOwnership)
 : m_hasOwnership(hasOwnership)
@@ -46,7 +49,7 @@ bool AbstractResource::hasOwnership() const
     return m_hasOwnership;
 }
 
-IDTrait::IDTrait(gl::GLuint id)
+IDTrait::IDTrait(GLuint id)
 : m_id(id)
 {
 }
@@ -55,24 +58,24 @@ IDTrait::~IDTrait()
 {
 }
 
-gl::GLuint IDTrait::id() const
+GLuint IDTrait::id() const
 {
     return m_id;
 }
 
-IDResource::IDResource(gl::GLuint id)
+IDResource::IDResource(GLuint id)
 : AbstractResource(true)
 , IDTrait(id)
 {
 }
 
-IDResource::IDResource(gl::GLuint id, bool hasOwnership)
+IDResource::IDResource(GLuint id, bool hasOwnership)
 : AbstractResource(hasOwnership)
 , IDTrait(id)
 {
 }
 
-ExternalResource::ExternalResource(gl::GLuint id)
+ExternalResource::ExternalResource(GLuint id)
 : IDResource(id, false)
 {
 }
@@ -102,7 +105,7 @@ FrameBufferObjectResource::~FrameBufferObjectResource()
 }
 
 ProgramResource::ProgramResource()
-: IDResource(gl::glCreateProgram())
+: IDResource(glCreateProgram())
 {
 }
 
@@ -110,42 +113,42 @@ ProgramResource::~ProgramResource()
 {
     if (hasOwnership())
     {
-        gl::glDeleteProgram(id());
+        glDeleteProgram(id());
     }
 }
 
 QueryResource::QueryResource()
-: IDResource(createObject(gl::glGenQueries))
+: IDResource(createObject(glGenQueries))
 {
 }
 
 QueryResource::~QueryResource()
 {
-    deleteObject(gl::glDeleteQueries, id(), hasOwnership());
+    deleteObject(glDeleteQueries, id(), hasOwnership());
 }
 
 RenderBufferObjectResource::RenderBufferObjectResource()
-: IDResource(createObject(gl::glGenRenderbuffers))
+: IDResource(createObject(glGenRenderbuffers))
 {
 }
 
 RenderBufferObjectResource::~RenderBufferObjectResource()
 {
-    deleteObject(gl::glDeleteRenderbuffers, id(), hasOwnership());
+    deleteObject(glDeleteRenderbuffers, id(), hasOwnership());
 }
 
 SamplerResource::SamplerResource()
-: IDResource(createObject(gl::glGenSamplers))
+: IDResource(createObject(glGenSamplers))
 {
 }
 
 SamplerResource::~SamplerResource()
 {
-    deleteObject(gl::glDeleteSamplers, id(), hasOwnership());
+    deleteObject(glDeleteSamplers, id(), hasOwnership());
 }
 
-ShaderResource::ShaderResource(gl::GLenum type)
-: IDResource(gl::glCreateShader(type))
+ShaderResource::ShaderResource(GLenum type)
+: IDResource(glCreateShader(type))
 {
 }
 
@@ -153,38 +156,38 @@ ShaderResource::~ShaderResource()
 {
     if (hasOwnership())
     {
-        gl::glDeleteShader(id());
+        glDeleteShader(id());
     }
 }
 
 TextureResource::TextureResource()
-: IDResource(createObject(gl::glGenTextures))
+: IDResource(createObject(glGenTextures))
 {
 }
 
 TextureResource::~TextureResource()
 {
-    deleteObject(gl::glDeleteTextures, id(), hasOwnership());
+    deleteObject(glDeleteTextures, id(), hasOwnership());
 }
 
 TransformFeedbackResource::TransformFeedbackResource()
-: IDResource(createObject(gl::glGenTransformFeedbacks))
+: IDResource(createObject(glGenTransformFeedbacks))
 {
 }
 
 TransformFeedbackResource::~TransformFeedbackResource()
 {
-    deleteObject(gl::glDeleteTransformFeedbacks, id(), hasOwnership());
+    deleteObject(glDeleteTransformFeedbacks, id(), hasOwnership());
 }
 
 VertexArrayObjectResource::VertexArrayObjectResource()
-: IDResource(createObject(gl::glGenVertexArrays))
+: IDResource(createObject(glGenVertexArrays))
 {
 }
 
 VertexArrayObjectResource::~VertexArrayObjectResource()
 {
-    deleteObject(gl::glDeleteVertexArrays, id(), hasOwnership());
+    deleteObject(glDeleteVertexArrays, id(), hasOwnership());
 }
 
 } // namespace globjects

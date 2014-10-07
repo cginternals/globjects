@@ -6,7 +6,11 @@
 
 #include <globjects/globjects.h>
 
-namespace globjects {
+
+using namespace gl;
+
+namespace globjects 
+{
 
 NamedStringRegistry::NamedStringRegistry()
 {
@@ -47,7 +51,7 @@ void NamedStringRegistry::deregisterNamedString(NamedString * namedString)
 bool NamedStringRegistry::hasNativeSupport()
 {
     // TODO: cache
-    return hasExtension(gl::GLextension::GL_ARB_shading_language_include);
+    return hasExtension(GLextension::GL_ARB_shading_language_include);
 }
 
 } // namespace globjects

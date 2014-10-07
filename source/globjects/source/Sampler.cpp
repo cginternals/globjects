@@ -7,6 +7,9 @@
 
 #include "Resource.h"
 
+
+using namespace gl;
+
 namespace globjects
 {
 
@@ -20,7 +23,7 @@ Sampler::Sampler(IDResource * resource)
 {
 }
 
-Sampler * Sampler::fromId(gl::GLuint id)
+Sampler * Sampler::fromId(GLuint id)
 {
     return new Sampler(new ExternalResource(id));
 }
@@ -34,45 +37,45 @@ void Sampler::accept(ObjectVisitor & visitor)
     visitor.visitSampler(this);
 }
 
-void Sampler::bind(gl::GLuint unit) const
+void Sampler::bind(GLuint unit) const
 {
-    gl::glBindSampler(unit, id());
+    glBindSampler(unit, id());
 }
 
-void Sampler::unbind(gl::GLuint unit)
+void Sampler::unbind(GLuint unit)
 {
-    gl::glBindSampler(unit, 0);
+    glBindSampler(unit, 0);
 }
 
-void Sampler::setParameter(gl::GLenum name, gl::GLint value)
+void Sampler::setParameter(GLenum name, GLint value)
 {
-    gl::glSamplerParameteri(id(), name, value);
+    glSamplerParameteri(id(), name, value);
 }
 
-void Sampler::setParameter(gl::GLenum name, gl::GLfloat value)
+void Sampler::setParameter(GLenum name, GLfloat value)
 {
-    gl::glSamplerParameterf(id(), name, value);
+    glSamplerParameterf(id(), name, value);
 }
 
-gl::GLint Sampler::getParameteri(gl::GLenum pname) const
+GLint Sampler::getParameteri(GLenum pname) const
 {
-    gl::GLint value = 0;
-    gl::glGetSamplerParameteriv(id(), pname, &value);
+    GLint value = 0;
+    glGetSamplerParameteriv(id(), pname, &value);
 
 	return value;
 }
 
-gl::GLfloat Sampler::getParameterf(gl::GLenum pname) const
+GLfloat Sampler::getParameterf(GLenum pname) const
 {
-    gl::GLfloat value = 0;
-    gl::glGetSamplerParameterfv(id(), pname, &value);
+    GLfloat value = 0;
+    glGetSamplerParameterfv(id(), pname, &value);
 
 	return value;
 }
 
-gl::GLenum Sampler::objectType() const
+GLenum Sampler::objectType() const
 {
-    return gl::GL_SAMPLER;
+    return GL_SAMPLER;
 }
 
 } // namespace globjects

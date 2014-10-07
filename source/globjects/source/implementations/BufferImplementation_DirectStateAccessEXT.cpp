@@ -59,7 +59,7 @@ void BufferImplementation_DirectStateAccessEXT::copySubData(const Buffer * buffe
     glNamedCopyBufferSubDataEXT(buffer->id(), other->id(), readOffset, writeOffset, size);
 }
 
-gl::GLint BufferImplementation_DirectStateAccessEXT::getParameter(const Buffer * buffer, GLenum pname) const
+GLint BufferImplementation_DirectStateAccessEXT::getParameter(const Buffer * buffer, GLenum pname) const
 {
     GLint value = 0;
 
@@ -68,7 +68,7 @@ gl::GLint BufferImplementation_DirectStateAccessEXT::getParameter(const Buffer *
     return value;
 }
 
-gl::GLint64 BufferImplementation_DirectStateAccessEXT::getParameter64(const Buffer * buffer, GLenum pname) const
+GLint64 BufferImplementation_DirectStateAccessEXT::getParameter64(const Buffer * buffer, GLenum pname) const
 {
     return BufferImplementation_Legacy::instance()->getParameter64(buffer, pname);
 }
@@ -97,7 +97,7 @@ void BufferImplementation_DirectStateAccessEXT::flushMappedRange(const Buffer * 
     glFlushMappedNamedBufferRangeEXT(buffer->id(), offset, length);
 }
 
-void BufferImplementation_DirectStateAccessEXT::getBufferSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLvoid * data) const
+void BufferImplementation_DirectStateAccessEXT::getBufferSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, GLvoid * data) const
 {
     glGetNamedBufferSubDataEXT(buffer->id(), offset, size, data);
 }

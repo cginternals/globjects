@@ -380,9 +380,9 @@ std::vector<FramebufferAttachment*> Framebuffer::attachments()
 	return attachments;
 }
 
-gl::GLenum Framebuffer::objectType() const
+GLenum Framebuffer::objectType() const
 {
-    return gl::GL_FRAMEBUFFER;
+    return GL_FRAMEBUFFER;
 }
 
 } // namespace globjects

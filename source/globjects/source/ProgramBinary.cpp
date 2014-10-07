@@ -3,15 +3,18 @@
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/base/AbstractStringSource.h>
 
+
+using namespace gl;
+
 namespace globjects
 {
 
-ProgramBinary::ProgramBinary(gl::GLenum binaryFormat, const std::vector<char> & binaryData)
+ProgramBinary::ProgramBinary(GLenum binaryFormat, const std::vector<char> & binaryData)
 : ProgramBinary(binaryFormat, new StaticStringSource(binaryData.data(), binaryData.size()))
 {
 }
 
-ProgramBinary::ProgramBinary(gl::GLenum binaryFormat, AbstractStringSource * dataSource)
+ProgramBinary::ProgramBinary(GLenum binaryFormat, AbstractStringSource * dataSource)
 : m_binaryFormat(binaryFormat)
 , m_dataSource(dataSource)
 , m_valid(false)
@@ -30,7 +33,7 @@ ProgramBinary::~ProgramBinary()
     }
 }
 
-gl::GLenum ProgramBinary::format() const
+GLenum ProgramBinary::format() const
 {
     return m_binaryFormat;
 }
@@ -42,11 +45,11 @@ const void * ProgramBinary::data() const
     return reinterpret_cast<const void*>(m_binaryData.data());
 }
 
-gl::GLsizei ProgramBinary::length() const
+GLsizei ProgramBinary::length() const
 {
     validate();
 
-    return static_cast<gl::GLsizei>(m_binaryData.size());
+    return static_cast<GLsizei>(m_binaryData.size());
 }
 
 void ProgramBinary::notifyChanged(const Changeable *)

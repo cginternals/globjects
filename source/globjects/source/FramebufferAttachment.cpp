@@ -7,21 +7,24 @@
 
 #include <globjects/Framebuffer.h>
 
+
+using namespace gl;
+
 namespace globjects
 {
 
-FramebufferAttachment::FramebufferAttachment(Framebuffer * fbo, gl::GLenum attachment)
+FramebufferAttachment::FramebufferAttachment(Framebuffer * fbo, GLenum attachment)
 : m_fbo(fbo)
 , m_attachment(attachment)
 {
 }
 
-gl::GLenum FramebufferAttachment::attachment() const
+GLenum FramebufferAttachment::attachment() const
 {
 	return m_attachment;
 }
 
-gl::GLint FramebufferAttachment::getParameter(gl::GLenum pname) const
+GLint FramebufferAttachment::getParameter(GLenum pname) const
 {
     return m_fbo->getAttachmentParameter(m_attachment, pname);
 }

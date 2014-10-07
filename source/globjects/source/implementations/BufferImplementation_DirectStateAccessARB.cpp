@@ -104,7 +104,7 @@ void BufferImplementation_DirectStateAccessARB::flushMappedRange(const Buffer * 
     glFlushMappedNamedBufferRange(buffer->id(), offset, static_cast<GLsizei>(length));
 }
 
-void BufferImplementation_DirectStateAccessARB::getBufferSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLvoid * data) const
+void BufferImplementation_DirectStateAccessARB::getBufferSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, GLvoid * data) const
 {
     glGetNamedBufferSubData(buffer->id(), offset, static_cast<GLsizei>(size), data);
 }

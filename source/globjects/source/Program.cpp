@@ -449,9 +449,9 @@ void Program::setShaderStorageBlockBinding(GLuint storageBlockIndex, GLuint stor
     glShaderStorageBlockBinding(id(), storageBlockIndex, storageBlockBinding);
 }
 
-gl::GLenum Program::objectType() const
+GLenum Program::objectType() const
 {
-    return gl::GL_PROGRAM;
+    return GL_PROGRAM;
 }
 
 } // namespace globjects

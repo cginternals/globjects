@@ -24,6 +24,8 @@
 #include "implementations/AbstractShadingLanguageIncludeImplementation.h"
 
 
+using namespace gl;
+
 namespace
 {
 
@@ -36,13 +38,14 @@ const globjects::AbstractShadingLanguageIncludeImplementation & shadingLanguageI
 
 namespace globjects
 {
-void Shader::hintIncludeImplementation(const IncludeImplementation impl)
+
+    void Shader::hintIncludeImplementation(const IncludeImplementation impl)
 {
     ImplementationRegistry::current().initialize(impl);
 }
 
 
-Shader::Shader(const gl::GLenum type)
+Shader::Shader(const GLenum type)
 : Object(new ShaderResource(type))
 , m_type(type)
 , m_compiled(false)
@@ -50,19 +53,19 @@ Shader::Shader(const gl::GLenum type)
 {
 }
 
-Shader::Shader(const gl::GLenum type, AbstractStringSource * source, const IncludePaths & includePaths)
+Shader::Shader(const GLenum type, AbstractStringSource * source, const IncludePaths & includePaths)
 : Shader(type)
 {
     setIncludePaths(includePaths);
     setSource(source);
 }
 
-Shader * Shader::fromString(const gl::GLenum type, const std::string & sourceString, const IncludePaths & includePaths)
+Shader * Shader::fromString(const GLenum type, const std::string & sourceString, const IncludePaths & includePaths)
 {
     return new Shader(type, new StaticStringSource(sourceString), includePaths);
 }
 
-Shader * Shader::fromFile(const gl::GLenum type, const std::string & filename, const IncludePaths & includePaths)
+Shader * Shader::fromFile(const GLenum type, const std::string & filename, const IncludePaths & includePaths)
 {
     return new Shader(type, new File(filename), includePaths);
 }
@@ -80,7 +83,7 @@ void Shader::accept(ObjectVisitor & visitor)
 	visitor.visitShader(this);
 }
 
-gl::GLenum Shader::type() const
+GLenum Shader::type() const
 {
 	return m_type;
 }
@@ -163,29 +166,29 @@ void Shader::setIncludePaths(const std::vector<std::string> & includePaths)
     invalidate();
 }
 
-gl::GLint Shader::get(gl::GLenum pname) const
+GLint Shader::get(GLenum pname) const
 {
-    gl::GLint value = 0;
-    gl::glGetShaderiv(id(), pname, &value);
+    GLint value = 0;
+    glGetShaderiv(id(), pname, &value);
 
     return value;
 }
 
 std::string Shader::getSource() const
 {
-    gl::GLint sourceLength = get(gl::GL_SHADER_SOURCE_LENGTH);
+    GLint sourceLength = get(GL_SHADER_SOURCE_LENGTH);
     std::vector<char> source(sourceLength);
 
-    gl::glGetShaderSource(id(), sourceLength, nullptr, source.data());
+    glGetShaderSource(id(), sourceLength, nullptr, source.data());
 
     return std::string(source.data(), sourceLength);
 }
 
 bool Shader::checkCompileStatus() const
 {
-    gl::GLboolean status = static_cast<gl::GLboolean>(get(gl::GL_COMPILE_STATUS));
+    GLboolean status = static_cast<GLboolean>(get(GL_COMPILE_STATUS));
 
-    if (status == gl::GL_FALSE)
+    if (status == GL_FALSE)
     {
         critical()
             << "Compiler error:" << std::endl
@@ -200,10 +203,10 @@ bool Shader::checkCompileStatus() const
 
 std::string Shader::infoLog() const
 {
-    gl::GLsizei length = get(gl::GL_INFO_LOG_LENGTH);
+    GLsizei length = get(GL_INFO_LOG_LENGTH);
 	std::vector<char> log(length);
 
-	gl::glGetShaderInfoLog(id(), length, &length, log.data());
+	glGetShaderInfoLog(id(), length, &length, log.data());
 
 	return std::string(log.data(), length);
 }
@@ -228,30 +231,30 @@ std::string Shader::typeString() const
     return typeString(m_type);
 }
 
-std::string Shader::typeString(gl::GLenum type)
+std::string Shader::typeString(GLenum type)
 {
     switch (type)
 	{
-    case gl::GL_GEOMETRY_SHADER:
-        return "gl::GL_GEOMETRY_SHADER";
-    case gl::GL_FRAGMENT_SHADER:
-        return "gl::GL_FRAGMENT_SHADER";
-    case gl::GL_VERTEX_SHADER:
-        return "gl::GL_VERTEX_SHADER";
-    case gl::GL_TESS_EVALUATION_SHADER:
-        return "gl::GL_TESS_EVALUATION_SHADER";
-    case gl::GL_TESS_CONTROL_SHADER:
-        return "gl::GL_TESS_CONTROL_SHADER";
-    case gl::GL_COMPUTE_SHADER:
-        return "gl::GL_COMPUTE_SHADER";
+    case GL_GEOMETRY_SHADER:
+        return "GL_GEOMETRY_SHADER";
+    case GL_FRAGMENT_SHADER:
+        return "GL_FRAGMENT_SHADER";
+    case GL_VERTEX_SHADER:
+        return "GL_VERTEX_SHADER";
+    case GL_TESS_EVALUATION_SHADER:
+        return "GL_TESS_EVALUATION_SHADER";
+    case GL_TESS_CONTROL_SHADER:
+        return "GL_TESS_CONTROL_SHADER";
+    case GL_COMPUTE_SHADER:
+        return "GL_COMPUTE_SHADER";
 	default:
 		return "Unknown Shader Type";
 	}
 }
 
-gl::GLenum Shader::objectType() const
+GLenum Shader::objectType() const
 {
-    return gl::GL_SHADER;
+    return GL_SHADER;
 }
 
 } // namespace globjects

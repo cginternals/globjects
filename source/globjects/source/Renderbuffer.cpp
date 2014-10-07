@@ -7,6 +7,9 @@
 
 #include "Resource.h"
 
+
+using namespace gl;
+
 namespace globjects
 {
 
@@ -26,52 +29,52 @@ void Renderbuffer::accept(ObjectVisitor& visitor)
 
 void Renderbuffer::bind() const
 {
-    bind(gl::GL_RENDERBUFFER);
+    bind(GL_RENDERBUFFER);
 }
 
 void Renderbuffer::unbind()
 {
-    unbind(gl::GL_RENDERBUFFER);
+    unbind(GL_RENDERBUFFER);
 }
 
-void Renderbuffer::bind(gl::GLenum target) const
+void Renderbuffer::bind(GLenum target) const
 {
-    gl::glBindRenderbuffer(target, id());
+    glBindRenderbuffer(target, id());
 }
 
-void Renderbuffer::unbind(gl::GLenum target)
+void Renderbuffer::unbind(GLenum target)
 {
-    gl::glBindRenderbuffer(target, 0);
+    glBindRenderbuffer(target, 0);
 }
 
-void Renderbuffer::storage(gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height)
+void Renderbuffer::storage(GLenum internalformat, GLsizei width, GLsizei height)
 {
-    bind(gl::GL_RENDERBUFFER);
+    bind(GL_RENDERBUFFER);
 
-    gl::glRenderbufferStorage(gl::GL_RENDERBUFFER, internalformat, width, height);
+    glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
 }
 
-void Renderbuffer::storageMultisample(gl::GLsizei samples, gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height)
+void Renderbuffer::storageMultisample(GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
 {
-    bind(gl::GL_RENDERBUFFER);
+    bind(GL_RENDERBUFFER);
 
-    gl::glRenderbufferStorageMultisample(gl::GL_RENDERBUFFER, samples, internalformat, width, height);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, internalformat, width, height);
 }
 
-gl::GLint Renderbuffer::getParameter(gl::GLenum pname) const
+GLint Renderbuffer::getParameter(GLenum pname) const
 {
-	gl::GLint value = 0;
+	GLint value = 0;
 
-    bind(gl::GL_RENDERBUFFER);
+    bind(GL_RENDERBUFFER);
 
-	gl::glGetRenderbufferParameteriv(gl::GL_RENDERBUFFER, pname, &value);
+	glGetRenderbufferParameteriv(GL_RENDERBUFFER, pname, &value);
 
 	return value;
 }
 
-gl::GLenum Renderbuffer::objectType() const
+GLenum Renderbuffer::objectType() const
 {
-    return gl::GL_RENDERBUFFER;
+    return GL_RENDERBUFFER;
 }
 
 } // namespace globjects

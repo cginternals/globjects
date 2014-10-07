@@ -8,6 +8,9 @@
 
 #include "Resource.h"
 
+
+using namespace gl;
+
 namespace globjects
 {
 
@@ -21,7 +24,7 @@ Query::Query(IDResource * resource)
 {
 }
 
-Query * Query::fromId(gl::GLuint id)
+Query * Query::fromId(GLuint id)
 {
     return new Query(new ExternalResource(id));
 }
@@ -30,9 +33,9 @@ Query::~Query()
 {
 }
 
-Query * Query::current(gl::GLenum target)
+Query * Query::current(GLenum target)
 {
-    gl::GLint id = get(target, gl::GL_CURRENT_QUERY);
+    GLint id = get(target, GL_CURRENT_QUERY);
 
     if (id <= 0)
     {
@@ -46,39 +49,39 @@ Query * Query::current(gl::GLenum target)
 Query * Query::timestamp()
 {
     Query * query = new Query();
-    query->counter(gl::GL_TIMESTAMP);
+    query->counter(GL_TIMESTAMP);
 
     return query;
 }
 
-int Query::getCounterBits(gl::GLenum target)
+int Query::getCounterBits(GLenum target)
 {	
-    return get(target, gl::GL_QUERY_COUNTER_BITS);
+    return get(target, GL_QUERY_COUNTER_BITS);
 }
 
-gl::GLuint Query::genQuery()
+GLuint Query::genQuery()
 {
-	gl::GLuint id;
+	GLuint id;
 
-    gl::glGenQueries(1, &id);
+    glGenQueries(1, &id);
 
 	return id;
 }
 
-gl::GLint Query::get(gl::GLenum target, gl::GLenum pname)
+GLint Query::get(GLenum target, GLenum pname)
 {
-    gl::GLint value = 0;
+    GLint value = 0;
 
-    gl::glGetQueryiv(target, pname, &value);
+    glGetQueryiv(target, pname, &value);
 
     return value;
 }
 
-gl::GLint Query::getIndexed(gl::GLenum target, gl::GLuint index, gl::GLenum pname)
+GLint Query::getIndexed(GLenum target, GLuint index, GLenum pname)
 {
-    gl::GLint value = 0;
+    GLint value = 0;
 
-    gl::glGetQueryIndexediv(target, index, pname, &value);
+    glGetQueryIndexediv(target, index, pname, &value);
 
     return value;
 }
@@ -88,47 +91,47 @@ void Query::accept(ObjectVisitor& visitor)
 	visitor.visitQuery(this);
 }
 
-void Query::begin(gl::GLenum target) const
+void Query::begin(GLenum target) const
 {
-    gl::glBeginQuery(target, id());
+    glBeginQuery(target, id());
 }
 
-void Query::end(gl::GLenum target) const
+void Query::end(GLenum target) const
 {
-    gl::glEndQuery(target);
+    glEndQuery(target);
 }
 
-void Query::beginIndexed(gl::GLenum target, gl::GLuint index) const
+void Query::beginIndexed(GLenum target, GLuint index) const
 {
-    gl::glBeginQueryIndexed(target, index, id());
+    glBeginQueryIndexed(target, index, id());
 }
 
-void Query::endIndexed(gl::GLenum target, gl::GLuint index) const
+void Query::endIndexed(GLenum target, GLuint index) const
 {
-    gl::glEndQueryIndexed(target, index);
+    glEndQueryIndexed(target, index);
 }
 
-gl::GLuint Query::get(gl::GLenum pname) const
+GLuint Query::get(GLenum pname) const
 {
-    gl::GLuint value = 0;
+    GLuint value = 0;
 	
-    gl::glGetQueryObjectuiv(id(), pname, &value);
+    glGetQueryObjectuiv(id(), pname, &value);
 	
 	return value;
 }
 
-gl::GLuint64 Query::get64(gl::GLenum pname) const
+GLuint64 Query::get64(GLenum pname) const
 {
-    gl::GLuint64 value = 0;
+    GLuint64 value = 0;
 	
-    gl::glGetQueryObjectui64v(id(), pname, &value);
+    glGetQueryObjectui64v(id(), pname, &value);
 	
 	return value;
 }
 
 bool Query::resultAvailable() const
 {
-    return static_cast<gl::GLboolean>(get(gl::GL_QUERY_RESULT_AVAILABLE)) == gl::GL_TRUE;
+    return static_cast<GLboolean>(get(GL_QUERY_RESULT_AVAILABLE)) == GL_TRUE;
 }
 
 void Query::wait() const
@@ -147,38 +150,38 @@ void Query::wait(const std::chrono::duration<int, std::nano> & timeout) const
     }
 }
 
-gl::GLuint Query::waitAndGet(gl::GLenum pname) const
+GLuint Query::waitAndGet(GLenum pname) const
 {
     wait();
 	
 	return get(pname);
 }
 
-gl::GLuint64 Query::waitAndGet64(gl::GLenum pname) const
+GLuint64 Query::waitAndGet64(GLenum pname) const
 {
     wait();
 	
     return get64(pname);
 }
 
-gl::GLuint Query::waitAndGet(const std::chrono::duration<int, std::nano> & timeout, gl::GLenum pname) const
+GLuint Query::waitAndGet(const std::chrono::duration<int, std::nano> & timeout, GLenum pname) const
 {
     return waitAndGet(pname, timeout);
 }
 
-gl::GLuint64 Query::waitAndGet64(const std::chrono::duration<int, std::nano> & timeout, gl::GLenum pname) const
+GLuint64 Query::waitAndGet64(const std::chrono::duration<int, std::nano> & timeout, GLenum pname) const
 {
     return waitAndGet64(pname, timeout);
 }
 
-gl::GLuint Query::waitAndGet(gl::GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const
+GLuint Query::waitAndGet(GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const
 {
     wait(timeout);
 
     return get(pname);
 }
 
-gl::GLuint64 Query::waitAndGet64(gl::GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const
+GLuint64 Query::waitAndGet64(GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const
 {
     wait(timeout);
 
@@ -187,22 +190,22 @@ gl::GLuint64 Query::waitAndGet64(gl::GLenum pname, const std::chrono::duration<i
 
 void Query::counter() const
 {
-    counter(gl::GL_TIMESTAMP);
+    counter(GL_TIMESTAMP);
 }
 
-void Query::counter(gl::GLenum target) const
+void Query::counter(GLenum target) const
 {
-    gl::glQueryCounter(id(), target);
+    glQueryCounter(id(), target);
 }
 
-bool Query::isQuery(gl::GLuint id)
+bool Query::isQuery(GLuint id)
 {
-    return gl::glIsQuery(id) == gl::GL_TRUE;
+    return glIsQuery(id) == GL_TRUE;
 }
 
-gl::GLenum Query::objectType() const
+GLenum Query::objectType() const
 {
-    return gl::GL_QUERY;
+    return GL_QUERY;
 }
 
 } // namespace globjects

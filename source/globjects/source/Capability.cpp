@@ -6,21 +6,25 @@
 #include <globjects/State.h>
 #include <globjects/globjects.h>
 
-namespace globjects {
 
-Capability::Capability(gl::GLenum capability)
+using namespace gl;
+
+namespace globjects 
+{
+
+Capability::Capability(GLenum capability)
 : m_capability(capability)
 , m_enabled(false)
 {
 }
 
-Capability::Capability(gl::GLenum capability, bool enabled)
+Capability::Capability(GLenum capability, bool enabled)
 : m_capability(capability)
 , m_enabled(enabled)
 {
 }
 
-gl::GLenum Capability::capability() const
+GLenum Capability::capability() const
 {
     return m_capability;
 }

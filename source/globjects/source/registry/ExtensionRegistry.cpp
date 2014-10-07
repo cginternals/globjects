@@ -6,7 +6,10 @@
 
 #include <globjects/globjects.h>
 
-namespace globjects {
+using namespace gl;
+
+namespace globjects 
+{
 
 ExtensionRegistry::ExtensionRegistry()
 : m_initialized(false)
@@ -19,17 +22,17 @@ ExtensionRegistry & ExtensionRegistry::current()
 }
 
 
-std::set<gl::GLextension>::iterator ExtensionRegistry::begin()
+std::set<GLextension>::iterator ExtensionRegistry::begin()
 {
     return availableExtensions().begin();
 }
 
-std::set<gl::GLextension>::iterator ExtensionRegistry::end()
+std::set<GLextension>::iterator ExtensionRegistry::end()
 {
     return availableExtensions().end();
 }
 
-const std::set<gl::GLextension> & ExtensionRegistry::availableExtensions()
+const std::set<GLextension> & ExtensionRegistry::availableExtensions()
 {
     initialize();
     return m_availableExtensions;
@@ -51,7 +54,7 @@ void ExtensionRegistry::initialize()
     m_initialized = true;
 }
 
-bool ExtensionRegistry::hasExtension(gl::GLextension extension)
+bool ExtensionRegistry::hasExtension(GLextension extension)
 {
     initialize();
 
@@ -65,9 +68,9 @@ bool ExtensionRegistry::hasExtension(const std::string & extensionName)
 {
     initialize();
 
-    gl::GLextension extension = glbinding::Meta::getExtension(extensionName);
+    GLextension extension = glbinding::Meta::getExtension(extensionName);
 
-    if (extension != gl::GLextension::UNKNOWN)
+    if (extension != GLextension::UNKNOWN)
     {
         return hasExtension(extension);
     }
@@ -77,12 +80,12 @@ bool ExtensionRegistry::hasExtension(const std::string & extensionName)
     }
 }
 
-glbinding::Version getCoreVersion(gl::GLextension extension)
+glbinding::Version getCoreVersion(GLextension extension)
 {
     return glbinding::Meta::getRequiringVersion(extension);
 }
 
-bool ExtensionRegistry::isInCoreProfile(gl::GLextension extension, const glbinding::Version & version)
+bool ExtensionRegistry::isInCoreProfile(GLextension extension, const glbinding::Version & version)
 {
     glbinding::Version coreVersion = getCoreVersion(extension);
 
@@ -93,7 +96,7 @@ bool ExtensionRegistry::isInCoreProfile(gl::GLextension extension, const glbindi
 }
 
 
-bool ExtensionRegistry::isInCoreProfile(gl::GLextension extension)
+bool ExtensionRegistry::isInCoreProfile(GLextension extension)
 {
     return isInCoreProfile(extension, globjects::version());
 }

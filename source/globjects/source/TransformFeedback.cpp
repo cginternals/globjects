@@ -11,6 +11,9 @@
 
 #include "Resource.h"
 
+
+using namespace gl;
+
 namespace globjects
 {
 
@@ -30,75 +33,75 @@ void TransformFeedback::accept(ObjectVisitor& visitor)
 
 void TransformFeedback::bind() const
 {
-    bind(gl::GL_TRANSFORM_FEEDBACK);
+    bind(GL_TRANSFORM_FEEDBACK);
 }
 
 void TransformFeedback::unbind()
 {
-    unbind(gl::GL_TRANSFORM_FEEDBACK);
+    unbind(GL_TRANSFORM_FEEDBACK);
 }
 
-void TransformFeedback::bind(gl::GLenum target) const
+void TransformFeedback::bind(GLenum target) const
 {
-    gl::glBindTransformFeedback(target, id());
+    glBindTransformFeedback(target, id());
 }
 
-void TransformFeedback::unbind(gl::GLenum target)
+void TransformFeedback::unbind(GLenum target)
 {
-    gl::glBindTransformFeedback(target, 0);
+    glBindTransformFeedback(target, 0);
 }
 
-void TransformFeedback::begin(gl::GLenum primitiveMode)
+void TransformFeedback::begin(GLenum primitiveMode)
 {
-	gl::glBeginTransformFeedback(primitiveMode);
+	glBeginTransformFeedback(primitiveMode);
 }
 
 void TransformFeedback::pause()
 {
-    gl::glPauseTransformFeedback();
+    glPauseTransformFeedback();
 }
 
 void TransformFeedback::resume()
 {
-    gl::glResumeTransformFeedback();
+    glResumeTransformFeedback();
 }
 
 void TransformFeedback::end()
 {
-	gl::glEndTransformFeedback();
+	glEndTransformFeedback();
 }
 
-void TransformFeedback::draw(gl::GLenum primitiveMode) const
+void TransformFeedback::draw(GLenum primitiveMode) const
 {
-    bind(gl::GL_TRANSFORM_FEEDBACK); // TODO: is this necessary
+    bind(GL_TRANSFORM_FEEDBACK); // TODO: is this necessary
 
-    gl::glDrawTransformFeedback(primitiveMode, id());
+    glDrawTransformFeedback(primitiveMode, id());
 }
 
-void TransformFeedback::setVaryings(const Program * program, gl::GLsizei count, const char** varyingNames, gl::GLenum bufferMode) const
+void TransformFeedback::setVaryings(const Program * program, GLsizei count, const char** varyingNames, GLenum bufferMode) const
 {
     assert(varyingNames != nullptr || count == 0);
 
-    bind(gl::GL_TRANSFORM_FEEDBACK);
+    bind(GL_TRANSFORM_FEEDBACK);
 
-    gl::glTransformFeedbackVaryings(program->id(), count, varyingNames, bufferMode);
+    glTransformFeedbackVaryings(program->id(), count, varyingNames, bufferMode);
 
 	program->invalidate();
 }
 
-void TransformFeedback::setVaryings(const Program *program, const std::vector<const char*> & varyingNames, gl::GLenum bufferMode) const
+void TransformFeedback::setVaryings(const Program *program, const std::vector<const char*> & varyingNames, GLenum bufferMode) const
 {
-    setVaryings(program, static_cast<gl::GLint>(varyingNames.size()), const_cast<const char**>(varyingNames.data()), bufferMode);
+    setVaryings(program, static_cast<GLint>(varyingNames.size()), const_cast<const char**>(varyingNames.data()), bufferMode);
 }
 
-bool TransformFeedback::isTransformFeedback(gl::GLuint id)
+bool TransformFeedback::isTransformFeedback(GLuint id)
 {
-    return gl::glIsTransformFeedback(id) == gl::GL_TRUE;
+    return glIsTransformFeedback(id) == GL_TRUE;
 }
 
-gl::GLenum TransformFeedback::objectType() const
+GLenum TransformFeedback::objectType() const
 {
-    return gl::GL_TRANSFORM_FEEDBACK;
+    return GL_TRANSFORM_FEEDBACK;
 }
 
 } // namespace globjects

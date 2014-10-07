@@ -4,10 +4,13 @@
 
 #include <globjects/Renderbuffer.h>
 
+
+using namespace gl;
+
 namespace globjects
 {
 
-AttachedRenderbuffer::AttachedRenderbuffer(Framebuffer * fbo,  gl::GLenum attachment, Renderbuffer * renderBuffer)
+AttachedRenderbuffer::AttachedRenderbuffer(Framebuffer * fbo,  GLenum attachment, Renderbuffer * renderBuffer)
 : FramebufferAttachment(fbo, attachment)
 , m_renderBuffer(renderBuffer)
 {

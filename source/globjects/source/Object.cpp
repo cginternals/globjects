@@ -7,12 +7,17 @@
 
 #include "Resource.h"
 
+
+using namespace gl;
+
 namespace 
 {
+
 globjects::AbstractObjectNameImplementation & nameImplementation()
 {
     return globjects::ImplementationRegistry::current().objectNameImplementation();
 }
+
 }
 
 namespace globjects
@@ -37,7 +42,7 @@ Object::~Object()
     delete m_resource;
 }
 
-gl::GLuint Object::id() const
+GLuint Object::id() const
 {
     return m_resource->id();
 }

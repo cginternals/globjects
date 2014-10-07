@@ -4,10 +4,13 @@
 
 #include <globjects/Texture.h>
 
+
+using namespace gl;
+
 namespace globjects
 {
 
-AttachedTexture::AttachedTexture(Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer)
+AttachedTexture::AttachedTexture(Framebuffer * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer)
 : FramebufferAttachment(fbo, attachment)
 , m_texture(texture)
 , m_level(level)
@@ -30,7 +33,7 @@ const Texture * AttachedTexture::texture() const
     return m_texture;
 }
 
-gl::GLint AttachedTexture::level() const
+GLint AttachedTexture::level() const
 {
     return m_level;
 }
@@ -40,7 +43,7 @@ bool AttachedTexture::hasLayer() const
     return m_layer >= 0;
 }
 
-gl::GLint AttachedTexture::layer() const
+GLint AttachedTexture::layer() const
 {
     return m_layer;
 }

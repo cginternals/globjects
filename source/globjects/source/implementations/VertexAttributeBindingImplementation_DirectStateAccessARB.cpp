@@ -10,6 +10,8 @@
 #include <globjects/VertexAttributeBinding.h>
 
 
+using namespace gl;
+
 namespace globjects 
 {
 
@@ -23,44 +25,44 @@ VertexAttributeBindingImplementation_DirectStateAccessARB::~VertexAttributeBindi
 
 }
 
-void VertexAttributeBindingImplementation_DirectStateAccessARB::enable(const VertexArray * vertexArray, gl::GLint attributeIndex) const
+void VertexAttributeBindingImplementation_DirectStateAccessARB::enable(const VertexArray * vertexArray, GLint attributeIndex) const
 {
-    gl::glEnableVertexArrayAttrib(vertexArray->id(), attributeIndex);
+    glEnableVertexArrayAttrib(vertexArray->id(), attributeIndex);
 }
 
-void VertexAttributeBindingImplementation_DirectStateAccessARB::disable(const VertexArray * vertexArray, gl::GLint attributeIndex) const
+void VertexAttributeBindingImplementation_DirectStateAccessARB::disable(const VertexArray * vertexArray, GLint attributeIndex) const
 {
-    gl::glDisableVertexArrayAttrib(vertexArray->id(), attributeIndex);
+    glDisableVertexArrayAttrib(vertexArray->id(), attributeIndex);
 }
 
-void VertexAttributeBindingImplementation_DirectStateAccessARB::setAttributeDivisor(const VertexAttributeBinding * binding, gl::GLuint divisor) const
+void VertexAttributeBindingImplementation_DirectStateAccessARB::setAttributeDivisor(const VertexAttributeBinding * binding, GLuint divisor) const
 {
-    gl::glVertexArrayBindingDivisor(vao(binding)->id(), bindingIndex(binding), divisor);
+    glVertexArrayBindingDivisor(vao(binding)->id(), bindingIndex(binding), divisor);
 }
 
-void VertexAttributeBindingImplementation_DirectStateAccessARB::bindAttribute(const VertexAttributeBinding * binding, gl::GLint attributeIndex) const
+void VertexAttributeBindingImplementation_DirectStateAccessARB::bindAttribute(const VertexAttributeBinding * binding, GLint attributeIndex) const
 {
-    gl::glVertexArrayAttribBinding(vao(binding)->id(), attributeIndex, bindingIndex(binding));
+    glVertexArrayAttribBinding(vao(binding)->id(), attributeIndex, bindingIndex(binding));
 }
 
-void VertexAttributeBindingImplementation_DirectStateAccessARB::bindBuffer(const VertexAttributeBinding * binding, const Buffer * vbo, gl::GLint baseoffset, gl::GLint stride) const
+void VertexAttributeBindingImplementation_DirectStateAccessARB::bindBuffer(const VertexAttributeBinding * binding, const Buffer * vbo, GLint baseoffset, GLint stride) const
 {
-    gl::glVertexArrayVertexBuffer(vao(binding)->id(), bindingIndex(binding), vbo ? vbo->id() : 0, baseoffset, stride);
+    glVertexArrayVertexBuffer(vao(binding)->id(), bindingIndex(binding), vbo ? vbo->id() : 0, baseoffset, stride);
 }
 
-void VertexAttributeBindingImplementation_DirectStateAccessARB::setFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeoffset) const
+void VertexAttributeBindingImplementation_DirectStateAccessARB::setFormat(const VertexAttributeBinding * binding, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset) const
 {
-    gl::glVertexArrayAttribFormat(vao(binding)->id(), attributeIndex(binding), size, type, normalized, relativeoffset);
+    glVertexArrayAttribFormat(vao(binding)->id(), attributeIndex(binding), size, type, normalized, relativeoffset);
 }
 
-void VertexAttributeBindingImplementation_DirectStateAccessARB::setIFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset) const
+void VertexAttributeBindingImplementation_DirectStateAccessARB::setIFormat(const VertexAttributeBinding * binding, GLint size, GLenum type, GLuint relativeoffset) const
 {
-    gl::glVertexArrayAttribIFormat(vao(binding)->id(), attributeIndex(binding), size, type, relativeoffset);
+    glVertexArrayAttribIFormat(vao(binding)->id(), attributeIndex(binding), size, type, relativeoffset);
 }
 
-void VertexAttributeBindingImplementation_DirectStateAccessARB::setLFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset) const
+void VertexAttributeBindingImplementation_DirectStateAccessARB::setLFormat(const VertexAttributeBinding * binding, GLint size, GLenum type, GLuint relativeoffset) const
 {
-    gl::glVertexArrayAttribLFormat(vao(binding)->id(), attributeIndex(binding), size, type, relativeoffset);
+    glVertexArrayAttribLFormat(vao(binding)->id(), attributeIndex(binding), size, type, relativeoffset);
 }
 
 } // namespace globjects

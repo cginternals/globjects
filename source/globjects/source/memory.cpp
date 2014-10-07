@@ -5,11 +5,15 @@
 
 #include <globjects/globjects.h>
 
-namespace {
 
-gl::GLint getMemoryInformation(gl::GLenum pname)
+using namespace gl;
+
+namespace 
 {
-    if (!globjects::hasExtension(gl::GLextension::GL_NVX_gpu_memory_info))
+
+GLint getMemoryInformation(GLenum pname)
+{
+    if (!globjects::hasExtension(GLextension::GL_NVX_gpu_memory_info))
         return -1;
 
     return globjects::getInteger(pname);
@@ -23,29 +27,29 @@ namespace globjects
 namespace memory
 {
 
-gl::GLint total()
+GLint total()
 {
-    return getMemoryInformation(gl::GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX);
+    return getMemoryInformation(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX);
 }
 
-gl::GLint dedicated()
+GLint dedicated()
 {
-    return getMemoryInformation(gl::GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX);
+    return getMemoryInformation(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX);
 }
 
-gl::GLint available()
+GLint available()
 {
-    return getMemoryInformation(gl::GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX);
+    return getMemoryInformation(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX);
 }
 
-gl::GLint evicted()
+GLint evicted()
 {
-    return getMemoryInformation(gl::GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX);
+    return getMemoryInformation(GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX);
 }
 
-gl::GLint evictionCount()
+GLint evictionCount()
 {
-    return getMemoryInformation(gl::GL_GPU_MEMORY_INFO_EVICTION_COUNT_NVX);
+    return getMemoryInformation(GL_GPU_MEMORY_INFO_EVICTION_COUNT_NVX);
 }
 
 } // namespace memory

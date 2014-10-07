@@ -4,6 +4,8 @@
 #include <glbinding/gl/enum.h>
 
 
+using namespace gl;
+
 namespace globjects
 {
 
@@ -27,7 +29,7 @@ std::size_t StateSettingType::hash() const
     return std::hash<void*>()(m_functionIdentifier);
 }
 
-void StateSettingType::specializeType(gl::GLenum subtype)
+void StateSettingType::specializeType(GLenum subtype)
 {
     m_subtypes.insert(subtype);
 }

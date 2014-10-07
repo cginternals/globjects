@@ -21,6 +21,9 @@
 
 #include <globjects/NamedString.h>
 
+
+using namespace gl;
+
 namespace
 {
     bool g_globjectsIsInitialized = false;
@@ -49,7 +52,7 @@ void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
     std::stringstream stream;
     stream << function.name() << " generated " << error.name();
 
-    DebugMessage::insertMessage(gl::GL_DEBUG_SOURCE_API_ARB, gl::GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), gl::GL_DEBUG_SEVERITY_HIGH_ARB, stream.str());
+    DebugMessage::insertMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), GL_DEBUG_SEVERITY_HIGH_ARB, stream.str());
 }
 
 void init()
@@ -116,125 +119,125 @@ void setCurrentContext()
     setContext(contextId);
 }
 
-std::string getString(gl::GLenum pname)
+std::string getString(GLenum pname)
 {
-    const gl::GLubyte* result = gl::glGetString(pname);
+    const GLubyte* result = glGetString(pname);
 
 	return reinterpret_cast<const char*>(result);
 }
 
-std::string getString(gl::GLenum pname, gl::GLuint index)
+std::string getString(GLenum pname, GLuint index)
 {
-    const gl::GLubyte* result = gl::glGetStringi(pname, index);
+    const GLubyte* result = glGetStringi(pname, index);
 
     return reinterpret_cast<const char*>(result);
 }
 
-gl::GLint getInteger(gl::GLenum pname)
+GLint getInteger(GLenum pname)
 {
-	gl::GLint value;
+	GLint value;
 
-    gl::glGetIntegerv(pname, &value);
+    glGetIntegerv(pname, &value);
 
 	return value;
 }
 
-gl::GLenum getEnum(gl::GLenum pname)
+GLenum getEnum(GLenum pname)
 {
-    return static_cast<gl::GLenum>(getInteger(pname));
+    return static_cast<GLenum>(getInteger(pname));
 }
 
-gl::GLfloat getFloat(gl::GLenum pname)
+GLfloat getFloat(GLenum pname)
 {
-	gl::GLfloat value;
+	GLfloat value;
 
-    gl::glGetFloatv(pname, &value);
+    glGetFloatv(pname, &value);
 
 	return value;
 }
 
-gl::GLdouble getDouble(gl::GLenum pname)
+GLdouble getDouble(GLenum pname)
 {
-	gl::GLdouble value;
+	GLdouble value;
 
-    gl::glGetDoublev(pname, &value);
+    glGetDoublev(pname, &value);
 
 	return value;
 }
 
-gl::GLboolean getBoolean(gl::GLenum pname)
+GLboolean getBoolean(GLenum pname)
 {
-	gl::GLboolean value;
+	GLboolean value;
 
-    gl::glGetBooleanv(pname, &value);
+    glGetBooleanv(pname, &value);
 
 	return value;
 }
 
-gl::GLint getInteger(gl::GLenum pname, gl::GLuint index)
+GLint getInteger(GLenum pname, GLuint index)
 {
-	gl::GLint value;
+	GLint value;
 
-    gl::glGetIntegeri_v(pname, index, &value);
+    glGetIntegeri_v(pname, index, &value);
 
 	return value;
 }
 
-gl::GLenum getEnum(gl::GLenum pname, gl::GLuint index)
+GLenum getEnum(GLenum pname, GLuint index)
 {
-    return static_cast<gl::GLenum>(getInteger(pname, index));
+    return static_cast<GLenum>(getInteger(pname, index));
 }
 
-gl::GLfloat getFloat(gl::GLenum pname, gl::GLuint index)
+GLfloat getFloat(GLenum pname, GLuint index)
 {
-    gl::GLfloat value;
+    GLfloat value;
 
-    gl::glGetFloati_v(pname, index, &value);
+    glGetFloati_v(pname, index, &value);
 
     return value;
 }
 
-gl::GLdouble getDouble(gl::GLenum pname, gl::GLuint index)
+GLdouble getDouble(GLenum pname, GLuint index)
 {
-    gl::GLdouble value;
+    GLdouble value;
 
-    gl::glGetDoublei_v(pname, index, &value);
+    glGetDoublei_v(pname, index, &value);
 
     return value;
 }
 
-gl::GLboolean getBoolean(gl::GLenum pname, gl::GLuint index)
+GLboolean getBoolean(GLenum pname, GLuint index)
 {
-    gl::GLboolean value;
+    GLboolean value;
 
-    gl::glGetBooleani_v(pname, index, &value);
+    glGetBooleani_v(pname, index, &value);
 
     return value;
 }
 
 std::string vendor()
 {
-    return getString(gl::GL_VENDOR);
+    return getString(GL_VENDOR);
 }
 
 std::string renderer()
 {
-    return getString(gl::GL_RENDERER);
+    return getString(GL_RENDERER);
 }
 
 std::string versionString()
 {
-    return getString(gl::GL_VERSION);
+    return getString(GL_VERSION);
 }
 
-gl::GLint majorVersion()
+GLint majorVersion()
 {
-    return getInteger(gl::GL_MAJOR_VERSION);
+    return getInteger(GL_MAJOR_VERSION);
 }
 
-gl::GLint minorVersion()
+GLint minorVersion()
 {
-    return getInteger(gl::GL_MINOR_VERSION);
+    return getInteger(GL_MINOR_VERSION);
 }
 
 glbinding::Version version()
@@ -249,10 +252,10 @@ bool isCoreProfile()
         return false;
     }
 
-    return (getInteger(gl::GL_CONTEXT_PROFILE_MASK) & static_cast<unsigned>(gl::GL_CONTEXT_CORE_PROFILE_BIT)) > 0;
+    return (getInteger(GL_CONTEXT_PROFILE_MASK) & static_cast<unsigned>(GL_CONTEXT_CORE_PROFILE_BIT)) > 0;
 }
 
-const std::set<gl::GLextension> & availableExtensions()
+const std::set<GLextension> & availableExtensions()
 {
     return ExtensionRegistry::current().availableExtensions();
 }
@@ -262,7 +265,7 @@ const std::set<std::string> & unknownAvailableExtensions()
     return ExtensionRegistry::current().unknownAvailableExtensions();
 }
 
-bool hasExtension(gl::GLextension extension)
+bool hasExtension(GLextension extension)
 {
     return ExtensionRegistry::current().hasExtension(extension);
 }
@@ -272,56 +275,56 @@ bool hasExtension(const std::string & extensionName)
     return ExtensionRegistry::current().hasExtension(extensionName);
 }
 
-bool isInCoreProfile(gl::GLextension extension, const glbinding::Version & version)
+bool isInCoreProfile(GLextension extension, const glbinding::Version & version)
 {
     return ExtensionRegistry::current().isInCoreProfile(extension, version);
 }
 
-bool isInCoreProfile(gl::GLextension extension)
+bool isInCoreProfile(GLextension extension)
 {
     return ExtensionRegistry::current().isInCoreProfile(extension);
 }
 
-void enable(gl::GLenum capability)
+void enable(GLenum capability)
 {
-    gl::glEnable(capability);
+    glEnable(capability);
 }
 
-void disable(gl::GLenum capability)
+void disable(GLenum capability)
 {
-    gl::glDisable(capability);
+    glDisable(capability);
 }
 
-bool isEnabled(gl::GLenum capability)
+bool isEnabled(GLenum capability)
 {
-    gl::GLboolean value = gl::glIsEnabled(capability);
+    GLboolean value = glIsEnabled(capability);
 
-    return value == gl::GL_TRUE;
+    return value == GL_TRUE;
 }
 
-void setEnabled(gl::GLenum capability, bool enabled)
+void setEnabled(GLenum capability, bool enabled)
 {
     enabled ? enable(capability) : disable(capability);
 }
 
-void enable(gl::GLenum capability, int index)
+void enable(GLenum capability, int index)
 {
-    gl::glEnablei(capability, index);
+    glEnablei(capability, index);
 }
 
-void disable(gl::GLenum capability, int index)
+void disable(GLenum capability, int index)
 {
-    gl::glDisablei(capability, index);
+    glDisablei(capability, index);
 }
 
-bool isEnabled(gl::GLenum capability, int index)
+bool isEnabled(GLenum capability, int index)
 {
-    gl::GLboolean value = gl::glIsEnabledi(capability, index);
+    GLboolean value = glIsEnabledi(capability, index);
 
-    return value == gl::GL_TRUE;
+    return value == GL_TRUE;
 }
 
-void setEnabled(gl::GLenum capability, int index, bool enabled)
+void setEnabled(GLenum capability, int index, bool enabled)
 {
     enabled ? enable(capability, index) : disable(capability, index);
 }

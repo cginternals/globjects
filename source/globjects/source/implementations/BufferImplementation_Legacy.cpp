@@ -136,7 +136,7 @@ void BufferImplementation_Legacy::flushMappedRange(const Buffer * buffer, GLintp
     glFlushMappedBufferRange(s_workingTarget, offset, length);
 }
 
-void BufferImplementation_Legacy::getBufferSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLvoid * data) const
+void BufferImplementation_Legacy::getBufferSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr size, GLvoid * data) const
 {
     buffer->bind(s_workingTarget);
 

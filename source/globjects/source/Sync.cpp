@@ -3,62 +3,65 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 
+
+using namespace gl;
+
 namespace globjects
 {
 
-Sync * Sync::fence(gl::GLenum condition)
+Sync * Sync::fence(GLenum condition)
 {
-    return fence(condition, gl::GL_UNUSED_BIT);
+    return fence(condition, GL_UNUSED_BIT);
 }
 
-Sync * Sync::fence(gl::GLenum condition, gl::UnusedMask flags)
+Sync * Sync::fence(GLenum condition, UnusedMask flags)
 {
     return new Sync(fenceSync(condition, flags));
 }
 
-Sync::Sync(gl::GLsync sync)
+Sync::Sync(GLsync sync)
 : m_sync(sync)
 {
 }
 
 Sync::~Sync()
 {
-    gl::glDeleteSync(m_sync);
+    glDeleteSync(m_sync);
 }
 
-gl::GLsync Sync::fenceSync(gl::GLenum condition, gl::UnusedMask flags)
+GLsync Sync::fenceSync(GLenum condition, UnusedMask flags)
 {
-    return gl::glFenceSync(condition, flags);
+    return glFenceSync(condition, flags);
 }
 
-gl::GLsync Sync::sync() const
+GLsync Sync::sync() const
 {
     return m_sync;
 }
 
-gl::GLenum Sync::clientWait(gl::SyncObjectMask flags, gl::GLuint64 timeout)
+GLenum Sync::clientWait(SyncObjectMask flags, GLuint64 timeout)
 {
-    return gl::glClientWaitSync(m_sync, flags, timeout);
+    return glClientWaitSync(m_sync, flags, timeout);
 }
 
-void Sync::wait(gl::GLuint64 timeout)
+void Sync::wait(GLuint64 timeout)
 {
-    wait(gl::GL_UNUSED_BIT, timeout);
+    wait(GL_UNUSED_BIT, timeout);
 }
 
-void Sync::wait(gl::UnusedMask flags, gl::GLuint64 timeout)
+void Sync::wait(UnusedMask flags, GLuint64 timeout)
 {
-    gl::glWaitSync(m_sync, flags, timeout);
+    glWaitSync(m_sync, flags, timeout);
 }
 
-void Sync::get(gl::GLenum pname, gl::GLsizei bufsize, gl::GLsizei * length, gl::GLint * values)
+void Sync::get(GLenum pname, GLsizei bufsize, GLsizei * length, GLint * values)
 {
-    gl::glGetSynciv(m_sync, pname, bufsize, length, values);
+    glGetSynciv(m_sync, pname, bufsize, length, values);
 }
 
-gl::GLint Sync::get(gl::GLenum pname)
+GLint Sync::get(GLenum pname)
 {
-    gl::GLint result = 0;
+    GLint result = 0;
     get(pname, sizeof(result), nullptr, &result);
 
     return result;

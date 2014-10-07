@@ -173,32 +173,32 @@ void Buffer::clearSubData(GLenum internalformat, GLintptr offset, GLsizeiptr siz
 
 const void * Buffer::getPointer() const
 {
-    return getPointer(gl::GL_BUFFER_MAP_POINTER);
+    return getPointer(GL_BUFFER_MAP_POINTER);
 }
 
 void * Buffer::getPointer()
 {
-    return getPointer(gl::GL_BUFFER_MAP_POINTER);
+    return getPointer(GL_BUFFER_MAP_POINTER);
 }
 
-const void * Buffer::getPointer(gl::GLenum pname) const
+const void * Buffer::getPointer(GLenum pname) const
 {
     return implementation().getPointer(this, pname);
 }
 
-void * Buffer::getPointer(gl::GLenum pname)
+void * Buffer::getPointer(GLenum pname)
 {
     return implementation().getPointer(this, pname);
 }
 
-void Buffer::getSubData(gl::GLintptr offset, gl::GLsizeiptr size, void * data) const
+void Buffer::getSubData(GLintptr offset, GLsizeiptr size, void * data) const
 {
     implementation().getBufferSubData(this, offset, size, data);
 }
 
-gl::GLenum Buffer::objectType() const
+GLenum Buffer::objectType() const
 {
-    return gl::GL_BUFFER;
+    return GL_BUFFER;
 }
 
 } // namespace globjects
