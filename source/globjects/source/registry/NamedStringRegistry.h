@@ -3,7 +3,8 @@
 #include <string>
 #include <unordered_map>
 
-namespace globjects {
+namespace globjects 
+{
 
 class NamedString;
 

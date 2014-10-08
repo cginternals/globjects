@@ -6,14 +6,12 @@
 #include <glbinding/gl/extension.h>
 #include <glbinding/Version.h>
 
-#include <globjects/globjects_api.h>
-
 namespace globjects
 {
 
 class Version;
 
-class GLOBJECTS_API ExtensionRegistry
+class ExtensionRegistry
 {
 public:
     ExtensionRegistry();

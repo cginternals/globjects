@@ -3,7 +3,6 @@
 #include <unordered_map>
 #include <memory>
 
-#include <globjects/globjects_api.h>
 #include <glbinding/ContextHandle.h>
 
 namespace globjects
@@ -14,7 +13,8 @@ class ExtensionRegistry;
 class ImplementationRegistry;
 class NamedStringRegistry;
 
-class GLOBJECTS_API Registry
+
+class Registry
 {
 public:
     static void registerContext(glbinding::ContextHandle contextId);
@@ -31,6 +31,7 @@ public:
     NamedStringRegistry & namedStrings();
 
     bool isInitialized() const;
+
 private:
     Registry();
     Registry(Registry * sharedRegistry);
@@ -42,6 +43,7 @@ private:
     static void setCurrentRegistry(glbinding::ContextHandle contextId);
 
     static std::unordered_map<glbinding::ContextHandle, Registry *> s_registries;
+
 private:
     bool m_initialized;
     std::shared_ptr<ObjectRegistry> m_objects;

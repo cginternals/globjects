@@ -2,8 +2,6 @@
 
 #include <set>
 
-#include <globjects/globjects_api.h>
-
 namespace globjects 
 {
 
@@ -15,20 +13,21 @@ class VertexArray;
     
     To obtain all wrapped objects use objects().
 */
-class GLOBJECTS_API ObjectRegistry
+class ObjectRegistry
 {
     friend class Object;
 public:
 	ObjectRegistry();
     static ObjectRegistry & current();
 
-    const std::set<Object *> & objects();
+    const std::set<Object *> & objects() const;
 
     std::set<Object *>::iterator begin();
     std::set<Object *>::iterator end();
 
     Framebuffer * defaultFBO();
     VertexArray * defaultVAO();
+
 protected:
     void registerObject(Object * object);
     void deregisterObject(Object * object);

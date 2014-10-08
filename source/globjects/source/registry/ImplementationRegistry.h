@@ -1,8 +1,5 @@
 #pragma once
 
-#include <globjects/globjects_api.h>
-
-
 #include <globjects/Shader.h>
 #include <globjects/Program.h>
 #include <globjects/AbstractUniform.h>
@@ -25,7 +22,7 @@ class AbstractShadingLanguageIncludeImplementation;
 class AbstractObjectNameImplementation;
 class AbstractVertexAttributeBindingImplementation;
 
-class GLOBJECTS_API ImplementationRegistry
+class ImplementationRegistry
 {
 public:
     ImplementationRegistry();
