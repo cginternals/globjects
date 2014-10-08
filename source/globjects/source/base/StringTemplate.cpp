@@ -1,4 +1,4 @@
-#include <common/StringTemplate.h>
+#include <globjects/base/StringTemplate.h>
 
 #include <sstream>
 #include <cassert>

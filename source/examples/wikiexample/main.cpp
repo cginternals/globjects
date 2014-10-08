@@ -8,7 +8,7 @@
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/base/StaticStringSource.h>
 
-#include <common/StringTemplate.h>
+#include <globjects/base/StringTemplate.h>
 #include <common/Window.h>
 #include <common/ContextFormat.h>
 #include <common/Context.h>

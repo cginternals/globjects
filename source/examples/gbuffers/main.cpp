@@ -17,7 +17,7 @@
 #include <common/Camera.h>
 #include <common/AbstractCoordinateProvider.h>
 #include <common/WorldInHandNavigation.h>
-#include <common/StringTemplate.h>
+#include <globjects/base/StringTemplate.h>
 #include <common/ScreenAlignedQuad.h>
 
 #include <common/ContextFormat.h>

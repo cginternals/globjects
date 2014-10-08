@@ -14,7 +14,7 @@
 #include <globjects/Buffer.h>
 #include <globjects/Shader.h>
 
-#include <common/StringTemplate.h>
+#include <globjects/base/StringTemplate.h>
 
 
 using namespace gl;

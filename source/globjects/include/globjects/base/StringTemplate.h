@@ -4,11 +4,12 @@
 #include <map>
 
 #include <globjects/base/CachedValue.h>
+#include <globjects/base/StringSourceDecorator.h>
 
-#include <common/StringSourceDecorator.h>
+#include <globjects/globjects_api.h>
 
 
-class StringTemplate : public StringSourceDecorator
+class GLOBJECTS_API StringTemplate : public StringSourceDecorator
 {
 public:
     StringTemplate(AbstractStringSource * source);

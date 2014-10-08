@@ -11,7 +11,7 @@
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/State.h>
 
-#include <common/StringTemplate.h>
+#include <globjects/base/StringTemplate.h>
 #include <common/Context.h>
 #include <common/ContextFormat.h>
 #include <common/Window.h>

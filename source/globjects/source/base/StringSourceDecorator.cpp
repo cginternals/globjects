@@ -1,4 +1,4 @@
-#include <common/StringSourceDecorator.h>
+#include <globjects/base/StringSourceDecorator.h>
 
 #include <cassert>
 

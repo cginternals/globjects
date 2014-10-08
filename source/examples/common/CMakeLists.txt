@@ -45,8 +45,6 @@ set(api_includes
     ${include_path}/Icosahedron.h
     ${include_path}/navigationmath.h
     ${include_path}/ScreenAlignedQuad.h
-    ${include_path}/StringSourceDecorator.h
-    ${include_path}/StringTemplate.h
     ${include_path}/Timer.h
     ${include_path}/VertexDrawable.h
     ${include_path}/WorldInHandNavigation.h
@@ -67,8 +65,6 @@ set(sources
     ${source_path}/Icosahedron.cpp
     ${source_path}/navigationmath.cpp
     ${source_path}/ScreenAlignedQuad.cpp
-    ${source_path}/StringSourceDecorator.cpp
-    ${source_path}/StringTemplate.cpp
     ${source_path}/Timer.cpp
     ${source_path}/VertexDrawable.cpp
     ${source_path}/WorldInHandNavigation.cpp

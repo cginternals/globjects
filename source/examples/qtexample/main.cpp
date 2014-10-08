@@ -37,7 +37,7 @@
 #include <common/AbstractCoordinateProvider.h>
 #include <common/WorldInHandNavigation.h>
 #include <globjects/base/File.h>
-#include <common/StringTemplate.h>
+#include <globjects/base/StringTemplate.h>
 
 class Window : public QtOpenGLWindow, AbstractCoordinateProvider
 {

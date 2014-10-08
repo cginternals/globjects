@@ -90,6 +90,8 @@ set(sources
 	${source_path}/base/LogMessage.cpp
 	${source_path}/base/Referenced.cpp
 	${source_path}/base/StaticStringSource.cpp
+	${source_path}/base/StringSourceDecorator.cpp
+	${source_path}/base/StringTemplate.cpp
 
 	${source_path}/implementations/AbstractBufferImplementation.cpp
 	${source_path}/implementations/AbstractBufferImplementation.h
@@ -271,6 +273,8 @@ set(api_includes
 	${include_path}/base/Singleton.h
 	${include_path}/base/Singleton.hpp
 	${include_path}/base/StaticStringSource.h
+	${include_path}/base/StringSourceDecorator.h
+	${include_path}/base/StringTemplate.h
 )
 
 # Group source files

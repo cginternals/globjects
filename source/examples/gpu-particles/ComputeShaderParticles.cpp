@@ -17,7 +17,7 @@
 
 #include <common/ScreenAlignedQuad.h>
 #include <common/Camera.h>
-#include <common/StringTemplate.h>
+#include <globjects/base/StringTemplate.h>
 
 
 using namespace gl;

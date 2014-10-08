@@ -4,8 +4,9 @@
 #include <globjects/base/ref_ptr.h>
 #include <globjects/base/AbstractStringSource.h>
 
+#include <globjects/globjects_api.h>
 
-class StringSourceDecorator : public globjects::AbstractStringSource, protected globjects::ChangeListener
+class GLOBJECTS_API StringSourceDecorator : public globjects::AbstractStringSource, protected globjects::ChangeListener
 {
 public:
     StringSourceDecorator(globjects::AbstractStringSource * source);
