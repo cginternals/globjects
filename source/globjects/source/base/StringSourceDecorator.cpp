@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+namespace globjects
+{
 
 StringSourceDecorator::StringSourceDecorator(AbstractStringSource * source)
 : m_internal(source)
@@ -27,3 +29,5 @@ void StringSourceDecorator::notifyChanged(const globjects::Changeable *)
 void StringSourceDecorator::update()
 {
 }
+
+} // namespace globjects

@@ -8,6 +8,8 @@
 
 #include <globjects/globjects_api.h>
 
+namespace globjects
+{
 
 class GLOBJECTS_API StringTemplate : public StringSourceDecorator
 {
@@ -31,3 +33,5 @@ protected:
     void invalidate();
     std::string modifiedSource() const;
 };
+
+} // namespace globjects

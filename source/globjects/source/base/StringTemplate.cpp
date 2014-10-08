@@ -23,6 +23,9 @@ void replaceAll(
 
 }
 
+namespace globjects
+{
+
 StringTemplate::StringTemplate(AbstractStringSource * source)
 : StringSourceDecorator(source)
 {
@@ -80,3 +83,5 @@ std::string StringTemplate::modifiedSource() const
 
     return source;
 }
+
+} // namespace globjects
