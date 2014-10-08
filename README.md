@@ -22,11 +22,11 @@ The documentation is regularly generated and can be found [here](http://libglow.
 ### Dependencies
 
 The following dev-libraries and programs need to be provided for correct CMake configuration:
-* C++11 compatible compiler (e.g. gcc >=4.7, MSVC >=2013)
-* CMake (>=2.8.9, better 2.8.12): http://www.cmake.org/
-* OpenGL C++ Bindings (glbinding >=1.0.0): https://github.com/hpicgs/glbinding
-* OpenGL Mathematics (GLM >=0.9.4): http://glm.g-truc.net/, https://github.com/g-truc/glm
-* Window and Context creation (GLFW 3.0): http://www.glfw.org/ (optional, needed for examples)
+* C++11 compatible compiler (e.g. gcc >=4.7, clang >=3.4, MSVC >= 2013 **Update 3**)
+* CMake (>= 2.8.12): http://www.cmake.org/
+* OpenGL C++ Bindings (glbinding >= 1.0): https://github.com/hpicgs/glbinding
+* OpenGL Mathematics (GLM >= 0.9.5): http://glm.g-truc.net/, https://github.com/g-truc/glm
+* Window and Context creation (GLFW >= 3.0.4): http://www.glfw.org/ (optional, needed for examples)
 
 
 ### Development Notes

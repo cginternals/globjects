@@ -93,7 +93,7 @@ public:
 
                 vec2 pos(static_cast<float>(x) / w, static_cast<float>(y) / h);
 
-                float h = perlin(pos * 16.f + vec2(3.f * i));
+                float h = perlin(pos * 16.f + vec2(3.f * static_cast<float>(i)));
 
                 vec3 color = vec3(masks[i % std::tuple_size<decltype(masks)>::value]) * h;
                 ivec3 icolor = ivec3(color * 255.f);
