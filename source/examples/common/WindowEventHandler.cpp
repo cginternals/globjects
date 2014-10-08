@@ -3,6 +3,9 @@
 #include <sstream>
 #include <iomanip>
 
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
+
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -105,10 +108,16 @@ void WindowEventHandler::initialize(Window &)
 {
     globjects::init();
     globjects::DebugMessage::enable();
+
+    std::cout << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
 }
 
 void WindowEventHandler::finalize(Window &)
 {
+    globjects::detachAllObjects();
 }
 
 void WindowEventHandler::idle(Window & window)

@@ -25,73 +25,81 @@ class Context;
 class Window
 {
 public:
+    static const std::set<Window *> & instances();
+
+public:
     Window();
     virtual ~Window();
 
-    bool create(const ContextFormat & format, int width = 1280, int height = 720);
-    bool create(const ContextFormat & format, const std::string & title = "globjects", int width = 1280, int height = 720);
+    void setTitle(const std::string & title);
+    const std::string & title() const;
 
-    /**
-     * Takes ownership of the given eventhandler and deletes that either on
-     * quitting, just before the opengl context gets destroyed, or when
-     * reassigning a new, different handler.
-     */
+    bool create(
+        const ContextFormat & format
+    ,   int width = 1280
+    ,   int height = 720);
+
+    bool create(
+        const ContextFormat & format
+    ,   const std::string & title = "globjects"
+    ,   int width = 1280
+    ,   int height = 720);
+
+    Context * context() const;
+    GLFWwindow * internalWindow() const;
+
+    void destroy();
+
+    /** If enabled, this causes an application wide quit message to be posted
+    when the window gets destroyed. Hence, the MainLoop will be quit
+    and all other remaining windows destroyed.
+    */
+    void setQuitOnDestroy(bool enable);
+    bool quitsOnDestroy() const;
+
+    /** Takes ownership of the given eventhandler and deletes that either on
+        quitting, just before the opengl context gets destroyed, or when
+        reassigning a new, different handler.
+    */
     void setEventHandler(WindowEventHandler * eventHandler);
+
     const WindowEventHandler * eventHandler() const;
     WindowEventHandler * eventHandler();
 
     void show();
     void hide();
-
-    int width() const;
-    int height() const;
-    glm::ivec2 size() const;
-    glm::ivec2 position() const;
-    glm::ivec2 framebufferSize() const;
-    int inputMode(int mode) const;
-    const std::string & title() const;
-
-    void setTitle(const std::string & title);
-    void resize(int width, int height);
-    void setInputMode(int mode, int value);
-
-    /**
-     * If enabled, this causes an application wide quit message to be posted
-     * when the window gets destroyed. Hence, the MainLoop will be quit
-     * and all other remaining windows destroyed.
-     */
-    void quitOnDestroy(bool enable);
-    bool quitsOnDestroy() const;
-
-    Context * context() const;
-
     void close();
 
-    /**
-     * Queues a paint event.
-     */
+    void resize(int width, int height);
+    glm::ivec2 size() const;
+    glm::ivec2 framebufferSize() const;
+
+    glm::ivec2 position() const;
+
+    void setInputMode(int mode, int value);
+    int inputMode(int mode) const;
+
+
     void repaint();
     void idle();
+    void swap();
 
     void fullScreen();
     bool isFullScreen() const;
+
     void windowed();
     bool isWindowed() const;
+
     void toggleMode();
 
-    GLFWwindow * internalWindow() const;
 
     void queueEvent(WindowEvent * event);
+
     bool hasPendingEvents();
     void processEvents();
 
-    static const std::set<Window*>& instances();
-
     void addTimer(int id, int interval, bool singleShot = false);
     void removeTimer(int id);
-
-    void swap();
-    void destroy();
 
 protected:
     bool createContext(const ContextFormat & format, int width, int height, GLFWmonitor* monitor = nullptr);
@@ -104,23 +112,30 @@ protected:
     void processEvent(WindowEvent & event);
     void postprocessEvent(WindowEvent & event);
 
+    enum class Mode
+    {
+        Windowed
+    ,   FullScreen
+    };
+
+    void setMode(Mode mode);
+
 protected:
     Context * m_context;
     GLFWwindow * m_window;
 
     globjects::ref_ptr<WindowEventHandler> m_eventHandler;
-    std::queue<WindowEvent *> m_eventQueue;
+
+    using EventQueue = std::queue<WindowEvent *>;
+    EventQueue m_eventQueue[2];
+
+    EventQueue * m_activeEventQueue;
+    EventQueue * m_inactiveEventQueue;
 
     glm::ivec2 m_windowedModeSize;
     std::string m_title;
 
     bool m_quitOnDestroy;
-
-    enum class Mode
-    {
-        WindowMode
-    ,   FullScreenMode
-    };
 
     Mode m_mode;
 

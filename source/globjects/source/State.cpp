@@ -23,19 +23,19 @@ State::State(Mode mode)
 
 State::~State()
 {
-    for (const auto& capability : m_capabilities)
+    for (const auto & capability : m_capabilities)
     {
         delete capability.second;
     }
-    for (const auto& setting : m_settings)
+    for (const auto & setting : m_settings)
     {
         delete setting.second;
     }
 }
 
-State* State::currentState()
+State * State::currentState()
 {
-    State* state = new State(DeferredMode);
+    State * state = new State(DeferredMode);
 
     std::vector<GLenum> capabilities = {
         GL_BLEND,

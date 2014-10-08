@@ -88,8 +88,8 @@ protected:
     virtual ~Shader();
 
     virtual void notifyChanged(const Changeable * changeable) override;
-protected:
 
+protected:
     std::string shaderString() const;
 
 protected:

@@ -3,9 +3,6 @@
 #include <cassert>
 #include <iostream>
 
-#include <glbinding/ContextInfo.h>
-#include <glbinding/Version.h>
-
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -31,7 +28,9 @@ Window::Window()
 :   m_context(nullptr)
 ,   m_window(nullptr)
 ,   m_quitOnDestroy(true)
-,   m_mode(Mode::WindowMode)
+,   m_mode(Mode::Windowed)
+,   m_activeEventQueue  (&m_eventQueue[0])
+,   m_inactiveEventQueue(&m_eventQueue[1])
 {
     s_instances.insert(this);
 }
@@ -39,6 +38,13 @@ Window::Window()
 Window::~Window()
 {
     s_instances.erase(this);
+
+    if (hasPendingEvents())
+    {
+        clearEventQueue();
+        std::swap(m_activeEventQueue, m_inactiveEventQueue);
+        clearEventQueue();
+    }
 
     if (m_context)
     {
@@ -64,16 +70,6 @@ const WindowEventHandler * Window::eventHandler() const
 Context * Window::context() const
 {
     return m_context;
-}
-
-int Window::width() const
-{
-    return size().x;
-}
-
-int Window::height() const
-{
-    return size().y;
 }
 
 ivec2 Window::size() const
@@ -120,7 +116,7 @@ const std::string & Window::title() const
     return m_title;
 }
 
-void Window::quitOnDestroy(const bool enable)
+void Window::setQuitOnDestroy(const bool enable)
 {
     m_quitOnDestroy = enable;
 }
@@ -154,7 +150,7 @@ bool Window::create(const ContextFormat & format, int width, int height)
     return true;
 }
 
-bool Window::createContext(const ContextFormat & format, int width, int height, GLFWmonitor* monitor)
+bool Window::createContext(const ContextFormat & format, int width, int height, GLFWmonitor * monitor)
 {
     assert(nullptr == m_context);
 
@@ -172,14 +168,6 @@ bool Window::createContext(const ContextFormat & format, int width, int height, 
 
         return false;
     }
-
-    m_context->makeCurrent();
-    std::cout << std::endl
-        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
-    m_context->doneCurrent();
-
     return true;
 }
 
@@ -194,25 +182,25 @@ void Window::destroyContext()
 
 void Window::initializeEventHandler()
 {
-    if (m_eventHandler)
-    {
-        m_context->makeCurrent();
-        m_eventHandler->initialize(*this);
-        m_context->doneCurrent();
+    if (!m_eventHandler)
+        return;
 
-        queueEvent(new ResizeEvent(size()));
-        queueEvent(new ResizeEvent(framebufferSize(), true));
-    }
+    m_context->makeCurrent();
+    m_eventHandler->initialize(*this);
+    m_context->doneCurrent();
+
+    queueEvent(new ResizeEvent(size()));
+    queueEvent(new ResizeEvent(framebufferSize(), true));
 }
 
 void Window::finalizeEventHandler()
 {
-    if (m_eventHandler)
-    {
-        m_context->makeCurrent();
-        m_eventHandler->finalize(*this);
-        m_context->doneCurrent();
-    }
+    if (!m_eventHandler)
+        return;
+
+    m_context->makeCurrent();
+    m_eventHandler->finalize(*this);
+    m_context->doneCurrent();
 }
 
 bool Window::quitsOnDestroy() const
@@ -236,20 +224,36 @@ void Window::hide()
     glfwHideWindow(m_window);
 }
 
-void Window::fullScreen()
+void Window::setMode(Mode mode)
 {
-    if (Mode::WindowMode != m_mode)
+    if (mode == m_mode)
         return;
 
-    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-    if (!monitor)
+    const bool goFS(mode == Mode::FullScreen);
+
+    GLFWmonitor * monitor = goFS ? glfwGetPrimaryMonitor() : nullptr;
+    if (goFS && !monitor)
         return;
 
-    m_windowedModeSize = size();
+    clearEventQueue();
 
-    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-    int w = mode->width;
-    int h = mode->height;
+
+    int w(-1);
+    int h(-1);
+
+    if (goFS)
+    {
+        m_windowedModeSize = size();
+        
+        const GLFWvidmode * mode = glfwGetVideoMode(monitor);
+        w = mode->width;
+        h = mode->height;
+    }
+    else
+    {
+        w = m_windowedModeSize.x;
+        h = m_windowedModeSize.y;
+    }
 
     ContextFormat format = m_context->format();
 
@@ -257,57 +261,44 @@ void Window::fullScreen()
     WindowEventDispatcher::deregisterWindow(this);
     destroyContext();
 
-    if (createContext(format, w, h, monitor))
-    {
-        WindowEventDispatcher::registerWindow(this);
-        initializeEventHandler();
+    if (!createContext(format, w, h, monitor))
+        return;
 
-        m_mode = Mode::FullScreenMode;
-    }
+    WindowEventDispatcher::registerWindow(this);
+    initializeEventHandler();
+
+    m_mode = mode;
+}
+
+void Window::fullScreen()
+{
+    setMode(Mode::FullScreen);
 }
 
 void Window::windowed()
 {
-    if (Mode::FullScreenMode != m_mode)
-        return;
-
-    int w = m_windowedModeSize.x;
-    int h = m_windowedModeSize.y;
-
-    ContextFormat format = m_context->format();
-
-    finalizeEventHandler();
-    WindowEventDispatcher::deregisterWindow(this);
-    destroyContext();
-
-
-    if (createContext(format, w, h, nullptr))
-    {
-        WindowEventDispatcher::registerWindow(this);
-        initializeEventHandler();
-
-        m_mode = Mode::WindowMode;
-    }
+    setMode(Mode::Windowed);
 }
 
 bool Window::isFullScreen() const
 {
-    return Mode::FullScreenMode == m_mode;
+    return Mode::FullScreen == m_mode;
 }
 
 bool Window::isWindowed() const
 {
-    return Mode::WindowMode == m_mode;
+    return Mode::Windowed == m_mode;
 }
 
 void Window::toggleMode()
 {
     switch (m_mode)
     {
-    case Mode::FullScreenMode:
+    case Mode::FullScreen:
         windowed();
         return;
-    case Mode::WindowMode:
+
+    case Mode::Windowed:
         fullScreen();
         return;
     }
@@ -366,9 +357,7 @@ void Window::close()
 void Window::idle()
 {
     if (m_eventHandler)
-    {
         m_eventHandler->idle(*this);
-    }
 }
 
 void Window::swap()
@@ -395,25 +384,27 @@ void Window::queueEvent(WindowEvent * event)
     if (!event)
         return;
 
-    m_eventQueue.push(event);
+    m_inactiveEventQueue->push(event);
 }
 
 bool Window::hasPendingEvents()
 {
-    return !m_eventQueue.empty();
+    return !m_inactiveEventQueue->empty();
 }
 
 void Window::processEvents()
 {
-    if (m_eventQueue.empty() || !m_context)
+    if (m_inactiveEventQueue->empty() || !m_context)
         return;
+
+    std::swap(m_activeEventQueue, m_inactiveEventQueue);
 
     m_context->makeCurrent();
 
-    while (!m_eventQueue.empty())
+    while (!m_activeEventQueue->empty())
     {
-        WindowEvent* event = m_eventQueue.front();
-        m_eventQueue.pop();
+        WindowEvent * event = m_activeEventQueue->front();
+        m_activeEventQueue->pop();
         event->setWindow(this);
 
         processEvent(*event);
@@ -433,9 +424,7 @@ void Window::processEvents()
 void Window::processEvent(WindowEvent & event)
 {
     if (m_eventHandler)
-    {
         m_eventHandler->handleEvent(event);
-    }
 
     postprocessEvent(event);
 }
@@ -452,18 +441,15 @@ void Window::postprocessEvent(WindowEvent & event)
         if (!event.isAccepted())
             destroy();
         break;
-
-    default:
-        break;
     }
 }
 
 void Window::clearEventQueue()
 {
-    while (!m_eventQueue.empty())
+    while (!m_activeEventQueue->empty())
     {
-        delete m_eventQueue.front();
-        m_eventQueue.pop();
+        delete m_activeEventQueue->front();
+        m_activeEventQueue->pop();
     }
 }
 

@@ -118,7 +118,7 @@ int main(int /*argc*/, char * /*argv*/[])
     Window window;
     window.setEventHandler(new EventHandler());
 
-    if (!window.create(format, "Post Processing Example"))
+    if (!window.create(format, "Tesselation Example"))
         return 1;
 
     window.context()->setSwapInterval(Context::VerticalSyncronization);

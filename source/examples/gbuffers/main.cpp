@@ -97,8 +97,8 @@ public:
         m_gBufferChoice->program()->setUniform<GLint>("worldCoordSource",    3);
         m_gBufferChoice->program()->setUniform<GLint>("depthSource",         4);
 
-        m_camera.setZNear( 1.f);
-        m_camera.setZFar (16.f);
+        m_camera.setZNear(1.f);
+        m_camera.setZFar(16.f);
 
         m_gBufferChoice->program()->setUniform<GLfloat>("nearZ", m_camera.zNear());
         m_gBufferChoice->program()->setUniform<GLfloat>("farZ",  m_camera.zFar());
@@ -106,12 +106,6 @@ public:
         window.addTimer(0, 0, false);
 
         cameraChanged();
-    }
-
-    virtual void finalize(Window &) override
-    {
-        m_sphere = nullptr;
-        m_icosahedron = nullptr;
     }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -282,9 +276,7 @@ public:
     virtual float depthAt(const ivec2 & windowCoordinates) const override
     {
         m_sphereFBO->bind();
-
         float depth = AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
-
         m_sphereFBO->unbind();
 
         return depth;

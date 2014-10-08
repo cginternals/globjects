@@ -53,7 +53,7 @@ public:
     const Buffer * buffer() const;
 
 protected:
-    ~VertexAttributeBinding();
+    virtual ~VertexAttributeBinding();
 
 protected:
     VertexArray * m_vao; // TODO: weak_ptr?

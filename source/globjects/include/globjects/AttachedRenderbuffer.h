@@ -26,6 +26,7 @@ public:
     AttachedRenderbuffer(Framebuffer * fbo,  gl::GLenum attachment, Renderbuffer * renderBuffer);
 
     virtual bool isRenderBufferAttachment() const override;
+
 	Renderbuffer * renderBuffer();
     const Renderbuffer * renderBuffer() const;
 
