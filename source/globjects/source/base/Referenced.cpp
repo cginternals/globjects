@@ -1,5 +1,8 @@
 #include <globjects/base/Referenced.h>
 
+#include <cassert>
+
+
 namespace globjects
 {
 
@@ -19,12 +22,12 @@ void Referenced::ref() const
 
 void Referenced::unref() const
 {
+    assert(m_refCounter > 0);
+
 	--m_refCounter;
 
 	if (m_refCounter <= 0)
-	{
         destroy();
-	}
 }
 
 int Referenced::refCounter() const
