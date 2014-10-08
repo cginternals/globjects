@@ -10,12 +10,12 @@
 #include <globjects/base/ref_ptr.h>
 #include <globjects/base/Referenced.h>
 
+#include <globjects/VertexArray.h>
+#include <globjects/Buffer.h>
 
 namespace globjects
 {
 
-class VertexArray;
-class Buffer;
 class VertexAttributeBinding;
 
 }

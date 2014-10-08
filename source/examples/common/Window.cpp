@@ -27,10 +27,10 @@ const std::set<Window *> & Window::instances()
 Window::Window()
 :   m_context(nullptr)
 ,   m_window(nullptr)
-,   m_quitOnDestroy(true)
-,   m_mode(Mode::Windowed)
 ,   m_activeEventQueue  (&m_eventQueue[0])
 ,   m_inactiveEventQueue(&m_eventQueue[1])
+,   m_quitOnDestroy(true)
+,   m_mode(Mode::Windowed)
 {
     s_instances.insert(this);
 }
@@ -416,6 +416,9 @@ void Window::processEvents()
         case WindowEvent::Type::FrameBufferResize:
             fboresize = dynamic_cast<ResizeEvent *>(e);
             break;
+
+        default:
+            break;
         }
     }
 
@@ -426,7 +429,7 @@ void Window::processEvents()
     while (!m_activeEventQueue->empty())
     {
         WindowEvent * event = m_activeEventQueue->front();
-        m_activeEventQueue->erase(m_activeEventQueue->cbegin());
+        m_activeEventQueue->erase(m_activeEventQueue->begin());
 
         if ((event->type() == WindowEvent::Type::Resize && event != resize)
          || (event->type() == WindowEvent::Type::FrameBufferResize && event != fboresize))
@@ -471,6 +474,9 @@ void Window::postprocessEvent(WindowEvent & event)
         if (!event.isAccepted())
             destroy();
         break;
+
+    default:
+        break;
     }
 }
 
@@ -479,7 +485,7 @@ void Window::clearEventQueue()
     while (!m_activeEventQueue->empty())
     {
         delete m_activeEventQueue->front();
-        m_activeEventQueue->erase(m_activeEventQueue->cbegin());
+        m_activeEventQueue->erase(m_activeEventQueue->begin());
     }
 }
 

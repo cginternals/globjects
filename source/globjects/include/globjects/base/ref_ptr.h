@@ -62,7 +62,7 @@ protected:
 	void decreaseRef();
 
 protected:
-    mutable Referenced * m_referenced;
+    mutable const Referenced * m_referenced;
 };
 
 template <typename T>
