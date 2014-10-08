@@ -12,6 +12,7 @@
 #include <globjects/base/AbstractStringSource.h>
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/base/File.h>
+#include <globjects/base/StringTemplate.h>
 
 #include <globjects/Program.h>
 #include <globjects/logging.h>
@@ -39,10 +40,12 @@ const globjects::AbstractShadingLanguageIncludeImplementation & shadingLanguageI
 namespace globjects
 {
 
-    void Shader::hintIncludeImplementation(const IncludeImplementation impl)
+void Shader::hintIncludeImplementation(const IncludeImplementation impl)
 {
     ImplementationRegistry::current().initialize(impl);
 }
+
+std::map<std::string, std::string> Shader::s_globalReplacements;
 
 
 Shader::Shader(const GLenum type)
@@ -78,6 +81,21 @@ Shader::~Shader()
 	}
 }
 
+void Shader::globalReplace(const std::string & search, const std::string & replacement)
+{
+    s_globalReplacements[search] = replacement;
+}
+
+void Shader::globalReplace(const std::string & search, int i)
+{
+    globalReplace(search, std::to_string(i));
+}
+
+void Shader::clearGlobalReplacements()
+{
+    s_globalReplacements.clear();
+}
+
 void Shader::accept(ObjectVisitor & visitor)
 {
 	visitor.visitShader(this);
@@ -95,6 +113,18 @@ void Shader::setSource(AbstractStringSource * source)
 
 	if (m_source)
 		m_source->deregisterListener(this);
+
+    if (!s_globalReplacements.empty())
+    {
+        StringTemplate * sourceTemplate = new StringTemplate(source);
+
+        for (const std::pair<std::string, std::string> & pair : s_globalReplacements)
+        {
+            sourceTemplate->replace(pair.first, pair.second);
+        }
+
+        source = sourceTemplate;
+    }
 
 	m_source = source;
 
@@ -121,6 +151,8 @@ void Shader::notifyChanged(const Changeable *)
 
 void Shader::updateSource()
 {
+    debug() << m_source->string();
+
     shadingLanguageIncludeImplementation().updateSources(this);
 
     invalidate();

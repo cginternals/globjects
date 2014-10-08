@@ -75,11 +75,6 @@ public:
         StringTemplate* vertexShaderSource = new StringTemplate(new globjects::File("data/adaptive-grid/sphere.vert"));
         StringTemplate* fragmentShaderSource = new StringTemplate(new globjects::File("data/adaptive-grid/sphere.frag"));
 
-#ifdef MAC_OS
-        vertexShaderSource->replace("#version 140", "#version 150");
-        fragmentShaderSource->replace("#version 140", "#version 150");
-#endif
-
         m_sphere->attach(
             new globjects::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
         ,   new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));

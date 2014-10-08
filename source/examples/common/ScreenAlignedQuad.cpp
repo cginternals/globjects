@@ -64,11 +64,6 @@ ScreenAlignedQuad::ScreenAlignedQuad(
     StringTemplate * vertexShaderSource   = new StringTemplate(new StaticStringSource(s_defaultVertexShaderSource));
     StringTemplate * fragmentShaderSource = new StringTemplate(new StaticStringSource(s_defaultFagmentShaderSource));
     
-#ifdef MAC_OS
-    vertexShaderSource->replace("#version 140", "#version 150");
-    fragmentShaderSource->replace("#version 140", "#version 150");
-#endif
-    
     m_vertexShader   = new Shader(GL_VERTEX_SHADER, vertexShaderSource);
     
     if (!m_fragmentShader)

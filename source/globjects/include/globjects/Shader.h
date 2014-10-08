@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include <glbinding/gl/types.h>
 
@@ -53,6 +54,10 @@ public:
     static Shader * fromString(const gl::GLenum type, const std::string & sourceString, const IncludePaths & includePaths = IncludePaths());
     static Shader * fromFile(const gl::GLenum type, const std::string & filename, const IncludePaths & includePaths = IncludePaths());
 
+    static void globalReplace(const std::string & search, const std::string & replacement);
+    static void globalReplace(const std::string & search, int i);
+    static void clearGlobalReplacements();
+
 public:
     Shader(const gl::GLenum type);
     Shader(const gl::GLenum type, AbstractStringSource * source, const IncludePaths & includePaths = IncludePaths());
@@ -99,6 +104,8 @@ protected:
 
     mutable bool m_compiled;
     mutable bool m_compilationFailed;
+
+    static std::map<std::string, std::string> s_globalReplacements;
 };
 
 } // namespace globjects
