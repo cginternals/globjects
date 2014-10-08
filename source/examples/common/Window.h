@@ -2,7 +2,7 @@
 
 #include <set>
 #include <string>
-#include <queue>
+#include <vector>
 
 #include <glm/glm.hpp>
 
@@ -126,7 +126,7 @@ protected:
 
     globjects::ref_ptr<WindowEventHandler> m_eventHandler;
 
-    using EventQueue = std::queue<WindowEvent *>;
+    using EventQueue = std::vector<WindowEvent *>;
     EventQueue m_eventQueue[2];
 
     EventQueue * m_activeEventQueue;

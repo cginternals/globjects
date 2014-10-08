@@ -384,7 +384,7 @@ void Window::queueEvent(WindowEvent * event)
     if (!event)
         return;
 
-    m_inactiveEventQueue->push(event);
+    m_inactiveEventQueue->push_back(event);
 }
 
 bool Window::hasPendingEvents()
@@ -399,12 +399,42 @@ void Window::processEvents()
 
     std::swap(m_activeEventQueue, m_inactiveEventQueue);
 
+    // note: if glfw fixes it's resize event behavior, the following workaround might be obsolete:
+    // arg: only allow remove all Resize and FramebufferReszie Events, and only use the last ones
+    
+    ResizeEvent * resize(nullptr);
+    ResizeEvent * fboresize(nullptr);
+
+    for (auto e : *m_activeEventQueue)
+    {
+        switch (e->type())
+        {
+        case WindowEvent::Type::Resize:
+            resize = dynamic_cast<ResizeEvent *>(e);
+            break;
+
+        case WindowEvent::Type::FrameBufferResize:
+            fboresize = dynamic_cast<ResizeEvent *>(e);
+            break;
+        }
+    }
+
+    // continue with event processing, but ignore all resize events, except the last ones
+
     m_context->makeCurrent();
 
     while (!m_activeEventQueue->empty())
     {
         WindowEvent * event = m_activeEventQueue->front();
-        m_activeEventQueue->pop();
+        m_activeEventQueue->erase(m_activeEventQueue->cbegin());
+
+        if ((event->type() == WindowEvent::Type::Resize && event != resize)
+         || (event->type() == WindowEvent::Type::FrameBufferResize && event != fboresize))
+        {
+            delete event;
+            continue;
+        }
+
         event->setWindow(this);
 
         processEvent(*event);
@@ -449,7 +479,7 @@ void Window::clearEventQueue()
     while (!m_activeEventQueue->empty())
     {
         delete m_activeEventQueue->front();
-        m_activeEventQueue->pop();
+        m_activeEventQueue->erase(m_activeEventQueue->cbegin());
     }
 }
 
