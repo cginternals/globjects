@@ -72,12 +72,9 @@ public:
         gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
         m_sphere = new globjects::Program();
-        StringTemplate* vertexShaderSource = new StringTemplate(new globjects::File("data/adaptive-grid/sphere.vert"));
-        StringTemplate* fragmentShaderSource = new StringTemplate(new globjects::File("data/adaptive-grid/sphere.frag"));
-
         m_sphere->attach(
-            new globjects::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
-        ,   new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
+            globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/adaptive-grid/sphere.vert")
+        ,   globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/adaptive-grid/sphere.frag"));
 
 
         m_icosahedron = new Icosahedron(2);

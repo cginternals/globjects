@@ -39,6 +39,7 @@ public:
     ref_ptr(ref_ptr && reference);
 	~ref_ptr();
 
+    ref_ptr & operator=(T * referenced);
     ref_ptr & operator=(const ref_ptr & reference);
 
     T * get() const;

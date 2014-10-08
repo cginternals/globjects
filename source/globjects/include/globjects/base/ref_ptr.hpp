@@ -42,13 +42,19 @@ ref_ptr<T>::~ref_ptr()
 }
 
 template<typename T>
+ref_ptr<T> & ref_ptr<T>::operator=(T * referenced)
+{
+    decreaseRef();
+    m_referenced = referenced;
+    increaseRef();
+
+    return *this;
+}
+
+template<typename T>
 ref_ptr<T> & ref_ptr<T>::operator=(const ref_ptr & reference)
 {
-	decreaseRef();
-	m_referenced = reference.m_referenced;
-	increaseRef();
-
-	return *this;
+    return operator =(reference.get());
 }
 
 template<typename T>
