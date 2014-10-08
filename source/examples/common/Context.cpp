@@ -64,7 +64,6 @@ bool Context::create(const ContextFormat & format, const int width, const int he
     }
 
     makeCurrent();
-    glbinding::Binding::initialize(false);
     glfwSwapInterval(m_swapInterval);
     doneCurrent();
 
@@ -201,7 +200,7 @@ void Context::doneCurrent()
     if (!isValid())
         return;
 
-    glfwMakeContextCurrent(0);
+    glfwMakeContextCurrent(nullptr);
 }
 
 glbinding::Version Context::maximumSupportedVersion()
