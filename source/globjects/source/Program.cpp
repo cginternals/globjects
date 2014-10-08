@@ -60,14 +60,18 @@ Program::Program(ProgramBinary * binary)
 
 Program::~Program()
 {
-    for (ref_ptr<Shader> shader: std::set<ref_ptr<Shader>>(m_shaders))
-	{
-		detach(shader);
-	}
-
     for (std::pair<LocationIdentity, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
-    {
         uniformPair.second->deregisterProgram(this);
+
+    if (0 == id())
+    {
+        for (auto & shader : m_shaders)
+            shader->deregisterListener(this);
+    }
+    else
+    {
+        for (ref_ptr<Shader> shader : std::set<ref_ptr<Shader>>(m_shaders))
+            detach(shader);
     }
 }
 
@@ -118,10 +122,8 @@ void Program::notifyChanged(const Changeable *)
 
 void Program::checkDirty() const
 {
-	if (m_dirty)
-	{
-		link();
-	}
+    if (m_dirty)
+        link();
 }
 
 void Program::attach()
@@ -140,9 +142,9 @@ void Program::detach(Shader * shader)
 	invalidate();
 }
 
-std::set<Shader*> Program::shaders() const
+std::set<Shader *> Program::shaders() const
 {
-	std::set<Shader*> shaders;
+	std::set<Shader *> shaders;
     for (ref_ptr<Shader> shader: m_shaders)
 		shaders.insert(shader);
 	return shaders;
@@ -166,21 +168,18 @@ void Program::link() const
 
 bool Program::compileAttachedShaders() const
 {
-    for (Shader* shader : shaders())
+    for (Shader * shader : shaders())
     {
+        if (shader->isCompiled())
+            continue;
+
+        // Some drivers (e.g. nvidia-331 on Ubuntu 13.04 automatically compile shaders during program linkage)
+        // but we don't want to depend on such behavior
+        shader->compile();
+
         if (!shader->isCompiled())
-        {
-            // Some drivers (e.g. nvidia-331 on Ubuntu 13.04 automatically compile shaders during program linkage)
-            // but we don't want to depend on such behavior
-            shader->compile();
-
-            if (!shader->isCompiled())
-            {
-                return false;
-            }
-        }
+            return false;
     }
-
     return true;
 }
 
@@ -188,9 +187,7 @@ bool Program::checkLinkStatus() const
 {
     if (GL_FALSE == static_cast<GLboolean>(get(GL_LINK_STATUS)))
     {
-        critical()
-            << "Linker error:" << std::endl
-            << infoLog();
+        critical() << "Linker error:" << std::endl << infoLog();
         return false;
     }
     return true;
@@ -323,9 +320,7 @@ UniformBlock * Program::getUniformBlockByIdentity(const LocationIdentity & ident
     checkDirty();
 
     if (m_uniformBlocks.find(identity) == m_uniformBlocks.end())
-    {
         m_uniformBlocks[identity] = UniformBlock(this, identity);
-    }
 
     return &m_uniformBlocks[identity];
 }
@@ -337,35 +332,27 @@ void Program::addUniform(AbstractUniform * uniform)
     ref_ptr<AbstractUniform>& uniformReference = m_uniforms[uniform->identity()];
 
 	if (uniformReference)
-	{
 		uniformReference->deregisterProgram(this);
-	}
 
 	uniformReference = uniform;
 
 	uniform->registerProgram(this);
 
 	if (m_linked)
-	{
 		uniform->update(this);
-	}
 }
 
 void Program::updateUniforms() const
 {
 	// Note: uniform update will check if program is linked
     for (std::pair<LocationIdentity, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
-	{
 		uniformPair.second->update(this);
-	}
 }
 
 void Program::updateUniformBlockBindings() const
 {
     for (std::pair<LocationIdentity, UniformBlock> pair : m_uniformBlocks)
-    {
         pair.second.updateBinding();
-    }
 }
 
 void Program::setBinary(ProgramBinary * binary)
@@ -392,7 +379,6 @@ GLint Program::get(GLenum pname) const
     GLint value = 0;
     glGetProgramiv(id(), pname, &value);
 
-
 	return value;
 }
 
@@ -401,9 +387,7 @@ const std::string Program::infoLog() const
     GLint length = get(GL_INFO_LOG_LENGTH);
 
     if (length == 0)
-    {
         return std::string();
-    }
 
     std::vector<char> log(length);
 

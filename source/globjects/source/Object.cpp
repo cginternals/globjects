@@ -67,4 +67,13 @@ bool Object::hasName() const
     return nameImplementation().hasLabel(this);
 }
 
+void Object::detach()
+{
+    if (!m_resource)
+        return;
+
+    delete m_resource;
+    m_resource = new InvalidResource();
+}
+
 } // namespace globjects

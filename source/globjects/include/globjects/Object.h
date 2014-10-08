@@ -46,6 +46,10 @@ public:
 
     virtual gl::GLenum objectType() const = 0;
 
+    /** unlinks and destroys the associated opengl object
+    */
+    void detach();
+
 protected:
     Object(IDResource * resource);
     virtual ~Object();

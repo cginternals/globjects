@@ -13,6 +13,7 @@
 #include <globjects/logging.h>
 
 #include "registry/Registry.h"
+#include "registry/ObjectRegistry.h"
 #include "registry/ExtensionRegistry.h"
 #include "registry/ImplementationRegistry.h"
 
@@ -63,8 +64,7 @@ void init()
         glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
 
         glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
-            manualErrorCheckAfter(functionCall.function);
-        });
+            manualErrorCheckAfter(functionCall.function); });
 
         g_globjectsIsInitialized = true;
     }
@@ -81,14 +81,19 @@ void init(glbinding::ContextHandle sharedContextId)
         glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
 
         glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
-            manualErrorCheckAfter(functionCall.function);
-        });
+            manualErrorCheckAfter(functionCall.function); });
 
         g_globjectsIsInitialized = true;
     }
     g_mutex.unlock();
 
     registerCurrentContext(sharedContextId);
+}
+
+void detachAllObjects()
+{
+    for (Object * object : Registry::current().objects().objects())
+        object->detach();
 }
 
 void registerCurrentContext()
