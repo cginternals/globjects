@@ -5,9 +5,6 @@
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/extension.h>
 
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
-
 #include <globjects/globjects.h>
 #include <globjects/logging.h>
 
@@ -199,11 +196,14 @@ int main(int /*argc*/, char * /*argv*/[])
     info() << "\t" << "ESC" << "\t\t"       << "Close example";
     info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
     info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
     info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
 
     ContextFormat format;
     format.setVersion(4, 0);
-    format.setProfile(ContextFormat::CoreProfile);
+    format.setProfile(ContextFormat::Profile::Core);
+
+    Window::init();
 
     Window window;
     window.setEventHandler(new EventHandler());
@@ -211,7 +211,6 @@ int main(int /*argc*/, char * /*argv*/[])
     if (!window.create(format, "Transform Feedback Example"))
         return 1;
 
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
     window.show();
 
     return MainLoop::run();

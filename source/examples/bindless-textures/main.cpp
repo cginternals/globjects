@@ -296,6 +296,7 @@ int main(int /*argc*/, char * /*argv*/[])
     info() << "\t" << "ESC" << "\t\t"        << "Close example";
     info() << "\t" << "ALT + Enter" << "\t"  << "Toggle fullscreen";
     info() << "\t" << "F11" << "\t\t"        << "Toggle fullscreen";
+    info() << "\t" << "F10" << "\t\t"        << "Toggle vertical sync";
     info() << "\t" << "F5" << "\t\t"         << "Reload shaders";
     info() << "\t" << "Space" << "\t\t"      << "Reset camera";
     info() << "\t" << "Left Mouse" << "\t"   << "Pan scene";
@@ -305,13 +306,14 @@ int main(int /*argc*/, char * /*argv*/[])
     ContextFormat format;
     format.setVersion(3, 0);
 
+    Window::init();
+
     Window window;
     window.setEventHandler(new EventHandler());
 
     if (!window.create(format, "Bindless Texture Example"))
         return 1;
 
-    window.context()->setSwapInterval(Context::NoVerticalSyncronization);
     window.show();
 
     return MainLoop::run();

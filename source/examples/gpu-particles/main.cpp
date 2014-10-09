@@ -350,6 +350,7 @@ int main(int argc, char * argv[])
     info() << "\t" << "ESC" << "\t\t"       << "Close example";
     info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
     info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
     info() << "\t" << "Left Mouse" << "\t"  << "Rotate scene";
     info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
     info() << "\t" << "-" << "\t\t"         << "Reduce steps per frame";
@@ -363,7 +364,9 @@ int main(int argc, char * argv[])
 
     ContextFormat format;
     format.setVersion(3, 3); // minimum required version is 3.3 due to particle drawing using geometry shader.
-    format.setProfile(ContextFormat::CoreProfile);
+    format.setProfile(ContextFormat::Profile::Core);
+
+    Window::init();
 
     int numParticles = 262144;
 
@@ -376,7 +379,6 @@ int main(int argc, char * argv[])
     if (!window.create(format, "GPU - Particles Example"))
         return 1;
 
-    window.context()->setSwapInterval(Context::NoVerticalSyncronization);
     window.show();
 
     return MainLoop::run();

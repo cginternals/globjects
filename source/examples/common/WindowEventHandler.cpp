@@ -1,10 +1,6 @@
 #include <common/WindowEventHandler.h>
 
-#include <sstream>
 #include <iomanip>
-
-#include <glbinding/ContextInfo.h>
-#include <glbinding/Version.h>
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -15,12 +11,15 @@
 #include <globjects/DebugMessage.h>
 
 #include <globjects/base/File.h>
+#include <globjects/base/baselogging.h>
 
 #include <common/events.h>
+#include <common/Context.h>
 #include <common/Window.h>
 
 
 using namespace gl;
+using namespace globjects;
 
 WindowEventHandler::WindowEventHandler()
 : m_swapElapsedTime(0.0)
@@ -106,25 +105,20 @@ void WindowEventHandler::handleEvent(WindowEvent & event)
 
 void WindowEventHandler::initialize(Window &)
 {
-    globjects::init();
-    globjects::DebugMessage::enable();
+    init();
+    DebugMessage::enable();
 
 #ifdef MAC_OS
     Shader::clearGlobalReplacements();
     Shader::globalReplace("#version 140", "#version 150");
 
-    std::cout << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
+    debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
 #endif
-
-    std::cout << std::endl
-        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
 }
 
 void WindowEventHandler::finalize(Window &)
 {
-    globjects::detachAllObjects();
+    detachAllObjects();
 }
 
 void WindowEventHandler::idle(Window & window)
@@ -162,9 +156,22 @@ void WindowEventHandler::keyPressEvent(KeyEvent & event)
         if ((event.modifiers() & GLFW_MOD_ALT) == 0)
             break;
         // fall through
-    
+
     case GLFW_KEY_F11:
         event.window()->toggleMode();
+        break;
+
+    case GLFW_KEY_F10:
+        switch (event.window()->context()->swapInterval())
+        {
+        case Context::SwapInterval::NoVerticalSyncronization:
+            event.window()->context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
+            break;
+
+        case Context::SwapInterval::VerticalSyncronization:
+            event.window()->context()->setSwapInterval(Context::SwapInterval::NoVerticalSyncronization);
+            break;
+        }
         break;
 
     default:
@@ -175,7 +182,7 @@ void WindowEventHandler::keyPressEvent(KeyEvent & event)
 void WindowEventHandler::keyReleaseEvent(KeyEvent & event)
 {
     if (GLFW_KEY_F5 == event.key())
-        globjects::File::reloadAll();
+        File::reloadAll();
 }
 
 void WindowEventHandler::mousePressEvent(MouseEvent &)

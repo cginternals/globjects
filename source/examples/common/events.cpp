@@ -45,7 +45,7 @@ void WindowEvent::ignore()
     m_accepted = false;
 }
 
-Window* WindowEvent::window() const
+Window * WindowEvent::window() const
 {
     return m_window;
 }

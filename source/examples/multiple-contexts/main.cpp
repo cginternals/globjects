@@ -51,9 +51,12 @@ int main(int /*argc*/, char * /*argv*/[])
     info() << "\t" << "ESC" << "\t\t"       << "Close example";
     info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
     info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
+    info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
 
     ContextFormat format;
     format.setVersion(3, 0);
+
+    Window::init();
 
     Window windows[8];
 
@@ -64,8 +67,8 @@ int main(int /*argc*/, char * /*argv*/[])
         if (!windows[i].create(format, "Multiple Contexts Example", 320, 240))
             return 1;
 
+        windows[i].setQuitOnDestroy(i == 0 || rand() % 4 == 0);
         windows[i].show();
-        windows[i].context()->setSwapInterval(Context::NoVerticalSyncronization);
     }
     return MainLoop::run();
 }

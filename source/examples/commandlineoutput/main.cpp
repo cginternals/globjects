@@ -88,14 +88,14 @@ public:
     }
 };
 
-int main(int /*argc*/, char* /*argv*/[])
+int main(int /*argc*/, char * /*argv*/[])
 {
     ContextFormat format;
-    format.setVersion(3, 2);
-    format.setProfile(ContextFormat::CoreProfile);
+    format.setVersion(3, 0);
+
+    Window::init();
 
     Window window;
-
     window.setEventHandler(new EventHandler());
 
     std::cout << std::endl;

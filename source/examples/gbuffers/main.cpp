@@ -328,6 +328,7 @@ int main(int /*argc*/, char * /*argv*/[])
     info() << "\t" << "ESC" << "\t\t"        << "Close example";
     info() << "\t" << "ALT + Enter"          << "\t" << "Toggle fullscreen";
     info() << "\t" << "F11" << "\t\t"        << "Toggle fullscreen";
+    info() << "\t" << "F10" << "\t\t"        << "Toggle vertical sync";
     info() << "\t" << "F5" << "\t\t"         << "Reload shaders";
     info() << "\t" << "Space" << "\t\t"      << "Reset camera";
     info() << "\t" << "Left Mouse" << "\t"   << "Pan scene";
@@ -343,15 +344,14 @@ int main(int /*argc*/, char * /*argv*/[])
 
     ContextFormat format;
     format.setVersion(3, 2);
+    format.setProfile(ContextFormat::Profile::Core);
 
     Window window;
-
     window.setEventHandler(new EventHandler());
 
     if (!window.create(format, "GBuffers Example"))
         return 1;
 
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
     window.show();
 
     return MainLoop::run();
