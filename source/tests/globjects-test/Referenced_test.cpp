@@ -35,7 +35,7 @@ TEST_F(Referenced_test, DeletesItself)
 
     EXPECT_EQ(ref->refCounter(), 0);
     EXPECT_CALL(*ref, Die()).Times(1);
-    ref->unref();
+    ref->destroy();
 
     // check if referenced
 
