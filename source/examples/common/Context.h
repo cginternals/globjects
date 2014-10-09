@@ -1,73 +1,96 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
-#include <common/ContextFormat.h>
+#include <glbinding/ContextHandle.h>
+#include <glbinding/Version.h>
+
 
 struct GLFWwindow;
 struct GLFWmonitor;
 
-class AbstractNativeContext;
+class ContextFormat;
 
-class Context 
+
+class Context
 {
-
 public:
+    /** note: requires that glfw::init was previously called
+        note: requires active context
+    */
+    static glbinding::Version retrieveVersion();
 
-    enum SwapInterval {
-        NoVerticalSyncronization =  0,
-        VerticalSyncronization = 1,
-        AdaptiveVerticalSyncronization = -1
+    /** note: requires that glfw::init was previously called 
+    */
+    static glbinding::Version maxSupportedVersion();
+
+    enum class SwapInterval
+    {
+        NoVerticalSyncronization        =  0
+    ,   VerticalSyncronization          =  1
+    ,   AdaptiveVerticalSyncronization  = -1
     };
 
-    static const std::string swapIntervalString(SwapInterval swapInterval);
+    static const std::string & swapIntervalString(SwapInterval swapInterval);
+
+    /** strings for version, vendor, and renderer information.
+        note: requires active context
+    */
+    static std::string version();
+    static std::string vendor();
+    static std::string renderer();
 
 public:
+    /** Creates a hidden window of extend 1x1 with the provided format.
+    note: requires that glfw::init was previously called
+    */
+    static GLFWwindow * create(
+        const ContextFormat & format
+    ,   bool verify
+    ,   int width
+    ,   int height
+    ,   GLFWmonitor * monitor = nullptr);
 
-    Context();
+    Context(GLFWwindow * window);
     virtual ~Context();
 
-    GLFWwindow * window();
+    /** returns the context's handle - if this is somehow encapsulated tryFetchHandle for retrieval.
+    */
+    virtual glbinding::ContextHandle handle() const;
 
-    /** Tries to create a context with the given format on the given handle.
-     If successfull, m_format is set to the format created.
+    /** this should be in sync to the created context, not the requested one
+    */
+    virtual const ContextFormat & format() const;
 
-     \return isValid() is returned
-     */
-    bool create(const ContextFormat & format, int width, int height, GLFWmonitor * monitor = nullptr);
-    void release();
+    /** returns true if the context was created (irrespective of format verification)
+        and if handle() returns handle > 0.
+    */
+    virtual bool isValid() const;
 
-    void makeCurrent();
-    void doneCurrent();
-
-    void swap();
-
-    /** The returned format refers to the created context, not the requested one.
-     */
-    const ContextFormat & format() const;
-
-    /** \return true if the context was created (irrespective of format
-     verification) and if id() returns id > 0.
-     */
-    bool isValid() const;
-
-    /** Swap interval relates to the context, since there might be multiple
-     shared contexts with same format, but individual swap format.
-     */
-    void setSwapInterval(SwapInterval interval);
+    /** swap interval relates to context, since there might be multiple
+        shared contexts with same format, but individual swap format.
+    */
     SwapInterval swapInterval() const;
+
+    /** note: requires active context
+    */
+    virtual bool setSwapInterval(SwapInterval interval);
+
+    virtual void makeCurrent() const;
+    virtual void doneCurrent() const;
+
+protected:
+    /** operates by making the context current and fetching its context handle
+        note: this is not thread safe, so this might result in errorneuos behavior or wrong handle.
+    */
+    static glbinding::ContextHandle tryFetchHandle();
 
 protected:
     SwapInterval m_swapInterval;
-    ContextFormat m_format;
 
-private:
+    mutable ContextFormat * m_format;
+
     GLFWwindow * m_window;
-
-private:
-    static glbinding::Version maximumSupportedVersion();
-    static glbinding::Version validateVersion(const glbinding::Version & version);
-    void prepareFormat(const ContextFormat & format);
-
-    static void handleError(int errorCode, const char* errorMessage);
+    glbinding::ContextHandle m_handle;
 };

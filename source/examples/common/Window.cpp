@@ -3,12 +3,16 @@
 #include <cassert>
 #include <iostream>
 
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
+
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 #include <globjects/base/baselogging.h>
 
 #include <common/Context.h>
+#include <common/ContextFormat.h>
 #include <common/WindowEventHandler.h>
 #include <common/events.h>
 
@@ -22,6 +26,11 @@ std::set<Window *> Window::s_instances;
 const std::set<Window *> & Window::instances()
 {
     return s_instances;
+}
+
+int Window::init()
+{
+    return glfwInit();
 }
 
 Window::Window()
@@ -123,20 +132,18 @@ void Window::setQuitOnDestroy(const bool enable)
 
 bool Window::create(const ContextFormat & format, const std::string & title, int width, int height)
 {
-    if (create(format, width, height))
-    {
-        setTitle(title);
-        return true;
-    }
+    if (!create(format, width, height))
+        return false;
 
-    return false;
+    setTitle(title);
+    return true;
 }
 
 bool Window::create(const ContextFormat & format, int width, int height)
 {
     assert(nullptr == m_context);
 
-    if (!createContext(format, width, height))
+    if (!createContext(format, true, width, height))
     {
         globjects::fatal() << "Creating native window with OpenGL context failed.";
         return false;
@@ -147,34 +154,42 @@ bool Window::create(const ContextFormat & format, int width, int height)
 
     m_windowedModeSize = ivec2(width, height);
 
+    context()->makeCurrent();
+    std::cout << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
+    context()->doneCurrent();
+
     return true;
 }
 
-bool Window::createContext(const ContextFormat & format, int width, int height, GLFWmonitor * monitor)
+bool Window::createContext(
+    const ContextFormat & format
+,   bool verify
+,   int width
+,   int height
+,   GLFWmonitor * monitor)
 {
     assert(nullptr == m_context);
 
-    m_context = new Context();
-
-    if (m_context->create(format, width, height, monitor))
-    {
-        m_window = m_context->window();
-    }
-    else
-    {
-        delete m_context;
-        m_context = nullptr;
-        m_window = nullptr;
-
+    m_window = Context::create(format, verify, width, height, monitor);
+    if (!m_window)
         return false;
-    }
+
+//    glfwSetWindowSize(m_window, width, height);
+
+    m_context = new Context(m_window);
+    if (verify)
+        m_context->format().verify(format);
+
     return true;
 }
 
 void Window::destroyContext()
 {
-    m_context->release();
     delete m_context;
+    glfwDestroyWindow(m_window);
 
     m_context = nullptr;
     m_window = nullptr;
@@ -240,19 +255,26 @@ void Window::setMode(Mode mode)
 
     int w(-1);
     int h(-1);
+    int x(-1);
+    int y(-1);
 
     if (goFS)
     {
         m_windowedModeSize = size();
+        m_windowedModePosition = position();
         
         const GLFWvidmode * mode = glfwGetVideoMode(monitor);
         w = mode->width;
         h = mode->height;
+        x = 0;
+        y = 0;
     }
     else
     {
         w = m_windowedModeSize.x;
         h = m_windowedModeSize.y;
+        x = m_windowedModePosition.x;
+        y = m_windowedModePosition.y;
     }
 
     ContextFormat format = m_context->format();
@@ -261,8 +283,11 @@ void Window::setMode(Mode mode)
     WindowEventDispatcher::deregisterWindow(this);
     destroyContext();
 
-    if (!createContext(format, w, h, monitor))
+    if (!createContext(format, false, w, h, monitor))
         return;
+
+    if (!goFS)
+        glfwSetWindowPos(m_window, x, y);
 
     WindowEventDispatcher::registerWindow(this);
     initializeEventHandler();
@@ -362,7 +387,7 @@ void Window::idle()
 
 void Window::swap()
 {
-    m_context->swap();
+    glfwSwapBuffers(m_window);
 }
 
 void Window::destroy()

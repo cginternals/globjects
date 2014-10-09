@@ -25,25 +25,26 @@ class Context;
 class Window
 {
 public:
+    static int init();
+
     static const std::set<Window *> & instances();
 
 public:
     Window();
     virtual ~Window();
 
+    bool create(
+        const ContextFormat & format
+        , int width = 1280
+        , int height = 720);
+    bool create(
+        const ContextFormat & format
+        , const std::string & title = "gloperate"
+        , int width = 1280
+        , int height = 720);
+
     void setTitle(const std::string & title);
     const std::string & title() const;
-
-    bool create(
-        const ContextFormat & format
-    ,   int width = 1280
-    ,   int height = 720);
-
-    bool create(
-        const ContextFormat & format
-    ,   const std::string & title = "globjects"
-    ,   int width = 1280
-    ,   int height = 720);
 
     Context * context() const;
     GLFWwindow * internalWindow() const;
@@ -92,7 +93,6 @@ public:
 
     void toggleMode();
 
-
     void queueEvent(WindowEvent * event);
 
     bool hasPendingEvents();
@@ -102,7 +102,13 @@ public:
     void removeTimer(int id);
 
 protected:
-    bool createContext(const ContextFormat & format, int width, int height, GLFWmonitor* monitor = nullptr);
+    bool createContext(
+        const ContextFormat & format
+    ,   bool verify
+    ,   int width
+    ,   int height
+    ,   GLFWmonitor * monitor = nullptr);
+
     void destroyContext();
 
     void initializeEventHandler();
@@ -133,6 +139,7 @@ protected:
     EventQueue * m_inactiveEventQueue;
 
     glm::ivec2 m_windowedModeSize;
+    glm::ivec2 m_windowedModePosition;
     std::string m_title;
 
     bool m_quitOnDestroy;
