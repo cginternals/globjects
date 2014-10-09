@@ -82,7 +82,7 @@ State * State::currentState()
         {
             state->provokingVertex(getEnum(GL_PROVOKING_VERTEX));
         }
-        // is this necessary here? should be controlled by glo::debugmessageoutput
+        // is this necessary here? should be controlled by debugmessageoutput
         if (hasExtension(GLextension::GL_KHR_debug))
         {
             capabilities.push_back(GL_DEBUG_OUTPUT);

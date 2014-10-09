@@ -119,9 +119,7 @@ void Shader::setSource(AbstractStringSource * source)
         StringTemplate * sourceTemplate = new StringTemplate(source);
 
         for (const std::pair<std::string, std::string> & pair : s_globalReplacements)
-        {
             sourceTemplate->replace(pair.first, pair.second);
-        }
 
         source = sourceTemplate;
     }
@@ -151,8 +149,6 @@ void Shader::notifyChanged(const Changeable *)
 
 void Shader::updateSource()
 {
-    debug() << m_source->string();
-
     shadingLanguageIncludeImplementation().updateSources(this);
 
     invalidate();
