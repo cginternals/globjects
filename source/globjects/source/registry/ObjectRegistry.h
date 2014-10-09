@@ -20,7 +20,7 @@ public:
 	ObjectRegistry();
     static ObjectRegistry & current();
 
-    const std::set<Object *> & objects() const;
+    std::set<Object *> objects() const;
 
     std::set<Object *>::iterator begin();
     std::set<Object *>::iterator end();

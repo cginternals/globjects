@@ -7,7 +7,6 @@
 
 #include "Resource.h"
 
-
 using namespace gl;
 
 namespace 
@@ -71,6 +70,8 @@ void Object::detach()
 {
     if (!m_resource)
         return;
+
+    ObjectRegistry::current().deregisterObject(this);
 
     delete m_resource;
     m_resource = new InvalidResource();
