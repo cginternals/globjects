@@ -101,7 +101,7 @@ GLFWwindow * Context::create(
     glbinding::Version version = format.version();
 
     if (verify) // check if version is valid and supported
-        glbinding::Version version = ContextFormat::validateVersion(format.version(), maxSupportedVersion());
+        version = ContextFormat::validateVersion(format.version(), maxSupportedVersion());
 
     /*
     * GLFW3 does not set default hint values on window creation so at least
@@ -173,8 +173,9 @@ const std::string & Context::swapIntervalString(const SwapInterval interval)
 
 Context::Context(GLFWwindow * window)
 : m_swapInterval(SwapInterval::NoVerticalSyncronization)
-, m_window(window)
 , m_format(nullptr)
+, m_window(window)
+, m_handle(0)
 {
     assert(window);
 

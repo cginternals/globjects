@@ -44,10 +44,11 @@ void ContextFormat::setVersion(const glbinding::Version & version)
     m_version = version;
 }
 
-glbinding::Version ContextFormat::validateVersion(
-    glbinding::Version requestedVersion
-    , glbinding::Version maximumVersion)
+glbinding::Version ContextFormat::validateVersion(const glbinding::Version &requestedVersion
+    , const glbinding::Version & _maximumVersion)
 {
+    glbinding::Version maximumVersion(_maximumVersion);
+
     if (maximumVersion.isNull())
     {
 #ifdef MAC_OS
