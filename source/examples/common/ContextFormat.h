@@ -65,9 +65,9 @@ public:
 
     /** Validates requested version itself and clamps to maximum
     */
-    static glbinding::Version ContextFormat::validateVersion(
-        glbinding::Version requestedVersion
-        , glbinding::Version maximumVersion);
+    static glbinding::Version validateVersion(
+        const glbinding::Version & requestedVersion
+        , const glbinding::Version & maximumVersion);
 
     int majorVersion() const;
     int minorVersion() const;
