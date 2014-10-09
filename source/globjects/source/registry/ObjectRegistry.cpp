@@ -21,7 +21,7 @@ ObjectRegistry & ObjectRegistry::current()
     return Registry::current().objects();
 }
 
-const std::set<Object*> & ObjectRegistry::objects() const
+std::set<Object*> ObjectRegistry::objects() const
 {
     return m_objects;
 }
