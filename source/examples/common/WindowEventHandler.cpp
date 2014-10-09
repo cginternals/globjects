@@ -110,10 +110,10 @@ void WindowEventHandler::initialize(Window &)
     globjects::DebugMessage::enable();
 
 #ifdef MAC_OS
-        Shader::clearGlobalReplacements();
-        Shader::globalReplace("#version 140", "#version 150");
+    Shader::clearGlobalReplacements();
+    Shader::globalReplace("#version 140", "#version 150");
 
-        std::cout << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
+    std::cout << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
 #endif
 
     std::cout << std::endl

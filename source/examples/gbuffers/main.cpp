@@ -17,7 +17,6 @@
 #include <common/Camera.h>
 #include <common/AbstractCoordinateProvider.h>
 #include <common/WorldInHandNavigation.h>
-#include <globjects/base/StringTemplate.h>
 #include <common/ScreenAlignedQuad.h>
 
 #include <common/ContextFormat.h>
@@ -199,7 +198,7 @@ public:
         case GLFW_KEY_3:
         case GLFW_KEY_4:
         case GLFW_KEY_5:
-            m_gBufferChoice->program()->setUniform<GLint>("choice", GLFW_KEY_1 - 49);
+            m_gBufferChoice->program()->setUniform<GLint>("choice", event.key() - 49);
             break;
 
         case GLFW_KEY_SPACE:
