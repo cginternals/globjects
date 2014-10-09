@@ -8,8 +8,6 @@
 #include <globjects/base/File.h>
 
 #include <common/ScreenAlignedQuad.h>
-#include <globjects/base/StringTemplate.h>
-
 #include <common/ContextFormat.h>
 #include <common/Context.h>
 #include <common/Window.h>
