@@ -92,6 +92,7 @@ public:
     bool isWindowed() const;
 
     void toggleMode();
+    void toggleVSync();
 
     void queueEvent(WindowEvent * event);
 

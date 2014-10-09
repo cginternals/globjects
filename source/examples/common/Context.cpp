@@ -153,7 +153,6 @@ GLFWwindow * Context::create(
     {
         glfwMakeContextCurrent(window);
         glbinding::Binding::initialize(false);
-        glfwSwapInterval(static_cast<int>(format.swapBehavior()));
         glfwMakeContextCurrent(nullptr);
     }
     return window;
@@ -237,18 +236,15 @@ Context::SwapInterval Context::swapInterval() const
 
 bool Context::setSwapInterval(const SwapInterval interval)
 {
-    if (interval == m_swapInterval)
-        return true;
+    //if (interval == m_swapInterval) // initialized value might not match or explicit reset might be required
+    //    return true;
 
     bool result(false);
 
-    if (handle() != glbinding::getCurrentContext())
-    {
-        warning() << "Setting swap interval skipped (another context was already current).";
-        return false;
-    }
+    GLFWwindow * current = glfwGetCurrentContext();
 
-    assert(0 != glbinding::getCurrentContext());
+    if (current != m_window)
+        glfwMakeContextCurrent(m_window);
 
 #ifdef WIN32
 
@@ -276,12 +272,15 @@ bool Context::setSwapInterval(const SwapInterval interval)
 
 #endif
 
+    if (current != m_window)
+        glfwMakeContextCurrent(current);
+
+
     if (result)
         m_swapInterval = interval;
-
-    if (!result)
+    else
         warning("Setting swap interval to % failed.", swapIntervalString(interval));
-
+    
     return result;
 }
 
@@ -304,7 +303,6 @@ const ContextFormat & Context::format() const
     GLFWwindow * current = glfwGetCurrentContext();
     if (current != m_window)
         glfwMakeContextCurrent(m_window);
-
  
     m_format->setVersion(retrieveVersion());
 

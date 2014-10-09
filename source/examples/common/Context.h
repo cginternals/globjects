@@ -25,7 +25,7 @@ public:
     */
     static glbinding::Version maxSupportedVersion();
 
-    enum class SwapInterval
+    enum class SwapInterval : int
     {
         NoVerticalSyncronization        =  0
     ,   VerticalSyncronization          =  1

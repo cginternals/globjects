@@ -20,6 +20,7 @@
 
 
 using namespace glm;
+using namespace globjects;
 
 std::set<Window *> Window::s_instances;
 
@@ -145,7 +146,7 @@ bool Window::create(const ContextFormat & format, int width, int height)
 
     if (!createContext(format, true, width, height))
     {
-        globjects::fatal() << "Creating native window with OpenGL context failed.";
+        fatal() << "Creating native window with OpenGL context failed.";
         return false;
     }
 
@@ -171,15 +172,25 @@ bool Window::createContext(
 ,   int height
 ,   GLFWmonitor * monitor)
 {
-    assert(nullptr == m_context);
+    const bool restoreInterval = m_context != nullptr;
+    Context::SwapInterval interval;
+    if (restoreInterval)
+        interval = m_context->swapInterval();
+
+    destroyContext();
+
+    assert(!m_context);
+    assert(!m_window);
 
     m_window = Context::create(format, verify, width, height, monitor);
     if (!m_window)
         return false;
 
-//    glfwSetWindowSize(m_window, width, height);
-
     m_context = new Context(m_window);
+
+    if (restoreInterval)
+        m_context->setSwapInterval(interval);
+
     if (verify)
         m_context->format().verify(format);
 
@@ -241,6 +252,8 @@ void Window::hide()
 
 void Window::setMode(Mode mode)
 {
+    assert(m_context);
+
     if (mode == m_mode)
         return;
 
@@ -252,11 +265,8 @@ void Window::setMode(Mode mode)
 
     clearEventQueue();
 
-
-    int w(-1);
-    int h(-1);
-    int x(-1);
-    int y(-1);
+    int w, h, x, y;
+    w = h = x = y = -1;
 
     if (goFS)
     {
@@ -266,8 +276,7 @@ void Window::setMode(Mode mode)
         const GLFWvidmode * mode = glfwGetVideoMode(monitor);
         w = mode->width;
         h = mode->height;
-        x = 0;
-        y = 0;
+        x = y = 0;
     }
     else
     {
@@ -281,7 +290,6 @@ void Window::setMode(Mode mode)
 
     finalizeEventHandler();
     WindowEventDispatcher::deregisterWindow(this);
-    destroyContext();
 
     if (!createContext(format, false, w, h, monitor))
         return;
@@ -326,6 +334,20 @@ void Window::toggleMode()
     case Mode::Windowed:
         fullScreen();
         return;
+    }
+}
+
+void Window::toggleVSync()
+{
+    switch (context()->swapInterval())
+    {
+    case Context::SwapInterval::NoVerticalSyncronization:
+        context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
+        break;
+
+    case Context::SwapInterval::VerticalSyncronization:
+        context()->setSwapInterval(Context::SwapInterval::NoVerticalSyncronization);
+        break;
     }
 }
 

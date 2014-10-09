@@ -14,7 +14,6 @@
 #include <globjects/base/baselogging.h>
 
 #include <common/events.h>
-#include <common/Context.h>
 #include <common/Window.h>
 
 
@@ -162,16 +161,7 @@ void WindowEventHandler::keyPressEvent(KeyEvent & event)
         break;
 
     case GLFW_KEY_F10:
-        switch (event.window()->context()->swapInterval())
-        {
-        case Context::SwapInterval::NoVerticalSyncronization:
-            event.window()->context()->setSwapInterval(Context::SwapInterval::VerticalSyncronization);
-            break;
-
-        case Context::SwapInterval::VerticalSyncronization:
-            event.window()->context()->setSwapInterval(Context::SwapInterval::NoVerticalSyncronization);
-            break;
-        }
+        event.window()->toggleVSync();
         break;
 
     default:
