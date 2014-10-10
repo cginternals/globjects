@@ -3,20 +3,15 @@
 #include <glbinding/gl/gl.h>
 
 #include <globjects/base/ref_ptr.h>
-#include <globjects/base/StaticStringSource.h>
 
 #include <globjects/globjects.h>
 #include <globjects/logging.h>
 #include <globjects/VertexArray.h>
-#include <globjects/Buffer.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Framebuffer.h>
 
 #include <common/ScreenAlignedQuad.h>
-#include <common/StringTemplate.h>
-
-#include <array>
 
 using namespace gl;
 using namespace glm;
