@@ -4,6 +4,7 @@ message(STATUS "Lib ${target}")
 
 # External libraries
 
+find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(GLBinding REQUIRED)
 
@@ -22,6 +23,7 @@ include_directories(
 # Libraries
 
 set(libs
+	${OPENGL_LIBRARIES}
     ${GLBINDING_LIBRARIES}
 )
 
