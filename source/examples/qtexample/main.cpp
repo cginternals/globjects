@@ -73,8 +73,8 @@ public:
 
         m_sphere = new globjects::Program();
         m_sphere->attach(
-            globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/adaptive-grid/sphere.vert")
-        ,   globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/adaptive-grid/sphere.frag"));
+            globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gbuffers/sphere.vert")
+        ,   globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gbuffers/sphere.frag"));
 
 
         m_icosahedron = new Icosahedron(2);
