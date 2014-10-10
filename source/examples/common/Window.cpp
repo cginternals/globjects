@@ -346,6 +346,7 @@ void Window::toggleVSync()
         break;
 
     case Context::SwapInterval::VerticalSyncronization:
+    case Context::SwapInterval::AdaptiveVerticalSyncronization:
         context()->setSwapInterval(Context::SwapInterval::NoVerticalSyncronization);
         break;
     }
