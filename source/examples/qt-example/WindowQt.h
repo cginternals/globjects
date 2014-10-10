@@ -6,21 +6,24 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch"
 #endif
+
 #include <QWindow>
 #include <QScopedPointer>
+
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif
 
+
 class QSurfaceFormat;
 class QOpenGLContext;
 
-class QtOpenGLWindow : public QWindow
+class WindowQt : public QWindow
 {
 public:
-    QtOpenGLWindow();
-    QtOpenGLWindow(const QSurfaceFormat& format);
-    virtual ~QtOpenGLWindow();
+    WindowQt();
+    WindowQt(const QSurfaceFormat & format);
+    virtual ~WindowQt();
 
     virtual void resizeEvent(QResizeEvent * event) override;
     virtual void exposeEvent(QExposeEvent * event) override;
@@ -35,6 +38,7 @@ public:
     QOpenGLContext * context();
 
     void updateGL();
+
 protected:
     QScopedPointer<QOpenGLContext> m_context;
 

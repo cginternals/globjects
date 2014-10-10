@@ -1,17 +1,18 @@
 
-#include "QtOpenGLWindow.h"
-
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch"
 #endif
+
 #include <QApplication>
 #include <QMainWindow>
 #include <QTimer>
 #include <QResizeEvent>
 #include <QWheelEvent>
+#include <QSurfaceFormat>
+
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif
@@ -31,23 +32,29 @@
 #include <globjects/VertexArray.h>
 #include <globjects/DebugMessage.h>
 
+#include <globjects/base/File.h>
+
 #include <common/AxisAlignedBoundingBox.h>
 #include <common/Icosahedron.h>
 #include <common/Camera.h>
 #include <common/AbstractCoordinateProvider.h>
 #include <common/WorldInHandNavigation.h>
-#include <globjects/base/File.h>
-#include <globjects/base/StringTemplate.h>
 
-class Window : public QtOpenGLWindow, AbstractCoordinateProvider
+#include "WindowQt.h"
+
+
+using namespace gl;
+using namespace globjects;
+
+class Window : public WindowQt, AbstractCoordinateProvider
 {
 public:
-    Window()
-    : QtOpenGLWindow()
-    , m_camera(glm::vec3(0.f, 1.f, 4.0f))
+    Window(QSurfaceFormat & format)
+    : WindowQt(format)
+    , m_camera(glm::vec3(0.f, 1.f, 4.f))
     {
         m_aabb.extend(glm::vec3(-8.f, -1.f, -8.f));
-        m_aabb.extend(glm::vec3(8.f, 1.f, 8.f));
+        m_aabb.extend(glm::vec3( 8.f,  1.f,  8.f));
 
         m_nav.setCamera(&m_camera);
         m_nav.setCoordinateProvider(this);
@@ -56,7 +63,7 @@ public:
         m_timer = new QTimer(this);
         m_timer->setInterval(0);
 
-        connect(m_timer, &QTimer::timeout, this, &QtOpenGLWindow::updateGL);
+        connect(m_timer, &QTimer::timeout, this, &WindowQt::updateGL);
     }
 
     virtual ~Window()
@@ -65,36 +72,36 @@ public:
 
     virtual void initializeGL() override
     {
-        globjects::init();
+        init();
 
-        globjects::DebugMessage::enable();
+        DebugMessage::enable();
 
-        gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
+        glClearColor(1.f, 1.f, 1.f, 0.f);
 
-        m_sphere = new globjects::Program();
+        m_sphere = new Program();
         m_sphere->attach(
-            globjects::Shader::fromFile(gl::GL_VERTEX_SHADER, "data/gbuffers/sphere.vert")
-        ,   globjects::Shader::fromFile(gl::GL_FRAGMENT_SHADER, "data/gbuffers/sphere.frag"));
+            Shader::fromFile(GL_VERTEX_SHADER,   "data/gbuffers/sphere.vert")
+          , Shader::fromFile(GL_FRAGMENT_SHADER, "data/gbuffers/sphere.frag"));
 
 
         m_icosahedron = new Icosahedron(2);
 
-        m_camera.setZNear(0.1f);
-        m_camera.setZFar(1024.f);
+        m_camera.setZNear(1.f);
+        m_camera.setZFar(16.f);
 
         m_timer->start();
     }
 
     virtual void resizeGL(QResizeEvent * event) override
     {
-        gl::glViewport(0, 0, event->size().width(), event->size().height());
+        glViewport(0, 0, event->size().width(), event->size().height());
 
         m_camera.setViewport(event->size().width(), event->size().height());
     }
 
     virtual void paintGL() override
     {
-        gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_sphere->setUniform("transform", m_camera.viewProjection());
 
@@ -110,16 +117,16 @@ public:
 
         switch (event->key())
         {
-            case Qt::Key_F5:
-                globjects::File::reloadAll();
-                break;
-            case Qt::Key_Space:
-                m_camera.setCenter(glm::vec3());
-                m_camera.setEye(glm::vec3(0.f, 1.f, 4.0f));
-                m_camera.setUp(glm::vec3(0,1,0));
-                break;
-        }
+        case Qt::Key_F5:
+            File::reloadAll();
+            break;
 
+        case Qt::Key_Space:
+            m_camera.setCenter(glm::vec3());
+            m_camera.setEye(glm::vec3( 0.f, 1.f, 4.f));
+            m_camera.setUp (glm::vec3( 0.f, 1.f, 0.f));
+            break;
+        }
         doneCurrent();
     }
 
@@ -131,16 +138,16 @@ public:
 
         switch (event->button())
         {
-            case Qt::LeftButton:
-                m_nav.panBegin(pos);
-                break;
+        case Qt::LeftButton:
+            m_nav.panBegin(pos);
+            break;
 
-            case Qt::RightButton:
-                m_nav.rotateBegin(pos);
-                break;
+        case Qt::RightButton:
+            m_nav.rotateBegin(pos);
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         doneCurrent();
@@ -154,15 +161,16 @@ public:
 
         switch (m_nav.mode())
         {
-            case WorldInHandNavigation::PanInteraction:
-                m_nav.panProcess(pos);
-                break;
+        case WorldInHandNavigation::PanInteraction:
+            m_nav.panProcess(pos);
+            break;
 
-            case WorldInHandNavigation::RotateInteraction:
-                m_nav.rotateProcess(pos);
-                break;
-            case WorldInHandNavigation::NoInteraction:
-                break;
+        case WorldInHandNavigation::RotateInteraction:
+            m_nav.rotateProcess(pos);
+            break;
+
+        case WorldInHandNavigation::NoInteraction:
+            break;
         }
 
         doneCurrent();
@@ -174,15 +182,16 @@ public:
 
         switch (event->button())
         {
-            case Qt::LeftButton:
-                m_nav.panEnd();
-                break;
+        case Qt::LeftButton:
+            m_nav.panEnd();
+            break;
 
-            case Qt::RightButton:
-                m_nav.rotateEnd();
-                break;
-            default:
-                break;
+        case Qt::RightButton:
+            m_nav.rotateEnd();
+            break;
+
+        default:
+            break;
         }
 
         doneCurrent();
@@ -204,12 +213,12 @@ public:
 
     virtual float depthAt(const glm::ivec2 & windowCoordinates) const override
     {
-        return AbstractCoordinateProvider::depthAt(m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
+        return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
     }
 
     virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) const override
     {
-        return unproject(m_camera, static_cast<gl::GLenum>(gl::GL_DEPTH_COMPONENT), windowCoordinates);
+        return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
     }
 
     virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) const override
@@ -223,9 +232,9 @@ public:
     }
 
 protected:
-    globjects::ref_ptr<globjects::Program> m_sphere;
+    ref_ptr<Program> m_sphere;
 
-    globjects::ref_ptr<Icosahedron> m_icosahedron;
+    ref_ptr<Icosahedron> m_icosahedron;
 
     Camera m_camera;
     WorldInHandNavigation m_nav;
@@ -235,15 +244,23 @@ protected:
     AxisAlignedBoundingBox m_aabb;
 };
 
-int main(int argc, char* argv[])
+int main(int argc, char * argv[])
 {
     QApplication app(argc, argv);
 
-    Window * openGLwindow = new Window();
+    QSurfaceFormat format;
+#ifdef MAC_OS
+    format.setVersion(3, 2);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+#else
+    format.setVersion(3, 0);
+#endif
+
+    Window * glwindow = new Window(format);
 
     QMainWindow window;
-    window.setGeometry(100, 100, 800, 600);
-    window.setCentralWidget(QWidget::createWindowContainer(openGLwindow));
+    window.setGeometry(0, 0, 640, 480);
+    window.setCentralWidget(QWidget::createWindowContainer(glwindow));
 
     window.show();
 

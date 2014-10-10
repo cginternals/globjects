@@ -43,11 +43,11 @@ set(libs
 # Sources
 
 set(headers
-	QtOpenGLWindow.h
+    WindowQt.h
 )
 set(sources
     main.cpp
-    QtOpenGLWindow.cpp
+    WindowQt.cpp
 )
 
 # Build executable
