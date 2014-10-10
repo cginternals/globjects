@@ -1,6 +1,17 @@
 
 set(target qt-example)
 
+# Qt5
+
+# good resource: http://www.kdab.com/using-cmake-with-qt-5/
+
+# http://qt-project.org/forums/viewthread/30006/
+if(MSVC)
+    cmake_policy(SET CMP0020 NEW)
+endif()
+
+# External libraries
+
 find_package(Qt5Core    5.1 QUIET)
 find_package(Qt5Gui     5.1 QUIET)
 find_package(Qt5Widgets 5.1 QUIET)
@@ -12,6 +23,7 @@ endif()
 
 message(STATUS "Example ${target}")
 
+
 set(CMAKE_AUTOMOC ON)
 set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
 
@@ -19,7 +31,6 @@ set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
 # What we do not want is automocs beside the project -> http://www.cmake.org/Bug/view.php?id=13688
 set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
 
-# External libraries
 
 # Includes
 
