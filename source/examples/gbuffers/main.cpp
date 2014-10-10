@@ -346,6 +346,8 @@ int main(int /*argc*/, char * /*argv*/[])
     format.setVersion(3, 2);
     format.setProfile(ContextFormat::Profile::Core);
 
+    Window::init();
+
     Window window;
     window.setEventHandler(new EventHandler());
 

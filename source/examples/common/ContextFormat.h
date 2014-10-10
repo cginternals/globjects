@@ -67,7 +67,7 @@ public:
     */
     static glbinding::Version validateVersion(
         const glbinding::Version & requestedVersion
-        , const glbinding::Version & maximumVersion);
+      , const glbinding::Version & supportedMaximumVersion);
 
     int majorVersion() const;
     int minorVersion() const;

@@ -14,7 +14,7 @@ in vec2 v_uv;
 
 float depthAt(in vec2 coord)
 {
-	return texture2D(depthSource, coord).x;
+	return texture(depthSource, coord).x;
 }
 
 void calculateAO(in vec2 tc,

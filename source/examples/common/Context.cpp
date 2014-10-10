@@ -11,15 +11,15 @@
 #include <glbinding/Binding.h>
 #include <glbinding/Version.h>
 
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
+// which requires APIENTRY in windows..
+
 #include <globjects/globjects.h>
 #include <globjects/base/baselogging.h>
 
 #include <common/ContextFormat.h>
 
-
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h> // specifies APIENTRY, should be after Error.h include,
-// which requires APIENTRY in windows..
 
 using namespace gl;
 using namespace globjects;
@@ -103,10 +103,9 @@ GLFWwindow * Context::create(
     if (verify) // check if version is valid and supported
         version = ContextFormat::validateVersion(format.version(), maxSupportedVersion());
 
-    /*
-    * GLFW3 does not set default hint values on window creation so at least
-    * the default values must be set before glfwCreateWindow can be called.
-    * cf. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
+    /** GLFW3 does not set default hint values on window creation so at least
+        the default values must be set before glfwCreateWindow can be called.
+        cf. http://www.glfw.org/docs/latest/group__window.html#ga4fd9e504bb937e79588a0ffdca9f620b
     */
     glfwDefaultWindowHints();
 
@@ -158,7 +157,6 @@ GLFWwindow * Context::create(
     return window;
 }
 
-
 const std::string & Context::swapIntervalString(const SwapInterval interval)
 {
     static const std::map<SwapInterval, std::string> swapiIdentifier = {
@@ -168,7 +166,6 @@ const std::string & Context::swapIntervalString(const SwapInterval interval)
 
     return swapiIdentifier.at(interval);
 }
-
 
 
 Context::Context(GLFWwindow * window)

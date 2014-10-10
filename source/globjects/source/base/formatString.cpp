@@ -117,11 +117,12 @@ void parseFormat(std::ostream& stream, const char*& format)
 	if (*format == '.')
 	{
 		int precision;
-		format += readInt(++format, precision);
-		if (precision>0)
-		{
+
+        ++format;
+        format += readInt(format, precision);
+
+        if (precision > 0)
 			stream << std::setprecision(precision);
-		}
 	}
 
 	static std::set<char> baseFlags = { 'd', 'o', 'x' };

@@ -34,7 +34,7 @@ ContextFormat::~ContextFormat()
 
 void ContextFormat::setVersion(
     const unsigned int majorVersion
-    , const unsigned int minorVersion)
+,   const unsigned int minorVersion)
 {
     setVersion(glbinding::Version(majorVersion, minorVersion));
 }
@@ -44,27 +44,26 @@ void ContextFormat::setVersion(const glbinding::Version & version)
     m_version = version;
 }
 
-glbinding::Version ContextFormat::validateVersion(const glbinding::Version &requestedVersion
-    , const glbinding::Version & _maximumVersion)
+glbinding::Version ContextFormat::validateVersion(
+    const glbinding::Version & requestedVersion
+,   const glbinding::Version & supportedMaximumVersion)
 {
-    glbinding::Version maximumVersion(_maximumVersion);
-
-    if (maximumVersion.isNull())
-    {
 #ifdef MAC_OS
-        maximumVersion = glbinding::Version(3, 2);
-#else
-        maximumVersion = glbinding::Version(3, 0);
+    return glbinding::Version(3, 2);
 #endif
-    }
 
-    if (requestedVersion.isNull() || requestedVersion > maximumVersion)
-        return maximumVersion;
+    glbinding::Version maxv(supportedMaximumVersion);
+
+    if (maxv.isNull())
+        maxv = glbinding::Version(3, 0);
+
+    if (requestedVersion.isNull() || requestedVersion > maxv)
+        return maxv;
 
     if (!requestedVersion.isValid())
     {
         glbinding::Version nearest = requestedVersion.nearest();
-        return nearest > maximumVersion ? maximumVersion : nearest;
+        return nearest > maxv ? maxv : nearest;
     }
     return requestedVersion;
 }
