@@ -4,7 +4,7 @@ if(OPTION_BUILD_EXAMPLES)
 
         # for compatibility between glm 0.9.4 and 0.9.5
         add_definitions("-DGLM_FORCE_RADIANS")
-	
+
 	find_package(GLM REQUIRED)
 	find_package(GLFW REQUIRED)
 	find_package(GLBinding REQUIRED)
@@ -34,6 +34,10 @@ if(OPTION_BUILD_EXAMPLES)
 		${EXAMPLE_COMMON}
 	)
 
+	if(WIN32)
+		install(FILES ${GLBINDING_BINARY} DESTINATION ${INSTALL_EXAMPLES} COMPONENT examples)
+	endif()
+
 	add_subdirectory("bindless-textures")
 	add_subdirectory("commandlineoutput")
 	add_subdirectory("computeshader")
@@ -50,6 +54,6 @@ if(OPTION_BUILD_EXAMPLES)
 	add_subdirectory("wikiexample")
 	add_subdirectory("sparse-texture")
 	
-	add_subdirectory("osgexample")
-	add_subdirectory("qtexample")
+	add_subdirectory("osg-example")
+	add_subdirectory("qt-example")
 endif()

@@ -9,6 +9,9 @@
 # GLOBJECTS_LIBRARY_DEBUG
 # GLOBJECTS_INCLUDE_DIR
 
+# GLOBJECTS_BINARY (win32 only)
+
+
 include(FindPackageHandleStandardArgs)
 
 if(CMAKE_CURRENT_LIST_FILE)
@@ -85,6 +88,19 @@ macro (find LIB_NAME HEADER)
 endmacro()
 
 find(globjects globjects/globjects_api.h ${LIB_PATHS})
+if (GLOBJECTS_LIBRARY AND WIN32)
+
+    find_file(GLOBJECTS_BINARY
+        NAMES globjects.dll
+        PATHS
+        ${GLOBJECTS_DIR}/bin
+        ${GLOBJECTS_DIR}/build/Release
+        ${GLOBJECTS_DIR}/build/Debug
+        ${GLOBJECTS_DIR}/build-release
+        ${GLOBJECTS_DIR}/build-debug
+        DOC "The globjects binary")
+
+endif()
 
 # DEBUG
 # message("GLOBJECTS_INCLUDES  = ${GLOBJECTS_INCLUDES}")

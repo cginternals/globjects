@@ -2,13 +2,9 @@
 set(target wikiexample)
 message(STATUS "Example ${target}")
 
-#
 # External libraries
-#
 
-#
 # Includes
-#
 
 include_directories(
     ${GLOBJECTS_EXAMPLE_DEPENDENCY_INCLUDES}
@@ -20,25 +16,19 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-#
 # Libraries
-#
 
 set(libs
     ${GLOBJECTS_EXAMPLES_LIBRARIES}
 )
 
-#
 # Sources
-#
 
 set(sources
     main.cpp
 )
 
-#
 # Build executable
-#
 
 add_executable(${target} ${sources})
 
@@ -55,11 +45,9 @@ set_target_properties(${target}
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
 
-#
 # Deployment
-#
 
-install(TARGETS ${target}
+install(TARGETS ${target} COMPONENT examples
     RUNTIME DESTINATION ${INSTALL_EXAMPLES}
 #   LIBRARY DESTINATION ${INSTALL_SHARED}
 #   ARCHIVE DESTINATION ${INSTALL_LIB}

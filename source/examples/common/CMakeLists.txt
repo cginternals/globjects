@@ -2,13 +2,9 @@
 set(target ${EXAMPLE_COMMON})
 message(STATUS "Library ${target}")
 
-#
 # External libraries
-#
 
-#
 # Includes
-#
 
 include_directories(
     ${GLOBJECTS_EXAMPLE_DEPENDENCY_INCLUDES}
@@ -20,9 +16,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-#
 # Libraries
-#
 
 set(libs
     ${GLOBJECTS_EXAMPLES_LIBRARIES}
@@ -31,9 +25,7 @@ set(libs
 # for compatibility between glm 0.9.4 and 0.9.5
 add_definitions("-DGLM_FORCE_RADIANS")
 
-#
 # Sources
-#
 
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -86,9 +78,7 @@ source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$"
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
 
-#
 # Build library
-#
 
 add_library(${target} STATIC ${api_includes} ${sources})
 target_link_libraries(${target} ${libs})

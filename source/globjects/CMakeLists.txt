@@ -1,18 +1,13 @@
 
-# Target
 set(target globjects)
 message(STATUS "Lib ${target}")
 
-#
 # External libraries
-#
 
 find_package(GLM REQUIRED)
 find_package(GLBinding REQUIRED)
 
-#
 # Includes
-#
 
 include_directories(
     ${GLM_INCLUDE_DIR}
@@ -24,9 +19,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-#
 # Libraries
-#
 
 set(libs
     ${GLBINDING_LIBRARIES}
@@ -51,9 +44,8 @@ endif()
 # for compatibility between glm 0.9.4 and 0.9.5
 add_definitions("-DGLM_FORCE_RADIANS")
 
-#
+
 # Sources
-#
 
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
@@ -285,9 +277,7 @@ source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$"
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
 
-#
 # Build library
-#
 
 add_library(${target} ${api_includes} ${sources})
 
@@ -305,16 +295,32 @@ set_target_properties(${target}
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
     INCLUDE_PATH	            ${include_path})
 
-#
 # Deployment
-#
 
 # Library
-install(TARGETS ${target}
-    RUNTIME DESTINATION ${INSTALL_BIN}
-    LIBRARY DESTINATION ${INSTALL_SHARED}
-    ARCHIVE DESTINATION ${INSTALL_LIB}
-)
+if(NOT OPTION_BUILD_STATIC)
+    install(TARGETS ${target} COMPONENT runtime
+        RUNTIME DESTINATION ${INSTALL_BIN}
+        LIBRARY DESTINATION ${INSTALL_SHARED})
+else()
+    install(TARGETS ${target} COMPONENT dev
+        ARCHIVE DESTINATION ${INSTALL_LIB})
+endif()
+
+if(WIN32 AND NOT OPTION_BUILD_STATIC) # on windows, provide self contained zip files (examples and dev, both contain the run-time)
+
+    if(OPTION_BUILD_EXAMPLES)
+        install(TARGETS ${target} COMPONENT examples
+            RUNTIME DESTINATION ${INSTALL_BIN}
+            LIBRARY DESTINATION ${INSTALL_BIN})
+    endif()
+
+    install(TARGETS ${target} COMPONENT dev
+        RUNTIME DESTINATION ${INSTALL_BIN}
+        LIBRARY DESTINATION ${INSTALL_SHARED}
+        ARCHIVE DESTINATION ${INSTALL_LIB})
+
+endif()
 
 # Header files
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE})
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE} COMPONENT dev)

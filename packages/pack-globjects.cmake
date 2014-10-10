@@ -5,10 +5,12 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     
     # Options
     
+    set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
     if(WIN32)
         set(OPTION_PACK_GENERATOR "ZIP;NSIS" CACHE STRING "Package targets")
     else()
         set(OPTION_PACK_GENERATOR "ZIP;TGZ;DEB" CACHE STRING "Package targets")
+        set(CPACK_DEB_COMPONENT_INSTALL ON)
     endif()
 
     
@@ -37,10 +39,10 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     
     # Package information
     
-    string(TOLOWER ${META_PROJECT_NAME} package_name)                       # Package name
-    set(package_description     "OpenGL Objects Wrapper Library")           # Package description
-    set(package_vendor          "hpicgs group")                             # Package vendor
-    set(package_maintainer      "stefan.buschmann@hpi.uni-potsdam.de")      # Package maintainer
+    string(TOLOWER ${META_PROJECT_NAME} package_name)
+    set(package_description ${META_PROJECT_DESCRIPTION})
+    set(package_vendor      ${META_AUTHOR_ORGANIZATION})
+    set(package_maintainer  ${META_AUTHOR_MAINTAINER}) 
 
     
     # Package specific options
@@ -162,7 +164,27 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
         set(CPACK_SET_DESTDIR ON)
     endif()
     set(CPack_CMake_INCLUDED FALSE)
+
+    # this is good: http://www.cmake.org/Wiki/CMake:Component_Install_With_CPack
+
+    set(CPACK_ALL_INSTALL_TYPES Full Developer)
+    if(NOT OPTION_BUILD_STATIC)
+        set(CPACK_COMPONENT_RUN-TIME_INSTALL_TYPES Developer Full)
+    endif()
+    set(CPACK_COMPONENT_DEV_INSTALL_TYPES Developer Full)
+    set(CPACK_COMPONENT_EXAMPLES_INSTALL_TYPES Full)
+
+    if(NOT OPTION_BUILD_STATIC)
+        set(CPACK_COMPONENT_RUNTIME_DISPLAY_NAME "Run-Time (Binaries)")
+        set(CPACK_COMPONENT_RUNTIME_REQUIRED ON)
+        set(CPACK_COMPONENT_DEV_DISPLAY_NAME "Headers and Libraries")
+        set(CPACK_COMPONENT_DEV_DEPENDS runtime)
+        set(CPACK_COMPONENT_EXAMPLES_DISPLAY_NAME "Examples")
+        set(CPACK_COMPONENT_EXAMPLES_DEPENDS runtime)
+    endif()
+
     include(CPack)
+
 endif()
 
 

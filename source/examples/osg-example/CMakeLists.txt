@@ -1,5 +1,13 @@
 
-set(target gpu-particles)
+set(target osg-example)
+
+find_package(OpenSceneGraph COMPONENTS osgViewer osgDB  osgGA osgUtil QUIET)
+
+if (NOT OPENSCENEGRAPH_FOUND)
+    message(STATUS "Example ${target} (disabled - OSG not found)")
+    return()
+endif()
+
 message(STATUS "Example ${target}")
 
 # External libraries
@@ -8,6 +16,7 @@ message(STATUS "Example ${target}")
 
 include_directories(
     ${GLOBJECTS_EXAMPLE_DEPENDENCY_INCLUDES}
+    ${OPENSCENEGRAPH_INCLUDE_DIRS}
 )
 
 include_directories(
@@ -20,26 +29,22 @@ include_directories(
 
 set(libs
     ${GLOBJECTS_EXAMPLES_LIBRARIES}
+    ${OPENSCENEGRAPH_LIBRARIES}
 )
 
 # Sources
 
+set(headers
+    impl.h
+)
 set(sources
     main.cpp
-    
-    AbstractParticleTechnique.cpp
-    AbstractParticleTechnique.h
-    ComputeShaderParticles.cpp
-    ComputeShaderParticles.h
-    FragmentShaderParticles.cpp
-    FragmentShaderParticles.h
-    TransformFeedbackParticles.cpp
-    TransformFeedbackParticles.h
+    impl.cpp
 )
 
 # Build executable
 
-add_executable(${target} ${sources})
+add_executable(${target} ${headers} ${sources})
 
 target_link_libraries(${target} ${libs})
 
@@ -56,8 +61,10 @@ set_target_properties(${target}
 
 # Deployment
 
-install(TARGETS ${target} COMPONENT examples
-    RUNTIME DESTINATION ${INSTALL_EXAMPLES}
+# Do NOT install this example 
+
+#install(TARGETS ${target} COMPONENT examples
+#    RUNTIME DESTINATION ${INSTALL_EXAMPLES}
 #   LIBRARY DESTINATION ${INSTALL_SHARED}
 #   ARCHIVE DESTINATION ${INSTALL_LIB}
-)
+#)

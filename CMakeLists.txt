@@ -1,21 +1,30 @@
+
 cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 
 
-# PROJECT DESCRIPTION
+# Project description and (meta) information
 
 set(META_PROJECT_NAME        "globjects")
 set(META_VERSION_MAJOR       "0")
-set(META_VERSION_MINOR       "3")
-set(META_VERSION_PATCH       "2")
+set(META_VERSION_MINOR       "4")
+set(META_VERSION_PATCH       "0")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "hpicgs group")
 set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/globjects/")
 set(META_AUTHOR_MAINTAINER   "daniel.limberger@hpi.de")
 
+string(TOUPPER ${META_PROJECT_NAME} META_PROJECT_NAME_UPPER)
 
-# OPTIONS
 
-option(OPTION_LIMIT_CONFIGS       "Generate limited configs (Release; Debug)" ON)
+# Limit supported configuration types
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Limited Configs" FORCE)
+
+# Set project name and type (C/C++)
+project(${META_PROJECT_NAME} C CXX)
+
+
+# Configuration options
+
 option(OPTION_PORTABLE_INSTALL    "Install to a local directory instead of the system" OFF)
 option(OPTION_BUILD_STATIC        "Build static libraries" OFF)
 option(OPTION_BUILD_TESTS         "Build tests (if gmock and gtest are found)" ON)
@@ -31,9 +40,7 @@ else()
 endif()
 
 
-#
 # CMake configuration
-#
 
 # Include cmake modules from ./cmake
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -42,20 +49,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-
-# Set configuration types
-if(OPTION_LIMIT_CONFIGS)
-    set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Limited Configs" FORCE)
-endif()
-set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build, options are: ${CMAKE_CONFIGURATION_TYPES}")
-# Reorder CMAKE_CONFIGURATION_TYPES list so that the chosen CMAKE_BUILD_TYPE is the first element.
-if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "")
-    list(REMOVE_ITEM CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}")
-    list(INSERT CMAKE_CONFIGURATION_TYPES 0 "${CMAKE_BUILD_TYPE}")
-endif()
-
-# Project
-project(${META_PROJECT_NAME} C CXX)
 
 
 # Generate folders for IDE targets (e.g., VisualStudio solutions)
@@ -67,15 +60,15 @@ include(cmake/Custom.cmake)
 include(cmake/GitRevision.cmake)
 
 
-#
 # Platform and architecture
-#
 
 # Architecture (32/64 bit)
 set(X64 OFF)
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(X64 ON)
 endif()
+
+# Setup platform specifics (compile flags, etc., ...)
 
 # This policy was introduced in 3.0.0 and does not allow for COMPILER_DEFINITIONS_<Config>,
 # anymore, but instead requires generator expressions like $<CONFIG:Debug> ... 
@@ -144,25 +137,27 @@ else()
 endif()
 
 
-#
 # Global deployment
-#
-
-# Project meta files
-install(FILES globjects-config.cmake DESTINATION ${INSTALL_ROOT})
-install(FILES AUTHORS           DESTINATION ${INSTALL_ROOT})
-install(FILES LICENSE           DESTINATION ${INSTALL_ROOT})
 
 # Add a revision file containing the git-head tag for cpack and install
 create_revision_file(${CMAKE_BINARY_DIR}/revision ${INSTALL_ROOT})
 
+# Project meta files
+install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION ${INSTALL_ROOT} COMPONENT dev)
+if(NOT OPTION_BUILD_STATIC)
+    install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION ${INSTALL_ROOT} COMPONENT runtime)
+endif()
+install(FILES ${CMAKE_BINARY_DIR}/revision DESTINATION ${INSTALL_ROOT} COMPONENT examples)
+install(FILES AUTHORS                      DESTINATION ${INSTALL_ROOT} COMPONENT dev)
+install(FILES LICENSE                      DESTINATION ${INSTALL_ROOT} COMPONENT dev)
+install(FILES globjects-config.cmake       DESTINATION ${INSTALL_ROOT} COMPONENT dev)
+
 # Data files
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/data DESTINATION ${INSTALL_DATA})
+if(OPTION_BUILD_EXAMPLES)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/data DESTINATION ${INSTALL_DATA} COMPONENT examples)
+endif()
 
-
-#
 # Include projects
-#
 
 add_subdirectory(source)
 add_subdirectory(docs)
