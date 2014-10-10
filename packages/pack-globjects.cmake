@@ -42,7 +42,7 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
     string(TOLOWER ${META_PROJECT_NAME} package_name)
     set(package_description ${META_PROJECT_DESCRIPTION})
     set(package_vendor      ${META_AUTHOR_ORGANIZATION})
-    set(package_maintainer  ${META_AUTHOR_MAINTAINER}) 
+    set(package_maintainer  ${META_AUTHOR_MAINTAINER})
 
     
     # Package specific options
@@ -187,7 +187,6 @@ if(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
 
 endif()
 
-
 # Package target
 
 add_custom_target(
@@ -196,7 +195,6 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 set_target_properties(pack-${project_name} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD 1)
-
 
 # Dependencies
 

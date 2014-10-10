@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 # Project description and (meta) information
 
 set(META_PROJECT_NAME        "globjects")
+set(META_PROJECT_DESCRIPTION "Strict OpenGL objects wrapper")
 set(META_VERSION_MAJOR       "0")
 set(META_VERSION_MINOR       "4")
 set(META_VERSION_PATCH       "0")
