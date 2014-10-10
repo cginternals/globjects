@@ -50,11 +50,6 @@ WindowQt::WindowQt(const QSurfaceFormat & format)
         qDebug() << "Could not create OpenGL context.";
         QApplication::quit();
     }
-    else
-    {
-        qDebug().nospace() << "Created OpenGL context "
-            << m_context->format().version().first << "." << m_context->format().version().second;
-    }
 }
 
 WindowQt::~WindowQt()

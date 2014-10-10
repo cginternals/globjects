@@ -22,6 +22,7 @@
 #include <glm/gtx/transform.hpp>
 
 #include <glbinding/gl/gl.h>
+#include <glbinding/ContextInfo.h>
 
 #include <globjects/globjects.h>
 #include <globjects/Uniform.h>
@@ -73,8 +74,19 @@ public:
     virtual void initializeGL() override
     {
         init();
-
         DebugMessage::enable();
+
+        std::cout << std::endl
+            << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+            << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+            << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
+
+#ifdef MAC_OS
+        Shader::clearGlobalReplacements();
+        Shader::globalReplace("#version 140", "#version 150");
+
+        debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
+#endif
 
         glClearColor(1.f, 1.f, 1.f, 0.f);
 
@@ -82,7 +94,6 @@ public:
         m_sphere->attach(
             Shader::fromFile(GL_VERTEX_SHADER,   "data/gbuffers/sphere.vert")
           , Shader::fromFile(GL_FRAGMENT_SHADER, "data/gbuffers/sphere.frag"));
-
 
         m_icosahedron = new Icosahedron(2);
 
