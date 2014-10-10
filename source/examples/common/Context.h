@@ -75,7 +75,7 @@ public:
 
     /** note: requires active context
     */
-    virtual bool setSwapInterval(SwapInterval interval);
+    virtual void setSwapInterval(SwapInterval interval);
 
     virtual void makeCurrent() const;
     virtual void doneCurrent() const;

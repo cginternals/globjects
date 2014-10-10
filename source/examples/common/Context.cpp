@@ -29,13 +29,13 @@ glbinding::Version Context::retrieveVersion()
 {
     assert(0 != glbinding::getCurrentContext());
 
-    GLint major = -1;
-    GLint minor = -1;
+    GLint minorVersion = -1;
+    GLint majorVersion = -1;
 
-    glGetIntegerv(GLenum::GL_MAJOR_VERSION, &major); // major version
-    glGetIntegerv(GLenum::GL_MINOR_VERSION, &minor); // minor version
+    glGetIntegerv(GLenum::GL_MAJOR_VERSION, &majorVersion); // major version
+    glGetIntegerv(GLenum::GL_MINOR_VERSION, &minorVersion); // minor version
 
-    if (major < 0 && minor < 0) // probably a context < 3.0 with no support for GL_MAJOR/MINOR_VERSION
+    if (minorVersion < 0 && majorVersion < 0) // probably a context < 3.0 with no support for GL_MAJOR/MINOR_VERSION
     {
         const GLubyte * vstr = glGetString(GLenum::GL_VERSION);
         if (!vstr)
@@ -44,12 +44,12 @@ glbinding::Version Context::retrieveVersion()
         assert(vstr[1] == '.');
 
         assert(vstr[0] >= '0'  && vstr[0] <= '9');
-        major = vstr[0] - '0';
+        majorVersion = vstr[0] - '0';
 
         assert(vstr[2] >= '0'  && vstr[2] <= '9');
-        minor = vstr[2] - '0';
+        minorVersion = vstr[2] - '0';
     }
-    return glbinding::Version(major, minor);
+    return glbinding::Version(majorVersion, minorVersion);
 }
 
 glbinding::Version Context::maxSupportedVersion()
@@ -235,54 +235,22 @@ Context::SwapInterval Context::swapInterval() const
     return m_swapInterval;
 }
 
-bool Context::setSwapInterval(const SwapInterval interval)
+void Context::setSwapInterval(const SwapInterval interval)
 {
     //if (interval == m_swapInterval) // initialized value might not match or explicit reset might be required
     //    return true;
-
-    bool result(false);
 
     GLFWwindow * current = glfwGetCurrentContext();
 
     if (current != m_window)
         glfwMakeContextCurrent(m_window);
 
-#ifdef WIN32
-
-    using SWAPINTERVALEXTPROC = bool(*)(int);
-    static SWAPINTERVALEXTPROC wglSwapIntervalEXT(nullptr);
-
-    if (!wglSwapIntervalEXT)
-        wglSwapIntervalEXT = reinterpret_cast<SWAPINTERVALEXTPROC>(glbinding::getProcAddress("wglSwapIntervalEXT"));
-    if (wglSwapIntervalEXT)
-        result = wglSwapIntervalEXT(static_cast<int>(interval));
-
-#elif __APPLE__
-
-    warning("ToDo: Setting swap interval is currently not implemented for __APPLE__");
-
-#else
-
-    using SWAPINTERVALEXTPROC = int(*)(int);
-    static SWAPINTERVALEXTPROC glXSwapIntervalSGI = nullptr;
-
-    if (!glXSwapIntervalSGI)
-        glXSwapIntervalSGI = reinterpret_cast<SWAPINTERVALEXTPROC>(glbinding::getProcAddress("glXSwapIntervalSGI"));
-    if (glXSwapIntervalSGI)
-        result = glXSwapIntervalSGI(static_cast<int>(interval));
-
-#endif
+    glfwSwapInterval(static_cast<int>(interval));
 
     if (current != m_window)
         glfwMakeContextCurrent(current);
 
-
-    if (result)
-        m_swapInterval = interval;
-    else
-        warning("Setting swap interval to % failed.", swapIntervalString(interval));
-    
-    return result;
+    m_swapInterval = interval;
 }
 
 glbinding::ContextHandle Context::handle() const
