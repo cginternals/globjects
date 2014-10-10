@@ -242,7 +242,25 @@ void Context::setSwapInterval(const SwapInterval interval)
     if (current != m_window)
         glfwMakeContextCurrent(m_window);
 
+#ifdef WIN32
+
+    using SWAPINTERVALEXTPROC = bool(*)(int);
+    static SWAPINTERVALEXTPROC wglSwapIntervalEXT(nullptr);
+
+    bool result(false);
+    if (!wglSwapIntervalEXT)
+        wglSwapIntervalEXT = reinterpret_cast<SWAPINTERVALEXTPROC>(glbinding::getProcAddress("wglSwapIntervalEXT"));
+    if (wglSwapIntervalEXT)
+        result = wglSwapIntervalEXT(static_cast<int>(interval));
+
+    if(!result)
+        warning("Setting swap interval to % failed.", swapIntervalString(interval));
+
+#else
+
     glfwSwapInterval(static_cast<int>(interval));
+
+#endif
 
     if (current != m_window)
         glfwMakeContextCurrent(current);
