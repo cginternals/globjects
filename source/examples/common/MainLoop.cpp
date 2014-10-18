@@ -38,7 +38,7 @@ void MainLoop::start()
 
     while (m_running)
     {
-        pollEvents();
+		pollEvents();
         processEvents();
     };
 
@@ -69,7 +69,7 @@ void MainLoop::pollEvents()
 
 void MainLoop::processEvents()
 {
-    for (Window* window : Window::instances())
+    for (Window * window : Window::instances())
     {
         if (window->hasPendingEvents())
             window->processEvents();
