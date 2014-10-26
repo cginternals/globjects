@@ -69,7 +69,7 @@ void VertexAttributeBindingImplementation_Legacy::setAttributeDivisor(const Vert
 {
     vao(binding)->bind();
 
-    glVertexBindingDivisor(bindingIndex(binding), divisor);
+    glVertexAttribDivisor(binding->attributeIndex(), divisor);
 }
 
 VertexAttributeBindingImplementation_Legacy::BindingData * & VertexAttributeBindingImplementation_Legacy::bindingData(const VertexAttributeBinding * binding) const
