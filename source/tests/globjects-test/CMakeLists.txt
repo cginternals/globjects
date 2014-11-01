@@ -32,6 +32,7 @@ set(libs
 set(sources
     main.cpp
     ref_ptr_test.cpp
+    make_ref_test.cpp
     Referenced_test.cpp
 )
 

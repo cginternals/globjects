@@ -66,8 +66,8 @@ protected:
     mutable const Referenced * m_referenced;
 };
 
-template <typename T>
-ref_ptr<T> make_ref(T * object);
+template<typename T, typename... Args>
+ref_ptr<T> make_ref(Args&&... args);
 
 } // namespace globjects
 
