@@ -1,6 +1,6 @@
 
 set(target ${EXAMPLE_COMMON})
-message(STATUS "Library ${target}")
+message(STATUS "Lib ${target} (used for examples)")
 
 # External libraries
 

@@ -4,7 +4,7 @@ set(target osg-example)
 find_package(OpenSceneGraph COMPONENTS osgViewer osgDB  osgGA osgUtil QUIET)
 
 if (NOT OPENSCENEGRAPH_FOUND)
-    message(STATUS "Example ${target} (disabled - OSG not found)")
+    message("Example ${target} skipped: OSG not found")
     return()
 endif()
 
