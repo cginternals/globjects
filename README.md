@@ -1,16 +1,10 @@
 ![globjects Logo](globjects-logo.png "globjects")
 
-The OpenGL Objects Wrapper Library (globjects) provides an object oriented C++ interface for OpenGL's programmable pipeline (3.0+).
-globjects is a cross-platform library licenced under the [MIT license](http://opensource.org/licenses/MIT).
+*globjects* provides an object oriented C++ interface for OpenGL's programmable pipeline (3.0+).
+*globjects* is a cross-platform library licenced under the [MIT license](http://opensource.org/licenses/MIT).
 
 The current release is [globjects-0.4.1](https://github.com/hpicgs/globjects/releases/tag/v0.4.1).
 To find out more about globjects and how to use it, check out our [wiki](https://github.com/hpicgs/globjects/wiki).
-
-#### Project Health
-<a href="https://scan.coverity.com/projects/2005">
-  <img alt="Coverity Scan Build Status"
-       src="https://scan.coverity.com/projects/2005/badge.svg"/>
-</a>
 
 
 ### Documentation
