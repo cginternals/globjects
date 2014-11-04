@@ -21,6 +21,7 @@ Sync * Sync::fence(GLenum condition, UnusedMask flags)
 
 Sync::Sync(GLsync sync)
 : m_sync(sync)
+, m_objectLabelState(nullptr)
 {
 }
 

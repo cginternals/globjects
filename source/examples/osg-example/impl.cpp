@@ -1,5 +1,7 @@
 #include "impl.h"
 
+#include <glm/glm.hpp>
+
 #include <glbinding/gl/gl.h>
 
 #include <globjects/base/ref_ptr.h>
@@ -10,6 +12,7 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 #include <globjects/Framebuffer.h>
+#include <globjects/Texture.h>
 
 #include <common/ScreenAlignedQuad.h>
 

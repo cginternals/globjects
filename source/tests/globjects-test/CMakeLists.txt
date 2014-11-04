@@ -2,9 +2,8 @@
 set(target globjects-test)
 message(STATUS "Test ${target}")
 
-#
+
 # Includes
-#
 
 include_directories(
     
@@ -15,9 +14,8 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/source/globjects/include
 )
 
-#
+
 # Libraries
-#
 
 set(libs
     ${GMOCK_LIBRARIES}
@@ -25,19 +23,18 @@ set(libs
     globjects
 )
 
-#
+
 # Sources
-#
 
 set(sources
     main.cpp
     ref_ptr_test.cpp
+    make_ref_test.cpp
     Referenced_test.cpp
 )
 
-#
+
 # Build executable
-#
 
 add_executable(${target} ${sources})
 

@@ -28,7 +28,6 @@ if(DOXYGEN_FOUND)
         WORKING_DIRECTORY   ${path}
         COMMAND             ${CMAKE_COMMAND} -E copy_directory ${path} ${CMAKE_CURRENT_BINARY_DIR}/html # ToDO, configure doxygen to use source as is
         COMMAND             ${DOXYGEN} \"${doxyfile}\"
-        COMMAND             ${CMAKE_COMMAND} -E copy_directory ${path}/extra_files ${CMAKE_CURRENT_BINARY_DIR}/html
         COMMENT             "Creating doxygen documentation for globjects."
     )
 
@@ -39,6 +38,6 @@ if(DOXYGEN_FOUND)
 
 else()
 
-    message(STATUS "Disabled generation of doxygen documentation (missing doxygen).")
+    message("generate target documentation skipped: doxygen not found")
 
 endif()

@@ -2,11 +2,13 @@
 set(target globjects)
 message(STATUS "Lib ${target}")
 
+
 # External libraries
 
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(GLBinding REQUIRED)
+
 
 # Includes
 
@@ -20,6 +22,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+
 # Libraries
 
 set(libs
@@ -27,9 +30,8 @@ set(libs
     ${GLBINDING_LIBRARIES}
 )
 
-#
+
 # Compiler definitions
-#
 
 if (OPTION_BUILD_STATIC)
     add_definitions("-D${META_PROJECT_NAME_UPPER}_STATIC")
@@ -296,6 +298,7 @@ set_target_properties(${target}
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
     INCLUDE_PATH	            ${include_path})
+
 
 # Deployment
 

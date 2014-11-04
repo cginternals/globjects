@@ -130,4 +130,6 @@ void AbstractParticleTechnique::draw(const float elapsed)
     m_quad->draw();
 
     glEnable(GL_DEPTH_TEST);
+
+	glFinish();
 }

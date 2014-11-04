@@ -57,25 +57,32 @@ void FramebufferImplementation_Legacy::attachTexture(const Framebuffer * fbo, GL
 {
     fbo->bind(s_workingTarget);
 
-    switch (texture->target())
+    if (texture == nullptr)
     {
-    case GL_TEXTURE_1D:
-        glFramebufferTexture1D(s_workingTarget, attachment, texture ? texture->target() : GL_TEXTURE_1D, texture ? texture->id() : 0, level);
-        break;
-    case GL_TEXTURE_2D:
-    case GL_TEXTURE_RECTANGLE:
-    case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
-    case GL_TEXTURE_CUBE_MAP_POSITIVE_Y:
-    case GL_TEXTURE_CUBE_MAP_POSITIVE_Z:
-    case GL_TEXTURE_CUBE_MAP_NEGATIVE_X:
-    case GL_TEXTURE_CUBE_MAP_NEGATIVE_Y:
-    case GL_TEXTURE_CUBE_MAP_NEGATIVE_Z:
-    case GL_TEXTURE_2D_MULTISAMPLE:
-        glFramebufferTexture2D(s_workingTarget, attachment, texture ? texture->target() : GL_TEXTURE_2D, texture ? texture->id() : 0, level);
-        break;
-    default:
-        glFramebufferTexture(s_workingTarget, attachment, texture ? texture->id() : 0, level);
-        break;
+        glFramebufferTexture(s_workingTarget, attachment, 0, level);
+    }
+    else
+    {
+        switch (texture->target())
+        {
+        case GL_TEXTURE_1D:
+            glFramebufferTexture1D(s_workingTarget, attachment, texture->target(), texture->id(), level);
+            break;
+        case GL_TEXTURE_2D:
+        case GL_TEXTURE_RECTANGLE:
+        case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
+        case GL_TEXTURE_CUBE_MAP_POSITIVE_Y:
+        case GL_TEXTURE_CUBE_MAP_POSITIVE_Z:
+        case GL_TEXTURE_CUBE_MAP_NEGATIVE_X:
+        case GL_TEXTURE_CUBE_MAP_NEGATIVE_Y:
+        case GL_TEXTURE_CUBE_MAP_NEGATIVE_Z:
+        case GL_TEXTURE_2D_MULTISAMPLE:
+            glFramebufferTexture2D(s_workingTarget, attachment, texture->target(), texture->id(), level);
+            break;
+        default:
+            glFramebufferTexture(s_workingTarget, attachment, texture->id(), level);
+            break;
+        }
     }
 }
 
