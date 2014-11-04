@@ -1,11 +1,13 @@
 #pragma once
 
+#include <utility>
+
 #include <globjects/base/ref_ptr.h>
 
 #include <globjects/base/Referenced.h>
 
 
-namespace globjects 
+namespace globjects
 {
 
 template<typename T>
@@ -143,10 +145,10 @@ void ref_ptr<T>::decreaseRef()
 		m_referenced->unref();
 }
 
-template <typename T>
-ref_ptr<T> make_ref(T * object)
+template<typename T, typename... Args>
+ref_ptr<T> make_ref(Args&&... args)
 {
-    return ref_ptr<T>(object);
+    return new T(std::forward<Args>(args)...);
 }
 
 } // namespace globjects
