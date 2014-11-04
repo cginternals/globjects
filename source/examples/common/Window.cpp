@@ -173,7 +173,7 @@ bool Window::createContext(
 ,   GLFWmonitor * monitor)
 {
     const bool restoreInterval = m_context != nullptr;
-    Context::SwapInterval interval;
+    Context::SwapInterval interval = Context::SwapInterval::NoVerticalSyncronization;
     if (restoreInterval)
         interval = m_context->swapInterval();
 

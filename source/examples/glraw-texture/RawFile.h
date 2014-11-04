@@ -18,6 +18,9 @@ public:
     bool isValid() const;
     const std::string & filePath() const;
 
+    // Note: this is intentionally not implemented - but fixes MSVC12 C4512 warning
+    RawFile & operator=(const RawFile & rawFile);
+
 protected:
     bool readFile();
     void readRawData(std::ifstream & ifs);

@@ -25,7 +25,7 @@ public:
 
     virtual void initialize() override;
     virtual void reset() override;
-    
+
     virtual void step(float elapsed) override;
 
 protected:

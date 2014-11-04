@@ -42,13 +42,16 @@ public:
 
     void pause(bool paused);
 
+    // Note: this is intentionally not implemented - but fixes MSVC12 C4512 warning
+    AbstractParticleTechnique & operator=(const AbstractParticleTechnique & particleTechnique);
+
 protected:
     void initialize(const std::string & vertexShaderSourceFilePath);
     virtual void draw_impl() = 0; // // use m_drawProgram
 
 protected:
-    const std::vector<glm::vec4> & m_positions;
-    const std::vector<glm::vec4> & m_velocities;
+    const std::vector<glm::vec4> m_positions;
+    const std::vector<glm::vec4> m_velocities;
 
     const globjects::Texture & m_forces;
     const Camera & m_camera;
