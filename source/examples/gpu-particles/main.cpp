@@ -157,7 +157,7 @@ public:
     {
         // initialize 3D Force Field (3D Texture)
 
-        static const ivec3 fdim(8, 8, 8); // this has center axises and allows for random rings etc..
+        static const ivec3 fdim(5, 5, 5); // this has center axises and allows for random rings etc..
 
         std::vector<vec3> forces;
         forces.resize(fdim.x * fdim.y * fdim.z);
@@ -171,7 +171,7 @@ public:
             const int i = z *  fdim.x * fdim.y + y * fdim.x + x;
             const vec3 f(sphericalRand<float>(1.0));
 
-            forces[i] = f * (1.f - length(vec3(x, y, z)) / std::sqrt(3.f)) * 10.f;
+            forces[i] = f * (1.f - length(vec3(x, y, z)) / std::sqrt(3.f));
         }
 
         m_forces->image3D(0, GL_RGB32F, fdim.x, fdim.y, fdim.z, 0, GL_RGB, GL_FLOAT, forces.data());
