@@ -26,6 +26,10 @@ find_library(GTEST_LIBRARY
     $ENV{GTEST_HOME}
     $ENV{GMOCKDIR}/gtest
     $ENV{GMOCK_HOME}/gtest
+    $ENV{GTESTDIR}/Release
+    $ENV{GTEST_HOME}/Release
+    $ENV{GMOCKDIR}/gtest/Release
+    $ENV{GMOCK_HOME}/gtest/Release
     /usr/lib64
     /usr/local/lib64
     /sw/lib64
@@ -47,6 +51,10 @@ find_library(GTEST_LIBRARY_DEBUG
     $ENV{GTEST_HOME}
     $ENV{GMOCKDIR}/gtest
     $ENV{GMOCK_HOME}/gtest
+	$ENV{GTESTDIR}/Debug
+    $ENV{GTEST_HOME}/Debug
+    $ENV{GMOCKDIR}/gtest/Debug
+    $ENV{GMOCK_HOME}/gtest/Debug
     /usr/lib64
     /usr/local/lib64
     /sw/lib64
@@ -58,13 +66,13 @@ find_library(GTEST_LIBRARY_DEBUG
     DOC "The GTEST debug library")
 
 if (GTEST_LIBRARY AND GTEST_LIBRARY_DEBUG)
-	set(GTEST_LIBRARIES "optimized" ${GTEST_LIBRARY} "debug" ${GTEST_LIBRARY_DEBUG})
+    set(GTEST_LIBRARIES "optimized" ${GTEST_LIBRARY} "debug" ${GTEST_LIBRARY_DEBUG})
 elseif (GTEST_LIBRARY)
-	set(GTEST_LIBRARIES ${GTEST_LIBRARY})
+    set(GTEST_LIBRARIES ${GTEST_LIBRARY})
 elseif (GTEST_LIBRARY_DEBUG)
-	set(GTEST_LIBRARIES ${GTEST_LIBRARY_DEBUG})
+    set(GTEST_LIBRARIES ${GTEST_LIBRARY_DEBUG})
 else ()
-	set(GTEST_LIBRARIES "")
+    set(GTEST_LIBRARIES "")
 endif ()
 
 include(FindPackageHandleStandardArgs)

@@ -22,6 +22,8 @@ find_library(GMOCK_LIBRARY
     $ENV{GMOCK_HOME}/lib/.libs
     $ENV{GMOCKDIR}
     $ENV{GMOCK_HOME}
+    $ENV{GMOCKDIR}/Release
+    $ENV{GMOCK_HOME}/Release
     /usr/lib64
     /usr/local/lib64
     /sw/lib64
@@ -41,6 +43,8 @@ find_library(GMOCK_LIBRARY_DEBUG
     $ENV{GMOCK_HOME}/lib/.libs
     $ENV{GMOCKDIR}
     $ENV{GMOCK_HOME}
+    $ENV{GMOCKDIR}/Debug
+    $ENV{GMOCK_HOME}/Debug
     /usr/lib64
     /usr/local/lib64
     /sw/lib64
@@ -52,13 +56,13 @@ find_library(GMOCK_LIBRARY_DEBUG
     DOC "The GMOCK debug library")
 
 if (GMOCK_LIBRARY AND GMOCK_LIBRARY_DEBUG)
-	set(GMOCK_LIBRARIES "optimized" ${GMOCK_LIBRARY} "debug" ${GMOCK_LIBRARY_DEBUG})
+    set(GMOCK_LIBRARIES "optimized" ${GMOCK_LIBRARY} "debug" ${GMOCK_LIBRARY_DEBUG})
 elseif (GMOCK_LIBRARY)
-	set(GMOCK_LIBRARIES ${GMOCK_LIBRARY})
+    set(GMOCK_LIBRARIES ${GMOCK_LIBRARY})
 elseif (GMOCK_LIBRARY_DEBUG)
-	set(GMOCK_LIBRARIES ${GMOCK_LIBRARY_DEBUG})
+    set(GMOCK_LIBRARIES ${GMOCK_LIBRARY_DEBUG})
 else ()
-	set(GMOCK_LIBRARIES "")
+    set(GMOCK_LIBRARIES "")
 endif ()
 
 include(FindPackageHandleStandardArgs)
