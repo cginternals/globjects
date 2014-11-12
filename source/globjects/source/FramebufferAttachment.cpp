@@ -1,9 +1,8 @@
 #include <globjects/FramebufferAttachment.h>
 
-#include <sstream>
 #include <string>
 
-#include <globjects/constants.h>
+#include <glbinding/Meta.h>
 
 #include <globjects/Framebuffer.h>
 
@@ -41,7 +40,7 @@ bool FramebufferAttachment::isRenderBufferAttachment() const
 
 std::string FramebufferAttachment::attachmentString() const
 {
-    return globjects::enumName(m_attachment);
+    return glbinding::Meta::getString(m_attachment);
 }
 
 AttachedTexture * FramebufferAttachment::asTextureAttachment()

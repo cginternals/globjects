@@ -59,7 +59,6 @@ set(sources
 	${source_path}/AbstractUniform.cpp
 	${source_path}/Buffer.cpp
 	${source_path}/Capability.cpp
-	${source_path}/constants.cpp
 	${source_path}/container_helpers.hpp
 	${source_path}/DebugInfo.cpp
 	${source_path}/DebugMessage.cpp
@@ -200,7 +199,6 @@ set(api_includes
 	${include_path}/Buffer.h
 	${include_path}/Buffer.hpp
 	${include_path}/Capability.h
-	${include_path}/constants.h
 	${include_path}/DebugInfo.h
 	${include_path}/DebugMessage.h
 	${include_path}/Error.h
@@ -263,6 +261,7 @@ set(api_includes
 	${include_path}/base/LogMessageBuilder.h
 	${include_path}/base/LogMessageBuilder.hpp
 	${include_path}/base/LogMessage.h
+	${include_path}/base/LogMessageLevel.h
 	${include_path}/base/Referenced.h
 	${include_path}/base/ref_ptr.h
 	${include_path}/base/ref_ptr.hpp

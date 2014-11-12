@@ -7,16 +7,12 @@
 #include <globjects/Capability.h>
 #include <globjects/StateSetting.h>
 
-#include <globjects/logging.h>
-#include <globjects/constants.h>
-
-
 using namespace gl;
 
 namespace globjects 
 {
 
-State::State(Mode mode)
+State::State(const Mode mode)
 : m_mode(mode)
 {
 }
@@ -147,7 +143,7 @@ State * State::currentState()
     return state;
 }
 
-void State::enable(GLenum capability)
+void State::enable(const GLenum capability)
 {
     Capability* cap = getCapability(capability);
     cap->enable();
@@ -155,7 +151,7 @@ void State::enable(GLenum capability)
         cap->apply();
 }
 
-void State::disable(GLenum capability)
+void State::disable(const GLenum capability)
 {
     Capability* cap = getCapability(capability);
     cap->disable();
@@ -163,7 +159,7 @@ void State::disable(GLenum capability)
         cap->apply();
 }
 
-bool State::isEnabled(GLenum capability) const
+bool State::isEnabled(const GLenum capability) const
 {
     if (m_capabilities.find(capability) == m_capabilities.end())
         return false;
@@ -171,7 +167,7 @@ bool State::isEnabled(GLenum capability) const
     return m_capabilities.at(capability)->isEnabled();
 }
 
-void State::enable(GLenum capability, int index)
+void State::enable(const GLenum capability, const int index)
 {   
     Capability* cap = getCapability(capability);
     cap->enable(index);
@@ -179,7 +175,7 @@ void State::enable(GLenum capability, int index)
         cap->apply();
 }
 
-void State::disable(GLenum capability, int index)
+void State::disable(const GLenum capability, const int index)
 {
     Capability* cap = getCapability(capability);
     cap->disable(index);
@@ -187,7 +183,7 @@ void State::disable(GLenum capability, int index)
         cap->apply();
 }
 
-bool State::isEnabled(GLenum capability, int index) const
+bool State::isEnabled(const GLenum capability, const int index) const
 {
     if (m_capabilities.find(capability) == m_capabilities.end())
         return false;
@@ -195,7 +191,7 @@ bool State::isEnabled(GLenum capability, int index) const
     return m_capabilities.at(capability)->isEnabled(index);
 }
 
-void State::setMode(Mode mode)
+void State::setMode(const Mode mode)
 {
     m_mode = mode;
 }
@@ -207,11 +203,11 @@ State::Mode State::mode() const
 
 void State::apply()
 {
-    for (const auto& capability : m_capabilities)
+    for (const auto & capability : m_capabilities)
     {
         capability.second->apply();
     }
-    for (const auto& setting : m_settings)
+    for (const auto & setting : m_settings)
     {
         setting.second->apply();
     }
@@ -249,7 +245,7 @@ std::vector<Capability*> State::capabilities() const
     return caps;
 }
 
-Capability* State::capability(GLenum capability)
+Capability* State::capability(const GLenum capability)
 {
     auto it = m_capabilities.find(capability);
     if (it == m_capabilities.end())
@@ -258,7 +254,7 @@ Capability* State::capability(GLenum capability)
     return it->second;
 }
 
-const Capability* State::capability(GLenum capability) const
+const Capability* State::capability(const GLenum capability) const
 {
     auto it = m_capabilities.find(capability);
     if (it == m_capabilities.end())

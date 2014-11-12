@@ -10,7 +10,7 @@ using namespace gl;
 namespace globjects
 {
 
-AttachedTexture::AttachedTexture(Framebuffer * fbo, GLenum attachment, Texture * texture, GLint level, GLint layer)
+AttachedTexture::AttachedTexture(Framebuffer * fbo, const GLenum attachment, Texture * texture, GLint level, GLint layer)
 : FramebufferAttachment(fbo, attachment)
 , m_texture(texture)
 , m_level(level)

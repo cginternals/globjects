@@ -50,7 +50,7 @@ public:
     using WidthManipulator = decltype(std::setw(0));
 
 public:
-    LogMessageBuilder(LogMessage::Level level, AbstractLogHandler * handler);
+    LogMessageBuilder(LogMessageLevel level, AbstractLogHandler * handler);
     LogMessageBuilder(const LogMessageBuilder & builder);
 	virtual ~LogMessageBuilder();
 
@@ -93,7 +93,7 @@ public:
     LogMessageBuilder & operator<<(const std::array<T, Count> & array);
 
 protected:
-	LogMessage::Level m_level;
+    LogMessageLevel m_level;
     AbstractLogHandler * m_handler;
     std::shared_ptr<std::stringstream> m_stream;
 };

@@ -28,9 +28,9 @@ public:
     std::string string() const;
     gl::GLenum type() const;
 
-    AbstractStringSource * stringSource();
+    AbstractStringSource * stringSource() const;
 
-    gl::GLint getParameter(gl::GLenum pname);
+    gl::GLint getParameter(gl::GLenum pname) const;
 
     virtual void notifyChanged(const Changeable * changeable) override;
 

@@ -26,7 +26,7 @@ public:
     virtual std::vector<std::string> strings() const;
 
     std::vector<const AbstractStringSource*> flatten() const;
-    virtual void flattenInto(std::vector<const AbstractStringSource*>& vector) const;
+    virtual void flattenInto(std::vector<const AbstractStringSource*> & vector) const;
 
     virtual std::string shortInfo() const;
 };

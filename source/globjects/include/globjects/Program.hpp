@@ -4,12 +4,9 @@
 
 #include <cassert>
 
-#include <glbinding/gl/functions.h>
-
 #include <globjects/base/baselogging.h>
 
 #include <globjects/Uniform.h>
-#include <globjects/Shader.h>
 
 namespace globjects
 {
@@ -100,14 +97,7 @@ const Uniform<T> * Program::getUniform(gl::GLint location) const
 template <class ...Shaders>
 void Program::attach(Shader * shader, Shaders... shaders)
 {
-    assert(shader != nullptr);
-
-    gl::glAttachShader(id(), shader->id());
-
-    shader->registerListener(this);
-    m_shaders.insert(shader);
-
-    invalidate();
+    attach(shader);
 
     attach(std::forward<Shaders>(shaders)...);
 }

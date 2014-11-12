@@ -11,7 +11,6 @@
 namespace globjects
 {
 
-class ObjectVisitor;
 class Program;
 
 
@@ -71,11 +70,11 @@ public:
 
     void draw(gl::GLenum primitiveMode) const;
 
-	void setVaryings(const Program * program, gl::GLsizei count, const char ** varyingNames, gl::GLenum bufferMode) const;
-    void setVaryings(const Program * program, const std::vector<const char *> & varyingNames, gl::GLenum bufferMode) const;
+    void setVaryings(const Program * program, gl::GLsizei count, const char ** varyingNames, gl::GLenum bufferMode);
+    void setVaryings(const Program * program, const std::vector<const char *> & varyingNames, gl::GLenum bufferMode);
 
     template <std::size_t Count>
-    void setVaryings(const Program * program, const std::array<const char *, Count> & varyingNames, gl::GLenum bufferMode) const;
+    void setVaryings(const Program * program, const std::array<const char *, Count> & varyingNames, gl::GLenum bufferMode);
 
     static bool isTransformFeedback(gl::GLuint id);
 

@@ -50,7 +50,6 @@ void NamedStringRegistry::deregisterNamedString(NamedString * namedString)
 
 bool NamedStringRegistry::hasNativeSupport()
 {
-    // TODO: cache
     return hasExtension(GLextension::GL_ARB_shading_language_include);
 }
 

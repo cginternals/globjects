@@ -9,12 +9,12 @@ using namespace gl;
 namespace globjects
 {
 
-ProgramBinary::ProgramBinary(GLenum binaryFormat, const std::vector<char> & binaryData)
+ProgramBinary::ProgramBinary(const GLenum binaryFormat, const std::vector<char> & binaryData)
 : ProgramBinary(binaryFormat, new StaticStringSource(binaryData.data(), binaryData.size()))
 {
 }
 
-ProgramBinary::ProgramBinary(GLenum binaryFormat, AbstractStringSource * dataSource)
+ProgramBinary::ProgramBinary(const GLenum binaryFormat, AbstractStringSource * dataSource)
 : m_binaryFormat(binaryFormat)
 , m_dataSource(dataSource)
 , m_valid(false)

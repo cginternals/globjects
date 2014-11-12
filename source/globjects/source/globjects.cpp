@@ -73,7 +73,7 @@ void init()
     registerCurrentContext();
 }
 
-void init(glbinding::ContextHandle sharedContextId)
+void init(const glbinding::ContextHandle sharedContextId)
 {
     g_mutex.lock();
     if (g_globjectsIsInitialized)
@@ -104,7 +104,7 @@ void registerCurrentContext()
     Registry::registerContext(contextId);
 }
 
-void registerCurrentContext(glbinding::ContextHandle sharedContextId)
+void registerCurrentContext(const glbinding::ContextHandle sharedContextId)
 {
     glbinding::ContextHandle contextId = glbinding::getCurrentContext();
 
@@ -112,7 +112,7 @@ void registerCurrentContext(glbinding::ContextHandle sharedContextId)
     Registry::registerContext(contextId, sharedContextId);
 }
 
-void setContext(glbinding::ContextHandle contextId)
+void setContext(const glbinding::ContextHandle contextId)
 {
     glbinding::Binding::useContext(contextId);
     Registry::setCurrentContext(contextId);
@@ -124,21 +124,21 @@ void setCurrentContext()
     setContext(contextId);
 }
 
-std::string getString(GLenum pname)
+std::string getString(const GLenum pname)
 {
     const GLubyte* result = glGetString(pname);
 
 	return reinterpret_cast<const char*>(result);
 }
 
-std::string getString(GLenum pname, GLuint index)
+std::string getString(const GLenum pname, const GLuint index)
 {
     const GLubyte* result = glGetStringi(pname, index);
 
     return reinterpret_cast<const char*>(result);
 }
 
-GLint getInteger(GLenum pname)
+GLint getInteger(const GLenum pname)
 {
 	GLint value;
 
@@ -147,12 +147,12 @@ GLint getInteger(GLenum pname)
 	return value;
 }
 
-GLenum getEnum(GLenum pname)
+GLenum getEnum(const GLenum pname)
 {
     return static_cast<GLenum>(getInteger(pname));
 }
 
-GLfloat getFloat(GLenum pname)
+GLfloat getFloat(const GLenum pname)
 {
 	GLfloat value;
 
@@ -161,7 +161,7 @@ GLfloat getFloat(GLenum pname)
 	return value;
 }
 
-GLdouble getDouble(GLenum pname)
+GLdouble getDouble(const GLenum pname)
 {
 	GLdouble value;
 
@@ -170,7 +170,7 @@ GLdouble getDouble(GLenum pname)
 	return value;
 }
 
-GLboolean getBoolean(GLenum pname)
+GLboolean getBoolean(const GLenum pname)
 {
 	GLboolean value;
 
@@ -179,7 +179,7 @@ GLboolean getBoolean(GLenum pname)
 	return value;
 }
 
-GLint getInteger(GLenum pname, GLuint index)
+GLint getInteger(const GLenum pname, const GLuint index)
 {
 	GLint value;
 
@@ -188,12 +188,12 @@ GLint getInteger(GLenum pname, GLuint index)
 	return value;
 }
 
-GLenum getEnum(GLenum pname, GLuint index)
+GLenum getEnum(const GLenum pname, const GLuint index)
 {
     return static_cast<GLenum>(getInteger(pname, index));
 }
 
-GLfloat getFloat(GLenum pname, GLuint index)
+GLfloat getFloat(const GLenum pname, const GLuint index)
 {
     GLfloat value;
 
@@ -202,7 +202,7 @@ GLfloat getFloat(GLenum pname, GLuint index)
     return value;
 }
 
-GLdouble getDouble(GLenum pname, GLuint index)
+GLdouble getDouble(const GLenum pname, const GLuint index)
 {
     GLdouble value;
 
@@ -211,7 +211,7 @@ GLdouble getDouble(GLenum pname, GLuint index)
     return value;
 }
 
-GLboolean getBoolean(GLenum pname, GLuint index)
+GLboolean getBoolean(const GLenum pname, const GLuint index)
 {
     GLboolean value;
 
@@ -270,7 +270,7 @@ const std::set<std::string> & unknownAvailableExtensions()
     return ExtensionRegistry::current().unknownAvailableExtensions();
 }
 
-bool hasExtension(GLextension extension)
+bool hasExtension(const GLextension extension)
 {
     return ExtensionRegistry::current().hasExtension(extension);
 }
@@ -280,96 +280,96 @@ bool hasExtension(const std::string & extensionName)
     return ExtensionRegistry::current().hasExtension(extensionName);
 }
 
-bool isInCoreProfile(GLextension extension, const glbinding::Version & version)
+bool isInCoreProfile(const GLextension extension, const glbinding::Version & version)
 {
     return ExtensionRegistry::current().isInCoreProfile(extension, version);
 }
 
-bool isInCoreProfile(GLextension extension)
+bool isInCoreProfile(const GLextension extension)
 {
     return ExtensionRegistry::current().isInCoreProfile(extension);
 }
 
-void enable(GLenum capability)
+void enable(const GLenum capability)
 {
     glEnable(capability);
 }
 
-void disable(GLenum capability)
+void disable(const GLenum capability)
 {
     glDisable(capability);
 }
 
-bool isEnabled(GLenum capability)
+bool isEnabled(const GLenum capability)
 {
     GLboolean value = glIsEnabled(capability);
 
     return value == GL_TRUE;
 }
 
-void setEnabled(GLenum capability, bool enabled)
+void setEnabled(const GLenum capability, const bool enabled)
 {
     enabled ? enable(capability) : disable(capability);
 }
 
-void enable(GLenum capability, int index)
+void enable(const GLenum capability, const int index)
 {
     glEnablei(capability, index);
 }
 
-void disable(GLenum capability, int index)
+void disable(const GLenum capability, const int index)
 {
     glDisablei(capability, index);
 }
 
-bool isEnabled(GLenum capability, int index)
+bool isEnabled(const GLenum capability, const int index)
 {
     GLboolean value = glIsEnabledi(capability, index);
 
     return value == GL_TRUE;
 }
 
-void setEnabled(GLenum capability, int index, bool enabled)
+void setEnabled(const GLenum capability, const int index, const bool enabled)
 {
     enabled ? enable(capability, index) : disable(capability, index);
 }
 
-void initializeStrategy(AbstractUniform::BindlessImplementation impl)
+void initializeStrategy(const AbstractUniform::BindlessImplementation impl)
 {
     Registry::current().implementations().initialize(impl);
 }
 
-void initializeStrategy(Buffer::BindlessImplementation impl)
+void initializeStrategy(const Buffer::BindlessImplementation impl)
 {
     Registry::current().implementations().initialize(impl);
 }
 
-void initializeStrategy(Framebuffer::BindlessImplementation impl)
+void initializeStrategy(const Framebuffer::BindlessImplementation impl)
 {
     Registry::current().implementations().initialize(impl);
 }
 
-void initializeStrategy(DebugMessage::Implementation impl)
+void initializeStrategy(const DebugMessage::Implementation impl)
 {
     Registry::current().implementations().initialize(impl);
 }
 
-void initializeStrategy(Program::BinaryImplementation impl)
+void initializeStrategy(const Program::BinaryImplementation impl)
 {
     Registry::current().implementations().initialize(impl);
 }
 
-void initializeStrategy(Shader::IncludeImplementation impl)
+void initializeStrategy(const Shader::IncludeImplementation impl)
 {
     Registry::current().implementations().initialize(impl);
 }
 
-void initializeStrategy(Object::NameImplementation impl)
+void initializeStrategy(const Object::NameImplementation impl)
 {
     Registry::current().implementations().initialize(impl);
 }
 
-void initializeStrategy(VertexArray::AttributeImplementation impl)
+void initializeStrategy(const VertexArray::AttributeImplementation impl)
 {
     Registry::current().implementations().initialize(impl);
 }

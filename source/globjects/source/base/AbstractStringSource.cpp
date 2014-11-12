@@ -24,7 +24,7 @@ std::string AbstractStringSource::shortInfo() const
     return "";
 }
 
-void AbstractStringSource::flattenInto(std::vector<const AbstractStringSource*>& vector) const
+void AbstractStringSource::flattenInto(std::vector<const AbstractStringSource*> & vector) const
 {
     vector.push_back(this);
 }

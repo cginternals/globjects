@@ -13,8 +13,6 @@
 namespace globjects 
 {
 
-class ObjectVisitor;
-class Buffer;
 class VertexAttributeBinding;
 
 
@@ -106,7 +104,7 @@ protected:
     virtual ~VertexArray();
 
 protected:
-    std::map<gl::GLuint, ref_ptr<VertexAttributeBinding >> m_bindings;
+    std::map<gl::GLuint, ref_ptr<VertexAttributeBinding>> m_bindings;
 
 };
 

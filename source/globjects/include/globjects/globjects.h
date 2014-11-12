@@ -25,8 +25,6 @@
 namespace globjects 
 {
 
-class AbstractStringSource;
-
 GLOBJECTS_API void init();
 GLOBJECTS_API void init(glbinding::ContextHandle sharedContextId);
 

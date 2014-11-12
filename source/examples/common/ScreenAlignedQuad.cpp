@@ -4,6 +4,7 @@
 #include <array>
 
 #include <glbinding/gl/enum.h>
+#include <glbinding/gl/functions.h>
 
 #include <globjects/base/StaticStringSource.h>
 

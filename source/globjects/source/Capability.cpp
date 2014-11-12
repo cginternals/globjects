@@ -12,13 +12,13 @@ using namespace gl;
 namespace globjects 
 {
 
-Capability::Capability(GLenum capability)
+Capability::Capability(const GLenum capability)
 : m_capability(capability)
 , m_enabled(false)
 {
 }
 
-Capability::Capability(GLenum capability, bool enabled)
+Capability::Capability(const GLenum capability, const bool enabled)
 : m_capability(capability)
 , m_enabled(enabled)
 {
@@ -44,17 +44,17 @@ bool Capability::isEnabled() const
     return m_enabled;
 }
 
-void Capability::enable(int index)
+void Capability::enable(const int index)
 {
     m_indexEnabled[index] = true;
 }
 
-void Capability::disable(int index)
+void Capability::disable(const int index)
 {
     m_indexEnabled[index] = false;
 }
 
-bool Capability::isEnabled(int index) const
+bool Capability::isEnabled(const int index) const
 {
     return m_indexEnabled.at(index);
 }

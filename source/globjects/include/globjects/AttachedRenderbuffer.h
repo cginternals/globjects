@@ -9,6 +9,7 @@
 
 namespace globjects 
 {
+
 class Renderbuffer;
 class Framebuffer;
 

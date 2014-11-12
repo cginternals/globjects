@@ -2,19 +2,20 @@
 
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
-
+#include <glbinding/gl/bitfield.h>
+#include <glbinding/gl/values.h>
 
 using namespace gl;
 
 namespace globjects
 {
 
-Sync * Sync::fence(GLenum condition)
+Sync * Sync::fence(const GLenum condition)
 {
     return fence(condition, GL_UNUSED_BIT);
 }
 
-Sync * Sync::fence(GLenum condition, UnusedMask flags)
+Sync * Sync::fence(const GLenum condition, const UnusedMask flags)
 {
     return new Sync(fenceSync(condition, flags));
 }
@@ -30,7 +31,7 @@ Sync::~Sync()
     glDeleteSync(m_sync);
 }
 
-GLsync Sync::fenceSync(GLenum condition, UnusedMask flags)
+GLsync Sync::fenceSync(const GLenum condition, const UnusedMask flags)
 {
     return glFenceSync(condition, flags);
 }
@@ -40,27 +41,27 @@ GLsync Sync::sync() const
     return m_sync;
 }
 
-GLenum Sync::clientWait(SyncObjectMask flags, GLuint64 timeout)
+GLenum Sync::clientWait(const SyncObjectMask flags, const GLuint64 timeout)
 {
     return glClientWaitSync(m_sync, flags, timeout);
 }
 
-void Sync::wait(GLuint64 timeout)
+void Sync::wait(const GLuint64 timeout)
 {
     wait(GL_UNUSED_BIT, timeout);
 }
 
-void Sync::wait(UnusedMask flags, GLuint64 timeout)
+void Sync::wait(const UnusedMask flags, const GLuint64 timeout)
 {
     glWaitSync(m_sync, flags, timeout);
 }
 
-void Sync::get(GLenum pname, GLsizei bufsize, GLsizei * length, GLint * values)
+void Sync::get(const GLenum pname, const GLsizei bufsize, GLsizei * length, GLint * values)
 {
     glGetSynciv(m_sync, pname, bufsize, length, values);
 }
 
-GLint Sync::get(GLenum pname)
+GLint Sync::get(const GLenum pname)
 {
     GLint result = 0;
     get(pname, sizeof(result), nullptr, &result);

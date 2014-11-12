@@ -4,6 +4,8 @@
 
 #include <globjects/globjects_api.h>
 
+#include <globjects/base/LogMessageLevel.h>
+
 namespace globjects
 {
 
@@ -18,23 +20,14 @@ namespace globjects
 class GLOBJECTS_API LogMessage
 {
 public:
-	enum Level
-	{
-		Fatal
-    ,   Critical
-    ,   Warning
-    ,   Debug
-    ,   Info
-	};
+    LogMessage(LogMessageLevel level, const std::string & message);
 
-	LogMessage(Level level, const std::string & message);
-
-	Level level() const;
-	const std::string & message() const;
+    LogMessageLevel level() const;
+    const std::string & message() const;
 
 protected:
-	Level m_level;
-	std::string m_message;
+    LogMessageLevel m_level;
+    std::string m_message;
 };
 
 } // namespace globjects

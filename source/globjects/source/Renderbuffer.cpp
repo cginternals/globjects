@@ -37,31 +37,31 @@ void Renderbuffer::unbind()
     unbind(GL_RENDERBUFFER);
 }
 
-void Renderbuffer::bind(GLenum target) const
+void Renderbuffer::bind(const GLenum target) const
 {
     glBindRenderbuffer(target, id());
 }
 
-void Renderbuffer::unbind(GLenum target)
+void Renderbuffer::unbind(const GLenum target)
 {
     glBindRenderbuffer(target, 0);
 }
 
-void Renderbuffer::storage(GLenum internalformat, GLsizei width, GLsizei height)
+void Renderbuffer::storage(const GLenum internalformat, const GLsizei width, const GLsizei height)
 {
     bind(GL_RENDERBUFFER);
 
     glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
 }
 
-void Renderbuffer::storageMultisample(GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
+void Renderbuffer::storageMultisample(const GLsizei samples, const GLenum internalformat, const GLsizei width, const GLsizei height)
 {
     bind(GL_RENDERBUFFER);
 
     glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, internalformat, width, height);
 }
 
-GLint Renderbuffer::getParameter(GLenum pname) const
+GLint Renderbuffer::getParameter(const GLenum pname) const
 {
 	GLint value = 0;
 

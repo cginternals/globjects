@@ -10,23 +10,27 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractDebugImplementation.h"
 
-
 using namespace gl;
+
+namespace
+{
+
+globjects::AbstractDebugImplementation & implementation()
+{
+    return globjects::ImplementationRegistry::current().debugImplementation();
+}
+
+}
 
 namespace globjects 
 {
 
-AbstractDebugImplementation & implementation()
-{
-    return ImplementationRegistry::current().debugImplementation();
-}
-
-void DebugMessage::hintImplementation(Implementation impl)
+void DebugMessage::hintImplementation(const Implementation impl)
 {
     ImplementationRegistry::current().initialize(impl);
 }
 
-DebugMessage::DebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string & message)
+DebugMessage::DebugMessage(const GLenum source, const GLenum type, const GLuint id, const GLenum severity, const std::string & message)
 : m_source(source)
 , m_type(type)
 , m_id(id)
@@ -137,7 +141,7 @@ bool DebugMessage::isFallbackImplementation()
     return implementation().isFallback();
 }
 
-void DebugMessage::enable(bool synchronous)
+void DebugMessage::enable(const bool synchronous)
 {
     implementation().enable();
 
@@ -154,19 +158,19 @@ void DebugMessage::setCallback(Callback callback)
     implementation().setCallback(callback);
 }
 
-void DebugMessage::setSynchronous(bool synchronous)
+void DebugMessage::setSynchronous(const bool synchronous)
 {
     implementation().setSynchronous(synchronous);
 }
 
-void DebugMessage::insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message)
+void DebugMessage::insertMessage(const GLenum source, const GLenum type, const GLuint id, const GLenum severity, const GLsizei length, const char * message)
 {
     assert(message != nullptr);
 
     insertMessage(DebugMessage(source, type, id, severity, std::string(message, length)));
 }
 
-void DebugMessage::insertMessage(GLenum source, GLenum type, GLuint id, GLenum severity, const std::string & message)
+void DebugMessage::insertMessage(const GLenum source, const GLenum type, const GLuint id, const GLenum severity, const std::string & message)
 {
     insertMessage(DebugMessage(source, type, id, severity, message));
 }
@@ -176,37 +180,37 @@ void DebugMessage::insertMessage(const DebugMessage & message)
     implementation().insertMessage(message);
 }
 
-void DebugMessage::enableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
+void DebugMessage::enableMessage(const GLenum source, const GLenum type, const GLenum severity, GLuint id)
 {
     enableMessages(source, type, severity, 1, &id);
 }
 
-void DebugMessage::enableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids)
+void DebugMessage::enableMessages(const GLenum source, const GLenum type, const GLenum severity, const GLsizei count, const GLuint * ids)
 {
     controlMessages(source, type, severity, count, ids, GL_TRUE);
 }
 
-void DebugMessage::enableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint> & ids)
+void DebugMessage::enableMessages(const GLenum source, const GLenum type, const GLenum severity, const std::vector<GLuint> & ids)
 {
     enableMessages(source, type, severity, static_cast<int>(ids.size()), ids.data());
 }
 
-void DebugMessage::disableMessage(GLenum source, GLenum type, GLenum severity, GLuint id)
+void DebugMessage::disableMessage(const GLenum source, const GLenum type, const GLenum severity, const GLuint id)
 {
     disableMessages(source, type, severity, 1, &id);
 }
 
-void DebugMessage::disableMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids)
+void DebugMessage::disableMessages(const GLenum source, const GLenum type, const GLenum severity, const GLsizei count, const GLuint * ids)
 {
     controlMessages(source, type, severity, count, ids, GL_FALSE);
 }
 
-void DebugMessage::disableMessages(GLenum source, GLenum type, GLenum severity, const std::vector<GLuint> & ids)
+void DebugMessage::disableMessages(const GLenum source, const GLenum type, const GLenum severity, const std::vector<GLuint> & ids)
 {
     disableMessages(source, type, severity, static_cast<int>(ids.size()), ids.data());
 }
 
-void DebugMessage::controlMessages(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids, GLboolean enabled)
+void DebugMessage::controlMessages(const GLenum source, const GLenum type, const GLenum severity, const GLsizei count, const GLuint * ids, const GLboolean enabled)
 {
     assert(ids != nullptr || count == 0);
 

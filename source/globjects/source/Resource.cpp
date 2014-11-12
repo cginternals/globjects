@@ -22,7 +22,7 @@ GLuint createObject(CreateObjectsFunction function)
 }
 
 template <typename DeleteObjectsFunction>
-void deleteObject(DeleteObjectsFunction function, GLuint id, bool hasOwnership)
+void deleteObject(DeleteObjectsFunction function, const GLuint id, const bool hasOwnership)
 {
     if (hasOwnership)
     {
@@ -35,7 +35,7 @@ void deleteObject(DeleteObjectsFunction function, GLuint id, bool hasOwnership)
 namespace globjects 
 {
 
-AbstractResource::AbstractResource(bool hasOwnership)
+AbstractResource::AbstractResource(const bool hasOwnership)
 : m_hasOwnership(hasOwnership)
 {
 }
@@ -65,20 +65,20 @@ GLuint IDTrait::id() const
 }
 
 
-IDResource::IDResource(GLuint id)
+IDResource::IDResource(const GLuint id)
 : AbstractResource(true)
 , IDTrait(id)
 {
 }
 
-IDResource::IDResource(GLuint id, bool hasOwnership)
+IDResource::IDResource(const GLuint id, const bool hasOwnership)
 : AbstractResource(hasOwnership)
 , IDTrait(id)
 {
 }
 
 
-ExternalResource::ExternalResource(GLuint id)
+ExternalResource::ExternalResource(const GLuint id)
 : IDResource(id, false)
 {
 }

@@ -1,9 +1,10 @@
 #include <globjects/UniformBlock.h>
+
 #include <globjects/Program.h>
-#include <globjects/Buffer.h>
 
 #include <glbinding/gl/values.h>
 #include <glbinding/gl/enum.h>
+#include <glbinding/gl/functions.h>
 
 
 using namespace gl;
@@ -54,21 +55,21 @@ void UniformBlock::updateBinding() const
     glUniformBlockBinding(m_program->id(), blockIndex(), m_bindingIndex);
 
 }
-void UniformBlock::getActive(GLenum pname, GLint * params) const
+void UniformBlock::getActive(const GLenum pname, GLint * params) const
 {
     m_program->checkDirty();
 
     glGetActiveUniformBlockiv(m_program->id(), blockIndex(), pname, params);
 }
 
-GLint UniformBlock::getActive(GLenum pname) const
+GLint UniformBlock::getActive(const GLenum pname) const
 {
     GLint result = 0;
     getActive(pname, &result);
     return result;
 }
 
-std::vector<GLint> UniformBlock::getActive(GLenum pname, GLint paramCount) const
+std::vector<GLint> UniformBlock::getActive(const GLenum pname, const GLint paramCount) const
 {
     std::vector<GLint> result(paramCount);
     getActive(pname, result.data());

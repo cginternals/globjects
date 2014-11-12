@@ -1,16 +1,14 @@
-
 #include <globjects/base/LogMessageBuilder.h>
 
-#include <cstring>
 #include <cassert>
+#include <cstring>
 
 #include <globjects/base/AbstractLogHandler.h>
-
 
 namespace globjects
 {
 
-LogMessageBuilder::LogMessageBuilder(LogMessage::Level level, AbstractLogHandler * handler)
+LogMessageBuilder::LogMessageBuilder(const LogMessageLevel level, AbstractLogHandler * handler)
 : m_level(level)
 , m_handler(handler)
 , m_stream(new std::stringstream)
@@ -48,67 +46,67 @@ LogMessageBuilder & LogMessageBuilder::operator<<(const std::string & str)
 	return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(bool b)
+LogMessageBuilder & LogMessageBuilder::operator<<(const bool b)
 {
 	*this << (b ? "true" : "false");
 	return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(char c)
+LogMessageBuilder & LogMessageBuilder::operator<<(const char c)
 {
     *m_stream << c;
 	return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(int i)
+LogMessageBuilder & LogMessageBuilder::operator<<(const int i)
 {
     *m_stream << i;
 	return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(float f)
+LogMessageBuilder & LogMessageBuilder::operator<<(const float f)
 {
     *m_stream << f;
 	return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(double d)
+LogMessageBuilder & LogMessageBuilder::operator<<(const double d)
 {
     *m_stream << d;
 	return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(long double d)
+LogMessageBuilder & LogMessageBuilder::operator<<(const long double d)
 {
     *m_stream << d;
 	return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(unsigned u)
+LogMessageBuilder & LogMessageBuilder::operator<<(const unsigned u)
 {
     *m_stream << u;
 	return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(long l)
+LogMessageBuilder & LogMessageBuilder::operator<<(const long l)
 {
     *m_stream << l;
 	return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(long long l)
+LogMessageBuilder & LogMessageBuilder::operator<<(const long long l)
 {
     *m_stream << l;
     return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(unsigned long ul)
+LogMessageBuilder & LogMessageBuilder::operator<<(const unsigned long ul)
 {
     *m_stream << ul;
 	return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(unsigned char uc)
+LogMessageBuilder & LogMessageBuilder::operator<<(const unsigned char uc)
 {
     *m_stream << uc;
 	return *this;
@@ -126,20 +124,20 @@ LogMessageBuilder & LogMessageBuilder::operator<<(std::ostream & (*manipulator)(
 	return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(LogMessageBuilder::PrecisionManipulator manipulator)
+LogMessageBuilder & LogMessageBuilder::operator<<(const LogMessageBuilder::PrecisionManipulator manipulator)
 {
     *m_stream << manipulator;
     return *this;
 }
 
-LogMessageBuilder & LogMessageBuilder::operator<<(LogMessageBuilder::FillManipulator manipulator)
+LogMessageBuilder & LogMessageBuilder::operator<<(const LogMessageBuilder::FillManipulator manipulator)
 {
     *m_stream << manipulator;
     return *this;
 }
 
 #ifndef _MSC_VER
-LogMessageBuilder & LogMessageBuilder::operator<<(LogMessageBuilder::WidthManipulator manipulator)
+LogMessageBuilder & LogMessageBuilder::operator<<(const LogMessageBuilder::WidthManipulator manipulator)
 {
     *m_stream << manipulator;
     return *this;

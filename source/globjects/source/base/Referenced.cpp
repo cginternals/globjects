@@ -24,9 +24,9 @@ void Referenced::unref() const
 {
     assert(m_refCounter > 0);
 
-	--m_refCounter;
+    --m_refCounter;
 
-	if (m_refCounter <= 0)
+    if (m_refCounter <= 0)
         destroy();
 }
 

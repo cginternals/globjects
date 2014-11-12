@@ -13,7 +13,7 @@
 namespace globjects
 {
 
-    class StateSetting;
+class StateSetting;
 class Capability;
 
 

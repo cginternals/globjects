@@ -2,8 +2,6 @@
 
 #include <globjects/Uniform.h>
 
-#include <globjects/Program.h>
-
 namespace globjects
 {
 

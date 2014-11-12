@@ -22,7 +22,7 @@ globjects::AbstractObjectNameImplementation & nameImplementation()
 namespace globjects
 {
 
-void Object::hintNameImplementation(NameImplementation impl)
+void Object::hintNameImplementation(const NameImplementation impl)
 {
     ImplementationRegistry::current().initialize(impl);
 }

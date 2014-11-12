@@ -5,7 +5,7 @@ namespace globjects
 
 /** \brief Extends a value of arbitrary type by an invalidation flag.
 
-    The cached value is intended for use in lazzy initialization, getter or setters
+    The cached value is intended for use in lazy initialization, getter or setters
     and removes the overhead of adding those dirty, valid, or update flags to your
     class. Especially when having multiple values, cached value allows per value
     validity flags. Note: all setters are of this class are const, simplifying const
@@ -15,13 +15,13 @@ namespace globjects
     \code{.cpp}
 
         // on update
-        lazzyValue.invalidate();
+        lazyValue.invalidate();
         ...
         // example getter
-        if (!lazzyValue.isValid())
-            lazzyValue.setValue(complexCalculationForLazzyValue());
+        if (!lazyValue.isValid())
+            lazyValue.setValue(complexCalculationForLazyValue());
 
-        return lazzyValue.value();
+        return lazyValue.value();
 
     \endcode
 */

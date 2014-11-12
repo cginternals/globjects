@@ -31,7 +31,7 @@ void Registry::registerContext(glbinding::ContextHandle contextId)
     setCurrentRegistry(contextId);
 }
 
-void Registry::registerContext(glbinding::ContextHandle contextId, glbinding::ContextHandle sharedContextId)
+void Registry::registerContext(const glbinding::ContextHandle contextId, const glbinding::ContextHandle sharedContextId)
 {
     if (isContextRegistered(contextId))
     {
@@ -53,7 +53,7 @@ void Registry::registerContext(glbinding::ContextHandle contextId, glbinding::Co
     //registry->initialize();
 }
 
-void Registry::setCurrentContext(glbinding::ContextHandle contextId)
+void Registry::setCurrentContext(const glbinding::ContextHandle contextId)
 {
     if (!isContextRegistered(contextId))
     {
@@ -63,7 +63,7 @@ void Registry::setCurrentContext(glbinding::ContextHandle contextId)
     setCurrentRegistry(contextId);
 }
 
-void Registry::deregisterContext(glbinding::ContextHandle contextId)
+void Registry::deregisterContext(const glbinding::ContextHandle contextId)
 {
     if (!isContextRegistered(contextId))
     {
@@ -90,7 +90,7 @@ Registry & Registry::current()
     return *t_currentRegistry;
 }
 
-bool Registry::isContextRegistered(glbinding::ContextHandle contextId)
+bool Registry::isContextRegistered(const glbinding::ContextHandle contextId)
 {
     g_mutex.lock();
     bool found = s_registries.find(contextId) != s_registries.end();
@@ -99,7 +99,7 @@ bool Registry::isContextRegistered(glbinding::ContextHandle contextId)
     return found;
 }
 
-void Registry::setCurrentRegistry(glbinding::ContextHandle contextId)
+void Registry::setCurrentRegistry(const glbinding::ContextHandle contextId)
 {
     g_mutex.lock();
     auto it = s_registries.find(contextId);

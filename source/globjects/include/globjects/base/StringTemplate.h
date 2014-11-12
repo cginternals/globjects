@@ -3,10 +3,10 @@
 #include <string>
 #include <map>
 
+#include <globjects/globjects_api.h>
+
 #include <globjects/base/CachedValue.h>
 #include <globjects/base/StringSourceDecorator.h>
-
-#include <globjects/globjects_api.h>
 
 namespace globjects
 {
