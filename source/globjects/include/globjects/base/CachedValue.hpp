@@ -24,7 +24,7 @@ CachedValue<T>::CachedValue(const T & value)
 template <typename T>
 bool CachedValue<T>::isValid() const
 {
-	return m_valid;
+    return m_valid;
 }
 
 template <typename T>
@@ -36,27 +36,28 @@ T & CachedValue<T>::value()
 template <typename T>
 const T & CachedValue<T>::value() const
 {
-	assert(m_valid);
-	return m_value;
+    assert(m_valid);
+
+    return m_value;
 }
 
 template <typename T>
 void CachedValue<T>::setValue(const T & value, const bool validate) const
 {
     m_valid = validate;
-	m_value = value;
+    m_value = value;
 }
 
 template <typename T>
 void CachedValue<T>::validate() const
 {
-	m_valid = true;
+    m_valid = true;
 }
 
 template <typename T>
 void CachedValue<T>::invalidate() const
 {
-	m_valid = false;
+    m_valid = false;
 }
 
 } // namespace globjects

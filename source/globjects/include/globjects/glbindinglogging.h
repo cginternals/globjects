@@ -13,6 +13,6 @@ namespace glbinding
 namespace globjects 
 {
 
-GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const glbinding::Version & vector);
+GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const glbinding::Version & version);
 
 } // namespace globjects

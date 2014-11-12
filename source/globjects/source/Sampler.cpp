@@ -23,7 +23,7 @@ Sampler::Sampler(IDResource * resource)
 {
 }
 
-Sampler * Sampler::fromId(GLuint id)
+Sampler * Sampler::fromId(const GLuint id)
 {
     return new Sampler(new ExternalResource(id));
 }
@@ -37,27 +37,27 @@ void Sampler::accept(ObjectVisitor & visitor)
     visitor.visitSampler(this);
 }
 
-void Sampler::bind(GLuint unit) const
+void Sampler::bind(const GLuint unit) const
 {
     glBindSampler(unit, id());
 }
 
-void Sampler::unbind(GLuint unit)
+void Sampler::unbind(const GLuint unit)
 {
     glBindSampler(unit, 0);
 }
 
-void Sampler::setParameter(GLenum name, GLint value)
+void Sampler::setParameter(const GLenum name, const GLint value)
 {
     glSamplerParameteri(id(), name, value);
 }
 
-void Sampler::setParameter(GLenum name, GLfloat value)
+void Sampler::setParameter(const GLenum name, const GLfloat value)
 {
     glSamplerParameterf(id(), name, value);
 }
 
-GLint Sampler::getParameteri(GLenum pname) const
+GLint Sampler::getParameteri(const GLenum pname) const
 {
     GLint value = 0;
     glGetSamplerParameteriv(id(), pname, &value);
@@ -65,7 +65,7 @@ GLint Sampler::getParameteri(GLenum pname) const
 	return value;
 }
 
-GLfloat Sampler::getParameterf(GLenum pname) const
+GLfloat Sampler::getParameterf(const GLenum pname) const
 {
     GLfloat value = 0;
     glGetSamplerParameterfv(id(), pname, &value);

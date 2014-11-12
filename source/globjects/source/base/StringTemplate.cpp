@@ -57,7 +57,7 @@ void StringTemplate::replace(const std::string & original, const std::string & s
     invalidate();
 }
 
-void StringTemplate::replace(const std::string & original, int i)
+void StringTemplate::replace(const std::string & original, const int i)
 {
 	std::stringstream ss;
 	ss << i;

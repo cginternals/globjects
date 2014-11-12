@@ -17,7 +17,6 @@
 namespace globjects 
 {
 class AbstractStringSource;
-class Program;
 
 /** \brief Encapsulates OpenGL shaders.
     

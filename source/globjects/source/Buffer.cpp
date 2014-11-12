@@ -12,7 +12,6 @@
 
 #include "Resource.h"
 
-#include "registry/ImplementationRegistry.h"
 #include "implementations/BufferImplementation_Legacy.h"
 
 
@@ -52,7 +51,7 @@ Buffer::Buffer(IDResource * resource)
 {
 }
 
-Buffer * Buffer::fromId(GLuint id)
+Buffer * Buffer::fromId(const GLuint id)
 {
     return new Buffer(new ExternalResource(id));
 }
@@ -66,17 +65,17 @@ void Buffer::accept(ObjectVisitor& visitor)
 	visitor.visitBuffer(this);
 }
 
-void Buffer::bind(GLenum target) const
+void Buffer::bind(const GLenum target) const
 {
     glBindBuffer(target, id());
 }
 
-void Buffer::unbind(GLenum target)
+void Buffer::unbind(const GLenum target)
 {
     glBindBuffer(target, 0);
 }
 
-void Buffer::unbind(GLenum target, GLuint index)
+void Buffer::unbind(const GLenum target, const GLuint index)
 {
     glBindBufferBase(target, index, 0);
 }
@@ -86,12 +85,12 @@ const void * Buffer::map() const
     return static_cast<const void*>(implementation().map(this, GL_READ_ONLY));
 }
 
-void* Buffer::map(GLenum access)
+void* Buffer::map(const GLenum access)
 {
     return implementation().map(this, access);
 }
 
-void* Buffer::mapRange(GLintptr offset, GLsizeiptr length, BufferAccessMask access)
+void* Buffer::mapRange(const GLintptr offset, const GLsizeiptr length, const BufferAccessMask access)
 {
     return implementation().mapRange(this, offset, length, access);
 }
@@ -101,59 +100,59 @@ bool Buffer::unmap() const
     return implementation().unmap(this);
 }
 
-void Buffer::flushMappedRange(GLintptr offset, GLsizeiptr length)
+void Buffer::flushMappedRange(const GLintptr offset, const GLsizeiptr length)
 {
     implementation().flushMappedRange(this, offset, length);
 }
 
-void Buffer::setData(GLsizeiptr size, const GLvoid * data, GLenum usage)
+void Buffer::setData(const GLsizeiptr size, const GLvoid * data, const GLenum usage)
 {
     implementation().setData(this, size, data, usage);
 }
     
-void Buffer::setSubData(GLintptr offset, GLsizeiptr size, const GLvoid * data)
+void Buffer::setSubData(const GLintptr offset, const GLsizeiptr size, const GLvoid * data)
 {
     implementation().setSubData(this, offset, size, data);
 }
 
-void Buffer::setStorage(GLsizeiptr size, const GLvoid * data, MapBufferUsageMask flags)
+void Buffer::setStorage(const GLsizeiptr size, const GLvoid * data, const MapBufferUsageMask flags)
 {
     implementation().setStorage(this, size, data, flags);
 }
 
-GLint Buffer::getParameter(GLenum pname) const
+GLint Buffer::getParameter(const GLenum pname) const
 {
     return implementation().getParameter(this, pname);
 }
 
-GLint64 Buffer::getParameter64(GLenum pname) const
+GLint64 Buffer::getParameter64(const GLenum pname) const
 {
     return implementation().getParameter64(this, pname);
 }
 
-void Buffer::bindBase(GLenum target, GLuint index) const
+void Buffer::bindBase(const GLenum target, const GLuint index) const
 {
     glBindBufferBase(target, index, id());
 }
 
-void Buffer::bindRange(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size) const
+void Buffer::bindRange(const GLenum target, const GLuint index, const GLintptr offset, const GLsizeiptr size) const
 {
     glBindBufferRange(target, index, id(), offset, size);
 }
 
-void Buffer::copySubData(Buffer * buffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) const
+void Buffer::copySubData(Buffer * buffer, const GLintptr readOffset, const GLintptr writeOffset, const GLsizeiptr size) const
 {
     assert(buffer != nullptr);
 
     implementation().copySubData(this, buffer, readOffset, writeOffset, size);
 }
 
-void Buffer::copySubData(Buffer * buffer, GLsizeiptr size) const
+void Buffer::copySubData(Buffer * buffer, const GLsizeiptr size) const
 {
 	copySubData(buffer, 0, 0, size);
 }
 
-void Buffer::copyData(Buffer * buffer, GLsizeiptr size, GLenum usage) const
+void Buffer::copyData(Buffer * buffer, const GLsizeiptr size, const GLenum usage) const
 {
     assert(buffer != nullptr);
 
@@ -161,12 +160,12 @@ void Buffer::copyData(Buffer * buffer, GLsizeiptr size, GLenum usage) const
 	copySubData(buffer, 0, 0, size);
 }
 
-void Buffer::clearData(GLenum internalformat, GLenum format, GLenum type, const void * data)
+void Buffer::clearData(const GLenum internalformat, const GLenum format, const GLenum type, const void * data)
 {
     implementation().clearData(this, internalformat, format, type, data);
 }
 
-void Buffer::clearSubData(GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data)
+void Buffer::clearSubData(const GLenum internalformat, const GLintptr offset, const GLsizeiptr size, const GLenum format, const GLenum type, const void * data)
 {
     implementation().clearSubData(this, internalformat, offset, size, format, type, data);
 }
@@ -181,17 +180,17 @@ void * Buffer::getPointer()
     return getPointer(GL_BUFFER_MAP_POINTER);
 }
 
-const void * Buffer::getPointer(GLenum pname) const
+const void * Buffer::getPointer(const GLenum pname) const
 {
     return implementation().getPointer(this, pname);
 }
 
-void * Buffer::getPointer(GLenum pname)
+void * Buffer::getPointer(const GLenum pname)
 {
     return implementation().getPointer(this, pname);
 }
 
-void Buffer::getSubData(GLintptr offset, GLsizeiptr size, void * data) const
+void Buffer::getSubData(const GLintptr offset, const GLsizeiptr size, void * data) const
 {
     implementation().getBufferSubData(this, offset, size, data);
 }

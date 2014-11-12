@@ -11,12 +11,12 @@ using namespace gl;
 namespace 
 {
 
-int nextMultiple(int n, int k)
+int nextMultiple(const int n, const int k)
 {
     return n + (k-n%k)%k;
 }
 
-int byteSize(GLenum type)
+int byteSize(const GLenum type)
 {
     switch (type)
     {
@@ -43,7 +43,7 @@ int byteSize(GLenum type)
     }
 }
 
-int numberOfComponents(GLenum format)
+int numberOfComponents(const GLenum format)
 {
     switch (format)
     {
@@ -84,7 +84,7 @@ int numberOfComponents(GLenum format)
     }
 }
 
-int bytesPerPixel(GLenum format, GLenum type)
+int bytesPerPixel(const GLenum format, const GLenum type)
 {
     switch (type) // several components encoded in type, disregard component count
     {
@@ -121,7 +121,7 @@ int bytesPerPixel(GLenum format, GLenum type)
 
 namespace globjects {
 
-int imageSizeInBytes(int width, int height, GLenum format, GLenum type)
+int imageSizeInBytes(const int width, const int height, const GLenum format, const GLenum type)
 {
     if (type == GL_BITMAP)
     {

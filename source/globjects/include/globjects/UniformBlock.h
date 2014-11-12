@@ -9,7 +9,6 @@ namespace globjects
 {
 
 class Program;
-class Buffer;
 
 class GLOBJECTS_API UniformBlock
 {

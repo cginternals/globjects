@@ -25,7 +25,7 @@ NamedString * NamedString::create(const std::string & name, const std::string & 
     return create(name, string, GL_SHADER_INCLUDE_ARB);
 }
 
-NamedString * NamedString::create(const std::string & name, AbstractStringSource * source, GLenum type)
+NamedString * NamedString::create(const std::string & name, AbstractStringSource * source, const GLenum type)
 {
     if (isNamedString(name))
     {
@@ -35,7 +35,7 @@ NamedString * NamedString::create(const std::string & name, AbstractStringSource
     return new NamedString(name, source, type);
 }
 
-NamedString * NamedString::create(const std::string & name, const std::string & string, GLenum type)
+NamedString * NamedString::create(const std::string & name, const std::string & string, const GLenum type)
 {
     if (isNamedString(name))
     {
@@ -45,7 +45,7 @@ NamedString * NamedString::create(const std::string & name, const std::string & 
     return new NamedString(name, new StaticStringSource(string), type);
 }
 
-NamedString::NamedString(const std::string & name, AbstractStringSource * source, GLenum type)
+NamedString::NamedString(const std::string & name, AbstractStringSource * source, const GLenum type)
 : m_name(name)
 , m_source(source)
 , m_type(type)
@@ -107,7 +107,7 @@ bool NamedString::isNamedString(const std::string & name)
     return false;
 }
 
-GLint NamedString::getParameter(GLenum pname)
+GLint NamedString::getParameter(const GLenum pname) const
 {
     if (hasNativeSupport())
     {
@@ -166,9 +166,9 @@ GLenum NamedString::type() const
     return m_type;
 }
 
-AbstractStringSource * NamedString::stringSource()
+AbstractStringSource * NamedString::stringSource() const
 {
-    return m_source;
+    return m_source.get();
 }
 
 bool NamedString::hasNativeSupport()

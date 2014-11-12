@@ -1,8 +1,6 @@
 #pragma once
 
 #include <glbinding/gl/types.h>
-#include <glbinding/gl/bitfield.h>
-#include <glbinding/gl/values.h>
 
 #include <globjects/base/Referenced.h>
 

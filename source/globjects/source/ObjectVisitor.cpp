@@ -1,8 +1,8 @@
+#include <globjects/ObjectVisitor.h>
+
 #include <cassert>
 
 #include <globjects/Object.h>
-
-#include <globjects/ObjectVisitor.h>
 
 namespace globjects
 {
@@ -19,7 +19,7 @@ void ObjectVisitor::visit(Object* object)
 {
     assert(object != nullptr);
 
-	object->accept(*this);
+    object->accept(*this);
 }
 
 void ObjectVisitor::visitBuffer(Buffer* /*buffer*/)

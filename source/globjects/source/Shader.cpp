@@ -1,23 +1,16 @@
 #include <globjects/Shader.h>
 
-#include <vector>
-#include <sstream>
-
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/boolean.h>
 
-#include <globjects/base/ref_ptr.h>
-#include <glbinding/Version.h>
 #include <globjects/base/AbstractStringSource.h>
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/base/File.h>
 #include <globjects/base/StringTemplate.h>
 
 #include <globjects/Program.h>
-#include <globjects/logging.h>
 #include <globjects/ObjectVisitor.h>
-#include <globjects/globjects.h>
 
 #include "Resource.h"
 
@@ -86,7 +79,7 @@ void Shader::globalReplace(const std::string & search, const std::string & repla
     s_globalReplacements[search] = replacement;
 }
 
-void Shader::globalReplace(const std::string & search, int i)
+void Shader::globalReplace(const std::string & search, const int i)
 {
     globalReplace(search, std::to_string(i));
 }

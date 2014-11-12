@@ -11,7 +11,7 @@ using namespace gl;
 namespace 
 {
 
-GLint getMemoryInformation(GLenum pname)
+GLint getMemoryInformation(const GLenum pname)
 {
     if (!globjects::hasExtension(GLextension::GL_NVX_gpu_memory_info))
         return -1;

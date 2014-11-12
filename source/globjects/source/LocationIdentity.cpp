@@ -13,7 +13,7 @@ LocationIdentity::LocationIdentity()
 {
 }
 
-LocationIdentity::LocationIdentity(GLint location)
+LocationIdentity::LocationIdentity(const GLint location)
 : m_invalid(false)
 , m_location(location)
 , m_hasName(false)

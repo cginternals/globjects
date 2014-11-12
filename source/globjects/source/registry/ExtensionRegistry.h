@@ -4,12 +4,16 @@
 #include <string>
 
 #include <glbinding/gl/extension.h>
-#include <glbinding/Version.h>
 
-namespace globjects
+namespace glbinding
 {
 
 class Version;
+
+}
+
+namespace globjects
+{
 
 class ExtensionRegistry
 {

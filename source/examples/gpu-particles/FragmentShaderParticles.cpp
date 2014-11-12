@@ -4,6 +4,7 @@
 #include <glbinding/gl/gl.h>
 
 #include <globjects/Program.h>
+#include <globjects/Shader.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Framebuffer.h>
 #include <globjects/Texture.h>

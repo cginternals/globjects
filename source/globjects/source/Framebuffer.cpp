@@ -5,18 +5,14 @@
 
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
+#include <glbinding/Meta.h>
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include <globjects/logging.h>
 #include <globjects/ObjectVisitor.h>
 #include <globjects/AttachedTexture.h>
 #include <globjects/FramebufferAttachment.h>
 #include <globjects/AttachedRenderbuffer.h>
-#include <globjects/Buffer.h>
-#include <globjects/Renderbuffer.h>
-#include <globjects/Texture.h>
-#include <globjects/constants.h>
 #include "pixelformat.h"
 
 #include "registry/ImplementationRegistry.h"
@@ -25,7 +21,6 @@
 #include "implementations/AbstractFramebufferImplementation.h"
 
 #include "Resource.h"
-
 
 using namespace gl;
 
@@ -43,7 +38,7 @@ const globjects::AbstractFramebufferImplementation & implementation()
 namespace globjects
 {
 
-void Framebuffer::hintBindlessImplementation(BindlessImplementation impl)
+void Framebuffer::hintBindlessImplementation(const BindlessImplementation impl)
 {
     ImplementationRegistry::current().initialize(impl);
 }
@@ -59,7 +54,7 @@ Framebuffer::Framebuffer(IDResource * resource)
 {
 }
 
-Framebuffer * Framebuffer::fromId(GLuint id)
+Framebuffer * Framebuffer::fromId(const GLuint id)
 {
     return new Framebuffer(new ExternalResource(id));
 }
@@ -73,7 +68,7 @@ Framebuffer::~Framebuffer()
 {
 }
 
-void Framebuffer::accept(ObjectVisitor& visitor)
+void Framebuffer::accept(ObjectVisitor & visitor)
 {
     visitor.visitFrameBufferObject(this);
 }
@@ -83,7 +78,7 @@ void Framebuffer::bind() const
     glBindFramebuffer(GL_FRAMEBUFFER, id());
 }
 
-void Framebuffer::bind(GLenum target) const
+void Framebuffer::bind(const GLenum target) const
 {
     glBindFramebuffer(target, id());
 }
@@ -93,43 +88,43 @@ void Framebuffer::unbind()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Framebuffer::unbind(GLenum target)
+void Framebuffer::unbind(const GLenum target)
 {
     glBindFramebuffer(target, 0);
 }
 
-void Framebuffer::setParameter(GLenum pname, GLint param)
+void Framebuffer::setParameter(const GLenum pname, const GLint param)
 {
     implementation().setParameter(this, pname, param);
 }
 
-GLint Framebuffer::getAttachmentParameter(GLenum attachment, GLenum pname) const
+GLint Framebuffer::getAttachmentParameter(const GLenum attachment, const GLenum pname) const
 {
     return implementation().getAttachmentParameter(this, attachment, pname);
 }
 
-void Framebuffer::attachTexture(GLenum attachment, Texture * texture, GLint level)
+void Framebuffer::attachTexture(const GLenum attachment, Texture * texture, const GLint level)
 {
     implementation().attachTexture(this, attachment, texture, level);
 
     addAttachment(new AttachedTexture(this, attachment, texture, level));
 }
 
-void Framebuffer::attachTextureLayer(GLenum attachment, Texture * texture, GLint level, GLint layer)
+void Framebuffer::attachTextureLayer(const GLenum attachment, Texture * texture, const GLint level, const GLint layer)
 {
     implementation().attachTextureLayer(this, attachment, texture, level, layer);
 
     addAttachment(new AttachedTexture(this, attachment, texture, level, layer));
 }
 
-void Framebuffer::attachRenderBuffer(GLenum attachment, Renderbuffer * renderBuffer)
+void Framebuffer::attachRenderBuffer(const GLenum attachment, Renderbuffer * renderBuffer)
 {
     implementation().attachRenderBuffer(this, attachment, renderBuffer);
 
     addAttachment(new AttachedRenderbuffer(this, attachment, renderBuffer));
 }
 
-bool Framebuffer::detach(GLenum attachment)
+bool Framebuffer::detach(const GLenum attachment)
 {
     FramebufferAttachment * attachmentObject = getAttachment(attachment);
 
@@ -159,17 +154,17 @@ bool Framebuffer::detach(GLenum attachment)
     return true;
 }
 
-void Framebuffer::setReadBuffer(GLenum mode) const
+void Framebuffer::setReadBuffer(const GLenum mode) const
 {
     implementation().setReadBuffer(this, mode);
 }
 
-void Framebuffer::setDrawBuffer(GLenum mode) const
+void Framebuffer::setDrawBuffer(const GLenum mode) const
 {
     implementation().setDrawBuffer(this, mode);
 }
 
-void Framebuffer::setDrawBuffers(GLsizei n, const GLenum * modes) const
+void Framebuffer::setDrawBuffers(const GLsizei n, const GLenum * modes) const
 {
     assert(modes != nullptr || n == 0);
 
@@ -181,57 +176,57 @@ void Framebuffer::setDrawBuffers(const std::vector<GLenum> & modes) const
     setDrawBuffers(static_cast<int>(modes.size()), modes.data());
 }
 
-void Framebuffer::clear(ClearBufferMask mask)
+void Framebuffer::clear(const ClearBufferMask mask)
 {
     bind();
 
     glClear(mask);
 }
 
-void Framebuffer::clearBufferiv(GLenum buffer, GLint drawBuffer, const GLint * value)
+void Framebuffer::clearBufferiv(const GLenum buffer, const GLint drawBuffer, const GLint * value)
 {
     bind();
 
     glClearBufferiv(buffer, drawBuffer, value);
 }
 
-void Framebuffer::clearBufferuiv(GLenum buffer, GLint drawBuffer, const GLuint * value)
+void Framebuffer::clearBufferuiv(const GLenum buffer, const GLint drawBuffer, const GLuint * value)
 {
     bind();
 
     glClearBufferuiv(buffer, drawBuffer, value);
 }
 
-void Framebuffer::clearBufferfv(GLenum buffer, GLint drawBuffer, const GLfloat * value)
+void Framebuffer::clearBufferfv(const GLenum buffer, const GLint drawBuffer, const GLfloat * value)
 {
     bind();
 
     glClearBufferfv(buffer, drawBuffer, value);
 }
 
-void Framebuffer::clearBufferfi(GLenum buffer, GLint drawBuffer, GLfloat depth, GLint stencil)
+void Framebuffer::clearBufferfi(const GLenum buffer, const GLint drawBuffer, const GLfloat depth, const GLint stencil)
 {
     bind();
 
     glClearBufferfi(buffer, drawBuffer, depth, stencil);
 }
 
-void Framebuffer::clearBuffer(GLenum buffer, GLint drawBuffer, const glm::ivec4 & value)
+void Framebuffer::clearBuffer(const GLenum buffer, const GLint drawBuffer, const glm::ivec4 & value)
 {
     clearBufferiv(buffer, drawBuffer, glm::value_ptr(value));
 }
 
-void Framebuffer::clearBuffer(GLenum buffer, GLint drawBuffer, const glm::uvec4 & value)
+void Framebuffer::clearBuffer(const GLenum buffer, const GLint drawBuffer, const glm::uvec4 & value)
 {
     clearBufferuiv(buffer, drawBuffer, glm::value_ptr(value));
 }
 
-void Framebuffer::clearBuffer(GLenum buffer, GLint drawBuffer, const glm::vec4 & value)
+void Framebuffer::clearBuffer(const GLenum buffer, const GLint drawBuffer, const glm::vec4 & value)
 {
     clearBufferfv(buffer, drawBuffer, glm::value_ptr(value));
 }
 
-void Framebuffer::colorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
+void Framebuffer::colorMask(const GLboolean red, const GLboolean green, const GLboolean blue, const GLboolean alpha)
 {
     glColorMask(red, green, blue, alpha);
 }
@@ -241,17 +236,17 @@ void Framebuffer::colorMask(const glm::bvec4 & mask)
     colorMask(static_cast<GLboolean>(mask[0]), static_cast<GLboolean>(mask[1]), static_cast<GLboolean>(mask[2]), static_cast<GLboolean>(mask[3]));
 }
 
-void Framebuffer::colorMaski(GLuint buffer, GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
+void Framebuffer::colorMaski(const GLuint buffer, const GLboolean red, const GLboolean green, const GLboolean blue, const GLboolean alpha)
 {
     glColorMaski(buffer, red, green, blue, alpha);
 }
 
-void Framebuffer::colorMaski(GLuint buffer, const glm::bvec4 & mask)
+void Framebuffer::colorMaski(const GLuint buffer, const glm::bvec4 & mask)
 {
     colorMaski(buffer, static_cast<GLboolean>(mask[0]), static_cast<GLboolean>(mask[1]), static_cast<GLboolean>(mask[2]), static_cast<GLboolean>(mask[3]));
 }
 
-void Framebuffer::clearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
+void Framebuffer::clearColor(const GLfloat red, const GLfloat green, const GLfloat blue, const GLfloat alpha)
 {
     glClearColor(red, green, blue, alpha);
 }
@@ -261,30 +256,30 @@ void Framebuffer::clearColor(const glm::vec4 & color)
     clearColor(color.r, color.g, color.b, color.a);
 }
 
-void Framebuffer::clearDepth(GLclampd depth)
+void Framebuffer::clearDepth(const GLclampd depth)
 {
     glClearDepth(depth);
 }
 
-void Framebuffer::readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * data) const
+void Framebuffer::readPixels(const GLint x, const GLint y, const GLsizei width, const GLsizei height, const GLenum format, const GLenum type, GLvoid * data) const
 {
     bind(GL_READ_FRAMEBUFFER);
 
     glReadPixels(x, y, width, height, format, type, data);
 }
 
-void Framebuffer::readPixels(const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data) const
+void Framebuffer::readPixels(const std::array<GLint, 4> & rect, const GLenum format, const GLenum type, GLvoid * data) const
 {
     readPixels(rect[0], rect[1], rect[2], rect[3], format, type, data);
 }
 
-void Framebuffer::readPixels(GLenum readBuffer, const std::array<GLint, 4> & rect, GLenum format, GLenum type, GLvoid * data) const
+void Framebuffer::readPixels(const GLenum readBuffer, const std::array<GLint, 4> & rect, const GLenum format, const GLenum type, GLvoid * data) const
 {
     setReadBuffer(readBuffer);
     readPixels(rect, format, type, data);
 }
 
-std::vector<unsigned char> Framebuffer::readPixelsToByteArray(const std::array<GLint, 4> & rect, GLenum format, GLenum type) const
+std::vector<unsigned char> Framebuffer::readPixelsToByteArray(const std::array<GLint, 4> & rect, const GLenum format, const GLenum type) const
 {
     int size = imageSizeInBytes(rect[2], rect[3], format, type);
     std::vector<unsigned char> data(size);
@@ -343,7 +338,7 @@ GLenum Framebuffer::checkStatus() const
 
 std::string Framebuffer::statusString() const
 {
-    return enumName(checkStatus());
+    return glbinding::Meta::getString(checkStatus());
 }
 
 void Framebuffer::printStatus(bool onlyErrors) const
@@ -354,7 +349,7 @@ void Framebuffer::printStatus(bool onlyErrors) const
 
 	if (status == GL_FRAMEBUFFER_COMPLETE)
 	{
-        info() << enumName(GL_FRAMEBUFFER_COMPLETE);
+        info() << glbinding::Meta::getString(GL_FRAMEBUFFER_COMPLETE);
 	}
 	else
 	{
@@ -362,7 +357,7 @@ void Framebuffer::printStatus(bool onlyErrors) const
 		ss.flags(std::ios::hex | std::ios::showbase);
         ss << static_cast<unsigned int>(status);
 
-        critical() << enumName(status) << " (" << ss.str() << ")";
+        critical() << glbinding::Meta::getString(status) << " (" << ss.str() << ")";
 	}
 }
 

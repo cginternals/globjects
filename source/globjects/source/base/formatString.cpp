@@ -11,7 +11,7 @@
 namespace globjects
 {
 
-int readInt(const char* str, int& number)
+int readInt(const char* str, int & number)
 {
 	number = 0;
 	int read = 0;
@@ -25,7 +25,7 @@ int readInt(const char* str, int& number)
 	return read;
 }
 
-void parseFormat(std::ostream& stream, const char*& format)
+void parseFormat(std::ostream & stream, const char * & format)
 {
     std::locale loc;
 
@@ -152,7 +152,7 @@ void parseFormat(std::ostream& stream, const char*& format)
 	while (*format && *format++ != ';');
 }
 
-void streamprintf(std::ostream& stream, const char* format)
+void streamprintf(std::ostream & stream, const char * format)
 {
 	stream << format;
 }

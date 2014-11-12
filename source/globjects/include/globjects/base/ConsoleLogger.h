@@ -21,7 +21,7 @@ public:
     virtual void handle(const LogMessage & message) override;
 
 protected:
-    static std::string levelString(LogMessage::Level level);
+    static std::string levelString(LogMessageLevel level);
 };
 
 } // namespace globjects

@@ -11,7 +11,7 @@ namespace globjects
 {
 
 template <int Count>
-std::array<gl::GLint, Count> getIntegers(gl::GLenum pname)
+std::array<gl::GLint, Count> getIntegers(const gl::GLenum pname)
 {
     std::array<gl::GLint, Count> values;
 
@@ -21,7 +21,7 @@ std::array<gl::GLint, Count> getIntegers(gl::GLenum pname)
 }
 
 template <int Count>
-std::array<gl::GLfloat, Count> getFloats(gl::GLenum pname)
+std::array<gl::GLfloat, Count> getFloats(const gl::GLenum pname)
 {
     std::array<gl::GLfloat, Count> values;
 
@@ -31,7 +31,7 @@ std::array<gl::GLfloat, Count> getFloats(gl::GLenum pname)
 }
 
 template <int Count>
-std::array<gl::GLdouble, Count> getDoubles(gl::GLenum pname)
+std::array<gl::GLdouble, Count> getDoubles(const gl::GLenum pname)
 {
     std::array<gl::GLdouble, Count> values;
 
@@ -41,7 +41,7 @@ std::array<gl::GLdouble, Count> getDoubles(gl::GLenum pname)
 }
 
 template <int Count>
-std::array<gl::GLboolean, Count> getBooleans(gl::GLenum pname)
+std::array<gl::GLboolean, Count> getBooleans(const gl::GLenum pname)
 {
     std::array<gl::GLboolean, Count> values;
 
@@ -59,7 +59,7 @@ void init(T strategy, Args... args)
 }
 
 template <typename T, typename... Args>
-void init(glbinding::ContextHandle sharedContextId, T strategy, Args... args)
+void init(const glbinding::ContextHandle sharedContextId, T strategy, Args... args)
 {
     init(sharedContextId, args...);
 

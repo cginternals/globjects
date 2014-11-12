@@ -9,7 +9,6 @@ namespace globjects
 {
 
 class AbstractLogHandler;
-class LogMessageBuilder;
 
 /**
   * Creates a stream like object (LogMessageBuilder) to create a LogMessage from the objects
@@ -20,7 +19,7 @@ class LogMessageBuilder;
   * info() << "Message: " << 3.14;
   * \endcode
   */
-GLOBJECTS_API LogMessageBuilder info(LogMessage::Level level = LogMessage::Info);
+GLOBJECTS_API LogMessageBuilder info(LogMessageLevel level = LogMessageLevel::Info);
 GLOBJECTS_API LogMessageBuilder debug();
 GLOBJECTS_API LogMessageBuilder warning();
 GLOBJECTS_API LogMessageBuilder critical();
@@ -29,8 +28,8 @@ GLOBJECTS_API LogMessageBuilder fatal();
 GLOBJECTS_API void setLoggingHandler(AbstractLogHandler * handler);
 GLOBJECTS_API AbstractLogHandler * loggingHandler();
 
-GLOBJECTS_API void setVerbosityLevel(LogMessage::Level verbosity);
-GLOBJECTS_API LogMessage::Level verbosityLevel();
+GLOBJECTS_API void setVerbosityLevel(LogMessageLevel verbosity);
+GLOBJECTS_API LogMessageLevel verbosityLevel();
 
 /**
  * Uses formatString to write on the usual logging streams.

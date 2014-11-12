@@ -14,14 +14,16 @@
 #include <globjects/Object.h>
 #include <globjects/LocationIdentity.h>
 #include <globjects/UniformBlock.h>
-#include <globjects/AbstractUniform.h>
 
 namespace globjects
 {
 
-class ObjectVisitor;
+class AbstractUniform;
 class ProgramBinary;
 class Shader;
+
+template <typename T>
+class Uniform;
 
 
 /** \brief Wraps an OpenGL program.
@@ -97,7 +99,7 @@ public:
 	bool isUsed() const;
 	bool isLinked() const;
 
-	//void attach(Shader * shader);
+    void attach(Shader * shader);
     template <class ...Shaders> 
     void attach(Shader * shader, Shaders... shaders);
 
@@ -172,8 +174,6 @@ public:
 
 protected:
     virtual ~Program();
-
-    void attach();
 
     bool checkLinkStatus() const;
     void checkDirty() const;

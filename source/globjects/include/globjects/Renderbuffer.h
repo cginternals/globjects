@@ -8,8 +8,6 @@
 namespace globjects 
 {
 
-class ObjectVisitor;
-
 /** \brief Encapsulates OpenGL render buffer objects.
  
     \see http://www.opengl.org/wiki/Renderbuffer_Objects

@@ -2,8 +2,6 @@
 
 #include <cassert>
 
-#include <glbinding/Version.h>
-
 #include <globjects/VertexArray.h>
 #include <globjects/globjects.h>
 
@@ -78,23 +76,23 @@ const Buffer * VertexAttributeBinding::buffer() const
     return m_vbo;
 }
 
-void VertexAttributeBinding::setBuffer(const Buffer * vbo, GLint baseoffset, GLint stride)
+void VertexAttributeBinding::setBuffer(const Buffer * vbo, const GLint baseoffset, const GLint stride)
 {
     m_vbo = vbo;
     attributeImplementation().bindBuffer(this, vbo, baseoffset, stride);
 }
 
-void VertexAttributeBinding::setFormat(GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset)
+void VertexAttributeBinding::setFormat(const GLint size, const GLenum type, const GLboolean normalized, const GLuint relativeoffset)
 {
     attributeImplementation().setFormat(this, size, type, normalized, relativeoffset);
 }
 
-void VertexAttributeBinding::setIFormat(GLint size, GLenum type, GLuint relativeoffset)
+void VertexAttributeBinding::setIFormat(const GLint size, const GLenum type, const GLuint relativeoffset)
 {
     attributeImplementation().setIFormat(this, size, type, relativeoffset);
 }
 
-void VertexAttributeBinding::setLFormat(GLint size, GLenum type, GLuint relativeoffset)
+void VertexAttributeBinding::setLFormat(const GLint size, const GLenum type, const GLuint relativeoffset)
 {
     attributeImplementation().setLFormat(this, size, type, relativeoffset);
 }

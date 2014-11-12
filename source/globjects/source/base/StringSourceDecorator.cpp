@@ -10,19 +10,19 @@ StringSourceDecorator::StringSourceDecorator(AbstractStringSource * source)
 {
     assert(source != nullptr);
 
-	m_internal->registerListener(this);
+    m_internal->registerListener(this);
 
     update();
 }
 
 StringSourceDecorator::~StringSourceDecorator()
 {
-	m_internal->deregisterListener(this);
+    m_internal->deregisterListener(this);
 }
 
 void StringSourceDecorator::notifyChanged(const globjects::Changeable *)
 {
-	update();
+    update();
     changed();
 }
 

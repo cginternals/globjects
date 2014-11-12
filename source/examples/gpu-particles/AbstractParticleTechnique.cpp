@@ -8,6 +8,7 @@
 
 #include <globjects/Texture.h>
 #include <globjects/Program.h>
+#include <globjects/Shader.h>
 #include <globjects/Buffer.h>
 #include <globjects/Framebuffer.h>
 
