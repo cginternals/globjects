@@ -29,7 +29,7 @@ DebugMessage::Callback AbstractDebugImplementation::s_defaultCallback = [](const
         fatal() << message.toString();
 #endif
     }
-    else
+    else if (message.type() != GL_DEBUG_TYPE_OTHER)
     {
         debug() << message.toString();
     }
