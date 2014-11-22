@@ -328,6 +328,9 @@ std::string Program::getResourceName(gl::GLenum programInterface, gl::GLuint ind
 
     size_t nameLength = getResource(programInterface, index, gl::GL_NAME_LENGTH);
 
+    if (gl::glGetError() != gl::GL_NONE)
+        return std::string();
+
     if (nameLength == 1)
         return std::string();
 
