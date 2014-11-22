@@ -267,7 +267,7 @@ GLuint Program::getResourceIndex(const GLenum programInterface, const std::strin
 {
     checkDirty();
 
-    return glGetProgramResourceIndex(id(), programInterface, name.c_str());
+    return glGetProgramResourceIndex(id(), programInterface, name.data());
 }
 
 void Program::getResourceName(gl::GLenum programInterface, gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, char * name)
@@ -288,14 +288,14 @@ gl::GLint Program::getResourceLocation(gl::GLenum programInterface, const std::s
 {
     checkDirty();
 
-    return glGetProgramResourceLocation(id(), programInterface, name.c_str());
+    return glGetProgramResourceLocation(id(), programInterface, name.data());
 }
 
 gl::GLint Program::getResourceLocationIndex(gl::GLenum programInterface, const std::string & name)
 {
     checkDirty();
 
-    return glGetProgramResourceLocationIndex(id(), programInterface, name.c_str());
+    return glGetProgramResourceLocationIndex(id(), programInterface, name.data());
 }
 
 gl::GLint Program::getResource(gl::GLenum programInterface, gl::GLuint index, gl::GLenum prop, gl::GLsizei * length)
@@ -312,32 +312,32 @@ std::vector<gl::GLint> Program::getResource(gl::GLenum programInterface, gl::GLu
     std::vector<gl::GLint> result;
     result.resize(props.size());
 
-    getResource(programInterface, index, props, result.size(), length, &result[0]);
+    getResource(programInterface, index, props, result.size(), length, result.data());
 
     return result;
 }
 
 void Program::getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params)
 {
-    getResource(programInterface, index, props.size(), &props[0], bufSize, length, params);
+    getResource(programInterface, index, props.size(), props.data(), bufSize, length, params);
 }
 
 std::string Program::getResourceName(gl::GLenum programInterface, gl::GLuint index)
 {
-    std::string result;
+    std::vector<char> result;
 
     size_t nameLength = getResource(programInterface, index, gl::GL_NAME_LENGTH);
-    result.resize(nameLength);
+    result.resize(nameLength + 1);
 
 #ifndef NDEBUG
     gl::GLint length;
-    getResourceName(programInterface, index, nameLength, &length, &result[0]);
+    getResourceName(programInterface, index, nameLength, &length, result.data());
     assert(length + 1 == static_cast<gl::GLint>(nameLength)); // length does NOT include the null-terminator
 #else
-    getResourceName(programInterface, index, nameLength, NULL, &result[0]);
+    getResourceName(programInterface, index, nameLength, NULL, result.data());
 #endif
 
-    return result;
+    return std::string(result.data(), nameLength);
 }
 
 GLuint Program::getUniformBlockIndex(const std::string & name) const
