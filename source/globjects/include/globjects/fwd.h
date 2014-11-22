@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base/ref_ptr.h"
+#include <globjects/base/ref_ptr.h>
 
 
 namespace globjects
