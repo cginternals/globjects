@@ -192,6 +192,8 @@ set(sources
 )
 
 set(api_includes
+	${include_path}/fwd.h
+	
 	${include_path}/AbstractState.h
 	${include_path}/AbstractState.hpp
 	${include_path}/AbstractUniform.h
