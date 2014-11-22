@@ -267,7 +267,7 @@ GLuint Program::getResourceIndex(const GLenum programInterface, const std::strin
 {
     checkDirty();
 
-    return glGetProgramResourceIndex(id(), programInterface, name.data());
+    return glGetProgramResourceIndex(id(), programInterface, name.c_str());
 }
 
 void Program::getResourceName(gl::GLenum programInterface, gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, char * name)
@@ -288,14 +288,14 @@ gl::GLint Program::getResourceLocation(gl::GLenum programInterface, const std::s
 {
     checkDirty();
 
-    return glGetProgramResourceLocation(id(), programInterface, name.data());
+    return glGetProgramResourceLocation(id(), programInterface, name.c_str());
 }
 
 gl::GLint Program::getResourceLocationIndex(gl::GLenum programInterface, const std::string & name)
 {
     checkDirty();
 
-    return glGetProgramResourceLocationIndex(id(), programInterface, name.data());
+    return glGetProgramResourceLocationIndex(id(), programInterface, name.c_str());
 }
 
 gl::GLint Program::getResource(gl::GLenum programInterface, gl::GLuint index, gl::GLenum prop, gl::GLsizei * length)
@@ -328,15 +328,15 @@ std::string Program::getResourceName(gl::GLenum programInterface, gl::GLuint ind
 
     size_t nameLength = getResource(programInterface, index, gl::GL_NAME_LENGTH);
 
-    if (nameLength == 0)
+    if (nameLength == 1)
         return std::string();
 
-    result.resize(nameLength + 1);
+    result.resize(nameLength);
 
 #ifndef NDEBUG
     gl::GLint length;
     getResourceName(programInterface, index, nameLength, &length, result.data());
-    assert(length + 1 == static_cast<gl::GLint>(nameLength)); // length does NOT include the null-terminator
+    assert(length == static_cast<gl::GLint>(nameLength - 1)); // length does NOT include the null-terminator
 #else
     getResourceName(programInterface, index, nameLength, NULL, result.data());
 #endif
