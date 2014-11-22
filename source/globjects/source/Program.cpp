@@ -327,6 +327,10 @@ std::string Program::getResourceName(gl::GLenum programInterface, gl::GLuint ind
     std::vector<char> result;
 
     size_t nameLength = getResource(programInterface, index, gl::GL_NAME_LENGTH);
+
+    if (nameLength == 0)
+        return std::string();
+
     result.resize(nameLength + 1);
 
 #ifndef NDEBUG
