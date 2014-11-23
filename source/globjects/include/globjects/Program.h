@@ -141,10 +141,6 @@ public:
     std::vector<gl::GLint> getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei * length = nullptr);
     void getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params);
 
-    /** Convenience method for getResourceName()
-    */
-    std::string getResourceName(gl::GLenum programInterface, gl::GLuint index);
-
     gl::GLuint getUniformBlockIndex(const std::string& name) const;
     UniformBlock * uniformBlock(gl::GLuint uniformBlockIndex);
     const UniformBlock * uniformBlock(gl::GLuint uniformBlockIndex) const;

@@ -322,31 +322,6 @@ void Program::getResource(gl::GLenum programInterface, gl::GLuint index, const s
     getResource(programInterface, index, props.size(), props.data(), bufSize, length, params);
 }
 
-std::string Program::getResourceName(gl::GLenum programInterface, gl::GLuint index)
-{
-    std::vector<char> result;
-
-    size_t nameLength = getResource(programInterface, index, gl::GL_NAME_LENGTH);
-
-    if (gl::glGetError() != gl::GL_NONE)
-        return std::string();
-
-    if (nameLength == 1)
-        return std::string();
-
-    result.resize(nameLength);
-
-#ifndef NDEBUG
-    gl::GLint length;
-    getResourceName(programInterface, index, nameLength, &length, result.data());
-    assert(length == static_cast<gl::GLint>(nameLength - 1)); // length does NOT include the null-terminator
-#else
-    getResourceName(programInterface, index, nameLength, NULL, result.data());
-#endif
-
-    return std::string(result.data(), nameLength);
-}
-
 GLuint Program::getUniformBlockIndex(const std::string & name) const
 {
     checkDirty();
