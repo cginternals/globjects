@@ -127,7 +127,19 @@ public:
 
     gl::GLint getFragDataLocation(const std::string & name) const;
     gl::GLint getFragDataIndex(const std::string & name) const;
+
+    void getInterface(gl::GLenum programInterface, gl::GLenum pname, gl::GLint * params) const;
     gl::GLuint getResourceIndex(gl::GLenum programInterface, const std::string & name) const;
+    void getResourceName(gl::GLenum programInterface, gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, char * name);
+    void getResource(gl::GLenum programInterface, gl::GLuint index, gl::GLsizei propCount, const gl::GLenum * props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params);
+    gl::GLint getResourceLocation(gl::GLenum programInterface, const std::string & name);
+    gl::GLint getResourceLocationIndex(gl::GLenum programInterface, const std::string & name);
+
+	/** Convenience methods for getResource()
+	*/
+    gl::GLint getResource(gl::GLenum programInterface, gl::GLuint index, gl::GLenum prop, gl::GLsizei * length = nullptr);
+    std::vector<gl::GLint> getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei * length = nullptr);
+    void getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params);
 
     gl::GLuint getUniformBlockIndex(const std::string& name) const;
     UniformBlock * uniformBlock(gl::GLuint uniformBlockIndex);

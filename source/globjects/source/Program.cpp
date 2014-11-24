@@ -23,7 +23,7 @@
 
 using namespace gl;
 
-namespace 
+namespace
 {
 
 const globjects::AbstractProgramBinaryImplementation & binaryImplementation()
@@ -256,11 +256,70 @@ GLint Program::getAttributeLocation(const std::string & name) const
     return glGetAttribLocation(id(), name.c_str());
 }
 
+void Program::getInterface(gl::GLenum programInterface, gl::GLenum pname, gl::GLint * params) const
+{
+    checkDirty();
+
+    glGetProgramInterfaceiv(id(), programInterface, pname, params);
+}
+
 GLuint Program::getResourceIndex(const GLenum programInterface, const std::string & name) const
 {
     checkDirty();
 
     return glGetProgramResourceIndex(id(), programInterface, name.c_str());
+}
+
+void Program::getResourceName(gl::GLenum programInterface, gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, char * name)
+{
+    checkDirty();
+
+    glGetProgramResourceName(id(), programInterface, index, bufSize, length, name);
+}
+
+void Program::getResource(gl::GLenum programInterface, gl::GLuint index, gl::GLsizei propCount, const gl::GLenum * props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params)
+{
+    checkDirty();
+
+    glGetProgramResourceiv(id(), programInterface, index, propCount, props, bufSize, length, params);
+}
+
+gl::GLint Program::getResourceLocation(gl::GLenum programInterface, const std::string & name)
+{
+    checkDirty();
+
+    return glGetProgramResourceLocation(id(), programInterface, name.c_str());
+}
+
+gl::GLint Program::getResourceLocationIndex(gl::GLenum programInterface, const std::string & name)
+{
+    checkDirty();
+
+    return glGetProgramResourceLocationIndex(id(), programInterface, name.c_str());
+}
+
+gl::GLint Program::getResource(gl::GLenum programInterface, gl::GLuint index, gl::GLenum prop, gl::GLsizei * length)
+{
+    gl::GLint result;
+
+    getResource(programInterface, index, 1, &prop, 1, length, &result);
+
+    return result;
+}
+
+std::vector<gl::GLint> Program::getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei * length)
+{
+    std::vector<gl::GLint> result;
+    result.resize(props.size());
+
+    getResource(programInterface, index, props, result.size(), length, result.data());
+
+    return result;
+}
+
+void Program::getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params)
+{
+    getResource(programInterface, index, props.size(), props.data(), bufSize, length, params);
 }
 
 GLuint Program::getUniformBlockIndex(const std::string & name) const
