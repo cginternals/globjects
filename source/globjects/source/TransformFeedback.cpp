@@ -89,9 +89,17 @@ void TransformFeedback::setVaryings(const Program * program, const GLsizei count
 	program->invalidate();
 }
 
-void TransformFeedback::setVaryings(const Program *program, const std::vector<const char*> & varyingNames, const GLenum bufferMode)
+void TransformFeedback::setVaryings(const Program * program, const std::vector<std::string> & varyingNames, GLenum bufferMode)
 {
-    setVaryings(program, static_cast<GLint>(varyingNames.size()), const_cast<const char**>(varyingNames.data()), bufferMode);
+    std::vector<const char*> c_ptrs;
+    c_ptrs.reserve((varyingNames.size()));
+
+    for (auto & name : varyingNames)
+    {
+        c_ptrs.push_back(name.data());
+    }
+
+    setVaryings(program, static_cast<GLint>(varyingNames.size()), const_cast<const char**>(c_ptrs.data()), bufferMode);
 }
 
 bool TransformFeedback::isTransformFeedback(const GLuint id)

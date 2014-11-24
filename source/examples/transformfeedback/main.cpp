@@ -119,7 +119,7 @@ public:
     {
         m_transformFeedback = new TransformFeedback();
         m_transformFeedback->setVaryings(m_transformFeedbackProgram
-            , std::array<const char*, 1>{ { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
+            , { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
     }
     
     virtual void framebufferResizeEvent(ResizeEvent & event) override
