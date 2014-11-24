@@ -115,6 +115,7 @@ int main(int /*argc*/, char * /*argv*/[])
     format.setVersion(4, 0);
     format.setProfile(ContextFormat::Profile::Core);
     format.setDepthBufferSize(16);
+    format.setForwardCompatible(true);
 
     Window::init();
 

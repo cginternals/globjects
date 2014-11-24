@@ -1,4 +1,4 @@
-#version 330
+#version 130
 
 uniform float alpha;
 uniform mat4 viewProjection;

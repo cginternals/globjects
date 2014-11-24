@@ -1,4 +1,5 @@
-#version 410
+#version 130
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform float timef;
 

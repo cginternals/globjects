@@ -1,4 +1,5 @@
-#version 410
+#version 130
+#extension GL_ARB_explicit_attrib_location : require
 
 layout (location = 0) in vec3 a_vertex;
 out vec3 v_vertex;
