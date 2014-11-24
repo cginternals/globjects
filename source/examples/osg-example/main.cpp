@@ -1,6 +1,7 @@
+
 #ifdef _MSC_VER
-	#pragma warning( push )
-	#pragma warning( disable : 4100) // ignore unreferenced parameter warning introduced in osg
+    #pragma warning(push)
+    #pragma warning(disable : 4100) // ignore unreferenced parameter warning introduced in osg
 #endif
 
 #include <osg/Geode>
@@ -21,12 +22,14 @@
 #include <osgGA/TrackballManipulator>
 
 #ifdef _MSC_VER
-	#pragma warning( pop )
+    #pragma warning(pop)
 #endif
+
 
 #include <iostream>
 
 #include "impl.h"
+
 
 GlobjectsInterface globjectsInterface;
 
