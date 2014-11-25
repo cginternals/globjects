@@ -1,5 +1,3 @@
-#version 410
-
 vec3 phong(
 	in vec3 eye
 ,	in vec3 vertex

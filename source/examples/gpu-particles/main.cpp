@@ -363,8 +363,9 @@ int main(int argc, char * argv[])
     info() << "\t" << "C" << "\t\t"         << "Particle computation using compute shader";
 
     ContextFormat format;
-    format.setVersion(3, 3); // minimum required version is 3.3 due to particle drawing using geometry shader.
+    format.setVersion(3, 2); // minimum required version is 3.2 due to particle drawing using geometry shader.
     format.setProfile(ContextFormat::Profile::Core);
+    format.setForwardCompatible(true);
 
     Window::init();
 

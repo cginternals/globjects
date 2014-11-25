@@ -202,6 +202,7 @@ int main(int /*argc*/, char * /*argv*/[])
     ContextFormat format;
     format.setVersion(4, 0);
     format.setProfile(ContextFormat::Profile::Core);
+    format.setForwardCompatible(true);
 
     Window::init();
 

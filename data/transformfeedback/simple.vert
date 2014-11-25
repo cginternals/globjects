@@ -1,4 +1,5 @@
-#version 330
+#version 130
+#extension GL_ARB_explicit_attrib_location : require
 
 uniform mat4 modelView;
 uniform mat4 projection;
