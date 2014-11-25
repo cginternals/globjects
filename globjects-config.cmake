@@ -9,39 +9,9 @@
 # GLOBJECTS_LIBRARY_DEBUG
 # GLOBJECTS_INCLUDE_DIR
 
-# GLOBJECTS_BINARY (win32 only)
-
-
-include(FindPackageHandleStandardArgs)
-
-if(CMAKE_CURRENT_LIST_FILE)
-    get_filename_component(GLOBJECTS_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
-endif()
-
-file(TO_CMAKE_PATH "$ENV{PROGRAMFILES}" ENVPROGRAMFILES)
-file(TO_CMAKE_PATH "$ENV{GLOBJECTS_DIR}" ENVGLOBJECTS_DIR)
-
-set(GLOBJECTS_INCLUDES "")
-set(GLOBJECTS_LIBRARIES "")
-
-set(LIB_PATHS   
-    ${GLOBJECTS_DIR}/build
-    ${GLOBJECTS_DIR}/build/Release
-    ${GLOBJECTS_DIR}/build/Debug
-    ${GLOBJECTS_DIR}/build-release
-    ${GLOBJECTS_DIR}/build-debug
-    ${ENVGLOBJECTS_DIR}/lib
-    ${GLOBJECTS_DIR}/lib
-    ${ENVPROGRAMFILES}/globjects/lib
-    /usr/lib
-    /usr/local/lib
-    /sw/lib
-    /opt/local/lib
-    /usr/lib64
-    /usr/local/lib64
-    /sw/lib64
-    /opt/local/lib64
-)
+# GLOBJECTS_BINARIES        (win32 only)
+# GLOBJECTS_BINARY_RELEASE  (win32 only)
+# GLOBJECTS_BINARY_DEBUG    (win32 only)
 
 macro (find LIB_NAME HEADER)
     set(HINT_PATHS ${ARGN})
@@ -77,28 +47,79 @@ macro (find LIB_NAME HEADER)
         set(${LIB_NAME_UPPER}_LIBRARY ${${LIB_NAME_UPPER}_LIBRARY_DEBUG})
     endif()
 
+    list(APPEND GLOBJECTS_INCLUDES ${${LIB_NAME_UPPER}_INCLUDE_DIR})
+    list(APPEND GLOBJECTS_LIBRARIES ${${LIB_NAME_UPPER}_LIBRARY})
+
     # DEBUG
     # message("${LIB_NAME_UPPER}_INCLUDE_DIR     = ${${LIB_NAME_UPPER}_INCLUDE_DIR}")
     # message("${LIB_NAME_UPPER}_LIBRARY_RELEASE = ${${LIB_NAME_UPPER}_LIBRARY_RELEASE}")
     # message("${LIB_NAME_UPPER}_LIBRARY_DEBUG   = ${${LIB_NAME_UPPER}_LIBRARY_DEBUG}")
     # message("${LIB_NAME_UPPER}_LIBRARY         = ${${LIB_NAME_UPPER}_LIBRARY}")
 
-    list(APPEND GLOBJECTS_INCLUDES ${${LIB_NAME_UPPER}_INCLUDE_DIR})
-    list(APPEND GLOBJECTS_LIBRARIES ${${LIB_NAME_UPPER}_LIBRARY})
 endmacro()
 
-find(globjects globjects/globjects_api.h ${LIB_PATHS})
-if (GLOBJECTS_LIBRARY AND WIN32)
 
-    find_file(GLOBJECTS_BINARY
+if(CMAKE_CURRENT_LIST_FILE)
+    get_filename_component(GLOBJECTS_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
+endif()
+
+file(TO_CMAKE_PATH "$ENV{PROGRAMFILES}" ENVPROGRAMFILES)
+file(TO_CMAKE_PATH "$ENV{GLOBJECTS_DIR}" ENVGLOBJECTS_DIR)
+
+set(GLOBJECTS_INCLUDES "")
+set(GLOBJECTS_LIBRARIES "")
+
+set(LIB_PATHS   
+    ${GLOBJECTS_DIR}/build
+    ${GLOBJECTS_DIR}/build/Release
+    ${GLOBJECTS_DIR}/build/Debug
+    ${GLOBJECTS_DIR}/build-release
+    ${GLOBJECTS_DIR}/build-debug
+    ${ENVGLOBJECTS_DIR}/lib
+    ${GLOBJECTS_DIR}/lib
+    ${ENVPROGRAMFILES}/globjects/lib
+    /usr/lib
+    /usr/local/lib
+    /sw/lib
+    /opt/local/lib
+    /usr/lib64
+    /usr/local/lib64
+    /sw/lib64
+    /opt/local/lib64
+)
+
+
+find(globjects globjects/globjects_api.h ${LIB_PATHS})
+
+if (GLOBJECTS_LIBRARY AND WIN32)
+    set(GLOBJECTS_BINARIES "")
+
+    find_file(GLOBJECTS_BINARY_RELEASE
         NAMES globjects.dll
         PATHS
         ${GLOBJECTS_DIR}/bin
         ${GLOBJECTS_DIR}/build/Release
-        ${GLOBJECTS_DIR}/build/Debug
         ${GLOBJECTS_DIR}/build-release
-        ${GLOBJECTS_DIR}/build-debug
         DOC "The globjects binary")
+
+    find_file(GLOBJECTS_BINARY_DEBUG
+        NAMES globjectsd.dll
+        PATHS
+        ${GLOBJECTS_DIR}/bin
+        ${GLOBJECTS_DIR}/build/Debug
+        ${GLOBJECTS_DIR}/build-debug
+        DOC "The globjects debug binary")
+
+    if(NOT GLOBJECTS_BINARY_RELEASE STREQUAL "GLOBJECTS_BINARY_RELEASE-NOTFOUND")
+        list(APPEND GLOBJECTS_BINARIES ${GLOBJECTS_BINARY_RELEASE})
+    endif()
+
+    if(NOT GLOBJECTS_BINARY_DEBUG STREQUAL "GLOBJECTS_BINARY_DEBUG-NOTFOUND")
+        list(APPEND GLOBJECTS_BINARIES ${GLOBJECTS_BINARY_DEBUG})
+    endif()
+
+    # DEBUG
+    # message("${LIB_NAME_UPPER}_BINARIES         = ${${LIB_NAME_UPPER}_BINARIES}")
 
 endif()
 
@@ -106,5 +127,6 @@ endif()
 # message("GLOBJECTS_INCLUDES  = ${GLOBJECTS_INCLUDES}")
 # message("GLOBJECTS_LIBRARIES = ${GLOBJECTS_LIBRARIES}")
 
+include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(GLOBJECTS DEFAULT_MSG GLOBJECTS_LIBRARIES GLOBJECTS_INCLUDES)
 mark_as_advanced(GLOBJECTS_FOUND)
