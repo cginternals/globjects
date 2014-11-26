@@ -81,7 +81,7 @@ public:
             << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
             << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
 
-#ifdef MAC_OS
+#ifdef __APPLE__
         Shader::clearGlobalReplacements();
         Shader::globalReplace("#version 130", "#version 150");
         Shader::globalReplace("#version 140", "#version 150");
@@ -262,7 +262,7 @@ int main(int argc, char * argv[])
     QApplication app(argc, argv);
 
     QSurfaceFormat format;
-#ifdef MAC_OS
+#ifdef __APPLE__
     format.setVersion(3, 2);
     format.setProfile(QSurfaceFormat::CoreProfile);
 #else

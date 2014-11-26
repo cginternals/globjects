@@ -107,7 +107,7 @@ void WindowEventHandler::initialize(Window &)
     init();
     DebugMessage::enable();
 
-#ifdef MAC_OS
+#ifdef __APPLE__
     Shader::clearGlobalReplacements();
     Shader::globalReplace("#version 130", "#version 150");
     Shader::globalReplace("#version 140", "#version 150");

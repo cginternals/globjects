@@ -48,7 +48,7 @@ glbinding::Version ContextFormat::validateVersion(
     const glbinding::Version & requestedVersion
 ,   const glbinding::Version & supportedMaximumVersion)
 {
-#ifdef MAC_OS
+#ifdef __APPLE__
     return glbinding::Version(3, 2);
 #endif
 
