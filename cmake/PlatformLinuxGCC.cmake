@@ -35,27 +35,54 @@ else()
 	set(EXCEPTION_FLAG "-fno-exceptions")
 endif()
 
-set(LINUX_COMPILE_FLAGS "-fvisibility=hidden -pthread -pipe -fPIC -Wreturn-type -Wall -pedantic -Wextra -Wfloat-equal -Wcast-qual -Wcast-align -Wconversion -Werror -Wno-error=float-equal -Wno-error=conversion -Wno-error=switch ${EXCEPTION_FLAG}")
-# pthread       -> use pthread library
-# no-rtti       -> disable c++ rtti
-# no-exceptions -> disable exception handling
-# pipe          -> use pipes
-# fPIC          -> use position independent code
-# -Wreturn-type -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
-# -Wshadow -> e.g. when a parameter is named like a member, too many warnings, disabled for now
-# -fvisibility=hidden -> only export symbols with __attribute__ ((visibility ("default")))
+set(LINUX_COMPILE_FLAGS
+      
+      ${EXCEPTION_FLAG}
+      -pthread      # -> use pthread library
+    # -no-rtti      # -> disable c++ rtti
+      -pipe         # -> use pipes
+      -pedantic     # ->
+      -Wall         # -> 
+      -Wextra       # -> 
+      -Werror       # ->
+	
+      -Wfloat-equal 
+      -Wcast-qual 
+      -Wcast-align 
+      -Wconversion 
+      -Wreturn-type 
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-	# gcc
-	set(LINUX_COMPILE_FLAGS "${LINUX_COMPILE_FLAGS} -Wtrampolines")
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+      -Wno-error=float-equal 
+      -Wno-error=conversion 
+      -Wno-error=switch
+
+      -fPIC         # -> use position independent code
+      -fvisibility=hidden # ->
+    # -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
+    # -Wshadow      # -> e.g. when a parameter is named like a member, too many warnings, disabled for now
+)
+
+set(DEFAULT_COMPILE_FLAGS
+    ${LINUX_COMPILE_FLAGS}
+    $<$<CONFIG:Debug>:   
+    >
+    $<$<CONFIG:Release>: 
+    >
+)
+
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	# clang
-        set(LINUX_COMPILE_FLAGS "${LINUX_COMPILE_FLAGS} -Wno-mismatched-tags -Wno-unsequenced -Wno-sign-conversion -Wno-unused-function -Wno-missing-braces -Wno-error=shorten-64-to-32")
+    set(LINUX_COMPILE_FLAGS ${LINUX_COMPILE_FLAGS}
+    	-Wno-mismatched-tags 
+    	-Wno-unsequenced 
+    	-Wno-sign-conversion 
+    	-Wno-unused-function 
+    	-Wno-missing-braces 
+    	-Wno-error=shorten-64-to-32
+	)
 endif()
 
 set(LINUX_LINKER_FLAGS "-pthread")
-
-set(DEFAULT_COMPILE_FLAGS ${LINUX_COMPILE_FLAGS})
 
 set(DEFAULT_LINKER_FLAGS_RELEASE ${LINUX_LINKER_FLAGS})
 set(DEFAULT_LINKER_FLAGS_DEBUG ${LINUX_LINKER_FLAGS})
