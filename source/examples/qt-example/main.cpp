@@ -83,10 +83,8 @@ public:
 
 #ifdef __APPLE__
         Shader::clearGlobalReplacements();
-        Shader::globalReplace("#version 130", "#version 150");
         Shader::globalReplace("#version 140", "#version 150");
 
-        debug() << "Using global OS X shader replacement '#version 130' -> '#version 150'" << std::endl;
         debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
 #endif
 
@@ -266,7 +264,7 @@ int main(int argc, char * argv[])
     format.setVersion(3, 2);
     format.setProfile(QSurfaceFormat::CoreProfile);
 #else
-    format.setVersion(3, 0);
+    format.setVersion(3, 1);
 #endif
 
     Window * glwindow = new Window(format);

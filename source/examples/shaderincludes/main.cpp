@@ -63,7 +63,7 @@ int main(int /*argc*/, char * /*argv*/[])
     info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
 
     ContextFormat format;
-    format.setVersion(3, 0);
+    format.setVersion(3, 1);
     format.setForwardCompatible(true);
 
     Window::init();

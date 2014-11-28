@@ -67,4 +67,3 @@ TEST_F(make_ref_test, CorrectRefCount)
 
     EXPECT_EQ(ref->refCounter(), 1);
 }
-
