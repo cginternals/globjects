@@ -12,7 +12,7 @@ public:
     // This is based on QSurfaceFormat::OpenGLContextProfile
     enum class Profile
     {
-        Core          ///< Functionality deprecated in OpenGL version 3.0 is not available.
+        Core          ///< Functionality deprecated in OpenGL version 3.2 is not available.
     ,   Compatibility ///< Functionality from earlier OpenGL versions is available.
     ,   None
     };

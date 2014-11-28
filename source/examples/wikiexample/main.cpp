@@ -22,7 +22,7 @@ using namespace globjects;
 namespace 
 {
     const char * vertexShaderCode = R"(
-#version 130
+#version 140
 #extension GL_ARB_explicit_attrib_location : require
 
 layout (location = 0) in vec2 corner;
@@ -37,7 +37,7 @@ void main()
 
 )";
     const char * fragmentShaderCode = R"(
-#version 130
+#version 140
 #extension GL_ARB_explicit_attrib_location : require
 
 layout (location = 0) out vec4 fragColor;
@@ -116,7 +116,7 @@ int main(int /*argc*/, char * /*argv*/[])
     info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
 
     ContextFormat format;
-    format.setVersion(3, 0);
+    format.setVersion(3, 1);
     format.setForwardCompatible(true);
 
     Window::init();
