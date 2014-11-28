@@ -62,6 +62,19 @@ set(LINUX_COMPILE_FLAGS
     # -Wshadow      # -> e.g. when a parameter is named like a member, too many warnings, disabled for now
 )
 
+
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	# clang
+    set(LINUX_COMPILE_FLAGS ${LINUX_COMPILE_FLAGS}
+      -Wno-mismatched-tags 
+      -Wno-unsequenced 
+      -Wno-sign-conversion 
+      -Wno-unused-function 
+      -Wno-missing-braces 
+      -Wno-error=shorten-64-to-32
+	)
+endif()
+
 set(DEFAULT_COMPILE_FLAGS
     ${LINUX_COMPILE_FLAGS}
     $<$<CONFIG:Debug>:   
@@ -69,18 +82,6 @@ set(DEFAULT_COMPILE_FLAGS
     $<$<CONFIG:Release>: 
     >
 )
-
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-	# clang
-    set(LINUX_COMPILE_FLAGS ${LINUX_COMPILE_FLAGS}
-    	-Wno-mismatched-tags 
-    	-Wno-unsequenced 
-    	-Wno-sign-conversion 
-    	-Wno-unused-function 
-    	-Wno-missing-braces 
-    	-Wno-error=shorten-64-to-32
-	)
-endif()
 
 set(LINUX_LINKER_FLAGS "-pthread")
 
