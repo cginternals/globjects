@@ -16,10 +16,6 @@ class ContextFormat;
 class Context
 {
 public:
-    /** note: requires that glfw::init was previously called
-        note: requires active context
-    */
-    static glbinding::Version retrieveVersion();
 
     /** note: requires that glfw::init was previously called 
     */

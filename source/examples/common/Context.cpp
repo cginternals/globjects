@@ -24,34 +24,6 @@
 using namespace gl;
 using namespace globjects;
 
-
-glbinding::Version Context::retrieveVersion()
-{
-    assert(0 != glbinding::getCurrentContext());
-
-    GLint minorVersion = -1;
-    GLint majorVersion = -1;
-
-    glGetIntegerv(GLenum::GL_MAJOR_VERSION, &majorVersion); // major version
-    glGetIntegerv(GLenum::GL_MINOR_VERSION, &minorVersion); // minor version
-
-    if (minorVersion < 0 && majorVersion < 0) // probably a context < 3.0 with no support for GL_MAJOR/MINOR_VERSION
-    {
-        const GLubyte * vstr = glGetString(GLenum::GL_VERSION);
-        if (!vstr)
-            return glbinding::Version();
-
-        assert(vstr[1] == '.');
-
-        assert(vstr[0] >= '0'  && vstr[0] <= '9');
-        majorVersion = vstr[0] - '0';
-
-        assert(vstr[2] >= '0'  && vstr[2] <= '9');
-        minorVersion = vstr[2] - '0';
-    }
-    return glbinding::Version(majorVersion, minorVersion);
-}
-
 glbinding::Version Context::maxSupportedVersion()
 {
     glbinding::Version version;
@@ -83,7 +55,7 @@ glbinding::Version Context::maxSupportedVersion()
         glfwMakeContextCurrent(window);
 
         glbinding::Binding::initialize(false);
-        version = retrieveVersion();
+        version = glbinding::ContextInfo::version();
 
         glfwMakeContextCurrent(nullptr);
         glfwDestroyWindow(window);
@@ -288,7 +260,7 @@ const ContextFormat & Context::format() const
     if (current != m_window)
         glfwMakeContextCurrent(m_window);
  
-    m_format->setVersion(retrieveVersion());
+    m_format->setVersion(glbinding::ContextInfo::version());
 
     if (m_format->version() >= glbinding::Version(3, 2))
         m_format->setProfile(isCoreProfile() ? ContextFormat::Profile::Core : ContextFormat::Profile::Compatibility);
