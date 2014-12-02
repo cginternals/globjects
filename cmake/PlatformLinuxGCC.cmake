@@ -53,7 +53,6 @@ set(LINUX_COMPILE_FLAGS
       -Wreturn-type 
 
       -Wno-error=float-equal 
-      -Wno-error=float-conversion
       -Wno-error=conversion 
       -Wno-error=switch
 
@@ -63,6 +62,13 @@ set(LINUX_COMPILE_FLAGS
     # -Wshadow      # -> e.g. when a parameter is named like a member, too many warnings, disabled for now
 )
 
+if (CMAKE_COMPILER_IS_GNUCXX)
+    if (NOT (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "4.9"))
+        set(LINUX_COMPILE_FLAGS "${LINUX_COMPILE_FLAGS}
+            -Wno-error=float-conversion
+        ")
+    endif ()
+endif ()
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	# clang
