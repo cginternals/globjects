@@ -48,7 +48,7 @@ void TransformFeedbackParticles::initialize()
     m_transformFeedbackProgram->link();
 
     m_transformFeedback = new TransformFeedback();
-    m_transformFeedback->setVaryings(m_transformFeedbackProgram, { { "out_position", "out_velocity" } }, GL_SEPARATE_ATTRIBS);
+    m_transformFeedback->setVaryings(m_transformFeedbackProgram, { "out_position", "out_velocity" }, GL_SEPARATE_ATTRIBS);
 
     m_vao = new VertexArray();
     m_vao->bind();

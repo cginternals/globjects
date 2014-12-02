@@ -46,11 +46,12 @@ void AbstractParticleTechnique::initialize(const std::string & vertexShaderSourc
     m_fbo = new Framebuffer();
 
     m_color = new Texture(GL_TEXTURE_2D);
-    m_color->setParameter(GL_TEXTURE_MIN_FILTER, static_cast<GLint>(GL_NEAREST));
-    m_color->setParameter(GL_TEXTURE_MAG_FILTER, static_cast<GLint>(GL_NEAREST));
-    m_color->setParameter(GL_TEXTURE_WRAP_S, static_cast<GLint>(GL_CLAMP_TO_EDGE));
-    m_color->setParameter(GL_TEXTURE_WRAP_T, static_cast<GLint>(GL_CLAMP_TO_EDGE));
-    m_color->setParameter(GL_TEXTURE_WRAP_R, static_cast<GLint>(GL_CLAMP_TO_EDGE));
+    m_color->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    m_color->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_color->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    m_color->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    m_color->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    m_color->image2D(0, GL_RGB16F, glm::vec2(1, 1), 0, GL_RGB, GL_FLOAT, nullptr);
 
     m_fbo->bind();
     m_fbo->attachTexture(GL_COLOR_ATTACHMENT0, m_color);
@@ -96,6 +97,7 @@ void AbstractParticleTechnique::reset()
         return;
 
     m_fbo->bind();
+    m_fbo->printStatus(true);
     glClear(GL_COLOR_BUFFER_BIT);
     m_fbo->unbind();
 }
