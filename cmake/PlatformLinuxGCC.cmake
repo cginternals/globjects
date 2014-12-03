@@ -64,9 +64,9 @@ set(LINUX_COMPILE_FLAGS
 
 if (CMAKE_COMPILER_IS_GNUCXX)
     if (NOT (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "4.9"))
-        set(LINUX_COMPILE_FLAGS "${LINUX_COMPILE_FLAGS}
+        set(LINUX_COMPILE_FLAGS ${LINUX_COMPILE_FLAGS}
             -Wno-error=float-conversion
-        ")
+        )
     endif ()
 endif ()
 
