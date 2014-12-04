@@ -5,6 +5,7 @@
 #include <glbinding/gl/types.h>
 
 #include <globjects/base/Referenced.h>
+#include <globjects/base/weak_ptr.h>
 
 #include <globjects/globjects_api.h>
 
@@ -43,7 +44,7 @@ public:
 	std::string attachmentString() const;
 
 protected:
-    Framebuffer * m_fbo; // TODO: weak pointer?
+    weak_ptr<Framebuffer> m_fbo;
 	gl::GLenum m_attachment;
 };
 
