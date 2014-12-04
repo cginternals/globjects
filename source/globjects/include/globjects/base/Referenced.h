@@ -1,8 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include <globjects/globjects_api.h>
 
 #include <globjects/base/HeapOnly.h>
+#include <globjects/base/Reference.h>
 
 
 namespace globjects
@@ -27,15 +30,20 @@ public:
 
     int refCounter() const;
 
+    template <typename T>
+    const std::shared_ptr<Reference<T>> & get_ref() const
+    {
+        return reinterpret_cast<const std::shared_ptr<Reference<T>> &>(m_reference);
+    }
 private:
     Referenced(const Referenced &) = delete;
     Referenced & operator=(const Referenced &) = delete;
-
 protected:
     virtual ~Referenced();
 
 private:
     mutable int m_refCounter;
+    std::shared_ptr<Reference<Referenced>> m_reference;
 };
 
 } // namespace globjects

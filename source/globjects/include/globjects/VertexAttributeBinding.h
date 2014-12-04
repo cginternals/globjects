@@ -4,6 +4,7 @@
 #include <glbinding/gl/boolean.h>
 
 #include <globjects/base/Referenced.h>
+#include <globjects/base/weak_ptr.h>
 
 #include <globjects/globjects_api.h>
 
@@ -56,12 +57,12 @@ protected:
     virtual ~VertexAttributeBinding();
 
 protected:
-    VertexArray * m_vao; // TODO: weak_ptr?
-   
+    weak_ptr<VertexArray> m_vao;
+
     gl::GLint m_bindingIndex;
     gl::GLint m_attributeIndex;
     
-    const Buffer * m_vbo;
+    weak_ptr<const Buffer> m_vbo;
 
     mutable void * m_bindingData;
 };

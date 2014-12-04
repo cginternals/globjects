@@ -265,11 +265,15 @@ set(api_includes
 	${include_path}/base/Referenced.h
 	${include_path}/base/ref_ptr.h
 	${include_path}/base/ref_ptr.hpp
+	${include_path}/base/Reference.h
+	${include_path}/base/Reference.hpp
 	${include_path}/base/Singleton.h
 	${include_path}/base/Singleton.hpp
 	${include_path}/base/StaticStringSource.h
 	${include_path}/base/StringSourceDecorator.h
 	${include_path}/base/StringTemplate.h
+	${include_path}/base/weak_ptr.h
+	${include_path}/base/weak_ptr.hpp
 )
 
 # Group source files
