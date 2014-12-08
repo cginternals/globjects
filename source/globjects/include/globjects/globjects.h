@@ -64,8 +64,6 @@ GLOBJECTS_API gl::GLboolean getBoolean(gl::GLenum pname, gl::GLuint index);
 GLOBJECTS_API std::string vendor();
 GLOBJECTS_API std::string renderer();
 GLOBJECTS_API std::string versionString();
-GLOBJECTS_API gl::GLint majorVersion();
-GLOBJECTS_API gl::GLint minorVersion();
 GLOBJECTS_API glbinding::Version version();
 GLOBJECTS_API bool isCoreProfile();
 

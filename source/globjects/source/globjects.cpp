@@ -8,6 +8,7 @@
 #include <glbinding/AbstractFunction.h>
 #include <glbinding/Binding.h>
 #include <glbinding/callbacks.h>
+#include <glbinding/ContextInfo.h>
 
 #include <globjects/Error.h>
 #include <globjects/logging.h>
@@ -222,12 +223,12 @@ GLboolean getBoolean(const GLenum pname, const GLuint index)
 
 std::string vendor()
 {
-    return getString(GL_VENDOR);
+    return glbinding::ContextInfo::vendor();
 }
 
 std::string renderer()
 {
-    return getString(GL_RENDERER);
+    return glbinding::ContextInfo::renderer();
 }
 
 std::string versionString()
@@ -235,19 +236,9 @@ std::string versionString()
     return getString(GL_VERSION);
 }
 
-GLint majorVersion()
-{
-    return getInteger(GL_MAJOR_VERSION);
-}
-
-GLint minorVersion()
-{
-    return getInteger(GL_MINOR_VERSION);
-}
-
 glbinding::Version version()
 {
-    return glbinding::Version(majorVersion(), minorVersion());
+    return glbinding::ContextInfo::version();
 }
 
 bool isCoreProfile()
