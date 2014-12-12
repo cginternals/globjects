@@ -312,14 +312,14 @@ std::vector<gl::GLint> Program::getResource(gl::GLenum programInterface, gl::GLu
     std::vector<gl::GLint> result;
     result.resize(props.size());
 
-    getResource(programInterface, index, props, result.size(), length, result.data());
+    getResource(programInterface, index, props, static_cast<gl::GLsizei>(result.size()), length, result.data());
 
     return result;
 }
 
 void Program::getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params)
 {
-    getResource(programInterface, index, props.size(), props.data(), bufSize, length, params);
+    getResource(programInterface, index, static_cast<gl::GLsizei>(props.size()), props.data(), bufSize, length, params);
 }
 
 GLuint Program::getUniformBlockIndex(const std::string & name) const
