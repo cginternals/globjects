@@ -5,7 +5,7 @@
 #include <limits>
 
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/constants.hpp>
+#include <glm/gtc/constants.hpp>
 
 #include <globjects/logging.h>
 

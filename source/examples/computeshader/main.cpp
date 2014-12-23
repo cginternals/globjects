@@ -1,5 +1,5 @@
 
-#include <glm/gtx/constants.hpp>
+#include <glm/gtc/constants.hpp>
 
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/extension.h>
