@@ -60,7 +60,6 @@ set(sources
 	${source_path}/Buffer.cpp
 	${source_path}/Capability.cpp
 	${source_path}/container_helpers.hpp
-	${source_path}/DebugInfo.cpp
 	${source_path}/DebugMessage.cpp
 	${source_path}/Error.cpp
 	${source_path}/FramebufferAttachment.cpp
@@ -199,7 +198,6 @@ set(api_includes
 	${include_path}/Buffer.h
 	${include_path}/Buffer.hpp
 	${include_path}/Capability.h
-	${include_path}/DebugInfo.h
 	${include_path}/DebugMessage.h
 	${include_path}/Error.h
 	${include_path}/FramebufferAttachment.h
