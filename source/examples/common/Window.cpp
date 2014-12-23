@@ -272,10 +272,10 @@ void Window::setMode(Mode mode)
     {
         m_windowedModeSize = size();
         m_windowedModePosition = position();
-        
-        const GLFWvidmode * mode = glfwGetVideoMode(monitor);
-        w = mode->width;
-        h = mode->height;
+
+        auto * vidmode = glfwGetVideoMode(monitor);
+        w = vidmode->width;
+        h = vidmode->height;
         x = y = 0;
     }
     else
