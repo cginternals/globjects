@@ -151,7 +151,8 @@ void VertexAttributeBindingImplementation_Legacy::finish(const VertexAttributeBi
     if (vbo(binding))
     {
         vbo(binding)->bind(GL_ARRAY_BUFFER);
-        offset = reinterpret_cast<void *>(bindingData(binding)->baseoffset + bindingData(binding)->format.relativeoffset);
+        const auto offset64 = static_cast<GLuint64>(bindingData(binding)->baseoffset + bindingData(binding)->format.relativeoffset);
+        offset = reinterpret_cast<void *>(offset64);
     }
     else
     {
