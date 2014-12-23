@@ -29,10 +29,11 @@ CMakeLists.txt.user.*
 *.sublime-workspace
 
 # Local config windows
-_configure.bat
-_open-project.bat
-_start-cmake-gui.bat
-_start-cmd.bat
+_configure*.bat
+_open-project*.bat
+_start-cmake-gui*.bat
+_start-cmd*.bat
 
 # Local config unix
 .localconfig
+_make.bat
