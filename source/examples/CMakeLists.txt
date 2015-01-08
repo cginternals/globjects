@@ -7,7 +7,7 @@ if(OPTION_BUILD_EXAMPLES)
 
 	find_package(GLM REQUIRED)
 	find_package(GLFW REQUIRED)
-	find_package(GLBinding REQUIRED)
+	find_package(glbinding REQUIRED)
 	
 	set(GLOBJECTS_EXAMPLE_DEPENDENCY_INCLUDES
 		${GLM_INCLUDE_DIR}
