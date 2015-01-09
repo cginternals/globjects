@@ -116,6 +116,8 @@ public:
 	const std::string infoLog() const;
 	gl::GLint get(gl::GLenum pname) const;
 
+    void getActiveAttrib(gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * size, gl::GLenum * type, gl::GLchar * name) const;
+
     gl::GLint getAttributeLocation(const std::string & name) const;
     gl::GLint getUniformLocation(const std::string & name) const;
 
@@ -130,16 +132,21 @@ public:
 
     void getInterface(gl::GLenum programInterface, gl::GLenum pname, gl::GLint * params) const;
     gl::GLuint getResourceIndex(gl::GLenum programInterface, const std::string & name) const;
-    void getResourceName(gl::GLenum programInterface, gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, char * name);
-    void getResource(gl::GLenum programInterface, gl::GLuint index, gl::GLsizei propCount, const gl::GLenum * props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params);
-    gl::GLint getResourceLocation(gl::GLenum programInterface, const std::string & name);
-    gl::GLint getResourceLocationIndex(gl::GLenum programInterface, const std::string & name);
+    void getResourceName(gl::GLenum programInterface, gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, char * name) const;
+    void getResource(gl::GLenum programInterface, gl::GLuint index, gl::GLsizei propCount, const gl::GLenum * props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params) const;
+    gl::GLint getResourceLocation(gl::GLenum programInterface, const std::string & name) const;
+    gl::GLint getResourceLocationIndex(gl::GLenum programInterface, const std::string & name) const;
+
+    /** Convenience methods for getInterface()
+    */
+    gl::GLint getInterface(gl::GLenum programInterface, gl::GLenum pname) const;
+
 
 	/** Convenience methods for getResource()
 	*/
-    gl::GLint getResource(gl::GLenum programInterface, gl::GLuint index, gl::GLenum prop, gl::GLsizei * length = nullptr);
-    std::vector<gl::GLint> getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei * length = nullptr);
-    void getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params);
+    gl::GLint getResource(gl::GLenum programInterface, gl::GLuint index, gl::GLenum prop, gl::GLsizei * length = nullptr) const;
+    std::vector<gl::GLint> getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei * length = nullptr) const;
+    void getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params) const;
 
     gl::GLuint getUniformBlockIndex(const std::string& name) const;
     UniformBlock * uniformBlock(gl::GLuint uniformBlockIndex);
