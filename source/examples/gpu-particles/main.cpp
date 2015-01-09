@@ -195,7 +195,7 @@ public:
         switch (event.key())
         {
         case GLFW_KEY_C:
-            if (m_techniques[ParticleTechnique::ComputeShaderTechnique])
+            if (m_techniques.count(ParticleTechnique::ComputeShaderTechnique) > 0)
             {
                 debug() << "switch to compute shader technique";
                 m_technique = ParticleTechnique::ComputeShaderTechnique;
@@ -203,7 +203,7 @@ public:
             break;
 
         case GLFW_KEY_T:
-            if (m_techniques[ParticleTechnique::TransformFeedbackTechnique])
+            if (m_techniques.count(ParticleTechnique::TransformFeedbackTechnique) > 0)
             {
                 debug() << "switch to transform feedback technique";
                 m_technique = ParticleTechnique::TransformFeedbackTechnique;
