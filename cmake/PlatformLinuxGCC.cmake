@@ -45,6 +45,7 @@ set(LINUX_COMPILE_FLAGS
       -Wall         # -> 
       -Wextra       # -> 
       -Werror       # ->
+    # -pedantic     # -> yeah, be really pedantic
 	
       -Wfloat-equal 
       -Wcast-qual 

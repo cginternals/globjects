@@ -5,8 +5,10 @@
 include(FindPackageHandleStandardArgs)
 
 FIND_PATH(GLM_INCLUDE_DIR glm/glm.hpp
+    HINTS
     $ENV{GLM_HOME}
     $ENV{GLMDIR}
+    $ENV{GLM_DIR}
     /usr/include
     /usr/local/include
     /sw/include
