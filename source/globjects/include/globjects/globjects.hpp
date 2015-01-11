@@ -21,6 +21,16 @@ std::array<gl::GLint, Count> getIntegers(const gl::GLenum pname)
 }
 
 template <int Count>
+std::array<gl::GLenum, Count> getEnums(const gl::GLenum pname)
+{
+    std::array<gl::GLenum, Count> values;
+
+    gl::glGetIntegerv(pname, reinterpret_cast<gl::GLint*>(&values));
+
+    return values;
+}
+
+template <int Count>
 std::array<gl::GLfloat, Count> getFloats(const gl::GLenum pname)
 {
     std::array<gl::GLfloat, Count> values;
