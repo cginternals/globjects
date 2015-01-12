@@ -105,7 +105,8 @@ State * State::currentState()
     state->pointParameter(GL_POINT_FADE_THRESHOLD_SIZE, getInteger(GL_POINT_FADE_THRESHOLD_SIZE));
     state->pointParameter(GL_POINT_SPRITE_COORD_ORIGIN, getInteger(GL_POINT_SPRITE_COORD_ORIGIN));
     state->pointSize(getFloat(GL_POINT_SIZE));
-    state->polygonMode(GL_FRONT_AND_BACK, getEnum(GL_POLYGON_MODE)); // is it right to only set GL_FRONT_AND_BACK?
+    state->polygonMode(GL_FRONT, getEnums<2>(GL_POLYGON_MODE)[0]);
+    state->polygonMode(GL_BACK, getEnums<2>(GL_POLYGON_MODE)[1]);
     state->polygonOffset(getFloat(GL_POLYGON_OFFSET_FACTOR), getFloat(GL_POLYGON_OFFSET_UNITS));
     state->sampleCoverage(getFloat(GL_SAMPLE_COVERAGE_VALUE), getBoolean(GL_SAMPLE_COVERAGE_INVERT));
     state->scissor(getIntegers<4>(GL_SCISSOR_BOX));

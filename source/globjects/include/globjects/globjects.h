@@ -70,6 +70,8 @@ GLOBJECTS_API bool isCoreProfile();
 template <int Count>
 std::array<gl::GLint, Count> getIntegers(gl::GLenum pname);
 template <int Count>
+std::array<gl::GLenum, Count> getEnums(gl::GLenum pname);
+template <int Count>
 std::array<gl::GLfloat, Count> getFloats(gl::GLenum pname);
 template <int Count>
 std::array<gl::GLdouble, Count> getDoubles(gl::GLenum pname);
