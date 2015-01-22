@@ -55,7 +55,7 @@ const std::array<T, Count> Buffer::getSubData(gl::GLintptr offset) const
 {
     std::array<T, Count> data;
 
-    getSubData(offset, Count, data.data());
+    getSubData(offset, static_cast<gl::GLsizeiptr>(Count * sizeof(T)), data.data());
 
     return data;
 }
