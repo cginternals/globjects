@@ -5,6 +5,7 @@
 #include <glm/gtx/transform.hpp>
 
 #include <globjects/logging.h>
+#include <globjects/globjects.h>
 
 #include <globjects/Uniform.h>
 #include <globjects/Program.h>
@@ -40,6 +41,14 @@ public:
     virtual void initialize(Window & window) override
     {
         WindowEventHandler::initialize(window);
+
+        if (!hasExtension(GLextension::GL_ARB_tessellation_shader))
+        {
+            critical() << "Tesselation not supported.";
+
+            window.close();
+            return;
+        }
 
         glClearColor(1.f, 1.f, 1.f, 0.f);
 

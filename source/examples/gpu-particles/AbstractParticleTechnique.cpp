@@ -51,7 +51,8 @@ void AbstractParticleTechnique::initialize(const std::string & vertexShaderSourc
     m_color->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     m_color->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     m_color->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-    m_color->image2D(0, GL_RGB16F, glm::ivec2(1, 1), 0, GL_RGB, GL_FLOAT, nullptr);
+    //m_color->image2D(0, GL_RGB16F, glm::ivec2(1, 1), 0, GL_RGB, GL_FLOAT, nullptr);
+    m_color->image2D(0, GL_RGBA32F, glm::ivec2(1, 1), 0, GL_RGB, GL_FLOAT, nullptr);
 
     m_fbo->bind();
     m_fbo->attachTexture(GL_COLOR_ATTACHMENT0, m_color);
@@ -84,7 +85,8 @@ void AbstractParticleTechnique::resize()
 {
     m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
 
-    m_color->image2D(0, GL_RGB16F, m_camera.viewport(), 0, GL_RGB, GL_FLOAT, nullptr);
+    //m_color->image2D(0, GL_RGB16F, m_camera.viewport(), 0, GL_RGB, GL_FLOAT, nullptr);
+    m_color->image2D(0, GL_RGBA32F, m_camera.viewport(), 0, GL_RGB, GL_FLOAT, nullptr);
 
     m_fbo->bind();
     glClear(GL_COLOR_BUFFER_BIT);

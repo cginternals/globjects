@@ -266,6 +266,7 @@ int main(int argc, char * argv[])
 #else
     format.setVersion(3, 1);
 #endif
+    format.setDepthBufferSize(16);
 
     Window * glwindow = new Window(format);
 
