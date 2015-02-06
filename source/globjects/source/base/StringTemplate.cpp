@@ -72,6 +72,7 @@ void StringTemplate::update()
 void StringTemplate::invalidate()
 {
     m_modifiedSource.invalidate();
+    changed();
 }
 
 std::string StringTemplate::modifiedSource() const
