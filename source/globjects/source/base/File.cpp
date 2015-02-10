@@ -9,8 +9,9 @@
 namespace globjects
 {
 
-File::File(const std::string & filePath)
+File::File(const std::string & filePath, bool binary)
 : m_filePath(filePath)
+, m_binary(binary)
 , m_valid(false)
 {
     FileRegistry::registerFile(this);
@@ -52,7 +53,12 @@ void File::reloadAll()
 
 void File::loadFileContent() const
 {
-    std::ifstream ifs(m_filePath, std::ios::in | std::ios::binary | std::ios::ate);
+    std::ios::openmode mode = std::ios::in | std::ios::ate;
+    if (m_binary) {
+        mode |= std::ios::binary;
+    }
+
+    std::ifstream ifs(m_filePath, mode);
 
     if (ifs)
     {
@@ -63,6 +69,7 @@ void File::loadFileContent() const
         m_source.resize(size);
 
         ifs.read(const_cast<char*>(m_source.data()), size);
+        m_source.resize(ifs.gcount());
         ifs.close();
 
         m_valid = true;

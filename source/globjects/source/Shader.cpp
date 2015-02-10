@@ -63,7 +63,7 @@ Shader * Shader::fromString(const GLenum type, const std::string & sourceString,
 
 Shader * Shader::fromFile(const GLenum type, const std::string & filename, const IncludePaths & includePaths)
 {
-    return new Shader(type, new File(filename), includePaths);
+    return new Shader(type, new File(filename, false), includePaths);
 }
 
 Shader::~Shader()
