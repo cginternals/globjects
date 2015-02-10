@@ -99,6 +99,7 @@ State * State::currentState()
     state->colorMask(getBooleans<4>(GL_COLOR_WRITEMASK));
     state->cullFace(getEnum(GL_CULL_FACE_MODE));
     state->depthFunc(getEnum(GL_DEPTH_FUNC));
+    state->depthMask(getBoolean(GL_DEPTH_WRITEMASK));
     state->depthRange(getFloats<2>(GL_DEPTH_RANGE));
     state->frontFace(getEnum(GL_FRONT_FACE));
     state->logicOp(getEnum(GL_LOGIC_OP_MODE));
