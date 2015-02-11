@@ -22,6 +22,13 @@ CachedValue<T>::CachedValue(const T & value)
 }
 
 template <typename T>
+CachedValue<T>::CachedValue(T && value)
+: m_valid(true)
+, m_value(std::move(value))
+{
+}
+
+template <typename T>
 bool CachedValue<T>::isValid() const
 {
     return m_valid;
@@ -46,6 +53,13 @@ void CachedValue<T>::setValue(const T & value, const bool validate) const
 {
     m_valid = validate;
     m_value = value;
+}
+
+template <typename T>
+void CachedValue<T>::setValue(T && value, const bool validate) const
+{
+    m_valid = validate;
+    m_value = std::move(value);
 }
 
 template <typename T>

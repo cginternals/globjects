@@ -31,12 +31,14 @@ class CachedValue
 public:
 	CachedValue();
 	CachedValue(const T & value);
+    CachedValue(T && value);
 
 	bool isValid() const;
 	
 	T & value();
 	const T & value() const;
-	void setValue(const T & value, bool validate = true) const;
+    void setValue(const T & value, bool validate = true) const;
+    void setValue(T && value, bool validate = true) const;
 
 	void validate() const;
 	void invalidate() const;
