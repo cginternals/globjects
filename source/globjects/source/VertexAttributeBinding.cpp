@@ -42,12 +42,14 @@ VertexAttributeBinding::~VertexAttributeBinding()
 
 const VertexArray * VertexAttributeBinding::vao() const
 {
-    return m_vao;
+    auto vao = m_vao.lock();
+    return vao.get();
 }
 
 VertexArray * VertexAttributeBinding::vao()
 {
-    return m_vao;
+    auto vao = m_vao.lock();
+    return vao.get();
 }
 
 void VertexAttributeBinding::setDivisor(GLint divisor)
@@ -73,7 +75,8 @@ GLint VertexAttributeBinding::bindingIndex() const
 
 const Buffer * VertexAttributeBinding::buffer() const
 {
-    return m_vbo;
+    auto vbo = m_vbo.lock();
+    return vbo.get();
 }
 
 void VertexAttributeBinding::setBuffer(const Buffer * vbo, const GLint baseoffset, const GLint stride)

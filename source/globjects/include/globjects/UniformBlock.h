@@ -3,6 +3,9 @@
 #include <vector>
 
 #include <globjects/globjects_api.h>
+
+#include <globjects/base/weak_ptr.h>
+
 #include <globjects/LocationIdentity.h>
 
 namespace globjects 
@@ -30,7 +33,7 @@ public:
     std::string getName() const;
 
 protected:
-    const Program * m_program;
+    weak_ptr<const Program> m_program;
     LocationIdentity m_identity;
     gl::GLuint m_bindingIndex;
 

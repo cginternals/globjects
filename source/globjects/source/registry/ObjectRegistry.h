@@ -1,6 +1,7 @@
 #pragma once
 
 #include <set>
+#include <globjects/base/ref_ptr.h>
 
 namespace globjects 
 {
@@ -34,8 +35,8 @@ protected:
 
 protected:
     std::set<Object *> m_objects;
-    Framebuffer * m_defaultFBO;
-    VertexArray * m_defaultVAO;
+    ref_ptr<Framebuffer> m_defaultFBO;
+    ref_ptr<VertexArray> m_defaultVAO;
 };
 
 } // namespace globjects

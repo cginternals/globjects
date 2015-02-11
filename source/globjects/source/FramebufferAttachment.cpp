@@ -25,7 +25,11 @@ GLenum FramebufferAttachment::attachment() const
 
 GLint FramebufferAttachment::getParameter(GLenum pname) const
 {
-    return m_fbo->getAttachmentParameter(m_attachment, pname);
+    auto fbo = m_fbo.lock();
+    
+    assert(fbo != nullptr);
+    
+    return fbo->getAttachmentParameter(m_attachment, pname);
 }
 
 bool FramebufferAttachment::isTextureAttachment() const

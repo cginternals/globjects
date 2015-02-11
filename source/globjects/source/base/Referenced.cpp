@@ -8,11 +8,13 @@ namespace globjects
 
 Referenced::Referenced()
 : m_refCounter(0)
+, m_reference(std::make_shared<Reference<Referenced>>(this))
 {
 }
 
 Referenced::~Referenced()
 {
+    m_reference->setReference(nullptr);
 }
 
 void Referenced::ref() const
