@@ -19,7 +19,7 @@ namespace globjects
 class GLOBJECTS_API File : public globjects::AbstractStringSource
 {
 public:
-    File(const std::string & filePath);
+    File(const std::string & filePath, bool binary = true);
 
     virtual std::string string() const override;
     virtual std::string shortInfo() const override;
@@ -32,6 +32,7 @@ public:
 
 protected:
     std::string m_filePath;
+    bool m_binary;
     mutable std::string m_source;
     mutable bool m_valid;
 
