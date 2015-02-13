@@ -2,6 +2,7 @@
 
 #include <globjects/base/CachedValue.h>
 
+#include <memory>
 #include <cassert>
 
 namespace globjects
