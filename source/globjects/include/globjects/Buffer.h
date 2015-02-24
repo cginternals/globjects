@@ -125,17 +125,17 @@ public:
         \param flags flags indicating usage
         \see www.opengl.org/sdk/docs/man/xhtml/glBufferStorage.xml
     */
-    void setStorage(gl::GLsizeiptr size, const gl::GLvoid * data, gl::MapBufferUsageMask flags);
+    void setStorage(gl::GLsizeiptr size, const gl::GLvoid * data, gl::BufferStorageMask flags);
     
     /** \brief Convenience method to simplify passing of data in form of an std::vector.
     */
     template <typename T>
-    void setStorage(const std::vector<T> & data, gl::MapBufferUsageMask flags);
+    void setStorage(const std::vector<T> & data, gl::BufferStorageMask flags);
     
     /** \brief Convenience method to simplify passing of data in form of an std::array.
     */
     template <typename T, std::size_t Count>
-    void setStorage(const std::array<T, Count> & data, gl::MapBufferUsageMask flags);
+    void setStorage(const std::array<T, Count> & data, gl::BufferStorageMask flags);
 
     /** \brief Wraps the OpenGL function gl::glGetBufferParameter.
         Queries OpenGL for internal state of the buffer.

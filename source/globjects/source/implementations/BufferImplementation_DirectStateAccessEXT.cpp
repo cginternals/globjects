@@ -49,7 +49,7 @@ void BufferImplementation_DirectStateAccessEXT::setSubData(const Buffer * buffer
     glNamedBufferSubDataEXT(buffer->id(), offset, size, data);
 }
 
-void BufferImplementation_DirectStateAccessEXT::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, MapBufferUsageMask flags) const
+void BufferImplementation_DirectStateAccessEXT::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, BufferStorageMask flags) const
 {
     glNamedBufferStorageEXT(buffer->id(), size, data, flags);
 }

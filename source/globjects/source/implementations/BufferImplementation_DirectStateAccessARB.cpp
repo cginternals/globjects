@@ -52,7 +52,7 @@ void BufferImplementation_DirectStateAccessARB::setSubData(const Buffer * buffer
     glNamedBufferSubData(buffer->id(), offset, static_cast<GLsizei>(size), data);
 }
 
-void BufferImplementation_DirectStateAccessARB::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, MapBufferUsageMask flags) const
+void BufferImplementation_DirectStateAccessARB::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, BufferStorageMask flags) const
 {
     glNamedBufferStorage(buffer->id(), static_cast<GLsizei>(size), data, flags);
 }

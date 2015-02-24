@@ -64,7 +64,7 @@ void BufferImplementation_Legacy::setSubData(const Buffer * buffer, GLintptr off
     glBufferSubData(s_workingTarget, offset, size, data);
 }
 
-void BufferImplementation_Legacy::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, MapBufferUsageMask flags) const
+void BufferImplementation_Legacy::setStorage(const Buffer * buffer, GLsizeiptr size, const GLvoid * data, BufferStorageMask flags) const
 {
     buffer->bind(s_workingTarget);
 

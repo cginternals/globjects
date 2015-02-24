@@ -115,7 +115,7 @@ void Buffer::setSubData(const GLintptr offset, const GLsizeiptr size, const GLvo
     implementation().setSubData(this, offset, size, data);
 }
 
-void Buffer::setStorage(const GLsizeiptr size, const GLvoid * data, const MapBufferUsageMask flags)
+void Buffer::setStorage(const GLsizeiptr size, const GLvoid * data, const BufferStorageMask flags)
 {
     implementation().setStorage(this, size, data, flags);
 }
