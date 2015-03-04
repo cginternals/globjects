@@ -65,7 +65,7 @@ void init()
         glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
 
         glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
-            manualErrorCheckAfter(functionCall.function); });
+            manualErrorCheckAfter(*functionCall.function); });
 
         g_globjectsIsInitialized = true;
     }
@@ -82,7 +82,7 @@ void init(const glbinding::ContextHandle sharedContextId)
         glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
 
         glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
-            manualErrorCheckAfter(functionCall.function); });
+            manualErrorCheckAfter(*functionCall.function); });
 
         g_globjectsIsInitialized = true;
     }

@@ -6,6 +6,8 @@
 #pragma GCC diagnostic ignored "-Wswitch"
 #endif
 
+#include <iostream>
+
 #include <QApplication>
 #include <QMainWindow>
 #include <QTimer>
