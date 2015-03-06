@@ -4,6 +4,7 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
+#include <globjects/base/File.h>
 #include <globjects/Uniform.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
@@ -55,41 +56,51 @@ public:
         glClearColor(1.f, 1.f, 1.f, 0.f);
 
 
-        m_icosahedron = new Icosahedron(2);
+        m_icosahedron.reset(new Icosahedron(2));
 
-        m_sphere = new Program();
+        m_sphere.reset(new Program());
+
+        m_vertexSource.reset(new File("data/gbuffers/sphere.vert"));
+        m_fragmentSource.reset(new File("data/gbuffers/sphere.frag"));
+
+        m_vertexShader.reset(new Shader(GL_VERTEX_SHADER, m_vertexSource.get()));
+        m_fragmentShader.reset(new Shader(GL_FRAGMENT_SHADER, m_fragmentSource.get()));
 
         m_sphere->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,   "data/gbuffers/sphere.vert"),
-            Shader::fromFile(GL_FRAGMENT_SHADER, "data/gbuffers/sphere.frag"));
+            m_vertexShader.get(),
+            m_fragmentShader.get());
 
-        m_colorTexture    = Texture::createDefault(GL_TEXTURE_2D);
-        m_depthTexture    = Texture::createDefault(GL_TEXTURE_2D);
-        m_normalTexture   = Texture::createDefault(GL_TEXTURE_2D);
-        m_geometryTexture = Texture::createDefault(GL_TEXTURE_2D);
+        m_colorTexture.reset(Texture::createDefault(GL_TEXTURE_2D));
+        m_depthTexture.reset(Texture::createDefault(GL_TEXTURE_2D));
+        m_normalTexture.reset(Texture::createDefault(GL_TEXTURE_2D));
+        m_geometryTexture.reset(Texture::createDefault(GL_TEXTURE_2D));
 
-        m_sphereFBO = new Framebuffer;
-        m_sphereFBO->attachTexture(GL_COLOR_ATTACHMENT0, m_colorTexture);
-        m_sphereFBO->attachTexture(GL_COLOR_ATTACHMENT1, m_normalTexture);
-        m_sphereFBO->attachTexture(GL_COLOR_ATTACHMENT2, m_geometryTexture);
-        m_sphereFBO->attachTexture(GL_DEPTH_ATTACHMENT,  m_depthTexture);
+        m_sphereFBO.reset(new Framebuffer);
+        m_sphereFBO->attachTexture(GL_COLOR_ATTACHMENT0, m_colorTexture.get());
+        m_sphereFBO->attachTexture(GL_COLOR_ATTACHMENT1, m_normalTexture.get());
+        m_sphereFBO->attachTexture(GL_COLOR_ATTACHMENT2, m_geometryTexture.get());
+        m_sphereFBO->attachTexture(GL_DEPTH_ATTACHMENT,  m_depthTexture.get());
         m_sphereFBO->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 });
 
-        m_postprocessing = new ScreenAlignedQuad(
-            Shader::fromFile(GL_FRAGMENT_SHADER, "data/gbuffers/postprocessing.frag"));
+        m_postprocessingSource.reset(new File("data/gbuffers/postprocessing.frag"));
+        m_postprocessingShader.reset(new Shader(GL_FRAGMENT_SHADER, m_postprocessingSource.get()));
+
+        m_postprocessing.reset(new ScreenAlignedQuad(m_postprocessingShader.get()));
         m_postprocessing->program()->setUniform<GLint>("colorSource",      0);
         m_postprocessing->program()->setUniform<GLint>("normalSource",     1);
         m_postprocessing->program()->setUniform<GLint>("worldCoordSource", 2);
         m_postprocessing->program()->setUniform<GLint>("depthSource",      3);
 
-        m_postprocessedTexture = Texture::createDefault(GL_TEXTURE_2D);
+        m_postprocessedTexture.reset(Texture::createDefault(GL_TEXTURE_2D));
 
-        m_postprocessingFBO = new Framebuffer;
-        m_postprocessingFBO->attachTexture(GL_COLOR_ATTACHMENT0, m_postprocessedTexture);
+        m_postprocessingFBO.reset(new Framebuffer);
+        m_postprocessingFBO->attachTexture(GL_COLOR_ATTACHMENT0, m_postprocessedTexture.get());
         m_postprocessingFBO->setDrawBuffer(GL_COLOR_ATTACHMENT0);
 
-        m_gBufferChoice = new ScreenAlignedQuad(
-            Shader::fromFile(GL_FRAGMENT_SHADER, "data/gbuffers/gbufferchoice.frag"));
+        m_gBufferChoiceSource.reset(new File("data/gbuffers/gbufferchoice.frag"));
+        m_gBufferChoiceShader.reset(new Shader(GL_FRAGMENT_SHADER, m_gBufferChoiceSource.get()));
+
+        m_gBufferChoice.reset(new ScreenAlignedQuad(m_gBufferChoiceShader.get()));
         m_gBufferChoice->program()->setUniform<GLint>("postprocessedSource", 0);
         m_gBufferChoice->program()->setUniform<GLint>("colorSource",         1);
         m_gBufferChoice->program()->setUniform<GLint>("normalSource",        2);
@@ -300,19 +311,31 @@ public:
     }
 
 protected:
-    ref_ptr<Icosahedron> m_icosahedron;
-    ref_ptr<Program> m_sphere;
-    ref_ptr<Texture> m_colorTexture;
-    ref_ptr<Texture> m_normalTexture;
-    ref_ptr<Texture> m_geometryTexture;
-    ref_ptr<Texture> m_depthTexture;
-    ref_ptr<Framebuffer> m_sphereFBO;
+    std::unique_ptr<Icosahedron> m_icosahedron;
+    std::unique_ptr<Program> m_sphere;
+    std::unique_ptr<Texture> m_colorTexture;
+    std::unique_ptr<Texture> m_normalTexture;
+    std::unique_ptr<Texture> m_geometryTexture;
+    std::unique_ptr<Texture> m_depthTexture;
+    std::unique_ptr<Framebuffer> m_sphereFBO;
 
-    ref_ptr<ScreenAlignedQuad> m_postprocessing;
-    ref_ptr<Texture> m_postprocessedTexture;
-    ref_ptr<Framebuffer> m_postprocessingFBO;
+    std::unique_ptr<AbstractStringSource> m_vertexSource;
+    std::unique_ptr<AbstractStringSource> m_fragmentSource;
 
-    ref_ptr<ScreenAlignedQuad> m_gBufferChoice;
+    std::unique_ptr<Shader> m_vertexShader;
+    std::unique_ptr<Shader> m_fragmentShader;
+
+    std::unique_ptr<AbstractStringSource> m_postprocessingSource;
+    std::unique_ptr<Shader> m_postprocessingShader;
+
+    std::unique_ptr<AbstractStringSource> m_gBufferChoiceSource;
+    std::unique_ptr<Shader> m_gBufferChoiceShader;
+
+    std::unique_ptr<ScreenAlignedQuad> m_postprocessing;
+    std::unique_ptr<Texture> m_postprocessedTexture;
+    std::unique_ptr<Framebuffer> m_postprocessingFBO;
+
+    std::unique_ptr<ScreenAlignedQuad> m_gBufferChoice;
 
     Camera m_camera;
     WorldInHandNavigation m_nav;

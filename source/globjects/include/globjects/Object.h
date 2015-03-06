@@ -4,8 +4,6 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects/base/Referenced.h>
-
 #include <globjects/globjects_api.h>
 
 namespace globjects 
@@ -20,7 +18,7 @@ class IDResource;
     The OpenGL name (id) of the OpenGL resource that was provided in the constructor can be queried using id().
     Additionally, an Object can have meaningful name wich can be get and set using name() and setName().
  */
-class GLOBJECTS_API Object : public Referenced
+class GLOBJECTS_API Object
 {
     friend class AbstractObjectNameImplementation;
 

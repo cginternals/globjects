@@ -29,23 +29,23 @@ template <typename T>
 class CachedValue
 {
 public:
-	CachedValue();
-	CachedValue(const T & value);
+    CachedValue();
+    CachedValue(const T & value);
     CachedValue(T && value);
 
-	bool isValid() const;
-	
-	T & value();
-	const T & value() const;
+    bool isValid() const;
+
+    T & value();
+    const T & value() const;
     void setValue(const T & value, bool validate = true) const;
     void setValue(T && value, bool validate = true) const;
 
-	void validate() const;
-	void invalidate() const;
+    void validate() const;
+    void invalidate() const;
 
 protected:
     mutable bool m_valid;
-	mutable T m_value;
+    mutable T m_value;
 };
 
 } // namespace globjects

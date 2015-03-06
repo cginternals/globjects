@@ -343,46 +343,46 @@ std::string Framebuffer::statusString() const
 
 void Framebuffer::printStatus(bool onlyErrors) const
 {
-	GLenum status = checkStatus();
+    GLenum status = checkStatus();
 
-	if (onlyErrors && status == GL_FRAMEBUFFER_COMPLETE) return;
+    if (onlyErrors && status == GL_FRAMEBUFFER_COMPLETE) return;
 
-	if (status == GL_FRAMEBUFFER_COMPLETE)
-	{
+    if (status == GL_FRAMEBUFFER_COMPLETE)
+    {
         info() << glbinding::Meta::getString(GL_FRAMEBUFFER_COMPLETE);
-	}
-	else
-	{
-		std::stringstream ss;
-		ss.flags(std::ios::hex | std::ios::showbase);
+    }
+    else
+    {
+        std::stringstream ss;
+        ss.flags(std::ios::hex | std::ios::showbase);
         ss << static_cast<unsigned int>(status);
 
         critical() << glbinding::Meta::getString(status) << " (" << ss.str() << ")";
-	}
+    }
 }
 
 void Framebuffer::addAttachment(FramebufferAttachment * attachment)
 {
     assert(attachment != nullptr);
 
-    m_attachments[attachment->attachment()] = attachment;
+    m_attachments[attachment->attachment()].reset(attachment);
 }
 
 FramebufferAttachment * Framebuffer::getAttachment(GLenum attachment)
 {
-	return m_attachments[attachment];
+    return m_attachments[attachment].get();
 }
 
 std::vector<FramebufferAttachment*> Framebuffer::attachments()
 {
-	std::vector<FramebufferAttachment*> attachments;
+    std::vector<FramebufferAttachment*> attachments;
 
-    for (std::pair<GLenum, ref_ptr<FramebufferAttachment>> pair: m_attachments)
-	{
-		attachments.push_back(pair.second);
-	}
+    for (std::pair<const GLenum, std::unique_ptr<FramebufferAttachment>> & pair: m_attachments)
+    {
+        attachments.push_back(pair.second.get());
+    }
 
-	return attachments;
+    return attachments;
 }
 
 GLenum Framebuffer::objectType() const

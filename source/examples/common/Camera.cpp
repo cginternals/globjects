@@ -192,7 +192,7 @@ const mat4 & Camera::projection() const
         update();
 
     if (!m_projection.isValid())
-	    m_projection.setValue(perspective(m_fovy, m_aspect, m_zNear, m_zFar));
+        m_projection.setValue(perspective(m_fovy, m_aspect, m_zNear, m_zFar));
 
     return m_projection.value();
 }
@@ -203,7 +203,7 @@ const mat4 & Camera::viewProjection() const
         update();
 
     if (!m_viewProjection.isValid())
-    	m_viewProjection.setValue(projection() * view());
+        m_viewProjection.setValue(projection() * view());
     
     return m_viewProjection.value();
 }

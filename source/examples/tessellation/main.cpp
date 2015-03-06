@@ -7,6 +7,7 @@
 #include <globjects/logging.h>
 #include <globjects/globjects.h>
 
+#include <globjects/base/File.h>
 #include <globjects/Uniform.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
@@ -52,16 +53,24 @@ public:
 
         glClearColor(1.f, 1.f, 1.f, 0.f);
 
-        m_sphere = new Program();
-        m_sphere->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,          "data/tessellation/sphere.vert")
-        ,   Shader::fromFile(GL_TESS_CONTROL_SHADER,    "data/tessellation/sphere.tcs")
-        ,   Shader::fromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
-        ,   Shader::fromFile(GL_GEOMETRY_SHADER,        "data/tessellation/sphere.geom")
-        ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/tessellation/sphere.frag")
-        ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/common/phong.frag"));
+        m_vertexSource.reset(new File("data/tessellation/sphere.vert"));
+        m_tessControlSource.reset(new File("data/tessellation/sphere.tcs"));
+        m_tessEvaluationSource.reset(new File("data/tessellation/sphere.tes"));
+        m_geometrySource.reset(new File("data/tessellation/sphere.geom"));
+        m_fragmentSource.reset(new File("data/tessellation/sphere.frag"));
+        m_phongSource.reset(new File("data/common/phong.frag"));
 
-        m_icosahedron = new Icosahedron();
+        m_vertexShader.reset(new Shader(GL_VERTEX_SHADER, m_vertexSource.get()));
+        m_tessControlShader.reset(new Shader(GL_TESS_CONTROL_SHADER, m_tessControlSource.get()));
+        m_tessEvaluationShader.reset(new Shader(GL_TESS_EVALUATION_SHADER, m_tessEvaluationSource.get()));
+        m_geometryShader.reset(new Shader(GL_GEOMETRY_SHADER, m_geometrySource.get()));
+        m_fragmentShader.reset(new Shader(GL_FRAGMENT_SHADER, m_fragmentSource.get()));
+        m_phongShader.reset(new Shader(GL_FRAGMENT_SHADER, m_phongSource.get()));
+
+        m_sphere.reset(new Program());
+        m_sphere->attach(m_vertexShader.get(), m_tessControlShader.get(), m_tessEvaluationShader.get(), m_geometryShader.get(), m_phongShader.get(), m_fragmentShader.get());
+
+        m_icosahedron.reset(new Icosahedron());
 
         m_time.reset();
         m_time.start();
@@ -100,9 +109,23 @@ public:
     }
 
 protected:
-    ref_ptr<Program> m_sphere;
+    std::unique_ptr<Program> m_sphere;
 
-    ref_ptr<Icosahedron> m_icosahedron;
+    std::unique_ptr<AbstractStringSource> m_vertexSource;
+    std::unique_ptr<AbstractStringSource> m_tessControlSource;
+    std::unique_ptr<AbstractStringSource> m_tessEvaluationSource;
+    std::unique_ptr<AbstractStringSource> m_geometrySource;
+    std::unique_ptr<AbstractStringSource> m_fragmentSource;
+    std::unique_ptr<AbstractStringSource> m_phongSource;
+
+    std::unique_ptr<Shader> m_vertexShader;
+    std::unique_ptr<Shader> m_tessControlShader;
+    std::unique_ptr<Shader> m_tessEvaluationShader;
+    std::unique_ptr<Shader> m_geometryShader;
+    std::unique_ptr<Shader> m_fragmentShader;
+    std::unique_ptr<Shader> m_phongShader;
+
+    std::unique_ptr<Icosahedron> m_icosahedron;
 
     Camera m_camera;
     Timer m_time;

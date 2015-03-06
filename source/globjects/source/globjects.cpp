@@ -129,7 +129,7 @@ std::string getString(const GLenum pname)
 {
     const GLubyte* result = glGetString(pname);
 
-	return reinterpret_cast<const char*>(result);
+    return reinterpret_cast<const char*>(result);
 }
 
 std::string getString(const GLenum pname, const GLuint index)
@@ -141,11 +141,11 @@ std::string getString(const GLenum pname, const GLuint index)
 
 GLint getInteger(const GLenum pname)
 {
-	GLint value;
+    GLint value;
 
     glGetIntegerv(pname, &value);
 
-	return value;
+    return value;
 }
 
 GLenum getEnum(const GLenum pname)
@@ -155,38 +155,38 @@ GLenum getEnum(const GLenum pname)
 
 GLfloat getFloat(const GLenum pname)
 {
-	GLfloat value;
+    GLfloat value;
 
     glGetFloatv(pname, &value);
 
-	return value;
+    return value;
 }
 
 GLdouble getDouble(const GLenum pname)
 {
-	GLdouble value;
+    GLdouble value;
 
     glGetDoublev(pname, &value);
 
-	return value;
+    return value;
 }
 
 GLboolean getBoolean(const GLenum pname)
 {
-	GLboolean value;
+    GLboolean value;
 
     glGetBooleanv(pname, &value);
 
-	return value;
+    return value;
 }
 
 GLint getInteger(const GLenum pname, const GLuint index)
 {
-	GLint value;
+    GLint value;
 
     glGetIntegeri_v(pname, index, &value);
 
-	return value;
+    return value;
 }
 
 GLenum getEnum(const GLenum pname, const GLuint index)

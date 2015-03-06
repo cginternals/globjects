@@ -11,12 +11,12 @@ LogMessage::LogMessage(const LogMessageLevel level, const std::string & message)
 
 LogMessageLevel LogMessage::level() const
 {
-	return m_level;
+    return m_level;
 }
 
 const std::string & LogMessage::message() const
 {
-	return m_message;
+    return m_message;
 }
 
 } // namespace globjects

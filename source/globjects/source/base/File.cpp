@@ -27,7 +27,7 @@ std::string File::string() const
     if (!m_valid)
         loadFileContent();
 
-	return m_source;
+    return m_source;
 }
 
 std::string File::shortInfo() const
@@ -37,7 +37,7 @@ std::string File::shortInfo() const
 
 const std::string& File::filePath() const
 {
-	return m_filePath;
+    return m_filePath;
 }
 
 void File::reload()

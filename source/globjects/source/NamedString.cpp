@@ -168,7 +168,7 @@ GLenum NamedString::type() const
 
 AbstractStringSource * NamedString::stringSource() const
 {
-    return m_source.get();
+    return m_source;
 }
 
 bool NamedString::hasNativeSupport()

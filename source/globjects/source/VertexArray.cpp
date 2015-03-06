@@ -66,26 +66,26 @@ void VertexArray::accept(ObjectVisitor & visitor)
 
 void VertexArray::bind() const
 {
-	glBindVertexArray(id());
+    glBindVertexArray(id());
 }
 
 void VertexArray::unbind()
 {
-	glBindVertexArray(0);
+    glBindVertexArray(0);
 }
 
 VertexAttributeBinding * VertexArray::binding(const GLuint bindingIndex)
 {
-	if (!m_bindings[bindingIndex])
-        m_bindings[bindingIndex] = new VertexAttributeBinding(this, bindingIndex);
+    if (!m_bindings[bindingIndex])
+        m_bindings[bindingIndex].reset(new VertexAttributeBinding(this, bindingIndex));
 
-    return m_bindings[bindingIndex];
+    return m_bindings[bindingIndex].get();
 }
 
 const VertexAttributeBinding* VertexArray::binding(const GLuint bindingIndex) const
 {
     if (m_bindings.count(bindingIndex))
-        return m_bindings.at(bindingIndex);
+        return m_bindings.at(bindingIndex).get();
 
     return nullptr;
 }
@@ -102,21 +102,21 @@ void VertexArray::disable(GLint attributeIndex)
 
 std::vector<VertexAttributeBinding *> VertexArray::bindings()
 {
-	std::vector<VertexAttributeBinding *> bindings;
+    std::vector<VertexAttributeBinding *> bindings;
 
-    for (std::pair<GLuint, ref_ptr<VertexAttributeBinding>> pair: m_bindings)
-		bindings.push_back(pair.second);
+    for (auto & pair: m_bindings)
+        bindings.push_back(pair.second.get());
 
-	return bindings;
+    return bindings;
 }
 
 std::vector<const VertexAttributeBinding*> VertexArray::bindings() const
 {
     std::vector<const VertexAttributeBinding*> bindings;
 
-    for (std::pair<GLuint, ref_ptr<VertexAttributeBinding>> pair: m_bindings)
+    for (auto & pair: m_bindings)
     {
-        bindings.push_back(pair.second);
+        bindings.push_back(pair.second.get());
     }
 
     return bindings;

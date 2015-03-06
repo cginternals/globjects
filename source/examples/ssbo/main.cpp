@@ -4,8 +4,10 @@
 
 #include <globjects/globjects.h>
 
+#include <globjects/base/File.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
+#include <globjects/Texture.h>
 
 #include <common/ScreenAlignedQuad.h>
 #include <common/ContextFormat.h>
@@ -44,7 +46,10 @@ public:
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
 
-        m_quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
+        m_quadSource.reset(new File("data/ssbo/ssbo.frag"));
+        m_quadShader.reset(new Shader(GL_FRAGMENT_SHADER, m_quadSource.get()));
+
+        m_quad.reset(new ScreenAlignedQuad(m_quadShader.get()));
 
         m_quad->program()->setUniform("maximum",     10);
         m_quad->program()->setUniform("rowCount",    10);
@@ -62,7 +67,7 @@ public:
             3,4,5,6,7,8,9,10,1,2,
             2,3,4,5,6,7,8,9,10,1 };
 
-        m_buffer = new Buffer();
+        m_buffer.reset(new Buffer());
         m_buffer->setData(sizeof(data), data, GL_STATIC_DRAW);
 
         m_buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
@@ -78,8 +83,10 @@ public:
     }
 
 protected:
-    ref_ptr<ScreenAlignedQuad> m_quad;
-    ref_ptr<Buffer> m_buffer;
+    std::unique_ptr<ScreenAlignedQuad> m_quad;
+    std::unique_ptr<AbstractStringSource> m_quadSource;
+    std::unique_ptr<Shader> m_quadShader;
+    std::unique_ptr<Buffer> m_buffer;
 };
 
 

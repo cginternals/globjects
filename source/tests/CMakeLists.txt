@@ -27,16 +27,16 @@ endif()
 
 if(OPTION_BUILD_TESTS AND GMOCK_FOUND AND GTEST_FOUND)
 
-	# Include gmock and gtest
-	include_directories(
-		${GMOCK_INCLUDE_DIR}
-		${GTEST_INCLUDE_DIR}
-	)
+    # Include gmock and gtest
+    include_directories(
+        ${GMOCK_INCLUDE_DIR}
+        ${GTEST_INCLUDE_DIR}
+    )
 
-	# Target 'test'
-	add_custom_target(test)
-	set_target_properties(test PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD 1)
+    # Target 'test'
+    add_custom_target(test)
+    set_target_properties(test PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD 1)
 
     # Add tests
-	add_test_without_ctest(globjects-test)
+    add_test_without_ctest(globjects-test)
 endif()

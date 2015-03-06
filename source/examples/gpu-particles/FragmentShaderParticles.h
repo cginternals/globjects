@@ -1,7 +1,5 @@
 #pragma once
 
-#include <globjects/base/ref_ptr.h>
-
 #include "AbstractParticleTechnique.h"
 
 
@@ -35,13 +33,15 @@ protected:
     std::vector<glm::vec4> m_positionsFilled;
     std::vector<glm::vec4> m_velocitiesFilled;
 
-    globjects::ref_ptr<globjects::Texture> m_positionsTex;
-    globjects::ref_ptr<globjects::Texture> m_velocitiesTex;
+    std::unique_ptr<globjects::Texture> m_positionsTex;
+    std::unique_ptr<globjects::Texture> m_velocitiesTex;
 
-    globjects::ref_ptr<globjects::Framebuffer> m_updateFbo;
-    globjects::ref_ptr<ScreenAlignedQuad> m_updateQuad;
+    std::unique_ptr<globjects::Framebuffer> m_updateFbo;
+    std::unique_ptr<ScreenAlignedQuad> m_updateQuad;
+    std::unique_ptr<globjects::AbstractStringSource> m_updateSource;
+    std::unique_ptr<globjects::Shader> m_updateShader;
 
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
+    std::unique_ptr<globjects::VertexArray> m_vao;
 
     glm::ivec2 m_workGroupSize;
 };

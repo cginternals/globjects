@@ -3,7 +3,7 @@
 namespace globjects
 {
 
-enum class LogMessageLevel
+enum class LogMessageLevel : unsigned int
 {
     Fatal
 ,   Critical

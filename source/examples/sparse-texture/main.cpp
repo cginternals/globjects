@@ -50,7 +50,7 @@ public:
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         createAndSetupTexture();
-	    createAndSetupGeometry();
+        createAndSetupGeometry();
     }
 
     void createAndSetupTexture()
@@ -95,7 +95,7 @@ public:
         glGetIntegerv(GL_MAX_SPARSE_TEXTURE_SIZE_ARB, &maxSparseTextureSize);
         info("GL_MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
 
-        m_texture = new Texture(GL_TEXTURE_2D);
+        m_texture.reset(new Texture(GL_TEXTURE_2D));
 
         // make texture sparse
         m_texture->setParameter(GL_TEXTURE_SPARSE_ARB, static_cast<GLint>(GL_TRUE));
@@ -115,7 +115,7 @@ public:
 
     void createAndSetupGeometry()
     {
-        m_quad = new ScreenAlignedQuad(m_texture);
+        m_quad.reset(new ScreenAlignedQuad(m_texture.get()));
         m_quad->setSamplerUniform(0);
     }
 
@@ -160,8 +160,8 @@ public:
     }
 
 protected:
-    ref_ptr<Texture> m_texture;
-    ref_ptr<ScreenAlignedQuad> m_quad;
+    std::unique_ptr<Texture> m_texture;
+    std::unique_ptr<ScreenAlignedQuad> m_quad;
 
     ivec2 m_textureSize;
     ivec2 m_pageSize;

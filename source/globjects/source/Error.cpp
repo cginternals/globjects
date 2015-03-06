@@ -21,7 +21,7 @@ Error::Error()
 
 GLenum Error::code() const
 {
-	return m_errorCode;
+    return m_errorCode;
 }
 
 std::string Error::name() const

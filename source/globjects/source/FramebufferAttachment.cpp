@@ -20,7 +20,7 @@ FramebufferAttachment::FramebufferAttachment(Framebuffer * fbo, GLenum attachmen
 
 GLenum FramebufferAttachment::attachment() const
 {
-	return m_attachment;
+    return m_attachment;
 }
 
 GLint FramebufferAttachment::getParameter(GLenum pname) const
@@ -30,12 +30,12 @@ GLint FramebufferAttachment::getParameter(GLenum pname) const
 
 bool FramebufferAttachment::isTextureAttachment() const
 {
-	return false;
+    return false;
 }
 
 bool FramebufferAttachment::isRenderBufferAttachment() const
 {
-	return false;
+    return false;
 }
 
 std::string FramebufferAttachment::attachmentString() const

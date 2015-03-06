@@ -3,12 +3,4 @@
 namespace globjects
 {
 
-AbstractFunctionCall::AbstractFunctionCall() 
-{
-}
-
-AbstractFunctionCall::~AbstractFunctionCall()
-{
-}
-
 } // namespace globjects

@@ -1,9 +1,15 @@
 
+#include <memory>
+
 #include <glbinding/gl/gl.h>
 
 #include <globjects/logging.h>
 
 #include <globjects/Texture.h>
+#include <globjects/VertexArray.h>
+#include <globjects/Buffer.h>
+#include <globjects/Shader.h>
+#include <globjects/Program.h>
 
 #include <common/ScreenAlignedQuad.h>
 #include <common/ContextFormat.h>
@@ -36,7 +42,7 @@ public:
         if (!raw.isValid())
             return;
 
-        m_texture = Texture::createDefault(GL_TEXTURE_2D);
+        m_texture.reset(Texture::createDefault(GL_TEXTURE_2D));
 
         m_texture->compressedImage2D(0, GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, 
             ivec2(256, 256), 0, static_cast<GLsizei>(raw.size()), raw.data());
@@ -44,7 +50,7 @@ public:
 
     void createAndSetupGeometry()
     {
-        m_quad = new ScreenAlignedQuad(m_texture);
+        m_quad.reset(new ScreenAlignedQuad(m_texture.get()));
         m_quad->setSamplerUniform(0);
     }
 
@@ -55,7 +61,7 @@ public:
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         createAndSetupTexture();
-	    createAndSetupGeometry();
+        createAndSetupGeometry();
     }
 
     virtual void paintEvent(PaintEvent & event) override
@@ -67,8 +73,8 @@ public:
     }
 
 protected:
-    ref_ptr<Texture> m_texture;
-    ref_ptr<ScreenAlignedQuad> m_quad;
+    std::unique_ptr<Texture> m_texture;
+    std::unique_ptr<ScreenAlignedQuad> m_quad;
 };
 
 

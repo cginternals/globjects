@@ -210,9 +210,9 @@ void WorldInHandNavigation::pan(vec3 t)
         return;
 
     //enforceTranslationConstraints(t);
-	if (glm::isinf(t.x) || glm::isinf(t.y) || glm::isinf(t.z))
-		return;
-	
+    if (glm::isinf(t.x) || glm::isinf(t.y) || glm::isinf(t.z))
+        return;
+    
     m_camera->setEye(t + m_eye);
     m_camera->setCenter(t + m_center);
 
@@ -415,7 +415,7 @@ void WorldInHandNavigation::enforceScaleConstraints(
 
     if ((scale > 0.f && ds >= DEFAULT_DIST_MAX)
     ||  (scale < 0.f && ds <= DEFAULT_DIST_MIN)
-    ||  (eye.y <= m_center.y))	// last fixes abnormal scales (e.g., resulting from mouse flywheels)
+    ||  (eye.y <= m_center.y))    // last fixes abnormal scales (e.g., resulting from mouse flywheels)
         scale = 0.f;
 }
 

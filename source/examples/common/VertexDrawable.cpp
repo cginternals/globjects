@@ -72,11 +72,11 @@ VertexDrawable::VertexDrawable(globjects::Buffer* vbo, GLint baseOffset, GLint s
 void VertexDrawable::setBuffer(globjects::Buffer* vbo, GLint size)
 {
     m_size = size;
-    m_vbo = vbo;
+    m_vbo.reset(vbo);
 
     for (unsigned i = 0; i<m_formats.size(); ++i)
     {
-        m_vao->binding(i)->setBuffer(m_vbo, m_baseOffset, m_stride);
+        m_vao->binding(i)->setBuffer(m_vbo.get(), m_baseOffset, m_stride);
     }
 }
 
@@ -102,7 +102,7 @@ void VertexDrawable::setFormats(const std::vector<AttributeFormat> & formats)
     {
         auto binding = m_vao->binding(i);
         binding->setAttribute(i);
-        binding->setBuffer(m_vbo, m_baseOffset, m_stride);
+        binding->setBuffer(m_vbo.get(), m_baseOffset, m_stride);
         formats[i].setTo(binding);
 
         m_attributeIndices.push_back(i);

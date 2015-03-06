@@ -27,12 +27,4 @@ Singleton<T>::Singleton()
     assert(!s_instance);
 }
 
-template<class T>
-Singleton<T>::~Singleton()
-{
-    assert(s_instance);
-
-    delete s_instance;
-}
-
 } // namespace globjects

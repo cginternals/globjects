@@ -4,6 +4,7 @@
 #include <glbinding/gl/gl.h>
 
 #include <globjects/Program.h>
+#include <globjects/Buffer.h>
 #include <globjects/Shader.h>
 #include <globjects/VertexArray.h>
 #include <globjects/Framebuffer.h>
@@ -59,14 +60,14 @@ void FragmentShaderParticles::initialize()
         m_velocitiesFilled[size + i] = glm::vec4(0.f, 0.f, 0.f, 0.f);
     }
 
-    m_positionsTex = new Texture(GL_TEXTURE_2D);
+    m_positionsTex.reset(new Texture(GL_TEXTURE_2D));
     m_positionsTex->setParameter(GL_TEXTURE_MIN_FILTER, static_cast<GLint>(GL_NEAREST));
     m_positionsTex->setParameter(GL_TEXTURE_MAG_FILTER, static_cast<GLint>(GL_NEAREST));
     m_positionsTex->setParameter(GL_TEXTURE_WRAP_S, static_cast<GLint>(GL_CLAMP_TO_EDGE));
     m_positionsTex->setParameter(GL_TEXTURE_WRAP_T, static_cast<GLint>(GL_CLAMP_TO_EDGE));
     m_positionsTex->setParameter(GL_TEXTURE_WRAP_R, static_cast<GLint>(GL_CLAMP_TO_EDGE));
 
-    m_velocitiesTex = new Texture(GL_TEXTURE_2D);
+    m_velocitiesTex.reset(new Texture(GL_TEXTURE_2D));
     m_velocitiesTex->setParameter(GL_TEXTURE_MIN_FILTER, static_cast<GLint>(GL_NEAREST));
     m_velocitiesTex->setParameter(GL_TEXTURE_MAG_FILTER, static_cast<GLint>(GL_NEAREST));
     m_velocitiesTex->setParameter(GL_TEXTURE_WRAP_S, static_cast<GLint>(GL_CLAMP_TO_EDGE));
@@ -75,17 +76,19 @@ void FragmentShaderParticles::initialize()
 
     reset();
 
-    m_vao = new VertexArray();
+    m_vao.reset(new VertexArray());
 
-    m_updateFbo = new Framebuffer();
+    m_updateFbo.reset(new Framebuffer());
     m_updateFbo->bind();
-    m_updateFbo->attachTexture(GL_COLOR_ATTACHMENT0, m_positionsTex);
-    m_updateFbo->attachTexture(GL_COLOR_ATTACHMENT1, m_velocitiesTex);
+    m_updateFbo->attachTexture(GL_COLOR_ATTACHMENT0, m_positionsTex.get());
+    m_updateFbo->attachTexture(GL_COLOR_ATTACHMENT1, m_velocitiesTex.get());
     m_updateFbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 });
     m_updateFbo->unbind();
 
-    m_updateQuad = new ScreenAlignedQuad(
-        Shader::fromFile(GL_FRAGMENT_SHADER, "data/gpu-particles/particle.frag"), m_positionsTex);
+    m_updateSource.reset(new File("data/gpu-particles/particle.frag"));
+    m_updateShader.reset(new Shader(GL_FRAGMENT_SHADER, m_updateSource.get()));
+
+    m_updateQuad.reset(new ScreenAlignedQuad(m_updateShader.get(), m_positionsTex.get()));
     m_updateQuad->program()->setUniform("vertices",   0);
     m_updateQuad->program()->setUniform("velocities", 1);
     m_updateQuad->program()->setUniform("forces",     2);
