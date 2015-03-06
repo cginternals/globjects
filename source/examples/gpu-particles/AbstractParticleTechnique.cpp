@@ -80,18 +80,35 @@ void AbstractParticleTechnique::initialize(const std::string & vertexShaderSourc
 
     // try to provide a particle alpha that scales well for 10 as well as for 1000000 particles
     const float alpha = 1.0f - 0.9f * (glm::sqrt(glm::sqrt(static_cast<float>(m_numParticles))) / 30.f);
-    m_drawProgram->setUniform("alpha", alpha);
+
+
+    m_alphaUniform.reset(new globjects::Uniform<float>("alpha", alpha));
+    m_aspectRatioUniform.reset(new globjects::Uniform<float>("aspect", 1.0));
+    m_elapsedUniform.reset(new globjects::Uniform<float>("elapsed", 0.0f));
+    m_pausedUniform.reset(new globjects::Uniform<bool>("paused", m_paused));
+    m_viewProjectionUniform.reset(new globjects::Uniform<glm::mat4>("viewProjection", m_camera.viewProjection()));
+
+    m_drawProgram->attach(
+        m_alphaUniform.get(),
+        m_aspectRatioUniform.get(),
+        m_viewProjectionUniform.get(),
+        m_pausedUniform.get()
+    );
+
+    m_clear->program()->attach(
+        m_elapsedUniform.get()
+    );
 }
 
 void AbstractParticleTechnique::pause(bool paused)
 {
     m_paused = paused;
-    m_drawProgram->setUniform("paused", paused);
+    m_pausedUniform->set(paused);
 }
 
 void AbstractParticleTechnique::resize()
 {
-    m_drawProgram->setUniform("aspect", m_camera.aspectRatio());
+    m_aspectRatioUniform->set(m_camera.aspectRatio());
 
     //m_color->image2D(0, GL_RGB16F, m_camera.viewport(), 0, GL_RGB, GL_FLOAT, nullptr);
     m_color->image2D(0, GL_RGBA32F, m_camera.viewport(), 0, GL_RGB, GL_FLOAT, nullptr);
@@ -126,13 +143,13 @@ void AbstractParticleTechnique::draw(const float elapsed)
     {
         glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
 
-        m_clear->program()->setUniform("elapsed", elapsed);
+        m_elapsedUniform->set(elapsed);
         m_clear->draw();
     }
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
     // draw particles
-    m_drawProgram->setUniform("viewProjection", m_camera.viewProjection());
+    m_viewProjectionUniform->set(m_camera.viewProjection());
 
     draw_impl(); // uses m_drawProgram
 

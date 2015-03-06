@@ -51,9 +51,15 @@ public:
 
         m_quad.reset(new ScreenAlignedQuad(m_quadShader.get()));
 
-        m_quad->program()->setUniform("maximum",     10);
-        m_quad->program()->setUniform("rowCount",    10);
-        m_quad->program()->setUniform("columnCount", 10);
+        m_maximumUniform.reset(new Uniform<int>("maximum", 10));
+        m_rowUniform.reset(new Uniform<int>("rowCount", 10));
+        m_columnUniform.reset(new Uniform<int>("columnCount", 10));
+
+        m_quad->program()->attach(
+            m_maximumUniform.get(),
+            m_rowUniform.get(),
+            m_columnUniform.get()
+        );
 
         int data[] = {
             1,2,3,4,5,6,7,8,9,10,
@@ -87,6 +93,10 @@ protected:
     std::unique_ptr<AbstractStringSource> m_quadSource;
     std::unique_ptr<Shader> m_quadShader;
     std::unique_ptr<Buffer> m_buffer;
+
+    std::unique_ptr<Uniform<int>> m_maximumUniform;
+    std::unique_ptr<Uniform<int>> m_rowUniform;
+    std::unique_ptr<Uniform<int>> m_columnUniform;
 };
 
 

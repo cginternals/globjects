@@ -87,10 +87,10 @@ public:
         m_postprocessingSource.reset(new File("data/gbuffers/postprocessing.frag"));
         m_postprocessingShader.reset(new Shader(GL_FRAGMENT_SHADER, m_postprocessingSource.get()));
 
-        m_postprocessingColorSourceUniform.reset(new Uniform<unsigned int>("colorSource", 0));
-        m_postprocessingNormalSourceUniform.reset(new Uniform<unsigned int>("normalSource", 1));
-        m_postprocessingWorldCoordSourceUniform.reset(new Uniform<unsigned int>("worldCoordSource", 2));
-        m_postprocessingDepthSourceUniform.reset(new Uniform<unsigned int>("depthSource", 3));
+        m_postprocessingColorSourceUniform.reset(new Uniform<int>("colorSource", 0));
+        m_postprocessingNormalSourceUniform.reset(new Uniform<int>("normalSource", 1));
+        m_postprocessingWorldCoordSourceUniform.reset(new Uniform<int>("worldCoordSource", 2));
+        m_postprocessingDepthSourceUniform.reset(new Uniform<int>("depthSource", 3));
 
         m_postprocessing.reset(new ScreenAlignedQuad(m_postprocessingShader.get()));
         m_postprocessing->program()->attach(
@@ -111,19 +111,19 @@ public:
 
         m_gBufferChoice.reset(new ScreenAlignedQuad(m_gBufferChoiceShader.get()));
 
-        m_postprocessedSourceUniform.reset(new Uniform<unsigned int>("postprocessedSource", 0));
-        m_gBufferChoiceNormalSourceUniform.reset(new Uniform<unsigned int>("colorSource", 1));
-        m_gBufferChoiceNormalSourceUniform.reset(new Uniform<unsigned int>("normalSource", 2));
-        m_gBufferChoiceWorldCoordSourceUniform.reset(new Uniform<unsigned int>("worldCoordSource", 3));
-        m_gBufferChoiceDepthSourceUniform.reset(new Uniform<unsigned int>("depthSource", 4));
+        m_postprocessedSourceUniform.reset(new Uniform<int>("postprocessedSource", 0));
+        m_gBufferChoiceColorSourceUniform.reset(new Uniform<int>("colorSource", 1));
+        m_gBufferChoiceNormalSourceUniform.reset(new Uniform<int>("normalSource", 2));
+        m_gBufferChoiceWorldCoordSourceUniform.reset(new Uniform<int>("worldCoordSource", 3));
+        m_gBufferChoiceDepthSourceUniform.reset(new Uniform<int>("depthSource", 4));
 
-        m_nearPlaneUniform.reset((new Uniform<float>("nearZ", m_camera.zNear())));
-        m_farPlaneUniform.reset((new Uniform<float>("farZ", m_camera.zFar())));
+        m_nearPlaneUniform.reset(new Uniform<float>("nearZ", m_camera.zNear()));
+        m_farPlaneUniform.reset(new Uniform<float>("farZ", m_camera.zFar()));
 
         m_gBufferChoice->program()->attach(
             m_postprocessedSourceUniform.get(),
             m_gBufferChoiceColorSourceUniform.get(),
-            m_gBufferChoiceColorSourceUniform.get(),
+            m_gBufferChoiceNormalSourceUniform.get(),
             m_gBufferChoiceWorldCoordSourceUniform.get(),
             m_gBufferChoiceDepthSourceUniform.get(),
             m_nearPlaneUniform.get(),
@@ -144,7 +144,7 @@ public:
             m_normalMatrixUniform.get()
         );
 
-        m_choiceUniform.reset(new Uniform<unsigned int>("choice", 0));
+        m_choiceUniform.reset(new Uniform<int>("choice", 0));
 
         m_gBufferChoice->program()->attach(m_choiceUniform.get());
 
@@ -244,7 +244,7 @@ public:
         case GLFW_KEY_3:
         case GLFW_KEY_4:
         case GLFW_KEY_5:
-            m_choiceUniform->set(static_cast<unsigned int>(event.key() - 49));
+            m_choiceUniform->set(static_cast<int>(event.key() - 49));
             break;
 
         case GLFW_KEY_SPACE:
@@ -372,18 +372,18 @@ protected:
 
     std::unique_ptr<ScreenAlignedQuad> m_gBufferChoice;
 
-    std::unique_ptr<Uniform<unsigned int>> m_choiceUniform;
+    std::unique_ptr<Uniform<int>> m_choiceUniform;
 
-    std::unique_ptr<Uniform<unsigned int>> m_postprocessingColorSourceUniform;
-    std::unique_ptr<Uniform<unsigned int>> m_postprocessingNormalSourceUniform;
-    std::unique_ptr<Uniform<unsigned int>> m_postprocessingWorldCoordSourceUniform;
-    std::unique_ptr<Uniform<unsigned int>> m_postprocessingDepthSourceUniform;
+    std::unique_ptr<Uniform<int>> m_postprocessingColorSourceUniform;
+    std::unique_ptr<Uniform<int>> m_postprocessingNormalSourceUniform;
+    std::unique_ptr<Uniform<int>> m_postprocessingWorldCoordSourceUniform;
+    std::unique_ptr<Uniform<int>> m_postprocessingDepthSourceUniform;
 
-    std::unique_ptr<Uniform<unsigned int>> m_postprocessedSourceUniform;
-    std::unique_ptr<Uniform<unsigned int>> m_gBufferChoiceColorSourceUniform;
-    std::unique_ptr<Uniform<unsigned int>> m_gBufferChoiceNormalSourceUniform;
-    std::unique_ptr<Uniform<unsigned int>> m_gBufferChoiceWorldCoordSourceUniform;
-    std::unique_ptr<Uniform<unsigned int>> m_gBufferChoiceDepthSourceUniform;
+    std::unique_ptr<Uniform<int>> m_postprocessedSourceUniform;
+    std::unique_ptr<Uniform<int>> m_gBufferChoiceColorSourceUniform;
+    std::unique_ptr<Uniform<int>> m_gBufferChoiceNormalSourceUniform;
+    std::unique_ptr<Uniform<int>> m_gBufferChoiceWorldCoordSourceUniform;
+    std::unique_ptr<Uniform<int>> m_gBufferChoiceDepthSourceUniform;
 
     std::unique_ptr<Uniform<float>> m_nearPlaneUniform;
     std::unique_ptr<Uniform<float>> m_farPlaneUniform;

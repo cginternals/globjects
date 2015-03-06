@@ -41,5 +41,8 @@ protected:
     std::unique_ptr<globjects::Buffer> m_targetPositions;
     std::unique_ptr<globjects::Buffer> m_targetVelocities;
 
+    std::unique_ptr<globjects::Uniform<int>> m_forcesUniform;
+    std::unique_ptr<globjects::Uniform<float>> m_elapsedUniform;
+
     std::unique_ptr<globjects::VertexArray> m_vao;
 };

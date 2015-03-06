@@ -43,5 +43,11 @@ protected:
 
     std::unique_ptr<globjects::VertexArray> m_vao;
 
+    std::unique_ptr<globjects::Uniform<int>> m_verticesUniform;
+    std::unique_ptr<globjects::Uniform<int>> m_velocitiesUniform;
+    std::unique_ptr<globjects::Uniform<int>> m_forcesUniform;
+    std::unique_ptr<globjects::Uniform<float>> m_elapsedUniform;
+    std::unique_ptr<globjects::Uniform<int>> m_textureWidthUniform;
+
     glm::ivec2 m_workGroupSize;
 };

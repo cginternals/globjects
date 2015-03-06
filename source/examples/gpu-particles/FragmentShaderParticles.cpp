@@ -89,12 +89,25 @@ void FragmentShaderParticles::initialize()
     m_updateShader.reset(new Shader(GL_FRAGMENT_SHADER, m_updateSource.get()));
 
     m_updateQuad.reset(new ScreenAlignedQuad(m_updateShader.get(), m_positionsTex.get()));
-    m_updateQuad->program()->setUniform("vertices",   0);
-    m_updateQuad->program()->setUniform("velocities", 1);
-    m_updateQuad->program()->setUniform("forces",     2);
 
+    m_verticesUniform.reset(new Uniform<int>("vertices", 0));
+    m_velocitiesUniform.reset(new Uniform<int>("velocities", 1));
+    m_forcesUniform.reset(new Uniform<int>("forces", 2));
+
+    m_elapsedUniform.reset(new Uniform<float>("elapsed", 0.0f));
+
+    m_updateQuad->program()->attach(
+        m_verticesUniform.get(),
+        m_velocitiesUniform.get(),
+        m_forcesUniform.get(),
+        m_elapsedUniform.get()
+    );
+
+    m_textureWidthUniform.reset(new Uniform<int>("texWidth", m_workGroupSize.x));
 
     AbstractParticleTechnique::initialize("data/gpu-particles/points_fragment.vert");
+
+    m_drawProgram->attach(m_textureWidthUniform.get());
 }
 
 void FragmentShaderParticles::reset()
@@ -115,7 +128,7 @@ void FragmentShaderParticles::step(const float elapsed)
     m_velocitiesTex->bindActive(GL_TEXTURE1);
     m_forces.bindActive(GL_TEXTURE2);
 
-    m_updateQuad->program()->setUniform("elapsed", elapsed);
+    m_elapsedUniform->set(elapsed);
 
     glViewport(0, 0, m_workGroupSize.x, m_workGroupSize.y);
     m_updateQuad->draw();
@@ -127,10 +140,10 @@ void FragmentShaderParticles::step(const float elapsed)
 void FragmentShaderParticles::draw_impl()
 {
     m_positionsTex->bindActive(GL_TEXTURE0);
-    m_drawProgram->setUniform("vertices", 0);
     m_velocitiesTex->bindActive(GL_TEXTURE1);
-    m_drawProgram->setUniform("velocities", 1);
-    m_drawProgram->setUniform("texWidth", m_workGroupSize.x);
+
+    m_textureWidthUniform->set(m_workGroupSize.x);
+
     m_drawProgram->use();
 
     m_vao->bind();

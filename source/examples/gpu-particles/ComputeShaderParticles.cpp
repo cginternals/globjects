@@ -88,6 +88,13 @@ void ComputeShaderParticles::initialize()
 
     m_vao->unbind();
 
+    m_forcesUniform.reset(new globjects::Uniform<int>("forces", 0));
+    m_elapsedUniform.reset(new globjects::Uniform<float>("elapsed", 0.0f));
+
+    m_computeProgram->attach(
+        m_forcesUniform.get(),
+        m_elapsedUniform.get()
+    );
 
     AbstractParticleTechnique::initialize("data/gpu-particles/points.vert");
 }
@@ -106,8 +113,8 @@ void ComputeShaderParticles::step(const float elapsed)
     m_velocitiesSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 
     m_forces.bind();
-    m_computeProgram->setUniform("forces", 0);
-    m_computeProgram->setUniform("elapsed", elapsed);
+
+    m_elapsedUniform->set(elapsed);
 
     m_computeProgram->use();
     

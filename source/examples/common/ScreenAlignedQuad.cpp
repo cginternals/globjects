@@ -116,7 +116,7 @@ void ScreenAlignedQuad::initialize()
     binding->setFormat(2, GL_FLOAT, GL_FALSE, 0);
     m_vao->enable(0);
 
-    m_samplerUniform.reset(new Uniform<unsigned int>("source", 0));
+    m_samplerUniform.reset(new Uniform<int>("source", 0));
     m_program->attach(m_samplerUniform.get());
 
     setSamplerUniform(0);

@@ -51,7 +51,7 @@ protected:
     std::unique_ptr<globjects::Program> m_program;
     std::unique_ptr<globjects::Texture> m_texture;
 
-    std::unique_ptr<globjects::Uniform<unsigned int>> m_samplerUniform;
+    std::unique_ptr<globjects::Uniform<int>> m_samplerUniform;
 
     int m_samplerIndex;
 

@@ -294,7 +294,7 @@ protected:
     AxisAlignedBoundingBox m_aabb;
 
     std::array<std::unique_ptr<Texture>, 4> m_textures;
-    std::unique_ptr<Uniform<std::array<TextureHandle, 4>>> m_handlesUniform;
+    std::unique_ptr<Uniform<std::array<TextureHandle, std::tuple_size<decltype(m_textures)>::value>>> m_handlesUniform;
     std::unique_ptr<Uniform<glm::mat4>> m_projectionUniform;
     std::unique_ptr<Program> m_program;
     std::unique_ptr<VertexDrawable> m_drawable;

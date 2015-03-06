@@ -82,7 +82,15 @@ public:
         m_transformFeedbackProgram.reset(new Program());
         m_transformFeedbackProgram->attach(m_transformFeedbackShader.get());
 
-        m_transformFeedbackProgram->setUniform("deltaT", 0.0f);
+        m_modelViewUniform.reset(new Uniform<glm::mat4>("modelView", glm::mat4()));
+        m_projectionUniform.reset(new Uniform<glm::mat4>("projection", glm::mat4()));
+        m_deltaTUniform.reset(new Uniform<float>("deltaT", 0.0f));
+
+        m_transformFeedbackProgram->attach(
+            m_modelViewUniform.get(),
+            m_projectionUniform.get(),
+            m_deltaTUniform.get()
+        );
     }
 
     void createAndSetupGeometry()
@@ -138,8 +146,7 @@ public:
 
         glViewport((width - side) / 2, (height - side) / 2, side, side);
 
-        m_program->setUniform("modelView", mat4());
-        m_program->setUniform("projection", ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
+        m_projectionUniform->set(ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
     }
 
     virtual void paintEvent(PaintEvent & event) override
@@ -153,7 +160,7 @@ public:
 
         m_vao->bind();
 
-        m_transformFeedbackProgram->setUniform("deltaT", static_cast<float>(m_timer.elapsed().count()) * float(std::nano::num) / float(std::nano::den));
+        m_deltaTUniform->set(static_cast<float>(m_timer.elapsed().count()) * float(std::nano::num) / float(std::nano::den));
         m_timer.reset();
 
         m_vao->binding(0)->setBuffer(drawBuffer, 0, sizeof(vec4));
@@ -200,6 +207,10 @@ protected:
     std::unique_ptr<Buffer> m_vertexBuffer1;
     std::unique_ptr<Buffer> m_vertexBuffer2;
     std::unique_ptr<Buffer> m_colorBuffer;
+
+    std::unique_ptr<Uniform<glm::mat4>> m_modelViewUniform;
+    std::unique_ptr<Uniform<glm::mat4>> m_projectionUniform;
+    std::unique_ptr<Uniform<float>> m_deltaTUniform;
 
     Timer m_timer;
 };

@@ -56,6 +56,14 @@ void TransformFeedbackParticles::initialize()
     m_vao.reset(new VertexArray());
     m_vao->bind();
 
+    m_forcesUniform.reset(new globjects::Uniform<int>("forces", 0));
+    m_elapsedUniform.reset(new globjects::Uniform<float>("elapsed", 0.0f));
+
+    m_transformFeedbackProgram->attach(
+        m_forcesUniform.get(),
+        m_elapsedUniform.get()
+    );
+
     auto positionsBinding = m_vao->binding(0);
     positionsBinding->setAttribute(0);
     positionsBinding->setFormat(4, GL_FLOAT);
@@ -94,8 +102,8 @@ void TransformFeedbackParticles::step(const float elapsed)
     m_targetVelocities->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1);
 
     m_forces.bind();
-    m_transformFeedbackProgram->setUniform("forces", 0);
-    m_transformFeedbackProgram->setUniform("elapsed", elapsed);
+
+    m_elapsedUniform->set(elapsed);
 
     glEnable(GL_RASTERIZER_DISCARD);
 

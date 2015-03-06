@@ -59,7 +59,7 @@ public:
         m_computeProgram.reset(new Program());
         m_computeProgram->attach(m_computeShader.get());
 
-        m_textureUniform.reset(new Uniform<unsigned int>("destTex", 0));
+        m_textureUniform.reset(new Uniform<int>("destTex", 0));
         m_rollUniform.reset(new Uniform<float>("roll", 0.0f));
 
         m_computeProgram->attach(m_textureUniform.get(), m_rollUniform.get());
@@ -115,7 +115,7 @@ protected:
     std::unique_ptr<ScreenAlignedQuad> m_quad;
     std::unique_ptr<AbstractStringSource> m_computeSource;
     std::unique_ptr<Shader> m_computeShader;
-    std::unique_ptr<Uniform<unsigned int>> m_textureUniform;
+    std::unique_ptr<Uniform<int>> m_textureUniform;
     std::unique_ptr<Uniform<float>> m_rollUniform;
 
     unsigned int m_frame;

@@ -77,6 +77,16 @@ public:
 
         m_camera.setZNear(1.f);
         m_camera.setZFar(16.f);
+
+        m_viewProjectionUniform.reset(new Uniform<glm::mat4>("transform", m_camera.viewProjection()));
+        m_rotationUniform.reset(new Uniform<glm::mat4>("rotation", glm::mat4()));
+        m_levelUniform.reset(new Uniform<int>("level", 0));
+
+        m_sphere->attach(
+            m_viewProjectionUniform.get(),
+            m_rotationUniform.get(),
+            m_levelUniform.get()
+        );
     }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -95,11 +105,13 @@ public:
         float t = static_cast<float>(m_time.elapsed().count()) * 4e-10f;
         mat4 R = rotate(t * 10.f, vec3(sin(t * 0.321f), cos(t * 0.234f), sin(t * 0.123f)));
 
-        m_sphere->setUniform("transform", m_camera.viewProjection());
-        m_sphere->setUniform("rotation", R);
+        m_viewProjectionUniform->set(m_camera.viewProjection());
+        m_rotationUniform->set(R);
 
         int level = static_cast<int>((sin(t) * 0.5f + 0.5f) * 16) + 1;
-        m_sphere->setUniform("level", level);
+
+        m_levelUniform->set(level);
+
         m_sphere->use();
 
         glPatchParameteri(GL_PATCH_VERTICES, 3);
@@ -126,6 +138,10 @@ protected:
     std::unique_ptr<Shader> m_phongShader;
 
     std::unique_ptr<Icosahedron> m_icosahedron;
+
+    std::unique_ptr<Uniform<glm::mat4>> m_viewProjectionUniform;
+    std::unique_ptr<Uniform<glm::mat4>> m_rotationUniform;
+    std::unique_ptr<Uniform<int>> m_levelUniform;
 
     Camera m_camera;
     Timer m_time;

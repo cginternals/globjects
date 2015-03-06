@@ -14,6 +14,9 @@ class Buffer;
 class Texture;
 class Shader;
 class AbstractStringSource;
+
+template <typename T>
+class Uniform;
 }
 
 class ScreenAlignedQuad;
@@ -76,4 +79,10 @@ protected:
     std::unique_ptr<globjects::Shader> m_geometryShader;
     std::unique_ptr<globjects::AbstractStringSource> m_fragmentSource;
     std::unique_ptr<globjects::Shader> m_fragmentShader;
+
+    std::unique_ptr<globjects::Uniform<float>> m_alphaUniform;
+    std::unique_ptr<globjects::Uniform<float>> m_aspectRatioUniform;
+    std::unique_ptr<globjects::Uniform<float>> m_elapsedUniform;
+    std::unique_ptr<globjects::Uniform<bool>> m_pausedUniform;
+    std::unique_ptr<globjects::Uniform<glm::mat4>> m_viewProjectionUniform;
 };
