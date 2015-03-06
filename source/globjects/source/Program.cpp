@@ -137,6 +137,23 @@ void Program::attach(Shader * shader)
     invalidate();
 }
 
+void Program::attach(AbstractUniform * uniform)
+{
+    assert(uniform != nullptr);
+
+    auto & uniformReference = m_uniforms[uniform->identity()];
+
+    if (uniformReference)
+        uniformReference->deregisterProgram(this);
+
+    uniformReference = uniform;
+
+    uniform->registerProgram(this);
+
+    if (m_linked)
+        uniform->update(this);
+}
+
 void Program::detach(Shader * shader)
 {
     assert(shader != nullptr);
@@ -149,12 +166,9 @@ void Program::detach(Shader * shader)
     invalidate();
 }
 
-std::set<Shader *> Program::shaders() const
+const std::set<Shader *> & Program::shaders() const
 {
-    std::set<Shader *> shaders;
-    for (auto & shader: m_shaders)
-        shaders.insert(shader);
-    return shaders;
+    return m_shaders;
 }
 
 void Program::link() const
@@ -400,23 +414,6 @@ UniformBlock * Program::getUniformBlockByIdentity(const LocationIdentity & ident
         m_uniformBlocks[identity] = UniformBlock(this, identity);
 
     return &m_uniformBlocks[identity];
-}
-
-void Program::addUniform(AbstractUniform * uniform)
-{
-    assert(uniform != nullptr);
-
-    auto & uniformReference = m_uniforms[uniform->identity()];
-
-    if (uniformReference)
-        uniformReference->deregisterProgram(this);
-
-    uniformReference = uniform;
-
-    uniform->registerProgram(this);
-
-    if (m_linked)
-        uniform->update(this);
 }
 
 void Program::updateUniforms() const

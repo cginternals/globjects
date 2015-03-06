@@ -105,9 +105,18 @@ public:
     template <class ...Shaders> 
     void attach(Shader * shader, Shaders... shaders);
 
+    /** Adds the uniform to the internal list of named uniforms. If an equally
+        named uniform already exists, this program derigisters itself and the uniform
+        gets replaced (and by this the old one gets dereferenced). If the current
+        program is linked, the uniforms value will be passed to the program object.
+    */
+    void attach(AbstractUniform * uniform);
+    template <class ...Uniforms>
+    void attach(AbstractUniform * uniform, Uniforms... uniforms);
+
     void detach(Shader * shader);
 
-    std::set<Shader*> shaders() const;
+    const std::set<Shader*> & shaders() const;
 
     void link() const;
     void invalidate() const;
@@ -161,11 +170,6 @@ public:
     gl::GLint getActiveUniform(gl::GLuint uniformIndex, gl::GLenum pname) const;
     std::string getActiveUniformName(gl::GLuint uniformIndex) const;
 
-    template<typename T>
-    void setUniform(const std::string & name, const T & value);
-    template<typename T>
-    void setUniform(gl::GLint location, const T & value);
-
     /** Retrieves the existing or creates a new typed uniform, named <name>.
     */
     template<typename T>
@@ -176,13 +180,6 @@ public:
     Uniform<T> * getUniform(gl::GLint location);
     template<typename T>
     const Uniform<T> * getUniform(gl::GLint location) const;
-
-    /** Adds the uniform to the internal list of named uniforms. If an equally
-        named uniform already exists, this program derigisters itself and the uniform
-        gets replaced (and by this the old one gets dereferenced). If the current
-        program is linked, the uniforms value will be passed to the program object.
-    */
-    void addUniform(AbstractUniform * uniform);
 
     void setShaderStorageBlockBinding(gl::GLuint storageBlockIndex, gl::GLuint storageBlockBinding) const;
 

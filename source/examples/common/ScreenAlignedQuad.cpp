@@ -14,6 +14,7 @@
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
 #include <globjects/Shader.h>
+#include <globjects/Uniform.h>
 
 #include <globjects/base/StringTemplate.h>
 
@@ -115,6 +116,9 @@ void ScreenAlignedQuad::initialize()
     binding->setFormat(2, GL_FLOAT, GL_FALSE, 0);
     m_vao->enable(0);
 
+    m_samplerUniform.reset(new Uniform<unsigned int>("source", 0));
+    m_program->attach(m_samplerUniform.get());
+
     setSamplerUniform(0);
 }
 
@@ -142,7 +146,7 @@ void ScreenAlignedQuad::setTexture(Texture* texture)
 void ScreenAlignedQuad::setSamplerUniform(int index)
 {
     m_samplerIndex = index;
-    m_program->setUniform("source", m_samplerIndex);
+    m_samplerUniform->set(index);
 }
 
 Program * ScreenAlignedQuad::program()

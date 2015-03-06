@@ -55,6 +55,8 @@ public:
 
         glClearColor(1.f, 1.f, 1.f, 0.f);
 
+        m_camera.setZNear(1.f);
+        m_camera.setZFar(16.f);
 
         m_icosahedron.reset(new Icosahedron(2));
 
@@ -85,11 +87,18 @@ public:
         m_postprocessingSource.reset(new File("data/gbuffers/postprocessing.frag"));
         m_postprocessingShader.reset(new Shader(GL_FRAGMENT_SHADER, m_postprocessingSource.get()));
 
+        m_postprocessingColorSourceUniform.reset(new Uniform<unsigned int>("colorSource", 0));
+        m_postprocessingNormalSourceUniform.reset(new Uniform<unsigned int>("normalSource", 1));
+        m_postprocessingWorldCoordSourceUniform.reset(new Uniform<unsigned int>("worldCoordSource", 2));
+        m_postprocessingDepthSourceUniform.reset(new Uniform<unsigned int>("depthSource", 3));
+
         m_postprocessing.reset(new ScreenAlignedQuad(m_postprocessingShader.get()));
-        m_postprocessing->program()->setUniform<GLint>("colorSource",      0);
-        m_postprocessing->program()->setUniform<GLint>("normalSource",     1);
-        m_postprocessing->program()->setUniform<GLint>("worldCoordSource", 2);
-        m_postprocessing->program()->setUniform<GLint>("depthSource",      3);
+        m_postprocessing->program()->attach(
+            m_postprocessingColorSourceUniform.get(),
+            m_postprocessingNormalSourceUniform.get(),
+            m_postprocessingWorldCoordSourceUniform.get(),
+            m_postprocessingDepthSourceUniform.get()
+        );
 
         m_postprocessedTexture.reset(Texture::createDefault(GL_TEXTURE_2D));
 
@@ -101,17 +110,43 @@ public:
         m_gBufferChoiceShader.reset(new Shader(GL_FRAGMENT_SHADER, m_gBufferChoiceSource.get()));
 
         m_gBufferChoice.reset(new ScreenAlignedQuad(m_gBufferChoiceShader.get()));
-        m_gBufferChoice->program()->setUniform<GLint>("postprocessedSource", 0);
-        m_gBufferChoice->program()->setUniform<GLint>("colorSource",         1);
-        m_gBufferChoice->program()->setUniform<GLint>("normalSource",        2);
-        m_gBufferChoice->program()->setUniform<GLint>("worldCoordSource",    3);
-        m_gBufferChoice->program()->setUniform<GLint>("depthSource",         4);
 
-        m_camera.setZNear(1.f);
-        m_camera.setZFar(16.f);
+        m_postprocessedSourceUniform.reset(new Uniform<unsigned int>("postprocessedSource", 0));
+        m_gBufferChoiceNormalSourceUniform.reset(new Uniform<unsigned int>("colorSource", 1));
+        m_gBufferChoiceNormalSourceUniform.reset(new Uniform<unsigned int>("normalSource", 2));
+        m_gBufferChoiceWorldCoordSourceUniform.reset(new Uniform<unsigned int>("worldCoordSource", 3));
+        m_gBufferChoiceDepthSourceUniform.reset(new Uniform<unsigned int>("depthSource", 4));
 
-        m_gBufferChoice->program()->setUniform<GLfloat>("nearZ", m_camera.zNear());
-        m_gBufferChoice->program()->setUniform<GLfloat>("farZ",  m_camera.zFar());
+        m_nearPlaneUniform.reset((new Uniform<float>("nearZ", m_camera.zNear())));
+        m_farPlaneUniform.reset((new Uniform<float>("farZ", m_camera.zFar())));
+
+        m_gBufferChoice->program()->attach(
+            m_postprocessedSourceUniform.get(),
+            m_gBufferChoiceColorSourceUniform.get(),
+            m_gBufferChoiceColorSourceUniform.get(),
+            m_gBufferChoiceWorldCoordSourceUniform.get(),
+            m_gBufferChoiceDepthSourceUniform.get(),
+            m_nearPlaneUniform.get(),
+            m_farPlaneUniform.get()
+        );
+
+        m_screenSizeUniform.reset(new Uniform<glm::vec2>("screenSize", glm::vec2()));
+
+        m_postprocessing->program()->attach(m_screenSizeUniform.get());
+
+        m_viewProjectionUniform.reset(new Uniform<glm::mat4>("transform", m_camera.viewProjection()));
+        m_viewUniform.reset(new Uniform<glm::mat4>("modelView", m_camera.view()));
+        m_normalMatrixUniform.reset(new Uniform<glm::mat3>("normalMatrix", m_camera.normal()));
+
+        m_sphere->attach(
+            m_viewProjectionUniform.get(),
+            m_viewUniform.get(),
+            m_normalMatrixUniform.get()
+        );
+
+        m_choiceUniform.reset(new Uniform<unsigned int>("choice", 0));
+
+        m_gBufferChoice->program()->attach(m_choiceUniform.get());
 
         window.addTimer(0, 0, false);
 
@@ -123,22 +158,22 @@ public:
         glViewport(0, 0, event.width(), event.height());
         m_camera.setViewport(event.width(), event.height());
 
-        m_postprocessing->program()->setUniform<vec2>("screenSize", vec2(event.size()));
+        m_screenSizeUniform->set(vec2(event.size()));
 
         cameraChanged();
 
-        m_colorTexture->image2D(        0, GL_RGBA8,   event.width(), event.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-        m_normalTexture->image2D(       0, GL_RGBA16F, event.width(), event.height(), 0, GL_RGBA, GL_FLOAT, nullptr);
-        m_geometryTexture->image2D(     0, GL_RGBA16F, event.width(), event.height(), 0, GL_RGBA, GL_FLOAT, nullptr);
-        m_depthTexture->image2D(0, GL_DEPTH_COMPONENT, event.width(), event.height(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-        m_postprocessedTexture->image2D(0, GL_RGBA8,   event.width(), event.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        m_colorTexture->image2D(        0, GL_RGBA8,           event.width(), event.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        m_normalTexture->image2D(       0, GL_RGBA16F,         event.width(), event.height(), 0, GL_RGBA, GL_FLOAT, nullptr);
+        m_geometryTexture->image2D(     0, GL_RGBA16F,         event.width(), event.height(), 0, GL_RGBA, GL_FLOAT, nullptr);
+        m_depthTexture->image2D(        0, GL_DEPTH_COMPONENT, event.width(), event.height(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+        m_postprocessedTexture->image2D(0, GL_RGBA8,           event.width(), event.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     }
 
     void cameraChanged()
     {
-        m_sphere->setUniform("transform", m_camera.viewProjection());
-        m_sphere->setUniform("modelView", m_camera.view());
-        m_sphere->setUniform("normalMatrix", m_camera.normal());
+        m_viewProjectionUniform->set(m_camera.viewProjection());
+        m_viewUniform->set(m_camera.view());
+        m_normalMatrixUniform->set(m_camera.normal());
     }
 
     virtual void paintEvent(PaintEvent & event) override
@@ -209,7 +244,7 @@ public:
         case GLFW_KEY_3:
         case GLFW_KEY_4:
         case GLFW_KEY_5:
-            m_gBufferChoice->program()->setUniform<GLint>("choice", event.key() - 49);
+            m_choiceUniform->set(static_cast<unsigned int>(event.key() - 49));
             break;
 
         case GLFW_KEY_SPACE:
@@ -336,6 +371,28 @@ protected:
     std::unique_ptr<Framebuffer> m_postprocessingFBO;
 
     std::unique_ptr<ScreenAlignedQuad> m_gBufferChoice;
+
+    std::unique_ptr<Uniform<unsigned int>> m_choiceUniform;
+
+    std::unique_ptr<Uniform<unsigned int>> m_postprocessingColorSourceUniform;
+    std::unique_ptr<Uniform<unsigned int>> m_postprocessingNormalSourceUniform;
+    std::unique_ptr<Uniform<unsigned int>> m_postprocessingWorldCoordSourceUniform;
+    std::unique_ptr<Uniform<unsigned int>> m_postprocessingDepthSourceUniform;
+
+    std::unique_ptr<Uniform<unsigned int>> m_postprocessedSourceUniform;
+    std::unique_ptr<Uniform<unsigned int>> m_gBufferChoiceColorSourceUniform;
+    std::unique_ptr<Uniform<unsigned int>> m_gBufferChoiceNormalSourceUniform;
+    std::unique_ptr<Uniform<unsigned int>> m_gBufferChoiceWorldCoordSourceUniform;
+    std::unique_ptr<Uniform<unsigned int>> m_gBufferChoiceDepthSourceUniform;
+
+    std::unique_ptr<Uniform<float>> m_nearPlaneUniform;
+    std::unique_ptr<Uniform<float>> m_farPlaneUniform;
+
+    std::unique_ptr<Uniform<glm::vec2>> m_screenSizeUniform;
+
+    std::unique_ptr<Uniform<glm::mat4>> m_viewProjectionUniform;
+    std::unique_ptr<Uniform<glm::mat4>> m_viewUniform;
+    std::unique_ptr<Uniform<glm::mat3>> m_normalMatrixUniform;
 
     Camera m_camera;
     WorldInHandNavigation m_nav;

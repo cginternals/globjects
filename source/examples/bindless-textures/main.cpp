@@ -21,6 +21,7 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
+#include <globjects/Uniform.h>
 
 #include <globjects/base/File.h>
 
@@ -165,7 +166,10 @@ public:
         for (unsigned i = 0; i < m_textures.size(); ++i)
             handles[i] = m_textures[i]->makeResident();
 
-        m_program->setUniform("textures", handles);
+        m_handlesUniform.reset(new Uniform<std::array<TextureHandle, std::tuple_size<decltype(m_textures)>::value>>("textures", handles));
+        m_projectionUniform.reset(new Uniform<glm::mat4>("projection", m_camera.viewProjection()));
+
+        m_program->attach(m_handlesUniform.get(), m_projectionUniform.get());
 
         window.addTimer(0, 0);
     }
@@ -183,7 +187,7 @@ public:
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        m_program->setUniform("projection", m_camera.viewProjection());
+        m_projectionUniform->set(m_camera.viewProjection());
 
         m_program->use();
         m_drawable->draw();
@@ -290,6 +294,8 @@ protected:
     AxisAlignedBoundingBox m_aabb;
 
     std::array<std::unique_ptr<Texture>, 4> m_textures;
+    std::unique_ptr<Uniform<std::array<TextureHandle, 4>>> m_handlesUniform;
+    std::unique_ptr<Uniform<glm::mat4>> m_projectionUniform;
     std::unique_ptr<Program> m_program;
     std::unique_ptr<VertexDrawable> m_drawable;
     std::unique_ptr<AbstractStringSource> m_vertexSource;

@@ -38,5 +38,5 @@ if(OPTION_BUILD_TESTS AND GMOCK_FOUND AND GTEST_FOUND)
     set_target_properties(test PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD 1)
 
     # Add tests
-    add_test_without_ctest(globjects-test)
+    # add_test_without_ctest(globjects-test)
 endif()

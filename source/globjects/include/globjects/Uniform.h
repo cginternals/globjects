@@ -22,7 +22,7 @@ namespace globjects
  * Uniform<float> * u = new Uniform<float>("u_ratio");
  * u->set(1.618f);
  *
- * program->addUniform(u);
+ * program->attach(u);
  * \endcode
  *
  * \see AbstractUniform
