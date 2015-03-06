@@ -116,11 +116,6 @@ void Shader::setSource(AbstractStringSource * source)
     updateSource();
 }
 
-void Shader::setSource(const std::string & source)
-{
-    setSource(new StaticStringSource(source));
-}
-
 const AbstractStringSource* Shader::source() const
 {
     return m_source;

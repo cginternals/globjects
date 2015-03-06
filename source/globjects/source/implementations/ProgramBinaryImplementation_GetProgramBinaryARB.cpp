@@ -8,6 +8,8 @@
 #include <globjects/Program.h>
 #include <globjects/ProgramBinary.h>
 
+#include <globjects/base/StaticStringSource.h>
+
 
 using namespace gl;
 
@@ -37,7 +39,7 @@ ProgramBinary * ProgramBinaryImplementation_GetProgramBinaryARB::getProgramBinar
 
     glGetProgramBinary(program->id(), length, nullptr, &format, binary.data());
 
-    return new ProgramBinary(format, binary);
+    return new ProgramBinary(format, new StaticStringSource(binary.data(), binary.size()));
 }
 
 } // namespace globjects

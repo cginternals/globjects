@@ -39,7 +39,9 @@ public:
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        NamedString::create("/color.glsl", new File("data/shaderincludes/color.glsl"));
+        m_namedStringSource.reset(new File("data/shaderincludes/color.glsl"));
+
+        m_colorReplacement.reset(NamedString::create("/color.glsl", m_namedStringSource.get()));
 
         m_quadSource.reset(new File("data/shaderincludes/test.frag"));
         m_quadShader.reset(new Shader(GL_FRAGMENT_SHADER, m_quadSource.get()));
@@ -56,9 +58,11 @@ public:
     }
 
 protected:
+    std::unique_ptr<NamedString> m_colorReplacement;
     std::unique_ptr<ScreenAlignedQuad> m_quad;
     std::unique_ptr<AbstractStringSource> m_quadSource;
     std::unique_ptr<Shader> m_quadShader;
+    std::unique_ptr<AbstractStringSource> m_namedStringSource;
 };
 
 

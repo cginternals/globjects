@@ -26,7 +26,6 @@ class GLOBJECTS_API ProgramBinary : public Changeable, protected ChangeListener
 public:
     virtual ~ProgramBinary();
 
-    ProgramBinary(gl::GLenum binaryFormat, const std::vector<char> & binaryData);
     ProgramBinary(gl::GLenum binaryFormat, AbstractStringSource * dataSource);
 
     gl::GLenum format() const;

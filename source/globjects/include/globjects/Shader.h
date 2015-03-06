@@ -64,7 +64,6 @@ public:
     gl::GLenum type() const;
 
     void setSource(AbstractStringSource * source);
-    void setSource(const std::string & source);
     const AbstractStringSource* source() const;
     void updateSource();
 
