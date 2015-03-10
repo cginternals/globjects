@@ -150,18 +150,18 @@ public:
 
         m_vao->binding(0)->setBuffer(drawBuffer, 0, sizeof(vec4));
 
+        m_transformFeedback->bind();
         writeBuffer->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
 
         glEnable(GL_RASTERIZER_DISCARD);
 
         m_transformFeedbackProgram->use();
-        m_transformFeedback->bind();
         m_transformFeedback->begin(GL_TRIANGLES);
         m_vao->drawArrays(GL_TRIANGLES, 0, 6);
         m_transformFeedback->end();
-        m_transformFeedback->unbind();
         glDisable(GL_RASTERIZER_DISCARD);
 
+        m_transformFeedback->unbind();
 
         m_vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(vec4));
 
