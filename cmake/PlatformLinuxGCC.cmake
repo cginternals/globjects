@@ -56,6 +56,7 @@ set(LINUX_COMPILE_FLAGS
       -Wno-error=float-equal 
       -Wno-error=conversion 
       -Wno-error=switch
+      -Wno-error=comment
 
       -fPIC         # -> use position independent code
       -fvisibility=hidden # ->
