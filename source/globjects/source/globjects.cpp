@@ -60,15 +60,14 @@ void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
 void init()
 {
     g_mutex.lock();
-    if (g_globjectsIsInitialized)
+    if (!g_globjectsIsInitialized)
     {
-        glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
-
         glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
             manualErrorCheckAfter(*functionCall.function); });
 
         g_globjectsIsInitialized = true;
     }
+
     g_mutex.unlock();
 
     registerCurrentContext();

@@ -1,6 +1,8 @@
 
 #include "DebugImplementation_Legacy.h"
 
+#include <glbinding/callbacks.h>
+
 
 using namespace gl;
 
@@ -20,11 +22,15 @@ bool DebugImplementation_Legacy::isFallback()
 void DebugImplementation_Legacy::enable()
 {
     m_enabled = true;
+
+    glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
 }
 
 void DebugImplementation_Legacy::disable()
 {
     m_enabled = false;
+
+    glbinding::setCallbackMask(glbinding::CallbackMask::None);
 }
 
 void DebugImplementation_Legacy::setSynchronous(bool)
