@@ -7,8 +7,8 @@
 #	define GLOBJECTS_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
 #	define GLOBJECTS_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #else
-#	define GLOBJECTS_API_EXPORT_DECLARATION
-#	define GLOBJECTS_API_IMPORT_DECLARATION
+#	define GLOBJECTS_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
+#	define GLOBJECTS_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #endif
 
 #ifndef GLOBJECTS_STATIC
