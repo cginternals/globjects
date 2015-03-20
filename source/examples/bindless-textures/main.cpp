@@ -125,9 +125,9 @@ public:
         m_drawable = new VertexDrawable(vertices, GL_TRIANGLE_STRIP);
 
         m_drawable->setFormats({
-            Format(3, GL_FLOAT, offsetof(Vertex, position)),
-            Format(2, GL_FLOAT, offsetof(Vertex, texCoord)),
-            FormatI(1, GL_INT, offsetof(Vertex, side)) });
+            Format(3, GL_FLOAT, 0),
+            Format(2, GL_FLOAT, 12),
+            FormatI(1, GL_INT, 20) });
 
         m_drawable->enableAll();
     }
