@@ -102,4 +102,14 @@ void BufferImplementation_DirectStateAccessEXT::getBufferSubData(const Buffer * 
     glGetNamedBufferSubDataEXT(buffer->id(), offset, size, data);
 }
 
+void BufferImplementation_DirectStateAccessEXT::invalidateData(const Buffer * buffer) const
+{
+    glInvalidateBufferData(buffer->id());
+}
+
+void BufferImplementation_DirectStateAccessEXT::invalidateSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr length) const
+{
+    glInvalidateBufferSubData(buffer->id(), offset, length);
+}
+
 } // namespace globjects

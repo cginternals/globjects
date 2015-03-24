@@ -109,4 +109,14 @@ void BufferImplementation_DirectStateAccessARB::getBufferSubData(const Buffer * 
     glGetNamedBufferSubData(buffer->id(), offset, static_cast<GLsizei>(size), data);
 }
 
+void BufferImplementation_DirectStateAccessARB::invalidateData(const Buffer * buffer) const
+{
+    glInvalidateBufferData(buffer->id());
+}
+
+void BufferImplementation_DirectStateAccessARB::invalidateSubData(const Buffer * buffer, GLintptr offset, GLsizeiptr length) const
+{
+    glInvalidateBufferSubData(buffer->id(), offset, length);
+}
+
 } // namespace globjects
