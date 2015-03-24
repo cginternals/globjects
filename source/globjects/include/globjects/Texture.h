@@ -109,6 +109,10 @@ public:
     void clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const glm::ivec4 & value);
     void clearSubImage(gl::GLint level, const glm::ivec3 & offset, const glm::ivec3 & size, gl::GLenum format, gl::GLenum type, const glm::uvec4 & value);
 
+    void invalidateImage(gl::GLint level) const;
+    void invalidateSubImage(gl::GLint level, gl::GLint xoffset, gl::GLint yoffset, gl::GLint zoffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth);
+    void invalidateSubImage(gl::GLint level, const glm::ivec3& offset, const glm::ivec3 size);
+
     void bindImageTexture(gl::GLuint unit, gl::GLint level, gl::GLboolean layered, gl::GLint layer, gl::GLenum access, gl::GLenum format) const;
     static void unbindImageTexture(gl::GLuint unit);
 
