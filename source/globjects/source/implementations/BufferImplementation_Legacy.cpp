@@ -5,6 +5,7 @@
 #include <glbinding/gl/boolean.h>
 #include <glbinding/gl/enum.h>
 
+#include <globjects/base/baselogging.h>
 #include <globjects/Buffer.h>
 
 
@@ -141,6 +142,16 @@ void BufferImplementation_Legacy::getBufferSubData(const Buffer * buffer, GLintp
     buffer->bind(s_workingTarget);
 
     glGetBufferSubData(s_workingTarget, offset, size, data);
+}
+
+void BufferImplementation_Legacy::invalidateData(const Buffer * /* buffer */) const
+{
+    critical() << "glInvalidateBufferData requires direct state access";
+}
+
+void BufferImplementation_Legacy::invalidateSubData(const Buffer * /* buffer */, GLintptr /* offset */, GLsizeiptr /* length */) const
+{
+    critical() << "glInvalidateBufferSubData requires direct state access";
 }
 
 } // namespace globjects

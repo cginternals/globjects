@@ -245,6 +245,18 @@ public:
     template <typename T, std::size_t Count>
     const std::array<T, Count> getSubData(gl::GLintptr offset = 0) const;
 
+    /** \brief Wraps the OpenGL function gl::glInvalidateBufferData.
+        \see https://www.opengl.org/sdk/docs/man/html/glInvalidateBufferData.xhtml
+    */
+    void invalidateData() const;
+
+    /** \brief Wraps the OpenGL function gl::glInvalidateBufferSubData.
+        \param offset offset in bytes
+        \param size size in bytes
+        \see https://www.opengl.org/sdk/docs/man/html/glInvalidateBufferSubData.xhtml
+    */
+    void invalidateSubData(gl::GLintptr offset, gl::GLsizeiptr length) const;
+
     virtual gl::GLenum objectType() const override;
 
 protected:

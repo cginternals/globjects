@@ -409,6 +409,21 @@ void Texture::clearSubImage(const GLint level, const glm::ivec3 & offset, const 
     clearSubImage(level, offset, size, format, type, glm::value_ptr(value));
 }
 
+void Texture::invalidateImage(GLint level) const
+{
+    glInvalidateTexImage(id(), level);
+}
+
+void Texture::invalidateSubImage(GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth)
+{
+    glInvalidateTexSubImage(id(), level, xoffset, yoffset, zoffset, width, height, depth);
+}
+
+void Texture::invalidateSubImage(GLint level, const glm::ivec3& offset, const glm::ivec3 size)
+{
+    invalidateSubImage(level, offset.x, offset.y, offset.z, size.x, size.y, size.z);
+}
+
 void Texture::bindImageTexture(const GLuint unit, const GLint level, const GLboolean layered, const GLint layer, const GLenum access, const GLenum format) const
 {
 	glBindImageTexture(unit, id(), level, layered, layer, access, format);

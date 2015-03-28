@@ -36,6 +36,9 @@ public:
 
     virtual void getBufferSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLvoid * data) const override;
 
+    virtual void invalidateData(const Buffer * buffer) const override;
+    virtual void invalidateSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const override;
+
 public:
     static gl::GLenum s_workingTarget;
 };
