@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-#include <glm/gtx/random.hpp>
+#include <glm/gtc/random.hpp>
 
 #include <glbinding/gl/gl.h>
 
