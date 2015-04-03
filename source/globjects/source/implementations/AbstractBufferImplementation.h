@@ -42,6 +42,9 @@ public:
     virtual void flushMappedRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const = 0;
 
     virtual void getBufferSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size, gl::GLvoid * data) const = 0;
+
+    virtual void invalidateData(const Buffer * buffer) const = 0;
+    virtual void invalidateSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const = 0;
 };
 
 } // namespace globjects

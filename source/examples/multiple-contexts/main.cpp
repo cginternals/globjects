@@ -1,6 +1,8 @@
 
 #include <iostream>
 
+#include <glm/gtc/random.hpp>
+
 #include <glbinding/gl/gl.h>
 
 #include <globjects/logging.h>
@@ -31,9 +33,9 @@ public:
         WindowEventHandler::paintEvent(event);
 
         glClearColor(
-            static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
-            static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
-            static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
+            glm::linearRand<float>(0.0f, 1.0f),
+            glm::linearRand<float>(0.0f, 1.0f),
+            glm::linearRand<float>(0.0f, 1.0f),
             1.f);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -68,7 +70,7 @@ int main(int /*argc*/, char * /*argv*/[])
         if (!windows[i].create(format, "Multiple Contexts Example", 320, 240))
             return 1;
 
-        windows[i].setQuitOnDestroy(i == 0 || rand() % 4 == 0);
+        windows[i].setQuitOnDestroy(i == 0 || glm::linearRand<float>(0.0f, 3.0f) < 1.0);
         windows[i].show();
     }
     return MainLoop::run();

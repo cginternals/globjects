@@ -195,6 +195,16 @@ void Buffer::getSubData(const GLintptr offset, const GLsizeiptr size, void * dat
     implementation().getBufferSubData(this, offset, size, data);
 }
 
+void Buffer::invalidateData() const
+{
+    implementation().invalidateData(this);
+}
+
+void Buffer::invalidateSubData(const GLintptr offset, const GLsizeiptr length) const
+{
+    implementation().invalidateSubData(this, offset, length);
+}
+
 GLenum Buffer::objectType() const
 {
     return GL_BUFFER;
