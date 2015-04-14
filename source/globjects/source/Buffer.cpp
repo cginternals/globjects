@@ -62,7 +62,7 @@ Buffer::~Buffer()
 
 void Buffer::accept(ObjectVisitor& visitor)
 {
-	visitor.visitBuffer(this);
+    visitor.visitBuffer(this);
 }
 
 void Buffer::bind(const GLenum target) const
@@ -149,7 +149,7 @@ void Buffer::copySubData(Buffer * buffer, const GLintptr readOffset, const GLint
 
 void Buffer::copySubData(Buffer * buffer, const GLsizeiptr size) const
 {
-	copySubData(buffer, 0, 0, size);
+    copySubData(buffer, 0, 0, size);
 }
 
 void Buffer::copyData(Buffer * buffer, const GLsizeiptr size, const GLenum usage) const
@@ -157,7 +157,7 @@ void Buffer::copyData(Buffer * buffer, const GLsizeiptr size, const GLenum usage
     assert(buffer != nullptr);
 
     buffer->setData(static_cast<GLsizei>(size), nullptr, usage);
-	copySubData(buffer, 0, 0, size);
+    copySubData(buffer, 0, 0, size);
 }
 
 void Buffer::clearData(const GLenum internalformat, const GLenum format, const GLenum type, const void * data)

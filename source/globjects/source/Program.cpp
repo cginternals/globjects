@@ -57,8 +57,10 @@ Program::Program(ProgramBinary * binary)
 
 Program::~Program()
 {
-    for (std::pair<LocationIdentity, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
+    for (auto & uniformPair : m_uniforms)
+    {
         uniformPair.second->deregisterProgram(this);
+    }
 
     if (0 == id())
     {
@@ -67,19 +69,19 @@ Program::~Program()
     }
     else
     {
-        for (ref_ptr<Shader> shader : std::set<ref_ptr<Shader>>(m_shaders))
+        for (auto & shader : std::set<Shader *>(m_shaders))
             detach(shader);
     }
 }
 
 void Program::accept(ObjectVisitor & visitor)
 {
-	visitor.visitProgram(this);
+    visitor.visitProgram(this);
 }
 
 void Program::use() const
 {
-	checkDirty();
+    checkDirty();
 
     if (!isLinked())
         return;
@@ -104,17 +106,17 @@ bool Program::isUsed() const
 
 bool Program::isLinked() const
 {
-	return m_linked;
+    return m_linked;
 }
 
 void Program::invalidate() const
 {
-	m_dirty = true;
+    m_dirty = true;
 }
 
 void Program::notifyChanged(const Changeable *)
 {
-	invalidate();
+    invalidate();
 }
 
 void Program::checkDirty() const
@@ -135,24 +137,38 @@ void Program::attach(Shader * shader)
     invalidate();
 }
 
+void Program::attach(AbstractUniform * uniform)
+{
+    assert(uniform != nullptr);
+
+    auto & uniformReference = m_uniforms[uniform->identity()];
+
+    if (uniformReference)
+        uniformReference->deregisterProgram(this);
+
+    uniformReference = uniform;
+
+    uniform->registerProgram(this);
+
+    if (m_linked)
+        uniform->update(this);
+}
+
 void Program::detach(Shader * shader)
 {
     assert(shader != nullptr);
 
     glDetachShader(id(), shader->id());
 
-	shader->deregisterListener(this);
-	m_shaders.erase(shader);
+    shader->deregisterListener(this);
+    m_shaders.erase(shader);
 
-	invalidate();
+    invalidate();
 }
 
-std::set<Shader *> Program::shaders() const
+const std::set<Shader *> & Program::shaders() const
 {
-	std::set<Shader *> shaders;
-    for (ref_ptr<Shader> shader: m_shaders)
-		shaders.insert(shader);
-	return shaders;
+    return m_shaders;
 }
 
 void Program::link() const
@@ -165,7 +181,7 @@ void Program::link() const
     glLinkProgram(id());
 
     m_linked = checkLinkStatus();
-	m_dirty = false;
+    m_dirty = false;
 
     updateUniforms();
     updateUniformBlockBindings();
@@ -220,7 +236,7 @@ GLint Program::getFragDataIndex(const std::string & name) const
 
 GLint Program::getUniformLocation(const std::string& name) const
 {
-	checkDirty();
+    checkDirty();
     if (!m_linked)
         return -1;
 
@@ -249,7 +265,7 @@ std::vector<GLint> Program::getUniformLocations(const std::vector<std::string> &
 
 GLint Program::getAttributeLocation(const std::string & name) const
 {
-	checkDirty();
+    checkDirty();
     if (!m_linked)
         return -1;
 
@@ -400,28 +416,11 @@ UniformBlock * Program::getUniformBlockByIdentity(const LocationIdentity & ident
     return &m_uniformBlocks[identity];
 }
 
-void Program::addUniform(AbstractUniform * uniform)
-{
-    assert(uniform != nullptr);
-
-    ref_ptr<AbstractUniform>& uniformReference = m_uniforms[uniform->identity()];
-
-	if (uniformReference)
-		uniformReference->deregisterProgram(this);
-
-	uniformReference = uniform;
-
-	uniform->registerProgram(this);
-
-	if (m_linked)
-		uniform->update(this);
-}
-
 void Program::updateUniforms() const
 {
-	// Note: uniform update will check if program is linked
-    for (std::pair<LocationIdentity, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
-		uniformPair.second->update(this);
+    // Note: uniform update will check if program is linked
+    for (auto & uniformPair : m_uniforms)
+        uniformPair.second->update(this);
 }
 
 void Program::updateUniformBlockBindings() const
@@ -432,13 +431,13 @@ void Program::updateUniformBlockBindings() const
 
 void Program::setBinary(ProgramBinary * binary)
 {
-    if (m_binary == binary)
+    if (m_binary.get() == binary)
         return;
 
     if (m_binary)
         m_binary->deregisterListener(this);
 
-    m_binary = binary;
+    m_binary.reset(binary);
 
     if (m_binary)
         m_binary->registerListener(this);
@@ -454,7 +453,7 @@ GLint Program::get(const GLenum pname) const
     GLint value = 0;
     glGetProgramiv(id(), pname, &value);
 
-	return value;
+    return value;
 }
 
 void Program::getActiveAttrib(gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * size, gl::GLenum * type, gl::GLchar * name) const
@@ -475,7 +474,7 @@ const std::string Program::infoLog() const
 
     glGetProgramInfoLog(id(), length, &length, log.data());
 
-	return std::string(log.data(), length);
+    return std::string(log.data(), length);
 }
 
 void Program::dispatchCompute(const glm::uvec3 & numGroups)
@@ -510,7 +509,7 @@ void Program::dispatchComputeGroupSize(const glm::uvec3 & numGroups, const glm::
 
 void Program::setShaderStorageBlockBinding(const GLuint storageBlockIndex, const GLuint storageBlockBinding) const
 {
-	checkDirty();
+    checkDirty();
     if (!m_linked)
         return;
 

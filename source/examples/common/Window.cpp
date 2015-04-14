@@ -69,12 +69,12 @@ Window::~Window()
 
 WindowEventHandler * Window::eventHandler()
 {
-    return m_eventHandler.get();
+    return m_eventHandler;
 }
 
 const WindowEventHandler * Window::eventHandler() const
 {
-    return m_eventHandler.get();
+    return m_eventHandler;
 }
 
 Context * Window::context() const

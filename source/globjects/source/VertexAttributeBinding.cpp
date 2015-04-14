@@ -33,7 +33,7 @@ VertexAttributeBinding::VertexAttributeBinding(
 {
     assert(vao != nullptr);
 
-	// setAttribute(bindingIndex); // as default - this leads to errors when binding unknown type 
+    // setAttribute(bindingIndex); // as default - this leads to errors when binding unknown type 
 }
 
 VertexAttributeBinding::~VertexAttributeBinding()

@@ -3,6 +3,10 @@
 
 #include <globjects/NamedString.h>
 #include <globjects/Shader.h>
+#include <globjects/VertexArray.h>
+#include <globjects/Buffer.h>
+#include <globjects/Program.h>
+#include <globjects/Texture.h>
 
 #include <globjects/logging.h>
 #include <globjects/base/File.h>
@@ -35,9 +39,14 @@ public:
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        NamedString::create("/color.glsl", new File("data/shaderincludes/color.glsl"));
+        m_namedStringSource.reset(new File("data/shaderincludes/color.glsl"));
 
-        m_quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
+        m_colorReplacement.reset(NamedString::create("/color.glsl", m_namedStringSource.get()));
+
+        m_quadSource.reset(new File("data/shaderincludes/test.frag"));
+        m_quadShader.reset(new Shader(GL_FRAGMENT_SHADER, m_quadSource.get()));
+
+        m_quad.reset(new ScreenAlignedQuad(m_quadShader.get()));
     }
     
     virtual void paintEvent(PaintEvent & event) override
@@ -49,7 +58,11 @@ public:
     }
 
 protected:
-    ref_ptr<ScreenAlignedQuad> m_quad;
+    std::unique_ptr<NamedString> m_colorReplacement;
+    std::unique_ptr<ScreenAlignedQuad> m_quad;
+    std::unique_ptr<AbstractStringSource> m_quadSource;
+    std::unique_ptr<Shader> m_quadShader;
+    std::unique_ptr<AbstractStringSource> m_namedStringSource;
 };
 
 

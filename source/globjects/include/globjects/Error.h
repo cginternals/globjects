@@ -17,21 +17,21 @@ namespace globjects
 class GLOBJECTS_API Error
 {
 public:
-	Error();
-	Error(gl::GLenum errorCode);
+    Error();
+    Error(gl::GLenum errorCode);
 
     static Error get();
 
-	static void clear();
+    static void clear();
 
-	gl::GLenum code() const;
-	std::string name() const;
+    gl::GLenum code() const;
+    std::string name() const;
 
-	bool isError() const;
+    bool isError() const;
     operator bool() const;
 
 protected:
-	gl::GLenum m_errorCode;
+    gl::GLenum m_errorCode;
 };
 
 } // namespace globjects

@@ -79,7 +79,7 @@ public:
             m_velocities[i] = vec4(0.f);
 
 
-        m_forces = Texture::createDefault(GL_TEXTURE_3D);
+        m_forces.reset(Texture::createDefault(GL_TEXTURE_3D));
         
         NamedString::create("/particle-step.inc", new File("data/gpu-particles/particle-step.inc"));
 
@@ -340,7 +340,7 @@ protected:
     };
     std::vector<Attribute> m_attributes;
 
-    ref_ptr<Texture> m_forces;
+    std::unique_ptr<Texture> m_forces;
 };
 
 

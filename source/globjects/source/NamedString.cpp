@@ -20,11 +20,6 @@ NamedString * NamedString::create(const std::string & name, AbstractStringSource
     return create(name, source, GL_SHADER_INCLUDE_ARB);
 }
 
-NamedString * NamedString::create(const std::string & name, const std::string & string)
-{
-    return create(name, string, GL_SHADER_INCLUDE_ARB);
-}
-
 NamedString * NamedString::create(const std::string & name, AbstractStringSource * source, const GLenum type)
 {
     if (isNamedString(name))
@@ -33,16 +28,6 @@ NamedString * NamedString::create(const std::string & name, AbstractStringSource
     }
 
     return new NamedString(name, source, type);
-}
-
-NamedString * NamedString::create(const std::string & name, const std::string & string, const GLenum type)
-{
-    if (isNamedString(name))
-    {
-        return nullptr;
-    }
-
-    return new NamedString(name, new StaticStringSource(string), type);
 }
 
 NamedString::NamedString(const std::string & name, AbstractStringSource * source, const GLenum type)
@@ -145,7 +130,7 @@ NamedString * NamedString::obtain(const std::string & name)
 
         glGetNamedStringARB(static_cast<GLint>(name.size()), name.c_str(), length, nullptr, string.data());
 
-        namedString = create(name, std::string(string.data(), string.size()), static_cast<GLenum>(type));
+        namedString = create(name, new StaticStringSource(string.data(), string.size()), static_cast<GLenum>(type));
     }
 
     return namedString;
@@ -168,7 +153,7 @@ GLenum NamedString::type() const
 
 AbstractStringSource * NamedString::stringSource() const
 {
-    return m_source.get();
+    return m_source;
 }
 
 bool NamedString::hasNativeSupport()

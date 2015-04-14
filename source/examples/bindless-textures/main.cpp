@@ -1,4 +1,6 @@
 
+#include <memory>
+
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/noise.hpp>
 
@@ -19,6 +21,7 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
+#include <globjects/Uniform.h>
 
 #include <globjects/base/File.h>
 
@@ -102,7 +105,7 @@ public:
             }
 
             texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
-            m_textures[i] = texture;
+            m_textures[i].reset(texture);
         }
     }
 
@@ -122,7 +125,7 @@ public:
             Vertex{ points[0], vec2(1.0f, 0.0f), 2 },
             Vertex{ points[1], vec2(0.5f, 1.0f), 3 } } };
 
-        m_drawable = new VertexDrawable(vertices, GL_TRIANGLE_STRIP);
+        m_drawable.reset(new VertexDrawable(vertices, GL_TRIANGLE_STRIP));
 
         m_drawable->setFormats({
             Format(3, GL_FLOAT, 0),
@@ -144,23 +147,29 @@ public:
             return;
         }
 
-        ref_ptr<State> state = new State;
+        std::unique_ptr<State> state(new State);
         state->enable(GL_CULL_FACE);
         state->clearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         createGeometry();
         createTextures();
 
-        m_program = new Program;
+        m_vertexSource.reset(new File("data/bindless-textures/shader.vert"));
+        m_fragmentSource.reset(new File("data/bindless-textures/shader.frag"));
+
+        m_program.reset(new Program);
         m_program->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,   "data/bindless-textures/shader.vert"),
-            Shader::fromFile(GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag"));
+            new Shader(GL_VERTEX_SHADER, m_vertexSource.get()),
+            new Shader(GL_FRAGMENT_SHADER, m_fragmentSource.get()));
 
         std::array<TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
         for (unsigned i = 0; i < m_textures.size(); ++i)
             handles[i] = m_textures[i]->makeResident();
 
-        m_program->setUniform("textures", handles);
+        m_handlesUniform.reset(new Uniform<std::array<TextureHandle, std::tuple_size<decltype(m_textures)>::value>>("textures", handles));
+        m_projectionUniform.reset(new Uniform<glm::mat4>("projection", m_camera.viewProjection()));
+
+        m_program->attach(m_handlesUniform.get(), m_projectionUniform.get());
 
         window.addTimer(0, 0);
     }
@@ -178,7 +187,7 @@ public:
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        m_program->setUniform("projection", m_camera.viewProjection());
+        m_projectionUniform->set(m_camera.viewProjection());
 
         m_program->use();
         m_drawable->draw();
@@ -284,9 +293,13 @@ protected:
     WorldInHandNavigation m_nav;
     AxisAlignedBoundingBox m_aabb;
 
-    std::array<ref_ptr<Texture>, 4> m_textures;
-    ref_ptr<Program> m_program;
-    ref_ptr<VertexDrawable> m_drawable;
+    std::array<std::unique_ptr<Texture>, 4> m_textures;
+    std::unique_ptr<Uniform<std::array<TextureHandle, std::tuple_size<decltype(m_textures)>::value>>> m_handlesUniform;
+    std::unique_ptr<Uniform<glm::mat4>> m_projectionUniform;
+    std::unique_ptr<Program> m_program;
+    std::unique_ptr<VertexDrawable> m_drawable;
+    std::unique_ptr<AbstractStringSource> m_vertexSource;
+    std::unique_ptr<AbstractStringSource> m_fragmentSource;
 };
 
 

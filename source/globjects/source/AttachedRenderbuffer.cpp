@@ -18,12 +18,12 @@ AttachedRenderbuffer::AttachedRenderbuffer(Framebuffer * fbo,  const GLenum atta
 
 bool AttachedRenderbuffer::isRenderBufferAttachment() const
 {
-	return true;
+    return true;
 }
 
 Renderbuffer * AttachedRenderbuffer::renderBuffer()
 {
-	return m_renderBuffer;
+    return m_renderBuffer;
 }
 
 const Renderbuffer * AttachedRenderbuffer::renderBuffer() const

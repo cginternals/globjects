@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include <globjects/base/Referenced.h>
-
 #include <common/Timer.h>
 
 
@@ -24,7 +22,7 @@ class TimerEvent;
 /** \brief Can be attached to a Window to handle events.
     The window's context is made current before calling any methods and done current afterwards.
 */
-class WindowEventHandler : public globjects::Referenced
+class WindowEventHandler
 {
 public:
     WindowEventHandler();

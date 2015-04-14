@@ -12,13 +12,13 @@ void replaceAll(
 ,   const std::string & search
 ,   const std::string & replace)
 {
-	size_t pos = 0;
+    size_t pos = 0;
 
-	while((pos = subject.find(search, pos)) != std::string::npos)
-	{
-		subject.replace(pos, search.length(), replace);
-		pos += replace.length();
-	}
+    while((pos = subject.find(search, pos)) != std::string::npos)
+    {
+        subject.replace(pos, search.length(), replace);
+        pos += replace.length();
+    }
 }
 
 }
@@ -59,8 +59,8 @@ void StringTemplate::replace(const std::string & original, const std::string & s
 
 void StringTemplate::replace(const std::string & original, const int i)
 {
-	std::stringstream ss;
-	ss << i;
+    std::stringstream ss;
+    ss << i;
     replace(original, ss.str());
 }
 

@@ -3,11 +3,11 @@
 #include <set>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
 #include <glm/vec3.hpp>
 
 #include <globjects/base/ChangeListener.h>
-#include <globjects/base/ref_ptr.h>
 
 #include <globjects/globjects_api.h>
 
@@ -88,24 +88,35 @@ public:
     static void hintBinaryImplementation(BinaryImplementation impl);
 
 public:
-	Program();
+    Program();
     Program(ProgramBinary * binary);
+
+    virtual ~Program();
 
     virtual void accept(ObjectVisitor & visitor) override;
 
     void use() const;
     void release() const;
 
-	bool isUsed() const;
-	bool isLinked() const;
+    bool isUsed() const;
+    bool isLinked() const;
 
     void attach(Shader * shader);
     template <class ...Shaders> 
     void attach(Shader * shader, Shaders... shaders);
 
-	void detach(Shader * shader);
+    /** Adds the uniform to the internal list of named uniforms. If an equally
+        named uniform already exists, this program derigisters itself and the uniform
+        gets replaced (and by this the old one gets dereferenced). If the current
+        program is linked, the uniforms value will be passed to the program object.
+    */
+    void attach(AbstractUniform * uniform);
+    template <class ...Uniforms>
+    void attach(AbstractUniform * uniform, Uniforms... uniforms);
 
-	std::set<Shader*> shaders() const;
+    void detach(Shader * shader);
+
+    const std::set<Shader*> & shaders() const;
 
     void link() const;
     void invalidate() const;
@@ -113,8 +124,8 @@ public:
     void setBinary(ProgramBinary * binary);
     ProgramBinary * getBinary() const;
 
-	const std::string infoLog() const;
-	gl::GLint get(gl::GLenum pname) const;
+    const std::string infoLog() const;
+    gl::GLint get(gl::GLenum pname) const;
 
     void getActiveAttrib(gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * size, gl::GLenum * type, gl::GLchar * name) const;
 
@@ -142,8 +153,8 @@ public:
     gl::GLint getInterface(gl::GLenum programInterface, gl::GLenum pname) const;
 
 
-	/** Convenience methods for getResource()
-	*/
+    /** Convenience methods for getResource()
+    */
     gl::GLint getResource(gl::GLenum programInterface, gl::GLuint index, gl::GLenum prop, gl::GLsizei * length = nullptr) const;
     std::vector<gl::GLint> getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei * length = nullptr) const;
     void getResource(gl::GLenum programInterface, gl::GLuint index, const std::vector<gl::GLenum> & props, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * params) const;
@@ -159,15 +170,10 @@ public:
     gl::GLint getActiveUniform(gl::GLuint uniformIndex, gl::GLenum pname) const;
     std::string getActiveUniformName(gl::GLuint uniformIndex) const;
 
-	template<typename T>
-	void setUniform(const std::string & name, const T & value);
+    /** Retrieves the existing or creates a new typed uniform, named <name>.
+    */
     template<typename T>
-    void setUniform(gl::GLint location, const T & value);
-
-	/** Retrieves the existing or creates a new typed uniform, named <name>.
-	*/
-	template<typename T>
-	Uniform<T> * getUniform(const std::string & name);
+    Uniform<T> * getUniform(const std::string & name);
     template<typename T>
     const Uniform<T> * getUniform(const std::string & name) const;
     template<typename T>
@@ -175,16 +181,9 @@ public:
     template<typename T>
     const Uniform<T> * getUniform(gl::GLint location) const;
 
-	/** Adds the uniform to the internal list of named uniforms. If an equally
-		named uniform already exists, this program derigisters itself and the uniform
-		gets replaced (and by this the old one gets dereferenced). If the current
-		program is linked, the uniforms value will be passed to the program object.
-	*/
-	void addUniform(AbstractUniform * uniform);
-
     void setShaderStorageBlockBinding(gl::GLuint storageBlockIndex, gl::GLuint storageBlockBinding) const;
 
-	void dispatchCompute(gl::GLuint numGroupsX, gl::GLuint numGroupsY, gl::GLuint numGroupsZ);
+    void dispatchCompute(gl::GLuint numGroupsX, gl::GLuint numGroupsY, gl::GLuint numGroupsZ);
     void dispatchCompute(const glm::uvec3 & numGroups);
     void dispatchComputeGroupSize(gl::GLuint numGroupsX, gl::GLuint numGroupsY, gl::GLuint numGroupsZ, gl::GLuint groupSizeX, gl::GLuint groupSizeY, gl::GLuint groupSizeZ);
     void dispatchComputeGroupSize(const glm::uvec3 & numGroups, const glm::uvec3 & groupSizes);
@@ -192,8 +191,6 @@ public:
     virtual gl::GLenum objectType() const override;
 
 protected:
-    virtual ~Program();
-
     bool checkLinkStatus() const;
     void checkDirty() const;
 
@@ -201,12 +198,12 @@ protected:
     void updateUniforms() const;
     void updateUniformBlockBindings() const;
 
-	// ChangeListener Interface
+    // ChangeListener Interface
 
     virtual void notifyChanged(const Changeable * sender) override;
 
 protected:
-	static gl::GLuint createProgram();
+    static gl::GLuint createProgram();
 
     template<typename T>
     void setUniformByIdentity(const LocationIdentity & identity, const T & value);
@@ -219,10 +216,10 @@ protected:
     const UniformBlock * getUniformBlockByIdentity(const LocationIdentity & identity) const;
 
 protected:
-    std::set<ref_ptr<Shader>> m_shaders;
-    ref_ptr<ProgramBinary> m_binary;
+    std::set<Shader *> m_shaders;
+    std::unique_ptr<ProgramBinary> m_binary;
 
-    std::unordered_map<LocationIdentity, ref_ptr<AbstractUniform>> m_uniforms;
+    std::unordered_map<LocationIdentity, AbstractUniform *> m_uniforms;
     std::unordered_map<LocationIdentity, UniformBlock> m_uniformBlocks;
 
     mutable bool m_linked;

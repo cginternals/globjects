@@ -102,38 +102,38 @@ void Texture::setParameter(const GLenum name, const GLenum value)
 
 void Texture::setParameter(const GLenum name, const GLint value)
 {
-	bind();
+    bind();
 
     glTexParameteri(m_target, name, value);
 }
 
 void Texture::setParameter(const GLenum name, const GLfloat value)
 {
-	bind();
+    bind();
 
     glTexParameterf(m_target, name, value);
 }
 
 GLint Texture::getParameter(const GLenum pname) const
 {
-	bind();
+    bind();
 
-	GLint value = 0;
+    GLint value = 0;
 
     glGetTexParameteriv(m_target, pname, &value);
 
-	return value;
+    return value;
 }
 
 GLint Texture::getLevelParameter(const GLint level, const GLenum pname) const
 {
-	bind();
+    bind();
 
-	GLint value = 0;
+    GLint value = 0;
 
     glGetTexLevelParameteriv(m_target, level, pname, &value);
 
-	return value;
+    return value;
 }
 
 void Texture::getImage(const GLint level, const GLenum format, const GLenum type, GLvoid * image) const
@@ -196,7 +196,7 @@ void Texture::subImage1D(const GLint level, const GLint xOffset, const GLsizei w
 
 void Texture::image2D(const GLint level, const GLenum internalFormat, const GLsizei width, const GLsizei height, const GLint border, const GLenum format, const GLenum type, const GLvoid* data)
 {
-	bind();
+    bind();
 
     glTexImage2D(m_target, level, static_cast<GLint>(internalFormat), width, height, border, format, type, data);
 }
@@ -311,7 +311,7 @@ void Texture::storage1D(const GLsizei levels, const GLenum internalFormat, const
 
 void Texture::storage2D(const GLsizei levels, const GLenum internalFormat, const GLsizei width, const GLsizei height)
 {
-	bind();
+    bind();
 
     glTexStorage2D(m_target, levels, internalFormat, width, height);
 }
@@ -426,7 +426,7 @@ void Texture::invalidateSubImage(GLint level, const glm::ivec3& offset, const gl
 
 void Texture::bindImageTexture(const GLuint unit, const GLint level, const GLboolean layered, const GLint layer, const GLenum access, const GLenum format) const
 {
-	glBindImageTexture(unit, id(), level, layered, layer, access, format);
+    glBindImageTexture(unit, id(), level, layered, layer, access, format);
 }
 
 void Texture::unbindImageTexture(const GLuint unit)
@@ -437,14 +437,14 @@ void Texture::unbindImageTexture(const GLuint unit)
 
 void Texture::generateMipmap()
 {
-	bind();
+    bind();
 
     glGenerateMipmap(m_target);
 }
 
 void Texture::accept(ObjectVisitor& visitor)
 {
-	visitor.visitTexture(this);
+    visitor.visitTexture(this);
 }
 
 TextureHandle Texture::textureHandle() const
@@ -463,7 +463,7 @@ TextureHandle Texture::makeResident() const
 
     glMakeTextureHandleResidentARB(handle);
 
-	return handle;
+    return handle;
 }
 
 void Texture::makeNonResident() const

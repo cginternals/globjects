@@ -38,7 +38,7 @@ void MainLoop::start()
 
     while (m_running)
     {
-		pollEvents();
+        pollEvents();
         processEvents();
     };
 

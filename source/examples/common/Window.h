@@ -6,8 +6,6 @@
 
 #include <glm/glm.hpp>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <common/MainLoop.h>
 
 
@@ -39,7 +37,7 @@ public:
         , int height = 720);
     bool create(
         const ContextFormat & format
-        , const std::string & title = "gloperate"
+        , const std::string & title = "globjects"
         , int width = 1280
         , int height = 720);
 
@@ -131,7 +129,7 @@ protected:
     Context * m_context;
     GLFWwindow * m_window;
 
-    globjects::ref_ptr<WindowEventHandler> m_eventHandler;
+    WindowEventHandler * m_eventHandler;
 
     using EventQueue = std::vector<WindowEvent *>;
     EventQueue m_eventQueue[2];

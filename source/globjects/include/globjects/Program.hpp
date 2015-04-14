@@ -12,33 +12,12 @@ namespace globjects
 {
 
 template<typename T>
-void Program::setUniformByIdentity(const LocationIdentity & identity, const T & value)
-{
-    Uniform<T> * uniform = getUniformByIdentity<T>(identity);
-    if (!uniform)
-    {
-        warning() << "Uniform type mismatch on set uniform. Uniform will be replaced.";
-
-        addUniform(identity.isName() ? new Uniform<T>(identity.name(), value) : new Uniform<T>(identity.location(), value));
-        return;
-    }
-    uniform->set(value);
-}
-
-template<typename T>
 Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identity)
 {
     if (m_uniforms.count(identity))
         return m_uniforms.at(identity)->as<T>();
 
-    // create new uniform if none named <name> exists
-
-    Uniform<T> * uniform = identity.isName() ? new Uniform<T>(identity.name()) : new Uniform<T>(identity.location());
-
-    m_uniforms[uniform->identity()] = uniform;
-    uniform->registerProgram(this);
-
-    return uniform;
+    return nullptr;
 }
 
 template<typename T>
@@ -47,27 +26,7 @@ const Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identi
     if (m_uniforms.count(identity))
         return m_uniforms.at(identity)->as<T>();
 
-    // create new uniform if none named <name> exists
-
-    Uniform<T> * uniform = identity.isName() ? new Uniform<T>(identity.name()) : new Uniform<T>(identity.location());
-
-    m_uniforms[uniform->identity()] = uniform;
-    uniform->registerProgram(this);
-
-    return uniform;
-}
-
-
-template<typename T>
-void Program::setUniform(const std::string & name, const T & value)
-{
-    setUniformByIdentity(name, value);
-}
-
-template<typename T>
-void Program::setUniform(gl::GLint location, const T & value)
-{
-    setUniformByIdentity(location, value);
+    return nullptr;
 }
 
 template<typename T>
@@ -94,12 +53,20 @@ const Uniform<T> * Program::getUniform(gl::GLint location) const
     return getUniformByIdentity<T>(location);
 }
 
-template <class ...Shaders>
-void Program::attach(Shader * shader, Shaders... shaders)
+template <class ...Resources>
+void Program::attach(Shader * shader, Resources... resources)
 {
     attach(shader);
 
-    attach(std::forward<Shaders>(shaders)...);
+    attach(std::forward<Resources>(resources)...);
+}
+
+template <class ...Resources>
+void Program::attach(AbstractUniform * uniform, Resources... resources)
+{
+    attach(uniform);
+
+    attach(std::forward<Resources>(resources)...);
 }
 
 } // namespace globjects

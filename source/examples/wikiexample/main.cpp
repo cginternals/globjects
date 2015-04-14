@@ -73,19 +73,23 @@ public:
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        m_cornerBuffer = new Buffer();
-		m_program = new Program();
-		m_vao = new VertexArray();
+        m_cornerBuffer.reset(new Buffer());
+        m_program.reset(new Program());
+        m_vao.reset(new VertexArray());
 
-		m_program->attach(
-            Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode),
-            Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
+        m_vertexSource.reset(new StaticStringSource(vertexShaderCode));
+        m_vertexShader.reset(new Shader(GL_VERTEX_SHADER, m_vertexSource.get()));
+
+        m_fragmentSource.reset(new StaticStringSource(fragmentShaderCode));
+        m_fragmentShader.reset(new Shader(GL_FRAGMENT_SHADER, m_fragmentSource.get()));
+
+        m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 
         m_cornerBuffer->setData(std::array<vec2, 4>{ {
-			vec2(0, 0), vec2(1, 0), vec2(0, 1), vec2(1, 1) } }, GL_STATIC_DRAW);
+            vec2(0, 0), vec2(1, 0), vec2(0, 1), vec2(1, 1) } }, GL_STATIC_DRAW);
 
         m_vao->binding(0)->setAttribute(0);
-		m_vao->binding(0)->setBuffer(m_cornerBuffer, 0, sizeof(vec2));
+        m_vao->binding(0)->setBuffer(m_cornerBuffer.get(), 0, sizeof(vec2));
         m_vao->binding(0)->setFormat(2, GL_FLOAT);
         m_vao->enable(0);
     }
@@ -101,9 +105,13 @@ public:
     }
 
 private:
-    ref_ptr<VertexArray> m_vao;
-    ref_ptr<Buffer> m_cornerBuffer;
-    ref_ptr<Program> m_program;
+    std::unique_ptr<VertexArray> m_vao;
+    std::unique_ptr<Buffer> m_cornerBuffer;
+    std::unique_ptr<Program> m_program;
+    std::unique_ptr<AbstractStringSource> m_vertexSource;
+    std::unique_ptr<AbstractStringSource> m_fragmentSource;
+    std::unique_ptr<Shader> m_vertexShader;
+    std::unique_ptr<Shader> m_fragmentShader;
 };
 
 

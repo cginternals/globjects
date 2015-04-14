@@ -34,24 +34,24 @@ public:
     virtual ~ContextFormat();
 
     // 24 by default
-    int	depthBufferSize() const;
+    int    depthBufferSize() const;
     void setDepthBufferSize(int size);
 
-    int	redBufferSize() const;
+    int    redBufferSize() const;
     void setRedBufferSize(int size);
 
-    int	greenBufferSize() const;
+    int    greenBufferSize() const;
     void setGreenBufferSize(int size);
 
-    int	blueBufferSize() const;
+    int    blueBufferSize() const;
     void setBlueBufferSize(int size);
 
     // disabled by default
-    int	alphaBufferSize() const;
+    int    alphaBufferSize() const;
     void setAlphaBufferSize(int size);
 
     // disabled by default
-    int	samples() const;
+    int    samples() const;
     void setSamples(int samples);
 
     /** For major and minor parameters only valid version pairs are allowed,
@@ -83,7 +83,7 @@ public:
     void setForwardCompatible(bool on);
 
     // disabled by default
-    int	stencilBufferSize() const;
+    int    stencilBufferSize() const;
     void setStencilBufferSize(int size);
 
     // disabled by default

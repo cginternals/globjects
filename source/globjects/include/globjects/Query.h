@@ -63,11 +63,14 @@ class GLOBJECTS_API Query : public Object
 {
 public:
     Query();
+
+    virtual ~Query() = default;
+
     static Query * fromId(gl::GLuint id);
 
     static Query * current(gl::GLenum target);
     static Query * timestamp();
-	
+    
     static gl::GLint get(gl::GLenum target, gl::GLenum pname);
     static gl::GLint getIndexed(gl::GLenum target, gl::GLuint index, gl::GLenum pname);
 
@@ -80,16 +83,16 @@ public:
 
     void beginIndexed(gl::GLenum target, gl::GLuint index) const;
     void endIndexed(gl::GLenum target, gl::GLuint index) const;
-	
+    
     static bool isQuery(gl::GLuint id);
 
     gl::GLuint get(gl::GLenum pname) const;
     gl::GLuint64 get64(gl::GLenum pname) const;
-	
-	bool resultAvailable() const;
+    
+    bool resultAvailable() const;
     void wait() const;
     void wait(const std::chrono::duration<int, std::nano> & timeout) const;
-	
+    
     gl::GLuint waitAndGet(gl::GLenum pname) const;
     gl::GLuint64 waitAndGet64(gl::GLenum pname) const;
 
@@ -98,15 +101,13 @@ public:
 
     gl::GLuint waitAndGet(gl::GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const;
     gl::GLuint64 waitAndGet64(gl::GLenum pname, const std::chrono::duration<int, std::nano> & timeout) const;
-	
+    
     void counter() const;
 
     virtual gl::GLenum objectType() const override;
 
 protected:
-
     Query(IDResource * resource);
-    virtual ~Query();
 
     static gl::GLuint genQuery();
 

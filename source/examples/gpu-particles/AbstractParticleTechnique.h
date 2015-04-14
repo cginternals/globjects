@@ -2,11 +2,9 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 #include <glm/glm.hpp>
-
-#include <globjects/base/ref_ptr.h>
-
 
 namespace globjects
 {
@@ -14,6 +12,11 @@ class Framebuffer;
 class Program;
 class Buffer;
 class Texture;
+class Shader;
+class AbstractStringSource;
+
+template <typename T>
+class Uniform;
 }
 
 class ScreenAlignedQuad;
@@ -60,11 +63,26 @@ protected:
 
     bool m_paused;
 
-    globjects::ref_ptr<globjects::Framebuffer> m_fbo;
-    globjects::ref_ptr<globjects::Texture> m_color;
+    std::unique_ptr<globjects::Framebuffer> m_fbo;
+    std::unique_ptr<globjects::Texture> m_color;
 
-    globjects::ref_ptr<globjects::Program> m_drawProgram;
+    std::unique_ptr<globjects::Program> m_drawProgram;
 
-    globjects::ref_ptr<ScreenAlignedQuad> m_quad;
-    globjects::ref_ptr<ScreenAlignedQuad> m_clear;
+    std::unique_ptr<ScreenAlignedQuad> m_quad;
+    std::unique_ptr<ScreenAlignedQuad> m_clear;
+
+    std::unique_ptr<globjects::AbstractStringSource> m_clearSource;
+    std::unique_ptr<globjects::Shader> m_clearShader;
+    std::unique_ptr<globjects::AbstractStringSource> m_vertexSource;
+    std::unique_ptr<globjects::Shader> m_vertexShader;
+    std::unique_ptr<globjects::AbstractStringSource> m_geometrySource;
+    std::unique_ptr<globjects::Shader> m_geometryShader;
+    std::unique_ptr<globjects::AbstractStringSource> m_fragmentSource;
+    std::unique_ptr<globjects::Shader> m_fragmentShader;
+
+    std::unique_ptr<globjects::Uniform<float>> m_alphaUniform;
+    std::unique_ptr<globjects::Uniform<float>> m_aspectRatioUniform;
+    std::unique_ptr<globjects::Uniform<float>> m_elapsedUniform;
+    std::unique_ptr<globjects::Uniform<bool>> m_pausedUniform;
+    std::unique_ptr<globjects::Uniform<glm::mat4>> m_viewProjectionUniform;
 };

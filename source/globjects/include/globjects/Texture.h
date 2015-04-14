@@ -31,6 +31,9 @@ class GLOBJECTS_API Texture : public Object
 public:
     Texture();
     Texture(gl::GLenum target);
+
+    virtual ~Texture();
+
     static Texture * fromId(gl::GLuint id, gl::GLenum  target);
 
     static Texture * createDefault();
@@ -130,7 +133,6 @@ public:
 
 protected:
     Texture(IDResource * resource, gl::GLenum target);
-    virtual ~Texture();
 
 protected:
     gl::GLenum m_target;

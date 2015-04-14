@@ -8,11 +8,11 @@ namespace globjects
 class GLOBJECTS_API AbstractFunctionCall
 {
 public:
-	AbstractFunctionCall();
-	virtual ~AbstractFunctionCall();
+    AbstractFunctionCall() = default;
+    virtual ~AbstractFunctionCall() = default;
 
-	virtual void operator()() = 0;
-	virtual void * identifier() const = 0;
+    virtual void operator()() = 0;
+    virtual void * identifier() const = 0;
 };
 
 } // namespace globjects

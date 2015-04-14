@@ -1,6 +1,7 @@
 #pragma once
 
 #include <set>
+#include <memory>
 
 namespace globjects 
 {
@@ -17,7 +18,9 @@ class ObjectRegistry
 {
     friend class Object;
 public:
-	ObjectRegistry();
+    ObjectRegistry();
+    virtual ~ObjectRegistry() = default;
+
     static ObjectRegistry & current();
 
     std::set<Object *> objects() const;
@@ -34,8 +37,8 @@ protected:
 
 protected:
     std::set<Object *> m_objects;
-    Framebuffer * m_defaultFBO;
-    VertexArray * m_defaultVAO;
+    std::unique_ptr<Framebuffer> m_defaultFBO;
+    std::unique_ptr<VertexArray> m_defaultVAO;
 };
 
 } // namespace globjects

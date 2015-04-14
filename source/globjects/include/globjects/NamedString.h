@@ -5,8 +5,6 @@
 #include <glbinding/gl/types.h>
 
 #include <globjects/base/ChangeListener.h>
-#include <globjects/base/ref_ptr.h>
-#include <globjects/base/Referenced.h>
 
 #include <globjects/globjects_api.h>
 
@@ -14,11 +12,13 @@ namespace globjects
 {
 class AbstractStringSource;
 
-class GLOBJECTS_API NamedString : public Referenced, protected ChangeListener
+class GLOBJECTS_API NamedString : protected ChangeListener
 {
 public:
+    NamedString(const std::string & name, AbstractStringSource * source, gl::GLenum type);
+    virtual ~NamedString();
+
     static NamedString * create(const std::string & name, AbstractStringSource * string);
-    static NamedString * create(const std::string & name, const std::string & string);
 
     static bool isNamedString(const std::string & name);
     static NamedString * obtain(const std::string & name);
@@ -38,7 +38,6 @@ protected:
     static bool hasNativeSupport();
 
     static NamedString * create(const std::string & name, AbstractStringSource * string, gl::GLenum type);
-    static NamedString * create(const std::string & name, const std::string & string, gl::GLenum type);
 
 protected:
     void updateString();
@@ -46,17 +45,13 @@ protected:
     void createNamedString();
     void deleteNamedString();
 
-    NamedString(const std::string & name, AbstractStringSource * source, gl::GLenum type);
-
-    virtual ~NamedString();
-
     void registerNamedString();
     void deregisterNamedString();
 
 protected:
     std::string m_name;
 
-    ref_ptr<AbstractStringSource> m_source;
+    AbstractStringSource * m_source;
     gl::GLenum m_type;
 };
 

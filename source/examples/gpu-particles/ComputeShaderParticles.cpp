@@ -57,7 +57,7 @@ void ComputeShaderParticles::initialize()
     assert(m_workGroupSize.x * m_workGroupSize.y * m_workGroupSize.z * max_invocations >= m_numParticles);
     assert(m_workGroupSize.x * m_workGroupSize.y * m_workGroupSize.z * max_invocations < m_numParticles + max_invocations);
 
-    m_computeProgram = new Program();
+    m_computeProgram.reset(new Program());
     
     StringTemplate * stringTemplate = new StringTemplate(
         new File("data/gpu-particles/particle.comp"));
@@ -66,28 +66,35 @@ void ComputeShaderParticles::initialize()
 
     m_computeProgram->attach(new Shader(GL_COMPUTE_SHADER, stringTemplate));
 
-    m_positionsSSBO = new Buffer();
-    m_velocitiesSSBO = new Buffer();
+    m_positionsSSBO.reset(new Buffer());
+    m_velocitiesSSBO.reset(new Buffer());
 
     reset();
 
-    m_vao = new VertexArray();
+    m_vao.reset(new VertexArray());
     m_vao->bind();
 
     auto positionsBinding = m_vao->binding(0);
     positionsBinding->setAttribute(0);
-    positionsBinding->setBuffer(m_positionsSSBO, 0, sizeof(vec4));
+    positionsBinding->setBuffer(m_positionsSSBO.get(), 0, sizeof(vec4));
     positionsBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
     m_vao->enable(0);
 
     auto velocitiesBinding = m_vao->binding(1);
     velocitiesBinding->setAttribute(1);
-    velocitiesBinding->setBuffer(m_velocitiesSSBO, 0, sizeof(vec4));
+    velocitiesBinding->setBuffer(m_velocitiesSSBO.get(), 0, sizeof(vec4));
     velocitiesBinding->setFormat(4, GL_FLOAT, GL_FALSE, 0);
     m_vao->enable(1);
 
     m_vao->unbind();
 
+    m_forcesUniform.reset(new globjects::Uniform<int>("forces", 0));
+    m_elapsedUniform.reset(new globjects::Uniform<float>("elapsed", 0.0f));
+
+    m_computeProgram->attach(
+        m_forcesUniform.get(),
+        m_elapsedUniform.get()
+    );
 
     AbstractParticleTechnique::initialize("data/gpu-particles/points.vert");
 }
@@ -106,8 +113,8 @@ void ComputeShaderParticles::step(const float elapsed)
     m_velocitiesSSBO->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 
     m_forces.bind();
-    m_computeProgram->setUniform("forces", 0);
-    m_computeProgram->setUniform("elapsed", elapsed);
+
+    m_elapsedUniform->set(elapsed);
 
     m_computeProgram->use();
     

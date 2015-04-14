@@ -35,23 +35,34 @@ TransformFeedbackParticles::~TransformFeedbackParticles()
 
 void TransformFeedbackParticles::initialize()
 {
-    m_sourcePositions  = new Buffer();
-    m_sourceVelocities = new Buffer();
-    m_targetPositions  = new Buffer();
-    m_targetVelocities = new Buffer();
+    m_sourcePositions.reset(new Buffer());
+    m_sourceVelocities.reset(new Buffer());
+    m_targetPositions.reset(new Buffer());
+    m_targetVelocities.reset(new Buffer());
 
     reset();
 
-    m_transformFeedbackProgram = new Program();
-    m_transformFeedbackProgram->attach(Shader::fromFile(GL_VERTEX_SHADER, "data/gpu-particles/transformfeedback.vert"));
+    m_transformFeedbackSource.reset(new File("data/gpu-particles/transformfeedback.vert"));
+    m_transformFeedbackShader.reset(new Shader(GL_VERTEX_SHADER, m_transformFeedbackSource.get()));
+
+    m_transformFeedbackProgram.reset(new Program());
+    m_transformFeedbackProgram->attach(m_transformFeedbackShader.get());
 
     m_transformFeedbackProgram->link();
 
-    m_transformFeedback = new TransformFeedback();
-    m_transformFeedback->setVaryings(m_transformFeedbackProgram, { "out_position", "out_velocity" }, GL_SEPARATE_ATTRIBS);
+    m_transformFeedback.reset(new TransformFeedback());
+    m_transformFeedback->setVaryings(m_transformFeedbackProgram.get(), { "out_position", "out_velocity" }, GL_SEPARATE_ATTRIBS);
 
-    m_vao = new VertexArray();
+    m_vao.reset(new VertexArray());
     m_vao->bind();
+
+    m_forcesUniform.reset(new globjects::Uniform<int>("forces", 0));
+    m_elapsedUniform.reset(new globjects::Uniform<float>("elapsed", 0.0f));
+
+    m_transformFeedbackProgram->attach(
+        m_forcesUniform.get(),
+        m_elapsedUniform.get()
+    );
 
     auto positionsBinding = m_vao->binding(0);
     positionsBinding->setAttribute(0);
@@ -84,15 +95,15 @@ void TransformFeedbackParticles::step(const float elapsed)
 {
     m_vao->bind();
 
-    m_vao->binding(0)->setBuffer(m_sourcePositions,  0, sizeof(vec4));
-    m_vao->binding(1)->setBuffer(m_sourceVelocities, 0, sizeof(vec4));
+    m_vao->binding(0)->setBuffer(m_sourcePositions.get(),  0, sizeof(vec4));
+    m_vao->binding(1)->setBuffer(m_sourceVelocities.get(), 0, sizeof(vec4));
 
     m_targetPositions->bindBase (GL_TRANSFORM_FEEDBACK_BUFFER, 0);
     m_targetVelocities->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1);
 
     m_forces.bind();
-    m_transformFeedbackProgram->setUniform("forces", 0);
-    m_transformFeedbackProgram->setUniform("elapsed", elapsed);
+
+    m_elapsedUniform->set(elapsed);
 
     glEnable(GL_RASTERIZER_DISCARD);
 
@@ -116,8 +127,8 @@ void TransformFeedbackParticles::step(const float elapsed)
 
 void TransformFeedbackParticles::draw_impl()
 {
-    m_vao->binding(0)->setBuffer(m_sourcePositions, 0, sizeof(vec4));
-    m_vao->binding(1)->setBuffer(m_sourceVelocities, 0, sizeof(vec4));
+    m_vao->binding(0)->setBuffer(m_sourcePositions.get(), 0, sizeof(vec4));
+    m_vao->binding(1)->setBuffer(m_sourceVelocities.get(), 0, sizeof(vec4));
 
     m_drawProgram->use();
 

@@ -92,15 +92,23 @@ public:
 
         glClearColor(1.f, 1.f, 1.f, 0.f);
 
-        m_sphere = new Program();
-        m_sphere->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,   "data/gbuffers/sphere.vert")
-          , Shader::fromFile(GL_FRAGMENT_SHADER, "data/gbuffers/sphere.frag"));
+        m_vertexSource.reset(new File("data/gbuffers/sphere.vert"));
+        m_vertexShader.reset(new Shader(GL_VERTEX_SHADER, m_vertexSource.get()));
 
-        m_icosahedron = new Icosahedron(2);
+        m_fragmentSource.reset(new File("data/gbuffers/sphere.frag"));
+        m_fragmentShader.reset(new Shader(GL_FRAGMENT_SHADER, m_fragmentSource.get()));
+
+        m_sphere.reset(new Program());
+        m_sphere->attach(m_vertexShader.get(), m_fragmentShader.get());
+
+        m_icosahedron.reset(new Icosahedron(2));
 
         m_camera.setZNear(1.f);
         m_camera.setZFar(16.f);
+
+        m_transformUniform.reset(new Uniform<glm::mat4>("transform", m_camera.viewProjection()));
+
+        m_sphere->attach(m_transformUniform.get());
 
         m_timer->start();
     }
@@ -116,7 +124,7 @@ public:
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        m_sphere->setUniform("transform", m_camera.viewProjection());
+        m_transformUniform->set(m_camera.viewProjection());
 
         m_sphere->use();
         m_icosahedron->draw();
@@ -245,9 +253,15 @@ public:
     }
 
 protected:
-    ref_ptr<Program> m_sphere;
+    std::unique_ptr<Program> m_sphere;
+    std::unique_ptr<AbstractStringSource> m_vertexSource;
+    std::unique_ptr<AbstractStringSource> m_fragmentSource;
+    std::unique_ptr<Shader> m_vertexShader;
+    std::unique_ptr<Shader> m_fragmentShader;
 
-    ref_ptr<Icosahedron> m_icosahedron;
+    std::unique_ptr<Uniform<glm::mat4>> m_transformUniform;
+
+    std::unique_ptr<Icosahedron> m_icosahedron;
 
     Camera m_camera;
     WorldInHandNavigation m_nav;

@@ -2,10 +2,9 @@
 
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
 #include <glbinding/gl/types.h>
-
-#include <globjects/base/Referenced.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/AbstractState.h>
@@ -17,7 +16,7 @@ class StateSetting;
 class Capability;
 
 
-class GLOBJECTS_API State : public AbstractState, public Referenced
+class GLOBJECTS_API State : public AbstractState
 {
 public:
     enum Mode
@@ -28,6 +27,8 @@ public:
 
 public:
     State(Mode = ImmediateMode);
+
+    virtual ~State() = default;
 
     static State * currentState();
 
@@ -60,11 +61,9 @@ protected:
     const Capability * getCapability(gl::GLenum capability) const;
 
 protected:
-    virtual ~State();
-
     Mode m_mode;
-    std::unordered_map<gl::GLenum, Capability *> m_capabilities;
-    std::unordered_map<StateSettingType, StateSetting *> m_settings;
+    std::unordered_map<gl::GLenum, std::unique_ptr<Capability>> m_capabilities;
+    std::unordered_map<StateSettingType, std::unique_ptr<StateSetting>> m_settings;
 };
 
 } // namespace globjects

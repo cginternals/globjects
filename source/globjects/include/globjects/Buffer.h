@@ -53,6 +53,11 @@ public:
     */
     Buffer();
 
+    /** Automatically deletes the associated OpenGL buffer unless the object was created with an external id.
+        \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glDeleteBuffers.xml
+    */
+    virtual ~Buffer();
+
     /** \brief Creates a buffer with an external id.
         This object does not own the associated OpenGL object and
         will not delete it in the destructor.
@@ -264,11 +269,6 @@ protected:
         \param id an external OpenGL buffer id
     */
     Buffer(IDResource * resource);
-
-    /** Automatically deletes the associated OpenGL buffer unless the object was created with an external id.
-        \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glDeleteBuffers.xml
-    */
-    virtual ~Buffer();
 };
 
 } // namespace globjects

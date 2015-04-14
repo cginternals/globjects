@@ -10,16 +10,16 @@ class Camera;
 class WorldInHandNavigation
 {
 public:
-	enum InteractionMode
-	{
-		NoInteraction
-	,	PanInteraction
-	,	RotateInteraction
-	};
+    enum InteractionMode
+    {
+        NoInteraction
+    ,    PanInteraction
+    ,    RotateInteraction
+    };
 
 public:
-	WorldInHandNavigation();
-	virtual ~WorldInHandNavigation();
+    WorldInHandNavigation();
+    virtual ~WorldInHandNavigation();
 
     void setBoundaryHint(const AxisAlignedBoundingBox & aabb); ///< is currently ignored
 
@@ -31,36 +31,36 @@ public:
     InteractionMode mode() const;
 
 public:
-	void panBegin(const glm::ivec2 & mouse);
-	void panProcess(const glm::ivec2 & mouse);
-	void panEnd();
+    void panBegin(const glm::ivec2 & mouse);
+    void panProcess(const glm::ivec2 & mouse);
+    void panEnd();
 
-	void rotateBegin(const glm::ivec2 & mouse);
-	void rotateProcess(const glm::ivec2 & mouse);
-	void rotateEnd();
+    void rotateBegin(const glm::ivec2 & mouse);
+    void rotateProcess(const glm::ivec2 & mouse);
+    void rotateEnd();
 
     void pan(glm::vec3 t);
     void rotate(float hAngle, float vAngle);
 
-	void scaleAtCenter(float scale);
-	void scaleAtMouse(const glm::ivec2 & mouse,	float scale);
-	void resetScaleAtMouse(const glm::ivec2 & mouse);
+    void scaleAtCenter(float scale);
+    void scaleAtMouse(const glm::ivec2 & mouse,    float scale);
+    void resetScaleAtMouse(const glm::ivec2 & mouse);
 
-//	void enforceWholeMapVisible(const float offset = 0.08);
+//    void enforceWholeMapVisible(const float offset = 0.08);
 
-	// constraints
+    // constraints
 protected:
-	void enforceTranslationConstraints(glm::vec3 & p) const;
-	void enforceRotationConstraints(
-		float & hAngle
-	,	float & vAngle) const;
-	void enforceScaleConstraints(
-		float & scale
-	,	glm::vec3 & i) const;
+    void enforceTranslationConstraints(glm::vec3 & p) const;
+    void enforceRotationConstraints(
+        float & hAngle
+    ,    float & vAngle) const;
+    void enforceScaleConstraints(
+        float & scale
+    ,    glm::vec3 & i) const;
 
-	// math
+    // math
 
-	const glm::vec3 mouseRayPlaneIntersection(
+    const glm::vec3 mouseRayPlaneIntersection(
         bool & intersects
     ,   const glm::ivec2 & mouse) const;
     const glm::vec3 mouseRayPlaneIntersection(
@@ -70,8 +70,8 @@ protected:
     const glm::vec3 mouseRayPlaneIntersection(
         bool & intersects
     ,   const glm::ivec2 & mouse
-	,	const glm::vec3 & p0
-	,	const glm::mat4 & viewProjectionInverted) const;
+    ,    const glm::vec3 & p0
+    ,    const glm::mat4 & viewProjectionInverted) const;
 
 protected:
     Camera * m_camera;
@@ -80,7 +80,7 @@ protected:
     AbstractCoordinateProvider * m_coordsProvider;
 
     bool m_rotationHappened;
-	InteractionMode m_mode;
+    InteractionMode m_mode;
 
     glm::vec3 m_homeEye;
     glm::vec3 m_homeCenter;

@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <memory>
 
 #include <glbinding/gl/enum.h>
 
@@ -45,36 +46,36 @@ public:
 
         std::cout << "Testing globjects objects:" << std::endl;
 
-        ref_ptr<Buffer> buffer(new Buffer());
+        std::unique_ptr<Buffer> buffer(new Buffer());
         std::cout << "  Buffer                : "; info() << buffer.get();
 
         std::cout << "  Framebuffer           : "; info() << Framebuffer::defaultFBO();
 
-        ref_ptr<Program> program(new Program());
+        std::unique_ptr<Program> program(new Program());
         std::cout << "  Program               : "; info() << program.get();
 
-        ref_ptr<Query> query(new Query());
+        std::unique_ptr<Query> query(new Query());
         std::cout << "  Query                 : "; info() << query.get();
 
-        ref_ptr<Renderbuffer> rbo(new Renderbuffer());
+        std::unique_ptr<Renderbuffer> rbo(new Renderbuffer());
         std::cout << "  Renderbuffer          : "; info() << rbo.get();
 
-        ref_ptr<Sampler> sampler(new Sampler());
+        std::unique_ptr<Sampler> sampler(new Sampler());
         std::cout << "  Sampler               : "; info() << sampler.get();
 
-        ref_ptr<Shader> shader(new Shader(GL_VERTEX_SHADER));
+        std::unique_ptr<Shader> shader(new Shader(GL_VERTEX_SHADER));
         std::cout << "  Shader                : "; info() << shader.get();
 
-        ref_ptr<Texture> texture(new Texture());
+        std::unique_ptr<Texture> texture(new Texture());
         std::cout << "  Texture               : "; info() << texture.get();
 
-        ref_ptr<TransformFeedback> tf(new TransformFeedback());
+        std::unique_ptr<TransformFeedback> tf(new TransformFeedback());
         std::cout << "  TransformFeedback     : "; info() << tf.get();
 
-        ref_ptr<VertexArray> vao(new VertexArray());
+        std::unique_ptr<VertexArray> vao(new VertexArray());
         std::cout << "  VertexArray           : "; info() << vao.get();
 
-        ref_ptr<Uniform<float>> uniform(new Uniform<float>("Pi", 3.14f));
+        std::unique_ptr<Uniform<float>> uniform(new Uniform<float>("Pi", 3.14f));
         std::cout << "  Uniform               : "; info() << uniform.get();
         std::cout << "  AbstractUniform       : "; info() << static_cast<AbstractUniform*>(uniform.get());
 

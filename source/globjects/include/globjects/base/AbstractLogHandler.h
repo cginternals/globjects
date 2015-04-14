@@ -20,11 +20,9 @@ class LogMessage;
 class GLOBJECTS_API AbstractLogHandler
 {
 public:
-	virtual ~AbstractLogHandler() 
-    {
-    }
+    virtual ~AbstractLogHandler() = default;
 
-	virtual void handle(const LogMessage& message) = 0;
+    virtual void handle(const LogMessage & message) = 0;
 };
 
 } // namespace globjects

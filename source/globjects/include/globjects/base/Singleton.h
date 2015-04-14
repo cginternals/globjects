@@ -11,7 +11,7 @@ public:
 
 protected:
     explicit Singleton();
-    virtual ~Singleton();
+    virtual ~Singleton() = default;
 
 protected:
     static T * s_instance;

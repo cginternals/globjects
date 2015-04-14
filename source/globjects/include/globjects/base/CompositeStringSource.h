@@ -5,7 +5,6 @@
 
 #include <globjects/globjects_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/base/ChangeListener.h>
 #include <globjects/base/AbstractStringSource.h>
 
@@ -34,7 +33,7 @@ protected:
     void update() const;
 
 protected:
-    std::vector<ref_ptr<AbstractStringSource>> m_sources;
+    std::vector<AbstractStringSource *> m_sources;
     
     mutable bool m_dirty;
     mutable std::vector<std::string> m_strings;

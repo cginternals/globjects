@@ -39,7 +39,7 @@ Uniform<T>::~Uniform()
 template<typename T>
 const T & Uniform<T>::value() const
 {
-	return m_value;
+    return m_value;
 }
 
 template<typename T>
@@ -51,8 +51,8 @@ void Uniform<T>::updateAt(const Program * program, gl::GLint location) const
 template<typename T>
 void Uniform<T>::set(const T & value)
 {
-	m_value = value;
-	changed();
+    m_value = value;
+    changed();
 }
 
 } // namespace globjects

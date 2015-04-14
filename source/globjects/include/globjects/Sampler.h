@@ -16,6 +16,9 @@ class GLOBJECTS_API Sampler : public Object
 {
 public:
     Sampler();
+
+    virtual ~Sampler();
+
     static Sampler * fromId(gl::GLuint id);
 
     virtual void accept(ObjectVisitor & visitor) override;
@@ -33,7 +36,6 @@ public:
 
 protected:
     Sampler(IDResource * resource);
-    virtual ~Sampler();
 };
 
 } // namespace globjects

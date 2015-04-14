@@ -1,4 +1,6 @@
 
+#include <memory>
+
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
@@ -56,8 +58,8 @@ public:
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-	    createAndSetupShaders();
-	    createAndSetupGeometry();
+        createAndSetupShaders();
+        createAndSetupGeometry();
         createAndSetupTransformFeedback();
 
         m_timer.start();
@@ -65,16 +67,30 @@ public:
 
     void createAndSetupShaders()
     {
-        m_shaderProgram = new Program();
-        m_shaderProgram->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,   "data/transformfeedback/simple.vert")
-          , Shader::fromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
+        m_vertexSource.reset(new File("data/transformfeedback/simple.vert"));
+        m_vertexShader.reset(new Shader(GL_VERTEX_SHADER, m_vertexSource.get()));
 
-        m_transformFeedbackProgram = new Program();
+        m_fragmentSource.reset(new File("data/transformfeedback/simple.frag"));
+        m_fragmentShader.reset(new Shader(GL_FRAGMENT_SHADER, m_fragmentSource.get()));
+
+        m_program.reset(new Program());
+        m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
+
+        m_transformFeedbackSource.reset(new File("data/transformfeedback/transformfeedback.vert"));
+        m_transformFeedbackShader.reset(new Shader(GL_VERTEX_SHADER, m_transformFeedbackSource.get()));
+
+        m_transformFeedbackProgram.reset(new Program());
+        m_transformFeedbackProgram->attach(m_transformFeedbackShader.get());
+
+        m_modelViewUniform.reset(new Uniform<glm::mat4>("modelView", glm::mat4()));
+        m_projectionUniform.reset(new Uniform<glm::mat4>("projection", glm::mat4()));
+        m_deltaTUniform.reset(new Uniform<float>("deltaT", 0.0f));
+
         m_transformFeedbackProgram->attach(
-            Shader::fromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
-
-        m_transformFeedbackProgram->setUniform("deltaT", 0.0f);
+            m_modelViewUniform.get(),
+            m_projectionUniform.get(),
+            m_deltaTUniform.get()
+        );
     }
 
     void createAndSetupGeometry()
@@ -95,20 +111,20 @@ public:
           , vec4(0, 0, 1, 1)
           , vec4(0, 1, 0, 1) });
 
-        m_vertexBuffer1 = new Buffer();
+        m_vertexBuffer1.reset(new Buffer());
         m_vertexBuffer1->setData(vertexArray, GL_STATIC_DRAW);
-        m_vertexBuffer2 = new Buffer();
+        m_vertexBuffer2.reset(new Buffer());
         m_vertexBuffer2->setData(vertexArray, GL_STATIC_DRAW);
-        m_colorBuffer = new Buffer();
+        m_colorBuffer.reset(new Buffer());
         m_colorBuffer->setData(colorArray, GL_STATIC_DRAW);
 
-        m_vao = new VertexArray();
+        m_vao.reset(new VertexArray());
 
         m_vao->binding(0)->setAttribute(0);
         m_vao->binding(0)->setFormat(4, GL_FLOAT);
 
         m_vao->binding(1)->setAttribute(1);
-        m_vao->binding(1)->setBuffer(m_colorBuffer, 0, sizeof(vec4));
+        m_vao->binding(1)->setBuffer(m_colorBuffer.get(), 0, sizeof(vec4));
         m_vao->binding(1)->setFormat(4, GL_FLOAT);
 
         m_vao->enable(0);
@@ -117,8 +133,8 @@ public:
 
     void createAndSetupTransformFeedback()
     {
-        m_transformFeedback = new TransformFeedback();
-        m_transformFeedback->setVaryings(m_transformFeedbackProgram
+        m_transformFeedback.reset(new TransformFeedback());
+        m_transformFeedback->setVaryings(m_transformFeedbackProgram.get()
             , { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
     }
     
@@ -130,8 +146,7 @@ public:
 
         glViewport((width - side) / 2, (height - side) / 2, side, side);
 
-	    m_shaderProgram->setUniform("modelView", mat4());
-        m_shaderProgram->setUniform("projection", ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
+        m_projectionUniform->set(ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
     }
 
     virtual void paintEvent(PaintEvent & event) override
@@ -140,12 +155,12 @@ public:
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        Buffer * drawBuffer  = m_vertexBuffer1;
-        Buffer * writeBuffer = m_vertexBuffer2;
+        Buffer * drawBuffer  = m_vertexBuffer1.get();
+        Buffer * writeBuffer = m_vertexBuffer2.get();
 
         m_vao->bind();
 
-        m_transformFeedbackProgram->setUniform("deltaT", static_cast<float>(m_timer.elapsed().count()) * float(std::nano::num) / float(std::nano::den));
+        m_deltaTUniform->set(static_cast<float>(m_timer.elapsed().count()) * float(std::nano::num) / float(std::nano::den));
         m_timer.reset();
 
         m_vao->binding(0)->setBuffer(drawBuffer, 0, sizeof(vec4));
@@ -165,9 +180,9 @@ public:
 
         m_vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(vec4));
 
-        m_shaderProgram->use();
+        m_program->use();
         m_transformFeedback->draw(GL_TRIANGLE_STRIP);
-        m_shaderProgram->release();
+        m_program->release();
 
         m_vao->unbind();
 
@@ -175,16 +190,27 @@ public:
     }
 
 protected:
-    ref_ptr<Program> m_shaderProgram;
-    ref_ptr<Program> m_transformFeedbackProgram;
-	
-    ref_ptr<VertexArray> m_vao;
+    std::unique_ptr<Program> m_program;
+    std::unique_ptr<Program> m_transformFeedbackProgram;
+    std::unique_ptr<AbstractStringSource> m_vertexSource;
+    std::unique_ptr<AbstractStringSource> m_fragmentSource;
+    std::unique_ptr<Shader> m_vertexShader;
+    std::unique_ptr<Shader> m_fragmentShader;
 
-    ref_ptr<TransformFeedback> m_transformFeedback;
-	
-    ref_ptr<Buffer> m_vertexBuffer1;
-    ref_ptr<Buffer> m_vertexBuffer2;
-    ref_ptr<Buffer> m_colorBuffer;
+    std::unique_ptr<AbstractStringSource> m_transformFeedbackSource;
+    std::unique_ptr<Shader> m_transformFeedbackShader;
+    
+    std::unique_ptr<VertexArray> m_vao;
+
+    std::unique_ptr<TransformFeedback> m_transformFeedback;
+    
+    std::unique_ptr<Buffer> m_vertexBuffer1;
+    std::unique_ptr<Buffer> m_vertexBuffer2;
+    std::unique_ptr<Buffer> m_colorBuffer;
+
+    std::unique_ptr<Uniform<glm::mat4>> m_modelViewUniform;
+    std::unique_ptr<Uniform<glm::mat4>> m_projectionUniform;
+    std::unique_ptr<Uniform<float>> m_deltaTUniform;
 
     Timer m_timer;
 };

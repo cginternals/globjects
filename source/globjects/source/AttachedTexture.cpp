@@ -20,12 +20,12 @@ AttachedTexture::AttachedTexture(Framebuffer * fbo, const GLenum attachment, Tex
 
 bool AttachedTexture::isTextureAttachment() const
 {
-	return true;
+    return true;
 }
 
 Texture * AttachedTexture::texture()
 {
-	return m_texture;
+    return m_texture;
 }
 
 const Texture * AttachedTexture::texture() const

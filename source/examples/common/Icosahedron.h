@@ -3,14 +3,11 @@
 #include <unordered_map>
 #include <array>
 #include <vector>
+#include <memory>
 
 #include <glm/glm.hpp>
 
 #include <glbinding/gl/gl.h>
-
-#include <globjects/base/Referenced.h>
-#include <globjects/base/ref_ptr.h>
-
 
 namespace globjects
 {
@@ -21,9 +18,11 @@ class Buffer;
 }
 
 
-class Icosahedron : public globjects::Referenced
+class Icosahedron
 {
 public:
+    virtual ~Icosahedron();
+
     using Face = std::array<gl::GLushort, 3>;
 
     static const std::array<glm::vec3, 12> vertices();
@@ -60,13 +59,10 @@ protected:
     ,   std::unordered_map<glm::uint, gl::GLushort> & cache);
 
 protected:
-    virtual ~Icosahedron();
+    std::unique_ptr<globjects::VertexArray> m_vao;
 
-protected:
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
-
-    globjects::ref_ptr<globjects::Buffer> m_vertices;
-    globjects::ref_ptr<globjects::Buffer> m_indices;
+    std::unique_ptr<globjects::Buffer> m_vertices;
+    std::unique_ptr<globjects::Buffer> m_indices;
 
     gl::GLsizei m_size;
 };

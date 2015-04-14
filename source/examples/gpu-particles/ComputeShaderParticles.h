@@ -1,9 +1,6 @@
 #pragma once
 
-#include <globjects/base/ref_ptr.h>
-
 #include "AbstractParticleTechnique.h"
-
 
 namespace globjects
 {
@@ -32,12 +29,15 @@ protected:
     virtual void draw_impl() override;
 
 protected:
-    globjects::ref_ptr<globjects::Buffer> m_positionsSSBO;
-    globjects::ref_ptr<globjects::Buffer> m_velocitiesSSBO;
+    std::unique_ptr<globjects::Buffer> m_positionsSSBO;
+    std::unique_ptr<globjects::Buffer> m_velocitiesSSBO;
 
-    globjects::ref_ptr<globjects::Program> m_computeProgram;
+    std::unique_ptr<globjects::Program> m_computeProgram;
 
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
+    std::unique_ptr<globjects::VertexArray> m_vao;
+
+    std::unique_ptr<globjects::Uniform<int>> m_forcesUniform;
+    std::unique_ptr<globjects::Uniform<float>> m_elapsedUniform;
 
     glm::uvec3 m_workGroupSize;
 };

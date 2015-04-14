@@ -40,7 +40,7 @@ void ObjectRegistry::registerObject(Object * object)
 {
     assert(object != nullptr);
 
-	if (object->id() == 0)
+    if (object->id() == 0)
         return;
 
     m_objects.insert(object);
@@ -58,24 +58,22 @@ void ObjectRegistry::deregisterObject(Object * object)
 
 Framebuffer * ObjectRegistry::defaultFBO()
 {
-    if (m_defaultFBO == nullptr)
+    if (!m_defaultFBO)
     {
-        m_defaultFBO = Framebuffer::fromId(0);
-        m_defaultFBO->ref();
+        m_defaultFBO.reset(Framebuffer::fromId(0));
     }
 
-    return m_defaultFBO;
+    return m_defaultFBO.get();
 }
 
 VertexArray * ObjectRegistry::defaultVAO()
 {
-    if (m_defaultVAO == nullptr)
+    if (!m_defaultVAO)
     {
-        m_defaultVAO = VertexArray::fromId(0);
-        m_defaultVAO->ref();
+        m_defaultVAO.reset(VertexArray::fromId(0));
     }
 
-    return m_defaultVAO;
+    return m_defaultVAO.get();
 }
 
 } // namespace globjects

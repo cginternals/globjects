@@ -2,10 +2,9 @@
 
 #include <map>
 #include <vector>
+#include <memory>
 
 #include <glbinding/gl/types.h>
-
-#include <globjects/base/ref_ptr.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
@@ -31,6 +30,7 @@ public:
 
 public:
     VertexArray();
+    virtual ~VertexArray();
 
     static VertexArray * fromId(gl::GLuint id);
     static VertexArray * defaultVAO();
@@ -101,10 +101,9 @@ public:
 
 protected:
     VertexArray(IDResource * resource);
-    virtual ~VertexArray();
 
 protected:
-    std::map<gl::GLuint, ref_ptr<VertexAttributeBinding>> m_bindings;
+    std::map<gl::GLuint, std::unique_ptr<VertexAttributeBinding>> m_bindings;
 
 };
 

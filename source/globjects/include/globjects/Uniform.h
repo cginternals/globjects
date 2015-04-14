@@ -22,7 +22,7 @@ namespace globjects
  * Uniform<float> * u = new Uniform<float>("u_ratio");
  * u->set(1.618f);
  *
- * program->addUniform(u);
+ * program->attach(u);
  * \endcode
  *
  * \see AbstractUniform
@@ -38,13 +38,13 @@ public:
     Uniform(const std::string & name);
     Uniform(const std::string & name, const T & value);
 
+    virtual ~Uniform();
+
     void set(const T & value);
 
     const T & value() const;
 
 protected:
-    virtual ~Uniform();
-
     virtual void updateAt(const Program * program, gl::GLint location) const override;
 
 protected:

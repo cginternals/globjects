@@ -21,8 +21,8 @@ class GLOBJECTS_API Changeable
 public:
     void changed() const;
 
-	void registerListener(ChangeListener * listener);
-	void deregisterListener(ChangeListener * listener);
+    void registerListener(ChangeListener * listener);
+    void deregisterListener(ChangeListener * listener);
 
 private:
     std::set<ChangeListener *> m_listeners;
