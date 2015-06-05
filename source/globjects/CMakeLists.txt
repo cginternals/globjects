@@ -14,7 +14,7 @@ find_package(glbinding REQUIRED)
 
 include_directories(
     ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDES}
+    ${GLBINDING_INCLUDE_DIRS}
 )
 
 include_directories(
