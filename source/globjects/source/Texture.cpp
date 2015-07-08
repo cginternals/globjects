@@ -147,8 +147,9 @@ std::vector<unsigned char> Texture::getImage(const GLint level, const GLenum for
 {
     GLint width = getLevelParameter(level, GL_TEXTURE_WIDTH);
     GLint height = getLevelParameter(level, GL_TEXTURE_HEIGHT);
+    GLint depth = getLevelParameter(level, GL_TEXTURE_DEPTH);
 
-    int byteSize = imageSizeInBytes(width, height, format, type);
+    int byteSize = imageSizeInBytes(width, height, depth, format, type);
 
     std::vector<unsigned char> data(byteSize);
     getImage(level, format, type, data.data());
