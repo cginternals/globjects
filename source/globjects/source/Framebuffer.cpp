@@ -281,7 +281,7 @@ void Framebuffer::readPixels(const GLenum readBuffer, const std::array<GLint, 4>
 
 std::vector<unsigned char> Framebuffer::readPixelsToByteArray(const std::array<GLint, 4> & rect, const GLenum format, const GLenum type) const
 {
-    int size = imageSizeInBytes(rect[2], rect[3], format, type);
+    int size = imageSizeInBytes(rect[2], rect[3], 1, format, type);
     std::vector<unsigned char> data(size);
 
     readPixels(rect, format, type, data.data());

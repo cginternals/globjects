@@ -4,6 +4,6 @@
 
 namespace globjects {
 
-int imageSizeInBytes(int width, int height, gl::GLenum format, gl::GLenum type);
+int imageSizeInBytes(int width, int height, int depth, gl::GLenum format, gl::GLenum type);
 
 } // namespace globjects

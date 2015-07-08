@@ -121,7 +121,7 @@ int bytesPerPixel(const GLenum format, const GLenum type)
 
 namespace globjects {
 
-int imageSizeInBytes(const int width, const int height, const GLenum format, const GLenum type)
+int imageSizeInBytes(const int width, const int height, const int depth, const GLenum format, const GLenum type)
 {
     if (type == GL_BITMAP)
     {
@@ -138,7 +138,7 @@ int imageSizeInBytes(const int width, const int height, const GLenum format, con
 
     rowSize = nextMultiple(rowSize, alignment);
 
-    return rowSize * height;
+    return rowSize * height * depth;
 }
 
 } // namespace globjects
