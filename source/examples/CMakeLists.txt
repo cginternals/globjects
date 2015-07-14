@@ -56,6 +56,7 @@ if(OPTION_BUILD_EXAMPLES)
 	add_subdirectory("tessellation")
 	add_subdirectory("wikiexample")
 	add_subdirectory("sparse-texture")
+	add_subdirectory("atomiccounter")
 	
 	add_subdirectory("osg-example")
 	add_subdirectory("qt-example")
