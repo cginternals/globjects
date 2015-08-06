@@ -114,6 +114,13 @@ void Texture::setParameter(const GLenum name, const GLfloat value)
     glTexParameterf(m_target, name, value);
 }
 
+void Texture::setParameter(gl::GLenum name, const glm::vec4 & value)
+{
+    bind();
+
+    glTexParameterfv(m_target, name, glm::value_ptr(value));
+}
+
 GLint Texture::getParameter(const GLenum pname) const
 {
 	bind();
