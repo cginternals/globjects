@@ -34,6 +34,11 @@ add_executable(${target} ${sources})
 
 target_link_libraries(${target} ${libs})
 
+if(MSVC)
+    # -> msvc14 : C4244 - 'argument': conversion from 'int' to 'const lm::u8', possible loss of data (problem in glm)
+    set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS} /wd4244)
+endif()
+
 target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
 
 set_target_properties(${target}

@@ -49,6 +49,7 @@ public:
     void setParameter(gl::GLenum name, gl::GLenum value);
     void setParameter(gl::GLenum name, gl::GLint value);
     void setParameter(gl::GLenum name, gl::GLfloat value);
+    void setParameter(gl::GLenum name, const glm::vec4 & value);
 
     gl::GLint getParameter(gl::GLenum pname) const;
     gl::GLint getLevelParameter(gl::GLint level, gl::GLenum pname) const;
