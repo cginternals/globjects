@@ -119,9 +119,7 @@ public:
     void generateMipmap();
 
     TextureHandle textureHandle() const;
-    bool isResident() const;
-    TextureHandle makeResident() const;
-    void makeNonResident() const;
+    TextureHandle textureHandle(Sampler* sampler) const;
 
     void pageCommitment(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLboolean commit) const;
     void pageCommitment(gl::GLint level, const glm::ivec3& offset, const glm::ivec3& size, gl::GLboolean commit) const;

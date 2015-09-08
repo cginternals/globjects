@@ -293,7 +293,9 @@ void UniformImplementation_Legacy::set(const Program * program, const GLint loca
 void UniformImplementation_Legacy::set(const Program * program, const GLint location, const std::vector<TextureHandle> & value) const
 {
     program->use();
-    glUniformHandleui64vARB(location, static_cast<GLint>(value.size()), value.data());
+    std::vector<GLuint64> handleValues(value.size());
+    std::transform(value.begin(), value.end(), handleValues.begin(), [](const TextureHandle& textureHandle) { return textureHandle.handle(); });
+    glUniformHandleui64vARB(location, static_cast<GLint>(value.size()), handleValues.data());
 }
 
 } // namespace globjects

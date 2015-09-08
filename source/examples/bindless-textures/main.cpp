@@ -157,8 +157,10 @@ public:
             Shader::fromFile(GL_FRAGMENT_SHADER, "data/bindless-textures/shader.frag"));
 
         std::array<TextureHandle, std::tuple_size<decltype(m_textures)>::value> handles;
-        for (unsigned i = 0; i < m_textures.size(); ++i)
-            handles[i] = m_textures[i]->makeResident();
+        for (unsigned i = 0; i < m_textures.size(); ++i) {
+            handles[i] = m_textures[i]->textureHandle();
+            handles[i].makeResident();
+        }
 
         m_program->setUniform("textures", handles);
 

@@ -247,8 +247,9 @@ void UniformImplementation_SeparateShaderObjectsARB::set(const Program * program
 
 void UniformImplementation_SeparateShaderObjectsARB::set(const Program * program, const GLint location, const std::vector<TextureHandle> & value) const
 {
-    const TextureHandle * handle = value.data();
-    glProgramUniformHandleui64vARB(program->id(), location, static_cast<GLint>(value.size()), handle);
+    std::vector<GLuint64> handleValues(value.size());
+    std::transform(value.begin(), value.end(), handleValues.begin(), [](const TextureHandle& textureHandle) { return textureHandle.handle(); });
+    glProgramUniformHandleui64vARB(program->id(), location, static_cast<GLint>(handleValues.size()), handleValues.data());
 }
 
 } // namespace globjects

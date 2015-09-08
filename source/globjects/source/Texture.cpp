@@ -450,26 +450,12 @@ void Texture::accept(ObjectVisitor& visitor)
 
 TextureHandle Texture::textureHandle() const
 {
-    return glGetTextureHandleARB(id());
+    return TextureHandle(this);
 }
 
-bool Texture::isResident() const
+TextureHandle Texture::textureHandle(Sampler* sampler) const
 {
-    return glIsTextureHandleResidentARB(textureHandle()) == GL_TRUE;
-}
-
-TextureHandle Texture::makeResident() const
-{
-    TextureHandle handle = textureHandle();
-
-    glMakeTextureHandleResidentARB(handle);
-
-	return handle;
-}
-
-void Texture::makeNonResident() const
-{
-    glMakeTextureHandleNonResidentARB(textureHandle());
+    return TextureHandle(this, sampler);
 }
 
 void Texture::pageCommitment(const GLint level, const GLint xOffset, const GLint yOffset, const GLint zOffset, const GLsizei width, const GLsizei height, const GLsizei depth, const GLboolean commit) const
