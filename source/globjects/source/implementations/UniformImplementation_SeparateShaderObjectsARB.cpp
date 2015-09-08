@@ -124,7 +124,7 @@ void UniformImplementation_SeparateShaderObjectsARB::set(const Program * program
     glProgramUniformMatrix4x3fv(program->id(), location, 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void UniformImplementation_SeparateShaderObjectsARB::set(const Program * program, const GLint location, const TextureHandle & value) const
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program * program, const GLint location, const GLuint64 & value) const
 {
     glProgramUniformHandleui64ARB(program->id(), location, value);
 }
@@ -245,11 +245,9 @@ void UniformImplementation_SeparateShaderObjectsARB::set(const Program * program
     glProgramUniformMatrix4x3fv(program->id(), location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
 }
 
-void UniformImplementation_SeparateShaderObjectsARB::set(const Program * program, const GLint location, const std::vector<TextureHandle> & value) const
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program* program, const GLint location, const std::vector<GLuint64> & value) const
 {
-    std::vector<GLuint64> handleValues(value.size());
-    std::transform(value.begin(), value.end(), handleValues.begin(), [](const TextureHandle& textureHandle) { return textureHandle.handle(); });
-    glProgramUniformHandleui64vARB(program->id(), location, static_cast<GLint>(handleValues.size()), handleValues.data());
+    glProgramUniformHandleui64vARB(program->id(), location, static_cast<GLint>(value.size()), value.data());
 }
 
 } // namespace globjects

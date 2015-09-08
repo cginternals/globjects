@@ -41,7 +41,7 @@ public:
     virtual void set(const Program * program, gl::GLint location, const glm::mat3x4 & value) const override;
     virtual void set(const Program * program, gl::GLint location, const glm::mat4x3 & value) const override;
 
-    virtual void set(const Program * program, gl::GLint location, const TextureHandle & value) const override;
+    virtual void set(const Program * program, gl::GLint location, const gl::GLuint64 & value) const override;
 
     virtual void set(const Program * program, gl::GLint location, const std::vector<float> & value) const override;
     virtual void set(const Program * program, gl::GLint location, const std::vector<int> & value) const override;
@@ -71,7 +71,7 @@ public:
     virtual void set(const Program * program, gl::GLint location, const std::vector<glm::mat3x4> & value) const override;
     virtual void set(const Program * program, gl::GLint location, const std::vector<glm::mat4x3> & value) const override;
 
-    virtual void set(const Program * program, gl::GLint location, const std::vector<TextureHandle> & value) const override;
+    virtual void set(const Program * program, gl::GLint location, const std::vector<gl::GLuint64> & value) const override;
 };
 
 } // namespace globjects

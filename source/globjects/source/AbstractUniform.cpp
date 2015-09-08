@@ -211,7 +211,7 @@ void AbstractUniform::setValue(const Program * program, const GLint location, co
     implementation().set(program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const TextureHandle & value) const
+void AbstractUniform::setValue(const Program * program, const GLint location, const GLuint64 & value) const
 {
     implementation().set(program, location, value);
 }
@@ -322,6 +322,11 @@ void AbstractUniform::setValue(const Program * program, const GLint location, co
 }
 
 void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::mat4x3> & value) const
+{
+    implementation().set(program, location, value);
+}
+
+void AbstractUniform::setValue(const Program* program, const GLint location, const std::vector<GLuint64> & value) const
 {
     implementation().set(program, location, value);
 }
