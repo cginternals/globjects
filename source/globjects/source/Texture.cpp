@@ -8,6 +8,7 @@
 
 #include <globjects/Buffer.h>
 #include <globjects/ObjectVisitor.h>
+#include <globjects/TextureHandle.h>
 
 #include "pixelformat.h"
 #include "Resource.h"
@@ -453,7 +454,7 @@ TextureHandle Texture::textureHandle() const
     return TextureHandle(this);
 }
 
-TextureHandle Texture::textureHandle(Sampler* sampler) const
+TextureHandle Texture::textureHandle(Sampler * sampler) const
 {
     return TextureHandle(this, sampler);
 }

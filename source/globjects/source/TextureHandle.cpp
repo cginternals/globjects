@@ -16,12 +16,17 @@ TextureHandle::TextureHandle()
 {
 }
 
-TextureHandle::TextureHandle(const Texture* texture)
+TextureHandle::TextureHandle(const GLuint64 handle)
+: m_handle(handle)
+{
+}
+
+TextureHandle::TextureHandle(const Texture * texture)
 : m_handle(glGetTextureHandleARB(texture->id()))
 {
 }
 
-TextureHandle::TextureHandle(const Texture* texture, const Sampler* sampler)
+TextureHandle::TextureHandle(const Texture * texture, const Sampler * sampler)
 : m_handle(glGetTextureSamplerHandleARB(texture->id(), sampler->id()))
 {
 }
@@ -36,7 +41,7 @@ void TextureHandle::makeNonResident()
     glMakeTextureHandleNonResidentARB(m_handle);
 }
 
-bool TextureHandle::isResident()
+bool TextureHandle::isResident() const
 {
     return glIsTextureHandleResidentARB(m_handle) == GL_TRUE;
 }
@@ -44,6 +49,11 @@ bool TextureHandle::isResident()
 GLuint64 TextureHandle::handle() const
 {
     return m_handle;
+}
+
+glm::uvec2 TextureHandle::asUVec2() const
+{
+    return glm::uvec2(static_cast<GLuint>(m_handle & 0xFFFFFFFF), m_handle >> 32);
 }
 
 TextureHandle::operator GLuint64() const
