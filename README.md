@@ -11,12 +11,12 @@ To find out more about globjects and how to use it, check out our [wiki](https:/
 
 | Service | System | Compiler | Options | Status |
 | ------- | ------ | -------- | ------- | ------ |
-| Jenkins | Ubuntu 14.04 | GCC 4.8 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc4.8&style=plastic)](http://jenkins.hpi3d.de/job/globjects-linux-gcc4.8)|
-| Jenkins | Ubuntu 14.04 | GCC 4.9 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc4.9&style=plastic)](http://jenkins.hpi3d.de/job/globjects-linux-gcc4.9)|
-| Jenkins | Ubuntu 14.04 | Clang 3.5 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-clang3.5&style=plastic)](http://jenkins.hpi3d.de/job/globjects-linux-clang3.5) |
-| Jenkins | OS X 10.10 | Clang 3.5 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-osx-clang3.5&style=plastic)](http://jenkins.hpi3d.de/job/globjects-osx-clang3.5) |
-| Jenkins | Windows 8.1 | MSVC 2013 Update 3 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-windows-msvc2013&style=plastic)](http://jenkins.hpi3d.de/job/globjects-windows-msvc2013) |
-| Jenkins | Windows 8.1 | MSVC 2015 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-windows-msvc2015&style=plastic)](http://jenkins.hpi3d.de/job/globjects-windows-msvc2015) |
+| Jenkins | Ubuntu 14.04 | GCC 4.8 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc4.8)](http://jenkins.hpi3d.de/job/globjects-linux-gcc4.8)|
+| Jenkins | Ubuntu 14.04 | GCC 4.9 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc4.9)](http://jenkins.hpi3d.de/job/globjects-linux-gcc4.9)|
+| Jenkins | Ubuntu 14.04 | Clang 3.5 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-clang3.5)](http://jenkins.hpi3d.de/job/globjects-linux-clang3.5) |
+| Jenkins | OS X 10.10 | Clang 3.5 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-osx-clang3.5)](http://jenkins.hpi3d.de/job/globjects-osx-clang3.5) |
+| Jenkins | Windows 8.1 | MSVC 2013 Update 3 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-windows-msvc2013)](http://jenkins.hpi3d.de/job/globjects-windows-msvc2013) |
+| Jenkins | Windows 8.1 | MSVC 2015 | all | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-windows-msvc2015)](http://jenkins.hpi3d.de/job/globjects-windows-msvc2015) |
 
 ## Features
 
