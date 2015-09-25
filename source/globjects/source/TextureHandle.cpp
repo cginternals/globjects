@@ -61,4 +61,9 @@ TextureHandle::operator GLuint64() const
     return m_handle;
 }
 
+TextureHandle::operator glm::uvec2() const
+{
+    return asUVec2();
+}
+
 } // namespace globjects

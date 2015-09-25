@@ -28,6 +28,7 @@ public:
     operator gl::GLuint64() const;
 
     glm::uvec2 asUVec2() const;
+    operator glm::uvec2() const;
 
 private:
     gl::GLuint64 m_handle;
