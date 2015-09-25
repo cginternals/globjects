@@ -85,10 +85,20 @@ void Texture::bindActive(const GLenum texture) const
     glBindTexture(m_target, id());
 }
 
+void Texture::bindActive(unsigned int index) const
+{
+    bindActive(GL_TEXTURE0 + index);
+}
+
 void Texture::unbindActive(const GLenum texture) const
 {
     glActiveTexture(texture);
     glBindTexture(m_target, 0);
+}
+
+void Texture::unbindActive(unsigned int index) const
+{
+    unbindActive(GL_TEXTURE0 + index);
 }
 
 GLenum Texture::target() const
