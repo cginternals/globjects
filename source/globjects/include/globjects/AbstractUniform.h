@@ -111,6 +111,7 @@ protected:
     void setValue(const Program * program, gl::GLint location, const glm::mat4x3 & value) const;
 
     void setValue(const Program * program, gl::GLint location, const gl::GLuint64 & value) const;
+    void setValue(const Program * program, gl::GLint location, const TextureHandle & value) const;
 
     void setValue(const Program * program, gl::GLint location, const std::vector<float> & value) const;
     void setValue(const Program * program, gl::GLint location, const std::vector<int> & value) const;
