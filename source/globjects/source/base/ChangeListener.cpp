@@ -7,9 +7,10 @@ namespace globjects
 
 ChangeListener::~ChangeListener()
 {
-    for (Changeable * subject : m_subjects)
+    while (!m_subjects.empty())
     {
-        subject->deregisterListener(this);
+        // calls removeSubject
+        (*m_subjects.begin())->deregisterListener(this);
     }
 }
 
