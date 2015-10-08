@@ -43,7 +43,9 @@ public:
     static void unbind(gl::GLenum target);
 
     void bindActive(gl::GLenum texture) const;
+    void bindActive(unsigned int index) const;
     void unbindActive(gl::GLenum texture) const;
+    void unbindActive(unsigned int index) const;
 
     void setParameter(gl::GLenum name, gl::GLenum value);
     void setParameter(gl::GLenum name, gl::GLint value);
