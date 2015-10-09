@@ -47,6 +47,11 @@ void Sampler::unbind(const GLuint unit)
     glBindSampler(unit, 0);
 }
 
+void Sampler::setParameter(const GLenum name, const GLenum value)
+{
+    glSamplerParameteri(id(), name, static_cast<GLint>(value));
+}
+
 void Sampler::setParameter(const GLenum name, const GLint value)
 {
     glSamplerParameteri(id(), name, value);

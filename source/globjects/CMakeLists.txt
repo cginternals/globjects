@@ -184,6 +184,7 @@ set(sources
 	${source_path}/Sync.cpp
 	${source_path}/AttachedTexture.cpp
 	${source_path}/Texture.cpp
+	${source_path}/TextureHandle.cpp
 	${source_path}/TransformFeedback.cpp
 	${source_path}/UniformBlock.cpp
 	${source_path}/VertexArray.cpp

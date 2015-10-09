@@ -146,7 +146,7 @@ void UniformImplementation_Legacy::set(const Program * program, const GLint loca
     glUniformMatrix4x3fv(location, 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void UniformImplementation_Legacy::set(const Program * program, const GLint location, const TextureHandle & value) const
+void UniformImplementation_Legacy::set(const Program * program, const GLint location, const GLuint64 & value) const
 {
     program->use();
     glUniformHandleui64ARB(location, value);
@@ -290,7 +290,7 @@ void UniformImplementation_Legacy::set(const Program * program, const GLint loca
     glUniformMatrix4x3fv(location, static_cast<GLint>(value.size()), GL_FALSE, reinterpret_cast<const float*>(value.data()));
 }
 
-void UniformImplementation_Legacy::set(const Program * program, const GLint location, const std::vector<TextureHandle> & value) const
+void UniformImplementation_Legacy::set(const Program* program, const GLint location, const std::vector<GLuint64> & value) const
 {
     program->use();
     glUniformHandleui64vARB(location, static_cast<GLint>(value.size()), value.data());

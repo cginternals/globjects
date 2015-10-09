@@ -110,6 +110,7 @@ protected:
     void setValue(const Program * program, gl::GLint location, const glm::mat3x4 & value) const;
     void setValue(const Program * program, gl::GLint location, const glm::mat4x3 & value) const;
 
+    void setValue(const Program * program, gl::GLint location, const gl::GLuint64 & value) const;
     void setValue(const Program * program, gl::GLint location, const TextureHandle & value) const;
 
     void setValue(const Program * program, gl::GLint location, const std::vector<float> & value) const;
@@ -140,6 +141,7 @@ protected:
     void setValue(const Program * program, gl::GLint location, const std::vector<glm::mat3x4> & value) const;
     void setValue(const Program * program, gl::GLint location, const std::vector<glm::mat4x3> & value) const;
 
+    void setValue(const Program * program, gl::GLint location, const std::vector<gl::GLuint64> & value) const;
     void setValue(const Program * program, gl::GLint location, const std::vector<TextureHandle> & value) const;
 
     template <typename T, std::size_t Count>

@@ -23,6 +23,7 @@ public:
     void bind(gl::GLuint unit) const;
     static void unbind(gl::GLuint unit);
 
+    void setParameter(gl::GLenum name, gl::GLenum value);
     void setParameter(gl::GLenum name, gl::GLint value);
     void setParameter(gl::GLenum name, gl::GLfloat value);
 
