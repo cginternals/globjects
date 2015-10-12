@@ -160,7 +160,10 @@ void Program::link() const
     m_linked = false;
 
     if (!binaryImplementation().updateProgramLinkSource(this))
+    {
+        changed();
         return;
+    }
 
     glLinkProgram(id());
 
@@ -169,6 +172,8 @@ void Program::link() const
 
     updateUniforms();
     updateUniformBlockBindings();
+
+    changed();
 }
 
 bool Program::compileAttachedShaders() const

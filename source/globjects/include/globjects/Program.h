@@ -7,6 +7,7 @@
 #include <glm/vec3.hpp>
 
 #include <globjects/base/ChangeListener.h>
+#include <globjects/base/Changeable.h>
 #include <globjects/base/ref_ptr.h>
 
 #include <globjects/globjects_api.h>
@@ -72,7 +73,7 @@ class Uniform;
     \see http://www.opengl.org/wiki/Program_Object
     \see Shader
  */
-class GLOBJECTS_API Program : public Object, protected ChangeListener
+class GLOBJECTS_API Program : public Object, protected ChangeListener, public Changeable
 {
     friend class UniformBlock;
     friend class ProgramBinaryImplementation_GetProgramBinaryARB;
