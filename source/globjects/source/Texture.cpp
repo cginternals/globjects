@@ -25,7 +25,7 @@ Texture::Texture()
 }
 
 Texture::Texture(const GLenum target)
-: Object(new TextureResource)
+: Object(new TextureResource(target))
 , m_target(target)
 {
 }

@@ -30,6 +30,13 @@ class Sampler;
 class GLOBJECTS_API Texture : public Object
 {
 public:
+    enum class BindlessImplementation
+    {
+        DirectStateAccessARB
+    ,   DirectStateAccessEXT
+    ,   Legacy
+    };
+
     Texture();
     Texture(gl::GLenum target);
     static Texture * fromId(gl::GLuint id, gl::GLenum  target);

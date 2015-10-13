@@ -115,7 +115,7 @@ public:
 class TextureResource : public IDResource
 {
 public:
-    TextureResource();
+    TextureResource(gl::GLenum target);
     ~TextureResource();
 };
 

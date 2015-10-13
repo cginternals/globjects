@@ -9,6 +9,7 @@
 #include "../implementations/AbstractProgramBinaryImplementation.h"
 #include "../implementations/AbstractShadingLanguageIncludeImplementation.h"
 #include "../implementations/AbstractObjectNameImplementation.h"
+#include "../implementations/AbstractTextureImplementation.h"
 #include "../implementations/AbstractVertexAttributeBindingImplementation.h"
 
 namespace globjects 
@@ -22,6 +23,7 @@ ImplementationRegistry::ImplementationRegistry()
 , m_programBinaryImplementation(nullptr)
 , m_shadingLanguageIncludeImplementation(nullptr)
 , m_objectNameImplementation(nullptr)
+, m_textureImplementation(nullptr)
 , m_attributeImplementation(nullptr)
 {
 }
@@ -95,6 +97,11 @@ void ImplementationRegistry::initialize(const VertexArray::AttributeImplementati
     m_attributeImplementation = AbstractVertexAttributeBindingImplementation::get(impl);
 }
 
+void ImplementationRegistry::initialize(Texture::BindlessImplementation impl)
+{
+    m_textureImplementation = AbstractTextureImplementation::get(impl);
+}
+
 AbstractUniformImplementation & ImplementationRegistry::uniformImplementation()
 {
     if (!m_uniformImplementation)
@@ -157,6 +164,14 @@ AbstractVertexAttributeBindingImplementation & ImplementationRegistry::attribute
         m_attributeImplementation = AbstractVertexAttributeBindingImplementation::get();
 
     return *m_attributeImplementation;
+}
+
+AbstractTextureImplementation & ImplementationRegistry::textureImplementation()
+{
+    if (!m_textureImplementation)
+        m_textureImplementation = AbstractTextureImplementation::get();
+
+    return *m_textureImplementation;
 }
 
 } // namespace globjects

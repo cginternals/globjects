@@ -6,6 +6,7 @@
 
 #include "implementations/AbstractBufferImplementation.h"
 #include "implementations/AbstractFramebufferImplementation.h"
+#include "implementations/AbstractTextureImplementation.h"
 
 
 using namespace gl;
@@ -178,14 +179,15 @@ ShaderResource::~ShaderResource()
 }
 
 
-TextureResource::TextureResource()
-: IDResource(createObject(glGenTextures))
+TextureResource::TextureResource(GLenum target)
+: IDResource(ImplementationRegistry::current().textureImplementation().create(target))
 {
 }
 
 TextureResource::~TextureResource()
 {
-    deleteObject(glDeleteTextures, id(), hasOwnership());
+    if (hasOwnership())
+        ImplementationRegistry::current().textureImplementation().destroy(id());
 }
 
 
