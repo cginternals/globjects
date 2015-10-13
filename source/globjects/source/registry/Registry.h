@@ -23,6 +23,8 @@ public:
 
     static void setCurrentContext(glbinding::ContextHandle contextId);
 
+    static bool isCurrentContext(glbinding::ContextHandle contextId);
+
     static Registry & current();
 
     ObjectRegistry & objects();
