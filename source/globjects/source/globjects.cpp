@@ -30,40 +30,57 @@ namespace
 {
     bool g_globjectsIsInitialized = false;
     std::mutex g_mutex;
+
+    void manualContextCheck(const glbinding::AbstractFunction & /*function*/)
+    {
+        if (!globjects::Registry::isCurrentContext(glbinding::getCurrentContext()))
+        {
+#ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
+            throw std::runtime_error("Current OpenGL context and current globjects context mismatch");
+#else
+            globjects::fatal() << "Current OpenGL context and current globjects context mismatch";
+#endif
+        }
+    }
+
+    void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
+    {
+        globjects::Error error = globjects::Error::get();
+
+        if (!error)
+            return;
+
+        if (!globjects::Registry::current().isInitialized())
+        {
+            globjects::debug() << "Error during initialization: " << error.name();
+            return;
+        }
+
+        if (!globjects::DebugMessage::isFallbackImplementation())
+            return;
+
+        std::stringstream stream;
+        stream << function.name() << " generated " << error.name();
+
+        globjects::DebugMessage::insertMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), GL_DEBUG_SEVERITY_HIGH_ARB, stream.str());
+    }
 }
 
 namespace globjects
 {
-
-void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
-{
-    Error error = Error::get();
-
-    if (!error)
-        return;
-
-    if (!Registry::current().isInitialized())
-    {
-        debug() << "Error during initialization: " << error.name();
-        return;
-    }
-
-    if (!DebugMessage::isFallbackImplementation())
-        return;
-
-    std::stringstream stream;
-    stream << function.name() << " generated " << error.name();
-
-    DebugMessage::insertMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), GL_DEBUG_SEVERITY_HIGH_ARB, stream.str());
-}
 
 void init()
 {
     g_mutex.lock();
     if (!g_globjectsIsInitialized)
     {
+        // Callback mask is configured in AbstractDebugImplementation::enable
         glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
-            manualErrorCheckAfter(*functionCall.function); });
+            manualErrorCheckAfter(*functionCall.function);
+        });
+        glbinding::setBeforeCallback([](const glbinding::FunctionCall & functionCall) {
+            manualContextCheck(*functionCall.function);
+        });
 
         g_globjectsIsInitialized = true;
     }
@@ -76,12 +93,15 @@ void init()
 void init(const glbinding::ContextHandle sharedContextId)
 {
     g_mutex.lock();
-    if (g_globjectsIsInitialized)
+    if (!g_globjectsIsInitialized)
     {
-        glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
-
+        // Callback mask is configured in AbstractDebugImplementation::enable
         glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
-            manualErrorCheckAfter(*functionCall.function); });
+            manualErrorCheckAfter(*functionCall.function);
+        });
+        glbinding::setBeforeCallback([](const glbinding::FunctionCall & functionCall) {
+            manualContextCheck(*functionCall.function);
+        });
 
         g_globjectsIsInitialized = true;
     }

@@ -23,7 +23,7 @@ void DebugImplementation_Legacy::enable()
 {
     m_enabled = true;
 
-    glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
+    glbinding::setCallbackMaskExcept(glbinding::CallbackMask::BeforeAndAfter, { "glGetError" });
 }
 
 void DebugImplementation_Legacy::disable()

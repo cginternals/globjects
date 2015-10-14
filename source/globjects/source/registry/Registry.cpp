@@ -63,6 +63,18 @@ void Registry::setCurrentContext(const glbinding::ContextHandle contextId)
     setCurrentRegistry(contextId);
 }
 
+bool Registry::isCurrentContext(glbinding::ContextHandle contextId)
+{
+    g_mutex.lock();
+
+    const auto it = s_registries.find(contextId);
+    const auto result = it != s_registries.end() && it->second == t_currentRegistry;
+
+    g_mutex.unlock();
+
+    return result;
+}
+
 void Registry::deregisterContext(const glbinding::ContextHandle contextId)
 {
     if (!isContextRegistered(contextId))

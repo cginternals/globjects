@@ -1,6 +1,8 @@
 
 #include "DebugImplementation_DebugKHR.h"
 
+#include <glbinding/callbacks.h>
+
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 
@@ -42,6 +44,8 @@ void DebugImplementation_DebugKHR::registerCallback()
 void DebugImplementation_DebugKHR::enable()
 {
     globjects::enable(GL_DEBUG_OUTPUT);
+
+    glbinding::setCallbackMaskExcept(glbinding::CallbackMask::Before, { "glGetError" });
 
     registerCallback();
 }
