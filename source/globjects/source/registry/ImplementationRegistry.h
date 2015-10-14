@@ -7,6 +7,7 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/DebugMessage.h>
 #include <globjects/Object.h>
+#include <globjects/Texture.h>
 #include <globjects/VertexArray.h>
 
 
@@ -21,6 +22,7 @@ class AbstractProgramBinaryImplementation;
 class AbstractShadingLanguageIncludeImplementation;
 class AbstractObjectNameImplementation;
 class AbstractVertexAttributeBindingImplementation;
+class AbstractTextureImplementation;
 
 class ImplementationRegistry
 {
@@ -38,6 +40,7 @@ public:
     void initialize(Shader::IncludeImplementation impl);
     void initialize(Object::NameImplementation impl);
     void initialize(VertexArray::AttributeImplementation impl);
+    void initialize(Texture::BindlessImplementation impl);
 
     static ImplementationRegistry & current();
 
@@ -49,6 +52,7 @@ public:
     AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation();
     AbstractObjectNameImplementation & objectNameImplementation();
     AbstractVertexAttributeBindingImplementation & attributeImplementation();
+    AbstractTextureImplementation & textureImplementation();
 
 protected:
     AbstractUniformImplementation * m_uniformImplementation;
@@ -58,6 +62,7 @@ protected:
     AbstractProgramBinaryImplementation * m_programBinaryImplementation;
     AbstractShadingLanguageIncludeImplementation * m_shadingLanguageIncludeImplementation;
     AbstractObjectNameImplementation * m_objectNameImplementation;
+    AbstractTextureImplementation * m_textureImplementation;
     AbstractVertexAttributeBindingImplementation * m_attributeImplementation;
 };
 

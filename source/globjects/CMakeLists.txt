@@ -133,6 +133,15 @@ set(sources
 	${source_path}/implementations/ShadingLanguageIncludeImplementation_ARB.h
 	${source_path}/implementations/ShadingLanguageIncludeImplementation_Fallback.cpp
 	${source_path}/implementations/ShadingLanguageIncludeImplementation_Fallback.h
+        
+        ${source_path}/implementations/AbstractTextureImplementation.cpp
+	${source_path}/implementations/AbstractTextureImplementation.h
+	${source_path}/implementations/TextureImplementation_DirectStateAccessARB.cpp
+	${source_path}/implementations/TextureImplementation_DirectStateAccessARB.h
+	${source_path}/implementations/TextureImplementation_DirectStateAccessEXT.cpp
+	${source_path}/implementations/TextureImplementation_DirectStateAccessEXT.h
+	${source_path}/implementations/TextureImplementation_Legacy.cpp
+	${source_path}/implementations/TextureImplementation_Legacy.h
 
 	${source_path}/implementations/AbstractUniformImplementation.cpp
 	${source_path}/implementations/AbstractUniformImplementation.h

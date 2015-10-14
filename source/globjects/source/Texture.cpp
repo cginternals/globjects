@@ -13,11 +13,30 @@
 #include "pixelformat.h"
 #include "Resource.h"
 
+#include "registry/ImplementationRegistry.h"
+#include "implementations/AbstractTextureImplementation.h"
+
+
+namespace
+{
+
+const globjects::AbstractTextureImplementation & implementation()
+{
+    return globjects::ImplementationRegistry::current().textureImplementation();
+}
+
+}
+
 
 using namespace gl;
 
 namespace globjects
 {
+
+void Texture::hintBindlessImplementation(BindlessImplementation impl)
+{
+    ImplementationRegistry::current().initialize(impl);
+}
 
 Texture::Texture()
 : Texture(GL_TEXTURE_2D)
@@ -25,7 +44,7 @@ Texture::Texture()
 }
 
 Texture::Texture(const GLenum target)
-: Object(new TextureResource)
+: Object(new TextureResource(target))
 , m_target(target)
 {
 }
@@ -113,45 +132,27 @@ void Texture::setParameter(const GLenum name, const GLenum value)
 
 void Texture::setParameter(const GLenum name, const GLint value)
 {
-	bind();
-
-    glTexParameteri(m_target, name, value);
+    implementation().setParameter(this, name, value);
 }
 
 void Texture::setParameter(const GLenum name, const GLfloat value)
 {
-	bind();
-
-    glTexParameterf(m_target, name, value);
+    implementation().setParameter(this, name, value);
 }
 
 void Texture::setParameter(gl::GLenum name, const glm::vec4 & value)
 {
-    bind();
-
-    glTexParameterfv(m_target, name, glm::value_ptr(value));
+    implementation().setParameter(this, name, value);
 }
 
 GLint Texture::getParameter(const GLenum pname) const
 {
-	bind();
-
-	GLint value = 0;
-
-    glGetTexParameteriv(m_target, pname, &value);
-
-	return value;
+    return implementation().getParameter(this, pname);
 }
 
 GLint Texture::getLevelParameter(const GLint level, const GLenum pname) const
 {
-	bind();
-
-	GLint value = 0;
-
-    glGetTexLevelParameteriv(m_target, level, pname, &value);
-
-	return value;
+    return implementation().getLevelParameter(this, level, pname);
 }
 
 void Texture::getImage(const GLint level, const GLenum format, const GLenum type, GLvoid * image) const
@@ -194,30 +195,22 @@ std::vector<unsigned char> Texture::getCompressedImage(const GLint lod) const
 
 void Texture::image1D(const GLint level, const GLenum internalFormat, const GLsizei width, const GLint border, const GLenum format, const GLenum type, const GLvoid * data)
 {
-    bind();
-
-    glTexImage1D(m_target, level, static_cast<GLint>(internalFormat), width, border, format, type, data);
+    implementation().image1D(this, level, internalFormat, width, border, format, type, data);
 }
 
 void Texture::compressedImage1D(const GLint level, const GLenum internalFormat, const GLsizei width, const GLint border, const GLsizei imageSize, const GLvoid * data)
 {
-    bind();
-
-    glCompressedTexImage1D(m_target, level, internalFormat, width, border, imageSize, data);
+    implementation().compressedImage1D(this, level, internalFormat, width, border, imageSize, data);
 }
 
 void Texture::subImage1D(const GLint level, const GLint xOffset, const GLsizei width, const GLenum format, const GLenum type, const GLvoid * data)
 {
-    bind();
-
-    glTexSubImage1D(m_target, level, xOffset, width, format, type, data);
+    implementation().subImage1D(this, level, xOffset, width, format, type, data);
 }
 
 void Texture::image2D(const GLint level, const GLenum internalFormat, const GLsizei width, const GLsizei height, const GLint border, const GLenum format, const GLenum type, const GLvoid* data)
 {
-	bind();
-
-    glTexImage2D(m_target, level, static_cast<GLint>(internalFormat), width, height, border, format, type, data);
+    implementation().image2D(this, level, internalFormat, width, height, border, format, type, data);
 }
 
 void Texture::image2D(const GLint level, const GLenum internalFormat, const glm::ivec2 & size, const GLint border, const GLenum format, const GLenum type, const GLvoid* data)
@@ -225,23 +218,9 @@ void Texture::image2D(const GLint level, const GLenum internalFormat, const glm:
     image2D(level, internalFormat, size.x, size.y, border, format, type, data);
 }
 
-void Texture::image2D(const GLenum target, const GLint level, const GLenum internalFormat, const GLsizei width, const GLsizei height, const GLint border, const GLenum format, const GLenum type, const GLvoid* data)
-{
-    bind();
-
-    glTexImage2D(target, level, static_cast<GLint>(internalFormat), width, height, border, format, type, data);
-}
-
-void Texture::image2D(const GLenum target, const GLint level, const GLenum internalFormat, const glm::ivec2 & size, const GLint border, const GLenum format, const GLenum type, const GLvoid* data)
-{
-    image2D(target, level, internalFormat, size.x, size.y, border, format, type, data);
-}
-
 void Texture::compressedImage2D(const GLint level, const GLenum internalFormat, const GLsizei width, const GLsizei height, const GLint border, const GLsizei imageSize, const GLvoid * data)
 {
-    bind();
-
-    glCompressedTexImage2D(m_target, level, internalFormat, width, height, border, imageSize, data);
+    implementation().compressedImage2D(this, level, internalFormat, width, height, border, imageSize, data);
 }
 
 void Texture::compressedImage2D(const GLint level, const GLenum internalFormat, const glm::ivec2 & size, const GLint border, const GLsizei imageSize, const GLvoid * data)
@@ -251,9 +230,7 @@ void Texture::compressedImage2D(const GLint level, const GLenum internalFormat, 
 
 void Texture::subImage2D(const GLint level, const GLint xOffset, const GLint yOffset, const GLsizei width, const GLsizei height, const GLenum format, const GLenum type, const GLvoid * data)
 {
-    bind();
-
-    glTexSubImage2D(m_target, level, xOffset, yOffset, width, height, format, type, data);
+    implementation().subImage2D(this, level, xOffset, yOffset, width, height, format, type, data);
 }
 
 void Texture::subImage2D(const GLint level, const glm::ivec2& offset, const glm::ivec2& size, const GLenum format, const GLenum type, const GLvoid * data)
@@ -263,9 +240,7 @@ void Texture::subImage2D(const GLint level, const glm::ivec2& offset, const glm:
 
 void Texture::image3D(const GLint level, const GLenum internalFormat, const GLsizei width, const GLsizei height, const GLsizei depth, const GLint border, const GLenum format, const GLenum type, const GLvoid* data)
 {
-    bind();
-
-    glTexImage3D(m_target, level, static_cast<GLint>(internalFormat), width, height, depth, border, format, type, data);
+    implementation().image3D(this, level, internalFormat, width, height, depth, border, format, type, data);
 }
 
 void Texture::image3D(const GLint level, const GLenum internalFormat, const glm::ivec3 & size, const GLint border, const GLenum format, const GLenum type, const GLvoid* data)
@@ -275,9 +250,7 @@ void Texture::image3D(const GLint level, const GLenum internalFormat, const glm:
 
 void Texture::compressedImage3D(const GLint level, const GLenum internalFormat, const GLsizei width, const GLsizei height, const GLsizei depth, const GLint border, const GLsizei imageSize, const GLvoid * data)
 {
-    bind();
-
-    glCompressedTexImage3D(m_target, level, internalFormat, width, height, depth, border, imageSize, data);
+    implementation().compressedImage3D(this, level, internalFormat, width, height, depth, border, imageSize, data);
 }
 
 void Texture::compressedImage3D(GLint level, GLenum internalFormat, const glm::ivec3 & size, GLint border, GLsizei imageSize, const GLvoid * data)
@@ -287,9 +260,7 @@ void Texture::compressedImage3D(GLint level, GLenum internalFormat, const glm::i
 
 void Texture::subImage3D(const GLint level, const GLint xOffset, const GLint yOffset, const GLint zOffset, const GLsizei width, const GLsizei height, const GLsizei depth, const GLenum format, const GLenum type, const GLvoid * data)
 {
-    bind();
-
-    glTexSubImage3D(m_target, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
+    implementation().subImage3D(this, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
 }
 
 void Texture::subImage3D(const GLint level, const glm::ivec3& offset, const glm::ivec3& size, const GLenum format, const GLenum type, const GLvoid * data)
@@ -299,9 +270,7 @@ void Texture::subImage3D(const GLint level, const glm::ivec3& offset, const glm:
 
 void Texture::image2DMultisample(const GLsizei samples, const GLenum internalFormat, const GLsizei width, const GLsizei height, const GLboolean fixedSamplesLocations)
 {
-    bind();
-
-    glTexImage2DMultisample(m_target, samples, internalFormat, width, height, fixedSamplesLocations);
+    implementation().image2DMultisample(this, samples, internalFormat, width, height, fixedSamplesLocations);
 }
 
 void Texture::image2DMultisample(const GLsizei samples, const GLenum internalFormat, const glm::ivec2 & size, const GLboolean fixedSamplesLocations)
@@ -311,9 +280,7 @@ void Texture::image2DMultisample(const GLsizei samples, const GLenum internalFor
 
 void Texture::image3DMultisample(const GLsizei samples, const GLenum internalFormat, const GLsizei width, const GLsizei height, const GLsizei depth, const GLboolean fixedSamplesLocations)
 {
-    bind();
-
-    glTexImage3DMultisample(m_target, samples, internalFormat, width, height, depth, fixedSamplesLocations);
+    implementation().image3DMultisample(this, samples, internalFormat, width, height, depth, fixedSamplesLocations);
 }
 
 void Texture::image3DMultisample(const GLsizei samples, const GLenum internalFormat, const glm::ivec3 & size, const GLboolean fixedSamplesLocations)
@@ -323,16 +290,12 @@ void Texture::image3DMultisample(const GLsizei samples, const GLenum internalFor
 
 void Texture::storage1D(const GLsizei levels, const GLenum internalFormat, const GLsizei width)
 {
-    bind();
-
-    glTexStorage1D(m_target, levels, internalFormat, width);
+    implementation().storage1D(this, levels, internalFormat, width);
 }
 
 void Texture::storage2D(const GLsizei levels, const GLenum internalFormat, const GLsizei width, const GLsizei height)
 {
-	bind();
-
-    glTexStorage2D(m_target, levels, internalFormat, width, height);
+    implementation().storage2D(this, levels, internalFormat, width, height);
 }
 
 void Texture::storage2D(const GLsizei levels, const GLenum internalFormat, const glm::ivec2 & size)
@@ -342,9 +305,7 @@ void Texture::storage2D(const GLsizei levels, const GLenum internalFormat, const
 
 void Texture::storage3D(const GLsizei levels, const GLenum internalFormat, const GLsizei width, const GLsizei height, const GLsizei depth)
 {
-    bind();
-
-    glTexStorage3D(m_target, levels, internalFormat, width, height, depth);
+    implementation().storage3D(this, levels, internalFormat, width, height, depth);
 }
 
 void Texture::storage3D(const GLsizei levels, const GLenum internalFormat, const glm::ivec3 & size)
@@ -359,28 +320,12 @@ void Texture::textureView(const GLuint originalTexture, const GLenum internalFor
 
 void Texture::texBuffer(const GLenum internalFormat, Buffer * buffer)
 {
-    bind();
-
-    glTexBuffer(m_target, internalFormat, buffer ? buffer->id() : 0);
-}
-
-void Texture::texBuffer(const GLenum activeTexture, const GLenum internalFormat, Buffer * buffer)
-{
-    bindActive(activeTexture);
-    texBuffer(internalFormat, buffer);
+    implementation().texBuffer(this, internalFormat, buffer);
 }
 
 void Texture::texBufferRange(const GLenum internalFormat, Buffer * buffer, const GLintptr offset, const GLsizeiptr size)
 {
-    bind();
-
-    glTexBufferRange(m_target, internalFormat, buffer ? buffer->id() : 0, offset, size);
-}
-
-void Texture::texBufferRange(const GLenum activeTexture, const GLenum internalFormat, Buffer * buffer, const GLintptr offset, const GLsizeiptr size)
-{
-    bindActive(activeTexture);
-    texBufferRange(internalFormat, buffer, offset, size);
+    implementation().texBufferRange(this, internalFormat, buffer, offset, size);
 }
 
 void Texture::clearImage(const GLint level, const GLenum format, const GLenum type, const void * data)
@@ -456,9 +401,7 @@ void Texture::unbindImageTexture(const GLuint unit)
 
 void Texture::generateMipmap()
 {
-	bind();
-
-    glGenerateMipmap(m_target);
+    implementation().generateMipMap(this);
 }
 
 void Texture::accept(ObjectVisitor& visitor)
@@ -478,9 +421,7 @@ TextureHandle Texture::textureHandle(Sampler * sampler) const
 
 void Texture::pageCommitment(const GLint level, const GLint xOffset, const GLint yOffset, const GLint zOffset, const GLsizei width, const GLsizei height, const GLsizei depth, const GLboolean commit) const
 {
-    bind();
-
-    glTexPageCommitmentARB(m_target, level, xOffset, yOffset, zOffset, width, height, depth, commit);
+    implementation().pageCommitment(this, level, xOffset, yOffset, zOffset, width, height, depth, commit);
 }
 
 void Texture::pageCommitment(const GLint level, const glm::ivec3& offset, const glm::ivec3& size, const GLboolean commit) const
