@@ -37,6 +37,8 @@ public:
     ,   Legacy
     };
 
+    static void hintBindlessImplementation(BindlessImplementation impl);
+
     Texture();
     Texture(gl::GLenum target);
     static Texture * fromId(gl::GLuint id, gl::GLenum  target);
@@ -77,8 +79,6 @@ public:
 
     void image2D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
     void image2D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
-    void image2D(gl::GLenum target, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
-    void image2D(gl::GLenum target, gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
     void compressedImage2D(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data);
     void compressedImage2D(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data);
     void subImage2D(gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLsizei width, gl::GLsizei height, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
@@ -105,9 +105,7 @@ public:
     void textureView(gl::GLuint originalTexture, gl::GLenum internalFormat, gl::GLuint minLevel, gl::GLuint numLevels, gl::GLuint minLayer, gl::GLuint numLayers);
 
     void texBuffer(gl::GLenum internalFormat, Buffer * buffer);
-    void texBuffer(gl::GLenum activeTexture, gl::GLenum internalFormat, Buffer * buffer);
     void texBufferRange(gl::GLenum internalFormat, Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size);
-    void texBufferRange(gl::GLenum activeTexture, gl::GLenum internalFormat, Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr size);
 
     void clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const void * data);
     void clearImage(gl::GLint level, gl::GLenum format, gl::GLenum type, const glm::vec4 & value);
