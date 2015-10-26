@@ -311,11 +311,11 @@ void Framebuffer::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, 
 
 void Framebuffer::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, Framebuffer * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, ClearBufferMask mask, GLenum filter) const
 {
-    setReadBuffer(readBuffer);
-    destFbo->setDrawBuffers(drawBuffers);
-
     bind(GL_READ_FRAMEBUFFER);
     destFbo->bind(GL_DRAW_FRAMEBUFFER);
+
+    setReadBuffer(readBuffer);
+    destFbo->setDrawBuffers(drawBuffers);
 
     blit(srcRect, destRect, mask, filter);
 }
