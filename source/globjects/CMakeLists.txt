@@ -162,7 +162,6 @@ set(sources
 	${source_path}/IncludeProcessor.cpp
 	${source_path}/IncludeProcessor.h
 	${source_path}/LocationIdentity.cpp
-	${source_path}/memory.cpp
 	${source_path}/NamedString.cpp
 	${source_path}/Object.cpp
 	${source_path}/objectlogging.cpp
@@ -219,7 +218,6 @@ set(api_includes
 	${include_path}/globjects.hpp
 	${include_path}/LocationIdentity.h
 	${include_path}/logging.h
-	${include_path}/memory.h
 	${include_path}/NamedString.h
 	${include_path}/Object.h
 	${include_path}/objectlogging.h
