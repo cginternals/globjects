@@ -1,0 +1,176 @@
+\documentclass{article}
+
+\usepackage[pdfborder={0 0 0}]{hyperref}
+
+\begin{document}
+
+\title{globjects: An OpenGL Objects Wrapper}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+globjects provides object-oriented interfaces around the OpenGL API after version 3.0. Additionally, reoccuring tasks are automated and features the current driver doesn't provide are simlulated through earlier interfaces or even emulated with own implementations.
+
+\end{abstract}
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\newpage
+
+\section{Philosophy}
+
+globjects is an object-oriented wrapper around the OpenGL API. A main goal is to be as strict as possible. This means, that everything that isn't generalizable is not integrated. It provides the current interface the OpenGL API suggests and provides fallback implementations for drivers that cannot provide the newest API. For dynamically allocated memory, globjects rely on reference counting through smart pointers. To allow for multiple contexts and even shared contexts, globjects uses registries to manage different behavior.
+
+\section{Project Setup}
+
+As globjects\footnote{\url{https://github.com/cginternals/globjects}} should provide a basic library that is used in other libraries, tech demos and real-world applications, it strives for few dependencies and a clean and easy project setup.
+Therefore it is based on cmake-init\footnote{\url{https://github.com/cginternals/cmake-init}}.
+globjects itself provides the main library \emph{globjects} and some additional modules in means of tests and examples. The only real dependency of the globjects library is glbinding\footnote{\url{https://github.com/cginternals/glbinding}}, but the optional modules also have Qt5\footnote{\url{http://www.qt.io/}} and GLFW\footnote{\url{www.glfw.org/}} as additional dependencies.
+
+\section{Concepts}
+
+globjects provides classes for every main concept the current OpenGL API provides.
+
+\subsection{State}
+
+A \verb|State| object represents the accumulation of all global states an OpenGL context possesses. Mainly, this means a collection of \verb|StateSettings| (states with non-boolean values) and a collection of \verb|Capabilities| (boolean states).
+
+\subsubsection{Capability}
+
+A \verb|Capability| object represents 
+
+\subsubsection{StateSetting}
+
+A \verb|StateSetting| object represents 
+
+\subsection{DebugMessage}
+
+A \verb|DebugMessage| object represents 
+
+\subsection{Error}
+
+A \verb|Error| object represents 
+
+\subsection{Uniform}
+
+A \verb|Uniform| object represents 
+
+\subsection{Renderbuffer}
+
+A \verb|Renderbuffer| object represents 
+
+\subsection{Framebuffer}
+
+A \verb|Framebuffer| object represents 
+
+\subsubsection{Framebuffer Attachment}
+
+A \verb|FramebufferAttachment| object represents 
+
+\subsection{Texture}
+
+A \verb|Texture| object represents 
+
+\subsubsection{TextureHandle}
+
+A \verb|TextureHandle| object represents 
+
+\subsection{Image}
+
+A \verb|Image| object represents 
+
+\subsection{Shader}
+
+A \verb|Shader| object represents 
+
+\subsection{Program}
+
+A \verb|Program| object represents 
+
+\subsubsection{ProgramBinary}
+
+A \verb|ProgramBinary| object represents 
+
+\subsection{Query}
+
+A \verb|Query| object represents 
+
+\subsection{TransformFeedback}
+
+A \verb|TransformFeedback| object represents 
+
+\subsection{Buffer}
+
+A \verb|Buffer| object represents 
+
+\subsection{Uniform}
+
+A \verb|Uniform| object represents 
+
+\subsection{VertexArray}
+
+A \verb|VertexArray| object represents 
+
+\subsection{VertexAttributeBinding}
+
+A \verb|VertexAttributeBinding| object represents 
+
+\section{Strategies}
+
+globjects uses the design pattern \emph{strategy} to support multiple implementations for one interface using different OpenGL functions and backends. They have to be differentiated for each use case as they are developed asynchronously and every driver can decide which API extension to include.
+
+\subsection{Buffer}
+
+The \verb|Buffer| strategies handle
+
+\subsection{Debug}
+
+The \verb|Debug| strategies handle
+
+\subsection{Framebuffer}
+
+The \verb|Framebuffer| strategies handle
+
+\subsection{ObjectName}
+
+The \verb|ObjectName| strategies handle
+
+\subsection{ProgramBinary}
+
+The \verb|ProgramBinary| strategies handle
+
+\subsection{ShadingLanguageInclude}
+
+The \verb|ShadingLanguageInclude| strategies handle
+
+\subsection{Texture}
+
+The \verb|Texture| strategies handle
+
+\subsection{Uniform}
+
+The \verb|Uniform| strategies handle
+
+\subsection{VertexAttributeBinding}
+
+The \verb|VertexAttributeBinding| strategies handle
+
+\section{Automated Processes}
+
+As one main goal of globjects is the usage in modern early-prototyping applications it supports some generalizable automation concepts.
+
+\subsection{Shader Compilation}
+
+ 
+
+\subsection{Program Linkage}
+
+
+
+\subsection{Uniform Updates}
+
+
+
+\end{document}
