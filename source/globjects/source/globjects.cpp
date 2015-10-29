@@ -81,6 +81,13 @@ void init()
         glbinding::setBeforeCallback([](const glbinding::FunctionCall & functionCall) {
             manualContextCheck(*functionCall.function);
         });
+        glbinding::setUnresolvedCallback([](const glbinding::AbstractFunction & function) {
+#ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
+            throw std::runtime_error(std::string(function.name()) + " couldn't get resolved.");
+#else
+            globjects::fatal() << std::string(function.name()) << " couldn't get resolved.";
+#endif
+        });
 
         g_globjectsIsInitialized = true;
     }
@@ -101,6 +108,13 @@ void init(const glbinding::ContextHandle sharedContextId)
         });
         glbinding::setBeforeCallback([](const glbinding::FunctionCall & functionCall) {
             manualContextCheck(*functionCall.function);
+        });
+        glbinding::setUnresolvedCallback([](const glbinding::AbstractFunction & function) {
+#ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
+            throw std::runtime_error(std::string(function.name()) + " couldn't get resolved.");
+#else
+            globjects::fatal() << std::string(function.name()) << " couldn't get resolved.";
+#endif
         });
 
         g_globjectsIsInitialized = true;

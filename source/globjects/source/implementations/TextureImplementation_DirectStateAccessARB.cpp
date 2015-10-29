@@ -33,7 +33,7 @@ gl::GLuint TextureImplementation_DirectStateAccessARB::create(gl::GLenum target)
 
 void TextureImplementation_DirectStateAccessARB::destroy(gl::GLuint id) const
 {
-    TextureImplementation_Legacy::instance()->destroy(id);
+    get(Texture::BindlessImplementation::Legacy)->destroy(id);
 }
 
 void TextureImplementation_DirectStateAccessARB::setParameter(const Texture * texture, gl::GLenum name, gl::GLint value) const
@@ -76,12 +76,12 @@ gl::GLint TextureImplementation_DirectStateAccessARB::getLevelParameter(const Te
 
 void TextureImplementation_DirectStateAccessARB::image1D(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
 {
-    TextureImplementation_DirectStateAccessEXT::instance()->image1D(texture, level, internalFormat, width, border, format, type, data);
+    get(Texture::BindlessImplementation::DirectStateAccessEXT)->image1D(texture, level, internalFormat, width, border, format, type, data);
 }
 
 void TextureImplementation_DirectStateAccessARB::compressedImage1D(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data) const
 {
-    TextureImplementation_DirectStateAccessEXT::instance()->compressedImage1D(texture, level, internalFormat, width, border, imageSize, data);
+    get(Texture::BindlessImplementation::DirectStateAccessEXT)->compressedImage1D(texture, level, internalFormat, width, border, imageSize, data);
 }
 
 void TextureImplementation_DirectStateAccessARB::subImage1D(const Texture * texture, gl::GLint level, gl::GLint xOffset, gl::GLsizei width, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
@@ -91,12 +91,12 @@ void TextureImplementation_DirectStateAccessARB::subImage1D(const Texture * text
 
 void TextureImplementation_DirectStateAccessARB::image2D(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
 {
-    TextureImplementation_DirectStateAccessEXT::instance()->image2D(texture, level, internalFormat, width, height, border, format, type, data);
+    get(Texture::BindlessImplementation::DirectStateAccessEXT)->image2D(texture, level, internalFormat, width, height, border, format, type, data);
 }
 
 void TextureImplementation_DirectStateAccessARB::compressedImage2D(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data) const
 {
-    TextureImplementation_DirectStateAccessEXT::instance()->compressedImage2D(texture, level, internalFormat, width, height, border, imageSize, data);
+    get(Texture::BindlessImplementation::DirectStateAccessEXT)->compressedImage2D(texture, level, internalFormat, width, height, border, imageSize, data);
 }
 
 void TextureImplementation_DirectStateAccessARB::subImage2D(const Texture * texture, gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLsizei width, gl::GLsizei height, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
@@ -106,12 +106,12 @@ void TextureImplementation_DirectStateAccessARB::subImage2D(const Texture * text
 
 void TextureImplementation_DirectStateAccessARB::image3D(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
 {
-    TextureImplementation_DirectStateAccessEXT::instance()->image3D(texture, level, internalFormat, width, height, depth, border, format, type, data);
+    get(Texture::BindlessImplementation::DirectStateAccessEXT)->image3D(texture, level, internalFormat, width, height, depth, border, format, type, data);
 }
 
 void TextureImplementation_DirectStateAccessARB::compressedImage3D(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLint border, gl::GLsizei imageSize, const gl::GLvoid * data) const
 {
-    TextureImplementation_DirectStateAccessEXT::instance()->compressedImage3D(texture, level, internalFormat, width, height, depth, border, imageSize, data);
+    get(Texture::BindlessImplementation::DirectStateAccessEXT)->compressedImage3D(texture, level, internalFormat, width, height, depth, border, imageSize, data);
 }
 
 void TextureImplementation_DirectStateAccessARB::subImage3D(const Texture * texture, gl::GLint level, gl::GLint xOffset, gl::GLint yOffset, gl::GLint zOffset, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
@@ -156,7 +156,7 @@ void TextureImplementation_DirectStateAccessARB::texBufferRange(const Texture * 
 
 void TextureImplementation_DirectStateAccessARB::pageCommitment(const Texture * texture, const gl::GLint level, const gl::GLint xOffset, const gl::GLint yOffset, const gl::GLint zOffset, const gl::GLsizei width, const gl::GLsizei height, const gl::GLsizei depth, const gl::GLboolean commit) const
 {
-    gl::glTexturePageCommitmentEXT(texture->id(), level, xOffset, yOffset, zOffset, width, height, depth, commit);
+    get(Texture::BindlessImplementation::DirectStateAccessEXT)->pageCommitment(texture, level, xOffset, yOffset, zOffset, width, height, depth, commit);
 }
 
 } // namespace globjects
