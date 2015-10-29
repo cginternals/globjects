@@ -78,7 +78,9 @@ void AbstractUniform::deregisterProgram(Program * program)
 void AbstractUniform::changed()
 {
 	for (Program * program : m_programs)
-		update(program);
+    {
+        update(program, false);
+    }
 }
 
 GLint AbstractUniform::locationFor(const Program *program) const
@@ -86,12 +88,26 @@ GLint AbstractUniform::locationFor(const Program *program) const
     if (m_identity.isLocation())
         return m_identity.location();
 
-    return program->getUniformLocation(m_identity.name());
+    if (m_locations.count(program))
+    {
+        return m_locations.at(program);
+    }
+
+    gl::GLint location = program->getUniformLocation(m_identity.name());
+
+    m_locations.emplace(program, location);
+
+    return location;
 }
 
-void AbstractUniform::update(const Program * program) const
+void AbstractUniform::update(const Program * program, bool invalidateLocation) const
 {
     assert(program != nullptr);
+
+    if (invalidateLocation)
+    {
+        m_locations.erase(program);
+    }
 
     if (!program->isLinked())
     {

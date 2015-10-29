@@ -412,21 +412,27 @@ void Program::addUniform(AbstractUniform * uniform)
     ref_ptr<AbstractUniform>& uniformReference = m_uniforms[uniform->identity()];
 
 	if (uniformReference)
+    {
 		uniformReference->deregisterProgram(this);
+    }
 
 	uniformReference = uniform;
 
 	uniform->registerProgram(this);
 
 	if (m_linked)
-		uniform->update(this);
+    {
+        uniform->update(this, true);
+    }
 }
 
 void Program::updateUniforms() const
 {
 	// Note: uniform update will check if program is linked
     for (std::pair<LocationIdentity, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
-		uniformPair.second->update(this);
+    {
+        uniformPair.second->update(this, true);
+    }
 }
 
 void Program::updateUniformBlockBindings() const

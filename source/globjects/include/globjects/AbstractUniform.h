@@ -4,6 +4,7 @@
 #include <set>
 #include <vector>
 #include <array>
+#include <unordered_map>
 
 #include <glm/fwd.hpp>
 
@@ -73,7 +74,7 @@ protected:
 
 	/** Sets the uniform's value on the program.
 	*/
-    void update(const Program * program) const;
+    void update(const Program * program, bool invalidateLocation) const;
 
 	/** This function requires knowledge of the unifom's value.
 	*/
@@ -150,6 +151,7 @@ protected:
 protected:
     LocationIdentity m_identity;
     std::set<Program *> m_programs;
+    mutable std::unordered_map<const Program *, gl::GLint> m_locations;
 };
 
 } // namespace globjects

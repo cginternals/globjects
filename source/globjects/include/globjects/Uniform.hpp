@@ -45,6 +45,11 @@ const T & Uniform<T>::value() const
 template<typename T>
 void Uniform<T>::updateAt(const Program * program, gl::GLint location) const
 {
+    if (location < 0)
+    {
+        return;
+    }
+
     setValue(program, location, m_value);
 }
 
