@@ -15,14 +15,13 @@ namespace globjects
 
 void ShadingLanguageIncludeImplementation_ARB::updateSources(const Shader * shader) const
 {
-    std::vector<std::string> sources;
+    std::string source;
+    if (shader->source()) {
+        source = shader->source()->string();
+    }
 
-    if (shader->source())
-        sources = shader->source()->strings();
-
-    std::vector<const char*> cStrings = collectCStrings(sources);
-
-    glShaderSource(shader->id(), static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
+    const char* sourcePtr = source.c_str();
+    glShaderSource(shader->id(), static_cast<GLint>(1), &sourcePtr, nullptr);
 }
 
 void ShadingLanguageIncludeImplementation_ARB::compile(const Shader * shader) const
