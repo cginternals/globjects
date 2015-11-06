@@ -251,8 +251,6 @@ set(api_includes
 	${include_path}/base/AbstractLogHandler.h
 	${include_path}/base/baselogging.h
 	${include_path}/base/baselogging.hpp
-	${include_path}/base/CachedValue.h
-	${include_path}/base/CachedValue.hpp
 	${include_path}/base/Changeable.h
 	${include_path}/base/ChangeListener.h
 	${include_path}/base/CompositeStringSource.h

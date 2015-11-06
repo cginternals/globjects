@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include <globjects/base/CachedValue.h>
+#include "CachedValue.h"
 
 /** \brief Represents matrices for a typical 3d look at camera with perspective.
 
@@ -78,11 +78,11 @@ protected:
 
     glm::ivec2 m_viewport;
 
-    globjects::CachedValue<glm::mat4> m_view;
-    globjects::CachedValue<glm::mat4> m_viewInverted;
-    globjects::CachedValue<glm::mat4> m_projection;
-    globjects::CachedValue<glm::mat4> m_projectionInverted;
-    globjects::CachedValue<glm::mat4> m_viewProjection;
-    globjects::CachedValue<glm::mat4> m_viewProjectionInverted;
-    globjects::CachedValue<glm::mat3> m_normal;
+    CachedValue<glm::mat4> m_view;
+    CachedValue<glm::mat4> m_viewInverted;
+    CachedValue<glm::mat4> m_projection;
+    CachedValue<glm::mat4> m_projectionInverted;
+    CachedValue<glm::mat4> m_viewProjection;
+    CachedValue<glm::mat4> m_viewProjectionInverted;
+    CachedValue<glm::mat3> m_normal;
 };

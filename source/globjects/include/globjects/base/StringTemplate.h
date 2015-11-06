@@ -5,7 +5,6 @@
 
 #include <globjects/globjects_api.h>
 
-#include <globjects/base/CachedValue.h>
 #include <globjects/base/StringSourceDecorator.h>
 
 namespace globjects
@@ -25,7 +24,9 @@ public:
     void clearReplacements();
 
 protected:
-    globjects::CachedValue<std::string> m_modifiedSource;
+    mutable std::string m_modifiedSource;
+    mutable bool m_modifiedSourceValid;
+
 	std::map<std::string, std::string> m_replacements;
 
     virtual ~StringTemplate();

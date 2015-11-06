@@ -1,12 +1,9 @@
 #pragma once
 
-#include <globjects/base/CachedValue.h>
+#include "CachedValue.h"
 
 #include <memory>
 #include <cassert>
-
-namespace globjects
-{
 
 template <typename T>
 CachedValue<T>::CachedValue()
@@ -74,5 +71,3 @@ void CachedValue<T>::invalidate() const
 {
     m_valid = false;
 }
-
-} // namespace globjects

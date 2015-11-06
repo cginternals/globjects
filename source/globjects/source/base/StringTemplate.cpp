@@ -37,12 +37,13 @@ StringTemplate::~StringTemplate()
 
 std::string StringTemplate::string() const
 {
-    if (!m_modifiedSource.isValid())
+    if (!m_modifiedSourceValid)
     {
-        m_modifiedSource.setValue(modifiedSource());
+        m_modifiedSource = modifiedSource();
+        m_modifiedSourceValid = true;
     }
 
-    return m_modifiedSource.value();
+    return m_modifiedSource;
 }
 
 void StringTemplate::clearReplacements()
@@ -71,7 +72,7 @@ void StringTemplate::update()
 
 void StringTemplate::invalidate()
 {
-    m_modifiedSource.invalidate();
+    m_modifiedSourceValid = false;
     changed();
 }
 
