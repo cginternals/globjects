@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <glm/vec3.hpp>
+#include <glm/fwd.hpp>
 
 #include <globjects/base/ChangeListener.h>
 #include <globjects/base/Changeable.h>

@@ -3,6 +3,8 @@
 
 #include <cassert>
 
+#include <glm/vec3.hpp>
+
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/extension.h>
 #include <glbinding/gl/boolean.h>
