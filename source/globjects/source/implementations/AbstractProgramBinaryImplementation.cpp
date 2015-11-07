@@ -2,6 +2,7 @@
 #include "AbstractProgramBinaryImplementation.h"
 
 #include <globjects/globjects.h>
+#include <glbinding/gl/extension.h>
 
 #include "ProgramBinaryImplementation_GetProgramBinaryARB.h"
 #include "ProgramBinaryImplementation_None.h"

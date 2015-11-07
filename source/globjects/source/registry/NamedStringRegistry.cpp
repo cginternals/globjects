@@ -1,11 +1,13 @@
 #include "NamedStringRegistry.h"
-#include "Registry.h"
+
+#include <glbinding/gl/extension.h>
 
 #include <globjects/logging.h>
 #include <globjects/NamedString.h>
 
 #include <globjects/globjects.h>
 
+#include "Registry.h"
 
 using namespace gl;
 

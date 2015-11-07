@@ -19,6 +19,7 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Buffer.h>
+#include <globjects/TextureHandle.h>
 
 #include <globjects/base/File.h>
 

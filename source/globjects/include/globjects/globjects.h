@@ -1,14 +1,11 @@
 #pragma once
 
 #include <string>
-#include <vector>
 #include <array>
 #include <set>
 
 #include <glbinding/gl/types.h>
-#include <glbinding/gl/extension.h>
 
-#include <glbinding/Version.h>
 #include <glbinding/ContextHandle.h>
 
 #include <globjects/globjects_api.h>
@@ -21,6 +18,14 @@
 #include <globjects/Shader.h>
 #include <globjects/Object.h>
 #include <globjects/VertexArray.h>
+
+namespace glbinding
+{
+
+class Version;
+
+} // namespace glbinding
+
 
 namespace globjects 
 {

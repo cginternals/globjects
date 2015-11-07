@@ -13,11 +13,11 @@
 #include <globjects/globjects_api.h>
 
 #include <globjects/LocationIdentity.h>
-#include <globjects/TextureHandle.h>
 
 namespace globjects
 {
 
+class TextureHandle;
 class Program;
 template<typename T> class Uniform;
 

@@ -1,5 +1,7 @@
 #include <globjects/TextureHandle.h>
 
+#include <glm/vec2.hpp>
+
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/boolean.h>
 

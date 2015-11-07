@@ -25,6 +25,7 @@
 
 #include <glbinding/gl/gl.h>
 #include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
 
 #include <globjects/globjects.h>
 #include <globjects/Uniform.h>

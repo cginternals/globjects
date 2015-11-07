@@ -1,10 +1,11 @@
 
 #include "AbstractDebugImplementation.h"
 
+#include <glbinding/gl/enum.h>
+#include <glbinding/gl/extension.h>
+
 #include <globjects/globjects.h>
 #include <globjects/logging.h>
-
-#include <glbinding/gl/enum.h>
 
 #include "DebugImplementation_DebugKHR.h"
 #include "DebugImplementation_Legacy.h"

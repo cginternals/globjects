@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sstream>
+#include <iosfwd>
 #include <string>
 #include <vector>
 #include <array>
@@ -8,12 +8,14 @@
 #include <iomanip>
 
 #include <globjects/globjects_api.h>
-#include <globjects/base/LogMessage.h>
-#include <globjects/base/ref_ptr.h>
+#include <globjects/base/LogMessageLevel.h>
 
 
 namespace globjects
 {
+
+template <typename T>
+class ref_ptr;
 
 class AbstractLogHandler;
 
