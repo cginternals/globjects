@@ -9,8 +9,10 @@
 
 namespace glbinding
 {
-    class Version;
-}
+
+class Version;
+
+} // namespace glbinding
 
 namespace globjects 
 {

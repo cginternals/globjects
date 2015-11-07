@@ -64,10 +64,11 @@ inline auto apply(F && f, T && t)
     );
 }
 
-}
+} // namespace
 
 
-namespace globjects {
+namespace globjects
+{
 
 template <typename... Arguments>
 FunctionCall<Arguments...>::FunctionCall(FunctionPointer function, Arguments... arguments)

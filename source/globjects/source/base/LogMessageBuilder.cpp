@@ -2,8 +2,10 @@
 
 #include <cassert>
 #include <cstring>
+#include <sstream>
 
 #include <globjects/base/AbstractLogHandler.h>
+#include <globjects/base/LogMessage.h>
 
 namespace globjects
 {

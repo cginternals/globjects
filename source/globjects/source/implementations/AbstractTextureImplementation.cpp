@@ -2,6 +2,7 @@
 #include "AbstractTextureImplementation.h"
 
 #include <glbinding/gl/enum.h>
+#include <glbinding/gl/extension.h>
 
 #include <globjects/globjects.h>
 

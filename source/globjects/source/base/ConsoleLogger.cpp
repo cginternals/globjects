@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include <globjects/base/LogMessage.h>
+#include <globjects/base/LogMessageLevel.h>
+
 namespace globjects
 {
 

@@ -1,6 +1,8 @@
 
 #include "AbstractUniformImplementation.h"
 
+#include <glbinding/gl/extension.h>
+
 #include <globjects/globjects.h>
 
 #include "UniformImplementation_SeparateShaderObjectsARB.h"

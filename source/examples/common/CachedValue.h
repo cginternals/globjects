@@ -1,8 +1,5 @@
 #pragma once
 
-namespace globjects
-{
-
 /** \brief Extends a value of arbitrary type by an invalidation flag.
 
     The cached value is intended for use in lazy initialization, getter or setters
@@ -48,6 +45,4 @@ protected:
 	mutable T m_value;
 };
 
-} // namespace globjects
-
-#include <globjects/base/CachedValue.hpp>
+#include "CachedValue.hpp"

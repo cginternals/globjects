@@ -2,6 +2,7 @@
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/extension.h>
+#include <glbinding/Version.h>
 
 #include <globjects/globjects.h>
 #include <globjects/Capability.h>

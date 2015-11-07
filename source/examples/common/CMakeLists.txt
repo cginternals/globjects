@@ -33,6 +33,8 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(api_includes
     ${include_path}/AbstractCoordinateProvider.h
     ${include_path}/AxisAlignedBoundingBox.h
+    ${include_path}/CachedValue.h
+    ${include_path}/CachedValue.hpp
     ${include_path}/Camera.h
     ${include_path}/Icosahedron.h
     ${include_path}/navigationmath.h

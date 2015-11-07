@@ -4,7 +4,6 @@
 
 #include <utility>
 
-#include <glbinding/gl/types.h>
 #include <glbinding/gl/functions.h>
 
 namespace globjects 

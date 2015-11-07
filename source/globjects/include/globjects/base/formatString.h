@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ostream>
+#include <iosfwd>
 #include <string>
 
 #include <globjects/globjects_api.h>

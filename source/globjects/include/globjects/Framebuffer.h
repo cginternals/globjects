@@ -5,7 +5,7 @@
 #include <vector>
 #include <array>
 
-#include <glm/vec4.hpp>
+#include <glm/fwd.hpp>
 
 #include <globjects/base/ref_ptr.h>
 
