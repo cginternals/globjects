@@ -28,6 +28,7 @@ namespace globjects
 
 StringTemplate::StringTemplate(AbstractStringSource * source)
 : StringSourceDecorator(source)
+, m_modifiedSourceValid(false)
 {
 }
 
