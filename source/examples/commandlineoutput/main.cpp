@@ -1,8 +1,12 @@
 
 #include <iostream>
-#include <iomanip>
 
-#include <glbinding/gl/enum.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
+
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
 #include <globjects/globjects.h>
 #include <globjects/logging.h>
@@ -19,89 +23,32 @@
 #include <globjects/TransformFeedback.h>
 #include <globjects/VertexArray.h>
 
-#include <common/ContextFormat.h>
-#include <common/Context.h>
-#include <common/Window.h>
-#include <common/WindowEventHandler.h>
-
 
 using namespace gl;
 using namespace globjects;
 
-class EventHandler : public WindowEventHandler
-{
-public:
-    EventHandler()
-    {
-    }
-
-    virtual ~EventHandler()
-    {
-    }
-
-    virtual void initialize(Window & window) override
-    {
-        WindowEventHandler::initialize(window);
-
-        std::cout << "Testing globjects objects:" << std::endl;
-
-        ref_ptr<Buffer> buffer(new Buffer());
-        std::cout << "  Buffer                : "; info() << buffer.get();
-
-        std::cout << "  Framebuffer           : "; info() << Framebuffer::defaultFBO();
-
-        ref_ptr<Program> program(new Program());
-        std::cout << "  Program               : "; info() << program.get();
-
-        ref_ptr<Query> query(new Query());
-        std::cout << "  Query                 : "; info() << query.get();
-
-        ref_ptr<Renderbuffer> rbo(new Renderbuffer());
-        std::cout << "  Renderbuffer          : "; info() << rbo.get();
-
-        ref_ptr<Sampler> sampler(new Sampler());
-        std::cout << "  Sampler               : "; info() << sampler.get();
-
-        ref_ptr<Shader> shader(new Shader(GL_VERTEX_SHADER));
-        std::cout << "  Shader                : "; info() << shader.get();
-
-        ref_ptr<Texture> texture(new Texture());
-        std::cout << "  Texture               : "; info() << texture.get();
-
-        ref_ptr<TransformFeedback> tf(new TransformFeedback());
-        std::cout << "  TransformFeedback     : "; info() << tf.get();
-
-        ref_ptr<VertexArray> vao(new VertexArray());
-        std::cout << "  VertexArray           : "; info() << vao.get();
-
-        ref_ptr<Uniform<float>> uniform(new Uniform<float>("Pi", 3.14f));
-        std::cout << "  Uniform               : "; info() << uniform.get();
-        std::cout << "  AbstractUniform       : "; info() << static_cast<AbstractUniform*>(uniform.get());
-
-        std::cout << "  glbinding::Version               : "; info() << version();
-
-        std::vector<Buffer*> buffers{new Buffer(), new Buffer()};
-        std::cout << "  std::vector<Buffer *> : "; info() << buffers;
-        std::cout << std::endl;
-
-        window.close();
-    }
-};
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    ContextFormat format;
-    format.setVersion(3, 1);
-    format.setForwardCompatible(true);
+    // Initialize GLFW, create a hidden context, and make it current
+    glfwInit();
+    glfwWindowHint(GLFW_VISIBLE, false);
+    GLFWwindow * offscreen_context = glfwCreateWindow(640, 480, "", NULL, NULL);
+    glfwMakeContextCurrent(offscreen_context);
 
-    Window::init();
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
 
-    Window window;
-    window.setEventHandler(new EventHandler());
+    // Dump information about context and graphics card
+    std::cout << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
+
 
     std::cout << std::endl;
     std::cout << "Testing Standard Types:" << std::endl;
-    std::cout << "  void *      " << &window << " : "; info() << static_cast<void *>(&window);
+    std::cout << "  void *        " << &offscreen_context << " : "; info() << static_cast<void *>(&offscreen_context);
     std::cout << "  bool                    true : "; info() << true;
     std::cout << "  char                     'a' : "; info() << 'a';
     std::cout << "  unsigned char            'a' : "; info() << static_cast<unsigned char>('a');
@@ -130,9 +77,37 @@ int main(int /*argc*/, char * /*argv*/[])
     info("    Actual : %; - %X; - %rf?_10.2;", "A string", 255, 2.71828182846);
     std::cout << std::endl;
 
-    if (!window.create(format, "Command Line Output Example"))
-        return 1;
+    std::cout << "Testing globjects objects:" << std::endl;
+    ref_ptr<Buffer> buffer(new Buffer());
+    std::cout << "  Buffer                : "; info() << buffer.get();
+    std::cout << "  Framebuffer           : "; info() << Framebuffer::defaultFBO();
+    ref_ptr<Program> program(new Program());
+    std::cout << "  Program               : "; info() << program.get();
+    ref_ptr<Query> query(new Query());
+    std::cout << "  Query                 : "; info() << query.get();
+    ref_ptr<Renderbuffer> rbo(new Renderbuffer());
+    std::cout << "  Renderbuffer          : "; info() << rbo.get();
+    ref_ptr<Sampler> sampler(new Sampler());
+    std::cout << "  Sampler               : "; info() << sampler.get();
+    ref_ptr<Shader> shader(new Shader(GL_VERTEX_SHADER));
+    std::cout << "  Shader                : "; info() << shader.get();
+    ref_ptr<Texture> texture(new Texture());
+    std::cout << "  Texture               : "; info() << texture.get();
+    ref_ptr<TransformFeedback> tf(new TransformFeedback());
+    std::cout << "  TransformFeedback     : "; info() << tf.get();
+    ref_ptr<VertexArray> vao(new VertexArray());
+    std::cout << "  VertexArray           : "; info() << vao.get();
+    ref_ptr<Uniform<float>> uniform(new Uniform<float>("Pi", 3.14f));
+    std::cout << "  Uniform               : "; info() << uniform.get();
+    std::cout << "  AbstractUniform       : "; info() << static_cast<AbstractUniform*>(uniform.get());
+    std::cout << "  glbinding::Version    : "; info() << version();
+    std::vector<Buffer*> buffers{new Buffer(), new Buffer()};
+    std::cout << "  std::vector<Buffer *> : "; info() << buffers;
+    std::cout << std::endl;
 
-    window.show();
-    return MainLoop::run();
+
+    // Properly shutdown GLFW
+    glfwTerminate();
+
+    return 0;
 }
