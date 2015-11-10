@@ -3,6 +3,12 @@
 
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/extension.h>
+#include <glbinding/gl/bitfield.h>
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
+
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
 #include <globjects/logging.h>
 #include <globjects/globjects.h>
@@ -16,121 +22,94 @@
 #include <globjects/Texture.h>
 
 #include <common/ScreenAlignedQuad.h>
-#include <common/Context.h>
-#include <common/ContextFormat.h>
-#include <common/Window.h>
-#include <common/WindowEventHandler.h>
-#include <common/events.h>
 
 
 using namespace gl;
 using namespace glm;
 using namespace globjects;
 
-class EventHandler : public WindowEventHandler
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
 {
-public:
-    EventHandler()
-    :   m_frame(0)
-    {
-    }
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+        glfwSetWindowShouldClose(window, true);
+}
 
-    virtual ~EventHandler()
-    {
-    }
+void draw(Texture * texture, Program * computeProgram, ScreenAlignedQuad * quad, unsigned int & frame)
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    void createAndSetupTexture()
-    {
-        m_texture = Texture::createDefault(GL_TEXTURE_2D);
+    frame = (frame + 1) % static_cast<int>(200 * pi<double>());
 
-        m_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
-        m_texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
-    }
+    computeProgram->setUniform("roll", static_cast<float>(frame) * 0.01f);
 
-    void createAndSetupShaders()
-    {
-        m_computeProgram = new Program();
-        m_computeProgram->attach(Shader::fromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+    texture->bindActive(0);
 
-        m_computeProgram->setUniform("destTex", 0);
-    }
+    computeProgram->dispatchCompute(512 / 16, 512 / 16, 1); // 512^2 threads in blocks of 16^2
+    computeProgram->release();
 
-    void createAndSetupGeometry()
-    {
-        m_quad = new ScreenAlignedQuad(m_texture);
-        m_quad->setSamplerUniform(0);
-    }
+    glMemoryBarrier(GL_TEXTURE_UPDATE_BARRIER_BIT);
 
-    virtual void initialize(Window & window) override
-    {
-        WindowEventHandler::initialize(window);
-
-        if (!hasExtension(GLextension::GL_ARB_compute_shader))
-        {
-            critical() << "Compute shaders are not supported";
-
-            window.close();
-            return;
-        }
-
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-
-	    createAndSetupTexture();
-	    createAndSetupShaders();
-	    createAndSetupGeometry();
-    }
-
-    virtual void paintEvent(PaintEvent & event) override
-    {
-        WindowEventHandler::paintEvent(event);
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        ++m_frame %= static_cast<int>(200 * pi<double>());
-
-	    m_computeProgram->setUniform("roll", static_cast<float>(m_frame) * 0.01f);
-
-	    m_texture->bind();
-
-        m_computeProgram->dispatchCompute(512 / 16, 512 / 16, 1); // 512^2 threads in blocks of 16^2
-	    m_computeProgram->release();
-
-        m_quad->draw();
-    }
-    
-protected:
-    ref_ptr<Texture> m_texture;
-
-    ref_ptr<Program> m_computeProgram;
-    ref_ptr<ScreenAlignedQuad> m_quad;
-
-    unsigned int m_frame;
-};
-
+    quad->draw();
+}
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    info() << "Usage:";
-    info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
-    info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
+    // Initialize GLFW3, create a context, and make it current
+    glfwInit();
+    GLFWwindow * window = glfwCreateWindow(1024, 768, "", NULL, NULL);
+    glfwMakeContextCurrent(window);
 
-    ContextFormat format;
-    format.setVersion(4, 3);
-    format.setProfile(ContextFormat::Profile::Core);
-    format.setForwardCompatible(true);
+    // Create callback that when user presses ESC, the context should be destroyed and window closed
+    glfwSetKeyCallback(window, key_callback);
 
-    Window::init();
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
 
-    Window window;
-    window.setEventHandler(new EventHandler());
+    // Dump information about context and graphics card
+    info() << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
+    
 
-    if (!window.create(format, "Compute Shader Example"))
+    if (!hasExtension(GLextension::GL_ARB_compute_shader))
+    {
+        critical() << "Compute shaders are not supported";
+
+        glfwTerminate();
         return 1;
+    }
 
-    window.show();
+    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-    return MainLoop::run();
+    {
+
+        ref_ptr<Texture> texture = Texture::createDefault(GL_TEXTURE_2D);
+        texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
+        texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
+
+        ref_ptr<Program> computeProgram = new Program();
+        computeProgram->attach(Shader::fromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+        computeProgram->setUniform("destTex", 0);
+
+        ref_ptr<ScreenAlignedQuad> quad = new ScreenAlignedQuad(texture);
+        quad->setSamplerUniform(0);
+
+        unsigned int frame = 0;
+
+        // Main loop
+        while (!glfwWindowShouldClose(window))
+        {
+            glfwPollEvents();
+            draw(texture, computeProgram, quad, frame);
+            glfwSwapBuffers(window);
+        }
+
+    }
+
+    // Properly shutdown GLFW
+    glfwTerminate();
+
+    return 0;
 }
