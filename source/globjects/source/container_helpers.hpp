@@ -22,5 +22,14 @@ std::vector<T> collect(Container container, Function mapper)
     return collect<T, typename Container::const_iterator, Function>(container.begin(), container.end(), mapper);
 }
 
-#define collect_member(container, Class, member) collect<decltype(Class::member)>(container, [](const Class & object) { return object.member; })
-#define collect_type_member(T, container, Class, member) collect<T>(container, [](const Class & object) { return object.member; })
+template<class Container, class Class, class MemberType>
+std::vector<MemberType> collect_member(Container container, MemberType Class::*memberPointer)
+{
+    return collect<MemberType>(container, [memberPointer](const Class & object) { return (object.*memberPointer); });
+}
+
+template<class ReturnType, class Container, class Class, class MemberType>
+std::vector<ReturnType> collect_type_member(Container container, MemberType Class::*memberPointer)
+{
+    return collect<ReturnType>(container, [memberPointer](const Class & object) { return static_cast<ReturnType>(object.*memberPointer); });
+}

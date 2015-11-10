@@ -228,25 +228,25 @@ void VertexArray::drawRangeElementsBaseVertex(const GLenum mode, const GLuint st
 
 void VertexArray::multiDrawArrays(const GLenum mode, const std::vector<VertexArray::MultiDrawArraysRange> & ranges) const
 {
-    std::vector<GLint> firsts = collect_member(ranges, MultiDrawArraysRange, first);
-    std::vector<GLsizei> counts = collect_member(ranges, MultiDrawArraysRange, count);
+    std::vector<GLint> firsts = collect_member(ranges, &MultiDrawArraysRange::first);
+    std::vector<GLsizei> counts = collect_member(ranges, &MultiDrawArraysRange::count);
 
     multiDrawArrays(mode, firsts.data(), counts.data(), static_cast<GLsizei>(ranges.size()));
 }
 
 void VertexArray::multiDrawElements(const GLenum mode, const GLenum type, const std::vector<VertexArray::MultiDrawElementsRange> & ranges) const
 {
-    std::vector<GLsizei> counts = collect_member(ranges, MultiDrawElementsRange, count);
-    std::vector<const void*> indices = collect_type_member(const void*, ranges, MultiDrawElementsRange, indices);
+    std::vector<GLsizei> counts = collect_member(ranges, &MultiDrawElementsRange::count);
+    std::vector<const void*> indices = collect_type_member<const void*>(ranges, &MultiDrawElementsRange::indices);
 
     multiDrawElements(mode, counts.data(), type, indices.data(), static_cast<GLsizei>(ranges.size()));
 }
 
 void VertexArray::multiDrawElementsBaseVertex(const GLenum mode, const GLenum type, const std::vector<VertexArray::MultiDrawElementsBaseVertexRange> & ranges) const
 {
-    std::vector<GLsizei> counts = collect_member(ranges, MultiDrawElementsBaseVertexRange, count);
-    std::vector<const void*> indices = collect_type_member(const void*, ranges, MultiDrawElementsBaseVertexRange, indices);
-    std::vector<GLint> baseVertices = collect_member(ranges, MultiDrawElementsBaseVertexRange, baseVertex);
+    std::vector<GLsizei> counts = collect_member(ranges, &MultiDrawElementsBaseVertexRange::count);
+    std::vector<const void*> indices = collect_type_member<const void*>(ranges, &MultiDrawElementsBaseVertexRange::indices);
+    std::vector<GLint> baseVertices = collect_member(ranges, &MultiDrawElementsBaseVertexRange::baseVertex);
 
     multiDrawElementsBaseVertex(mode, counts.data(), type, indices.data(), static_cast<GLsizei>(ranges.size()), baseVertices.data());
 }
