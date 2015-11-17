@@ -2,61 +2,116 @@
 #include <algorithm>
 #include <random>
 
+#include <glm/glm.hpp>
+
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/extension.h>
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
 
-#include <globjects/globjects.h>
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
 #include <globjects/logging.h>
+#include <globjects/globjects.h>
+
 #include <globjects/Texture.h>
 
 #include <common/ScreenAlignedQuad.h>
-#include <common/ContextFormat.h>
-#include <common/Context.h>
-#include <common/Window.h>
-#include <common/WindowEventHandler.h>
-#include <common/events.h>
 
 
 using namespace gl;
 using namespace glm;
 using namespace globjects;
 
-class EventHandler : public WindowEventHandler
+
+const static ivec2 s_textureSize(4096);
+const static int s_maxResidentPages(512);
+
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
 {
-public:
-    EventHandler()
-    : m_textureSize(4096)
-    , m_totalPages(0)
-    , m_maxResidentPages(512)
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+        glfwSetWindowShouldClose(window, true);
+}
+
+void mapNextPage(Texture * texture, ivec2 pageSize, ivec2 numPages, int totalPages)
+{
+    static int currentPage = 0;
+
+    // create random texture data
+    std::vector<unsigned char> data(pageSize.x * pageSize.y * 4);
+
+    std::random_device rd;
+    std::mt19937 generator(rd());
+
+    std::poisson_distribution<> r(0.2);
+
+    for (int i = 0; i < pageSize.x * pageSize.y * 4; ++i)
+        data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
+
+    // unmap oldest page
+    int oldestPage = (currentPage + totalPages - s_maxResidentPages) % totalPages;
+    ivec2 oldOffset = ivec2(oldestPage % numPages.x, oldestPage / numPages.x) * pageSize;
+    texture->pageCommitment(0, ivec3(oldOffset, 0), ivec3(pageSize, 1), GL_FALSE);
+
+    // map next page
+    ivec2 newOffset = ivec2(currentPage % numPages.x, currentPage / numPages.x) * pageSize;
+
+    texture->pageCommitment(0, ivec3(newOffset, 0), ivec3(pageSize, 1), GL_TRUE);
+    texture->subImage2D(0, newOffset, pageSize, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
+
+    currentPage = (currentPage + 1) % totalPages;
+}
+
+void draw(Texture * texture, ScreenAlignedQuad * quad, ivec2 pageSize, ivec2 numPages,int totalPages)
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    mapNextPage(texture, pageSize, numPages, totalPages);
+
+    quad->draw();
+}
+
+
+/**
+ * @brief This example shows how to set up a sparse texture and then map/unmap pages using the ARB_sparse_texture extension.
+ *
+ * See http://www.opengl.org/registry/specs/ARB/sparse_texture.txt
+ */
+int main(int /*argc*/, char * /*argv*/[])
+{
+    // Initialize GLFW3, create a context, and make it current
+    glfwInit();
+    GLFWwindow * window = glfwCreateWindow(1024, 768, "", NULL, NULL);
+    glfwMakeContextCurrent(window);
+
+    // Create callback that when user presses ESC, the context should be destroyed and window closed
+    glfwSetKeyCallback(window, key_callback);
+
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+
+    // Dump information about context and graphics card
+    info() << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
+    
+
+    if (!hasExtension(GLextension::GL_ARB_sparse_texture))
     {
+        critical() << "Sparse textues not supported.";
+
+        glfwTerminate();
+        return 1;
     }
 
-    virtual ~EventHandler()
+    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+
     {
-    }
-
-    virtual void initialize(Window & window) override
-    {
-        WindowEventHandler::initialize(window);
-
-        if (!hasExtension(GLextension::GL_ARB_sparse_texture))
-        {
-            critical() << "Sparse textues not supported.";
-
-            window.close();
-            return;
-        }
-
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-
-        createAndSetupTexture();
-	    createAndSetupGeometry();
-    }
-
-    void createAndSetupTexture()
-    {
+        // Create and setup texture
         // Get available page sizes
-
         int numPageSizes;
         glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_NUM_VIRTUAL_PAGE_SIZES_ARB, sizeof(int), &numPageSizes);
         info("GL_NUM_VIRTUAL_PAGE_SIZES_ARB = %d;", numPageSizes);
@@ -64,7 +119,7 @@ public:
         if (numPageSizes == 0) 
         {
             fatal("Sparse Texture not supported for GL_RGBA8");
-            return;
+            return 1;
         }
 
         std::vector<int> pageSizesX(numPageSizes);
@@ -85,9 +140,9 @@ public:
         for (int i = 0; i < numPageSizes; ++i)
             info("GL_VIRTUAL_PAGE_SIZE_Z_ARB[%;] = %;", i, pageSizesZ[i]);
 
-        m_pageSize   = ivec2(pageSizesX[0], pageSizesY[0]);
-        m_numPages   = m_textureSize / m_pageSize;
-        m_totalPages = m_numPages.x * m_numPages.y;
+        ivec2 pageSize   = ivec2(pageSizesX[0], pageSizesY[0]);
+        ivec2 numPages   = s_textureSize / pageSize;
+        int totalPages = numPages.x * numPages.y;
 
         // Get maximum sparse texture size
 
@@ -95,109 +150,42 @@ public:
         glGetIntegerv(GL_MAX_SPARSE_TEXTURE_SIZE_ARB, &maxSparseTextureSize);
         info("GL_MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
 
-        m_texture = new Texture(GL_TEXTURE_2D);
+        ref_ptr<Texture> texture = new Texture(GL_TEXTURE_2D);
 
         // make texture sparse
-        m_texture->setParameter(GL_TEXTURE_SPARSE_ARB, static_cast<GLint>(GL_TRUE));
+        texture->setParameter(GL_TEXTURE_SPARSE_ARB, static_cast<GLint>(GL_TRUE));
         // specify the page size via its index in the array retrieved above (we simply use the first here)
-        m_texture->setParameter(GL_VIRTUAL_PAGE_SIZE_INDEX_ARB, 0);
+        texture->setParameter(GL_VIRTUAL_PAGE_SIZE_INDEX_ARB, 0);
 
-        m_texture->setParameter(GL_TEXTURE_MIN_FILTER, static_cast<GLint>(GL_LINEAR));
-        m_texture->setParameter(GL_TEXTURE_MAG_FILTER, static_cast<GLint>(GL_LINEAR));
+        texture->setParameter(GL_TEXTURE_MIN_FILTER, static_cast<GLint>(GL_LINEAR));
+        texture->setParameter(GL_TEXTURE_MAG_FILTER, static_cast<GLint>(GL_LINEAR));
 
-        m_texture->setParameter(GL_TEXTURE_WRAP_S, static_cast<GLint>(GL_CLAMP_TO_EDGE));
-        m_texture->setParameter(GL_TEXTURE_WRAP_T, static_cast<GLint>(GL_CLAMP_TO_EDGE));
-        m_texture->setParameter(GL_TEXTURE_WRAP_R, static_cast<GLint>(GL_CLAMP_TO_EDGE));
+        texture->setParameter(GL_TEXTURE_WRAP_S, static_cast<GLint>(GL_CLAMP_TO_EDGE));
+        texture->setParameter(GL_TEXTURE_WRAP_T, static_cast<GLint>(GL_CLAMP_TO_EDGE));
+        texture->setParameter(GL_TEXTURE_WRAP_R, static_cast<GLint>(GL_CLAMP_TO_EDGE));
 
         // allocate virtual(!) storage for texture
-        m_texture->storage2D(1, GL_RGBA8, m_textureSize);
+        texture->storage2D(1, GL_RGBA8, s_textureSize);
+
+
+        // Create and setup geometry
+        ref_ptr<ScreenAlignedQuad> quad = new ScreenAlignedQuad(texture);
+        quad->setSamplerUniform(0);
+
+
+
+        // Main loop
+        while (!glfwWindowShouldClose(window))
+        {
+            glfwPollEvents();
+            draw(texture, quad, pageSize, numPages, totalPages);
+            glfwSwapBuffers(window);
+        }
+
     }
 
-    void createAndSetupGeometry()
-    {
-        m_quad = new ScreenAlignedQuad(m_texture);
-        m_quad->setSamplerUniform(0);
-    }
+    // Properly shutdown GLFW
+    glfwTerminate();
 
-    void mapNextPage()
-    {
-        static int currentPage = 0;
-
-        // create random texture data
-        std::vector<unsigned char> data(m_pageSize.x * m_pageSize.y * 4);
-
-        std::random_device rd;
-        std::mt19937 generator(rd());
-
-        std::poisson_distribution<> r(0.2);
-
-        for (int i = 0; i < m_pageSize.x * m_pageSize.y * 4; ++i)
-            data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
-
-        // unmap oldest page
-        int oldestPage = (currentPage + m_totalPages - m_maxResidentPages) % m_totalPages;
-        ivec2 oldOffset = ivec2(oldestPage % m_numPages.x, oldestPage / m_numPages.x) * m_pageSize;
-        m_texture->pageCommitment(0, ivec3(oldOffset, 0), ivec3(m_pageSize, 1), GL_FALSE);
-
-        // map next page
-        ivec2 newOffset = ivec2(currentPage % m_numPages.x, currentPage / m_numPages.x) * m_pageSize;
-
-        m_texture->pageCommitment(0, ivec3(newOffset, 0), ivec3(m_pageSize, 1), GL_TRUE);
-        m_texture->subImage2D(0, newOffset, m_pageSize, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
-
-        currentPage = (currentPage + 1) % m_totalPages;
-    }
-
-    virtual void paintEvent(PaintEvent & event) override
-    {
-        WindowEventHandler::paintEvent(event);
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        mapNextPage();
-
-        m_quad->draw();
-    }
-
-protected:
-    ref_ptr<Texture> m_texture;
-    ref_ptr<ScreenAlignedQuad> m_quad;
-
-    ivec2 m_textureSize;
-    ivec2 m_pageSize;
-    ivec2 m_numPages;
-
-    int m_totalPages;
-    int m_maxResidentPages;
-};
-
-
-/**
- * @brief This example shows how to set up a sparse texture and then map/unmap pages using the ARB_sparse_texture extension.
- *
- * See http://www.opengl.org/registry/specs/ARB/sparse_texture.txt
- */
-int main(int /*argc*/, char * /*argv*/[])
-{
-    info() << "Usage:";
-    info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
-
-    ContextFormat format;
-    format.setVersion(3, 1);
-    format.setForwardCompatible(true);
-
-    Window::init();
-
-    Window window;
-    window.setEventHandler(new EventHandler());
-
-    if (!window.create(format, "Sparse Texture Example"))
-        return 1;
-
-    window.show();
-
-    return MainLoop::run();
+    return 0;
 }
