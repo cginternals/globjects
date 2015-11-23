@@ -32,7 +32,7 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         glfwSetWindowShouldClose(window, true);
 }
 
-void draw(Program * sphere, Icosahedron * icosahedron, std::chrono::high_resolution_clock::time_point t_start, glm::mat4 viewProjection)
+void draw(Program * sphere, Icosahedron * icosahedron, const std::chrono::high_resolution_clock::time_point & t_start, glm::mat4 viewProjection)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
