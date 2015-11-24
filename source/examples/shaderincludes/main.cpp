@@ -1,80 +1,91 @@
 
 #include <glbinding/gl/gl.h>
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
 
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
+#include <globjects/globjects.h>
 #include <globjects/NamedString.h>
 #include <globjects/Shader.h>
-
 #include <globjects/logging.h>
 #include <globjects/base/File.h>
 
 #include <common/ScreenAlignedQuad.h>
-#include <common/ContextFormat.h>
-#include <common/Context.h>
-#include <common/Window.h>
-#include <common/WindowEventHandler.h>
-#include <common/events.h>
 
 
 using namespace gl;
 using namespace globjects;
 
-class EventHandler : public WindowEventHandler
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
 {
-public:
-    EventHandler()
-    {
-    }
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+        glfwSetWindowShouldClose(window, true);
+}
 
-    virtual ~EventHandler()
-    {
-    }
-
-    virtual void initialize(Window & window) override
-    {
-        WindowEventHandler::initialize(window);
-
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-
-        NamedString::create("/color.glsl", new File("data/shaderincludes/color.glsl"));
-
-        m_quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
-    }
-    
-    virtual void paintEvent(PaintEvent & event) override
-    {
-        WindowEventHandler::paintEvent(event);
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        m_quad->draw();
-    }
-
-protected:
-    ref_ptr<ScreenAlignedQuad> m_quad;
-};
+void draw(ScreenAlignedQuad * quad)
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    quad->draw();
+}
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    info() << "Usage:";
-    info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
-    info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
+    // Initialize GLFW with error callback and needed OpenGL version window hint
+    glfwInit();
+    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
-    ContextFormat format;
-    format.setVersion(3, 1);
-    format.setForwardCompatible(true);
+    // Create a context and, if valid, make it current
+    GLFWwindow * window = glfwCreateWindow(1024, 768, "", NULL, NULL);
+    if (window == nullptr)
+    {
+        critical() << "Context creation failed. Terminate execution.";
 
-    Window::init();
-
-    Window window;
-    window.setEventHandler(new EventHandler());
-
-    if (!window.create(format, "Shading Language Include Example"))
+        glfwTerminate();
         return 1;
+    }
+    glfwMakeContextCurrent(window);
 
-    window.show();
+    // Create callback that when user presses ESC, the context should be destroyed and window closed
+    glfwSetKeyCallback(window, key_callback);
 
-    return MainLoop::run();
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+
+    // Dump information about context and graphics card
+    info() << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
+
+
+    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+
+    {
+        // Initialize
+
+        NamedString::create("/color.glsl", new File("data/shaderincludes/color.glsl"));
+
+        ref_ptr<ScreenAlignedQuad> quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, "data/shaderincludes/test.frag"));
+
+
+        // Main loop
+        while (!glfwWindowShouldClose(window))
+        {
+            glfwPollEvents();
+            draw(quad);
+            glfwSwapBuffers(window);
+        }
+
+    }
+
+    // Properly shutdown GLFW
+    glfwTerminate();
+
+    return 0;
 }
