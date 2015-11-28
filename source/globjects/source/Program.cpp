@@ -374,10 +374,16 @@ std::string Program::getActiveUniformName(const GLuint uniformIndex) const
     checkDirty();
 
     GLint length = getActiveUniform(uniformIndex, GL_UNIFORM_NAME_LENGTH);
+    assert(length > 1); // Has to include at least 1 char and '\0'
+        
     std::vector<char> name(length);
     glGetActiveUniformName(id(), uniformIndex, length, nullptr, name.data());
 
-    return std::string(name.data(), length);
+	// glGetActiveUniformName() insists we query '\0' as well, but it 
+	// shouldn't be passed to std::string(), otherwise std::string::size()
+	// returns <actual size> + 1 (on clang)	
+    auto numChars = length - 1; 
+    return std::string(name.data(), numChars);
 }
 
 UniformBlock * Program::uniformBlock(const GLuint uniformBlockIndex)
