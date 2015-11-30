@@ -74,11 +74,12 @@ void draw(Program * program, VertexArray * vao)
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    // Initialize GLFW with error callback and needed OpenGL version window hint
+    // Initialize GLFW with error callback and window hints
     glfwInit();
     glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     // Create a context and, if valid, make it current
     GLFWwindow * window = glfwCreateWindow(1024, 768, "", NULL, NULL);

@@ -55,9 +55,23 @@ void draw(Texture * texture, Program * computeProgram, ScreenAlignedQuad * quad,
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    // Initialize GLFW3, create a context, and make it current
+    // Initialize GLFW with error callback and window hints
     glfwInit();
+    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+
+    // Create a context and, if valid, make it current
     GLFWwindow * window = glfwCreateWindow(1024, 768, "", NULL, NULL);
+    if (window == nullptr)
+    {
+        critical() << "Context creation failed. Terminate execution.";
+
+        glfwTerminate();
+        return 1;
+    }
     glfwMakeContextCurrent(window);
 
     // Create callback that when user presses ESC, the context should be destroyed and window closed
