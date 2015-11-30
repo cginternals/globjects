@@ -12,7 +12,7 @@
 #include <globjects/logging.h>
 #include <globjects/base/File.h>
 
-#include <common/ScreenAlignedQuad.h>
+#include "ScreenAlignedQuad.h"
 
 
 using namespace gl;

@@ -26,6 +26,8 @@ set(libs
 
 set(sources
     main.cpp
+    ScreenAlignedQuad.h
+    ScreenAlignedQuad.cpp
 )
 
 # Build executable

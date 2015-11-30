@@ -26,6 +26,8 @@ set(libs
 
 set(sources
     main.cpp
+    Icosahedron.h
+    Icosahedron.cpp
 )
 
 # Build executable

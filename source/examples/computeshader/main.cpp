@@ -21,7 +21,7 @@
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/Texture.h>
 
-#include <common/ScreenAlignedQuad.h>
+#include "ScreenAlignedQuad.h"
 
 
 using namespace gl;

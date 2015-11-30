@@ -18,7 +18,7 @@
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
 
-#include <common/Icosahedron.h>
+#include "Icosahedron.h"
 
 
 using namespace gl;

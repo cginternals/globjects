@@ -13,7 +13,7 @@
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
 
-#include <common/ScreenAlignedQuad.h>
+#include "ScreenAlignedQuad.h"
 
 using namespace gl;
 using namespace glm;
