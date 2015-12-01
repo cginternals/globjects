@@ -7,8 +7,9 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <globjects/logging.h>
 #include <globjects/globjects.h>
+#include <globjects/base/File.h>
+#include <globjects/logging.h>
 
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
@@ -20,10 +21,78 @@ using namespace glm;
 using namespace globjects;
 
 
+namespace {
+    bool toggleFS = false;
+    bool isFS = false;
+}
+
+
 void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
         glfwSetWindowShouldClose(window, true);
+
+    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
+        File::reloadAll();
+
+    if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
+        toggleFS = true;
+}
+
+GLFWwindow * initialize(bool fs = false)
+{
+    // Set GLFW window hints
+    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+
+    // Create a context and, if valid, make it current
+    GLFWwindow * window = glfwCreateWindow(1024, 768, "", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
+    if (window == nullptr)
+    {
+        critical() << "Context creation failed. Terminate execution.";
+
+        glfwTerminate();
+        exit(1);
+    }
+    glfwMakeContextCurrent(window);
+
+    // Create callback that when user presses ESC, the context should be destroyed and window closed
+    glfwSetKeyCallback(window, key_callback);
+
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+
+    // Do only on startup
+    if (!toggleFS)
+    {
+       // Dump information about context and graphics card
+       info() << std::endl
+           << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+           << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+           << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
+    }
+
+    if (!hasExtension(GLextension::GL_ARB_shader_storage_buffer_object))
+    {
+        critical() << "Shader storage buffer objects not supported.";
+
+        glfwTerminate();
+        exit(1);
+    }
+
+    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+
+    isFS = fs;
+    return window;
+}
+
+void deinitialize(GLFWwindow * window)
+{
+    globjects::detachAllObjects();
+    glfwDestroyWindow(window);
 }
 
 void draw(ScreenAlignedQuad * quad)
@@ -36,50 +105,21 @@ void draw(ScreenAlignedQuad * quad)
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    // Initialize GLFW with error callback and window hints
+    // Initialize GLFW
     glfwInit();
-    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
-    // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(1024, 768, "", NULL, NULL);
-    if (window == nullptr)
+    GLFWwindow * window = nullptr;
+
+    do
     {
-        critical() << "Context creation failed. Terminate execution.";
+        // Deinitialize old window before fullscreen toggle
+        if (window != nullptr) deinitialize(window);
 
-        glfwTerminate();
-        return 1;
-    }
-    glfwMakeContextCurrent(window);
+        // Initialize window
+        window = initialize(toggleFS ? !isFS : isFS);
+        toggleFS = false;
 
-    // Create callback that when user presses ESC, the context should be destroyed and window closed
-    glfwSetKeyCallback(window, key_callback);
-
-    // Initialize globjects (internally initializes glbinding, and registers the current context)
-    globjects::init();
-
-    // Dump information about context and graphics card
-    info() << std::endl
-        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
-    
-
-    if (!hasExtension(GLextension::GL_ARB_shader_storage_buffer_object))
-    {
-        critical() << "Shader storage buffer objects not supported.";
-
-        glfwTerminate();
-        return 1;
-    }
-
-    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-
-    {
-        // Initialize
+        // Initialize OpenGL objects
         ref_ptr<ScreenAlignedQuad> quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
 
         quad->program()->setUniform("maximum",     10);
@@ -105,7 +145,7 @@ int main(int /*argc*/, char * /*argv*/[])
 
 
         // Main loop
-        while (!glfwWindowShouldClose(window))
+        while (!toggleFS && !glfwWindowShouldClose(window))
         {
             glfwPollEvents();
             draw(quad);
@@ -113,6 +153,7 @@ int main(int /*argc*/, char * /*argv*/[])
         }
 
     }
+    while (!glfwWindowShouldClose(window));
 
     // Properly shutdown GLFW
     glfwTerminate();
