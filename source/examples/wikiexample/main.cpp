@@ -56,8 +56,12 @@ void main()
 
 )";
 
-    bool toggleFS = false;
-    bool isFS = false;
+    bool g_toggleFS = false;
+    bool g_isFS = false;
+
+    Buffer * g_cornerBuffer = nullptr;
+    Program * g_program = nullptr;
+    VertexArray * g_vao = nullptr;
 }
 
 
@@ -70,10 +74,10 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         File::reloadAll();
 
     if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
-        toggleFS = true;
+        g_toggleFS = true;
 }
 
-GLFWwindow * initialize(bool fs = false)
+GLFWwindow * createWindow(bool fs = false)
 {
     // Set GLFW window hints
     glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
@@ -99,7 +103,7 @@ GLFWwindow * initialize(bool fs = false)
     globjects::init();
 
     // Do only on startup
-    if (!toggleFS)
+    if (!g_toggleFS)
     {
        // Dump information about context and graphics card
        info() << std::endl
@@ -110,69 +114,82 @@ GLFWwindow * initialize(bool fs = false)
 
     glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-    isFS = fs;
+    g_isFS = fs;
     return window;
 }
 
-void deinitialize(GLFWwindow * window)
+void destroyWindow(GLFWwindow * window)
 {
     globjects::detachAllObjects();
     glfwDestroyWindow(window);
 }
 
-void draw(Program * program, VertexArray * vao)
+void initialize()
+{
+    // Initialize OpenGL objects
+    g_cornerBuffer = new Buffer();
+    g_cornerBuffer->ref();
+    g_program = new Program();
+    g_program->ref();
+    g_vao = new VertexArray();
+    g_vao->ref();
+
+    g_program->attach(
+        Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode),
+        Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
+
+    g_cornerBuffer->setData(std::array<vec2, 4>{ {
+        vec2(0, 0), vec2(1, 0), vec2(0, 1), vec2(1, 1) } }, GL_STATIC_DRAW);
+
+    g_vao->binding(0)->setAttribute(0);
+    g_vao->binding(0)->setBuffer(g_cornerBuffer, 0, sizeof(vec2));
+    g_vao->binding(0)->setFormat(2, GL_FLOAT);
+    g_vao->enable(0);
+}
+
+void deinitialize()
+{
+    g_cornerBuffer->unref();
+    g_program->unref();
+    g_vao->unref();
+}
+
+void draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    program->use();
-    vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    g_program->use();
+    g_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
-
 
 int main(int /*argc*/, char * /*argv*/[])
 {
     // Initialize GLFW
     glfwInit();
 
-    GLFWwindow * window = nullptr;
+    GLFWwindow * window = createWindow();
+    initialize();
 
-    do
+    // Main loop
+    while (!glfwWindowShouldClose(window))
     {
-        // Deinitialize old window before fullscreen toggle
-        if (window != nullptr) deinitialize(window);
+        glfwPollEvents();
 
-        // Initialize window
-        window = initialize(toggleFS ? !isFS : isFS);
-        toggleFS = false;
-
-        // Initialize OpenGL objects
-        ref_ptr<Buffer> cornerBuffer = new Buffer();
-        ref_ptr<Program> program = new Program();
-        ref_ptr<VertexArray> vao = new VertexArray();
-
-        program->attach(
-            Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode),
-            Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
-
-        cornerBuffer->setData(std::array<vec2, 4>{ {
-            vec2(0, 0), vec2(1, 0), vec2(0, 1), vec2(1, 1) } }, GL_STATIC_DRAW);
-
-        vao->binding(0)->setAttribute(0);
-        vao->binding(0)->setBuffer(cornerBuffer, 0, sizeof(vec2));
-        vao->binding(0)->setFormat(2, GL_FLOAT);
-        vao->enable(0);
-
-
-        // Main loop
-        while (!toggleFS && !glfwWindowShouldClose(window))
+        if (g_toggleFS)
         {
-            glfwPollEvents();
-            draw(program, vao);
-            glfwSwapBuffers(window);
+            deinitialize();
+            destroyWindow(window);
+            window = createWindow(!g_isFS);
+            initialize();
+
+            g_toggleFS = false;
         }
 
+        draw();
+        glfwSwapBuffers(window);
     }
-    while (!glfwWindowShouldClose(window));
+
+    deinitialize();
 
     // Properly shutdown GLFW
     glfwTerminate();

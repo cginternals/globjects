@@ -22,8 +22,11 @@ using namespace globjects;
 
 
 namespace {
-    bool toggleFS = false;
-    bool isFS = false;
+    bool g_toggleFS = false;
+    bool g_isFS = false;
+
+    ScreenAlignedQuad * g_quad = nullptr;
+    Buffer * g_buffer = nullptr;
 }
 
 
@@ -36,10 +39,10 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         File::reloadAll();
 
     if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
-        toggleFS = true;
+        g_toggleFS = true;
 }
 
-GLFWwindow * initialize(bool fs = false)
+GLFWwindow * createWindow(bool fs = false)
 {
     // Set GLFW window hints
     glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
@@ -66,7 +69,7 @@ GLFWwindow * initialize(bool fs = false)
     globjects::init();
 
     // Do only on startup
-    if (!toggleFS)
+    if (!g_toggleFS)
     {
        // Dump information about context and graphics card
        info() << std::endl
@@ -85,21 +88,56 @@ GLFWwindow * initialize(bool fs = false)
 
     glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-    isFS = fs;
+    g_isFS = fs;
     return window;
 }
 
-void deinitialize(GLFWwindow * window)
+void destroyWindow(GLFWwindow * window)
 {
     globjects::detachAllObjects();
     glfwDestroyWindow(window);
 }
 
-void draw(ScreenAlignedQuad * quad)
+void initialize()
+{
+    // Initialize OpenGL objects
+    g_quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
+    g_quad->ref();
+
+    g_quad->program()->setUniform("maximum",     10);
+    g_quad->program()->setUniform("rowCount",    10);
+    g_quad->program()->setUniform("columnCount", 10);
+
+    int data[] = {
+        1,2,3,4,5,6,7,8,9,10,
+        10,1,2,3,4,5,6,7,8,9,
+        9,10,1,2,3,4,5,6,7,8,
+        8,9,10,1,2,3,4,5,6,7,
+        7,8,9,10,1,2,3,4,5,6,
+        6,7,8,9,10,1,2,3,4,5,
+        5,6,7,8,9,10,1,2,3,4,
+        4,5,6,7,8,9,10,1,2,3,
+        3,4,5,6,7,8,9,10,1,2,
+        2,3,4,5,6,7,8,9,10,1 };
+
+    g_buffer = new Buffer();
+    g_buffer->ref();
+    g_buffer->setData(sizeof(data), data, GL_STATIC_DRAW);
+
+    g_buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
+}
+
+void deinitialize()
+{
+    g_quad->unref();
+    g_buffer->unref();
+}
+
+void draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    quad->draw();
+    g_quad->draw();
 }
 
 
@@ -108,52 +146,29 @@ int main(int /*argc*/, char * /*argv*/[])
     // Initialize GLFW
     glfwInit();
 
-    GLFWwindow * window = nullptr;
+    GLFWwindow * window = createWindow();
+    initialize();
 
-    do
+    // Main loop
+    while (!glfwWindowShouldClose(window))
     {
-        // Deinitialize old window before fullscreen toggle
-        if (window != nullptr) deinitialize(window);
+        glfwPollEvents();
 
-        // Initialize window
-        window = initialize(toggleFS ? !isFS : isFS);
-        toggleFS = false;
-
-        // Initialize OpenGL objects
-        ref_ptr<ScreenAlignedQuad> quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
-
-        quad->program()->setUniform("maximum",     10);
-        quad->program()->setUniform("rowCount",    10);
-        quad->program()->setUniform("columnCount", 10);
-
-        int data[] = {
-            1,2,3,4,5,6,7,8,9,10,
-            10,1,2,3,4,5,6,7,8,9,
-            9,10,1,2,3,4,5,6,7,8,
-            8,9,10,1,2,3,4,5,6,7,
-            7,8,9,10,1,2,3,4,5,6,
-            6,7,8,9,10,1,2,3,4,5,
-            5,6,7,8,9,10,1,2,3,4,
-            4,5,6,7,8,9,10,1,2,3,
-            3,4,5,6,7,8,9,10,1,2,
-            2,3,4,5,6,7,8,9,10,1 };
-
-        ref_ptr<Buffer> buffer = new Buffer();
-        buffer->setData(sizeof(data), data, GL_STATIC_DRAW);
-
-        buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
-
-
-        // Main loop
-        while (!toggleFS && !glfwWindowShouldClose(window))
+        if (g_toggleFS)
         {
-            glfwPollEvents();
-            draw(quad);
-            glfwSwapBuffers(window);
+            deinitialize();
+            destroyWindow(window);
+            window = createWindow(!g_isFS);
+            initialize();
+
+            g_toggleFS = false;
         }
 
+        draw();
+        glfwSwapBuffers(window);
     }
-    while (!glfwWindowShouldClose(window));
+
+    deinitialize();
 
     // Properly shutdown GLFW
     glfwTerminate();

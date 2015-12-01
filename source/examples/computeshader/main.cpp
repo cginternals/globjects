@@ -31,8 +31,13 @@ using namespace globjects;
 
 
 namespace {
-    bool toggleFS = false;
-    bool isFS = false;
+    bool g_toggleFS = false;
+    bool g_isFS = false;
+
+    Texture * g_texture = nullptr;
+    Program * g_computeProgram = nullptr;
+    ScreenAlignedQuad * g_quad = nullptr;
+    unsigned int g_frame = 0;
 }
 
 
@@ -45,10 +50,10 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         File::reloadAll();
 
     if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
-        toggleFS = true;
+        g_toggleFS = true;
 }
 
-GLFWwindow * initialize(bool fs = false)
+GLFWwindow * createWindow(bool fs = false)
 {
     // Set GLFW window hints
     glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
@@ -75,7 +80,7 @@ GLFWwindow * initialize(bool fs = false)
     globjects::init();
 
     // Do only on startup
-    if (!toggleFS)
+    if (!g_toggleFS)
     {
        // Dump information about context and graphics card
        info() << std::endl
@@ -94,32 +99,57 @@ GLFWwindow * initialize(bool fs = false)
 
     glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-    isFS = fs;
+    g_isFS = fs;
     return window;
 }
 
-void deinitialize(GLFWwindow * window)
+void destroyWindow(GLFWwindow * window)
 {
     globjects::detachAllObjects();
     glfwDestroyWindow(window);
 }
 
-void draw(Texture * texture, Program * computeProgram, ScreenAlignedQuad * quad, unsigned int & frame)
+void initialize()
+{
+    // Initialize OpenGL objects
+    g_texture = Texture::createDefault(GL_TEXTURE_2D);
+    g_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
+    g_texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
+    g_texture->ref();
+
+    g_computeProgram = new Program();
+    g_computeProgram->attach(Shader::fromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+    g_computeProgram->setUniform("destTex", 0);
+    g_computeProgram->ref();
+
+    g_quad = new ScreenAlignedQuad(g_texture);
+    g_quad->setSamplerUniform(0);
+    g_quad->ref();
+}
+
+void deinitialize()
+{
+    g_texture->unref();
+    g_computeProgram->unref();
+    g_quad->unref();
+}
+
+void draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    frame = (frame + 1) % static_cast<int>(200 * pi<double>());
+    g_frame = (g_frame + 1) % static_cast<int>(200 * pi<double>());
 
-    computeProgram->setUniform("roll", static_cast<float>(frame) * 0.01f);
+    g_computeProgram->setUniform("roll", static_cast<float>(g_frame) * 0.01f);
 
-    texture->bindActive(0);
+    g_texture->bindActive(0);
 
-    computeProgram->dispatchCompute(512 / 16, 512 / 16, 1); // 512^2 threads in blocks of 16^2
-    computeProgram->release();
+    g_computeProgram->dispatchCompute(512 / 16, 512 / 16, 1); // 512^2 threads in blocks of 16^2
+    g_computeProgram->release();
 
     glMemoryBarrier(GL_TEXTURE_UPDATE_BARRIER_BIT);
 
-    quad->draw();
+    g_quad->draw();
 }
 
 int main(int /*argc*/, char * /*argv*/[])
@@ -127,41 +157,29 @@ int main(int /*argc*/, char * /*argv*/[])
     // Initialize GLFW
     glfwInit();
 
-    GLFWwindow * window = nullptr;
+    GLFWwindow * window = createWindow();
+    initialize();
 
-    do
+    // Main loop
+    while (!glfwWindowShouldClose(window))
     {
-        // Deinitialize old window before fullscreen toggle
-        if (window != nullptr) deinitialize(window);
+        glfwPollEvents();
 
-        // Initialize window
-        window = initialize(toggleFS ? !isFS : isFS);
-        toggleFS = false;
-
-        // Initialize OpenGL objects
-        ref_ptr<Texture> texture = Texture::createDefault(GL_TEXTURE_2D);
-        texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
-        texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
-
-        ref_ptr<Program> computeProgram = new Program();
-        computeProgram->attach(Shader::fromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
-        computeProgram->setUniform("destTex", 0);
-
-        ref_ptr<ScreenAlignedQuad> quad = new ScreenAlignedQuad(texture);
-        quad->setSamplerUniform(0);
-
-        unsigned int frame = 0;
-
-        // Main loop
-        while (!toggleFS && !glfwWindowShouldClose(window))
+        if (g_toggleFS)
         {
-            glfwPollEvents();
-            draw(texture, computeProgram, quad, frame);
-            glfwSwapBuffers(window);
+            deinitialize();
+            destroyWindow(window);
+            window = createWindow(!g_isFS);
+            initialize();
+
+            g_toggleFS = false;
         }
 
+        draw();
+        glfwSwapBuffers(window);
     }
-    while (!glfwWindowShouldClose(window));
+
+    deinitialize();
 
     // Properly shutdown GLFW
     glfwTerminate();
