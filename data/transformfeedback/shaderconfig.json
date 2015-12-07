@@ -1,0 +1,33 @@
+[
+    {
+        "opengl": {
+            "major": 4,
+            "minor": 0,
+            "core": true,
+            "forward": true,
+            "debug": false
+        },
+        "programs": [
+            {
+                "name": "Transformfeedback",
+                "shaders": [
+                    {
+                        "name": "Transformfeedback Vertex Shader",
+                        "type": "GL_VERTEX_SHADER",
+                        "file": "simple.vert"
+                    },
+                    {
+                        "name": "Transformfeedback Fragment Shader",
+                        "type": "GL_FRAGMENT_SHADER",
+                        "file": "simple.frag"
+                    }
+                    {
+                        "name": "Transformfeedback Vertex Shader 2",
+                        "type": "GL_VERTEX_SHADER",
+                        "file": "transformfeedback.vert"
+                    }
+                ]
+            }
+        ]
+    }
+]
