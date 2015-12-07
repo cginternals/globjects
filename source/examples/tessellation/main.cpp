@@ -118,7 +118,7 @@ void initialize()
     ,   Shader::fromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
     ,   Shader::fromFile(GL_GEOMETRY_SHADER,        "data/tessellation/sphere.geom")
     ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/tessellation/sphere.frag")
-    ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/common/phong.frag"));
+    ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/tessellation/phong.frag"));
 
 
     float fovy = radians(40.f);
