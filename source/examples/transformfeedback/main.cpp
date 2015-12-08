@@ -30,8 +30,18 @@ using namespace globjects;
 
 
 namespace {
-    bool toggleFS = false;
-    bool isFS = false;
+    bool g_toggleFS = false;
+    bool g_isFS = false;
+
+    VertexArray * g_vao = nullptr;
+    Program * g_transformFeedbackProgram = nullptr;
+    TransformFeedback * g_transformFeedback = nullptr;
+    Program * g_shaderProgram = nullptr;
+    Buffer * g_vertexBuffer1 = nullptr;
+    Buffer * g_vertexBuffer2 = nullptr;
+    Buffer * g_colorBuffer = nullptr;
+    
+    std::chrono::high_resolution_clock::time_point g_startTime;
 }
 
 
@@ -44,10 +54,10 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         File::reloadAll();
 
     if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
-        toggleFS = true;
+        g_toggleFS = true;
 }
 
-GLFWwindow * initialize(bool fs = false)
+GLFWwindow * createWindow(bool fs = false)
 {
     // Set GLFW window hints
     glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
@@ -74,7 +84,7 @@ GLFWwindow * initialize(bool fs = false)
     globjects::init();
 
     // Do only on startup
-    if (!toggleFS)
+    if (!g_toggleFS)
     {
        // Dump information about context and graphics card
        info() << std::endl
@@ -93,53 +103,140 @@ GLFWwindow * initialize(bool fs = false)
 
     glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-    isFS = fs;
+    g_isFS = fs;
     return window;
 }
 
-void deinitialize(GLFWwindow * window)
+void destroyWindow(GLFWwindow * window)
 {
     globjects::detachAllObjects();
     glfwDestroyWindow(window);
 }
 
-void draw(VertexArray * vao, Program * transformFeedbackProgram, TransformFeedback * transformFeedback, Program * shaderProgram, Buffer * vertexBuffer1, Buffer * vertexBuffer2, const std::chrono::high_resolution_clock::time_point & t_start)
+void initialize()
+{
+    // Initialize OpenGL objects
+    g_shaderProgram = new Program();
+    g_shaderProgram->ref();
+    g_shaderProgram->attach(
+        Shader::fromFile(GL_VERTEX_SHADER,   "data/transformfeedback/simple.vert")
+      , Shader::fromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
+
+    g_transformFeedbackProgram = new Program();
+    g_transformFeedbackProgram->ref();
+    g_transformFeedbackProgram->attach(
+        Shader::fromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
+
+    g_transformFeedbackProgram->setUniform("deltaT", 0.0f);
+
+
+    const int width = 1024;
+    const int height = 768;
+    const int side = std::min<int>(width, height);
+    glViewport((width - side) / 2, (height - side) / 2, side, side);
+    g_shaderProgram->setUniform("modelView", mat4());
+    g_shaderProgram->setUniform("projection", ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
+
+
+    // Create and setup geometry
+    auto vertexArray = std::vector<vec4>({
+        vec4(0, 0, 0, 1)
+      , vec4(1, 0, 0, 1)
+      , vec4(0, 1, 0, 1)
+      , vec4(1, 0, 0, 1)
+      , vec4(0, 1, 0, 1)
+      , vec4(1, 1, 0, 1) });
+
+    auto colorArray = std::vector<vec4>({
+        vec4(1, 0, 0, 1)
+      , vec4(1, 1, 0, 1)
+      , vec4(0, 0, 1, 1)
+      , vec4(1, 1, 0, 1)
+      , vec4(0, 0, 1, 1)
+      , vec4(0, 1, 0, 1) });
+
+    g_vertexBuffer1 = new Buffer();
+    g_vertexBuffer1->ref();
+    g_vertexBuffer1->setData(vertexArray, GL_STATIC_DRAW);
+    g_vertexBuffer2 = new Buffer();
+    g_vertexBuffer2->ref();
+    g_vertexBuffer2->setData(vertexArray, GL_STATIC_DRAW);
+    g_colorBuffer = new Buffer();
+    g_colorBuffer->ref();
+    g_colorBuffer->setData(colorArray, GL_STATIC_DRAW);
+
+    g_vao = new VertexArray();
+    g_vao->ref();
+
+    g_vao->binding(0)->setAttribute(0);
+    g_vao->binding(0)->setFormat(4, GL_FLOAT);
+
+    g_vao->binding(1)->setAttribute(1);
+    g_vao->binding(1)->setBuffer(g_colorBuffer, 0, sizeof(vec4));
+    g_vao->binding(1)->setFormat(4, GL_FLOAT);
+
+    g_vao->enable(0);
+    g_vao->enable(1);
+
+
+    // Create and setup TransformFeedback
+    g_transformFeedback = new TransformFeedback();
+    g_transformFeedback->ref();
+    g_transformFeedback->setVaryings(g_transformFeedbackProgram, { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
+
+
+    g_startTime = std::chrono::high_resolution_clock::now();
+}
+
+void deinitialize()
+{
+    g_vao->unref();
+    g_transformFeedbackProgram->unref();
+    g_transformFeedback->unref();
+    g_shaderProgram->unref();
+    g_vertexBuffer1->unref();
+    g_vertexBuffer2->unref();
+    g_colorBuffer->unref();
+}
+
+void draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    const auto t_elapsed = std::chrono::high_resolution_clock::now() - t_start;
+    const auto t_elapsed = std::chrono::high_resolution_clock::now() - g_startTime;
+    g_startTime = std::chrono::high_resolution_clock::now();
 
-    Buffer * drawBuffer  = vertexBuffer1;
-    Buffer * writeBuffer = vertexBuffer2;
+    Buffer * drawBuffer  = g_vertexBuffer1;
+    Buffer * writeBuffer = g_vertexBuffer2;
 
-    vao->bind();
+    g_vao->bind();
 
-    transformFeedbackProgram->setUniform("deltaT", static_cast<float>(t_elapsed.count()) * float(std::nano::num) / float(std::nano::den));
+    g_transformFeedbackProgram->setUniform("deltaT", static_cast<float>(t_elapsed.count()) * float(std::nano::num) / float(std::nano::den));
 
-    vao->binding(0)->setBuffer(drawBuffer, 0, sizeof(vec4));
+    g_vao->binding(0)->setBuffer(drawBuffer, 0, sizeof(vec4));
 
-    transformFeedback->bind();
+    g_transformFeedback->bind();
     writeBuffer->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
 
     glEnable(GL_RASTERIZER_DISCARD);
 
-    transformFeedbackProgram->use();
-    transformFeedback->begin(GL_TRIANGLES);
-    vao->drawArrays(GL_TRIANGLES, 0, 6);
-    transformFeedback->end();
+    g_transformFeedbackProgram->use();
+    g_transformFeedback->begin(GL_TRIANGLES);
+    g_vao->drawArrays(GL_TRIANGLES, 0, 6);
+    g_transformFeedback->end();
     glDisable(GL_RASTERIZER_DISCARD);
 
-    transformFeedback->unbind();
+    g_transformFeedback->unbind();
 
-    vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(vec4));
+    g_vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(vec4));
 
-    shaderProgram->use();
-    transformFeedback->draw(GL_TRIANGLE_STRIP);
-    shaderProgram->release();
+    g_shaderProgram->use();
+    g_transformFeedback->draw(GL_TRIANGLE_STRIP);
+    g_shaderProgram->release();
 
-    vao->unbind();
+    g_vao->unbind();
 
-    std::swap(vertexBuffer1, vertexBuffer2);
+    std::swap(g_vertexBuffer1, g_vertexBuffer2);
 }
 
 
@@ -148,93 +245,29 @@ int main(int /*argc*/, char * /*argv*/[])
     // Initialize GLFW
     glfwInit();
 
-    GLFWwindow * window = nullptr;
+    GLFWwindow * window = createWindow();
+    initialize();
 
-    do
+    // Main loop
+    while (!glfwWindowShouldClose(window))
     {
-        // Deinitialize old window before fullscreen toggle
-        if (window != nullptr) deinitialize(window);
+        glfwPollEvents();
 
-        // Initialize window
-        window = initialize(toggleFS ? !isFS : isFS);
-        toggleFS = false;
-
-        // Initialize OpenGL objects
-        ref_ptr<Program> shaderProgram = new Program();
-        shaderProgram->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,   "data/transformfeedback/simple.vert")
-          , Shader::fromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
-
-        ref_ptr<Program> transformFeedbackProgram = new Program();
-        transformFeedbackProgram->attach(
-            Shader::fromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
-
-        transformFeedbackProgram->setUniform("deltaT", 0.0f);
-
-
-        const int width = 1024;
-        const int height = 768;
-        const int side = std::min<int>(width, height);
-        glViewport((width - side) / 2, (height - side) / 2, side, side);
-        shaderProgram->setUniform("modelView", mat4());
-        shaderProgram->setUniform("projection", ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
-
-
-        // Create and setup geometry
-        auto vertexArray = std::vector<vec4>({
-            vec4(0, 0, 0, 1)
-          , vec4(1, 0, 0, 1)
-          , vec4(0, 1, 0, 1)
-          , vec4(1, 0, 0, 1)
-          , vec4(0, 1, 0, 1)
-          , vec4(1, 1, 0, 1) });
-
-        auto colorArray = std::vector<vec4>({
-            vec4(1, 0, 0, 1)
-          , vec4(1, 1, 0, 1)
-          , vec4(0, 0, 1, 1)
-          , vec4(1, 1, 0, 1)
-          , vec4(0, 0, 1, 1)
-          , vec4(0, 1, 0, 1) });
-
-        ref_ptr<Buffer> vertexBuffer1 = new Buffer();
-        vertexBuffer1->setData(vertexArray, GL_STATIC_DRAW);
-        ref_ptr<Buffer> vertexBuffer2 = new Buffer();
-        vertexBuffer2->setData(vertexArray, GL_STATIC_DRAW);
-        ref_ptr<Buffer> colorBuffer = new Buffer();
-        colorBuffer->setData(colorArray, GL_STATIC_DRAW);
-
-        ref_ptr<VertexArray> vao = new VertexArray();
-
-        vao->binding(0)->setAttribute(0);
-        vao->binding(0)->setFormat(4, GL_FLOAT);
-
-        vao->binding(1)->setAttribute(1);
-        vao->binding(1)->setBuffer(colorBuffer, 0, sizeof(vec4));
-        vao->binding(1)->setFormat(4, GL_FLOAT);
-
-        vao->enable(0);
-        vao->enable(1);
-
-
-        // Create and setup TransformFeedback
-        ref_ptr<TransformFeedback> transformFeedback = new TransformFeedback();
-        transformFeedback->setVaryings(transformFeedbackProgram, { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
-
-
-        auto t_start = std::chrono::high_resolution_clock::now();
-
-
-        // Main loop
-        while (!toggleFS && !glfwWindowShouldClose(window))
+        if (g_toggleFS)
         {
-            glfwPollEvents();
-            draw(vao, transformFeedbackProgram, transformFeedback, shaderProgram, vertexBuffer1, vertexBuffer2, t_start);
-            glfwSwapBuffers(window);
+            deinitialize();
+            destroyWindow(window);
+            window = createWindow(!g_isFS);
+            initialize();
+
+            g_toggleFS = false;
         }
 
+        draw();
+        glfwSwapBuffers(window);
     }
-    while (!glfwWindowShouldClose(window));
+
+    deinitialize();
 
     // Properly shutdown GLFW
     glfwTerminate();
