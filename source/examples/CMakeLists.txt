@@ -1,6 +1,5 @@
 
 if(OPTION_BUILD_EXAMPLES)
-	set(EXAMPLE_COMMON common)
 
         # for compatibility between glm 0.9.4 and 0.9.5
         add_definitions("-DGLM_FORCE_RADIANS")
@@ -26,8 +25,6 @@ if(OPTION_BUILD_EXAMPLES)
 		globjects
 	)
 	
-	add_subdirectory("common")
-	include_directories("common")
 	
 	set(GLOBJECTS_EXAMPLES_LIBRARIES
 		${GLOBJECTS_EXAMPLES_LIBRARIES}
@@ -41,10 +38,9 @@ if(OPTION_BUILD_EXAMPLES)
 			CONFIGURATIONS Debug COMPONENT examples)
 	endif()
 
-	add_subdirectory("bindless-textures")
+	# add_subdirectory("bindless-textures")
 	add_subdirectory("commandlineoutput")
 	add_subdirectory("computeshader")
-	add_subdirectory("gpu-particles")
 	add_subdirectory("states")
 	add_subdirectory("texture")
 	add_subdirectory("transformfeedback")
@@ -53,7 +49,6 @@ if(OPTION_BUILD_EXAMPLES)
 	add_subdirectory("tessellation")
 	add_subdirectory("wikiexample")
 	add_subdirectory("sparse-texture")
-	add_subdirectory("atomiccounter")
 	
 	add_subdirectory("qt-example")
 endif()

@@ -1,4 +1,4 @@
-#include <common/Icosahedron.h>
+#include "Icosahedron.h"
 
 #include <iterator>
 #include <algorithm>

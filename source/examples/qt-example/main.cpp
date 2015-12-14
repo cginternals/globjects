@@ -143,7 +143,7 @@ int main(int argc, char * argv[])
     Window * glwindow = new Window(format);
 
     QMainWindow window;
-    window.setGeometry(0, 0, 640, 480);
+    window.setGeometry(0, 0, 1024, 768);
     window.setCentralWidget(QWidget::createWindowContainer(glwindow));
 
     window.show();

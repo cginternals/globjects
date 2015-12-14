@@ -1,4 +1,4 @@
-#include <common/ScreenAlignedQuad.h>
+#include "ScreenAlignedQuad.h"
 
 #include <cassert>
 #include <array>
