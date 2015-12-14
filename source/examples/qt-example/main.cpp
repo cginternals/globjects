@@ -10,9 +10,7 @@
 
 #include <QApplication>
 #include <QMainWindow>
-#include <QTimer>
 #include <QResizeEvent>
-#include <QWheelEvent>
 #include <QSurfaceFormat>
 
 #ifdef __GNUC__
@@ -28,46 +26,30 @@
 #include <glbinding/Version.h>
 
 #include <globjects/globjects.h>
-#include <globjects/Uniform.h>
+#include <globjects/base/File.h>
+#include <globjects/logging.h>
+
+#include <globjects/Buffer.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
-#include <globjects/Buffer.h>
-#include <globjects/logging.h>
 #include <globjects/VertexArray.h>
-#include <globjects/DebugMessage.h>
-
-#include <globjects/base/File.h>
-
-#include <common/AxisAlignedBoundingBox.h>
-#include <common/Icosahedron.h>
-#include <common/Camera.h>
-#include <common/AbstractCoordinateProvider.h>
-#include <common/WorldInHandNavigation.h>
+#include <globjects/VertexAttributeBinding.h>
+#include <globjects/base/StaticStringSource.h>
 
 #include "WindowQt.h"
 
 
 using namespace gl;
+using namespace glm;
 using namespace globjects;
 
-class Window : public WindowQt, AbstractCoordinateProvider
+
+class Window : public WindowQt
 {
 public:
     Window(QSurfaceFormat & format)
     : WindowQt(format)
-    , m_camera(glm::vec3(0.f, 1.f, 4.f))
     {
-        m_aabb.extend(glm::vec3(-8.f, -1.f, -8.f));
-        m_aabb.extend(glm::vec3( 8.f,  1.f,  8.f));
-
-        m_nav.setCamera(&m_camera);
-        m_nav.setCoordinateProvider(this);
-        m_nav.setBoundaryHint(m_aabb);
-
-        m_timer = new QTimer(this);
-        m_timer->setInterval(0);
-
-        connect(m_timer, &QTimer::timeout, this, &WindowQt::updateGL);
     }
 
     virtual ~Window()
@@ -91,37 +73,37 @@ public:
         debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
 #endif
 
-        glClearColor(1.f, 1.f, 1.f, 0.f);
+        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        m_sphere = new Program();
-        m_sphere->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,   "data/gbuffers/sphere.vert")
-          , Shader::fromFile(GL_FRAGMENT_SHADER, "data/gbuffers/sphere.frag"));
+        // Initialize OpenGL objects
+        m_cornerBuffer = new Buffer();
+        m_program = new Program();
+        m_vao = new VertexArray();
 
-        m_icosahedron = new Icosahedron(2);
+        m_program->attach(
+            Shader::fromFile(GL_VERTEX_SHADER,  "data/qt-example/shader.vert"),
+            Shader::fromFile(GL_FRAGMENT_SHADER, "data/qt-example/shader.frag"));
 
-        m_camera.setZNear(1.f);
-        m_camera.setZFar(16.f);
+        m_cornerBuffer->setData(std::array<vec2, 4>{ {
+            vec2(0, 0), vec2(1, 0), vec2(0, 1), vec2(1, 1) } }, GL_STATIC_DRAW);
 
-        m_timer->start();
+        m_vao->binding(0)->setAttribute(0);
+        m_vao->binding(0)->setBuffer(m_cornerBuffer, 0, sizeof(vec2));
+        m_vao->binding(0)->setFormat(2, GL_FLOAT);
+        m_vao->enable(0);
     }
 
     virtual void resizeGL(QResizeEvent * event) override
     {
         glViewport(0, 0, event->size().width(), event->size().height());
-
-        m_camera.setViewport(event->size().width(), event->size().height());
     }
 
     virtual void paintGL() override
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        m_sphere->setUniform("transform", m_camera.viewProjection());
-
-        m_sphere->use();
-        m_icosahedron->draw();
-        m_sphere->release();
+        m_program->use();
+        m_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
 
 
@@ -134,128 +116,15 @@ public:
         case Qt::Key_F5:
             File::reloadAll();
             break;
-
-        case Qt::Key_Space:
-            m_camera.setCenter(glm::vec3());
-            m_camera.setEye(glm::vec3( 0.f, 1.f, 4.f));
-            m_camera.setUp (glm::vec3( 0.f, 1.f, 0.f));
-            break;
         }
         doneCurrent();
     }
 
-    virtual void mousePressEvent(QMouseEvent * event) override
-    {
-        glm::ivec2 pos(event->pos().x(), event->pos().y());
-
-        makeCurrent();
-
-        switch (event->button())
-        {
-        case Qt::LeftButton:
-            m_nav.panBegin(pos);
-            break;
-
-        case Qt::RightButton:
-            m_nav.rotateBegin(pos);
-            break;
-
-        default:
-            break;
-        }
-
-        doneCurrent();
-    }
-
-    virtual void mouseMoveEvent(QMouseEvent * event) override
-    {
-        glm::ivec2 pos(event->pos().x(), event->pos().y());
-
-        makeCurrent();
-
-        switch (m_nav.mode())
-        {
-        case WorldInHandNavigation::PanInteraction:
-            m_nav.panProcess(pos);
-            break;
-
-        case WorldInHandNavigation::RotateInteraction:
-            m_nav.rotateProcess(pos);
-            break;
-
-        case WorldInHandNavigation::NoInteraction:
-            break;
-        }
-
-        doneCurrent();
-    }
-
-    virtual void mouseReleaseEvent(QMouseEvent * event) override
-    {
-        makeCurrent();
-
-        switch (event->button())
-        {
-        case Qt::LeftButton:
-            m_nav.panEnd();
-            break;
-
-        case Qt::RightButton:
-            m_nav.rotateEnd();
-            break;
-
-        default:
-            break;
-        }
-
-        doneCurrent();
-    }
-
-    virtual void wheelEvent(QWheelEvent * event) override
-    {
-        if (WorldInHandNavigation::NoInteraction != m_nav.mode())
-            return;
-
-        makeCurrent();
-
-        glm::vec2 pos(event->pos().x(), event->pos().y());
-
-        m_nav.scaleAtMouse(glm::ivec2(pos), static_cast<float>(-event->delta()) * 0.001f);
-
-        doneCurrent();
-    }
-
-    virtual float depthAt(const glm::ivec2 & windowCoordinates) const override
-    {
-        return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
-    }
-
-    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates) const override
-    {
-        return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
-    }
-
-    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth) const override
-    {
-        return unproject(m_camera, depth, windowCoordinates);
-    }
-
-    virtual glm::vec3 objAt(const glm::ivec2 & windowCoordinates, const float depth, const glm::mat4 & viewProjectionInverted) const override
-    {
-        return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
-    }
 
 protected:
-    ref_ptr<Program> m_sphere;
-
-    ref_ptr<Icosahedron> m_icosahedron;
-
-    Camera m_camera;
-    WorldInHandNavigation m_nav;
-
-    QTimer * m_timer;
-
-    AxisAlignedBoundingBox m_aabb;
+    ref_ptr<Buffer> m_cornerBuffer;
+    ref_ptr<Program> m_program;
+    ref_ptr<VertexArray> m_vao;
 };
 
 int main(int argc, char * argv[])
