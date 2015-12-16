@@ -4,22 +4,30 @@ message(STATUS "Example ${target}")
 
 # External libraries
 
+find_package(GLM REQUIRED)
+find_package(GLFW REQUIRED)
+find_package(glbinding REQUIRED)
+
 # Includes
 
 include_directories(
-    ${GLOBJECTS_EXAMPLE_DEPENDENCY_INCLUDES}
+    ${GLM_INCLUDE_DIR}
+    ${GLFW_INCLUDE_DIR}
+    ${GLBINDING_INCLUDE_DIRS}
 )
 
 include_directories(
     BEFORE
-    ${GLOBJECTS_EXAMPLE_INCLUDES}
+    ${CMAKE_SOURCE_DIR}/source/globjects/include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 # Libraries
 
 set(libs
-    ${GLOBJECTS_EXAMPLES_LIBRARIES}
+    ${GLFW_LIBRARY}
+    ${GLBINDING_LIBRARIES}
+    globjects
 )
 
 # Sources
@@ -28,16 +36,16 @@ set(sources
     main.cpp
 )
 
+# Target definitions
+
+# for compatibility between glm 0.9.4 and 0.9.5
+add_definitions("-DGLM_FORCE_RADIANS")
+
 # Build executable
 
 add_executable(${target} ${sources})
 
 target_link_libraries(${target} ${libs})
-
-if(MSVC)
-    # -> msvc14 : C4458 - declaration hides class member (problem in glm)
-    set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS} /wd4458)
-endif()
 
 target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
 

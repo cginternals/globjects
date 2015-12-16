@@ -15,6 +15,8 @@ endif()
 find_package(Qt5Core    5.1 QUIET)
 find_package(Qt5Gui     5.1 QUIET)
 find_package(Qt5Widgets 5.1 QUIET)
+find_package(GLM            REQUIRED)
+find_package(glbinding      REQUIRED)
 
 if (NOT Qt5Core_FOUND)
     message("Example ${target} skipped: Qt5 not found")
@@ -35,12 +37,13 @@ set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
 # Includes
 
 include_directories(
-    ${GLOBJECTS_EXAMPLE_DEPENDENCY_INCLUDES}
+    ${GLM_INCLUDE_DIR}
+    ${GLBINDING_INCLUDE_DIRS}
 )
 
 include_directories(
     BEFORE
-    ${GLOBJECTS_EXAMPLE_INCLUDES}
+    ${CMAKE_SOURCE_DIR}/source/globjects/include
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -48,7 +51,8 @@ include_directories(
 # Libraries
 
 set(libs
-    ${GLOBJECTS_EXAMPLES_LIBRARIES}
+    ${GLBINDING_LIBRARIES}
+    globjects
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
@@ -59,10 +63,16 @@ set(libs
 set(headers
     WindowQt.h
 )
+
 set(sources
     main.cpp
     WindowQt.cpp
 )
+
+# Target definitions
+
+# for compatibility between glm 0.9.4 and 0.9.5
+add_definitions("-DGLM_FORCE_RADIANS")
 
 # Build executable
 
