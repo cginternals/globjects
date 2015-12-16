@@ -43,6 +43,9 @@ set(sources
 # for compatibility between glm 0.9.4 and 0.9.5
 add_definitions("-DGLM_FORCE_RADIANS")
 
+# disable any GL include from GLFW
+add_definitions("-DGLFW_INCLUDE_NONE")
+
 # Build executable
 
 add_executable(${target} ${sources})
