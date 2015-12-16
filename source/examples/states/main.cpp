@@ -1,7 +1,14 @@
 
+#include <glm/glm.hpp>
+
 #include <glbinding/gl/gl.h>
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
+
+#include <GLFW/glfw3.h>
 
 #include <globjects/globjects.h>
+#include <globjects/base/File.h>
 #include <globjects/logging.h>
 
 #include <globjects/Buffer.h>
@@ -11,158 +18,233 @@
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/State.h>
 
-#include <common/Context.h>
-#include <common/ContextFormat.h>
-#include <common/Window.h>
-#include <common/WindowEventHandler.h>
-#include <common/events.h>
-
 
 using namespace gl;
 using namespace glm;
 using namespace globjects;
 
-class EventHandler : public WindowEventHandler
+
+namespace {
+    bool g_toggleFS = false;
+    bool g_isFS = false;
+
+    Program * g_shaderProgram = nullptr;
+    VertexArray * g_vao = nullptr;
+    Buffer * g_buffer = nullptr;
+    State * g_thinnestPointSizeState = nullptr;
+    State * g_thinPointSizeState = nullptr;
+    State * g_normalPointSizeState = nullptr;
+    State * g_thickPointSizeState = nullptr;
+    State * g_disableRasterizerState = nullptr;
+    State * g_enableRasterizerState = nullptr;
+    State * g_defaultPointSizeState = nullptr;
+}
+
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
 {
-public:
-    EventHandler()
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+        glfwSetWindowShouldClose(window, true);
+
+    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
+        File::reloadAll();
+
+    if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
+        g_toggleFS = true;
+}
+
+GLFWwindow * createWindow(bool fs = false)
+{
+    // Set GLFW window hints
+    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+
+    // Create a context and, if valid, make it current
+    GLFWwindow * window = glfwCreateWindow(1024, 768, "", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
+    if (window == nullptr)
     {
-    }
+        critical() << "Context creation failed. Terminate execution.";
 
-    virtual ~EventHandler()
+        glfwTerminate();
+        exit(1);
+    }
+    glfwMakeContextCurrent(window);
+
+    // Create callback that when user presses ESC, the context should be destroyed and window closed
+    glfwSetKeyCallback(window, key_callback);
+
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+
+    // Do only on startup
+    if (!g_toggleFS)
     {
-    }
+       // Dump information about context and graphics card
+       info() << std::endl
+           << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+           << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+           << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
+    }   
 
-    virtual void initialize(Window & window) override
-    {
-        WindowEventHandler::initialize(window);
+    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+    g_isFS = fs;
+    return window;
+}
 
-        m_defaultPointSizeState  = new State();
-        m_defaultPointSizeState->pointSize(getFloat(GL_POINT_SIZE));
-        m_thinnestPointSizeState = new State();
-        m_thinnestPointSizeState->pointSize(2.0f);
-        m_thinPointSizeState     = new State();
-        m_thinPointSizeState->pointSize(5.0f);
-        m_normalPointSizeState   = new State();
-        m_normalPointSizeState->pointSize(10.0f);
-        m_thickPointSizeState    = new State();
-        m_thickPointSizeState->pointSize(20.0f);
-        m_disableRasterizerState = new State();
-        m_disableRasterizerState->enable(GL_RASTERIZER_DISCARD);
-        m_enableRasterizerState  = new State();
-        m_enableRasterizerState->disable(GL_RASTERIZER_DISCARD);
+void destroyWindow(GLFWwindow * window)
+{
+    globjects::detachAllObjects();
+    glfwDestroyWindow(window);
+}
 
-        m_vao = new VertexArray();
-        m_buffer = new Buffer();
+void initialize()
+{
+    // Initialize OpenGL objects
+    g_defaultPointSizeState = new State();
+    g_defaultPointSizeState->ref();
+    g_defaultPointSizeState->pointSize(getFloat(GL_POINT_SIZE));
+    g_thinnestPointSizeState = new State();
+    g_thinnestPointSizeState->ref();
+    g_thinnestPointSizeState->pointSize(2.0f);
+    g_thinPointSizeState = new State();
+    g_thinPointSizeState->ref();
+    g_thinPointSizeState->pointSize(5.0f);
+    g_normalPointSizeState = new State();
+    g_normalPointSizeState->ref();
+    g_normalPointSizeState->pointSize(10.0f);
+    g_thickPointSizeState = new State();
+    g_thickPointSizeState->ref();
+    g_thickPointSizeState->pointSize(20.0f);
+    g_disableRasterizerState = new State();
+    g_disableRasterizerState->ref();
+    g_disableRasterizerState->enable(GL_RASTERIZER_DISCARD);
+    g_enableRasterizerState = new State();
+    g_enableRasterizerState->ref();
+    g_enableRasterizerState->disable(GL_RASTERIZER_DISCARD);
 
-        m_shaderProgram = new Program();
-        m_shaderProgram->attach(
-            Shader::fromFile(GL_VERTEX_SHADER, "data/states/standard.vert")
-          , Shader::fromFile(GL_FRAGMENT_SHADER, "data/states/standard.frag"));
-        
-        m_buffer->setData(std::vector<vec2>({
-            vec2(-0.8f, 0.8f), vec2(-0.4f, 0.8f), vec2( 0.0f, 0.8f), vec2( 0.4f, 0.8f), vec2( 0.8f, 0.8f)
-          , vec2(-0.8f, 0.6f), vec2(-0.4f, 0.6f), vec2( 0.0f, 0.6f), vec2( 0.4f, 0.6f), vec2( 0.8f, 0.6f)
-          , vec2(-0.8f, 0.4f), vec2(-0.4f, 0.4f), vec2( 0.0f, 0.4f), vec2( 0.4f, 0.4f), vec2( 0.8f, 0.4f)
-          , vec2(-0.8f, 0.2f), vec2(-0.4f, 0.2f), vec2( 0.0f, 0.2f), vec2( 0.4f, 0.2f), vec2( 0.8f, 0.2f)
-          , vec2(-0.8f, 0.0f), vec2(-0.4f, 0.0f), vec2( 0.0f, 0.0f), vec2( 0.4f, 0.0f), vec2( 0.8f, 0.0f)
-          , vec2(-0.8f,-0.2f), vec2(-0.4f,-0.2f), vec2( 0.0f,-0.2f), vec2( 0.4f,-0.2f), vec2( 0.8f,-0.2f)
-          , vec2(-0.8f,-0.4f), vec2(-0.4f,-0.4f), vec2( 0.0f,-0.4f), vec2( 0.4f,-0.4f), vec2( 0.8f,-0.4f)
-          , vec2(-0.8f,-0.6f), vec2(-0.4f,-0.6f), vec2( 0.0f,-0.6f), vec2( 0.4f,-0.6f), vec2( 0.8f,-0.6f)
-          , vec2(-0.8f,-0.8f), vec2(-0.4f,-0.8f), vec2( 0.0f,-0.8f), vec2( 0.4f,-0.8f), vec2( 0.8f,-0.8f) })
-          , GL_STATIC_DRAW );
+    g_vao = new VertexArray();
+    g_vao->ref();
+    g_buffer = new Buffer();
+    g_buffer->ref();
 
-        m_vao->binding(0)->setAttribute(0);
-        m_vao->binding(0)->setBuffer(m_buffer, 0, sizeof(vec2));
-        m_vao->binding(0)->setFormat(2, GL_FLOAT);
-        m_vao->enable(0);
-    }
+    g_shaderProgram = new Program();
+    g_shaderProgram->ref();
+    g_shaderProgram->attach(
+        Shader::fromFile(GL_VERTEX_SHADER, "data/states/standard.vert")
+      , Shader::fromFile(GL_FRAGMENT_SHADER, "data/states/standard.frag"));
+    
+    g_buffer->setData(std::vector<vec2>({
+        vec2(-0.8f, 0.8f), vec2(-0.4f, 0.8f), vec2( 0.0f, 0.8f), vec2( 0.4f, 0.8f), vec2( 0.8f, 0.8f)
+      , vec2(-0.8f, 0.6f), vec2(-0.4f, 0.6f), vec2( 0.0f, 0.6f), vec2( 0.4f, 0.6f), vec2( 0.8f, 0.6f)
+      , vec2(-0.8f, 0.4f), vec2(-0.4f, 0.4f), vec2( 0.0f, 0.4f), vec2( 0.4f, 0.4f), vec2( 0.8f, 0.4f)
+      , vec2(-0.8f, 0.2f), vec2(-0.4f, 0.2f), vec2( 0.0f, 0.2f), vec2( 0.4f, 0.2f), vec2( 0.8f, 0.2f)
+      , vec2(-0.8f, 0.0f), vec2(-0.4f, 0.0f), vec2( 0.0f, 0.0f), vec2( 0.4f, 0.0f), vec2( 0.8f, 0.0f)
+      , vec2(-0.8f,-0.2f), vec2(-0.4f,-0.2f), vec2( 0.0f,-0.2f), vec2( 0.4f,-0.2f), vec2( 0.8f,-0.2f)
+      , vec2(-0.8f,-0.4f), vec2(-0.4f,-0.4f), vec2( 0.0f,-0.4f), vec2( 0.4f,-0.4f), vec2( 0.8f,-0.4f)
+      , vec2(-0.8f,-0.6f), vec2(-0.4f,-0.6f), vec2( 0.0f,-0.6f), vec2( 0.4f,-0.6f), vec2( 0.8f,-0.6f)
+      , vec2(-0.8f,-0.8f), vec2(-0.4f,-0.8f), vec2( 0.0f,-0.8f), vec2( 0.4f,-0.8f), vec2( 0.8f,-0.8f) })
+      , GL_STATIC_DRAW );
 
-    virtual void paintEvent(PaintEvent & event) override
-    {
-        WindowEventHandler::paintEvent(event);
+    g_vao->binding(0)->setAttribute(0);
+    g_vao->binding(0)->setBuffer(g_buffer, 0, sizeof(vec2));
+    g_vao->binding(0)->setFormat(2, GL_FLOAT);
+    g_vao->enable(0);
+}
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void deinitialize()
+{
+    g_shaderProgram->unref();
+    g_vao->unref();
+    g_buffer->unref();
+    g_thinnestPointSizeState->unref();
+    g_thinPointSizeState->unref();
+    g_normalPointSizeState->unref();
+    g_thickPointSizeState->unref();
+    g_disableRasterizerState->unref();
+    g_enableRasterizerState->unref();
+    g_defaultPointSizeState->unref();
+}
 
-        m_shaderProgram->use();
+void draw()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        m_defaultPointSizeState->apply();
-        m_vao->drawArrays(GL_POINTS, 0, 5);
+    g_shaderProgram->use();
 
-        m_thinnestPointSizeState->apply();
-        m_vao->drawArrays(GL_POINTS, 5, 5);
+    g_defaultPointSizeState->apply();
+    g_vao->drawArrays(GL_POINTS, 0, 5);
 
-        m_thinPointSizeState->apply();
-        m_vao->drawArrays(GL_POINTS, 10, 5);
+    g_thinnestPointSizeState->apply();
+    g_vao->drawArrays(GL_POINTS, 5, 5);
 
-        m_normalPointSizeState->apply();
-        m_vao->drawArrays(GL_POINTS, 15, 5);
+    g_thinPointSizeState->apply();
+    g_vao->drawArrays(GL_POINTS, 10, 5);
 
-        m_thickPointSizeState->apply();
+    g_normalPointSizeState->apply();
+    g_vao->drawArrays(GL_POINTS, 15, 5);
 
-        m_vao->drawArrays(GL_POINTS, 20, 1);
-        m_disableRasterizerState->apply();
-        m_vao->drawArrays(GL_POINTS, 21, 1);
-        m_enableRasterizerState->apply();
-        m_vao->drawArrays(GL_POINTS, 22, 1);
-        m_disableRasterizerState->apply();
-        m_vao->drawArrays(GL_POINTS, 23, 1);
-        m_enableRasterizerState->apply();
-        m_vao->drawArrays(GL_POINTS, 24, 1);
+    g_thickPointSizeState->apply();
 
-        m_normalPointSizeState->apply();
-        m_vao->drawArrays(GL_POINTS, 25, 5);
+    g_vao->drawArrays(GL_POINTS, 20, 1);
+    g_disableRasterizerState->apply();
+    g_vao->drawArrays(GL_POINTS, 21, 1);
+    g_enableRasterizerState->apply();
+    g_vao->drawArrays(GL_POINTS, 22, 1);
+    g_disableRasterizerState->apply();
+    g_vao->drawArrays(GL_POINTS, 23, 1);
+    g_enableRasterizerState->apply();
+    g_vao->drawArrays(GL_POINTS, 24, 1);
 
-        m_thinPointSizeState->apply();
-        m_vao->drawArrays(GL_POINTS, 30, 5);
+    g_normalPointSizeState->apply();
+    g_vao->drawArrays(GL_POINTS, 25, 5);
 
-        m_thinnestPointSizeState->apply();
-        m_vao->drawArrays(GL_POINTS, 35, 5);
+    g_thinPointSizeState->apply();
+    g_vao->drawArrays(GL_POINTS, 30, 5);
 
-        m_defaultPointSizeState->apply();
-        m_vao->drawArrays(GL_POINTS, 35, 5);
+    g_thinnestPointSizeState->apply();
+    g_vao->drawArrays(GL_POINTS, 35, 5);
 
-        m_shaderProgram->release();
-    }
+    g_defaultPointSizeState->apply();
+    g_vao->drawArrays(GL_POINTS, 35, 5);
 
-protected:
-    ref_ptr<VertexArray> m_vao;
-    ref_ptr<Buffer> m_buffer;
-    ref_ptr<Program> m_shaderProgram;
-
-    ref_ptr<State> m_defaultPointSizeState;
-    ref_ptr<State> m_thinnestPointSizeState;
-    ref_ptr<State> m_thinPointSizeState;
-    ref_ptr<State> m_normalPointSizeState;
-    ref_ptr<State> m_thickPointSizeState;
-    ref_ptr<State> m_disableRasterizerState;
-    ref_ptr<State> m_enableRasterizerState;
-};
+    g_shaderProgram->release();
+}
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    info() << "Usage:";
-    info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
+    // Initialize GLFW
+    glfwInit();
 
-    ContextFormat format;
-    format.setVersion(3, 1);
-    format.setForwardCompatible(true);
+    GLFWwindow * window = createWindow();
+    initialize();
 
-    Window::init();
+    // Main loop
+    while (!glfwWindowShouldClose(window))
+    {
+        glfwPollEvents();
 
-    Window window;
-    window.setEventHandler(new EventHandler());
+        if (g_toggleFS)
+        {
+            deinitialize();
+            destroyWindow(window);
+            window = createWindow(!g_isFS);
+            initialize();
 
-    if (!window.create(format, "OpenGL States Example"))
-        return 1;
+            g_toggleFS = false;
+        }
 
-    window.show();
+        draw();
+        glfwSwapBuffers(window);
+    }
 
-    return MainLoop::run();
+    deinitialize();
+
+    // Properly shutdown GLFW
+    glfwTerminate();
+
+    return 0;
 }

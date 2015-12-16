@@ -1,5 +1,15 @@
 
+#include <glm/glm.hpp>
+
 #include <glbinding/gl/gl.h>
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
+
+#include <GLFW/glfw3.h>
+
+#include <globjects/globjects.h>
+#include <globjects/base/File.h>
+#include <globjects/logging.h>
 
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
@@ -7,12 +17,6 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/base/StaticStringSource.h>
-
-#include <common/Window.h>
-#include <common/ContextFormat.h>
-#include <common/Context.h>
-#include <common/WindowEventHandler.h>
-#include <common/events.h>
 
 
 using namespace gl;
@@ -50,84 +54,144 @@ void main()
 }
 
 )";
+
+    bool g_toggleFS = false;
+    bool g_isFS = false;
+
+    Buffer * g_cornerBuffer = nullptr;
+    Program * g_program = nullptr;
+    VertexArray * g_vao = nullptr;
 }
 
-class EventHandler : public WindowEventHandler
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
 {
-public:
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+        glfwSetWindowShouldClose(window, true);
 
-    EventHandler()
-    : m_vao(nullptr)
-    , m_cornerBuffer(nullptr)
-    , m_program(nullptr)
+    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
+        File::reloadAll();
+
+    if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
+        g_toggleFS = true;
+}
+
+GLFWwindow * createWindow(bool fs = false)
+{
+    // Set GLFW window hints
+    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+
+    // Create a context and, if valid, make it current
+    GLFWwindow * window = glfwCreateWindow(1024, 768, "", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
+    if (window == nullptr)
     {
-    }
+        critical() << "Context creation failed. Terminate execution.";
 
-    virtual ~EventHandler()
+        glfwTerminate();
+        exit(1);
+    }
+    glfwMakeContextCurrent(window);
+
+    // Create callback that when user presses ESC, the context should be destroyed and window closed
+    glfwSetKeyCallback(window, key_callback);
+
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+
+    // Do only on startup
+    if (!g_toggleFS)
     {
-    }
+       // Dump information about context and graphics card
+       info() << std::endl
+           << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+           << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+           << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
+    }   
 
-    virtual void initialize(Window & window) override
-    {
-        WindowEventHandler::initialize(window);
+    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+    g_isFS = fs;
+    return window;
+}
 
-        m_cornerBuffer = new Buffer();
-		m_program = new Program();
-		m_vao = new VertexArray();
+void destroyWindow(GLFWwindow * window)
+{
+    globjects::detachAllObjects();
+    glfwDestroyWindow(window);
+}
 
-		m_program->attach(
-            Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode),
-            Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
+void initialize()
+{
+    // Initialize OpenGL objects
+    g_cornerBuffer = new Buffer();
+    g_cornerBuffer->ref();
+    g_program = new Program();
+    g_program->ref();
+    g_vao = new VertexArray();
+    g_vao->ref();
 
-        m_cornerBuffer->setData(std::array<vec2, 4>{ {
-			vec2(0, 0), vec2(1, 0), vec2(0, 1), vec2(1, 1) } }, GL_STATIC_DRAW);
+    g_program->attach(
+        Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode),
+        Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
 
-        m_vao->binding(0)->setAttribute(0);
-		m_vao->binding(0)->setBuffer(m_cornerBuffer, 0, sizeof(vec2));
-        m_vao->binding(0)->setFormat(2, GL_FLOAT);
-        m_vao->enable(0);
-    }
-    
-    virtual void paintEvent(PaintEvent & event) override
-    {
-        WindowEventHandler::paintEvent(event);
+    g_cornerBuffer->setData(std::array<vec2, 4>{ {
+        vec2(0, 0), vec2(1, 0), vec2(0, 1), vec2(1, 1) } }, GL_STATIC_DRAW);
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    g_vao->binding(0)->setAttribute(0);
+    g_vao->binding(0)->setBuffer(g_cornerBuffer, 0, sizeof(vec2));
+    g_vao->binding(0)->setFormat(2, GL_FLOAT);
+    g_vao->enable(0);
+}
 
-        m_program->use();
-        m_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    }
+void deinitialize()
+{
+    g_cornerBuffer->unref();
+    g_program->unref();
+    g_vao->unref();
+}
 
-private:
-    ref_ptr<VertexArray> m_vao;
-    ref_ptr<Buffer> m_cornerBuffer;
-    ref_ptr<Program> m_program;
-};
+void draw()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    g_program->use();
+    g_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    info() << "Usage:";
-    info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
+    // Initialize GLFW
+    glfwInit();
 
-    ContextFormat format;
-    format.setVersion(3, 1);
-    format.setForwardCompatible(true);
+    GLFWwindow * window = createWindow();
+    initialize();
 
-    Window::init();
+    // Main loop
+    while (!glfwWindowShouldClose(window))
+    {
+        glfwPollEvents();
 
-    Window window;
-    window.setEventHandler(new EventHandler());
+        if (g_toggleFS)
+        {
+            deinitialize();
+            destroyWindow(window);
+            window = createWindow(!g_isFS);
+            initialize();
 
-    if (!window.create(format, "Wiki Example"))
-        return 1;
+            g_toggleFS = false;
+        }
 
-    window.show();
+        draw();
+        glfwSwapBuffers(window);
+    }
 
-    return MainLoop::run();
+    deinitialize();
+
+    // Properly shutdown GLFW
+    glfwTerminate();
+
+    return 0;
 }

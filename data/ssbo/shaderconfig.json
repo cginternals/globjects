@@ -1,0 +1,23 @@
+[
+    {
+        "opengl": {
+            "major": 4,
+            "minor": 3,
+            "core": true,
+            "forward": true,
+            "debug": false
+        },
+        "programs": [
+            {
+                "name": "ssbo",
+                "shaders": [
+                    {
+                        "name": "ssbo Fragment Shader",
+                        "type": "GL_FRAGMENT_SHADER",
+                        "file": "ssbo.frag"
+                    }
+                ]
+            }
+        ]
+    }
+]

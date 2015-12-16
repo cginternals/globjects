@@ -1,140 +1,197 @@
 
-#include <glbinding/gl/gl.h>
+#include <chrono>
 
 #include <glm/glm.hpp>
+
 #include <glm/gtx/transform.hpp>
 
-#include <globjects/logging.h>
-#include <globjects/globjects.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
 
+#include <GLFW/glfw3.h>
+
+#include <globjects/globjects.h>
+#include <globjects/base/File.h>
+#include <globjects/logging.h>
 #include <globjects/Uniform.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>
-#include <globjects/Buffer.h>
 
-#include <common/Timer.h>
-#include <common/Icosahedron.h>
-#include <common/Camera.h>
-#include <common/ContextFormat.h>
-#include <common/Context.h>
-#include <common/Window.h>
-#include <common/WindowEventHandler.h>
-#include <common/events.h>
+#include "Icosahedron.h"
 
 
 using namespace gl;
 using namespace glm;
 using namespace globjects;
 
-class EventHandler : public WindowEventHandler
+
+namespace {
+    bool g_toggleFS = false;
+    bool g_isFS = false;
+    
+    Program * g_sphere = nullptr;
+    Icosahedron * g_icosahedron = nullptr;
+    glm::mat4 g_viewProjection;
+
+    const std::chrono::high_resolution_clock::time_point g_starttime = std::chrono::high_resolution_clock::now();
+}
+
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
 {
-public:
-    EventHandler()
-    : m_camera(vec3(0.f, 1.f, 4.f))
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+        glfwSetWindowShouldClose(window, true);
+
+    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
+        File::reloadAll();
+
+    if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
+        g_toggleFS = true;
+}
+
+GLFWwindow * createWindow(bool fs = false)
+{
+    // Set GLFW window hints
+    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+
+    // Create a context and, if valid, make it current
+    GLFWwindow * window = glfwCreateWindow(1024, 768, "", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
+    if (window == nullptr)
     {
+        critical() << "Context creation failed. Terminate execution.";
+
+        glfwTerminate();
+        exit(1);
+    }
+    glfwMakeContextCurrent(window);
+
+    // Create callback that when user presses ESC, the context should be destroyed and window closed
+    glfwSetKeyCallback(window, key_callback);
+
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+
+    // Do only on startup
+    if (!g_toggleFS)
+    {
+       // Dump information about context and graphics card
+       info() << std::endl
+           << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+           << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+           << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
     }
 
-    virtual ~EventHandler()
+    if (!hasExtension(GLextension::GL_ARB_tessellation_shader))
     {
+        critical() << "Tesselation not supported.";
+
+        glfwTerminate();
+        exit(1);
     }
 
-    virtual void initialize(Window & window) override
-    {
-        WindowEventHandler::initialize(window);
+    glClearColor(1.f, 1.f, 1.f, 0.f);
 
-        if (!hasExtension(GLextension::GL_ARB_tessellation_shader))
-        {
-            critical() << "Tesselation not supported.";
+    g_isFS = fs;
+    return window;
+}
 
-            window.close();
-            return;
-        }
+void destroyWindow(GLFWwindow * window)
+{
+    globjects::detachAllObjects();
+    glfwDestroyWindow(window);
+}
 
-        glClearColor(1.f, 1.f, 1.f, 0.f);
+void initialize()
+{
+    // Initialize OpenGL objects
+    g_sphere = new Program();
+    g_sphere->ref();
+    g_sphere->attach(
+        Shader::fromFile(GL_VERTEX_SHADER,          "data/tessellation/sphere.vert")
+    ,   Shader::fromFile(GL_TESS_CONTROL_SHADER,    "data/tessellation/sphere.tcs")
+    ,   Shader::fromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
+    ,   Shader::fromFile(GL_GEOMETRY_SHADER,        "data/tessellation/sphere.geom")
+    ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/tessellation/sphere.frag")
+    ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/tessellation/phong.frag"));
 
-        m_sphere = new Program();
-        m_sphere->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,          "data/tessellation/sphere.vert")
-        ,   Shader::fromFile(GL_TESS_CONTROL_SHADER,    "data/tessellation/sphere.tcs")
-        ,   Shader::fromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
-        ,   Shader::fromFile(GL_GEOMETRY_SHADER,        "data/tessellation/sphere.geom")
-        ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/tessellation/sphere.frag")
-        ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/common/phong.frag"));
 
-        m_icosahedron = new Icosahedron();
+    float fovy = radians(40.f);
+    float aspect = static_cast<float>(1024) / max(static_cast<float>(768), 1.f);
+    float zNear = 1.f;
+    float zFar = 16.f;
+    vec3 eye(0.f, 1.f, 4.f);
+    vec3 center(0.0, 0.0, 0.0);
+    vec3 up(0.0, 1.0, 0.0);
+    
+    g_icosahedron = new Icosahedron();
+    g_icosahedron->ref();
+    g_viewProjection = perspective(fovy, aspect, zNear, zFar) * lookAt(eye, center, up);
+}
 
-        m_time.reset();
-        m_time.start();
+void deinitialize()
+{
+    g_sphere->unref();
+    g_icosahedron->unref();
+}
 
-        m_camera.setZNear(1.f);
-        m_camera.setZFar(16.f);
-    }
+void draw()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    virtual void framebufferResizeEvent(ResizeEvent & event) override
-    {
-        WindowEventHandler::framebufferResizeEvent(event);
+    const auto t_elapsed = std::chrono::high_resolution_clock::now() - g_starttime;  
+    float t = static_cast<float>(t_elapsed.count()) * 4e-10f;
+    mat4 R = rotate(t * 10.f, vec3(sin(t * 0.321f), cos(t * 0.234f), sin(t * 0.123f)));
 
-        m_camera.setViewport(event.width(), event.height());
-    }
+    g_sphere->setUniform("transform", g_viewProjection);
+    g_sphere->setUniform("rotation", R);
 
-    virtual void paintEvent(PaintEvent & event) override
-    {
-        WindowEventHandler::paintEvent(event);
+    int level = static_cast<int>((sin(t) * 0.5f + 0.5f) * 16) + 1;
+    g_sphere->setUniform("level", level);
+    g_sphere->use();
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glPatchParameteri(GL_PATCH_VERTICES, 3);
+    g_icosahedron->draw(GL_PATCHES);
 
-        float t = static_cast<float>(m_time.elapsed().count()) * 4e-10f;
-        mat4 R = rotate(t * 10.f, vec3(sin(t * 0.321f), cos(t * 0.234f), sin(t * 0.123f)));
-
-        m_sphere->setUniform("transform", m_camera.viewProjection());
-        m_sphere->setUniform("rotation", R);
-
-        int level = static_cast<int>((sin(t) * 0.5f + 0.5f) * 16) + 1;
-        m_sphere->setUniform("level", level);
-        m_sphere->use();
-
-        glPatchParameteri(GL_PATCH_VERTICES, 3);
-        m_icosahedron->draw(GL_PATCHES);
-
-        m_sphere->release();
-    }
-
-protected:
-    ref_ptr<Program> m_sphere;
-
-    ref_ptr<Icosahedron> m_icosahedron;
-
-    Camera m_camera;
-    Timer m_time;
-
-    vec3 m_rand;
-};
+    g_sphere->release();
+}
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    info() << "Usage:";
-    info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
-    info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
+    // Initialize GLFW
+    glfwInit();
 
-    ContextFormat format;
-    format.setVersion(4, 0);
-    format.setProfile(ContextFormat::Profile::Core);
-    format.setDepthBufferSize(16);
-    format.setForwardCompatible(true);
+    GLFWwindow * window = createWindow();
+    initialize();
 
-    Window::init();
+    // Main loop
+    while (!glfwWindowShouldClose(window))
+    {
+        glfwPollEvents();
 
-    Window window;
-    window.setEventHandler(new EventHandler());
+        if (g_toggleFS)
+        {
+            deinitialize();
+            destroyWindow(window);
+            window = createWindow(!g_isFS);
+            initialize();
 
-    if (!window.create(format, "Tesselation Example"))
-        return 1;
+            g_toggleFS = false;
+        }
 
-    window.show();
+        draw();
+        glfwSwapBuffers(window);
+    }
 
-    return MainLoop::run();
+    deinitialize();
+
+    // Properly shutdown GLFW
+    glfwTerminate();
+
+    return 0;
 }

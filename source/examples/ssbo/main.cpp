@@ -1,111 +1,176 @@
 
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/extension.h>
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
+
+#include <GLFW/glfw3.h>
 
 #include <globjects/globjects.h>
+#include <globjects/base/File.h>
+#include <globjects/logging.h>
 
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
 
-#include <common/ScreenAlignedQuad.h>
-#include <common/ContextFormat.h>
-#include <common/Context.h>
-#include <common/Window.h>
-#include <common/WindowEventHandler.h>
-#include <common/events.h>
-
+#include "ScreenAlignedQuad.h"
 
 using namespace gl;
+using namespace glm;
 using namespace globjects;
 
-class EventHandler : public WindowEventHandler
+
+namespace {
+    bool g_toggleFS = false;
+    bool g_isFS = false;
+
+    ScreenAlignedQuad * g_quad = nullptr;
+    Buffer * g_buffer = nullptr;
+}
+
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
 {
-public:
-    EventHandler()
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+        glfwSetWindowShouldClose(window, true);
+
+    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
+        File::reloadAll();
+
+    if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
+        g_toggleFS = true;
+}
+
+GLFWwindow * createWindow(bool fs = false)
+{
+    // Set GLFW window hints
+    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+
+    // Create a context and, if valid, make it current
+    GLFWwindow * window = glfwCreateWindow(1024, 768, "", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
+    if (window == nullptr)
     {
+        critical() << "Context creation failed. Terminate execution.";
+
+        glfwTerminate();
+        exit(1);
+    }
+    glfwMakeContextCurrent(window);
+
+    // Create callback that when user presses ESC, the context should be destroyed and window closed
+    glfwSetKeyCallback(window, key_callback);
+
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+
+    // Do only on startup
+    if (!g_toggleFS)
+    {
+       // Dump information about context and graphics card
+       info() << std::endl
+           << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+           << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+           << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
     }
 
-    virtual ~EventHandler()
+    if (!hasExtension(GLextension::GL_ARB_shader_storage_buffer_object))
     {
+        critical() << "Shader storage buffer objects not supported.";
+
+        glfwTerminate();
+        exit(1);
     }
 
-    virtual void initialize(Window & window) override
-    {
-        WindowEventHandler::initialize(window);
+    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        if (!hasExtension(GLextension::GL_ARB_shader_storage_buffer_object))
-        {
-            critical() << "Shader storage buffer objects not supported.";
+    g_isFS = fs;
+    return window;
+}
 
-            window.close();
-            return;
-        }
+void destroyWindow(GLFWwindow * window)
+{
+    globjects::detachAllObjects();
+    glfwDestroyWindow(window);
+}
 
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+void initialize()
+{
+    // Initialize OpenGL objects
+    g_quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
+    g_quad->ref();
 
+    g_quad->program()->setUniform("maximum",     10);
+    g_quad->program()->setUniform("rowCount",    10);
+    g_quad->program()->setUniform("columnCount", 10);
 
-        m_quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, "data/ssbo/ssbo.frag"));
+    int data[] = {
+        1,2,3,4,5,6,7,8,9,10,
+        10,1,2,3,4,5,6,7,8,9,
+        9,10,1,2,3,4,5,6,7,8,
+        8,9,10,1,2,3,4,5,6,7,
+        7,8,9,10,1,2,3,4,5,6,
+        6,7,8,9,10,1,2,3,4,5,
+        5,6,7,8,9,10,1,2,3,4,
+        4,5,6,7,8,9,10,1,2,3,
+        3,4,5,6,7,8,9,10,1,2,
+        2,3,4,5,6,7,8,9,10,1 };
 
-        m_quad->program()->setUniform("maximum",     10);
-        m_quad->program()->setUniform("rowCount",    10);
-        m_quad->program()->setUniform("columnCount", 10);
+    g_buffer = new Buffer();
+    g_buffer->ref();
+    g_buffer->setData(sizeof(data), data, GL_STATIC_DRAW);
 
-        int data[] = {
-            1,2,3,4,5,6,7,8,9,10,
-            10,1,2,3,4,5,6,7,8,9,
-            9,10,1,2,3,4,5,6,7,8,
-            8,9,10,1,2,3,4,5,6,7,
-            7,8,9,10,1,2,3,4,5,6,
-            6,7,8,9,10,1,2,3,4,5,
-            5,6,7,8,9,10,1,2,3,4,
-            4,5,6,7,8,9,10,1,2,3,
-            3,4,5,6,7,8,9,10,1,2,
-            2,3,4,5,6,7,8,9,10,1 };
+    g_buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
+}
 
-        m_buffer = new Buffer();
-        m_buffer->setData(sizeof(data), data, GL_STATIC_DRAW);
+void deinitialize()
+{
+    g_quad->unref();
+    g_buffer->unref();
+}
 
-        m_buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
-    }
+void draw()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    virtual void paintEvent(PaintEvent & event) override
-    {
-        WindowEventHandler::paintEvent(event);
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        m_quad->draw();
-    }
-
-protected:
-    ref_ptr<ScreenAlignedQuad> m_quad;
-    ref_ptr<Buffer> m_buffer;
-};
+    g_quad->draw();
+}
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    info() << "Usage:";
-    info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
-    info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
+    // Initialize GLFW
+    glfwInit();
 
-    ContextFormat format;
-    format.setVersion(4, 3);
-    format.setProfile(ContextFormat::Profile::Core);
-    format.setForwardCompatible(true);
+    GLFWwindow * window = createWindow();
+    initialize();
 
-    Window::init();
+    // Main loop
+    while (!glfwWindowShouldClose(window))
+    {
+        glfwPollEvents();
 
-    Window window;
-    window.setEventHandler(new EventHandler());
+        if (g_toggleFS)
+        {
+            deinitialize();
+            destroyWindow(window);
+            window = createWindow(!g_isFS);
+            initialize();
 
-    if (!window.create(format, "Shader Storage Buffer Objects Example"))
-        return 1;
+            g_toggleFS = false;
+        }
 
-    window.show();
+        draw();
+        glfwSwapBuffers(window);
+    }
 
-    return MainLoop::run();
+    deinitialize();
+
+    // Properly shutdown GLFW
+    glfwTerminate();
+
+    return 0;
 }

@@ -59,7 +59,6 @@ set(sources
 	${source_path}/AbstractUniform.cpp
 	${source_path}/Buffer.cpp
 	${source_path}/Capability.cpp
-	${source_path}/container_helpers.hpp
 	${source_path}/DebugMessage.cpp
 	${source_path}/Error.cpp
 	${source_path}/FramebufferAttachment.cpp
@@ -67,6 +66,8 @@ set(sources
 	${source_path}/glbindinglogging.cpp
 	${source_path}/glmlogging.cpp
 	${source_path}/globjects.cpp
+	
+	${source_path}/container_helpers.hpp
 	
 	${source_path}/base/AbstractFunctionCall.cpp
 	${source_path}/base/AbstractStringSource.cpp
@@ -255,7 +256,6 @@ set(api_includes
 	${include_path}/base/ChangeListener.h
 	${include_path}/base/CompositeStringSource.h
 	${include_path}/base/ConsoleLogger.h
-	${include_path}/base/container_helpers.hpp
 	${include_path}/base/File.h
 	${include_path}/base/formatString.h
 	${include_path}/base/formatString.hpp

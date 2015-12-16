@@ -1,0 +1,23 @@
+[
+    {
+        "opengl": {
+            "major": 4,
+            "minor": 3,
+            "core": true,
+            "forward": true,
+            "debug": false
+        },
+        "programs": [
+            {
+                "name": "Computeshader",
+                "shaders": [
+                    {
+                        "name": "Computeshader Compute Shader",
+                        "type": "GL_COMPUTE_SHADER",
+                        "file": "cstest.comp"
+                    }
+                ]
+            }
+        ]
+    }
+]

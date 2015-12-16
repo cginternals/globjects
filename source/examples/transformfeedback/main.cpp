@@ -1,11 +1,17 @@
 
+#include <chrono>
+
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
 #include <glbinding/gl/gl.h>
-#include <glbinding/gl/extension.h>
+#include <glbinding/ContextInfo.h>
+#include <glbinding/Version.h>
+
+#include <GLFW/glfw3.h>
 
 #include <globjects/globjects.h>
+#include <globjects/base/File.h>
 #include <globjects/logging.h>
 
 #include <globjects/Uniform.h>
@@ -16,203 +22,254 @@
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/TransformFeedback.h>
 
-#include <globjects/base/File.h>
-
-#include <common/Timer.h>
-#include <common/Window.h>
-#include <common/ContextFormat.h>
-#include <common/Context.h>
-#include <common/WindowEventHandler.h>
-#include <common/events.h>
-
 
 using namespace gl;
 using namespace glm;
 using namespace globjects;
 
-class EventHandler : public WindowEventHandler
-{
-public:
-    EventHandler()
-    : m_timer(false, true)
-    {
-    }
 
-    virtual ~EventHandler()
-    {
-    }
+namespace {
+    bool g_toggleFS = false;
+    bool g_isFS = false;
 
-    virtual void initialize(Window & window) override
-    {
-        WindowEventHandler::initialize(window);
-
-        if (!hasExtension(GLextension::GL_ARB_transform_feedback3))
-        {
-            critical() << "Transform feedback not supported.";
-
-            window.close();
-            return;
-        }
-
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-
-	    createAndSetupShaders();
-	    createAndSetupGeometry();
-        createAndSetupTransformFeedback();
-
-        m_timer.start();
-    }
-
-    void createAndSetupShaders()
-    {
-        m_shaderProgram = new Program();
-        m_shaderProgram->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,   "data/transformfeedback/simple.vert")
-          , Shader::fromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
-
-        m_transformFeedbackProgram = new Program();
-        m_transformFeedbackProgram->attach(
-            Shader::fromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
-
-        m_transformFeedbackProgram->setUniform("deltaT", 0.0f);
-    }
-
-    void createAndSetupGeometry()
-    {
-        auto vertexArray = std::vector<vec4>({
-            vec4(0, 0, 0, 1)
-          , vec4(1, 0, 0, 1)
-          , vec4(0, 1, 0, 1)
-          , vec4(1, 0, 0, 1)
-          , vec4(0, 1, 0, 1)
-          , vec4(1, 1, 0, 1) });
-
-        auto colorArray = std::vector<vec4>({
-            vec4(1, 0, 0, 1)
-          , vec4(1, 1, 0, 1)
-          , vec4(0, 0, 1, 1)
-          , vec4(1, 1, 0, 1)
-          , vec4(0, 0, 1, 1)
-          , vec4(0, 1, 0, 1) });
-
-        m_vertexBuffer1 = new Buffer();
-        m_vertexBuffer1->setData(vertexArray, GL_STATIC_DRAW);
-        m_vertexBuffer2 = new Buffer();
-        m_vertexBuffer2->setData(vertexArray, GL_STATIC_DRAW);
-        m_colorBuffer = new Buffer();
-        m_colorBuffer->setData(colorArray, GL_STATIC_DRAW);
-
-        m_vao = new VertexArray();
-
-        m_vao->binding(0)->setAttribute(0);
-        m_vao->binding(0)->setFormat(4, GL_FLOAT);
-
-        m_vao->binding(1)->setAttribute(1);
-        m_vao->binding(1)->setBuffer(m_colorBuffer, 0, sizeof(vec4));
-        m_vao->binding(1)->setFormat(4, GL_FLOAT);
-
-        m_vao->enable(0);
-        m_vao->enable(1);
-    }
-
-    void createAndSetupTransformFeedback()
-    {
-        m_transformFeedback = new TransformFeedback();
-        m_transformFeedback->setVaryings(m_transformFeedbackProgram
-            , { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
-    }
+    VertexArray * g_vao = nullptr;
+    Program * g_transformFeedbackProgram = nullptr;
+    TransformFeedback * g_transformFeedback = nullptr;
+    Program * g_shaderProgram = nullptr;
+    Buffer * g_vertexBuffer1 = nullptr;
+    Buffer * g_vertexBuffer2 = nullptr;
+    Buffer * g_colorBuffer = nullptr;
     
-    virtual void framebufferResizeEvent(ResizeEvent & event) override
+    std::chrono::high_resolution_clock::time_point g_startTime;
+}
+
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+        glfwSetWindowShouldClose(window, true);
+
+    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
+        File::reloadAll();
+
+    if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
+        g_toggleFS = true;
+}
+
+GLFWwindow * createWindow(bool fs = false)
+{
+    // Set GLFW window hints
+    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+
+    // Create a context and, if valid, make it current
+    GLFWwindow * window = glfwCreateWindow(1024, 768, "", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
+    if (window == nullptr)
     {
-        const int width = event.width();
-        const int height = event.height();
-        const int side = std::min<int>(width, height);
+        critical() << "Context creation failed. Terminate execution.";
 
-        glViewport((width - side) / 2, (height - side) / 2, side, side);
+        glfwTerminate();
+        exit(1);
+    }
+    glfwMakeContextCurrent(window);
 
-	    m_shaderProgram->setUniform("modelView", mat4());
-        m_shaderProgram->setUniform("projection", ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
+    // Create callback that when user presses ESC, the context should be destroyed and window closed
+    glfwSetKeyCallback(window, key_callback);
+
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+
+    // Do only on startup
+    if (!g_toggleFS)
+    {
+       // Dump information about context and graphics card
+       info() << std::endl
+           << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+           << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+           << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
     }
 
-    virtual void paintEvent(PaintEvent & event) override
+    if (!hasExtension(GLextension::GL_ARB_transform_feedback3))
     {
-        WindowEventHandler::paintEvent(event);
+        critical() << "Transform feedback not supported.";
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        Buffer * drawBuffer  = m_vertexBuffer1;
-        Buffer * writeBuffer = m_vertexBuffer2;
-
-        m_vao->bind();
-
-        m_transformFeedbackProgram->setUniform("deltaT", static_cast<float>(m_timer.elapsed().count()) * float(std::nano::num) / float(std::nano::den));
-        m_timer.reset();
-
-        m_vao->binding(0)->setBuffer(drawBuffer, 0, sizeof(vec4));
-
-        m_transformFeedback->bind();
-        writeBuffer->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
-
-        glEnable(GL_RASTERIZER_DISCARD);
-
-        m_transformFeedbackProgram->use();
-        m_transformFeedback->begin(GL_TRIANGLES);
-        m_vao->drawArrays(GL_TRIANGLES, 0, 6);
-        m_transformFeedback->end();
-        glDisable(GL_RASTERIZER_DISCARD);
-
-        m_transformFeedback->unbind();
-
-        m_vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(vec4));
-
-        m_shaderProgram->use();
-        m_transformFeedback->draw(GL_TRIANGLE_STRIP);
-        m_shaderProgram->release();
-
-        m_vao->unbind();
-
-        std::swap(m_vertexBuffer1, m_vertexBuffer2);
+        glfwTerminate();
+        exit(1);
     }
 
-protected:
-    ref_ptr<Program> m_shaderProgram;
-    ref_ptr<Program> m_transformFeedbackProgram;
-	
-    ref_ptr<VertexArray> m_vao;
+    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-    ref_ptr<TransformFeedback> m_transformFeedback;
-	
-    ref_ptr<Buffer> m_vertexBuffer1;
-    ref_ptr<Buffer> m_vertexBuffer2;
-    ref_ptr<Buffer> m_colorBuffer;
+    g_isFS = fs;
+    return window;
+}
 
-    Timer m_timer;
-};
+void destroyWindow(GLFWwindow * window)
+{
+    globjects::detachAllObjects();
+    glfwDestroyWindow(window);
+}
+
+void initialize()
+{
+    // Initialize OpenGL objects
+    g_shaderProgram = new Program();
+    g_shaderProgram->ref();
+    g_shaderProgram->attach(
+        Shader::fromFile(GL_VERTEX_SHADER,   "data/transformfeedback/simple.vert")
+      , Shader::fromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
+
+    g_transformFeedbackProgram = new Program();
+    g_transformFeedbackProgram->ref();
+    g_transformFeedbackProgram->attach(
+        Shader::fromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
+
+    g_transformFeedbackProgram->setUniform("deltaT", 0.0f);
+
+
+    const int width = 1024;
+    const int height = 768;
+    const int side = std::min<int>(width, height);
+    glViewport((width - side) / 2, (height - side) / 2, side, side);
+    g_shaderProgram->setUniform("modelView", mat4());
+    g_shaderProgram->setUniform("projection", ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
+
+
+    // Create and setup geometry
+    auto vertexArray = std::vector<vec4>({
+        vec4(0, 0, 0, 1)
+      , vec4(1, 0, 0, 1)
+      , vec4(0, 1, 0, 1)
+      , vec4(1, 0, 0, 1)
+      , vec4(0, 1, 0, 1)
+      , vec4(1, 1, 0, 1) });
+
+    auto colorArray = std::vector<vec4>({
+        vec4(1, 0, 0, 1)
+      , vec4(1, 1, 0, 1)
+      , vec4(0, 0, 1, 1)
+      , vec4(1, 1, 0, 1)
+      , vec4(0, 0, 1, 1)
+      , vec4(0, 1, 0, 1) });
+
+    g_vertexBuffer1 = new Buffer();
+    g_vertexBuffer1->ref();
+    g_vertexBuffer1->setData(vertexArray, GL_STATIC_DRAW);
+    g_vertexBuffer2 = new Buffer();
+    g_vertexBuffer2->ref();
+    g_vertexBuffer2->setData(vertexArray, GL_STATIC_DRAW);
+    g_colorBuffer = new Buffer();
+    g_colorBuffer->ref();
+    g_colorBuffer->setData(colorArray, GL_STATIC_DRAW);
+
+    g_vao = new VertexArray();
+    g_vao->ref();
+
+    g_vao->binding(0)->setAttribute(0);
+    g_vao->binding(0)->setFormat(4, GL_FLOAT);
+
+    g_vao->binding(1)->setAttribute(1);
+    g_vao->binding(1)->setBuffer(g_colorBuffer, 0, sizeof(vec4));
+    g_vao->binding(1)->setFormat(4, GL_FLOAT);
+
+    g_vao->enable(0);
+    g_vao->enable(1);
+
+
+    // Create and setup TransformFeedback
+    g_transformFeedback = new TransformFeedback();
+    g_transformFeedback->ref();
+    g_transformFeedback->setVaryings(g_transformFeedbackProgram, { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
+
+
+    g_startTime = std::chrono::high_resolution_clock::now();
+}
+
+void deinitialize()
+{
+    g_vao->unref();
+    g_transformFeedbackProgram->unref();
+    g_transformFeedback->unref();
+    g_shaderProgram->unref();
+    g_vertexBuffer1->unref();
+    g_vertexBuffer2->unref();
+    g_colorBuffer->unref();
+}
+
+void draw()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    const auto t_elapsed = std::chrono::high_resolution_clock::now() - g_startTime;
+    g_startTime = std::chrono::high_resolution_clock::now();
+
+    Buffer * drawBuffer  = g_vertexBuffer1;
+    Buffer * writeBuffer = g_vertexBuffer2;
+
+    g_vao->bind();
+
+    g_transformFeedbackProgram->setUniform("deltaT", static_cast<float>(t_elapsed.count()) * float(std::nano::num) / float(std::nano::den));
+
+    g_vao->binding(0)->setBuffer(drawBuffer, 0, sizeof(vec4));
+
+    g_transformFeedback->bind();
+    writeBuffer->bindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
+
+    glEnable(GL_RASTERIZER_DISCARD);
+
+    g_transformFeedbackProgram->use();
+    g_transformFeedback->begin(GL_TRIANGLES);
+    g_vao->drawArrays(GL_TRIANGLES, 0, 6);
+    g_transformFeedback->end();
+    glDisable(GL_RASTERIZER_DISCARD);
+
+    g_transformFeedback->unbind();
+
+    g_vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(vec4));
+
+    g_shaderProgram->use();
+    g_transformFeedback->draw(GL_TRIANGLE_STRIP);
+    g_shaderProgram->release();
+
+    g_vao->unbind();
+
+    std::swap(g_vertexBuffer1, g_vertexBuffer2);
+}
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    info() << "Usage:";
-    info() << "\t" << "ESC" << "\t\t"       << "Close example";
-    info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-    info() << "\t" << "F11" << "\t\t"       << "Toggle fullscreen";
-    info() << "\t" << "F10" << "\t\t"       << "Toggle vertical sync";
-    info() << "\t" << "F5" << "\t\t"        << "Reload shaders";
+    // Initialize GLFW
+    glfwInit();
 
-    ContextFormat format;
-    format.setVersion(4, 0);
-    format.setProfile(ContextFormat::Profile::Core);
-    format.setForwardCompatible(true);
+    GLFWwindow * window = createWindow();
+    initialize();
 
-    Window::init();
+    // Main loop
+    while (!glfwWindowShouldClose(window))
+    {
+        glfwPollEvents();
 
-    Window window;
-    window.setEventHandler(new EventHandler());
+        if (g_toggleFS)
+        {
+            deinitialize();
+            destroyWindow(window);
+            window = createWindow(!g_isFS);
+            initialize();
 
-    if (!window.create(format, "Transform Feedback Example"))
-        return 1;
+            g_toggleFS = false;
+        }
 
-    window.show();
+        draw();
+        glfwSwapBuffers(window);
+    }
 
-    return MainLoop::run();
+    deinitialize();
+
+    // Properly shutdown GLFW
+    glfwTerminate();
+
+    return 0;
 }

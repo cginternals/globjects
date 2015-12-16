@@ -1,0 +1,28 @@
+[
+    {
+        "opengl": {
+            "major": 3,
+            "minor": 1,
+            "core": false,
+            "forward": true,
+            "debug": false
+        },
+        "programs": [
+            {
+                "name": "States",
+                "shaders": [
+                    {
+                        "name": "States Vertex Shader",
+                        "type": "GL_VERTEX_SHADER",
+                        "file": "standard.vert"
+                    },
+                    {
+                        "name": "States Fragment Shader",
+                        "type": "GL_FRAGMENT_SHADER",
+                        "file": "standard.frag"
+                    }
+                ]
+            }
+        ]
+    }
+]
