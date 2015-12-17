@@ -40,7 +40,6 @@
 
 
 using namespace gl;
-using namespace glm;
 using namespace globjects;
 
 
@@ -84,11 +83,11 @@ public:
             Shader::fromFile(GL_VERTEX_SHADER,  "data/qt-example/shader.vert"),
             Shader::fromFile(GL_FRAGMENT_SHADER, "data/qt-example/shader.frag"));
 
-        m_cornerBuffer->setData(std::array<vec2, 4>{ {
-            vec2(0, 0), vec2(1, 0), vec2(0, 1), vec2(1, 1) } }, GL_STATIC_DRAW);
+        m_cornerBuffer->setData(std::array<glm::vec2, 4>{ {
+                glm::vec2(0, 0), glm::vec2(1, 0), glm::vec2(0, 1), glm::vec2(1, 1) } }, GL_STATIC_DRAW);
 
         m_vao->binding(0)->setAttribute(0);
-        m_vao->binding(0)->setBuffer(m_cornerBuffer, 0, sizeof(vec2));
+        m_vao->binding(0)->setBuffer(m_cornerBuffer, 0, sizeof(glm::vec2));
         m_vao->binding(0)->setFormat(2, GL_FLOAT);
         m_vao->enable(0);
     }
