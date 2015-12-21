@@ -1,116 +1,140 @@
 
-set(target qt-example)
+# 
+# External dependencies
+# 
 
-# Qt5
+find_package(Qt5Core    5.1)
+find_package(Qt5Gui     5.1)
+find_package(Qt5Widgets 5.1)
 
-# good resource: http://www.kdab.com/using-cmake-with-qt-5/
+# Enable automoc
+set(CMAKE_AUTOMOC ON)
+SET(CMAKE_AUTOUIC ON)
+set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
+set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
 
-# http://qt-project.org/forums/viewthread/30006/
-if(MSVC)
+# ENABLE CMP0020: Automatically link Qt executables to qtmain target on Windows.
+if (POLICY CMP0020)
     cmake_policy(SET CMP0020 NEW)
 endif()
 
-# External libraries
 
-find_package(Qt5Core    5.1 QUIET)
-find_package(Qt5Gui     5.1 QUIET)
-find_package(Qt5Widgets 5.1 QUIET)
-find_package(GLM            REQUIRED)
-find_package(glbinding      REQUIRED)
+# 
+# Library name and options
+# 
 
+# Target name
+set(target cubescape-qt)
+
+# Exit here if required dependencies are not met
 if (NOT Qt5Core_FOUND)
-    message("Example ${target} skipped: Qt5 not found")
+    message(STATUS "Example ${target} skipped: Qt5 not found")
     return()
+else()
+    message(STATUS "Example ${target}")
 endif()
 
-message(STATUS "Example ${target}")
 
+# 
+# Sources
+# 
 
-set(CMAKE_AUTOMOC ON)
-set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
-
-# Probably works in the next cmake release -> http://www.cmake.org/Bug/view.php?id=13788
-# What we do not want is automocs beside the project -> http://www.cmake.org/Bug/view.php?id=13688
-set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
-
-
-# Includes
-
-include_directories(
-    ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIRS}
+set(sources
+    main.cpp
+    
+    WindowQt.cpp
+    WindowQt.h
 )
 
-include_directories(
-    BEFORE
-    ${CMAKE_SOURCE_DIR}/source/globjects/include
+
+# 
+# Create executable
+# 
+
+# Build executable
+add_executable(${target}
+    MACOSX_BUNDLE
+    ${sources}
+)
+
+# Create namespaced alias
+add_executable(${META_PROJECT_NAME}::${target} ALIAS ${target})
+
+
+# 
+# Project options
+# 
+
+set_target_properties(${target}
+    PROPERTIES
+    ${DEFAULT_PROJECT_OPTIONS}
+    FOLDER "${IDE_FOLDER}"
+)
+
+
+# 
+# Include directories
+# 
+
+target_include_directories(${target}
+    PRIVATE
+    ${DEFAULT_INCLUDE_DIRECTORIES}
+    ${PROJECT_BINARY_DIR}/source/include
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR} # for UIC generated headers
 )
 
-# Libraries
 
-set(libs
-    ${GLBINDING_LIBRARIES}
-    globjects
+# 
+# Libraries
+# 
+
+target_link_libraries(${target}
+    PRIVATE
+    ${DEFAULT_LIBRARIES}
+    ${META_PROJECT_NAME}::globjects
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
 )
 
-# Sources
 
-set(headers
-    WindowQt.h
+# 
+# Compile definitions
+# 
+
+target_compile_definitions(${target}
+    PRIVATE
+    ${DEFAULT_COMPILE_DEFINITIONS}
 )
 
-set(sources
-    main.cpp
-    WindowQt.cpp
+
+# 
+# Compile options
+# 
+
+target_compile_options(${target}
+    PRIVATE
+    ${DEFAULT_COMPILE_OPTIONS}
 )
 
-# Target definitions
 
-# for compatibility between glm 0.9.4 and 0.9.5
-add_definitions("-DGLM_FORCE_RADIANS")
+# 
+# Linker options
+# 
 
-# Build executable
+target_link_libraries(${target}
+    PRIVATE
+    ${DEFAULT_LINKER_OPTIONS}
+)
 
-add_executable(${target} ${headers} ${sources})
 
-target_link_libraries(${target} ${libs})
-
-
-if(MSVC)
-    # -> msvc14 : C4458 - declaration hides class member (problem in qt)
-    # -> msvc14 : C4127 - conditional expression is constant (problem in qt)
-    set(DEFAULT_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS} /wd4458 /wd4127)
-endif()
-
-target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
-
-set_target_properties(${target}
-    PROPERTIES
-    LINKER_LANGUAGE              CXX
-    FOLDER                      "${IDE_FOLDER}"
-    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
-    COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
-    LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
-    LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
-    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}")
-
+# 
 # Deployment
+# 
 
-# Do NOT install this example 
-
-#install(TARGETS ${target} COMPONENT examples
-#    RUNTIME DESTINATION ${INSTALL_EXAMPLES}
-#   LIBRARY DESTINATION ${INSTALL_SHARED}
-#   ARCHIVE DESTINATION ${INSTALL_LIB}
-#)
-
-# deploy qt binaries (glraw debug target should not be deployed)
-#if(WIN32)
-#    install_qt(examples ${INSTALL_EXAMPLES} Core Gui Widgets OpenGL)
-#    install_qt_platforms(examples ${INSTALL_EXAMPLES} qwindows)
-#endif()
+# Executable
+install(TARGETS ${target}
+    RUNTIME DESTINATION ${INSTALL_BIN} COMPONENT examples
+    BUNDLE  DESTINATION ${INSTALL_BIN} COMPONENT examples
+)

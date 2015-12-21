@@ -1,58 +1,110 @@
 
-set(target globjects)
-message(STATUS "Lib ${target}")
+# 
+# External dependencies
+# 
 
-
-# External libraries
-
-find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 
+# 
+# Library name and options
+# 
 
-# Includes
+# Target name
+set(target globjects)
 
-include_directories(
-    ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDE_DIRS}
-)
+# Exit here if required dependencies are not met
+message(STATUS "Lib ${target}")
 
-include_directories(
-    BEFORE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-
-# Libraries
-
-set(libs
-	${OPENGL_LIBRARIES}
-    ${GLBINDING_LIBRARIES}
-)
+# Set API export file and macro
+string(TOUPPER ${target} target_upper)
+set(feature_file "include/${target}/${target}_features.h")
+set(export_file  "include/${target}/${target}_api.h")
+set(export_macro "${target_upper}_API")
 
 
-# Compiler definitions
-
-if (OPTION_BUILD_STATIC)
-    add_definitions("-D${META_PROJECT_NAME_UPPER}_STATIC")
-else()
-    add_definitions("-DGLOBJECTS_EXPORTS")
-endif()
-
-if (OPTION_ERRORS_AS_EXCEPTION)
-    add_definitions("-DGLOBJECTS_GL_ERROR_RAISE_EXCEPTION")
-else()
-    add_definitions("-D_HAS_EXCEPTIONS=0")
-endif()
-
-# for compatibility between glm 0.9.4 and 0.9.5
-add_definitions("-DGLM_FORCE_RADIANS")
-
-
+# 
 # Sources
+# 
 
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
-set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
+set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
+
+set(headers
+	${include_path}/AbstractState.h
+	${include_path}/AbstractState.hpp
+	${include_path}/AbstractUniform.h
+	${include_path}/AbstractUniform.hpp
+	${include_path}/Buffer.h
+	${include_path}/Buffer.hpp
+	${include_path}/Capability.h
+	${include_path}/DebugMessage.h
+	${include_path}/Error.h
+	${include_path}/FramebufferAttachment.h
+	${include_path}/Framebuffer.h
+	${include_path}/glbindinglogging.h
+	${include_path}/glmlogging.h
+	${include_path}/globjects_api.h
+	${include_path}/globjects.h
+	${include_path}/globjects.hpp
+	${include_path}/LocationIdentity.h
+	${include_path}/logging.h
+	${include_path}/NamedString.h
+	${include_path}/Object.h
+	${include_path}/objectlogging.h
+	${include_path}/objectlogging.hpp
+	${include_path}/ObjectVisitor.h
+	${include_path}/ProgramBinary.h
+	${include_path}/Program.h
+	${include_path}/Program.hpp
+	${include_path}/Query.h
+	${include_path}/AttachedRenderbuffer.h
+	${include_path}/Renderbuffer.h
+	${include_path}/Sampler.h
+	${include_path}/Shader.h
+	${include_path}/State.h
+	${include_path}/StateSetting.h
+	${include_path}/StateSetting.hpp
+	${include_path}/Sync.h
+	${include_path}/AttachedTexture.h
+	${include_path}/Texture.h
+	${include_path}/TextureHandle.h
+	${include_path}/TransformFeedback.h
+	${include_path}/TransformFeedback.hpp
+	${include_path}/UniformBlock.h
+	${include_path}/Uniform.h
+	${include_path}/Uniform.hpp
+	${include_path}/VertexArray.h
+	${include_path}/VertexAttributeBinding.h
+	
+	${include_path}/base/AbstractStringSource.h
+	${include_path}/base/AbstractFunctionCall.h
+	${include_path}/base/AbstractLogHandler.h
+	${include_path}/base/baselogging.h
+	${include_path}/base/baselogging.hpp
+	${include_path}/base/Changeable.h
+	${include_path}/base/ChangeListener.h
+	${include_path}/base/CompositeStringSource.h
+	${include_path}/base/ConsoleLogger.h
+	${include_path}/base/File.h
+	${include_path}/base/formatString.h
+	${include_path}/base/formatString.hpp
+	${include_path}/base/FunctionCall.h
+	${include_path}/base/FunctionCall.hpp
+	${include_path}/base/HeapOnly.h
+	${include_path}/base/LogMessageBuilder.h
+	${include_path}/base/LogMessageBuilder.hpp
+	${include_path}/base/LogMessage.h
+	${include_path}/base/LogMessageLevel.h
+	${include_path}/base/Referenced.h
+	${include_path}/base/ref_ptr.h
+	${include_path}/base/ref_ptr.hpp
+	${include_path}/base/Singleton.h
+	${include_path}/base/Singleton.hpp
+	${include_path}/base/StaticStringSource.h
+	${include_path}/base/StringSourceDecorator.h
+	${include_path}/base/StringTemplate.h
+)
 
 set(sources
 	${source_path}/AbstractState.cpp
@@ -135,7 +187,7 @@ set(sources
 	${source_path}/implementations/ShadingLanguageIncludeImplementation_Fallback.cpp
 	${source_path}/implementations/ShadingLanguageIncludeImplementation_Fallback.h
         
-        ${source_path}/implementations/AbstractTextureImplementation.cpp
+    ${source_path}/implementations/AbstractTextureImplementation.cpp
 	${source_path}/implementations/AbstractTextureImplementation.h
 	${source_path}/implementations/TextureImplementation_DirectStateAccessARB.cpp
 	${source_path}/implementations/TextureImplementation_DirectStateAccessARB.h
@@ -200,143 +252,166 @@ set(sources
 	${source_path}/VertexAttributeBinding.cpp
 )
 
-set(api_includes
-	${include_path}/AbstractState.h
-	${include_path}/AbstractState.hpp
-	${include_path}/AbstractUniform.h
-	${include_path}/AbstractUniform.hpp
-	${include_path}/Buffer.h
-	${include_path}/Buffer.hpp
-	${include_path}/Capability.h
-	${include_path}/DebugMessage.h
-	${include_path}/Error.h
-	${include_path}/FramebufferAttachment.h
-	${include_path}/Framebuffer.h
-	${include_path}/glbindinglogging.h
-	${include_path}/glmlogging.h
-	${include_path}/globjects_api.h
-	${include_path}/globjects.h
-	${include_path}/globjects.hpp
-	${include_path}/LocationIdentity.h
-	${include_path}/logging.h
-	${include_path}/NamedString.h
-	${include_path}/Object.h
-	${include_path}/objectlogging.h
-	${include_path}/objectlogging.hpp
-	${include_path}/ObjectVisitor.h
-	${include_path}/ProgramBinary.h
-	${include_path}/Program.h
-	${include_path}/Program.hpp
-	${include_path}/Query.h
-	${include_path}/AttachedRenderbuffer.h
-	${include_path}/Renderbuffer.h
-	${include_path}/Sampler.h
-	${include_path}/Shader.h
-	${include_path}/State.h
-	${include_path}/StateSetting.h
-	${include_path}/StateSetting.hpp
-	${include_path}/Sync.h
-	${include_path}/AttachedTexture.h
-	${include_path}/Texture.h
-	${include_path}/TextureHandle.h
-	${include_path}/TransformFeedback.h
-	${include_path}/TransformFeedback.hpp
-	${include_path}/UniformBlock.h
-	${include_path}/Uniform.h
-	${include_path}/Uniform.hpp
-	${include_path}/VertexArray.h
-	${include_path}/VertexAttributeBinding.h
-	
-	${include_path}/base/AbstractStringSource.h
-	${include_path}/base/AbstractFunctionCall.h
-	${include_path}/base/AbstractLogHandler.h
-	${include_path}/base/baselogging.h
-	${include_path}/base/baselogging.hpp
-	${include_path}/base/Changeable.h
-	${include_path}/base/ChangeListener.h
-	${include_path}/base/CompositeStringSource.h
-	${include_path}/base/ConsoleLogger.h
-	${include_path}/base/File.h
-	${include_path}/base/formatString.h
-	${include_path}/base/formatString.hpp
-	${include_path}/base/FunctionCall.h
-	${include_path}/base/FunctionCall.hpp
-	${include_path}/base/HeapOnly.h
-	${include_path}/base/LogMessageBuilder.h
-	${include_path}/base/LogMessageBuilder.hpp
-	${include_path}/base/LogMessage.h
-	${include_path}/base/LogMessageLevel.h
-	${include_path}/base/Referenced.h
-	${include_path}/base/ref_ptr.h
-	${include_path}/base/ref_ptr.hpp
-	${include_path}/base/Singleton.h
-	${include_path}/base/Singleton.hpp
-	${include_path}/base/StaticStringSource.h
-	${include_path}/base/StringSourceDecorator.h
-	${include_path}/base/StringTemplate.h
-)
-
 # Group source files
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
 source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
-    ${header_group} ${api_includes})
-source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
+    ${header_group} ${headers})
+source_group_by_path(${source_path}  "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
 
+
+# 
+# Create library
+# 
+
 # Build library
+add_library(${target}
+    ${sources}
+    ${headers}
+)
 
-add_library(${target} ${api_includes} ${sources})
+# Create namespaced alias
+add_library(${META_PROJECT_NAME}::${target} ALIAS ${target})
 
-target_link_libraries(${target} ${libs})
+# Export library for downstream projects
+export(TARGETS ${target} NAMESPACE ${META_PROJECT_NAME}:: FILE ${PROJECT_BINARY_DIR}/cmake/${target}/${target}-export.cmake)
 
-target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
+# Create API export header
+generate_export_header(${target}
+    EXPORT_FILE_NAME  ${export_file}
+    EXPORT_MACRO_NAME ${export_macro}
+)
+
+# Create feature detection header
+write_compiler_detection_header(
+    FILE ${feature_file}
+    PREFIX ${target_upper}
+    COMPILERS AppleClang Clang GNU MSVC
+    FEATURES cxx_thread_local
+)
+
+
+# 
+# Project options
+# 
 
 set_target_properties(${target}
     PROPERTIES
-    LINKER_LANGUAGE              CXX
-    FOLDER                      "${IDE_FOLDER}"
-    COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
-    COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
-    LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
-    LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
-    DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
-    INCLUDE_PATH	            ${include_path})
+    ${DEFAULT_PROJECT_OPTIONS}
+    FOLDER "${IDE_FOLDER}"
+)
 
 
+# 
+# Include directories
+# 
+
+target_include_directories(${target}
+    PRIVATE
+    ${PROJECT_BINARY_DIR}/source/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_BINARY_DIR}/include
+
+    PUBLIC
+    ${DEFAULT_INCLUDE_DIRECTORIES}
+    ${GLM_INCLUDE_DIR}
+
+    INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+
+# 
+# Libraries
+# 
+
+target_link_libraries(${target}
+    PRIVATE
+
+    PUBLIC
+    ${DEFAULT_LIBRARIES}
+    glbinding::glbinding
+
+    INTERFACE
+)
+
+
+# 
+# Compile definitions
+# 
+
+target_compile_definitions(${target}
+    PRIVATE
+
+    PUBLIC
+    GLM_FORCE_RADIANS
+    $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:${target_upper}_STATIC_DEFINE>
+    ${DEFAULT_COMPILE_DEFINITIONS}
+
+    INTERFACE
+)
+
+# add_definitions("-DGLOBJECTS_GL_ERROR_RAISE_EXCEPTION")
+# add_definitions("-D_HAS_EXCEPTIONS=0")
+
+# 
+# Compile options
+# 
+
+target_compile_options(${target}
+    PRIVATE
+
+    PUBLIC
+    ${DEFAULT_COMPILE_OPTIONS}
+
+    INTERFACE
+)
+
+
+# 
+# Linker options
+# 
+
+target_link_libraries(${target}
+    PRIVATE
+
+    PUBLIC
+    ${DEFAULT_LINKER_OPTIONS}
+
+    INTERFACE
+)
+
+
+# 
 # Deployment
+# 
 
 # Library
-if(NOT OPTION_BUILD_STATIC)
-    install(TARGETS ${target} COMPONENT runtime
-        RUNTIME DESTINATION ${INSTALL_BIN}
-        LIBRARY DESTINATION ${INSTALL_SHARED})
-    if(WIN32)
-		install(FILES ${GLBINDING_BINARY_RELEASE} DESTINATION ${INSTALL_BIN}
-			CONFIGURATIONS Release COMPONENT dev)
-		install(FILES ${GLBINDING_BINARY_DEBUG} DESTINATION ${INSTALL_BIN}
-			CONFIGURATIONS Debug COMPONENT dev)
-    endif()
-
-else()
-    install(TARGETS ${target} COMPONENT dev
-        ARCHIVE DESTINATION ${INSTALL_LIB})
-endif()
-
-if(WIN32 AND NOT OPTION_BUILD_STATIC) # on windows, provide self contained zip files (examples and dev, both contain the run-time)
-
-    if(OPTION_BUILD_EXAMPLES)
-        install(TARGETS ${target} COMPONENT examples
-            RUNTIME DESTINATION ${INSTALL_BIN}
-            LIBRARY DESTINATION ${INSTALL_BIN})
-    endif()
-
-    install(TARGETS ${target} COMPONENT dev
-        RUNTIME DESTINATION ${INSTALL_BIN}
-        LIBRARY DESTINATION ${INSTALL_SHARED}
-        ARCHIVE DESTINATION ${INSTALL_LIB})
-
-endif()
+install(TARGETS ${target}
+    EXPORT  "${target}-export"            COMPONENT dev
+    RUNTIME DESTINATION ${INSTALL_BIN}    COMPONENT runtime
+    LIBRARY DESTINATION ${INSTALL_SHARED} COMPONENT runtime
+    ARCHIVE DESTINATION ${INSTALL_LIB}    COMPONENT dev
+)
 
 # Header files
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE} COMPONENT dev)
+install(DIRECTORY
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE}
+    COMPONENT dev
+)
+
+# Generated header files
+install(DIRECTORY
+    ${CMAKE_CURRENT_BINARY_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE}
+    COMPONENT dev
+)
+
+# CMake config
+install(EXPORT ${target}-export
+    NAMESPACE   ${META_PROJECT_NAME}::
+    DESTINATION ${INSTALL_CMAKE}/${target}
+    COMPONENT   dev
+)
