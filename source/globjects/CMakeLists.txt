@@ -44,7 +44,6 @@ set(headers
 	${include_path}/Framebuffer.h
 	${include_path}/glbindinglogging.h
 	${include_path}/glmlogging.h
-	${include_path}/globjects_api.h
 	${include_path}/globjects.h
 	${include_path}/globjects.hpp
 	${include_path}/LocationIdentity.h

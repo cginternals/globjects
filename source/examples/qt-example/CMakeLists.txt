@@ -24,7 +24,7 @@ endif()
 # 
 
 # Target name
-set(target cubescape-qt)
+set(target qt-example)
 
 # Exit here if required dependencies are not met
 if (NOT Qt5Core_FOUND)

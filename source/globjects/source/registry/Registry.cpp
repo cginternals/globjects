@@ -2,6 +2,7 @@
 
 #include <mutex>
 
+#include <globjects/globjects_features.h>
 #include <globjects/logging.h>
 
 #include "ObjectRegistry.h"
@@ -11,7 +12,7 @@
 
 namespace
 {
-    THREAD_LOCAL globjects::Registry * t_currentRegistry;
+	GLOBJECTS_THREAD_LOCAL globjects::Registry * t_currentRegistry;
 
     std::recursive_mutex g_mutex;
 }
