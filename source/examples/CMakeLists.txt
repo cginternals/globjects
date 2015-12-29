@@ -1,15 +1,10 @@
 
+# Check if examples are enabled
 if(NOT OPTION_BUILD_EXAMPLES)
     return()
-endif ()
-
-if(WIN32)
-	install(FILES ${GLBINDING_BINARY_RELEASE} DESTINATION ${INSTALL_EXAMPLES}
-		CONFIGURATIONS Release COMPONENT examples)
-	install(FILES ${GLBINDING_BINARY_DEBUG} DESTINATION ${INSTALL_EXAMPLES}
-		CONFIGURATIONS Debug COMPONENT examples)
 endif()
 
+# Examples
 # add_subdirectory("bindless-textures")
 add_subdirectory("commandlineoutput")
 add_subdirectory("computeshader")
