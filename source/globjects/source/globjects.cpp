@@ -32,18 +32,6 @@ namespace
     bool g_globjectsIsInitialized = false;
     std::mutex g_mutex;
 
-    void manualContextCheck(const glbinding::AbstractFunction & /*function*/)
-    {
-        if (!globjects::Registry::isCurrentContext(glbinding::getCurrentContext()))
-        {
-#ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
-            throw std::runtime_error("Current OpenGL context and current globjects context mismatch");
-#else
-            globjects::fatal() << "Current OpenGL context and current globjects context mismatch";
-#endif
-        }
-    }
-
     void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
     {
         globjects::Error error = globjects::Error::get();
@@ -79,9 +67,6 @@ void init()
         glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
             manualErrorCheckAfter(*functionCall.function);
         });
-        glbinding::setBeforeCallback([](const glbinding::FunctionCall & functionCall) {
-            manualContextCheck(*functionCall.function);
-        });
         glbinding::setUnresolvedCallback([](const glbinding::AbstractFunction & function) {
 #ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
             throw std::runtime_error(std::string(function.name()) + " couldn't get resolved.");
@@ -106,9 +91,6 @@ void init(const glbinding::ContextHandle sharedContextId)
         // Callback mask is configured in AbstractDebugImplementation::enable
         glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
             manualErrorCheckAfter(*functionCall.function);
-        });
-        glbinding::setBeforeCallback([](const glbinding::FunctionCall & functionCall) {
-            manualContextCheck(*functionCall.function);
         });
         glbinding::setUnresolvedCallback([](const glbinding::AbstractFunction & function) {
 #ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
