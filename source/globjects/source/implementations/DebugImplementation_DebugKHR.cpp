@@ -45,7 +45,7 @@ void DebugImplementation_DebugKHR::enable()
 {
     globjects::enable(GL_DEBUG_OUTPUT);
 
-    glbinding::setCallbackMaskExcept(glbinding::CallbackMask::Before, { "glGetError" });
+    glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
 
     registerCallback();
 }
