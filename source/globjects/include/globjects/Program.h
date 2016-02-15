@@ -117,6 +117,9 @@ public:
 	const std::string infoLog() const;
 	gl::GLint get(gl::GLenum pname) const;
 
+    void setParameter(gl::GLenum pname, gl::GLint value) const;
+    void setParameter(gl::GLenum pname, gl::GLboolean value) const;
+
     void getActiveAttrib(gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * size, gl::GLenum * type, gl::GLchar * name) const;
 
     gl::GLint getAttributeLocation(const std::string & name) const;

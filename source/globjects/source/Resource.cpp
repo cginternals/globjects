@@ -133,6 +133,17 @@ ProgramResource::~ProgramResource()
 }
 
 
+ProgramPipelineResource::ProgramPipelineResource()
+: IDResource(createObject(glGenProgramPipelines))
+{
+}
+
+ProgramPipelineResource::~ProgramPipelineResource()
+{
+    deleteObject(glDeleteProgramPipelines, id(), hasOwnership());
+}
+
+
 QueryResource::QueryResource()
 : IDResource(createObject(glGenQueries))
 {

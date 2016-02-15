@@ -541,4 +541,14 @@ GLenum Program::objectType() const
     return GL_PROGRAM;
 }
 
+void Program::setParameter(gl::GLenum pname, gl::GLint value) const
+{
+    glProgramParameteri(id(), pname, value);
+}
+
+void Program::setParameter(gl::GLenum pname, gl::GLboolean value) const
+{
+    glProgramParameteri(id(), pname, value == gl::GL_TRUE ? 1 : 0);
+}
+
 } // namespace globjects
