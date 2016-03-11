@@ -31,11 +31,18 @@ public:
     void releaseStages(gl::UseProgramStageMask stages);
     void releaseProgram(Program * program);
 
+    bool isValid() const;
+    void validate();
+
+    std::string infoLog() const;
+    gl::GLint get(gl::GLenum pname) const;
+
     virtual void notifyChanged(const Changeable * sender) override;
 
-    void invalidate();
-
     virtual gl::GLenum objectType() const override;
+
+protected:
+    void invalidate();
 
 protected:
     bool m_dirty;

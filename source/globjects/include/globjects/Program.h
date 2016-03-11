@@ -114,8 +114,11 @@ public:
     void setBinary(ProgramBinary * binary);
     ProgramBinary * getBinary() const;
 
-	const std::string infoLog() const;
+    std::string infoLog() const;
 	gl::GLint get(gl::GLenum pname) const;
+
+    bool isValid() const;
+    void validate();
 
     void setParameter(gl::GLenum pname, gl::GLint value) const;
     void setParameter(gl::GLenum pname, gl::GLboolean value) const;

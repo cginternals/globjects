@@ -81,14 +81,46 @@ void ProgramPipeline::releaseProgram(Program * program)
     invalidate();
 }
 
-void ProgramPipeline::notifyChanged(const Changeable * sender)
+void ProgramPipeline::notifyChanged(const Changeable * /*sender*/)
 {
     invalidate();
+}
+
+bool ProgramPipeline::isValid() const
+{
+    return get(gl::GL_VALIDATE_STATUS) == 1;
+}
+
+void ProgramPipeline::validate()
+{
+    gl::glValidateProgramPipeline(id());
 }
 
 void ProgramPipeline::invalidate()
 {
     m_dirty = true;
+}
+
+gl::GLint ProgramPipeline::get(const gl::GLenum pname) const
+{
+    gl::GLint value = 0;
+    gl::glGetProgramPipelineiv(id(), pname, &value);
+
+    return value;
+}
+
+std::string ProgramPipeline::infoLog() const
+{
+    gl::GLint length = get(gl::GL_INFO_LOG_LENGTH);
+
+    if (length == 0)
+        return std::string();
+
+    std::vector<char> log(length);
+
+    gl::glGetProgramPipelineInfoLog(id(), length, &length, log.data());
+
+    return std::string(log.data(), length);
 }
 
 gl::GLenum ProgramPipeline::objectType() const

@@ -483,7 +483,7 @@ void Program::getActiveAttrib(gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei
     glGetActiveAttrib(id(), index, bufSize, length, size, type, name);
 }
 
-const std::string Program::infoLog() const
+std::string Program::infoLog() const
 {
     GLint length = get(GL_INFO_LOG_LENGTH);
 
@@ -534,6 +534,16 @@ void Program::setShaderStorageBlockBinding(const GLuint storageBlockIndex, const
         return;
 
     glShaderStorageBlockBinding(id(), storageBlockIndex, storageBlockBinding);
+}
+
+bool Program::isValid() const
+{
+    return get(gl::GL_VALIDATE_STATUS) == 1;
+}
+
+void Program::validate()
+{
+    gl::glValidateProgram(id());
 }
 
 GLenum Program::objectType() const
