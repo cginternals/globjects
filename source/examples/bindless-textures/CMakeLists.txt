@@ -4,6 +4,7 @@
 # 
 
 find_package(GLFW)
+find_package(glbinding REQUIRED)
 
 
 # 

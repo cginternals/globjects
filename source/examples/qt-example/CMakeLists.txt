@@ -3,6 +3,7 @@
 # External dependencies
 # 
 
+find_package(glbinding REQUIRED)
 find_package(Qt5Core    5.1)
 find_package(Qt5Gui     5.1)
 find_package(Qt5Widgets 5.1)
@@ -14,9 +15,7 @@ set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
 set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
 
 # ENABLE CMP0020: Automatically link Qt executables to qtmain target on Windows.
-if (POLICY CMP0020)
-    cmake_policy(SET CMP0020 NEW)
-endif()
+cmake_policy(SET CMP0020 NEW)
 
 
 # 
