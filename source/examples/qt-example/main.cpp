@@ -7,6 +7,10 @@
 #endif
 
 #include <iostream>
+#include <algorithm>
+
+#include <cpplocate/cpplocate.h>
+#include <cpplocate/ModuleInfo.h>
 
 #include <QApplication>
 #include <QMainWindow>
@@ -43,6 +47,25 @@ using namespace gl;
 using namespace globjects;
 
 
+namespace
+{
+
+// taken from iozeug::FilePath::toPath
+std::string normalizePath(const std::string & filepath)
+{
+    auto copy = filepath;
+    std::replace( copy.begin(), copy.end(), '\\', '/');
+    auto i = copy.find_last_of('/');
+    if (i == copy.size()-1)
+    {
+        copy = copy.substr(0, copy.size()-1);
+    }
+    return copy;
+}
+
+}
+
+
 class Window : public WindowQt
 {
 public:
@@ -57,6 +80,14 @@ public:
 
     virtual void initializeGL() override
     {
+        cpplocate::ModuleInfo moduleInfo = cpplocate::findModule("globjects");
+
+        // Get data path
+        std::string dataPath = moduleInfo.value("dataPath");
+        dataPath = normalizePath(dataPath);
+        if (dataPath.size() > 0) dataPath = dataPath + "/";
+        else                     dataPath = "data/";
+
         init();
         DebugMessage::enable();
 
@@ -80,8 +111,8 @@ public:
         m_vao = new VertexArray();
 
         m_program->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,  "data/qt-example/shader.vert"),
-            Shader::fromFile(GL_FRAGMENT_SHADER, "data/qt-example/shader.frag"));
+            Shader::fromFile(GL_VERTEX_SHADER,  dataPath + "qt-example/shader.vert"),
+            Shader::fromFile(GL_FRAGMENT_SHADER, dataPath +"qt-example/shader.frag"));
 
         m_cornerBuffer->setData(std::array<glm::vec2, 4>{ {
                 glm::vec2(0, 0), glm::vec2(1, 0), glm::vec2(0, 1), glm::vec2(1, 1) } }, GL_STATIC_DRAW);

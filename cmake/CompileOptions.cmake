@@ -65,7 +65,6 @@ set(DEFAULT_COMPILE_OPTIONS)
 
 # MSVC compiler options
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
-
     set(DEFAULT_COMPILE_OPTIONS ${DEFAULT_COMPILE_OPTIONS}
         /MP           # -> build with multiple processes
         /W4           # -> warning level 4
@@ -123,6 +122,10 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" OR "${CMAKE_CXX_COMPILER_ID}" MATCH
         
         $<$<PLATFORM_ID:Darwin>:
             -pthread
+        >
+        
+        $<$<VERSION_LESS:${CMAKE_VERSION},3.1>:
+            -std=c++11
         >
     )
 endif ()

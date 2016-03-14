@@ -1,4 +1,9 @@
 
+#include <algorithm>
+
+#include <cpplocate/cpplocate.h>
+#include <cpplocate/ModuleInfo.h>
+
 #include <glm/gtc/constants.hpp>
 
 #include <glbinding/gl/gl.h>
@@ -29,16 +34,37 @@ using namespace glm;
 using namespace globjects;
 
 
-namespace {
-    bool g_toggleFS = false;
-    bool g_isFS = false;
+namespace
+{
 
-    Texture * g_texture = nullptr;
-    Program * g_computeProgram = nullptr;
-    ScreenAlignedQuad * g_quad = nullptr;
-    unsigned int g_frame = 0;
+// taken from iozeug::FilePath::toPath
+std::string normalizePath(const std::string & filepath)
+{
+    auto copy = filepath;
+    std::replace( copy.begin(), copy.end(), '\\', '/');
+    auto i = copy.find_last_of('/');
+    if (i == copy.size()-1)
+    {
+        copy = copy.substr(0, copy.size()-1);
+    }
+    return copy;
 }
 
+}
+
+
+namespace
+{
+
+bool g_toggleFS = false;
+bool g_isFS = false;
+
+Texture * g_texture = nullptr;
+Program * g_computeProgram = nullptr;
+ScreenAlignedQuad * g_quad = nullptr;
+unsigned int g_frame = 0;
+
+}
 
 void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
 {
@@ -110,6 +136,14 @@ void destroyWindow(GLFWwindow * window)
 
 void initialize()
 {
+    cpplocate::ModuleInfo moduleInfo = cpplocate::findModule("globjects");
+
+    // Get data path
+    std::string dataPath = moduleInfo.value("dataPath");
+    dataPath = normalizePath(dataPath);
+    if (dataPath.size() > 0) dataPath = dataPath + "/";
+    else                     dataPath = "data/";
+
     // Initialize OpenGL objects
     g_texture = Texture::createDefault(GL_TEXTURE_2D);
     g_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
@@ -117,7 +151,7 @@ void initialize()
     g_texture->ref();
 
     g_computeProgram = new Program();
-    g_computeProgram->attach(Shader::fromFile(GL_COMPUTE_SHADER, "data/computeshader/cstest.comp"));
+    g_computeProgram->attach(Shader::fromFile(GL_COMPUTE_SHADER, dataPath + "computeshader/cstest.comp"));
     g_computeProgram->setUniform("destTex", 0);
     g_computeProgram->ref();
 

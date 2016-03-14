@@ -285,12 +285,22 @@ generate_export_header(${target}
 )
 
 # Create feature detection header
-write_compiler_detection_header(
-    FILE ${feature_file}
-    PREFIX ${target_upper}
-    COMPILERS AppleClang Clang GNU MSVC
-    FEATURES cxx_thread_local
-)
+# Create feature detection header
+if (WriterCompilerDetectionHeaderFound)
+    write_compiler_detection_header(
+        FILE ${feature_file}
+        PREFIX ${target_upper}
+        COMPILERS AppleClang Clang GNU MSVC
+        FEATURES cxx_thread_local
+        VERSION 3.2
+    )
+else()
+    file(
+        COPY ${PROJECT_SOURCE_DIR}/codegeneration/${target}_features.h
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/${target}
+        USE_SOURCE_PERMISSIONS
+    )
+endif()
 
 
 # 

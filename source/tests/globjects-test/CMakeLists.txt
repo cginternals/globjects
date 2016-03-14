@@ -1,4 +1,11 @@
 
+#
+# Dependencies
+#
+
+find_package(glbinding REQUIRED)
+
+
 # 
 # Executable name and options
 # 
