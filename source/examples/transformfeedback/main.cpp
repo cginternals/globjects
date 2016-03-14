@@ -1,5 +1,9 @@
 
 #include <chrono>
+#include <algorithm>
+
+#include <cpplocate/cpplocate.h>
+#include <cpplocate/ModuleInfo.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
@@ -26,6 +30,25 @@
 using namespace gl;
 using namespace glm;
 using namespace globjects;
+
+
+namespace
+{
+
+// taken from iozeug::FilePath::toPath
+std::string normalizePath(const std::string & filepath)
+{
+    auto copy = filepath;
+    std::replace( copy.begin(), copy.end(), '\\', '/');
+    auto i = copy.find_last_of('/');
+    if (i == copy.size()-1)
+    {
+        copy = copy.substr(0, copy.size()-1);
+    }
+    return copy;
+}
+
+}
 
 
 namespace {
@@ -114,17 +137,25 @@ void destroyWindow(GLFWwindow * window)
 
 void initialize()
 {
+    cpplocate::ModuleInfo moduleInfo = cpplocate::findModule("globjects");
+
+    // Get data path
+    std::string dataPath = moduleInfo.value("dataPath");
+    dataPath = normalizePath(dataPath);
+    if (dataPath.size() > 0) dataPath = dataPath + "/";
+    else                     dataPath = "data/";
+
     // Initialize OpenGL objects
     g_shaderProgram = new Program();
     g_shaderProgram->ref();
     g_shaderProgram->attach(
-        Shader::fromFile(GL_VERTEX_SHADER,   "data/transformfeedback/simple.vert")
-      , Shader::fromFile(GL_FRAGMENT_SHADER, "data/transformfeedback/simple.frag"));
+        Shader::fromFile(GL_VERTEX_SHADER,   dataPath + "transformfeedback/simple.vert")
+      , Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "transformfeedback/simple.frag"));
 
     g_transformFeedbackProgram = new Program();
     g_transformFeedbackProgram->ref();
     g_transformFeedbackProgram->attach(
-        Shader::fromFile(GL_VERTEX_SHADER, "data/transformfeedback/transformfeedback.vert"));
+        Shader::fromFile(GL_VERTEX_SHADER, dataPath + "transformfeedback/transformfeedback.vert"));
 
     g_transformFeedbackProgram->setUniform("deltaT", 0.0f);
 

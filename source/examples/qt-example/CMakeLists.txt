@@ -92,6 +92,7 @@ target_link_libraries(${target}
     PRIVATE
     ${DEFAULT_LIBRARIES}
     ${META_PROJECT_NAME}::globjects
+    cpplocate::cpplocate
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets

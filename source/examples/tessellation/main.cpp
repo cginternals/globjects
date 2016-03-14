@@ -1,5 +1,9 @@
 
 #include <chrono>
+#include <algorithm>
+
+#include <cpplocate/cpplocate.h>
+#include <cpplocate/ModuleInfo.h>
 
 #include <glm/glm.hpp>
 
@@ -24,6 +28,25 @@
 using namespace gl;
 using namespace glm;
 using namespace globjects;
+
+
+namespace
+{
+
+// taken from iozeug::FilePath::toPath
+std::string normalizePath(const std::string & filepath)
+{
+    auto copy = filepath;
+    std::replace( copy.begin(), copy.end(), '\\', '/');
+    auto i = copy.find_last_of('/');
+    if (i == copy.size()-1)
+    {
+        copy = copy.substr(0, copy.size()-1);
+    }
+    return copy;
+}
+
+}
 
 
 namespace {
@@ -108,16 +131,24 @@ void destroyWindow(GLFWwindow * window)
 
 void initialize()
 {
+    cpplocate::ModuleInfo moduleInfo = cpplocate::findModule("globjects");
+
+    // Get data path
+    std::string dataPath = moduleInfo.value("dataPath");
+    dataPath = normalizePath(dataPath);
+    if (dataPath.size() > 0) dataPath = dataPath + "/";
+    else                     dataPath = "data/";
+
     // Initialize OpenGL objects
     g_sphere = new Program();
     g_sphere->ref();
     g_sphere->attach(
-        Shader::fromFile(GL_VERTEX_SHADER,          "data/tessellation/sphere.vert")
-    ,   Shader::fromFile(GL_TESS_CONTROL_SHADER,    "data/tessellation/sphere.tcs")
-    ,   Shader::fromFile(GL_TESS_EVALUATION_SHADER, "data/tessellation/sphere.tes")
-    ,   Shader::fromFile(GL_GEOMETRY_SHADER,        "data/tessellation/sphere.geom")
-    ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/tessellation/sphere.frag")
-    ,   Shader::fromFile(GL_FRAGMENT_SHADER,        "data/tessellation/phong.frag"));
+        Shader::fromFile(GL_VERTEX_SHADER,          dataPath + "tessellation/sphere.vert")
+    ,   Shader::fromFile(GL_TESS_CONTROL_SHADER,    dataPath + "tessellation/sphere.tcs")
+    ,   Shader::fromFile(GL_TESS_EVALUATION_SHADER, dataPath + "tessellation/sphere.tes")
+    ,   Shader::fromFile(GL_GEOMETRY_SHADER,        dataPath + "tessellation/sphere.geom")
+    ,   Shader::fromFile(GL_FRAGMENT_SHADER,        dataPath + "tessellation/sphere.frag")
+    ,   Shader::fromFile(GL_FRAGMENT_SHADER,        dataPath + "tessellation/phong.frag"));
 
 
     float fovy = radians(40.f);

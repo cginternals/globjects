@@ -81,6 +81,7 @@ target_link_libraries(${target}
     ${DEFAULT_LIBRARIES}
     ${GLFW_LIBRARIES}
     ${META_PROJECT_NAME}::globjects
+    cpplocate::cpplocate
 )
 
 
