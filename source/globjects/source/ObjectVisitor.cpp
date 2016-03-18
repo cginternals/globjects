@@ -34,6 +34,10 @@ void ObjectVisitor::visitProgram(Program* /*program*/)
 {
 }
 
+void ObjectVisitor::visitProgramPipeline(ProgramPipeline* /*programPipeline*/)
+{
+}
+
 void ObjectVisitor::visitQuery(Query* /*query*/)
 {
 }

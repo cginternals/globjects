@@ -170,7 +170,7 @@ void Program::link() const
     glLinkProgram(id());
 
     m_linked = checkLinkStatus();
-	m_dirty = false;
+    m_dirty = false;
 
     updateUniforms();
     updateUniformBlockBindings();

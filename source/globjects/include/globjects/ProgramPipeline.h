@@ -24,6 +24,8 @@ public:
     ProgramPipeline();
     virtual ~ProgramPipeline();
 
+    virtual void accept(ObjectVisitor & visitor) override;
+
     void use() const;
     static void release();
 
@@ -32,7 +34,9 @@ public:
     void releaseProgram(Program * program);
 
     bool isValid() const;
-    void validate();
+    void validate() const;
+
+    bool checkUseStatus() const;
 
     std::string infoLog() const;
     gl::GLint get(gl::GLenum pname) const;

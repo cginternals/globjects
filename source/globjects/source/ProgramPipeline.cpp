@@ -6,6 +6,8 @@
 #include <glbinding/gl/functions.h>
 
 #include <globjects/Program.h>
+#include <globjects/ObjectVisitor.h>
+
 #include "Resource.h"
 
 
@@ -33,6 +35,11 @@ ProgramPipeline::~ProgramPipeline()
     }
 }
 
+void ProgramPipeline::accept(ObjectVisitor & visitor)
+{
+    visitor.visitProgramPipeline(this);
+}
+
 void ProgramPipeline::use() const
 {
     if (m_dirty)
@@ -43,6 +50,8 @@ void ProgramPipeline::use() const
         }
 
         const_cast<ProgramPipeline *>(this)->m_dirty = false;
+
+        checkUseStatus();
     }
 
     gl::glUseProgram(0);
@@ -60,6 +69,8 @@ void ProgramPipeline::useStages(Program * program, gl::UseProgramStageMask stage
 
     program->registerListener(this);
     m_programs.emplace(program);
+
+    program->link();
 
     gl::glUseProgramStages(id(), stages, program->id());
 
@@ -91,7 +102,7 @@ bool ProgramPipeline::isValid() const
     return get(gl::GL_VALIDATE_STATUS) == 1;
 }
 
-void ProgramPipeline::validate()
+void ProgramPipeline::validate() const
 {
     gl::glValidateProgramPipeline(id());
 }
@@ -99,6 +110,20 @@ void ProgramPipeline::validate()
 void ProgramPipeline::invalidate()
 {
     m_dirty = true;
+}
+
+bool ProgramPipeline::checkUseStatus() const
+{
+    validate();
+
+    if (!isValid())
+    {
+        critical() << "Use error:" << std::endl << infoLog();
+
+        return false;
+    }
+
+    return true;
 }
 
 gl::GLint ProgramPipeline::get(const gl::GLenum pname) const
