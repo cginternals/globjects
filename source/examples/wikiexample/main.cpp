@@ -11,6 +11,7 @@
 #include <globjects/base/File.h>
 #include <globjects/logging.h>
 
+#include <globjects/DebugMessage.h>
 #include <globjects/Buffer.h>
 #include <globjects/Program.h>
 #include <globjects/Shader.h>

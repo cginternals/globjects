@@ -53,6 +53,36 @@ namespace
 
         globjects::DebugMessage::insertMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), GL_DEBUG_SEVERITY_HIGH_ARB, stream.str());
     }
+
+    void initializeCallbacks()
+    {
+        // Callback mask is configured in AbstractDebugImplementation::enable
+        if (glbinding::afterCallback())
+        {
+            globjects::warning() << "No error checking after callback registered as a glbinding after callback is already registered.";
+        }
+        else
+        {
+            glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
+                manualErrorCheckAfter(*functionCall.function);
+            });
+        }
+
+        if (glbinding::unresolvedCallback())
+        {
+            globjects::warning() << "No unresolved function checking callback registered as a glbinding unresolved callback is already registered.";
+        }
+        else
+        {
+            glbinding::setUnresolvedCallback([](const glbinding::AbstractFunction & function) {
+#ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
+                throw std::runtime_error(std::string(function.name()) + " couldn't get resolved.");
+#else
+                globjects::fatal() << std::string(function.name()) << " couldn't get resolved.";
+#endif
+            });
+        }
+    }
 }
 
 namespace globjects
@@ -63,17 +93,7 @@ void init()
     g_mutex.lock();
     if (!g_globjectsIsInitialized)
     {
-        // Callback mask is configured in AbstractDebugImplementation::enable
-        glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
-            manualErrorCheckAfter(*functionCall.function);
-        });
-        glbinding::setUnresolvedCallback([](const glbinding::AbstractFunction & function) {
-#ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
-            throw std::runtime_error(std::string(function.name()) + " couldn't get resolved.");
-#else
-            globjects::fatal() << std::string(function.name()) << " couldn't get resolved.";
-#endif
-        });
+        initializeCallbacks();
 
         g_globjectsIsInitialized = true;
     }
@@ -88,17 +108,7 @@ void init(const glbinding::ContextHandle sharedContextId)
     g_mutex.lock();
     if (!g_globjectsIsInitialized)
     {
-        // Callback mask is configured in AbstractDebugImplementation::enable
-        glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
-            manualErrorCheckAfter(*functionCall.function);
-        });
-        glbinding::setUnresolvedCallback([](const glbinding::AbstractFunction & function) {
-#ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
-            throw std::runtime_error(std::string(function.name()) + " couldn't get resolved.");
-#else
-            globjects::fatal() << std::string(function.name()) << " couldn't get resolved.";
-#endif
-        });
+        initializeCallbacks();
 
         g_globjectsIsInitialized = true;
     }

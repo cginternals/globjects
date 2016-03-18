@@ -361,12 +361,10 @@ target_compile_definitions(${target}
     GLM_FORCE_RADIANS
     $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:${target_upper}_STATIC_DEFINE>
     ${DEFAULT_COMPILE_DEFINITIONS}
+    $<$<BOOL:${OPTION_ERRORS_AS_EXCEPTION}>:GLOBJECTS_GL_ERROR_RAISE_EXCEPTION>
 
     INTERFACE
 )
-
-# add_definitions("-DGLOBJECTS_GL_ERROR_RAISE_EXCEPTION")
-# add_definitions("-D_HAS_EXCEPTIONS=0")
 
 # 
 # Compile options
