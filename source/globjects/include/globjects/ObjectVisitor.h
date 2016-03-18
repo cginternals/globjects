@@ -8,6 +8,7 @@ class Object;
 class Buffer;
 class Framebuffer;
 class Program;
+class ProgramPipeline;
 class Query;
 class Renderbuffer;
 class Sampler;
@@ -33,6 +34,7 @@ public:
     virtual void visitBuffer(Buffer * buffer);
     virtual void visitFrameBufferObject(Framebuffer * fbo);
     virtual void visitProgram(Program * program);
+    virtual void visitProgramPipeline(ProgramPipeline * programPipeline);
     virtual void visitQuery(Query * query);
     virtual void visitRenderBufferObject(Renderbuffer * rbo);
     virtual void visitSampler(Sampler * sampler);

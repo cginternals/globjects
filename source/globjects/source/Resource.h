@@ -80,6 +80,14 @@ public:
 };
 
 
+class ProgramPipelineResource : public IDResource
+{
+public:
+    ProgramPipelineResource();
+    ~ProgramPipelineResource();
+};
+
+
 class QueryResource : public IDResource
 {
 public:

@@ -56,6 +56,7 @@ set(headers
 	${include_path}/ProgramBinary.h
 	${include_path}/Program.h
 	${include_path}/Program.hpp
+	${include_path}/ProgramPipeline.h
 	${include_path}/Query.h
 	${include_path}/AttachedRenderbuffer.h
 	${include_path}/Renderbuffer.h
@@ -222,6 +223,7 @@ set(sources
 	${source_path}/pixelformat.h
 	${source_path}/ProgramBinary.cpp
 	${source_path}/Program.cpp
+	${source_path}/ProgramPipeline.cpp
 	${source_path}/Query.cpp
 	${source_path}/registry/ObjectRegistry.h
 	${source_path}/registry/ExtensionRegistry.h

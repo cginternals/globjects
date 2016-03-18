@@ -170,7 +170,7 @@ void Program::link() const
     glLinkProgram(id());
 
     m_linked = checkLinkStatus();
-	m_dirty = false;
+    m_dirty = false;
 
     updateUniforms();
     updateUniformBlockBindings();
@@ -483,7 +483,7 @@ void Program::getActiveAttrib(gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei
     glGetActiveAttrib(id(), index, bufSize, length, size, type, name);
 }
 
-const std::string Program::infoLog() const
+std::string Program::infoLog() const
 {
     GLint length = get(GL_INFO_LOG_LENGTH);
 
@@ -536,9 +536,29 @@ void Program::setShaderStorageBlockBinding(const GLuint storageBlockIndex, const
     glShaderStorageBlockBinding(id(), storageBlockIndex, storageBlockBinding);
 }
 
+bool Program::isValid() const
+{
+    return get(gl::GL_VALIDATE_STATUS) == 1;
+}
+
+void Program::validate()
+{
+    gl::glValidateProgram(id());
+}
+
 GLenum Program::objectType() const
 {
     return GL_PROGRAM;
+}
+
+void Program::setParameter(gl::GLenum pname, gl::GLint value) const
+{
+    glProgramParameteri(id(), pname, value);
+}
+
+void Program::setParameter(gl::GLenum pname, gl::GLboolean value) const
+{
+    glProgramParameteri(id(), pname, value == gl::GL_TRUE ? 1 : 0);
 }
 
 } // namespace globjects

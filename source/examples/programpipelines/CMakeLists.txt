@@ -12,7 +12,7 @@ find_package(glbinding REQUIRED)
 # 
 
 # Target name
-set(target bindless-textures)
+set(target programpipelines)
 
 # Exit here if required dependencies are not met
 if (NOT GLFW_FOUND)
@@ -79,7 +79,6 @@ target_link_libraries(${target}
     ${DEFAULT_LIBRARIES}
     ${GLFW_LIBRARIES}
     ${META_PROJECT_NAME}::globjects
-    cpplocate::cpplocate
 )
 
 
@@ -90,6 +89,7 @@ target_link_libraries(${target}
 target_compile_definitions(${target}
     PRIVATE
     ${DEFAULT_COMPILE_DEFINITIONS}
+    GLFW_INCLUDE_NONE
 )
 
 
@@ -100,7 +100,6 @@ target_compile_definitions(${target}
 target_compile_options(${target}
     PRIVATE
     ${DEFAULT_COMPILE_OPTIONS}
-    GLFW_INCLUDE_NONE
 )
 
 
