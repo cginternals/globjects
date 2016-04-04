@@ -95,7 +95,7 @@ public:
     virtual void accept(ObjectVisitor & visitor) override;
 
     void use() const;
-    void release() const;
+    static void release();
 
 	bool isUsed() const;
 	bool isLinked() const;
