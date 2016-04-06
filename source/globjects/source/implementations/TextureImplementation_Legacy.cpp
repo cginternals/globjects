@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <globjects/globjects.h>
 
@@ -178,6 +179,16 @@ void TextureImplementation_Legacy::storage3D(const Texture * texture, gl::GLsize
     texture->bind();
 
     gl::glTexStorage3D(texture->target(), levels, internalFormat, width, height, depth);
+}
+
+void TextureImplementation_Legacy::cubeMapImage(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
+{
+    texture->bind();
+
+    for (int i = 0; i < 6; ++i)
+    {
+        gl::glTexImage2D(gl::GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, level, static_cast<gl::GLint>(internalFormat), width, height, border, format, type, data);
+    }
 }
 
 void TextureImplementation_Legacy::texBuffer(const Texture * texture, const gl::GLenum internalFormat, Buffer * buffer) const

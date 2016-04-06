@@ -144,6 +144,11 @@ void TextureImplementation_DirectStateAccessARB::storage3D(const Texture * textu
     gl::glTextureStorage3D(texture->id(), levels, internalFormat, width, height, depth);
 }
 
+void TextureImplementation_DirectStateAccessARB::cubeMapImage(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
+{
+    get(Texture::BindlessImplementation::DirectStateAccessEXT)->cubeMapImage(texture, level, internalFormat, width, height, border, format, type, data);
+}
+
 void TextureImplementation_DirectStateAccessARB::texBuffer(const Texture * texture, const gl::GLenum internalFormat, Buffer * buffer) const
 {
     gl::glTextureBuffer(texture->id(), internalFormat, buffer ? buffer->id() : 0);

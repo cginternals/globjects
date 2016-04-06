@@ -139,6 +139,16 @@ void TextureImplementation_DirectStateAccessEXT::storage3D(const Texture * textu
     gl::glTextureStorage3DEXT(texture->id(), texture->target(), levels, internalFormat, width, height, depth);
 }
 
+void TextureImplementation_DirectStateAccessEXT::cubeMapImage(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
+{
+    texture->bind();
+
+    for (int i = 0; i < 6; ++i)
+    {
+        gl::glTextureImage2DEXT(texture->id(), gl::GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, level, static_cast<gl::GLint>(internalFormat), width, height, border, format, type, data);
+    }
+}
+
 void TextureImplementation_DirectStateAccessEXT::texBuffer(const Texture * texture, const gl::GLenum internalFormat, Buffer * buffer) const
 {
     gl::glTextureBufferEXT(texture->id(), texture->target(), internalFormat, buffer ? buffer->id() : 0);
