@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/fwd.hpp>
+
 #include <glbinding/gl/types.h>
 #include <glbinding/gl/boolean.h>
 
@@ -29,7 +31,15 @@ public:
     void setDivisor(gl::GLint divisor);
 
 	void setAttribute(gl::GLint attributeIndex);
-	void setBuffer(
+
+    gl::GLint attributeIndex() const;
+    gl::GLint bindingIndex() const;
+
+    /**
+     * For VertexAttribPointer
+     */
+    const Buffer * buffer() const;
+    void setBuffer(
         const Buffer * vbo
     ,   gl::GLint baseoffset
     ,   gl::GLint stride);
@@ -48,9 +58,31 @@ public:
     ,   gl::GLenum type
     ,   gl::GLuint relativeoffset = 0);
 
-    gl::GLint attributeIndex() const;
-    gl::GLint bindingIndex() const;
-    const Buffer * buffer() const;
+    /**
+     * For VertexAttrib
+     */
+    void setValue(gl::GLboolean value);
+    void setValue(gl::GLbyte value);
+    void setValue(gl::GLshort value);
+    void setValue(gl::GLint value);
+    void setValue(gl::GLint64 value);
+    void setValue(gl::GLfloat value);
+    void setValue(gl::GLdouble value);
+
+    void setValue(const glm::bvec2 value);
+    void setValue(const glm::ivec2 value);
+    void setValue(const glm::vec2 value);
+    void setValue(const glm::dvec2 value);
+
+    void setValue(const glm::bvec3 value);
+    void setValue(const glm::ivec3 value);
+    void setValue(const glm::vec3 value);
+    void setValue(const glm::dvec3 value);
+
+    void setValue(const glm::bvec4 value);
+    void setValue(const glm::ivec4 value);
+    void setValue(const glm::vec4 value);
+    void setValue(const glm::dvec4 value);
 
 protected:
     virtual ~VertexAttributeBinding();
