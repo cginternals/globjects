@@ -10,6 +10,7 @@
 #include "../implementations/AbstractShadingLanguageIncludeImplementation.h"
 #include "../implementations/AbstractObjectNameImplementation.h"
 #include "../implementations/AbstractTextureImplementation.h"
+#include "../implementations/AbstractTextureStorageImplementation.h"
 #include "../implementations/AbstractVertexAttributeBindingImplementation.h"
 
 namespace globjects 
@@ -23,7 +24,8 @@ ImplementationRegistry::ImplementationRegistry()
 , m_programBinaryImplementation(nullptr)
 , m_shadingLanguageIncludeImplementation(nullptr)
 , m_objectNameImplementation(nullptr)
-, m_textureImplementation(nullptr)
+, m_textureBindlessImplementation(nullptr)
+, m_textureStorageImplementation(nullptr)
 , m_attributeImplementation(nullptr)
 {
 }
@@ -38,6 +40,8 @@ ImplementationRegistry::~ImplementationRegistry()
     delete m_shadingLanguageIncludeImplementation;
     delete m_objectNameImplementation;
     delete m_attributeImplementation;
+    delete m_textureBindlessImplementation;
+    delete m_textureStorageImplementation;
 }
 
 ImplementationRegistry & ImplementationRegistry::current()
@@ -55,6 +59,8 @@ void ImplementationRegistry::initialize()
     m_shadingLanguageIncludeImplementation = AbstractShadingLanguageIncludeImplementation::get();
     m_objectNameImplementation = AbstractObjectNameImplementation::get();
     m_attributeImplementation = AbstractVertexAttributeBindingImplementation::get();
+    m_textureBindlessImplementation = AbstractTextureImplementation::get();
+    m_textureStorageImplementation = AbstractTextureStorageImplementation::get();
 }
 
 void ImplementationRegistry::initialize(const AbstractUniform::BindlessImplementation impl)
@@ -99,7 +105,12 @@ void ImplementationRegistry::initialize(const VertexArray::AttributeImplementati
 
 void ImplementationRegistry::initialize(Texture::BindlessImplementation impl)
 {
-    m_textureImplementation = AbstractTextureImplementation::get(impl);
+    m_textureBindlessImplementation = AbstractTextureImplementation::get(impl);
+}
+
+void ImplementationRegistry::initialize(Texture::StorageImplementation impl)
+{
+    m_textureStorageImplementation = AbstractTextureStorageImplementation::get(impl);
 }
 
 AbstractUniformImplementation & ImplementationRegistry::uniformImplementation()
@@ -166,12 +177,20 @@ AbstractVertexAttributeBindingImplementation & ImplementationRegistry::attribute
     return *m_attributeImplementation;
 }
 
-AbstractTextureImplementation & ImplementationRegistry::textureImplementation()
+AbstractTextureImplementation & ImplementationRegistry::textureBindlessImplementation()
 {
-    if (!m_textureImplementation)
-        m_textureImplementation = AbstractTextureImplementation::get();
+    if (!m_textureBindlessImplementation)
+        m_textureBindlessImplementation = AbstractTextureImplementation::get();
 
-    return *m_textureImplementation;
+    return *m_textureBindlessImplementation;
+}
+
+AbstractTextureStorageImplementation & ImplementationRegistry::textureStorageImplementation()
+{
+    if (!m_textureStorageImplementation)
+        m_textureStorageImplementation = AbstractTextureStorageImplementation::get();
+
+    return *m_textureStorageImplementation;
 }
 
 } // namespace globjects

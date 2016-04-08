@@ -129,21 +129,6 @@ void TextureImplementation_DirectStateAccessARB::image3DMultisample(const Textur
     gl::glTextureImage3DMultisampleNV(texture->id(), texture->target(), samples, static_cast<gl::GLint>(internalFormat), width, height, depth, fixedSamplesLocations);
 }
 
-void TextureImplementation_DirectStateAccessARB::storage1D(const Texture * texture, gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width) const
-{
-    gl::glTextureStorage1D(texture->id(), levels, internalFormat, width);
-}
-
-void TextureImplementation_DirectStateAccessARB::storage2D(const Texture * texture, gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height) const
-{
-    gl::glTextureStorage2D(texture->id(), levels, internalFormat, width, height);
-}
-
-void TextureImplementation_DirectStateAccessARB::storage3D(const Texture * texture, gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth) const
-{
-    gl::glTextureStorage3D(texture->id(), levels, internalFormat, width, height, depth);
-}
-
 void TextureImplementation_DirectStateAccessARB::cubeMapImage(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
 {
     get(Texture::BindlessImplementation::DirectStateAccessEXT)->cubeMapImage(texture, level, internalFormat, width, height, border, format, type, data);

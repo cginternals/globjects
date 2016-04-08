@@ -35,7 +35,16 @@ public:
     ,   Legacy
     };
 
+    enum class StorageImplementation
+    {
+        DirectStateAccessARB
+    ,   DirectStateAccessEXT
+    ,   Legacy
+    ,   Fallback
+    };
+
     static void hintBindlessImplementation(BindlessImplementation impl);
+    static void hintStorageImplementation(StorageImplementation impl);
 
     Texture();
     Texture(gl::GLenum target);

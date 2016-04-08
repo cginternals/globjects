@@ -160,27 +160,6 @@ void TextureImplementation_Legacy::image3DMultisample(const Texture * texture, g
     gl::glTexImage3DMultisample(texture->target(), samples, internalFormat, width, height, depth, fixedSamplesLocations);
 }
 
-void TextureImplementation_Legacy::storage1D(const Texture * texture, gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width) const
-{
-    texture->bind();
-
-    gl::glTexStorage1D(texture->target(), levels, internalFormat, width);
-}
-
-void TextureImplementation_Legacy::storage2D(const Texture * texture, gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height) const
-{
-    texture->bind();
-
-    gl::glTexStorage2D(texture->target(), levels, internalFormat, width, height);
-}
-
-void TextureImplementation_Legacy::storage3D(const Texture * texture, gl::GLsizei levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth) const
-{
-    texture->bind();
-
-    gl::glTexStorage3D(texture->target(), levels, internalFormat, width, height, depth);
-}
-
 void TextureImplementation_Legacy::cubeMapImage(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
 {
     texture->bind();

@@ -23,6 +23,7 @@ class AbstractShadingLanguageIncludeImplementation;
 class AbstractObjectNameImplementation;
 class AbstractVertexAttributeBindingImplementation;
 class AbstractTextureImplementation;
+class AbstractTextureStorageImplementation;
 
 class ImplementationRegistry
 {
@@ -41,6 +42,7 @@ public:
     void initialize(Object::NameImplementation impl);
     void initialize(VertexArray::AttributeImplementation impl);
     void initialize(Texture::BindlessImplementation impl);
+    void initialize(Texture::StorageImplementation impl);
 
     static ImplementationRegistry & current();
 
@@ -52,7 +54,8 @@ public:
     AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation();
     AbstractObjectNameImplementation & objectNameImplementation();
     AbstractVertexAttributeBindingImplementation & attributeImplementation();
-    AbstractTextureImplementation & textureImplementation();
+    AbstractTextureImplementation & textureBindlessImplementation();
+    AbstractTextureStorageImplementation & textureStorageImplementation();
 
 protected:
     AbstractUniformImplementation * m_uniformImplementation;
@@ -62,7 +65,8 @@ protected:
     AbstractProgramBinaryImplementation * m_programBinaryImplementation;
     AbstractShadingLanguageIncludeImplementation * m_shadingLanguageIncludeImplementation;
     AbstractObjectNameImplementation * m_objectNameImplementation;
-    AbstractTextureImplementation * m_textureImplementation;
+    AbstractTextureImplementation * m_textureBindlessImplementation;
+    AbstractTextureStorageImplementation * m_textureStorageImplementation;
     AbstractVertexAttributeBindingImplementation * m_attributeImplementation;
 };
 
