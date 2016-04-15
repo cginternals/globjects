@@ -191,14 +191,14 @@ ShaderResource::~ShaderResource()
 
 
 TextureResource::TextureResource(GLenum target)
-: IDResource(ImplementationRegistry::current().textureImplementation().create(target))
+: IDResource(ImplementationRegistry::current().textureBindlessImplementation().create(target))
 {
 }
 
 TextureResource::~TextureResource()
 {
     if (hasOwnership())
-        ImplementationRegistry::current().textureImplementation().destroy(id());
+        ImplementationRegistry::current().textureBindlessImplementation().destroy(id());
 }
 
 

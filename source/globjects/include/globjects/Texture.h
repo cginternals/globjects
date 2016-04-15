@@ -35,7 +35,16 @@ public:
     ,   Legacy
     };
 
+    enum class StorageImplementation
+    {
+        DirectStateAccessARB
+    ,   DirectStateAccessEXT
+    ,   Legacy
+    ,   Fallback
+    };
+
     static void hintBindlessImplementation(BindlessImplementation impl);
+    static void hintStorageImplementation(StorageImplementation impl);
 
     Texture();
     Texture(gl::GLenum target);
@@ -124,6 +133,9 @@ public:
     static void unbindImageTexture(gl::GLuint unit);
 
     void generateMipmap();
+
+    void cubeMapImage(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    void cubeMapImage(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
 
     TextureHandle textureHandle() const;
     TextureHandle textureHandle(Sampler * sampler) const;

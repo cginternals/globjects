@@ -195,6 +195,17 @@ set(sources
 	${source_path}/implementations/TextureImplementation_DirectStateAccessEXT.h
 	${source_path}/implementations/TextureImplementation_Legacy.cpp
 	${source_path}/implementations/TextureImplementation_Legacy.h
+    
+    ${source_path}/implementations/AbstractTextureStorageImplementation.cpp
+	${source_path}/implementations/AbstractTextureStorageImplementation.h
+	${source_path}/implementations/TextureStorageImplementation_DirectStateAccessARB.cpp
+	${source_path}/implementations/TextureStorageImplementation_DirectStateAccessARB.h
+	${source_path}/implementations/TextureStorageImplementation_DirectStateAccessEXT.cpp
+	${source_path}/implementations/TextureStorageImplementation_DirectStateAccessEXT.h
+	${source_path}/implementations/TextureStorageImplementation_Legacy.cpp
+	${source_path}/implementations/TextureStorageImplementation_Legacy.h
+	${source_path}/implementations/TextureStorageImplementation_Fallback.cpp
+	${source_path}/implementations/TextureStorageImplementation_Fallback.h
 
 	${source_path}/implementations/AbstractUniformImplementation.cpp
 	${source_path}/implementations/AbstractUniformImplementation.h
