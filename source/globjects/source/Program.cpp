@@ -89,11 +89,8 @@ void Program::use() const
     glUseProgram(id());
 }
 
-void Program::release() const
+void Program::release()
 {
-    if (!isLinked())
-        return;
-
     glUseProgram(0);
 }
 
