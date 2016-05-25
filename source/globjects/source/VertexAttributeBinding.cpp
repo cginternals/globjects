@@ -6,6 +6,10 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
+#include <glm/mat2x2.hpp>
+#include <glm/mat3x3.hpp>
+#include <glm/mat4x4.hpp>
+
 #include <globjects/VertexArray.h>
 #include <globjects/globjects.h>
 
@@ -133,68 +137,109 @@ void VertexAttributeBinding::setValue(gl::GLfloat value)
 
 void VertexAttributeBinding::setValue(gl::GLdouble value)
 {
-    glVertexAttrib1d(bindingIndex(), value);
     glVertexAttribL1d(bindingIndex(), value);
 }
 
-void VertexAttributeBinding::setValue(const glm::bvec2 value)
+void VertexAttributeBinding::setValue(const glm::bvec2 & value)
 {
     glVertexAttribI2i(bindingIndex(), static_cast<GLint>(value.x), static_cast<GLint>(value.y));
 }
 
-void VertexAttributeBinding::setValue(const glm::ivec2 value)
+void VertexAttributeBinding::setValue(const glm::ivec2 & value)
 {
     glVertexAttribI2i(bindingIndex(), value.x, value.y);
 }
 
-void VertexAttributeBinding::setValue(const glm::vec2 value)
+void VertexAttributeBinding::setValue(const glm::vec2 & value)
 {
     glVertexAttrib2f(bindingIndex(), value.x, value.y);
 }
 
-void VertexAttributeBinding::setValue(const glm::dvec2 value)
+void VertexAttributeBinding::setValue(const glm::dvec2 & value)
 {
     glVertexAttribL2d(bindingIndex(), value.x, value.y);
 }
 
-void VertexAttributeBinding::setValue(const glm::bvec3 value)
+void VertexAttributeBinding::setValue(const glm::bvec3 & value)
 {
     glVertexAttribI3i(bindingIndex(), static_cast<GLint>(value.x), static_cast<GLint>(value.y), static_cast<GLint>(value.z));
 }
 
-void VertexAttributeBinding::setValue(const glm::ivec3 value)
+void VertexAttributeBinding::setValue(const glm::ivec3 & value)
 {
     glVertexAttribI3i(bindingIndex(), value.x, value.y, value.z);
 }
 
-void VertexAttributeBinding::setValue(const glm::vec3 value)
+void VertexAttributeBinding::setValue(const glm::vec3 & value)
 {
     glVertexAttrib3f(bindingIndex(), value.x, value.y, value.z);
 }
 
-void VertexAttributeBinding::setValue(const glm::dvec3 value)
+void VertexAttributeBinding::setValue(const glm::dvec3 & value)
 {
     glVertexAttribL3d(bindingIndex(), value.x, value.y, value.z);
 }
 
-void VertexAttributeBinding::setValue(const glm::bvec4 value)
+void VertexAttributeBinding::setValue(const glm::bvec4 & value)
 {
     glVertexAttribI4i(bindingIndex(), static_cast<GLint>(value.x), static_cast<GLint>(value.y), static_cast<GLint>(value.z), static_cast<GLint>(value.w));
 }
 
-void VertexAttributeBinding::setValue(const glm::ivec4 value)
+void VertexAttributeBinding::setValue(const glm::ivec4 & value)
 {
     glVertexAttribI4i(bindingIndex(), value.x, value.y, value.z, value.w);
 }
 
-void VertexAttributeBinding::setValue(const glm::vec4 value)
+void VertexAttributeBinding::setValue(const glm::vec4 & value)
 {
     glVertexAttrib4f(bindingIndex(), value.x, value.y, value.z, value.w);
 }
 
-void VertexAttributeBinding::setValue(const glm::dvec4 value)
+void VertexAttributeBinding::setValue(const glm::dvec4 & value)
 {
     glVertexAttribL4d(bindingIndex(), value.x, value.y, value.z, value.w);
+}
+
+void VertexAttributeBinding::setValue(const glm::mat2 & value)
+{
+    glVertexAttrib2f(bindingIndex(), value[0][0], value[1][0]);
+    glVertexAttrib2f(bindingIndex()+1, value[0][1], value[1][1]);
+}
+
+void VertexAttributeBinding::setValue(const glm::mat3 & value)
+{
+    glVertexAttrib3f(bindingIndex(), value[0][0], value[1][0], value[2][0]);
+    glVertexAttrib3f(bindingIndex()+1, value[0][1], value[1][1], value[2][1]);
+    glVertexAttrib3f(bindingIndex()+2, value[0][2], value[1][2], value[2][2]);
+}
+
+void VertexAttributeBinding::setValue(const glm::mat4 & value)
+{
+    glVertexAttrib4f(bindingIndex(), value[0][0], value[1][0], value[2][0], value[3][0]);
+    glVertexAttrib4f(bindingIndex()+1, value[0][1], value[1][1], value[2][1], value[3][1]);
+    glVertexAttrib4f(bindingIndex()+2, value[0][2], value[1][2], value[2][2], value[3][2]);
+    glVertexAttrib4f(bindingIndex()+3, value[0][3], value[1][3], value[2][3], value[3][3]);
+}
+
+void VertexAttributeBinding::setValue(const glm::dmat2 & value)
+{
+    glVertexAttribL2d(bindingIndex(), value[0][0], value[1][0]);
+    glVertexAttribL2d(bindingIndex()+1, value[0][1], value[1][1]);
+}
+
+void VertexAttributeBinding::setValue(const glm::dmat3 & value)
+{
+    glVertexAttribL3d(bindingIndex(), value[0][0], value[1][0], value[2][0]);
+    glVertexAttribL3d(bindingIndex()+1, value[0][1], value[1][1], value[2][1]);
+    glVertexAttribL3d(bindingIndex()+2, value[0][2], value[1][2], value[2][2]);
+}
+
+void VertexAttributeBinding::setValue(const glm::dmat4 & value)
+{
+    glVertexAttribL4d(bindingIndex(), value[0][0], value[1][0], value[2][0], value[3][0]);
+    glVertexAttribL4d(bindingIndex()+1, value[0][1], value[1][1], value[2][1], value[3][1]);
+    glVertexAttribL4d(bindingIndex()+2, value[0][2], value[1][2], value[2][2], value[3][2]);
+    glVertexAttribL4d(bindingIndex()+3, value[0][3], value[1][3], value[2][3], value[3][3]);
 }
 
 
