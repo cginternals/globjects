@@ -1,3 +1,4 @@
+
 #include <globjects/base/formatString.h>
 
 #include <string>
@@ -8,8 +9,10 @@
 
 #include <iostream>
 
+
 namespace globjects
 {
+
 
 int readInt(const char* str, int & number)
 {
@@ -36,15 +39,17 @@ void parseFormat(std::ostream & stream, const char * & format)
 
 		switch (alignment)
 		{
-			case 'l':
-				stream << std::left;
-				break;
-			case 'r':
-				stream << std::right;
-				break;
-			case 'i':
-				stream << std::internal;
-				break;
+        case 'l':
+            stream << std::left;
+            break;
+        case 'r':
+            stream << std::right;
+            break;
+        case 'i':
+            stream << std::internal;
+            break;
+        default:
+            break;
 		}
 	}
 
@@ -55,27 +60,29 @@ void parseFormat(std::ostream & stream, const char * & format)
 
 		switch (flag)
 		{
-			case 'a':
-				stream << std::boolalpha;
-				break;
-			case '+':
-				stream << std::showpos;
-				break;
-			case ' ':
-				stream << std::skipws;
-				break;
-			case '#':
-				stream << std::showbase;
-				break;
-			case 'u':
-				stream << std::uppercase;
-				break;
-			case 'p':
-				stream << std::showpoint;
-				break;
-			case '0':
-				stream << std::setfill('0');
-				break;
+        case 'a':
+            stream << std::boolalpha;
+            break;
+        case '+':
+            stream << std::showpos;
+            break;
+        case ' ':
+            stream << std::skipws;
+            break;
+        case '#':
+            stream << std::showbase;
+            break;
+        case 'u':
+            stream << std::uppercase;
+            break;
+        case 'p':
+            stream << std::showpoint;
+            break;
+        case '0':
+            stream << std::setfill('0');
+            break;
+        default:
+            break;
 		}
 	}
 
@@ -91,12 +98,14 @@ void parseFormat(std::ostream & stream, const char * & format)
 
 		switch (std::tolower(flag, loc))
 		{
-			case 'f':
-				stream << std::fixed;
-				break;
-			case 'e':
-				stream << std::scientific;
-				break;
+        case 'f':
+            stream << std::fixed;
+            break;
+        case 'e':
+            stream << std::scientific;
+            break;
+        default:
+            break;
 		}
 	}
 
@@ -137,15 +146,17 @@ void parseFormat(std::ostream & stream, const char * & format)
 
 		switch (std::tolower(baseFlag, loc))
 		{
-			case 'd':
-				stream << std::dec;
-				break;
-			case 'o':
-				stream << std::oct;
-				break;
-			case 'x':
-				stream << std::hex;
-				break;
+        case 'd':
+            stream << std::dec;
+            break;
+        case 'o':
+            stream << std::oct;
+            break;
+        case 'x':
+            stream << std::hex;
+            break;
+        default:
+            break;
 		}
 	}
 
@@ -156,5 +167,6 @@ void streamprintf(std::ostream & stream, const char * format)
 {
 	stream << format;
 }
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <vector>
@@ -5,8 +6,10 @@
 #include <globjects/globjects_api.h>
 #include <globjects/LocationIdentity.h>
 
+
 namespace globjects 
 {
+
 
 class Program;
 
@@ -37,5 +40,6 @@ protected:
     gl::GLuint blockIndex() const;
     void updateBinding() const;
 };
+
 
 } // namespace globjects

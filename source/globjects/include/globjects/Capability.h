@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <map>
@@ -6,8 +7,10 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects
 {
+
 
 class GLOBJECTS_API Capability
 {
@@ -33,5 +36,6 @@ protected:
     bool m_enabled;
     std::map<int, bool> m_indexEnabled;
 };
+
 
 } // namespace globjects

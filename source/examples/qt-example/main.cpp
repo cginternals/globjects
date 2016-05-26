@@ -146,6 +146,8 @@ public:
         case Qt::Key_F5:
             File::reloadAll();
             break;
+        default:
+            break;
         }
         doneCurrent();
     }

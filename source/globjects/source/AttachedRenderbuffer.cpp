@@ -1,14 +1,16 @@
+
 #include <globjects/AttachedRenderbuffer.h>
 
 #include <cassert>
 
 #include <globjects/Renderbuffer.h>
 
-
 using namespace gl;
+
 
 namespace globjects
 {
+
 
 AttachedRenderbuffer::AttachedRenderbuffer(Framebuffer * fbo,  const GLenum attachment, Renderbuffer * renderBuffer)
 : FramebufferAttachment(fbo, attachment)
@@ -30,5 +32,6 @@ const Renderbuffer * AttachedRenderbuffer::renderBuffer() const
 {
     return m_renderBuffer;
 }
+
 
 } // namespace globjects

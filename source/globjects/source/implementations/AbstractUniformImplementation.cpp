@@ -8,11 +8,12 @@
 #include "UniformImplementation_SeparateShaderObjectsARB.h"
 #include "UniformImplementation_Legacy.h"
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 AbstractUniformImplementation::AbstractUniformImplementation()
 {
@@ -39,5 +40,6 @@ void AbstractUniformImplementation::set(const Program* program, GLint location, 
 {
     set(program, location, std::vector<GLuint64>{ value.begin(), value.end() });
 }
+
 
 } // namespace globjects

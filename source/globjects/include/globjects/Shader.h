@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -14,8 +15,11 @@
 
 #include <globjects/Object.h>
 
+
 namespace globjects 
 {
+
+
 class AbstractStringSource;
 
 /** \brief Encapsulates OpenGL shaders.
@@ -106,5 +110,6 @@ protected:
 
     static std::map<std::string, std::string> s_globalReplacements;
 };
+
 
 } // namespace globjects

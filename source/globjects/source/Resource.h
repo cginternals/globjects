@@ -1,9 +1,12 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
 
+
 namespace globjects 
 {
+
 
 class AbstractResource
 {
@@ -142,5 +145,6 @@ public:
     VertexArrayObjectResource();
     ~VertexArrayObjectResource();
 };
+
 
 } // namespace globjects

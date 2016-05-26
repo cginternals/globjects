@@ -1,13 +1,14 @@
+
 #pragma once
 
 #include <string>
 #include <set>
 #include <vector>
 
-#include <globjects/globjects_api.h>
 
 namespace globjects
 {
+
 
 class AbstractStringSource;
 class CompositeStringSource;
@@ -34,5 +35,6 @@ protected:
     std::set<std::string> m_includes;
     std::vector<std::string> m_includePaths;
 };
+
 
 } // namespace globjects

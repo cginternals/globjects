@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -11,6 +12,7 @@
 
 namespace globjects 
 {
+
 
 class VertexAttributeBindingImplementation_Legacy : public AbstractVertexAttributeBindingImplementation
         , public Singleton<VertexAttributeBindingImplementation_Legacy>
@@ -69,5 +71,6 @@ protected:
     void finishIfComplete(const VertexAttributeBinding * binding) const;
     void finish(const VertexAttributeBinding * binding) const;
 };
+
 
 } // namespace globjects

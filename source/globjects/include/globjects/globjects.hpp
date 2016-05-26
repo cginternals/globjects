@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/globjects.h>
@@ -6,8 +7,10 @@
 
 #include <glbinding/gl/functions.h>
 
+
 namespace globjects 
 {
+
 
 template <int Count>
 std::array<gl::GLint, Count> getIntegers(const gl::GLenum pname)
@@ -74,5 +77,6 @@ void init(const glbinding::ContextHandle sharedContextId, T strategy, Args... ar
 
     initializeStrategy(strategy);
 }
+
 
 } // namespace globjects

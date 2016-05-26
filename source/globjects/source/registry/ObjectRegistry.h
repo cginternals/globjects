@@ -1,9 +1,12 @@
+
 #pragma once
 
 #include <set>
 
+
 namespace globjects 
 {
+
 
 class Object;
 class Framebuffer;
@@ -37,5 +40,6 @@ protected:
     Framebuffer * m_defaultFBO;
     VertexArray * m_defaultVAO;
 };
+
 
 } // namespace globjects

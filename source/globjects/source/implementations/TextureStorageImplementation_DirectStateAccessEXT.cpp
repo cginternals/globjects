@@ -9,7 +9,10 @@
 
 using namespace gl;
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 TextureStorageImplementation_DirectStateAccessEXT::TextureStorageImplementation_DirectStateAccessEXT()
 {
@@ -38,5 +41,6 @@ void TextureStorageImplementation_DirectStateAccessEXT::cubeMapStorage(const Tex
 {
     storage2D(texture, levels, internalFormat, width, height);
 }
+
 
 } // namespace globjects

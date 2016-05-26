@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -6,8 +7,10 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects
 {
+
 
 /** \brief Wrapper for OpenGL errors.
  
@@ -33,5 +36,6 @@ public:
 protected:
 	gl::GLenum m_errorCode;
 };
+
 
 } // namespace globjects

@@ -10,8 +10,10 @@
 
 using namespace gl;
 
+
 namespace globjects 
 {
+
 
 void ShadingLanguageIncludeImplementation_ARB::updateSources(const Shader * shader) const
 {
@@ -29,5 +31,6 @@ void ShadingLanguageIncludeImplementation_ARB::compile(const Shader * shader) co
     std::vector<const char*> cStrings = collectCStrings(shader->includePaths());
     glCompileShaderIncludeARB(shader->id(), static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
 }
+
 
 } // namespace globjects

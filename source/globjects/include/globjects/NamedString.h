@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -10,8 +11,11 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects 
 {
+
+
 class AbstractStringSource;
 
 class GLOBJECTS_API NamedString : public Referenced, protected ChangeListener
@@ -59,5 +63,6 @@ protected:
     ref_ptr<AbstractStringSource> m_source;
     gl::GLenum m_type;
 };
+
 
 } // namespace globjects

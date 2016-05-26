@@ -12,7 +12,10 @@
 
 using namespace gl;
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 TextureStorageImplementation_DirectStateAccessARB::TextureStorageImplementation_DirectStateAccessARB()
 {
@@ -41,5 +44,6 @@ void TextureStorageImplementation_DirectStateAccessARB::cubeMapStorage(const Tex
 {
     storage2D(texture, levels, internalFormat, width, height);
 }
+
 
 } // namespace globjects

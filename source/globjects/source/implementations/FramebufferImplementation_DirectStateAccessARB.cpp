@@ -10,11 +10,12 @@
 
 #include "FramebufferImplementation_Legacy.h"
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 GLuint FramebufferImplementation_DirectStateAccessARB::create() const
 {
@@ -79,5 +80,6 @@ void FramebufferImplementation_DirectStateAccessARB::setDrawBuffers(const Frameb
 {
     glNamedFramebufferDrawBuffers(fbo->id(), n, modes);
 }
+
 
 } // namespace globjects

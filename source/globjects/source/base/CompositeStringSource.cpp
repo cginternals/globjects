@@ -1,10 +1,13 @@
+
 #include <globjects/base/CompositeStringSource.h>
 
 #include <sstream>
 #include <cassert>
 
+
 namespace globjects
 {
+
 
 CompositeStringSource::CompositeStringSource()
 : m_dirty(true)
@@ -95,5 +98,6 @@ std::string CompositeStringSource::shortInfo() const
 
     return info.str();
 }
+
 
 } // namespace globjects

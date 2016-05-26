@@ -5,8 +5,10 @@
 
 using namespace gl;
 
+
 namespace globjects
 {
+
 
 StateSettingType::StateSettingType()
 : m_functionIdentifier(nullptr)
@@ -59,13 +61,18 @@ StateSettingType & StateSetting::type()
     return m_type;
 }
 
+
 } // namespace globjects
 
-namespace std {
+
+namespace std
+{
+
 
 size_t hash<globjects::StateSettingType>::operator()(const globjects::StateSettingType & type) const
 {
     return type.hash();
 }
+
 
 } // namespace std

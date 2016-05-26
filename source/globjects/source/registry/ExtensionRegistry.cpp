@@ -1,3 +1,4 @@
+
 #include "ExtensionRegistry.h"
 #include "Registry.h"
 
@@ -9,8 +10,10 @@
 
 using namespace gl;
 
+
 namespace globjects 
 {
+
 
 ExtensionRegistry::ExtensionRegistry()
 : m_initialized(false)
@@ -102,5 +105,5 @@ bool ExtensionRegistry::isInCoreProfile(GLextension extension)
     return isInCoreProfile(extension, globjects::version());
 }
 
-} // namespace globjects
 
+} // namespace globjects

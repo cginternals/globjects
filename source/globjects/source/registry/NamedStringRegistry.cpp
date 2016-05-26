@@ -1,3 +1,4 @@
+
 #include "NamedStringRegistry.h"
 
 #include <glbinding/gl/extension.h>
@@ -11,8 +12,10 @@
 
 using namespace gl;
 
+
 namespace globjects 
 {
+
 
 NamedStringRegistry::NamedStringRegistry()
 {
@@ -54,5 +57,6 @@ bool NamedStringRegistry::hasNativeSupport()
 {
     return hasExtension(GLextension::GL_ARB_shading_language_include);
 }
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #include <globjects/VertexArray.h>
 
 #include <cassert>
@@ -16,19 +17,25 @@
 
 #include "Resource.h"
 
-
 using namespace gl;
+
 
 namespace 
 {
-    globjects::AbstractVertexAttributeBindingImplementation & implementation()
-    {
-        return globjects::ImplementationRegistry::current().attributeImplementation();
-    }
+
+
+globjects::AbstractVertexAttributeBindingImplementation & implementation()
+{
+    return globjects::ImplementationRegistry::current().attributeImplementation();
 }
+
+
+} // namespace
+
 
 namespace globjects
 {
+
 
 VertexArray::VertexArray()
 : Object(new VertexArrayObjectResource)
@@ -255,5 +262,6 @@ GLenum VertexArray::objectType() const
 {
     return GL_VERTEX_ARRAY;
 }
+
 
 } // namespace globjects

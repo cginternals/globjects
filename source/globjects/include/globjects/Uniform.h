@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -5,8 +6,10 @@
 #include <globjects/globjects_api.h>
 #include <globjects/AbstractUniform.h>
 
+
 namespace globjects
 {
+
 
 /** \brief Wraps access to typed global GLSL variables.
  *
@@ -51,6 +54,8 @@ protected:
     T m_value; ///< The uniforms value, explictly required when relinking programs.
 };
 
+
 } // namespace globjects
+
 
 #include <globjects/Uniform.hpp>

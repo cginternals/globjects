@@ -1,9 +1,13 @@
+
 #pragma once
 
 #include <set>
 
+
 namespace globjects
 {
+
+
 class File;
 
 class FileRegistry
@@ -20,5 +24,6 @@ protected:
     std::set<File*> m_registeredFiles;
     static FileRegistry* s_instance;
 };
+
 
 } // namespace globjects

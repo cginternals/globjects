@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -6,8 +7,10 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects
 {
+
 
 class GLOBJECTS_API Sync : public Referenced
 {
@@ -38,5 +41,6 @@ protected:
     gl::GLsync m_sync;
     mutable void * m_objectLabelState;
 };
+
 
 } // namespace globjects

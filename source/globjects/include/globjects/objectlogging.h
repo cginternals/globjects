@@ -1,11 +1,14 @@
+
 #pragma once
 
 #include <globjects/globjects_api.h>
 
 #include <globjects/base/LogMessageBuilder.h>
 
+
 namespace globjects
 {
+
 
 class Object;
 class Buffer;
@@ -22,7 +25,6 @@ class VertexArray;
 class AbstractUniform;
 template <typename T>
 class Uniform;
-class Version;
 
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Object * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Buffer * object);
@@ -35,7 +37,6 @@ GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Shad
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Texture * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const TransformFeedback * object);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const VertexArray * object);
-
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const Sync * sync);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const AbstractUniform * uniform);
 
@@ -44,6 +45,8 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const Uniform<T> * unifo
 template <typename T>
 LogMessageBuilder operator<<(LogMessageBuilder builder, Uniform<T> * uniform);
 
+
 } // namespace globjects
+
 
 #include <globjects/objectlogging.hpp>

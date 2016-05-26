@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -7,6 +8,7 @@
 
 namespace globjects
 {
+
 
 class Framebuffer;
 class Texture;
@@ -38,5 +40,6 @@ public:
 public:
     static gl::GLenum s_workingTarget;
 };
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <vector>
@@ -8,11 +9,12 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
+
 namespace globjects
 {
 
-class Program;
 
+class Program;
 
 /** \brief Interface to use transform feedback.
     
@@ -88,6 +90,8 @@ protected:
     static void unbind(gl::GLenum target);
 };
 
+
 } // namespace globjects
+
 
 #include <globjects/TransformFeedback.hpp>

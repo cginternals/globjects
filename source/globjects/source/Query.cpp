@@ -1,3 +1,4 @@
+
 #include <globjects/Query.h>
 
 #include <glbinding/gl/functions.h>
@@ -8,11 +9,12 @@
 
 #include "Resource.h"
 
-
 using namespace gl;
+
 
 namespace globjects
 {
+
 
 Query::Query()
 : Object(new QueryResource)
@@ -207,5 +209,6 @@ GLenum Query::objectType() const
 {
     return GL_QUERY;
 }
+
 
 } // namespace globjects

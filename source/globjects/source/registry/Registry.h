@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <unordered_map>
@@ -5,14 +6,15 @@
 
 #include <glbinding/ContextHandle.h>
 
+
 namespace globjects
 {
+
 
 class ObjectRegistry;
 class ExtensionRegistry;
 class ImplementationRegistry;
 class NamedStringRegistry;
-
 
 class Registry
 {
@@ -53,5 +55,6 @@ private:
     std::shared_ptr<ImplementationRegistry> m_implementations;
     std::shared_ptr<NamedStringRegistry> m_namedStrings;
 };
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #include <globjects/FramebufferAttachment.h>
 
 #include <string>
@@ -6,11 +7,12 @@
 
 #include <globjects/Framebuffer.h>
 
-
 using namespace gl;
+
 
 namespace globjects
 {
+
 
 FramebufferAttachment::FramebufferAttachment(Framebuffer * fbo, GLenum attachment)
 : m_fbo(fbo)
@@ -62,5 +64,6 @@ const AttachedRenderbuffer * FramebufferAttachment::asRenderBufferAttachment() c
 {
     return isRenderBufferAttachment() ? reinterpret_cast<const AttachedRenderbuffer*>(this) : nullptr;
 }
+
 
 } // namespace globjects

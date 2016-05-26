@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -9,6 +10,7 @@
 
 namespace globjects
 {
+
 
 class Object;
 class Sync;
@@ -38,5 +40,6 @@ protected:
     void setObjectLabelState(const Object * object, void * state) const;
     void setObjectLabelState(const Sync * sync, void * state) const;
 };
+
 
 } // namespace globjects

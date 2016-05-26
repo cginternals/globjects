@@ -10,11 +10,12 @@
 
 #include "implementations/AbstractUniformImplementation.h"
 
-
 using namespace gl;
+
 
 namespace 
 {
+
 
 const globjects::AbstractUniformImplementation & implementation()
 {
@@ -356,5 +357,6 @@ void AbstractUniform::setValue(const Program * program, const GLint location, co
 {
     implementation().set(program, location, value);
 }
+
 
 } // namespace globjects

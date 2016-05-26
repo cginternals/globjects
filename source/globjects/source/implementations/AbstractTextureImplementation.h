@@ -1,11 +1,14 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
 
 #include <globjects/Texture.h>
 
+
 namespace globjects
 {
+
 
 class AbstractTextureImplementation
 {
@@ -50,5 +53,6 @@ public:
 
     virtual void pageCommitment(const Texture * texture, const gl::GLint level, const gl::GLint xOffset, const gl::GLint yOffset, const gl::GLint zOffset, const gl::GLsizei width, const gl::GLsizei height, const gl::GLsizei depth, const gl::GLboolean commit) const = 0;
 };
+
 
 } // namespace globjects

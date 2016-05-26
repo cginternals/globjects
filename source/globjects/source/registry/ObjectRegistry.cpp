@@ -1,5 +1,5 @@
+
 #include "ObjectRegistry.h"
-#include "Registry.h"
 
 #include <cassert>
 
@@ -7,8 +7,12 @@
 #include <globjects/Framebuffer.h>
 #include <globjects/VertexArray.h>
 
+#include "Registry.h"
+
+
 namespace globjects 
 {
+
 
 ObjectRegistry::ObjectRegistry()
 : m_defaultFBO(nullptr)
@@ -77,5 +81,6 @@ VertexArray * ObjectRegistry::defaultVAO()
 
     return m_defaultVAO;
 }
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #include <globjects/base/StringTemplate.h>
 
 #include <sstream>
@@ -6,6 +7,7 @@
 
 namespace 
 {
+
 
 void replaceAll(
     std::string & subject
@@ -21,10 +23,13 @@ void replaceAll(
 	}
 }
 
-}
+
+} // namespace
+
 
 namespace globjects
 {
+
 
 StringTemplate::StringTemplate(AbstractStringSource * source)
 : StringSourceDecorator(source)
@@ -86,5 +91,6 @@ std::string StringTemplate::modifiedSource() const
 
     return source;
 }
+
 
 } // namespace globjects

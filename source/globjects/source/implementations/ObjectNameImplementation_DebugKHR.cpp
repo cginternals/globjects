@@ -12,7 +12,10 @@
 
 using namespace gl;
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 ObjectNameImplementation_KHR_debug::ObjectNameImplementation_KHR_debug()
     : m_maxLabelLength(getInteger(GL_MAX_LABEL_LENGTH))
@@ -76,5 +79,6 @@ void ObjectNameImplementation_KHR_debug::setLabel(const Sync * sync, const std::
 
     glObjectPtrLabel(sync->sync(), static_cast<GLsizei>(label.size()), label.data());
 }
+
 
 } // namespace globjects

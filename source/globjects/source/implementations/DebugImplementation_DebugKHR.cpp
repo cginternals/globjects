@@ -10,11 +10,12 @@
 
 #include <globjects/globjects.h>
 
-
 using namespace gl;
+
 
 namespace globjects
 {
+
 
 void GL_APIENTRY DebugImplementation_DebugKHR::debugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, const void * param)
 {
@@ -66,5 +67,6 @@ void DebugImplementation_DebugKHR::controlMessages(GLenum source, GLenum type, G
 {
     glDebugMessageControl(source, type, severity, count, ids, enabled);
 }
+
 
 } // namespace globjects

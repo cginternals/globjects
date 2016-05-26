@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -8,8 +9,10 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects 
 {
+
 
 class AttachedTexture;
 class AttachedRenderbuffer;
@@ -46,5 +49,6 @@ protected:
     Framebuffer * m_fbo; // TODO: weak pointer?
 	gl::GLenum m_attachment;
 };
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -9,6 +10,7 @@
 
 namespace globjects 
 {
+
 
 class DebugImplementation_DebugKHR : public AbstractDebugImplementation
     , public Singleton<DebugImplementation_DebugKHR>
@@ -28,5 +30,6 @@ protected:
 
     static void GL_APIENTRY debugMessageCallback(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message, const void * param);
 };
+
 
 } // namespace globjects

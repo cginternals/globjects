@@ -1,3 +1,4 @@
+
 #include <globjects/base/File.h>
 
 #include <fstream>
@@ -6,8 +7,10 @@
 
 #include "FileRegistry.h"
 
+
 namespace globjects
 {
+
 
 File::File(const std::string & filePath, bool binary)
 : m_filePath(filePath)
@@ -83,5 +86,6 @@ void File::loadFileContent() const
         m_valid = false;
     }
 }
+
 
 } // namespace globjects

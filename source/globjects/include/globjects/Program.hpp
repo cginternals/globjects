@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/Program.h>
@@ -8,8 +9,10 @@
 
 #include <globjects/Uniform.h>
 
+
 namespace globjects
 {
+
 
 template<typename T>
 void Program::setUniformByIdentity(const LocationIdentity & identity, const T & value)
@@ -101,5 +104,6 @@ void Program::attach(Shader * shader, Shaders... shaders)
 
     attach(std::forward<Shaders>(shaders)...);
 }
+
 
 } // namespace globjects

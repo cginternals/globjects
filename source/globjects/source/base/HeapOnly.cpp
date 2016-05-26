@@ -1,6 +1,10 @@
+
 #include <globjects/base/HeapOnly.h>
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 HeapOnly::HeapOnly()
 {
@@ -14,5 +18,6 @@ void HeapOnly::destroy() const
 HeapOnly::~HeapOnly()
 {
 }
+
 
 } // namespace globjects

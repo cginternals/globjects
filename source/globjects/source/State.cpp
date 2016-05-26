@@ -1,3 +1,4 @@
+
 #include <globjects/State.h>
 
 #include <glbinding/gl/enum.h>
@@ -10,8 +11,10 @@
 
 using namespace gl;
 
+
 namespace globjects 
 {
+
 
 State::State(const Mode mode)
 : m_mode(mode)
@@ -321,5 +324,6 @@ void State::add(StateSetting * setting)
     if (m_mode == ImmediateMode)
         setting->apply();
 }
+
 
 } // namespace globjects

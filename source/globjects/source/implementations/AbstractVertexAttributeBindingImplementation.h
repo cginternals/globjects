@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -6,7 +7,10 @@
 
 #include <globjects/VertexArray.h>
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 class VertexArray;
 class VertexAttributeBinding;
@@ -41,5 +45,6 @@ protected:
 
     void * & bindingData(const VertexAttributeBinding * binding) const;
 };
+
 
 } // namespace globjects

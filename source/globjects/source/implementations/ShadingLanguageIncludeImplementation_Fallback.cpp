@@ -10,11 +10,12 @@
 
 #include "../IncludeProcessor.h"
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 void ShadingLanguageIncludeImplementation_Fallback::updateSources(const Shader * shader) const
 {
@@ -36,5 +37,6 @@ void ShadingLanguageIncludeImplementation_Fallback::compile(const Shader * shade
 {
     glCompileShader(shader->id());
 }
+
 
 } // namespace globjects

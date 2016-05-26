@@ -1,9 +1,13 @@
+
 #pragma once
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects
 {
+
+
 class Object;
 class Buffer;
 class Framebuffer;
@@ -16,7 +20,6 @@ class Shader;
 class Texture;
 class TransformFeedback;
 class VertexArray;
-
 
 /** \brief Implements a Visitor Pattern to iterate over all tracked globjects objects.
  
@@ -43,5 +46,6 @@ public:
     virtual void visitTransformFeedback(TransformFeedback * transformfeedback);
     virtual void visitVertexArray(VertexArray * vao);
 };
+
 
 } // namespace globjects

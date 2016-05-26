@@ -10,11 +10,12 @@
 #include "TextureImplementation_DirectStateAccessEXT.h"
 #include "TextureImplementation_Legacy.h"
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 AbstractTextureImplementation::AbstractTextureImplementation()
 {
@@ -41,5 +42,6 @@ AbstractTextureImplementation * AbstractTextureImplementation::get(const Texture
         return TextureImplementation_Legacy::instance();
     }
 }
+
 
 } // namespace globjects

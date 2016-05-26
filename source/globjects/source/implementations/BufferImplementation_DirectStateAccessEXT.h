@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/base/Singleton.h>
@@ -7,6 +8,7 @@
 
 namespace globjects
 {
+
 
 class Buffer;
 
@@ -41,5 +43,6 @@ public:
     virtual void invalidateData(const Buffer * buffer) const override;
     virtual void invalidateSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const override;
 };
+
 
 } // namespace globjects

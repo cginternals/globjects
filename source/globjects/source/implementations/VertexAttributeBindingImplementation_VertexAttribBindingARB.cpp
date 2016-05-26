@@ -1,3 +1,4 @@
+
 #include "VertexAttributeBindingImplementation_VertexAttribBindingARB.h"
 
 #include <cassert>
@@ -10,11 +11,12 @@
 
 #include "VertexAttributeBindingImplementation_Legacy.h"
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 VertexAttributeBindingImplementation_VertexAttribBindingARB::VertexAttributeBindingImplementation_VertexAttribBindingARB()
 {
@@ -73,5 +75,6 @@ void VertexAttributeBindingImplementation_VertexAttribBindingARB::setLFormat(con
 
     glVertexAttribLFormat(attributeIndex(binding), size, type, relativeoffset);
 }
+
 
 } // namespace globjects

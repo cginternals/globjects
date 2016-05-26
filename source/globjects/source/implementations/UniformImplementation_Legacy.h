@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/base/Singleton.h>
@@ -7,6 +8,7 @@
 
 namespace globjects
 {
+
 
 class UniformImplementation_Legacy : public AbstractUniformImplementation
     , public Singleton<UniformImplementation_Legacy>
@@ -73,5 +75,6 @@ public:
 
     virtual void set(const Program * program, gl::GLint location, const std::vector<gl::GLuint64> & value) const override;
 };
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -8,6 +9,7 @@
 
 namespace globjects
 {
+
 
 class Shader;
 
@@ -25,5 +27,6 @@ public:
 
     static std::vector<const char*> collectCStrings(const std::vector<std::string> & strings);
 };
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #include "AbstractVertexAttributeBindingImplementation.h"
 
 #include <glbinding/gl/functions.h>
@@ -13,8 +14,10 @@
 
 using namespace gl;
 
+
 namespace globjects 
 {
+
 
 AbstractVertexAttributeBindingImplementation::AbstractVertexAttributeBindingImplementation()
 {
@@ -66,5 +69,6 @@ void * & AbstractVertexAttributeBindingImplementation::bindingData(const VertexA
 {
     return binding->m_bindingData;
 }
+
 
 } // namespace globjects

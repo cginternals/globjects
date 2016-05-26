@@ -8,7 +8,10 @@
 
 #include <globjects/globjects.h>
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 TextureStorageImplementation_Legacy::TextureStorageImplementation_Legacy()
 {
@@ -43,5 +46,6 @@ void TextureStorageImplementation_Legacy::cubeMapStorage(const Texture * texture
 {
     storage2D(texture, levels, internalFormat, width, height);
 }
+
 
 } // namespace globjects

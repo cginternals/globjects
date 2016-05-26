@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/base/Singleton.h>
@@ -7,6 +8,7 @@
 
 namespace globjects 
 {
+
 
 class DebugImplementation_Legacy : public AbstractDebugImplementation
     , public Singleton<DebugImplementation_Legacy>
@@ -24,5 +26,6 @@ public:
 protected:
     bool m_enabled;
 };
+
 
 } // namespace globjects

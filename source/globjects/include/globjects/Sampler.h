@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -5,8 +6,10 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
+
 namespace globjects 
 {
+
 
 /** \brief Wraps OpenGL sampler objects.
         
@@ -36,5 +39,6 @@ protected:
     Sampler(IDResource * resource);
     virtual ~Sampler();
 };
+
 
 } // namespace globjects

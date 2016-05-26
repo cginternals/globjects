@@ -1,3 +1,4 @@
+
 #include <globjects/Renderbuffer.h>
 
 #include <glbinding/gl/functions.h>
@@ -7,11 +8,12 @@
 
 #include "Resource.h"
 
-
 using namespace gl;
+
 
 namespace globjects
 {
+
 
 Renderbuffer::Renderbuffer()
 : Object(new RenderBufferObjectResource)
@@ -76,5 +78,6 @@ GLenum Renderbuffer::objectType() const
 {
     return GL_RENDERBUFFER;
 }
+
 
 } // namespace globjects

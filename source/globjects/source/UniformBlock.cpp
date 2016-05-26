@@ -1,3 +1,4 @@
+
 #include <globjects/UniformBlock.h>
 
 #include <globjects/Program.h>
@@ -6,11 +7,12 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 UniformBlock::UniformBlock()
 : m_program(nullptr)
@@ -92,5 +94,6 @@ std::string UniformBlock::getName() const
 
     return std::string(name.data(), length);
 }
+
 
 } // namespace globjects

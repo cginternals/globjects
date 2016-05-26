@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <chrono>
@@ -7,8 +8,10 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
+
 namespace globjects
 {
+
 
 /** \brief Encapsulates a GL Query object
     
@@ -112,5 +115,6 @@ protected:
 
     void counter(gl::GLenum target) const;
 };
+
 
 } // namespace globjects

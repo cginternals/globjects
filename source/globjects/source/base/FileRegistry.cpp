@@ -1,11 +1,14 @@
+
 #include "FileRegistry.h"
 
 #include <cassert>
 
 #include <globjects/base/File.h>
 
+
 namespace globjects
 {
+
 
 FileRegistry* FileRegistry::s_instance = new FileRegistry;
 
@@ -39,5 +42,6 @@ void FileRegistry::reloadAll()
         file->reload();
     }
 }
+
 
 } // namespace globjects

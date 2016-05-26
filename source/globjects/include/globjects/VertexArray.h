@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <map>
@@ -10,11 +11,12 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
+
 namespace globjects 
 {
 
-class VertexAttributeBinding;
 
+class VertexAttributeBinding;
 
 // http://www.opengl.org/wiki/Vertex_Array_Object
 class GLOBJECTS_API VertexArray : public Object
@@ -107,5 +109,6 @@ protected:
     std::map<gl::GLuint, ref_ptr<VertexAttributeBinding>> m_bindings;
 
 };
+
 
 } // namespace globjects

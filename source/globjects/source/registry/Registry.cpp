@@ -1,3 +1,4 @@
+
 #include "Registry.h"
 
 #include <mutex>
@@ -10,15 +11,21 @@
 #include "ImplementationRegistry.h"
 #include "NamedStringRegistry.h"
 
+
 namespace
 {
-	GLOBJECTS_THREAD_LOCAL globjects::Registry * t_currentRegistry;
 
-    std::recursive_mutex g_mutex;
-}
+
+GLOBJECTS_THREAD_LOCAL globjects::Registry * t_currentRegistry;
+std::recursive_mutex g_mutex;
+
+
+} // namespace
+
 
 namespace globjects
 {
+
 
 std::unordered_map<glbinding::ContextHandle, Registry *> Registry::s_registries;
 
@@ -190,5 +197,6 @@ NamedStringRegistry & Registry::namedStrings()
 {
     return *m_namedStrings;
 }
+
 
 } // namespace globjects

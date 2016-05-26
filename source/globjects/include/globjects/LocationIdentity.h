@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -7,8 +8,10 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects 
 {
+
 
 class GLOBJECTS_API LocationIdentity
 {
@@ -53,5 +56,6 @@ struct hash<globjects::LocationIdentity>
         return identity.hash();
     }
 };
+
 
 } // namespace globjects

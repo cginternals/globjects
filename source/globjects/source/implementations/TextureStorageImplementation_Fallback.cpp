@@ -18,15 +18,19 @@
 namespace
 {
 
+
 const globjects::AbstractTextureImplementation & bindlessImplementation()
 {
     return globjects::ImplementationRegistry::current().textureBindlessImplementation();
 }
 
-}
+
+} // namespace
 
 
-namespace globjects {
+namespace globjects
+{
+
 
 TextureStorageImplementation_Fallback::TextureStorageImplementation_Fallback()
 {
@@ -76,5 +80,6 @@ void TextureStorageImplementation_Fallback::cubeMapStorage(const Texture * textu
 {
     storage2D(texture, levels, internalFormat, width, height);
 }
+
 
 } // namespace globjects

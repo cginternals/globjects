@@ -12,6 +12,7 @@
 namespace globjects 
 {
 
+
 LogMessageBuilder operator<<(LogMessageBuilder builder, const glbinding::Version & version)
 {
     builder << "Version " << version.toString();
@@ -259,5 +260,6 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::BufferAccessMa
 
     return builder;
 }
+
 
 } // namespace globjects

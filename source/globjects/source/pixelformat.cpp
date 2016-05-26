@@ -1,3 +1,4 @@
+
 #include "pixelformat.h"
 
 #include <glbinding/gl/enum.h>
@@ -5,11 +6,12 @@
 #include <globjects/globjects.h>
 #include <globjects/logging.h>
 
-
 using namespace gl;
+
 
 namespace 
 {
+
 
 int nextMultiple(const int n, const int k)
 {
@@ -117,9 +119,13 @@ int bytesPerPixel(const GLenum format, const GLenum type)
     return numberOfComponents(format) * byteSize(type);
 }
 
-}
 
-namespace globjects {
+} // namespace
+
+
+namespace globjects
+{
+
 
 int imageSizeInBytes(const int width, const int height, const int depth, const GLenum format, const GLenum type)
 {
@@ -140,5 +146,6 @@ int imageSizeInBytes(const int width, const int height, const int depth, const G
 
     return rowSize * height * depth;
 }
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -10,6 +11,7 @@
 
 namespace globjects
 {
+
 
 class GLOBJECTS_API DebugMessage
 {
@@ -70,5 +72,6 @@ public:
 
     static bool isFallbackImplementation();
 };
+
 
 } // namespace globjects

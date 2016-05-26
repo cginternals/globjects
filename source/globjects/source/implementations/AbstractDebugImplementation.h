@@ -1,11 +1,14 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
 
 #include <globjects/DebugMessage.h>
 
+
 namespace globjects 
 {
+
 
 class AbstractDebugImplementation
 {
@@ -35,5 +38,6 @@ protected:
 
     virtual void handleMessage(const DebugMessage & message) const;
 };
+
 
 } // namespace globjects

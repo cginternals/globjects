@@ -1,3 +1,4 @@
+
 #include <globjects/base/ConsoleLogger.h>
 
 #include <iostream>
@@ -5,8 +6,10 @@
 #include <globjects/base/LogMessage.h>
 #include <globjects/base/LogMessageLevel.h>
 
+
 namespace globjects
 {
+
 
 void ConsoleLogger::handle(const LogMessage& message)
 {
@@ -30,5 +33,6 @@ std::string ConsoleLogger::levelString(const LogMessageLevel level)
         return "";
     }
 }
+
 
 } // namespace globjects

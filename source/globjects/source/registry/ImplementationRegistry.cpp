@@ -1,3 +1,4 @@
+
 #include "ImplementationRegistry.h"
 
 #include "Registry.h"
@@ -13,8 +14,10 @@
 #include "../implementations/AbstractTextureStorageImplementation.h"
 #include "../implementations/AbstractVertexAttributeBindingImplementation.h"
 
+
 namespace globjects 
 {
+
 
 ImplementationRegistry::ImplementationRegistry()
 : m_uniformImplementation(nullptr)
@@ -192,5 +195,6 @@ AbstractTextureStorageImplementation & ImplementationRegistry::textureStorageImp
 
     return *m_textureStorageImplementation;
 }
+
 
 } // namespace globjects

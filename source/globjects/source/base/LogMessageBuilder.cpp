@@ -1,3 +1,4 @@
+
 #include <globjects/base/LogMessageBuilder.h>
 
 #include <cassert>
@@ -7,8 +8,10 @@
 #include <globjects/base/AbstractLogHandler.h>
 #include <globjects/base/LogMessage.h>
 
+
 namespace globjects
 {
+
 
 LogMessageBuilder::LogMessageBuilder(const LogMessageLevel level, AbstractLogHandler * handler)
 : m_level(level)
@@ -145,5 +148,6 @@ LogMessageBuilder & LogMessageBuilder::operator<<(const LogMessageBuilder::Width
     return *this;
 }
 #endif
+
 
 } // namespace globjects

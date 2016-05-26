@@ -8,11 +8,12 @@
 #include <globjects/Program.h>
 #include <globjects/ProgramBinary.h>
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 bool ProgramBinaryImplementation_GetProgramBinaryARB::updateProgramLinkSource(const Program * program) const
 {
@@ -39,5 +40,6 @@ ProgramBinary * ProgramBinaryImplementation_GetProgramBinaryARB::getProgramBinar
 
     return new ProgramBinary(format, binary);
 }
+
 
 } // namespace globjects

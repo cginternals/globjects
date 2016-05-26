@@ -1,9 +1,12 @@
+
 #pragma once
 
 #include "AbstractObjectNameImplementation.h"
 
+
 namespace globjects
 {
+
 
 class ObjectNameImplementation_Legacy : public AbstractObjectNameImplementation
 {
@@ -20,5 +23,6 @@ public:
     virtual void setLabel(const Object * object, const std::string & label) const override;
     virtual void setLabel(const Sync * sync, const std::string & label) const override;
 };
+
 
 } // namespace globjects

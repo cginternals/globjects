@@ -1,10 +1,13 @@
+
 #pragma once
 
 #include <string>
 #include <unordered_map>
 
+
 namespace globjects 
 {
+
 
 class NamedString;
 
@@ -24,5 +27,6 @@ public:
 protected:
     std::unordered_map<std::string, NamedString*> m_namedStrings;
 };
+
 
 } // namespace globjects

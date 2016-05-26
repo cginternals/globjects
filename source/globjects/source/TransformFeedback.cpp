@@ -1,3 +1,4 @@
+
 #include <globjects/TransformFeedback.h>
 
 #include <cassert>
@@ -11,11 +12,12 @@
 
 #include "Resource.h"
 
-
 using namespace gl;
+
 
 namespace globjects
 {
+
 
 TransformFeedback::TransformFeedback()
 : Object(new TransformFeedbackResource)
@@ -111,5 +113,6 @@ GLenum TransformFeedback::objectType() const
 {
     return GL_TRANSFORM_FEEDBACK;
 }
+
 
 } // namespace globjects

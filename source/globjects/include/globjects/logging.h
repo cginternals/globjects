@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/base/baselogging.h>

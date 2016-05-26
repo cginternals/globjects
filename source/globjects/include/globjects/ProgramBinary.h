@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <vector>
@@ -14,8 +15,8 @@
 namespace globjects
 {
 
-class AbstractStringSource;
 
+class AbstractStringSource;
 
 /**
  * \brief The ProgramBinary class is used for directly setting binary sources for a Program.
@@ -47,5 +48,6 @@ protected:
     mutable bool m_valid;
     mutable std::vector<unsigned char> m_binaryData;
 };
+
 
 } // namespace globjects

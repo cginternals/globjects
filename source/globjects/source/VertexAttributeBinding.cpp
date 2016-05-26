@@ -1,3 +1,4 @@
+
 #include <globjects/VertexAttributeBinding.h>
 
 #include <cassert>
@@ -16,19 +17,25 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
-
 using namespace gl;
+
 
 namespace 
 {
-    globjects::AbstractVertexAttributeBindingImplementation & attributeImplementation()
-    {
-        return globjects::ImplementationRegistry::current().attributeImplementation();
-    }
+
+
+globjects::AbstractVertexAttributeBindingImplementation & attributeImplementation()
+{
+return globjects::ImplementationRegistry::current().attributeImplementation();
 }
+
+
+} // namespace
+
 
 namespace globjects
 {
+
 
 VertexAttributeBinding::VertexAttributeBinding(
     VertexArray * vao

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glm/fwd.hpp>
@@ -6,8 +7,10 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects 
 {
+
 
 class Texture;
 class Sampler;
@@ -33,5 +36,6 @@ public:
 private:
     gl::GLuint64 m_handle;
 };
+
 
 } // namespace globjects

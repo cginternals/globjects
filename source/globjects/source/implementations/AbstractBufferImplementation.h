@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -7,6 +8,7 @@
 
 namespace globjects
 {
+
 
 class Buffer;
 
@@ -46,5 +48,6 @@ public:
     virtual void invalidateData(const Buffer * buffer) const = 0;
     virtual void invalidateSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const = 0;
 };
+
 
 } // namespace globjects

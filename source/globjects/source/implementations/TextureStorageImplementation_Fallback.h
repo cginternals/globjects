@@ -1,11 +1,14 @@
+
 #pragma once
 
 #include <globjects/base/Singleton.h>
 
 #include "AbstractTextureStorageImplementation.h"
 
+
 namespace globjects
 {
+
 
 class TextureStorageImplementation_Fallback : public AbstractTextureStorageImplementation
     , public Singleton<TextureStorageImplementation_Fallback>
@@ -20,5 +23,6 @@ public:
 
     virtual void cubeMapStorage(const Texture * texture, gl::GLint levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height) const override;
 };
+
 
 } // namespace globjects

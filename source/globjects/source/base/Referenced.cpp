@@ -1,3 +1,4 @@
+
 #include <globjects/base/Referenced.h>
 
 #include <cassert>
@@ -34,5 +35,6 @@ int Referenced::refCounter() const
 {
 	return m_refCounter;
 }
+
 
 } // namespace globjects

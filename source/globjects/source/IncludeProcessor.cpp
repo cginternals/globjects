@@ -1,3 +1,4 @@
+
 #include "IncludeProcessor.h"
 
 #include <sstream>
@@ -12,32 +13,41 @@
 #include <globjects/globjects.h>
 #include <globjects/NamedString.h>
 
-namespace {
-    // From http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
-    inline std::string trim(const std::string &s)
-    {
-       auto wsfront=std::find_if_not(s.begin(),s.end(),[](int c){return std::isspace(c);});
-       auto wsback=std::find_if_not(s.rbegin(),s.rend(),[](int c){return std::isspace(c);}).base();
-       return (wsback<=wsfront ? std::string() : std::string(wsfront,wsback));
-    }
 
-    inline bool contains(const std::string& string, const std::string& search)
-    {
-        return string.find(search) != std::string::npos;
-    }
+namespace
+{
 
-    inline bool startsWith(const std::string& string, char firstChar)
-    {
-        return !string.empty() && string.front() == firstChar;
-    }
 
-    inline bool endsWith(const std::string& string, char firstChar)
-    {
-        return !string.empty() && string.back() == firstChar;
-    }
+// From http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+inline std::string trim(const std::string &s)
+{
+   auto wsfront=std::find_if_not(s.begin(),s.end(),[](int c){return std::isspace(c);});
+   auto wsback=std::find_if_not(s.rbegin(),s.rend(),[](int c){return std::isspace(c);}).base();
+   return (wsback<=wsfront ? std::string() : std::string(wsfront,wsback));
 }
 
-namespace globjects {
+inline bool contains(const std::string& string, const std::string& search)
+{
+    return string.find(search) != std::string::npos;
+}
+
+inline bool startsWith(const std::string& string, char firstChar)
+{
+    return !string.empty() && string.front() == firstChar;
+}
+
+inline bool endsWith(const std::string& string, char firstChar)
+{
+    return !string.empty() && string.back() == firstChar;
+}
+
+
+} // namespace
+
+
+namespace globjects
+{
+
 
 IncludeProcessor::IncludeProcessor()
 {
@@ -192,44 +202,47 @@ void IncludeProcessor::parseInclude(std::string & trimmedLine, CompositeStringSo
 
 void IncludeProcessor::processInclude(std::string & include, CompositeStringSource * compositeSource, std::stringstream & destinationstream)
 {
-    if (m_includes.count(include) == 0)
+    if (m_includes.count(include) > 0)
     {
-        m_includes.insert(include);
-        compositeSource->appendSource(new StaticStringSource(destinationstream.str()));
+        return;
+    }
 
-        NamedString * namedString = nullptr;
-        if (startsWith(include, '/'))
+    m_includes.insert(include);
+    compositeSource->appendSource(new StaticStringSource(destinationstream.str()));
+
+    NamedString * namedString = nullptr;
+    if (startsWith(include, '/'))
+    {
+        namedString = NamedString::obtain(include);
+    }
+    else
+    {
+        for (const std::string & prefix : m_includePaths)
         {
-            namedString = NamedString::obtain(include);
-        }
-        else
-        {
-            for (const std::string & prefix : m_includePaths)
+            namedString = NamedString::obtain(expandPath(include, prefix));
+            if (namedString)
             {
-                namedString = NamedString::obtain(expandPath(include, prefix));
-                if (namedString)
-                {
-                    break;
-                }
+                break;
             }
         }
-
-        if (namedString)
-        {
-            compositeSource->appendSource(processComposite(namedString->stringSource()));
-        }
-        else
-        {
-            warning() << "Did not find include " << include;
-        }
-
-        destinationstream.str("");
     }
+
+    if (namedString)
+    {
+        compositeSource->appendSource(processComposite(namedString->stringSource()));
+    }
+    else
+    {
+        warning() << "Did not find include " << include;
+    }
+
+    destinationstream.str("");
 }
 
 std::string IncludeProcessor::expandPath(const std::string& include, const std::string includePath)
 {
     return endsWith(includePath, '/') ? includePath + include : includePath + "/" + include;
 }
+
 
 } // namespace globjects

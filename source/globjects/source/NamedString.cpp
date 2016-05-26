@@ -1,3 +1,4 @@
+
 #include <globjects/NamedString.h>
 
 #include <glbinding/gl/functions.h>
@@ -9,11 +10,12 @@
 
 #include "registry/NamedStringRegistry.h"
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 NamedString * NamedString::create(const std::string & name, AbstractStringSource * source)
 {

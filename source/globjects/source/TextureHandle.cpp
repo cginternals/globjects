@@ -1,3 +1,4 @@
+
 #include <globjects/TextureHandle.h>
 
 #include <glm/vec2.hpp>
@@ -10,8 +11,10 @@
 
 using namespace gl;
 
+
 namespace globjects
 {
+
 
 TextureHandle::TextureHandle()
 : m_handle(0)
@@ -67,5 +70,6 @@ TextureHandle::operator glm::uvec2() const
 {
     return asUVec2();
 }
+
 
 } // namespace globjects

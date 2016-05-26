@@ -6,11 +6,12 @@
 #include <globjects/State.h>
 #include <globjects/globjects.h>
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 Capability::Capability(const GLenum capability)
 : m_capability(capability)
@@ -73,5 +74,6 @@ void Capability::apply()
         }
     }
 }
+
 
 } // namespace globjects

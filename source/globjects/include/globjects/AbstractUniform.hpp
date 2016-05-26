@@ -1,9 +1,12 @@
+
 #pragma once
 
 #include <globjects/AbstractUniform.h>
 
+
 namespace globjects 
 {
+
 
 template<typename T>
 Uniform<T> * AbstractUniform::as()
@@ -22,5 +25,6 @@ void AbstractUniform::setValue(const Program * program, const gl::GLint location
 {
     setValue(program, location, std::vector<T>(value.data(), value.data()+Count));
 }
+
 
 } // namespace globjects

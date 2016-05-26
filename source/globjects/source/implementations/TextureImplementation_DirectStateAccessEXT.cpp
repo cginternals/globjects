@@ -11,7 +11,10 @@
 
 using namespace gl;
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 TextureImplementation_DirectStateAccessEXT::TextureImplementation_DirectStateAccessEXT()
 {
@@ -148,5 +151,6 @@ void TextureImplementation_DirectStateAccessEXT::pageCommitment(const Texture * 
 {
     gl::glTexturePageCommitmentEXT(texture->id(), level, xOffset, yOffset, zOffset, width, height, depth, commit);
 }
+
 
 } // namespace globjects

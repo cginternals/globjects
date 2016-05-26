@@ -8,7 +8,10 @@
 
 #include <globjects/globjects.h>
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 TextureImplementation_Legacy::TextureImplementation_Legacy()
 {
@@ -190,5 +193,6 @@ void TextureImplementation_Legacy::pageCommitment(const Texture * texture, const
 
     gl::glTexPageCommitmentARB(texture->target(), level, xOffset, yOffset, zOffset, width, height, depth, commit);
 }
+
 
 } // namespace globjects

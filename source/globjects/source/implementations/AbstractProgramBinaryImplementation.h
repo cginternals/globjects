@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -7,6 +8,7 @@
 
 namespace globjects
 {
+
 
 class Program;
 class ProgramBinary;
@@ -23,5 +25,6 @@ public:
     virtual bool updateProgramLinkSource(const Program * program) const = 0;
     virtual ProgramBinary* getProgramBinary(const Program * program) const = 0;
 };
+
 
 } // namespace globjects

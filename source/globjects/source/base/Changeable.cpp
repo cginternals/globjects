@@ -1,11 +1,14 @@
+
 #include <globjects/base/Changeable.h>
 
 #include <cassert>
 
 #include <globjects/base/ChangeListener.h>
 
+
 namespace globjects
 {
+
 
 void Changeable::changed() const
 {
@@ -33,5 +36,6 @@ void Changeable::deregisterListener(ChangeListener * listener)
 	m_listeners.erase(listener);
     listener->removeSubject(this);
 }
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <vector>
@@ -10,6 +11,7 @@
 
 namespace globjects
 {
+
 
 class Program;
 
@@ -83,5 +85,6 @@ public:
     virtual void set(const Program * program, gl::GLint location, const std::vector<gl::GLuint64> & value) const = 0;
     virtual void set(const Program * program, gl::GLint location, const std::vector<TextureHandle> & value) const;
 };
+
 
 } // namespace globjects

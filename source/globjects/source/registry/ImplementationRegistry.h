@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/Shader.h>
@@ -13,6 +14,7 @@
 
 namespace globjects
 {
+
 
 class AbstractUniformImplementation;
 class AbstractBufferImplementation;
@@ -69,5 +71,6 @@ protected:
     AbstractTextureStorageImplementation * m_textureStorageImplementation;
     AbstractVertexAttributeBindingImplementation * m_attributeImplementation;
 };
+
 
 } // namespace globjects

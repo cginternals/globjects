@@ -1,9 +1,12 @@
+
 #pragma once
 
 #include <globjects/Uniform.h>
 
+
 namespace globjects
 {
+
 
 template<typename T>
 Uniform<T>::Uniform(gl::GLint location)
@@ -59,5 +62,6 @@ void Uniform<T>::set(const T & value)
 	m_value = value;
 	changed();
 }
+
 
 } // namespace globjects

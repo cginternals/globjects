@@ -1,10 +1,12 @@
-#include <globjects/LocationIdentity.h>
 
+#include <globjects/LocationIdentity.h>
 
 using namespace gl;
 
+
 namespace globjects 
 {
+
 
 LocationIdentity::LocationIdentity()
 : m_invalid(true)
@@ -95,5 +97,6 @@ std::size_t LocationIdentity::hash() const
         return std::hash<GLint>()(m_location);
     }
 }
+
 
 } // namespace globjects

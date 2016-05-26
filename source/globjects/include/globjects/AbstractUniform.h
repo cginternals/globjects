@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -14,8 +15,10 @@
 
 #include <globjects/LocationIdentity.h>
 
+
 namespace globjects
 {
+
 
 class TextureHandle;
 class Program;
@@ -154,6 +157,8 @@ protected:
     mutable std::unordered_map<const Program *, gl::GLint> m_locations;
 };
 
+
 } // namespace globjects
+
 
 #include <globjects/AbstractUniform.hpp>

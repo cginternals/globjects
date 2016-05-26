@@ -1,3 +1,4 @@
+
 #include <globjects/Texture.h>
 
 #include <glbinding/gl/enum.h>
@@ -17,9 +18,12 @@
 #include "implementations/AbstractTextureImplementation.h"
 #include "implementations/AbstractTextureStorageImplementation.h"
 
+using namespace gl;
+
 
 namespace
 {
+
 
 const globjects::AbstractTextureImplementation & bindlessImplementation()
 {
@@ -31,13 +35,13 @@ const globjects::AbstractTextureStorageImplementation & storageImplementation()
     return globjects::ImplementationRegistry::current().textureStorageImplementation();
 }
 
-}
 
+} // namespace
 
-using namespace gl;
 
 namespace globjects
 {
+
 
 void Texture::hintBindlessImplementation(BindlessImplementation impl)
 {
@@ -449,5 +453,6 @@ GLenum Texture::objectType() const
 {
     return GL_TEXTURE;
 }
+
 
 } // namespace globjects

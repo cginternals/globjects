@@ -1,11 +1,14 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
 
 #include <globjects/Texture.h>
 
+
 namespace globjects
 {
+
 
 class AbstractTextureStorageImplementation
 {
@@ -22,5 +25,6 @@ public:
 
     virtual void cubeMapStorage(const Texture * texture, gl::GLint levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height) const = 0;
 };
+
 
 } // namespace globjects

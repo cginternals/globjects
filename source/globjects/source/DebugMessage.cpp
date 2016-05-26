@@ -1,3 +1,4 @@
+
 #include <globjects/DebugMessage.h>
 
 #include <sstream>
@@ -12,18 +13,23 @@
 
 using namespace gl;
 
+
 namespace
 {
+
 
 globjects::AbstractDebugImplementation & implementation()
 {
     return globjects::ImplementationRegistry::current().debugImplementation();
 }
 
-}
+
+} // namespace
+
 
 namespace globjects 
 {
+
 
 void DebugMessage::hintImplementation(const Implementation impl)
 {
@@ -216,5 +222,6 @@ void DebugMessage::controlMessages(const GLenum source, const GLenum type, const
 
     implementation().controlMessages(source, type, severity, count, ids, enabled);
 }
+
 
 } // namespace globjects

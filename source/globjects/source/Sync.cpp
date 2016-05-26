@@ -1,3 +1,4 @@
+
 #include <globjects/Sync.h>
 
 #include <glbinding/gl/functions.h>
@@ -7,8 +8,10 @@
 
 using namespace gl;
 
+
 namespace globjects
 {
+
 
 Sync * Sync::fence(const GLenum condition)
 {
@@ -68,5 +71,6 @@ GLint Sync::get(const GLenum pname)
 
     return result;
 }
+
 
 } // namespace globjects

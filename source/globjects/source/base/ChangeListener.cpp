@@ -1,9 +1,12 @@
+
 #include <globjects/base/ChangeListener.h>
 
 #include <globjects/base/Changeable.h>
 
+
 namespace globjects
 {
+
 
 ChangeListener::~ChangeListener()
 {
@@ -27,5 +30,6 @@ void ChangeListener::removeSubject(Changeable * subject)
 {
     m_subjects.erase(subject);
 }
+
 
 } // namespace globjects

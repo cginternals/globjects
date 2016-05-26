@@ -1,3 +1,4 @@
+
 #include <globjects/globjects.h>
 
 #include <unordered_map>
@@ -27,66 +28,73 @@
 
 using namespace gl;
 
+
 namespace
 {
-    bool g_globjectsIsInitialized = false;
-    std::mutex g_mutex;
 
-    void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
+
+bool g_globjectsIsInitialized = false;
+std::mutex g_mutex;
+
+void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
+{
+    globjects::Error error = globjects::Error::get();
+
+    if (!error)
+        return;
+
+    if (!globjects::Registry::current().isInitialized())
     {
-        globjects::Error error = globjects::Error::get();
-
-        if (!error)
-            return;
-
-        if (!globjects::Registry::current().isInitialized())
-        {
-            globjects::debug() << "Error during initialization: " << error.name();
-            return;
-        }
-
-        if (!globjects::DebugMessage::isFallbackImplementation())
-            return;
-
-        std::stringstream stream;
-        stream << function.name() << " generated " << error.name();
-
-        globjects::DebugMessage::insertMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), GL_DEBUG_SEVERITY_HIGH_ARB, stream.str());
+        globjects::debug() << "Error during initialization: " << error.name();
+        return;
     }
 
-    void initializeCallbacks()
-    {
-        // Callback mask is configured in AbstractDebugImplementation::enable
-        if (glbinding::afterCallback())
-        {
-            globjects::warning() << "No error checking after callback registered as a glbinding after callback is already registered.";
-        }
-        else
-        {
-            glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
-                manualErrorCheckAfter(*functionCall.function);
-            });
-        }
+    if (!globjects::DebugMessage::isFallbackImplementation())
+        return;
 
-        if (glbinding::unresolvedCallback())
-        {
-            globjects::warning() << "No unresolved function checking callback registered as a glbinding unresolved callback is already registered.";
-        }
-        else
-        {
-            glbinding::setUnresolvedCallback([](const glbinding::AbstractFunction & function) {
+    std::stringstream stream;
+    stream << function.name() << " generated " << error.name();
+
+    globjects::DebugMessage::insertMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), GL_DEBUG_SEVERITY_HIGH_ARB, stream.str());
+}
+
+void initializeCallbacks()
+{
+    // Callback mask is configured in AbstractDebugImplementation::enable
+    if (glbinding::afterCallback())
+    {
+        globjects::warning() << "No error checking after callback registered as a glbinding after callback is already registered.";
+    }
+    else
+    {
+        glbinding::setAfterCallback([](const glbinding::FunctionCall & functionCall) {
+            manualErrorCheckAfter(*functionCall.function);
+        });
+    }
+
+    if (glbinding::unresolvedCallback())
+    {
+        globjects::warning() << "No unresolved function checking callback registered as a glbinding unresolved callback is already registered.";
+    }
+    else
+    {
+        glbinding::setUnresolvedCallback([](const glbinding::AbstractFunction & function) {
 #ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
-                throw std::runtime_error(std::string(function.name()) + " couldn't get resolved.");
+            throw std::runtime_error(std::string(function.name()) + " couldn't get resolved.");
 #else
-                globjects::fatal() << std::string(function.name()) << " couldn't get resolved.";
+            globjects::fatal() << std::string(function.name()) << " couldn't get resolved.";
 #endif
-            });
-        }
+        });
     }
 }
 
+
+} // namespace
+
+
 namespace globjects
 {
+
 
 void init()
 {
@@ -390,5 +398,6 @@ void initializeStrategy(const VertexArray::AttributeImplementation impl)
 {
     Registry::current().implementations().initialize(impl);
 }
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #include <globjects/Shader.h>
 
 #include <glbinding/gl/enum.h>
@@ -17,21 +18,25 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractShadingLanguageIncludeImplementation.h"
 
-
 using namespace gl;
+
 
 namespace
 {
+
 
 const globjects::AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation()
 {
     return globjects::ImplementationRegistry::current().shadingLanguageIncludeImplementation();
 }
 
-}
+
+} // namespace
+
 
 namespace globjects
 {
+
 
 void Shader::hintIncludeImplementation(const IncludeImplementation impl)
 {
@@ -277,5 +282,6 @@ GLenum Shader::objectType() const
 {
     return GL_SHADER;
 }
+
 
 } // namespace globjects

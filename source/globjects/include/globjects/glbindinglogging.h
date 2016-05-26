@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/globjects_api.h>
@@ -10,12 +11,16 @@
 namespace glbinding
 {
 
+
 class Version;
+
 
 } // namespace glbinding
 
+
 namespace globjects 
 {
+
 
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const glbinding::Version & version);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::GLboolean & value);
@@ -41,5 +46,6 @@ GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::PathFontStyle & value);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::UnusedMask & value);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::BufferAccessMask & value);
+
 
 } // namespace globjects

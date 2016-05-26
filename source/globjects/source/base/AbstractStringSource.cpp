@@ -1,7 +1,10 @@
+
 #include <globjects/base/AbstractStringSource.h>
+
 
 namespace globjects
 {
+
 
 std::vector<std::string> AbstractStringSource::strings() const
 {
@@ -28,5 +31,6 @@ void AbstractStringSource::flattenInto(std::vector<const AbstractStringSource*> 
 {
     vector.push_back(this);
 }
+
 
 } // namespace globjects

@@ -10,6 +10,7 @@
 namespace globjects 
 {
 
+
 bool ProgramBinaryImplementation_None::updateProgramLinkSource(const Program * program) const
 {
     return program->compileAttachedShaders();
@@ -19,5 +20,6 @@ ProgramBinary * ProgramBinaryImplementation_None::getProgramBinary(const Program
 {
     return nullptr;
 }
+
 
 } // namespace globjects

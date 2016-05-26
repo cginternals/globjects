@@ -3,11 +3,12 @@
 
 #include <glbinding/callbacks.h>
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 DebugImplementation_Legacy::DebugImplementation_Legacy()
 : m_enabled(false)
@@ -51,5 +52,6 @@ void DebugImplementation_Legacy::controlMessages(GLenum , GLenum , GLenum , GLsi
     // ignore
     // TODO: emulate OpenGL's filtering functionality
 }
+
 
 } // namespace globjects

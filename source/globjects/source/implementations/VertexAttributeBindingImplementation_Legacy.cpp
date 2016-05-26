@@ -1,3 +1,4 @@
+
 #include "VertexAttributeBindingImplementation_Legacy.h"
 
 #include <cassert>
@@ -9,11 +10,12 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 VertexAttributeBindingImplementation_Legacy::Format::Format()
 : method(Method::O)
@@ -178,5 +180,6 @@ void VertexAttributeBindingImplementation_Legacy::finish(const VertexAttributeBi
             , bindingData(binding)->format.normalized, bindingData(binding)->stride, offset);
     }
 }
+
 
 } // namespace globjects

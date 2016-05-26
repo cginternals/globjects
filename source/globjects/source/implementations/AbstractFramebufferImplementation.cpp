@@ -10,12 +10,13 @@
 #include "FramebufferImplementation_DirectStateAccessEXT.h"
 #include "FramebufferImplementation_Legacy.h"
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
-    
+
+
 GLenum AbstractFramebufferImplementation::s_workingTarget = GL_FRAMEBUFFER;
 
 AbstractFramebufferImplementation::AbstractFramebufferImplementation()
@@ -43,5 +44,6 @@ AbstractFramebufferImplementation * AbstractFramebufferImplementation::get(const
         return FramebufferImplementation_Legacy::instance();
     }
 }
+
 
 } // namespace globjects

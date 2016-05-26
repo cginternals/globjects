@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -7,8 +8,10 @@
 #include <globjects/globjects_api.h>
 #include <globjects/FramebufferAttachment.h>
 
+
 namespace globjects 
 {
+
 
 class Texture;
 class Framebuffer;
@@ -40,5 +43,6 @@ protected:
     gl::GLint m_level;
     gl::GLint m_layer;
 };
+
 
 } // namespace globjects

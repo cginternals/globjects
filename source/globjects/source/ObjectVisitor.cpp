@@ -1,11 +1,14 @@
+
 #include <globjects/ObjectVisitor.h>
 
 #include <cassert>
 
 #include <globjects/Object.h>
 
+
 namespace globjects
 {
+
 
 ObjectVisitor::ObjectVisitor()
 {
@@ -65,5 +68,6 @@ void ObjectVisitor::visitTransformFeedback(TransformFeedback* /*transformfeedbac
 void ObjectVisitor::visitVertexArray(VertexArray* /*vao*/)
 {
 }
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <functional>
@@ -7,11 +8,12 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects
 {
 
-class AbstractFunctionCall;
 
+class AbstractFunctionCall;
 
 class GLOBJECTS_API StateSettingType
 {
@@ -63,5 +65,6 @@ struct GLOBJECTS_API hash<globjects::StateSettingType>
 };
 
 } // namespace globjects
+
 
 #include <globjects/StateSetting.hpp>

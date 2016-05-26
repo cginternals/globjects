@@ -1,17 +1,25 @@
+
 #include <globjects/base/baselogging.h>
 
 #include <globjects/base/AbstractLogHandler.h>
 #include <globjects/base/LogMessageBuilder.h>
 #include <globjects/base/ConsoleLogger.h>
 
+
 namespace
 {
-    globjects::LogMessageLevel l_verbosityLevel = globjects::LogMessageLevel::Info;
-    globjects::AbstractLogHandler * l_logHandler = new globjects::ConsoleLogger();
-}
+
+
+globjects::LogMessageLevel l_verbosityLevel = globjects::LogMessageLevel::Info;
+globjects::AbstractLogHandler * l_logHandler = new globjects::ConsoleLogger();
+
+
+} // namespace
+
 
 namespace globjects
 {
+
 
 LogMessageBuilder info(const LogMessageLevel level)
 {
@@ -58,5 +66,6 @@ LogMessageLevel verbosityLevel()
 {
     return l_verbosityLevel;
 }
+
 
 } // namespace globjects

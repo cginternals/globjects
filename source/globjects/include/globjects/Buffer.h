@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <vector>
@@ -8,8 +9,10 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
+
 namespace globjects
 {
+
 
 /** \brief Wrapper for OpenGL buffer objects.
     
@@ -271,6 +274,8 @@ protected:
     virtual ~Buffer();
 };
 
+
 } // namespace globjects
+
 
 #include <globjects/Buffer.hpp>

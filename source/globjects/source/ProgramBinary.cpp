@@ -1,13 +1,15 @@
+
 #include <globjects/ProgramBinary.h>
 
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/base/AbstractStringSource.h>
 
-
 using namespace gl;
+
 
 namespace globjects
 {
+
 
 ProgramBinary::ProgramBinary(const GLenum binaryFormat, const std::vector<char> & binaryData)
 : ProgramBinary(binaryFormat, new StaticStringSource(binaryData.data(), binaryData.size()))
@@ -74,5 +76,6 @@ void ProgramBinary::validate() const
 
     m_valid = true;
 }
+
 
 } // namespace globjects

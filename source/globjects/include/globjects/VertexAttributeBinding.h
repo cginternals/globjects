@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glm/fwd.hpp>
@@ -9,12 +10,13 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects 
 {
 
+
 class Buffer;
 class VertexArray;
-
 
 class GLOBJECTS_API VertexAttributeBinding : public Referenced
 {
@@ -104,5 +106,6 @@ protected:
 
     mutable void * m_bindingData;
 };
+
 
 } // namespace globjects

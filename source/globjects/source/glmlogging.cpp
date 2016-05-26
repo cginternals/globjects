@@ -12,6 +12,7 @@
 namespace globjects 
 {
 
+
 LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::vec2 & vector)
 {
     builder << "vec2(" << vector.x << ", " << vector.y << ")";
@@ -110,5 +111,6 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const glm::mat4 & matrix
 
     return builder;
 }
+
 
 } // namespace globjects

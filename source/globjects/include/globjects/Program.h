@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <set>
@@ -16,8 +17,10 @@
 #include <globjects/LocationIdentity.h>
 #include <globjects/UniformBlock.h>
 
+
 namespace globjects
 {
+
 
 class AbstractUniform;
 class ProgramBinary;
@@ -25,7 +28,6 @@ class Shader;
 
 template <typename T>
 class Uniform;
-
 
 /** \brief Wraps an OpenGL program.
     
@@ -236,6 +238,8 @@ protected:
     mutable bool m_dirty;
 };
 
+
 } // namespace globjects
+
 
 #include <globjects/Program.hpp>

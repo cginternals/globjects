@@ -1,3 +1,4 @@
+
 #include <globjects/Sampler.h>
 
 #include <glbinding/gl/functions.h>
@@ -7,11 +8,12 @@
 
 #include "Resource.h"
 
-
 using namespace gl;
+
 
 namespace globjects
 {
+
 
 Sampler::Sampler()
 : Object(new SamplerResource)
@@ -82,5 +84,6 @@ GLenum Sampler::objectType() const
 {
     return GL_SAMPLER;
 }
+
 
 } // namespace globjects

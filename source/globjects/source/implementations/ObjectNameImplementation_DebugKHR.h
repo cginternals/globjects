@@ -1,9 +1,12 @@
+
 #pragma once
 
 #include "AbstractObjectNameImplementation.h"
 
+
 namespace globjects
 {
+
 
 class ObjectNameImplementation_KHR_debug : public AbstractObjectNameImplementation
 {
@@ -22,5 +25,6 @@ public:
 protected:
     unsigned int m_maxLabelLength;
 };
+
 
 } // namespace globjects

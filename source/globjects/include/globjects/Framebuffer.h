@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <map>
@@ -15,6 +16,7 @@
 
 namespace globjects 
 {
+
 
 class FramebufferAttachment;
 class Renderbuffer;
@@ -135,5 +137,6 @@ protected:
 protected:
 	std::map<gl::GLenum, ref_ptr<FramebufferAttachment>> m_attachments;
 };
+
 
 } // namespace globjects

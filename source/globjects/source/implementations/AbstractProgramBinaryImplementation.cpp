@@ -7,11 +7,12 @@
 #include "ProgramBinaryImplementation_GetProgramBinaryARB.h"
 #include "ProgramBinaryImplementation_None.h"
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 AbstractProgramBinaryImplementation::AbstractProgramBinaryImplementation()
 {
@@ -33,5 +34,6 @@ AbstractProgramBinaryImplementation * AbstractProgramBinaryImplementation::get(c
         return ProgramBinaryImplementation_None::instance();
     }
 }
+
 
 } // namespace globjects

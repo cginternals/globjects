@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -19,16 +20,20 @@
 #include <globjects/Object.h>
 #include <globjects/VertexArray.h>
 
+
 namespace glbinding
 {
 
+
 class Version;
+
 
 } // namespace glbinding
 
 
 namespace globjects 
 {
+
 
 GLOBJECTS_API void init();
 GLOBJECTS_API void init(glbinding::ContextHandle sharedContextId);
@@ -109,6 +114,8 @@ GLOBJECTS_API void initializeStrategy(Shader::IncludeImplementation impl);
 GLOBJECTS_API void initializeStrategy(Object::NameImplementation impl);
 GLOBJECTS_API void initializeStrategy(VertexArray::AttributeImplementation impl);
 
+
 } // namespace globjects
+
 
 #include <globjects/globjects.hpp>

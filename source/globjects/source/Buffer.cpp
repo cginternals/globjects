@@ -1,3 +1,4 @@
+
 #include <globjects/Buffer.h>
 
 #include <cassert>
@@ -14,21 +15,25 @@
 
 #include "implementations/BufferImplementation_Legacy.h"
 
-
 using namespace gl;
+
 
 namespace 
 {
+
 
 const globjects::AbstractBufferImplementation & implementation()
 {
     return globjects::ImplementationRegistry::current().bufferImplementation();
 }
 
-}
+
+} // namespace
+
 
 namespace globjects
 {
+
 
 void Buffer::hintBindlessImplementation(BindlessImplementation impl)
 {
@@ -209,5 +214,6 @@ GLenum Buffer::objectType() const
 {
     return GL_BUFFER;
 }
+
 
 } // namespace globjects

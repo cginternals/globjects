@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/base/Singleton.h>
@@ -7,6 +8,7 @@
 
 namespace globjects
 {
+
 
 class BufferImplementation_Legacy : public AbstractBufferImplementation
     , public Singleton<BufferImplementation_Legacy>
@@ -42,5 +44,6 @@ public:
 public:
     static gl::GLenum s_workingTarget;
 };
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -7,8 +8,10 @@
 #include <globjects/globjects_api.h>
 #include <globjects/FramebufferAttachment.h>
 
+
 namespace globjects 
 {
+
 
 class Renderbuffer;
 class Framebuffer;
@@ -34,5 +37,6 @@ public:
 protected:
     ref_ptr<Renderbuffer> m_renderBuffer;
 };
+
 
 } // namespace globjects

@@ -12,7 +12,10 @@
 
 using namespace gl;
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 TextureImplementation_DirectStateAccessARB::TextureImplementation_DirectStateAccessARB()
 {
@@ -148,5 +151,6 @@ void TextureImplementation_DirectStateAccessARB::pageCommitment(const Texture * 
 {
     get(Texture::BindlessImplementation::DirectStateAccessEXT)->pageCommitment(texture, level, xOffset, yOffset, zOffset, width, height, depth, commit);
 }
+
 
 } // namespace globjects

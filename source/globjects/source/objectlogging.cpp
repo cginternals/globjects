@@ -1,3 +1,4 @@
+
 #include <globjects/objectlogging.h>
 
 #include <globjects/Object.h>
@@ -14,7 +15,10 @@
 #include <globjects/VertexArray.h>
 #include <globjects/AbstractUniform.h>
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 void logObject(LogMessageBuilder & builder, const Object * object, const std::string & typeName)
 {
@@ -109,5 +113,6 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const AbstractUniform * 
 
     return builder;
 }
+
 
 } // namespace globjects

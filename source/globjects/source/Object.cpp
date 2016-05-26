@@ -9,15 +9,19 @@
 
 using namespace gl;
 
+
 namespace 
 {
+
 
 globjects::AbstractObjectNameImplementation & nameImplementation()
 {
     return globjects::ImplementationRegistry::current().objectNameImplementation();
 }
 
-}
+
+} // namespace
+
 
 namespace globjects
 {
@@ -76,5 +80,6 @@ void Object::detach()
     delete m_resource;
     m_resource = new InvalidResource();
 }
+
 
 } // namespace globjects

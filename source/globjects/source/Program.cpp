@@ -22,21 +22,25 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractProgramBinaryImplementation.h"
 
-
 using namespace gl;
+
 
 namespace
 {
+
 
 const globjects::AbstractProgramBinaryImplementation & binaryImplementation()
 {
     return globjects::ImplementationRegistry::current().programBinaryImplementation();
 }
 
-}
+
+} // namespace
+
 
 namespace globjects
 {
+
 
 void Program::hintBinaryImplementation(const BinaryImplementation impl)
 {
@@ -557,5 +561,6 @@ void Program::setParameter(gl::GLenum pname, gl::GLboolean value) const
 {
     glProgramParameteri(id(), pname, value == gl::GL_TRUE ? 1 : 0);
 }
+
 
 } // namespace globjects

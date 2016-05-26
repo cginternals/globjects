@@ -8,11 +8,12 @@
 #include <globjects/base/baselogging.h>
 #include <globjects/Buffer.h>
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 GLenum BufferImplementation_Legacy::s_workingTarget = GL_COPY_WRITE_BUFFER;
 
@@ -153,5 +154,6 @@ void BufferImplementation_Legacy::invalidateSubData(const Buffer * /* buffer */,
 {
     critical() << "glInvalidateBufferSubData requires direct state access";
 }
+
 
 } // namespace globjects

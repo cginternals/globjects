@@ -1,11 +1,14 @@
+
 #pragma once
 
 #include <globjects/base/Singleton.h>
 
 #include "AbstractTextureImplementation.h"
 
+
 namespace globjects
 {
+
 
 class TextureImplementation_DirectStateAccessARB : public AbstractTextureImplementation
     , public Singleton<TextureImplementation_DirectStateAccessARB>
@@ -48,5 +51,6 @@ public:
 
     virtual void pageCommitment(const Texture * texture, const gl::GLint level, const gl::GLint xOffset, const gl::GLint yOffset, const gl::GLint zOffset, const gl::GLsizei width, const gl::GLsizei height, const gl::GLsizei depth, const gl::GLboolean commit) const override;
 };
+
 
 } // namespace globjects

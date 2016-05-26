@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <unordered_map>
@@ -10,12 +11,13 @@
 #include <globjects/globjects_api.h>
 #include <globjects/AbstractState.h>
 
+
 namespace globjects
 {
 
+
 class StateSetting;
 class Capability;
-
 
 class GLOBJECTS_API State : public AbstractState, public Referenced
 {
@@ -66,5 +68,6 @@ protected:
     std::unordered_map<gl::GLenum, Capability *> m_capabilities;
     std::unordered_map<StateSettingType, StateSetting *> m_settings;
 };
+
 
 } // namespace globjects

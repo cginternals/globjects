@@ -8,11 +8,12 @@
 
 #include "BufferImplementation_Legacy.h"
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 GLuint BufferImplementation_DirectStateAccessEXT::create() const
 {
@@ -111,5 +112,6 @@ void BufferImplementation_DirectStateAccessEXT::invalidateSubData(const Buffer *
 {
     glInvalidateBufferSubData(buffer->id(), offset, length);
 }
+
 
 } // namespace globjects

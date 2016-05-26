@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <array>
@@ -9,6 +10,7 @@
 
 namespace globjects
 {
+
 
 class StateSetting;
 
@@ -66,6 +68,8 @@ public:
     void set(void (*function)(Arguments...), Arguments... arguments);
 };
 
+
 } // namespace globjects
+
 
 #include <globjects/AbstractState.hpp>

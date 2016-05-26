@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -5,8 +6,10 @@
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
 
+
 namespace globjects 
 {
+
 
 /** \brief Encapsulates OpenGL render buffer objects.
  
@@ -35,5 +38,6 @@ protected:
     void bind(gl::GLenum target) const;
     static void unbind(gl::GLenum target);
 };
+
 
 } // namespace globjects

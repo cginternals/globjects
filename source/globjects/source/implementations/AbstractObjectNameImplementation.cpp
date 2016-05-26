@@ -14,7 +14,10 @@
 
 using namespace gl;
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 AbstractObjectNameImplementation::AbstractObjectNameImplementation()
 {
@@ -56,5 +59,6 @@ void AbstractObjectNameImplementation::setObjectLabelState(const Sync * sync, vo
 {
     sync->m_objectLabelState = state;
 }
+
 
 } // namespace globjects

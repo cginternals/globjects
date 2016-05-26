@@ -1,13 +1,15 @@
+
 #include <globjects/Error.h>
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 
-
 using namespace gl;
+
 
 namespace globjects
 {
+
 
 Error::Error(GLenum errorCode)
 : m_errorCode(errorCode)
@@ -64,5 +66,6 @@ Error::operator bool() const
 {
     return isError();
 }
+
 
 } // namespace globjects

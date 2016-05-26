@@ -11,11 +11,12 @@
 #include "TextureStorageImplementation_Legacy.h"
 #include "TextureStorageImplementation_Fallback.h"
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 AbstractTextureStorageImplementation::AbstractTextureStorageImplementation()
 {
@@ -47,5 +48,6 @@ AbstractTextureStorageImplementation * AbstractTextureStorageImplementation::get
         return TextureStorageImplementation_Legacy::instance();
     }
 }
+
 
 } // namespace globjects

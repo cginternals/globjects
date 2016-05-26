@@ -11,8 +11,10 @@
 
 using namespace gl;
 
+
 namespace globjects 
 {
+
 
 GLuint FramebufferImplementation_Legacy::create() const
 {
@@ -121,5 +123,6 @@ void FramebufferImplementation_Legacy::setDrawBuffers(const Framebuffer * fbo, G
 
     glDrawBuffers(n, modes);
 }
+
 
 } // namespace globjects

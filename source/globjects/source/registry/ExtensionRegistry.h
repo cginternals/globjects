@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <set>
@@ -5,15 +6,20 @@
 
 #include <glbinding/gl/extension.h>
 
+
 namespace glbinding
 {
 
+
 class Version;
 
-}
+
+} // namespace glbinding
+
 
 namespace globjects
 {
+
 
 class ExtensionRegistry
 {
@@ -38,5 +44,6 @@ protected:
 
     void initialize();
 };
+
 
 } // namespace globjects

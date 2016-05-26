@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <glbinding/gl/types.h>
@@ -8,7 +9,10 @@
 
 #include "AbstractVertexAttributeBindingImplementation.h"
 
-namespace globjects {
+
+namespace globjects
+{
+
 
 class VertexAttributeBindingImplementation_VertexAttribBindingARB : public AbstractVertexAttributeBindingImplementation
         , public Singleton<VertexAttributeBindingImplementation_VertexAttribBindingARB>
@@ -29,5 +33,6 @@ public:
     virtual void setIFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset) const override;
     virtual void setLFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset) const override;
 };
+
 
 } // namespace globjects

@@ -24,25 +24,28 @@
 
 using namespace gl;
 
+
 namespace 
 {
+
 
 const globjects::AbstractFramebufferImplementation & implementation()
 {
     return globjects::ImplementationRegistry::current().framebufferImplementation();
 }
 
-}
+
+} // namespace
 
 
 namespace globjects
 {
 
+
 void Framebuffer::hintBindlessImplementation(const BindlessImplementation impl)
 {
     ImplementationRegistry::current().initialize(impl);
 }
-    
 
 Framebuffer::Framebuffer()
 : Object(new FrameBufferObjectResource)
@@ -323,7 +326,6 @@ void Framebuffer::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, 
 void Framebuffer::blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, ClearBufferMask mask, GLenum filter)
 {
     glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, destX0, destY0, destX1, destY1, mask, filter);
-
 }
 
 void Framebuffer::blit(const std::array<GLint, 4> & srcRect, const std::array<GLint, 4> & destRect, ClearBufferMask mask, GLenum filter)
@@ -389,5 +391,6 @@ GLenum Framebuffer::objectType() const
 {
     return GL_FRAMEBUFFER;
 }
+
 
 } // namespace globjects

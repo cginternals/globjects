@@ -1,3 +1,4 @@
+
 #include "Resource.h"
 
 #include <glbinding/gl/functions.h>
@@ -8,11 +9,12 @@
 #include "implementations/AbstractFramebufferImplementation.h"
 #include "implementations/AbstractTextureImplementation.h"
 
-
 using namespace gl;
+
 
 namespace 
 {
+
 
 template <typename CreateObjectsFunction>
 GLuint createObject(CreateObjectsFunction function)
@@ -222,5 +224,6 @@ VertexArrayObjectResource::~VertexArrayObjectResource()
 {
     deleteObject(glDeleteVertexArrays, id(), hasOwnership());
 }
+
 
 } // namespace globjects

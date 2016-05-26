@@ -6,11 +6,12 @@
 
 #include <globjects/StateSetting.h>
 
-
 using namespace gl;
+
 
 namespace globjects 
 {
+
 
 void AbstractState::setEnabled(GLenum capability, const bool enabled)
 {
@@ -202,5 +203,6 @@ void AbstractState::stencilOpSeparate(const GLenum face, const GLenum stencilFai
     setting->type().specializeType(face);
     add(setting);
 }
+
 
 } // namespace globjects

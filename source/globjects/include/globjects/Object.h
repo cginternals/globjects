@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -8,8 +9,10 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects 
 {
+
 
 class ObjectVisitor;
 class IDResource;
@@ -59,5 +62,6 @@ protected:
 
     mutable void * m_objectLabelState;
 };
+
 
 } // namespace globjects
