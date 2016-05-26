@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <iosfwd>
@@ -5,8 +6,10 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects
 {
+
 
 GLOBJECTS_API int readInt(const char* str, int& number);
 GLOBJECTS_API void parseFormat(std::ostream& stream, const char*& format);
@@ -80,6 +83,8 @@ void streamprintf(std::ostream& stream, const char* format, const T& value, Args
 template <typename... Args>
 std::string formatString(const char* format, Args... args);
 
+
 } // namespace globjects
+
 
 #include <globjects/base/formatString.hpp>

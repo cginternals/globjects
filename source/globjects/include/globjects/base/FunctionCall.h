@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <functional>
@@ -7,8 +8,10 @@
 
 #include <globjects/base/AbstractFunctionCall.h>
 
+
 namespace globjects
 {
+
 
 template <typename... Arguments>
 class FunctionCall : public AbstractFunctionCall
@@ -28,6 +31,8 @@ protected:
     std::tuple<Arguments...> m_arguments;
 };
 
+
 } // namespace globjects
+
 
 #include <globjects/base/FunctionCall.hpp>

@@ -1,11 +1,14 @@
+
 #pragma once
 
 #include <globjects/base/Singleton.h>
 
 #include <cassert>
 
+
 namespace globjects 
 {
+
 
 template<class T>
 T * Singleton<T>::s_instance(nullptr);
@@ -34,5 +37,6 @@ Singleton<T>::~Singleton()
 
     delete s_instance;
 }
+
 
 } // namespace globjects

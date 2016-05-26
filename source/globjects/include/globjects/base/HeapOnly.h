@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/globjects_api.h>
@@ -5,6 +6,7 @@
 
 namespace globjects 
 {
+
 
 /** \brief The HeapOnly class
     Restricts creation to heap
@@ -21,5 +23,6 @@ public:
 protected:
     virtual ~HeapOnly();
 };
+
 
 } // namespace globjects

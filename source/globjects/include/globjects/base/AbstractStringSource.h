@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -8,8 +9,10 @@
 #include <globjects/base/Referenced.h>
 #include <globjects/base/Changeable.h>
 
+
 namespace globjects
 {
+
 
 class CompositeStringSource;
 
@@ -30,5 +33,6 @@ public:
 
     virtual std::string shortInfo() const;
 };
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/base/FunctionCall.h>
@@ -6,8 +7,10 @@
 #include <type_traits>
 #include <utility>
 
+
 namespace 
 {
+
 
 // http://stackoverflow.com/questions/687490/how-do-i-expand-a-tuple-into-variadic-template-functions-arguments
 
@@ -64,11 +67,13 @@ inline auto apply(F && f, T && t)
     );
 }
 
+
 } // namespace
 
 
 namespace globjects
 {
+
 
 template <typename... Arguments>
 FunctionCall<Arguments...>::FunctionCall(FunctionPointer function, Arguments... arguments)
@@ -94,5 +99,6 @@ void * FunctionCall<Arguments...>::identifier() const
 {
     return *reinterpret_cast<void**>(&m_functionPointer);
 }
+
 
 } // namespace globjects

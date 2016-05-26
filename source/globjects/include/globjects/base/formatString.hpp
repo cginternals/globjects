@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/base/formatString.h>
@@ -5,8 +6,10 @@
 #include <sstream>
 #include <cassert>
 
+
 namespace globjects
 {
+
 
 template <typename T, typename... Args>
 void streamprintf(std::ostream& stream, const char* format, const T& value, Args... args)
@@ -38,5 +41,6 @@ std::string formatString(const char* format, Args... args)
 	streamprintf(ss, format, args...);
 	return ss.str();
 }
+
 
 } // namespace globjects

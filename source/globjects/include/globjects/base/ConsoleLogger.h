@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -6,8 +7,10 @@
 
 #include <globjects/base/AbstractLogHandler.h>
 
+
 namespace globjects
 {
+
 
 class LogMessage;
 enum class LogMessageLevel : unsigned int;
@@ -27,5 +30,6 @@ public:
 protected:
     static std::string levelString(LogMessageLevel level);
 };
+
 
 } // namespace globjects

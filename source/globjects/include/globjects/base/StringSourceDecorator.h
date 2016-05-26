@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/base/ChangeListener.h>
@@ -6,8 +7,10 @@
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects
 {
+
 
 class GLOBJECTS_API StringSourceDecorator : public globjects::AbstractStringSource, protected globjects::ChangeListener
 {
@@ -23,5 +26,6 @@ protected:
 protected:
     globjects::ref_ptr<globjects::AbstractStringSource> m_internal;
 };
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/base/baselogging.h>
@@ -6,8 +7,10 @@
 
 #include <globjects/base/formatString.h>
 
+
 namespace globjects
 {
+
 
 template <typename... Arguments> void info(const char* format, Arguments... arguments)
 {
@@ -43,5 +46,6 @@ template <typename... Arguments> void fatal(const char* format, Arguments... arg
 
     fatal() << formatString(format, arguments...);
 }
+
 
 } // namespace globjects

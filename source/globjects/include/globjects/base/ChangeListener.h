@@ -1,11 +1,14 @@
+
 #pragma once
 
 #include <set>
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects
 {
+
 
 class Changeable;
 
@@ -30,5 +33,6 @@ private:
     void addSubject(Changeable * subject);
     void removeSubject(Changeable * subject);
 };
+
 
 } // namespace globjects

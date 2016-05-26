@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/globjects_api.h>
@@ -5,8 +6,10 @@
 #include <globjects/base/LogMessage.h>
 #include <globjects/base/LogMessageBuilder.h>
 
+
 namespace globjects
 {
+
 
 class AbstractLogHandler;
 
@@ -69,6 +72,8 @@ void critical(const char* format, Arguments... arguments);
 template <typename... Arguments>
 void fatal(const char* format, Arguments... arguments);
 
+
 } // namespace globjects
+
 
 #include <globjects/base/baselogging.hpp>

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <iosfwd>
@@ -13,6 +14,7 @@
 
 namespace globjects
 {
+
 
 template <typename T>
 class ref_ptr;
@@ -100,6 +102,8 @@ protected:
     std::shared_ptr<std::stringstream> m_stream;
 };
 
+
 } // namespace globjects
+
 
 #include <globjects/base/LogMessageBuilder.hpp>

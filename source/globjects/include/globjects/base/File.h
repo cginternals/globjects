@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -6,8 +7,10 @@
 
 #include <globjects/base/AbstractStringSource.h>
 
+
 namespace globjects
 {
+
 
 /** \brief String source associated to a file.
     
@@ -40,5 +43,6 @@ protected:
 
     void loadFileContent() const;
 };
+
 
 } // namespace globjects

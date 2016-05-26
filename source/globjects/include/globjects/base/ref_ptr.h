@@ -1,7 +1,10 @@
+
 #pragma once
+
 
 namespace globjects
 {
+
 
 class Referenced;
 
@@ -67,6 +70,8 @@ protected:
 template<typename T, typename... Args>
 ref_ptr<T> make_ref(Args&&... args);
 
+
 } // namespace globjects
+
 
 #include <globjects/base/ref_ptr.hpp>

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -5,8 +6,10 @@
 #include <globjects/globjects_api.h>
 #include <globjects/base/AbstractStringSource.h>
 
+
 namespace globjects 
 {
+
 
 /** \brief StaticStringSource is a StringSource using an std::string as source.
 
@@ -28,5 +31,6 @@ public:
 protected:
     std::string m_string;
 };
+
 
 } // namespace globjects

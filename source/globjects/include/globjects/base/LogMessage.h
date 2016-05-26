@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -6,8 +7,10 @@
 
 #include <globjects/base/LogMessageLevel.h>
 
+
 namespace globjects
 {
+
 
 /** \brief Encapsulates a simple log message and its severity level.
 
@@ -29,5 +32,6 @@ protected:
     LogMessageLevel m_level;
     std::string m_message;
 };
+
 
 } // namespace globjects

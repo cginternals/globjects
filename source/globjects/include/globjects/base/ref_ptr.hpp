@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <utility>
@@ -10,6 +11,7 @@
 
 namespace globjects
 {
+
 
 template<typename T>
 ref_ptr<T>::ref_ptr()
@@ -151,5 +153,6 @@ ref_ptr<T> make_ref(Args&&... args)
 {
     return new T(std::forward<Args>(args)...);
 }
+
 
 } // namespace globjects

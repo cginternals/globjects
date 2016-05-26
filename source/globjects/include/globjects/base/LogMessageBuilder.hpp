@@ -1,9 +1,12 @@
+
 #pragma once
 
 #include <globjects/base/LogMessageBuilder.h>
 
+
 namespace globjects
 {
+
 
 template <typename T>
 LogMessageBuilder& LogMessageBuilder::operator<<(const ref_ptr<T> & ref_pointer)
@@ -46,5 +49,6 @@ LogMessageBuilder& LogMessageBuilder::operator<<(const std::array<T, Count> & ar
 
     return *this;
 }
+
 
 } // namespace globjects

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -9,8 +10,10 @@
 #include <globjects/base/ChangeListener.h>
 #include <globjects/base/AbstractStringSource.h>
 
+
 namespace globjects
 {
+
 
 class GLOBJECTS_API CompositeStringSource : public AbstractStringSource, protected ChangeListener
 {
@@ -39,5 +42,6 @@ protected:
     mutable bool m_dirty;
     mutable std::vector<std::string> m_strings;
 };
+
 
 } // namespace globjects

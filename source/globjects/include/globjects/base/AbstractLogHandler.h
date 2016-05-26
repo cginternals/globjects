@@ -1,9 +1,12 @@
+
 #pragma once
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects
 {
+
 
 class LogMessage;
 
@@ -26,5 +29,6 @@ public:
 
 	virtual void handle(const LogMessage& message) = 0;
 };
+
 
 } // namespace globjects

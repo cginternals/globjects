@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <globjects/globjects_api.h>
@@ -7,6 +8,7 @@
 
 namespace globjects
 {
+
 
 /** \brief Superclass for all classes that use reference counting in globjects.
     
@@ -37,5 +39,6 @@ protected:
 private:
     mutable int m_refCounter;
 };
+
 
 } // namespace globjects

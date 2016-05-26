@@ -1,7 +1,10 @@
+
 #pragma once
+
 
 namespace globjects
 {
+
 
 enum class LogMessageLevel : unsigned int
 {
@@ -11,5 +14,6 @@ enum class LogMessageLevel : unsigned int
 ,   Debug
 ,   Info
 };
+
 
 } // namespace globjects

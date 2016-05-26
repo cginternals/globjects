@@ -1,11 +1,14 @@
+
 #pragma once
 
 #include <set>
 
 #include <globjects/globjects_api.h>
 
+
 namespace globjects
 {
+
 
 class ChangeListener;
 
@@ -27,5 +30,6 @@ public:
 private:
     std::set<ChangeListener *> m_listeners;
 };
+
 
 } // namespace globjects
