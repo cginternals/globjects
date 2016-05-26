@@ -69,20 +69,27 @@ public:
     void setValue(gl::GLfloat value);
     void setValue(gl::GLdouble value);
 
-    void setValue(const glm::bvec2 value);
-    void setValue(const glm::ivec2 value);
-    void setValue(const glm::vec2 value);
-    void setValue(const glm::dvec2 value);
+    void setValue(const glm::bvec2 & value);
+    void setValue(const glm::ivec2 & value);
+    void setValue(const glm::vec2 & value);
+    void setValue(const glm::dvec2 & value);
 
-    void setValue(const glm::bvec3 value);
-    void setValue(const glm::ivec3 value);
-    void setValue(const glm::vec3 value);
-    void setValue(const glm::dvec3 value);
+    void setValue(const glm::bvec3 & value);
+    void setValue(const glm::ivec3 & value);
+    void setValue(const glm::vec3 & value);
+    void setValue(const glm::dvec3 & value);
 
-    void setValue(const glm::bvec4 value);
-    void setValue(const glm::ivec4 value);
-    void setValue(const glm::vec4 value);
-    void setValue(const glm::dvec4 value);
+    void setValue(const glm::bvec4 & value);
+    void setValue(const glm::ivec4 & value);
+    void setValue(const glm::vec4 & value);
+    void setValue(const glm::dvec4 & value);
+
+    void setValue(const glm::mat2 & value);
+    void setValue(const glm::mat3 & value);
+    void setValue(const glm::mat4 & value);
+    void setValue(const glm::dmat2 & value);
+    void setValue(const glm::dmat3 & value);
+    void setValue(const glm::dmat4 & value);
 
 protected:
     virtual ~VertexAttributeBinding();
