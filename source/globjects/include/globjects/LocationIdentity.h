@@ -55,4 +55,3 @@ struct hash<globjects::LocationIdentity>
 };
 
 } // namespace globjects
-

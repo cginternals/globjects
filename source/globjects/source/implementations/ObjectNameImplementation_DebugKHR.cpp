@@ -1,5 +1,5 @@
 
-#include "ObjectNameImplementation_KHR_debug.h"
+#include "ObjectNameImplementation_DebugKHR.h"
 
 #include <cassert>
 

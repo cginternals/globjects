@@ -1,5 +1,5 @@
 
-#include "ShadingLanguageIncludeImplementation_ARB.h"
+#include "ShadingLanguageIncludeImplementation_ShadingLanguageIncludeARB.h"
 
 #include <glbinding/gl/functions.h>
 

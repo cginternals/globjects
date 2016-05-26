@@ -104,6 +104,8 @@ GLFWwindow * createWindow(bool fs = false)
     // Initialize globjects (internally initializes glbinding, and registers the current context)
     globjects::init();
 
+    globjects::DebugMessage::enable(true);
+
     // Do only on startup
     if (!g_toggleFS)
     {
@@ -123,6 +125,7 @@ GLFWwindow * createWindow(bool fs = false)
     }
 
     glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+    glEnable(gl::GL_FRAGMENT_SHADER);
 
     g_isFS = fs;
     return window;

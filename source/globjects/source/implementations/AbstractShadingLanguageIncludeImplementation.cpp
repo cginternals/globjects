@@ -5,7 +5,7 @@
 
 #include <glbinding/gl/extension.h>
 
-#include "ShadingLanguageIncludeImplementation_ARB.h"
+#include "ShadingLanguageIncludeImplementation_ShadingLanguageIncludeARB.h"
 #include "ShadingLanguageIncludeImplementation_Fallback.h"
 
 

@@ -29,6 +29,7 @@ void GL_APIENTRY DebugImplementation_DebugKHR::debugMessageCallback(GLenum sourc
 DebugImplementation_DebugKHR::DebugImplementation_DebugKHR()
 : m_isRegistered(false)
 {
+    registerCallback();
 }
 
 void DebugImplementation_DebugKHR::registerCallback()
@@ -44,10 +45,6 @@ void DebugImplementation_DebugKHR::registerCallback()
 void DebugImplementation_DebugKHR::enable()
 {
     globjects::enable(GL_DEBUG_OUTPUT);
-
-    glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
-
-    registerCallback();
 }
 
 void DebugImplementation_DebugKHR::disable()

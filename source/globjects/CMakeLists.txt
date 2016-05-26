@@ -145,8 +145,8 @@ set(sources
 
 	${source_path}/implementations/AbstractObjectNameImplementation.h
 	${source_path}/implementations/AbstractObjectNameImplementation.cpp
-	${source_path}/implementations/ObjectNameImplementation_KHR_debug.h
-	${source_path}/implementations/ObjectNameImplementation_KHR_debug.cpp
+	${source_path}/implementations/ObjectNameImplementation_DebugKHR.h
+	${source_path}/implementations/ObjectNameImplementation_DebugKHR.cpp
 	${source_path}/implementations/ObjectNameImplementation_Legacy.h
 	${source_path}/implementations/ObjectNameImplementation_Legacy.cpp
 
@@ -182,8 +182,8 @@ set(sources
 
 	${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.cpp
 	${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.h
-	${source_path}/implementations/ShadingLanguageIncludeImplementation_ARB.cpp
-	${source_path}/implementations/ShadingLanguageIncludeImplementation_ARB.h
+	${source_path}/implementations/ShadingLanguageIncludeImplementation_ShadingLanguageIncludeARB.cpp
+	${source_path}/implementations/ShadingLanguageIncludeImplementation_ShadingLanguageIncludeARB.h
 	${source_path}/implementations/ShadingLanguageIncludeImplementation_Fallback.cpp
 	${source_path}/implementations/ShadingLanguageIncludeImplementation_Fallback.h
         

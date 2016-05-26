@@ -9,7 +9,7 @@
 #include <globjects/Object.h>
 #include <globjects/Sync.h>
 
-#include "ObjectNameImplementation_KHR_debug.h"
+#include "ObjectNameImplementation_DebugKHR.h"
 #include "ObjectNameImplementation_Legacy.h"
 
 using namespace gl;
