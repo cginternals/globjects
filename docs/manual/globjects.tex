@@ -5,12 +5,13 @@
 \begin{document}
 
 \title{globjects: An OpenGL Objects Wrapper}
+\author{Willy Scheibel, Daniel Limberger, Stefan Buschmann\\CG Internals}
 
 \maketitle
 
 \begin{abstract}
 \noindent
-globjects provides object-oriented interfaces around the OpenGL API after version 3.0. Additionally, reoccuring tasks are automated and features the current driver doesn't provide are simlulated through earlier interfaces or even emulated with own implementations.
+globjects provides object-oriented interfaces around the OpenGL API version 3.0 and higher. Reoccuring tasks are automated and features the current driver doesn't provide are simulated through earlier interfaces or even emulated with own implementations. One goal is a leaky abstraction of OpenGL, i.e., globjects can be used in conjunction with plain OpenGL API calls, e.g., from glbinding.
 
 \end{abstract}
 
@@ -19,9 +20,17 @@ globjects provides object-oriented interfaces around the OpenGL API after versio
 
 \newpage
 
-\section{Philosophy}
+\section{Overview}
+
+\subsection{globjects to plain OpenGL API Usage Comparison}
+
+\subsection{Philosophy}
 
 globjects is an object-oriented wrapper around the OpenGL API. A main goal is to be as strict as possible. This means, that everything that isn't generalizable is not integrated. It provides the current interface the OpenGL API suggests and provides fallback implementations for drivers that cannot provide the newest API. For dynamically allocated memory, globjects rely on reference counting through smart pointers. To allow for multiple contexts and even shared contexts, globjects uses registries to manage different behavior.
+
+\subsection{Scope}
+
+\subsection{Similar Projects}
 
 \section{Project Setup}
 
@@ -161,6 +170,14 @@ The \verb|VertexAttributeBinding| strategies handle
 
 As one main goal of globjects is the usage in modern early-prototyping applications it supports some generalizable automation concepts.
 
+\subsection{Objects Bindings}
+
+
+
+\subsection{Error Checking}
+
+
+
 \subsection{Shader Compilation}
 
  
@@ -170,6 +187,17 @@ As one main goal of globjects is the usage in modern early-prototyping applicati
 
 
 \subsection{Uniform Updates}
+
+
+
+\section{Multi-Threading and Multi-Context Support}
+
+
+\section{Remarks}
+
+\subsection{Limitations}
+
+\subsection{Future Development}
 
 
 
