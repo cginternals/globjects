@@ -1,6 +1,7 @@
 \documentclass{article}
 
 \usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage{listings}
 
 \begin{document}
 
@@ -11,7 +12,7 @@
 
 \begin{abstract}
 \noindent
-globjects provides object-oriented interfaces around the OpenGL API version 3.0 and higher. Reoccuring tasks are automated and features the current driver doesn't provide are simulated through earlier interfaces or even emulated with own implementations. One goal is a leaky abstraction of OpenGL, i.e., globjects can be used in conjunction with plain OpenGL API calls, e.g., from glbinding.
+globjects provides object-oriented interfaces to the OpenGL API version 3.0 and higher. Reoccuring tasks are automated and features the current driver doesn't provide are simulated through earlier interfaces or even emulated with own implementations. One goal is a leaky abstraction of OpenGL, i.e., globjects can be used in conjunction with plain OpenGL API calls, e.g., from glbinding.
 
 \end{abstract}
 
@@ -22,25 +23,197 @@ globjects provides object-oriented interfaces around the OpenGL API version 3.0 
 
 \section{Overview}
 
+globjects is a library providing object-oriented interfaces to the OpenGL API. Targeted features (versions in the language of the OpenGL API) are 3.0 and above.
+The main goals are much reduced code to use OpenGL in your rendering software and fewer errors due to the underlying glbinding and abstraction levels on top. Typical processes are automated and missing features in the used OpenGL driver are partially simulated or even emulated.
+
 \subsection{globjects to plain OpenGL API Usage Comparison}
+
+globjects should reduce the amount of code required in a rendering system. An example of a typical part of an OpenGL program is as follows:
+
+\begin{lstlisting}[language=c++,frame=single,basicstyle=\footnotesize]
+GLuint program = glCreateProgram();
+GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
+glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
+
+glCompileShader(vertexShader);
+glCompileShader(fragmentShader);
+
+glAttachShader(program, vertexShader);
+glAttachShader(program, fragmentShader);
+
+glLinkProgram(program);
+
+glUseProgram(program);
+glUniform2f(glGetUniformLocation(program, "extent"), 1.0, 0.5);
+\end{lstlisting}
+
+\noindent The same functionality and optional error checks in terms of \lstinline|glGetError| and compiler and linker status can be achieved using globjects with the following code:
+\begin{lstlisting}[language=c++,frame=single,basicstyle=\footnotesize]
+Program* program = new Program();
+
+program->attach(
+  Shader::fromString(GL_VERTEX_SHADER, vertexShaderSource), 
+  Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderSource)
+);
+
+program->setUniform<glm::vec2>("extent", glm::vec2(1.0, 0.5)));
+\end{lstlisting}
 
 \subsection{Philosophy}
 
-globjects is an object-oriented wrapper around the OpenGL API. A main goal is to be as strict as possible. This means, that everything that isn't generalizable is not integrated. It provides the current interface the OpenGL API suggests and provides fallback implementations for drivers that cannot provide the newest API. For dynamically allocated memory, globjects rely on reference counting through smart pointers. To allow for multiple contexts and even shared contexts, globjects uses registries to manage different behavior.
+One main goal of globjects is to be as strict as possible. This means, that everything that isn't generalizable is not integrated. It provides the current interface the OpenGL API suggests and provides fallback implementations for drivers that cannot provide the newest API. Further, globjects is designed for leaky abstraction, i.e., direct OpenGL API calls or other wrapping libraries can be used together with globjects. For dynamically allocated memory, globjects rely on reference counting through smart pointers. To allow for multiple contexts and even shared contexts, globjects uses registries to manage different behavior.
 
 \subsection{Scope}
 
+The scope of globjects are the features currently supported in the newest OpenGL API version and some features that are currently extensions but are likely to find their way to the OpenGL Core. Features that were used before OpenGL 3.0 are explicitly not covered. Likewise, features that are only supported by single vendors are likely to get omitted but are subject for discussion.
+
+An example list of features included:
+\begin{itemize}
+	\item State / Capability (e.g., Point Size, Depth Test)
+	\item Immediate Error Checking
+	\item Uniform
+	\item Renderbuffer
+	\item Framebuffer
+	\item Texture (including Bindless and Storage)
+	\item Image
+	\item Sampler
+	\item Shader
+	\item Program (including Compute Shaders)
+	\item Query
+	\item Transform Feedback
+	\item Vertex Buffer / Index Buffer (and uniform buffer, atomic counter buffer, shader storage buffer)
+	\item Vertex Array
+	\item Generic Attributes and Bindings
+	\item Shading Language Includes
+	\item Program Binaries
+\end{itemize}
+
+\noindent An example list of features excluded:
+\begin{itemize}
+	\item Display Lists
+	\item glBegin / glEnd
+	\item Client Vertex Buffer
+\end{itemize}
+
+\noindent An example list for subjects to discussion:
+\begin{itemize}
+	\item Command Lists
+	\item Bindless Buffer and storage
+\end{itemize}
+
 \subsection{Similar Projects}
+
+The idea to wrap the OpenGL API using a language that supports object-oriented semantics is far from new. Nevertheless, globjects differs notable from competitors.
+As globjects don't want to compete with complete rendering engines (Unity, Unreal Engine, CryEngine, FrostBite, Oger, OpenSceneGraph, Magnum, \dots), the list of similar projects is limited to sole object-oriented wrappers.
+
+\paragraph{OGLplus}
+
+\url{http://oglplus.org/}
+
+\paragraph{glcxx}
+
+\url{https://holtrop.github.io/glcxx/doxygen/annotated.html}
+
+\paragraph{OOGL}
+
+\url{https://github.com/Overv/OOGL}
+
+\paragraph{gloo}
+
+\url{http://vispy.org/gloo.html}
+
+\paragraph{JOGL}
+
+\url{http://jogamp.org/jogl/www/}
+
+\paragraph{OpenFrameworks gl}
+
+\url{http://openframeworks.cc/documentation/gl/}
+
+\paragraph{ClanLib GL}
+
+\url{https://github.com/sphair/ClanLib}
+
+\paragraph{glpp}
+
+\url{https://github.com/sque/glpp}
+
+\paragraph{GLT}
+
+\url{http://www.nigels.com/glt/}
+
+\paragraph{GLWrappers}
+
+\url{http://idav.ucdavis.edu/~okreylos/ResDev/Vrui/Documentation/OverviewGLWrappers.html}
+
+\paragraph{Qt5 OpenGL}
+
+\url{http://doc.qt.io/qt-5/qtopengl-index.html}
 
 \section{Project Setup}
 
-As globjects\footnote{\url{https://github.com/cginternals/globjects}} should provide a basic library that is used in other libraries, tech demos and real-world applications, it strives for few dependencies and a clean and easy project setup.
-Therefore it is based on cmake-init\footnote{\url{https://github.com/cginternals/cmake-init}}.
-globjects itself provides the main library \emph{globjects} and some additional modules in means of tests and examples. The only real dependency of the globjects library is glbinding\footnote{\url{https://github.com/cginternals/glbinding}}, but the optional modules also have Qt5\footnote{\url{http://www.qt.io/}} and GLFW\footnote{\url{www.glfw.org/}} as additional dependencies.
+The structure of globjects is driven by the design decisions in means of compile-time and run-time dependencies as well as the intended development and deployment use-cases. The project is permanently hosted on \url{https://github.com/cginternals/globjects}.
+
+\subsection{Required Build Environment}
+
+To effectively use and build globjects on your system, a C++11 compatible compiler is required. As a few newer C++11 features are used, not every C++11 compiler is suitable. The list and versions of supported and tested compilers is:
+\begin{itemize}
+	\item MSVC $\geq$ 2013 Update 3
+	\item GCC  $\geq$ 4.8
+	\item clang $\geq$ 3.3
+	\item AppleClang $\geq$ 6
+\end{itemize}
+Further, your system should also have the following pieces of software:
+\begin{itemize}
+	\item CMake $\geq$ 3.0
+	\item git $\geq$ 1.8
+	\item An OpenGL driver with OpenGL $\geq$ 3.0
+	\begin{itemize}
+		\item Nvidia
+		\item AMD
+		\item Intel
+		\item Mesa
+	\end{itemize}
+\end{itemize}
+
+\subsection{Project Dependencies}
+
+Compile-time dependencies of globjects are:
+\begin{itemize}
+	\item glbinding (required, \url{https://github.com/cginternals/glbinding})
+	\item cpplocate (optional, \url{https://github.com/cginternals/cpplocate})
+	\item GLFW (optional, \url{www.glfw.org/})
+	\item Qt5 (optional, \url{http://www.qt.io/})
+\end{itemize}
+
+Run-time dependencies of globjects are:
+\begin{itemize}
+	\item glbinding
+	\item GLFW
+	\item Qt5
+	\item An OpenGL driver (required)
+\end{itemize}
+
+\noindent All optional dependencies are used with the examples. If you don't want to compile or run the examples than you don't need anything besides glbinding.
+
+\subsection{File Structure}
+
+The globjects project is using git as code repository and GitHub as project management system. The file structure is based on cmake-init\footnote{cmake-init project page: \url{https://github.com/cginternals/cmake-init}}. This results in the following root directory structure:
+\begin{description}
+	\item[cmake] Additional find scripts and functions used by the cmake project setup.
+	\item[codegeneration] Fallback files if the cmake version can not generate certain files.
+	\item[data] Run-time data for examples.
+	\item[deploy] Cmake-scripts for deployment.
+	\item[docs] Documentation, including doxygen and this one.
+	\item[source] Actual source code of globjects.
+\end{description}
 
 \section{Concepts}
 
-globjects provides classes for every main concept the current OpenGL API provides.
+globjects provides classes for every main concept of the current OpenGL API.
 
 \subsection{State}
 
