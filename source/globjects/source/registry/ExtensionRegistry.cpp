@@ -53,7 +53,7 @@ void ExtensionRegistry::initialize()
     if (m_initialized)
         return;
 
-    m_availableExtensions = glbinding::ContextInfo::extensions(&m_unknownAvailableExtensions);
+    m_availableExtensions = glbinding::ContextInfo::extensions(m_unknownAvailableExtensions);
 
     m_initialized = true;
 }
@@ -86,7 +86,7 @@ bool ExtensionRegistry::hasExtension(const std::string & extensionName)
 
 glbinding::Version getCoreVersion(GLextension extension)
 {
-    return glbinding::Meta::getRequiringVersion(extension);
+    return glbinding::Meta::version(extension);
 }
 
 bool ExtensionRegistry::isInCoreProfile(GLextension extension, const glbinding::Version & version)
