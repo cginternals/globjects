@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <globjects/base/Singleton.h>
 
 #include <cassert>
 

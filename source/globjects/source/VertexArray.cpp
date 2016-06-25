@@ -12,7 +12,7 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
-#include "container_helpers.hpp"
+#include "container_helpers.h"
 #include "registry/ObjectRegistry.h"
 
 #include "Resource.h"

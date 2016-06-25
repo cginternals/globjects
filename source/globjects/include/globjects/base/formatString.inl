@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <globjects/base/formatString.h>
 
 #include <sstream>
 #include <cassert>

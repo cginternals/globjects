@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include <globjects/base/LogMessageBuilder.h>
-
 
 namespace globjects
 {

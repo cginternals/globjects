@@ -24,4 +24,4 @@ protected:
 } // namespace globjects
 
 
-#include <globjects/base/Singleton.hpp>
+#include <globjects/base/Singleton.inl>

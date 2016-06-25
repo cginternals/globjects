@@ -87,4 +87,4 @@ std::string formatString(const char* format, Args... args);
 } // namespace globjects
 
 
-#include <globjects/base/formatString.hpp>
+#include <globjects/base/formatString.inl>

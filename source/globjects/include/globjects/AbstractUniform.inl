@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include <globjects/AbstractUniform.h>
-
 
 namespace globjects 
 {

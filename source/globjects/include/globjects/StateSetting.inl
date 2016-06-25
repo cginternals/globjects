@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <globjects/StateSetting.h>
 
 #include <globjects/base/FunctionCall.h>
 

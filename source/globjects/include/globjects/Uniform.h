@@ -58,4 +58,4 @@ protected:
 } // namespace globjects
 
 
-#include <globjects/Uniform.hpp>
+#include <globjects/Uniform.inl>

@@ -76,4 +76,4 @@ void fatal(const char* format, Arguments... arguments);
 } // namespace globjects
 
 
-#include <globjects/base/baselogging.hpp>
+#include <globjects/base/baselogging.inl>

@@ -242,4 +242,4 @@ protected:
 } // namespace globjects
 
 
-#include <globjects/Program.hpp>
+#include <globjects/Program.inl>

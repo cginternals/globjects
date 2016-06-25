@@ -118,4 +118,4 @@ GLOBJECTS_API void initializeStrategy(VertexArray::AttributeImplementation impl)
 } // namespace globjects
 
 
-#include <globjects/globjects.hpp>
+#include <globjects/globjects.inl>

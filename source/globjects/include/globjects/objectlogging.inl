@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <globjects/objectlogging.h>
 
 #include <globjects/Uniform.h>
 

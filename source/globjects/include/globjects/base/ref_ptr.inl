@@ -1,10 +1,9 @@
 
 #pragma once
 
+
 #include <utility>
 #include <type_traits>
-
-#include <globjects/base/ref_ptr.h>
 
 #include <globjects/base/Referenced.h>
 

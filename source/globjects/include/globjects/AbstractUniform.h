@@ -161,4 +161,4 @@ protected:
 } // namespace globjects
 
 
-#include <globjects/AbstractUniform.hpp>
+#include <globjects/AbstractUniform.inl>

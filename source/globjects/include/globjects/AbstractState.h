@@ -72,4 +72,4 @@ public:
 } // namespace globjects
 
 
-#include <globjects/AbstractState.hpp>
+#include <globjects/AbstractState.inl>

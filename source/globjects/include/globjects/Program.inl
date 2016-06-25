@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <globjects/Program.h>
 
 #include <cassert>
 

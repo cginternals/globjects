@@ -49,4 +49,4 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, Uniform<T> * uniform);
 } // namespace globjects
 
 
-#include <globjects/objectlogging.hpp>
+#include <globjects/objectlogging.inl>

@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <globjects/base/FunctionCall.h>
 
 #include <cstddef>
 #include <type_traits>

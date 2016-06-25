@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include <globjects/Buffer.h>
-
 
 namespace globjects
 {

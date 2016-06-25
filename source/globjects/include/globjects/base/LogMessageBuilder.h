@@ -106,4 +106,4 @@ protected:
 } // namespace globjects
 
 
-#include <globjects/base/LogMessageBuilder.hpp>
+#include <globjects/base/LogMessageBuilder.inl>

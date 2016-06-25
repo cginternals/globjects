@@ -35,4 +35,4 @@ protected:
 } // namespace globjects
 
 
-#include <globjects/base/FunctionCall.hpp>
+#include <globjects/base/FunctionCall.inl>

@@ -94,4 +94,4 @@ protected:
 } // namespace globjects
 
 
-#include <globjects/TransformFeedback.hpp>
+#include <globjects/TransformFeedback.inl>

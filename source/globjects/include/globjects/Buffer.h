@@ -278,4 +278,4 @@ protected:
 } // namespace globjects
 
 
-#include <globjects/Buffer.hpp>
+#include <globjects/Buffer.inl>

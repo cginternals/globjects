@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <globjects/AbstractState.h>
 
 #include <globjects/StateSetting.h>
 

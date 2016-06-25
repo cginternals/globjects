@@ -32,11 +32,11 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
 	${include_path}/AbstractState.h
-	${include_path}/AbstractState.hpp
+	${include_path}/AbstractState.inl
 	${include_path}/AbstractUniform.h
-	${include_path}/AbstractUniform.hpp
+	${include_path}/AbstractUniform.inl
 	${include_path}/Buffer.h
-	${include_path}/Buffer.hpp
+	${include_path}/Buffer.inl
 	${include_path}/Capability.h
 	${include_path}/DebugMessage.h
 	${include_path}/Error.h
@@ -45,17 +45,17 @@ set(headers
 	${include_path}/glbindinglogging.h
 	${include_path}/glmlogging.h
 	${include_path}/globjects.h
-	${include_path}/globjects.hpp
+	${include_path}/globjects.inl
 	${include_path}/LocationIdentity.h
 	${include_path}/logging.h
 	${include_path}/NamedString.h
 	${include_path}/Object.h
 	${include_path}/objectlogging.h
-	${include_path}/objectlogging.hpp
+	${include_path}/objectlogging.inl
 	${include_path}/ObjectVisitor.h
 	${include_path}/ProgramBinary.h
 	${include_path}/Program.h
-	${include_path}/Program.hpp
+	${include_path}/Program.inl
 	${include_path}/ProgramPipeline.h
 	${include_path}/Query.h
 	${include_path}/AttachedRenderbuffer.h
@@ -64,16 +64,16 @@ set(headers
 	${include_path}/Shader.h
 	${include_path}/State.h
 	${include_path}/StateSetting.h
-	${include_path}/StateSetting.hpp
+	${include_path}/StateSetting.inl
 	${include_path}/Sync.h
 	${include_path}/AttachedTexture.h
 	${include_path}/Texture.h
 	${include_path}/TextureHandle.h
 	${include_path}/TransformFeedback.h
-	${include_path}/TransformFeedback.hpp
+	${include_path}/TransformFeedback.inl
 	${include_path}/UniformBlock.h
 	${include_path}/Uniform.h
-	${include_path}/Uniform.hpp
+	${include_path}/Uniform.inl
 	${include_path}/VertexArray.h
 	${include_path}/VertexAttributeBinding.h
 	
@@ -81,26 +81,26 @@ set(headers
 	${include_path}/base/AbstractFunctionCall.h
 	${include_path}/base/AbstractLogHandler.h
 	${include_path}/base/baselogging.h
-	${include_path}/base/baselogging.hpp
+	${include_path}/base/baselogging.inl
 	${include_path}/base/Changeable.h
 	${include_path}/base/ChangeListener.h
 	${include_path}/base/CompositeStringSource.h
 	${include_path}/base/ConsoleLogger.h
 	${include_path}/base/File.h
 	${include_path}/base/formatString.h
-	${include_path}/base/formatString.hpp
+	${include_path}/base/formatString.inl
 	${include_path}/base/FunctionCall.h
-	${include_path}/base/FunctionCall.hpp
+	${include_path}/base/FunctionCall.inl
 	${include_path}/base/HeapOnly.h
 	${include_path}/base/LogMessageBuilder.h
-	${include_path}/base/LogMessageBuilder.hpp
+	${include_path}/base/LogMessageBuilder.inl
 	${include_path}/base/LogMessage.h
 	${include_path}/base/LogMessageLevel.h
 	${include_path}/base/Referenced.h
 	${include_path}/base/ref_ptr.h
-	${include_path}/base/ref_ptr.hpp
+	${include_path}/base/ref_ptr.inl
 	${include_path}/base/Singleton.h
-	${include_path}/base/Singleton.hpp
+	${include_path}/base/Singleton.inl
 	${include_path}/base/StaticStringSource.h
 	${include_path}/base/StringSourceDecorator.h
 	${include_path}/base/StringTemplate.h
@@ -119,7 +119,8 @@ set(sources
 	${source_path}/glmlogging.cpp
 	${source_path}/globjects.cpp
 	
-	${source_path}/container_helpers.hpp
+	${source_path}/container_helpers.h
+	${source_path}/container_helpers.inl
 	
 	${source_path}/base/AbstractFunctionCall.cpp
 	${source_path}/base/AbstractStringSource.cpp
@@ -267,9 +268,9 @@ set(sources
 # Group source files
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
-source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${include_path} "\\\\.h$|\\\\.inl$" 
     ${header_group} ${headers})
-source_group_by_path(${source_path}  "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${source_path}  "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.inl$" 
     ${source_group} ${sources})
 
 

@@ -74,4 +74,4 @@ ref_ptr<T> make_ref(Args&&... args);
 } // namespace globjects
 
 
-#include <globjects/base/ref_ptr.hpp>
+#include <globjects/base/ref_ptr.inl>

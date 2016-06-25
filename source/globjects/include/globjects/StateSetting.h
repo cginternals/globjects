@@ -67,4 +67,4 @@ struct GLOBJECTS_API hash<globjects::StateSettingType>
 } // namespace globjects
 
 
-#include <globjects/StateSetting.hpp>
+#include <globjects/StateSetting.inl>
