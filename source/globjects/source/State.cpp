@@ -107,8 +107,8 @@ State * State::currentState()
     state->depthRange(getFloats<2>(GL_DEPTH_RANGE));
     state->frontFace(getEnum(GL_FRONT_FACE));
     state->logicOp(getEnum(GL_LOGIC_OP_MODE));
-    state->pointParameter(GL_POINT_FADE_THRESHOLD_SIZE, getInteger(GL_POINT_FADE_THRESHOLD_SIZE));
-    state->pointParameter(GL_POINT_SPRITE_COORD_ORIGIN, getInteger(GL_POINT_SPRITE_COORD_ORIGIN));
+    state->pointParameter(GL_POINT_FADE_THRESHOLD_SIZE, getEnum(GL_POINT_FADE_THRESHOLD_SIZE));
+    state->pointParameter(GL_POINT_SPRITE_COORD_ORIGIN, getEnum(GL_POINT_SPRITE_COORD_ORIGIN));
     state->pointSize(getFloat(GL_POINT_SIZE));
     state->polygonMode(GL_FRONT, getEnums<2>(GL_POLYGON_MODE)[0]);
     state->polygonMode(GL_BACK, getEnums<2>(GL_POLYGON_MODE)[1]);

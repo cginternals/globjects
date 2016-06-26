@@ -45,8 +45,8 @@ public:
     void depthRange(const std::array<gl::GLfloat, 2> & range);
     void frontFace(gl::GLenum winding);
     void logicOp(gl::GLenum opcode);
-    void pixelStore(gl::GLenum pname, gl::GLint param);
-    void pointParameter(gl::GLenum pname, gl::GLint param);
+    void pixelStore(gl::GLenum pname, const gl::GLboolean param);
+    void pointParameter(gl::GLenum pname, const gl::GLenum param);
     void pointSize(gl::GLfloat size);
     void polygonMode(gl::GLenum face, gl::GLenum mode);
     void polygonOffset(gl::GLfloat factor, gl::GLfloat units);
