@@ -115,14 +115,14 @@ void AbstractState::logicOp(const GLenum opcode)
 
 void AbstractState::pixelStore(const GLenum pname, const GLboolean param)
 {
-    auto setting = new StateSetting(glPixelStorei, pname, param);
+    auto setting = new StateSetting(static_cast<void (*)(GLenum, GLboolean)>(glPixelStorei), pname, param);
     setting->type().specializeType(pname);
     add(setting);
 }
 
 void AbstractState::pointParameter(const GLenum pname, const GLenum param)
 {
-    auto setting = new StateSetting(glPointParameteri, pname, param);
+    auto setting = new StateSetting(static_cast<void (*)(GLenum, GLenum)>(glPointParameteri), pname, param);
     setting->type().specializeType(pname);
     add(setting);
 }
