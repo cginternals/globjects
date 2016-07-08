@@ -16,7 +16,7 @@ The \emph{globjects} library provides object-oriented interfaces to the OpenGL A
 
 \end{abstract}
 
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{1}
 \tableofcontents
 
 \newpage
@@ -69,7 +69,6 @@ One main goal of globjects is to be as strict as possible. This means, that ever
 \subsection{Scope}
 
 The scope of globjects are the features currently supported in the newest OpenGL API version and some features that are currently extensions but are likely to find their way to the OpenGL Core. Features that were used before OpenGL 3.0 are explicitly not covered. Likewise, features that are only supported by single vendors are likely to get omitted but are subject for discussion.
-
 An example list of features included:
 \begin{itemize}
 	\item State / Capability (e.g., Point Size, Depth Test)
@@ -100,8 +99,8 @@ An example list of features included:
 
 \noindent An example list for subjects to discussion:
 \begin{itemize}
+	\item Buffer storage (Texture storage is implemented)
 	\item Command Lists
-	\item Bindless Buffer and storage
 \end{itemize}
 
 \subsection{Similar Projects}
@@ -215,162 +214,185 @@ The globjects project is using git as code repository and GitHub as project mana
 
 globjects provides classes for every main concept of the current OpenGL API. For every concept the according globjects class provides the newest interface and emulates or simulates the behavior if the newest interface of OpenGL is not available in your driver.
 
-\subsection{State}
-
+\paragraph{State}
 A \lstinline|State| object represents the accumulation of all global states an OpenGL context possesses. Mainly, this means a collection of \lstinline|StateSettings| (states with non-boolean values) and a collection of \lstinline|Capabilities| (boolean states).
 
-\subsubsection{Capability}
-
+\paragraph{Capability}
 A \lstinline|Capability| object represents a boolean state in the global OpenGL state machine.
 
-\subsubsection{StateSetting}
+\paragraph{StateSetting}
 
 A \lstinline|StateSetting| object represents compound global states that consist of one or more parameters that are set through a specific function call (e.g., \lstinline|glPointSize|).
 
-\subsection{DebugMessage}
+\paragraph{DebugMessage}
 
 A \lstinline|DebugMessage| object represents an OpenGL message with a type, severity and message string. The interface can also manage the generation and propagation of messages throughout the OpenGL API.
 
-\subsection{Error}
+\paragraph{Error}
 
 A \lstinline|Error| object represents an error state of the state machine.
 
-\subsection{Uniform}
+\paragraph{Uniform}
 
 A \lstinline|Uniform| object represents a uniform value of a program. All uniforms are automatically re-uploaded after a program relink.
 
-\subsection{Renderbuffer}
+\paragraph{Renderbuffer}
 
 A \lstinline|Renderbuffer| object represents a renderbuffer that is attachable to framebuffer objects.
 
-\subsection{Framebuffer}
+\paragraph{Framebuffer}
 
 A \lstinline|Framebuffer| object represents a framebuffer objects with attachable renderbuffers and textures.
 
-\subsubsection{Framebuffer Attachment}
+\paragraph{Framebuffer Attachment}
 
 A \lstinline|FramebufferAttachment| object represents the common superclass between renderbuffer and texture attachments.
 
-\subsection{Texture}
+\paragraph{Texture}
 
-A \lstinline|Texture| object represents 
+A \lstinline|Texture| object represents an OpenGL texture in all its variants. It provides functionality to transfer image data.
+Additionally, this object can be used for bindless textures if the driver supports it.
 
-\subsubsection{TextureHandle}
+\paragraph{TextureHandle}
 
-A \lstinline|TextureHandle| object represents 
+A \lstinline|TextureHandle| represents a bindless texture handle.
 
-\subsection{Image}
+\paragraph{Image}
 
-A \lstinline|Image| object represents 
+An OpenGL Image is wrapped inside a \lstinline|Texture| object. It can be bound for image load/store operations.
 
-\subsection{Shader}
+\paragraph{Shader}
 
-A \lstinline|Shader| object represents 
+A \lstinline|Shader| object represents a shader object including its type and a string source hierarchy.
+Each time the source changes, the shader is recompiled upon next usage.
 
-\subsection{Program}
+\paragraph{Program}
 
-A \lstinline|Program| object represents 
+A \lstinline|Program| object represents a full program including standard rendering programs and compute programs.
+If any attached shaders changes the program is relinked upon next usage. Attached uniforms are automatically resubmitted upon relink.
 
-\subsubsection{ProgramBinary}
+\paragraph{ProgramBinary}
 
-A \lstinline|ProgramBinary| object represents 
+A \lstinline|ProgramBinary| object represents the binary of an OpenGL program. Such a binary is strongly platform-dependent.
 
-\subsection{Query}
+\paragraph{Query}
 
-A \lstinline|Query| object represents 
+A \lstinline|Query| object represents a query in means of an object for measuring time or fragments.
 
-\subsection{TransformFeedback}
+\paragraph{TransformFeedback}
 
-A \lstinline|TransformFeedback| object represents 
+A \lstinline|TransformFeedback| object wraps the functionality and state required for the transform feedback feature of OpenGL, i.e., the configuration of the recorded varyings and the start, pause, stop, and replay of a record.
 
-\subsection{Buffer}
+\paragraph{Buffer}
 
-A \lstinline|Buffer| object represents 
+A \lstinline|Buffer| object represents a generic buffer of OpenGL. It wraps arbitrary data and can be bound to different binding points.
 
-\subsection{Uniform}
+\paragraph{Uniform}
 
-A \lstinline|Uniform| object represents 
+A \lstinline|Uniform| object represents a runtime-constant value of an OpenGL shader. Uniforms are attached to programs and are automatically managed and propagated to the OpenGL shader programs.
 
-\subsection{VertexArray}
+\paragraph{VertexArray}
 
-A \lstinline|VertexArray| object represents 
+A \lstinline|VertexArray| object manages the vertex shader inputs including all vertex attributed and the index buffers.
 
-\subsection{VertexAttributeBinding}
+\paragraph{VertexAttributeBinding}
 
-A \lstinline|VertexAttributeBinding| object represents 
+A \lstinline|VertexAttributeBinding| object represents a specific binding of a vertex attribute to an OpenGL attribute binding index.
 
 \section{Strategies}
 
-globjects uses the design pattern \emph{strategy} to support multiple implementations for one interface using different OpenGL functions and backends. They have to be differentiated for each use case as they are developed asynchronously and every driver can decide which API extension to include.
+globjects uses the design pattern \emph{strategy} to support multiple implementations for one interface using different OpenGL functions and backends. They have to be differentiated for each use case as they are developed independently and every driver can decide which API extension to include.
 
-\subsection{Buffer}
+\paragraph{Buffer}
 
-The \lstinline|Buffer| strategies handle
+The \lstinline|Buffer| strategies implements the standard buffer interface for bindless buffer access (ARB\_direct\_state\_access and EXT\_direct\_state\_access). and former \emph{bindfull} functions.
 
-\subsection{Debug}
+\paragraph{Debug}
 
-The \lstinline|Debug| strategies handle
+The \lstinline|Debug| strategies handle how OpenGL run-time errors are handled. Currently, the KHR\_debug extension can be used or per-call errors are gathered through manual glbinding after callbacks.
 
-\subsection{Framebuffer}
+\paragraph{Framebuffer}
 
-The \lstinline|Framebuffer| strategies handle
+The \lstinline|Framebuffer| strategies handles framebuffer access through either direct state access (ARB\_direct\_state\_access and EXT\_direct\_state\_access) or former \emph{bindfull} functions.
 
-\subsection{ObjectName}
+\paragraph{ObjectName}
 
-The \lstinline|ObjectName| strategies handle
+The \lstinline|ObjectName| strategies handle object name management. Currently, either KHR\_debug is used or the feature is emulated.
 
-\subsection{ProgramBinary}
+\paragraph{ProgramBinary}
 
-The \lstinline|ProgramBinary| strategies handle
+The \lstinline|ProgramBinary| strategies handle the program binary management. If GL\_ARB\_get\_program\_binary is not supported, this feature is not available.
 
-\subsection{ShadingLanguageInclude}
+\paragraph{ShadingLanguageInclude}
 
-The \lstinline|ShadingLanguageInclude| strategies handle
+The \lstinline|ShadingLanguageInclude| strategies handle shader includes through OpenGL Named Strings. Named strings and shader includes are emulated if \lstinline|GL_ARB_shading_language_include| is not available in your driver.
 
-\subsection{Texture}
+\paragraph{Texture}
 
-The \lstinline|Texture| strategies handle
+The \lstinline|Texture| strategies provides texture functions as both direct state access (ARB\_direct\_state\_access and EXT\_direct\_state\_access) and former \emph{bindfull} interfaces.
 
-\subsection{Uniform}
+\paragraph{TextureStorage}
 
-The \lstinline|Uniform| strategies handle
+The \lstinline|TextureStorage| strategies handle OpenGL texture storage management. If \lstinline|GL_ARB_texture_storage| is not available, this feature is simulated through multiple texture image calls.
 
-\subsection{VertexAttributeBinding}
+\paragraph{Uniform}
 
-The \lstinline|VertexAttributeBinding| strategies handle
+The \lstinline|Uniform| strategies handle the propagation of uniform data to shaders. Both the former interface and the bindless one are available. The latter is available if \lstinline|GL_ARB_separate_shader_objects| is present in your driver.
+
+\paragraph{VertexAttributeBinding}
+
+The \lstinline|VertexAttributeBinding| strategies handle how vertex attributes are configured. Possible implementations are either the former or the current one if your driver supports \lstinline|GL_ARB_vertex_attrib_binding|. If your driver supports direct state access (\lstinline|GL_ARB_direct_state_access|), the bindless interface of the newer one is used instead.
 
 \section{Automated Processes}
 
-As one main goal of globjects is the usage in modern early-prototyping applications it supports some generalizable automation concepts.
+As one main goal of globjects is the usage in modern tech demos and early-prototyping applications it supports some generalizable automation concepts.
+All of them ease the usage of the OpenGL API in means of lesser code to write and fewer events to react on.
 
-\subsection{Objects Bindings}
+\paragraph{Objects Bindings}
+
+As globjects intends to provide the newest interface as the default one, we don't want you to struggle with updating and keeping track of currently bound OpenGL objects. Unfortunately, only bindings required by the OpenGL driver are converted to bindless interfaces and bindings for the GPU remains.
+
+\paragraph{Error Checking}
+
+When enabled, globjects performs error checks for each OpenGL API call you trigger. If your driver supports it, the OpenGL driver issues any error or notification via a callback interface that is used by globjects. Without such support, an after-callback of glbinding triggers a manual \lstinline|glGetError|. However, the driver alternative provides additional warnings and informations besides actual errors.
+
+\paragraph{Shader Compilation}
+
+globjects Shaders uses attached shader source trees to produce the actual shader source and updates the OpenGL shader state upon source node update.
+After that, a shader recompile takes place.
+Likewise, Programs are updated if an attached shader is updated.
+
+\paragraph{Program Linkage}
+
+After Shader updates, linked Programs are updated and relinked.
+Attached Uniforms are resubmitted to the GPU program after every relink.
+
+\paragraph{Uniform Updates}
+
+If a Uniform is added or updated on a Program, it is automatically updated on the GPU.
+Additionally, after every Program relink the attached Uniforms are resubmitted to the GPU.
+
+\section{Handling Unsupported Features}
 
 
-
-\subsection{Error Checking}
-
+\paragraph{Simulated Features}
 
 
-\subsection{Shader Compilation}
-
- 
-
-\subsection{Program Linkage}
+\paragraph{Emulated Features}
 
 
-
-\subsection{Uniform Updates}
+\paragraph{Omitted Features}
 
 
 
 \section{Multi-Threading and Multi-Context Support}
 
 
-\section{Remarks}
+\section{Conclusions and Remarks}
 
-\subsection{Limitations}
+\paragraph{Limitations}
 
-\subsection{Future Development}
+\paragraph{Future Development}
 
 
 
