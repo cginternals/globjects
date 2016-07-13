@@ -1,11 +1,72 @@
 ![globjects Logo](globjects-logo.png "globjects")
 
-*globjects* provides an object oriented C++ interface for OpenGL's programmable pipeline (3.1+).
-*globjects* is a cross-platform library licenced under the [MIT license](http://opensource.org/licenses/MIT).
+*globjects* is a [MIT licensed](http://opensource.org/licenses/MIT), strict C++ [OpenGL API](http://www.opengl.org) objects wrapper based on [glbinding](https://github.com/cginternals/glbinding).
 
-The latest release is [globjects-0.4.2](https://github.com/hpicgs/globjects/releases/tag/v0.4.2).
+*globjects* provides object-oriented interfaces to the OpenGL API (3.0 and higher).
+The main goals are much reduced code to use OpenGL in your rendering software and fewer errors
+due to the underlying [glbinding](https://github.com/cginternals/glbinding) and abstraction
+levels on top. Typical processes are automated and missing features in the used OpenGL driver
+are partially simulated or even emulated.
 
-To find out more about globjects and how to use it, check out our [wiki](https://github.com/hpicgs/globjects/wiki).
+An example OpenGL snippet may look like this:
+```cpp
+// Plain OpenGL API
+
+GLuint program = glCreateProgram();
+GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
+glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
+
+glCompileShader(vertexShader);
+glCompileShader(fragmentShader);
+
+glAttachShader(program, vertexShader);
+glAttachShader(program, fragmentShader);
+
+glLinkProgram(program);
+
+glUseProgram(program);
+glUniform2f(glGetUniformLocation(program, "extent"), 1.0, 0.5);
+```
+
+However, the same functionality can be achieved with globjects using the following code:
+```cpp
+// globjects API
+
+Program* program = new Program();
+
+program->attach(
+  Shader::fromString(GL_VERTEX_SHADER, vertexShaderSource), 
+  Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderSource)
+);
+
+program->setUniform<glm::vec2>("extent", glm::vec2(1.0, 0.5)));
+```
+Additionally, this code performs can perform ```glGetError``` checks after each call and check the shaders for compiler errors and the program for linker errors.
+
+###### globjects for Enterprise
+
+Want to integrate globjects in your software? Our team of globjects experts will work closely with your team to help you integrate, customize, and support your globjects setup.
+
+Visit [Enterprise Support and Services](https://www.cginternals.com) for more details.
+
+## Resources
+* [List of supported concepts](#supported-concepts)
+* [Examples](https://github.com/cginternals/globjects/wiki/examples)
+* [Project Health](#project-health)
+
+###### Installation and Development
+* [Install Instructions](#install-instructions)
+* [Build form Source](#build-instructions)
+* [Tips for Linking](#tips-for-linking)
+* [Basic Example](#basic-example)
+
+###### Feature Documentation and Code Snippets
+* [Reference pointer as memory model](#reference-pointers)
+* [Shader templates](#shader-templates)
+* [Manual strategy override](#strategy-override)
 
 ## Project Health
 
