@@ -12,7 +12,7 @@ find_package(glbinding REQUIRED)
 # 
 
 # Target name
-set(target commandlineoutput)
+set(target globjects-commandlineoutput)
 
 # Exit here if required dependencies are not met
 if (NOT GLFW_FOUND)
