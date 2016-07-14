@@ -12,7 +12,7 @@ find_package(glbinding REQUIRED)
 # 
 
 # Target name
-set(target sparse-texture)
+set(target globjects-sparse-texture)
 
 # Exit here if required dependencies are not met
 if (NOT GLFW_FOUND)
@@ -121,6 +121,6 @@ target_link_libraries(${target}
 
 # Executable
 install(TARGETS ${target}
-    RUNTIME DESTINATION ${INSTALL_EXAMPLES} COMPONENT examples
-    BUNDLE  DESTINATION ${INSTALL_EXAMPLES} COMPONENT examples
+    RUNTIME DESTINATION ${INSTALL_EXAMPLES} COMPONENT examples_glfw
+    BUNDLE  DESTINATION ${INSTALL_EXAMPLES} COMPONENT examples_glfw
 )
