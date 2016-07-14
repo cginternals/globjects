@@ -47,7 +47,7 @@ endif()
 # Package components
 # 
 
-set(CPACK_COMPONENT_RUNTIME_DISPLAY_NAME "${META_PROJECT_NAME} library")
+set(CPACK_COMPONENT_RUNTIME_DISPLAY_NAME "Library")
 set(CPACK_COMPONENT_RUNTIME_DESCRIPTION "Runtime components for ${META_PROJECT_NAME} library")
 
 set(CPACK_COMPONENT_DEV_DISPLAY_NAME "C/C++ development files")
@@ -57,11 +57,22 @@ set(CPACK_COMPONENT_DEV_DEPENDS runtime)
 set(CPACK_COMPONENTS_ALL runtime dev)
 
 if (OPTION_BUILD_EXAMPLES)
-    set(CPACK_COMPONENT_EXAMPLES_DISPLAY_NAME "Example applications")
-    set(CPACK_COMPONENT_EXAMPLES_DESCRIPTION "Example applications for ${META_PROJECT_NAME} library")
-    set(CPACK_COMPONENT_EXAMPLES_DEPENDS runtime)
+    set(CPACK_COMPONENT_EXAMPLES_DATA_DISPLAY_NAME "Example data")
+    set(CPACK_COMPONENT_EXAMPLES_DATA_DESCRIPTION "Example data for ${META_PROJECT_NAME} library")
 
-    set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} examples)
+    set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} examples_data)
+    
+    set(CPACK_COMPONENT_EXAMPLES_GLFW_DISPLAY_NAME "Example applications using GLFW")
+    set(CPACK_COMPONENT_EXAMPLES_GLFW_DESCRIPTION "Example applications for ${META_PROJECT_NAME} library based on GLFW")
+    set(CPACK_COMPONENT_EXAMPLES_GLFW_DEPENDS runtime examples_data)
+
+    set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} examples_glfw)
+    
+    set(CPACK_COMPONENT_EXAMPLES_QT_DISPLAY_NAME "Example applications using Qt5")
+    set(CPACK_COMPONENT_EXAMPLES_QT_DESCRIPTION "Example applications for ${META_PROJECT_NAME} library based on Qt5")
+    set(CPACK_COMPONENT_EXAMPLES_QT_DEPENDS runtime examples_data)
+
+    set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} examples_qt)
 endif()
 
 if (OPTION_BUILD_DOCS)
