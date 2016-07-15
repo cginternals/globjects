@@ -328,7 +328,7 @@ fbo->blit(GL_COLOR_ATTACHMENT0, {{ 0, 0, width, height }}, Framebuffer::defaultF
 Register compile-time shader replacements for shader ```#include```s.
 ```cpp
 // typically the only function call you'll need
-NamedString * namedString = new NamedString("/upNormal.glsl", const vec3(0.0, 1.0, 0.0);");
+NamedString * namedString = new NamedString("/upNormal.glsl", "const vec3 up = vec3(0.0, 1.0, 0.0);");
 ```
 
 ##### Program
@@ -357,11 +357,81 @@ pipeline->use(); // as Program interface
 ```
 
 ##### Query
+
+Query and measure time and perform conditional rendering with passed samples.
+```cpp
+Query * query = new Query();
+query->begin(GL_TIME_ELAPSED);
+// calls
+query->end(GL_TIME_ELAPSED);
+
+if (!query->resultsAvailable())
+{
+    query->wait();
+}
+
+GLint elapsed = query->get(GL_QUERY_RESULT);
+```
+
 ##### Renderbuffer
+
+Use Renderbuffers if you don't care that much about internal formats and you don't want to sample from the image.
+```cpp
+Renderbuffer * renderBuffer = new Renderbuffer();
+renderBuffer->storage(GL_RGBA32F, 512, 512);
+```
+
 ##### Sampler
+
+For temporary overrides of texture parameters.
+```cpp
+Sampler * sampler = new Sampler();
+sampler->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+sampler->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+sampler->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+sampler->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+sampler->bind(0); // override sampler state for texture at binding point 0
+```
 ##### Shader
+
+```cpp
+Shader * shader1 = new Shader::fromFile(GL_VERTEX_SHADER, filename);
+Shader * shader2 = new Shader::fromString(GL_FRAGMENT_SHADER, shaderSource);
+
+Shader::globalReplace("#version 140", "#version 150"); // e.g., useful for OS X
+
+shader1->setIncludePaths({ std::string("/data") });
+
+shader2->compile();
+std::cout << shader2->infoLog() << std::endl; // acess compile info log, although it's done automatically if there is a compile error
+```
+
 ##### Sync
+
+```cpp
+Sync * sync = Sync::fence(GL_SYNC_GPU_COMMANDS_COMPLETE);
+
+sync->clientWait(GL_SYNC_FLUSH_COMMANDS_BIT, 2000000000); // wait on GPU; 2 secs
+sync->waitSync(1000000); // wait on CPU; 1 millisecond
+```
+
 ##### Transform Feedback
+
+Connect shader outputs to buffers and restart drawing.
+```cpp
+TransformFeedback * tf = new TransformFeedback();
+tf->setVaryings(program, { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
+
+tf->bind();
+glEnable(GL_RASTERIZER_DISCARD);
+program->use();
+tf->begin(GL_TRIANGLES);
+vao->drawArrays(GL_TRIANGLES, 0, 3);
+tf->end();
+glDisable(GL_RASTERIZER_DISCARD);
+tf->draw(GL_TRIANGLE_STRIP);
+```
 
 ##### Uniform
 
@@ -388,7 +458,7 @@ buffer->bindBase(GL_UNIFORM_BUFFER, 0);
 ##### Vertex Array
 
 Use to configure vertex shader inputs and trigger render pipeline processes.
-```
+```cpp
 VertexArray * vao = new VertexArray();
 // configure bindings (see next section)
 
@@ -396,6 +466,7 @@ vao->enable(0);
 vao->enable(1);
 
 vao->drawArrays(GL_POINTS, 0, 10);
+```
 
 ##### Vertex Attribute Binding
 
