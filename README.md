@@ -494,7 +494,7 @@ We advise that every globjects Object pointer is stored in a ```ref_ptr```.
     
     // query is destructed and freed on GPU at the end of the block.
 }
-
+```
 As the objects in globjects uses ```ref_ptr``` to store references, not using reference counting can lead to *accidentally* freed objects.
 If you don't want to use smart pointers, you have to use the manual reference counting interface:
 ```cpp
