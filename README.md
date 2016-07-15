@@ -63,6 +63,9 @@ Visit [Enterprise Support and Services](https://www.cginternals.com) for more de
 * [Tips for Linking](#tips-for-linking)
 * [Basic Example](#basic-example)
 
+##### Context Management
+* [Initializing Contexts](#initialize-contexts)
+
 ##### Wrapped OpenGL Objects and Code Snippets
 * [Global Functions](#global-functions)
 * [Buffer](#buffer)
@@ -212,6 +215,34 @@ find_package(globjects REQUIRED) # if it is really required in your project
 Finally, just link glbinding to your own library or executable:
 ```
 target_link_libraries(${target} ... PUBLIC globjects::globjects)
+```
+
+## Initialize Contexts
+
+globjects can handle multiple OpenGL contexts. For each context, you have to initialize the globjects state.
+Further, you have to tell globjects which context is active on a per-thread basis.
+```cpp
+#include <globjects/globjects.h>
+
+// manage contexts
+init();
+
+// set explicit context active
+setContext(contextID);
+
+// set current context active
+setCurrentContext();
+```
+
+You can also use glbinding to automatically sync OpenGL active contexts and their glbinding and globjects counterparts:
+```cpp
+glbinding::Binding::addContextSwitchCallback([](glbinding::ContextHandle handle) {
+    setContext(handle);
+}
+```
+The only additional thing to do is telling glbinding when a context is switched (per thread).
+```cpp
+glbinding::Binding::useContext(handle);
 ```
 
 ## Wrapped OpenGL Objects
