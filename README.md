@@ -501,8 +501,33 @@ If you don't want to use smart pointers, you have to use the manual reference co
 program->ref(); // increase reference count
 program->unref(); // decreare reference count; potentially free program pointer and GPU program
 ```
-```
 
 ##### Shader Templates
+
+The sources of Shaders, ```ShaderSource```s, can be configured and templated.
+```cpp
+StringTemplate * template = new StringTemplate(new File("fragmentShader.frag"));
+template->replace("REPLACE","WITH THIS");
+
+Shader * shader = new Shader(template);
+```
+
 ##### Strategy Override
+
+Although globjects try to use most current OpenGL APIs, you can override this automatic process.
+```cpp
+// Enable CPU shader includes (although supported, some drivers have problems, so disable it)
+globjects::init(Shader::IncludeImplementation::Fallback);
+
+// Update strategy at run-time
+Buffer::hintBindlessImplementation(Buffer::BindlessImplementation::Legacy);
+```
+
 ##### Logging
+
+Log globjects and glm objects.
+```cpp
+std::cout << Framebuffer::defaultFBO();
+std::cout << glm::vec4(1.0, 0.0, 0.0, 1.0);
+warning() << shader;
+```
