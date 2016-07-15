@@ -12,7 +12,7 @@ find_package(glbinding REQUIRED)
 # 
 
 # Target name
-set(target globjects-sparse-texture)
+set(target sparse-texture)
 
 # Exit here if required dependencies are not met
 if (NOT GLFW_FOUND)

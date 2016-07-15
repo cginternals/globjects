@@ -12,7 +12,7 @@ find_package(glbinding REQUIRED)
 # 
 
 # Target name
-set(target globjects-ssbo)
+set(target ssbo)
 
 # Exit here if required dependencies are not met
 if (NOT GLFW_FOUND)
