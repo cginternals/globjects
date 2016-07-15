@@ -64,14 +64,13 @@ Visit [Enterprise Support and Services](https://www.cginternals.com) for more de
 * [Basic Example](#basic-example)
 
 ##### Wrapped OpenGL Objects and Code Snippets
+* [Global Functions](#global-functions)
 * [Buffer](#buffer)
 * [Texture](#texture)
 * [State](#state)
-* [Uniform](#uniform)
 * [Error](#error)
 * [Debug Message](#debug-message)
 * [Framebuffer](#framebuffer)
-* [globals](#globals)
 * [Named String](#named string)
 * [Program](#program)
 * [Program Pipeline](#program-pipeline)
@@ -214,3 +213,206 @@ Finally, just link glbinding to your own library or executable:
 ```
 target_link_libraries(${target} ... PUBLIC globjects::globjects)
 ```
+
+## Wrapped OpenGL Objects
+
+##### Global Functions
+
+Some often used functions are wrapped to ease the interface as proposed by the OpenGL API.
+```cpp
+// somehow similar to glbinding
+
+std::string extensions = getString(GL_EXTENSIONS);
+int numExtensions = getInteger(GL_NUM_EXTENSIONS);
+
+if (isCoreProfile())
+{
+    return renderer();
+}
+```
+
+##### Buffer
+
+A buffer in means of OpenGL can be used for vertex attributes, indices, uniform data, atomic counters, texture data, and shader storage data.
+```cpp
+Buffer * buffer = new Buffer();
+
+// Using buffer data
+buffer->setData({{ 0, 1, 2, 3, 4}}, GL_STATIC_DRAW);
+
+// Using buffer storage
+buffer->setStorage({{ 0, 1, 2, 3, 4}}, GL_MAP_READ_BIT | GL_MAP_PERSISTENT_BIT);
+
+buffer->setSubData({{ 4, 3, 2 }}, 0);
+buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+```
+
+##### Texture
+
+Texture supports both traditional interfaces and bindless support.
+```cpp
+Texture * texture1 = new Texture(GL_TEXTURE_2D); // type has to be fix during lifetime
+texture1->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+texture1->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+texture1->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+texture1->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+texture1->image2D(0, GL_RGBA8, glm::ivec2(512), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+texture1->clearImage(0, GL_RGBA, GL_UNSIGNED_BYTE, glm::ivec4(255, 255, 255, 255));
+texture1->generateMipMap();
+
+Texture * texture2 = Texture::createDefault(); // creates a default-configured 2D texture
+
+auto handle = texture2->textureHandle(); // for bindless texturing
+texture2->bindActive(0); // For traditional texturing
+```
+
+##### State
+
+OpenGL state is wrapped as States, StateSettings and Capabilities, where thr latter two are mainly used internally.
+```cpp
+State * currentState = State::currentState(); // full current state; usable for resetting
+
+State * state1 = new State(State::ImmediateMode); // all changes are applied immediately
+state1->enable(GL_RASTERIZER_DISCARD); // Configuring a Capability
+state1->primitiveRestartIndex(static_cast<GLuint>(-1)); // Configuring a StateSetting
+
+State * state2 = new State(State::DeferredMode); // changes has to be applied explicitly
+state2->pointSize(10.0f);
+state2->apply();
+
+currentState->apply(); // Reset manipulated state
+```
+
+##### Error
+
+```cpp
+Error error = Error::get();
+
+if (error)
+{
+    std::cout << "Error " << std::hex << error.code() << ": " << error.name() << std::endl;
+}
+```
+
+##### Debug Message
+
+Enable DebugMessages to get performance hints, warnings and errors from your OpenGL driver.
+```cpp
+DebugMessage::enable(); // enable automatic messages if KHR_debug is available
+
+DebugMessage::setCallback([](const DebugMessage & message) {
+    std::cout << message.message() << std::endl;
+}); // if you want to handle messages by yourself
+```
+
+##### Framebuffer
+
+Wraps a canvas with multiple render targets to render on.
+```cpp
+Framebuffer * fbo = new Framebuffer();
+fbo->attachTexture(GL_COLOR_ATTACHMENT0, texture1);
+fbo->attachTexture(GL_COLOR_ATTACHMENT1, texture2);
+fbo->attachRenderbuffer(GL_DEPTH_ATTACHMENT, depthRenderbuffer);
+fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_NONE });
+fbo->printStatus(true); // Print errors if fbo is not complete
+
+fbo->clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+fbo->clearBuffer(GL_COLOR, 0, glm::vec4(1.0f, 1.0f, 1.0f, 0.0f));
+
+fbo->blit(GL_COLOR_ATTACHMENT0, {{ 0, 0, width, height }}, Framebuffer::defaultFBO(), GL_BACK_LEFT, {{ 0, 0, width, height }}, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+```
+
+##### Named String
+
+Register compile-time shader replacements for shader ```#include```s.
+```cpp
+// typically the only function call you'll need
+NamedString * namedString = new NamedString("/upNormal.glsl", const vec3(0.0, 1.0, 0.0);");
+```
+
+##### Program
+
+Can represent both render programs and compute programs. Is automatically relinked upon shader changes.
+```cpp
+Program * renderProgram = new Program();
+renderProgram->attach(vertexShader, fragmentShader);
+renderProgram->addUniform("viewProjection", glm::mat4(1.0));
+
+renderProgram->use(); // compiles shaders, links and uses program
+
+Program * computeProgram = new Program();
+computeProgram->attach(computeShader);
+
+computeProgram->dispatchCompute(128, 1, 1);
+```
+
+##### Program Pipeline
+
+```cpp
+ProgramPipeline pipeline = new ProgramPipeline();
+pipeline->useStages(vertexProgram, gl::GL_VERTEX_SHADER_BIT);
+pipeline->useStages(fragmentProgram, gl::GL_FRAGMENT_SHADER_BIT);
+pipeline->use(); // as Program interface
+```
+
+##### Query
+##### Renderbuffer
+##### Sampler
+##### Shader
+##### Sync
+##### Transform Feedback
+
+##### Uniform
+
+Uniforms attached to Programs are updated automatically, even after relinking.
+```cpp
+Uniform * uniform1 = new Uniform<glm::vec3>("lightPos", glm::vec3(10.0f, 5.0f, 0.0f)); // name-based uniform binding
+Uniform * uniform2 = new Uniform<glm::mat4>(0, glm::mat4(1.0f)); // location-based uniform binding
+
+program->addUniform(uniform1);
+program->addUniform(uniform2);
+
+program->use(); // uniform values are updated if required
+```
+
+##### Uniform Block
+
+Use uniform blocks for large, often switched chunks of uniforms.
+```cpp
+UniformBlock * block = program->uniformBlock("uniforms");
+block->setBinding(0);
+buffer->bindBase(GL_UNIFORM_BUFFER, 0);
+```
+
+##### Vertex Array
+
+Use to configure vertex shader inputs and trigger render pipeline processes.
+```
+VertexArray * vao = new VertexArray();
+// configure bindings (see next section)
+
+vao->enable(0);
+vao->enable(1);
+
+vao->drawArrays(GL_POINTS, 0, 10);
+
+##### Vertex Attribute Binding
+
+```cpp
+// For attribute pointers
+VertexAttributeBinding * binding1 = vao->binding(0);
+binding1->setBuffer(vertexBuffer, 0, sizeof(glm::vec3));
+binding1->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+
+// For static attributes for each vertex
+VertexAttributeBinding * binding2 = vao->binding(0);
+binding2->setValue<float>(1.0f);
+```
+
+## Additional Features
+
+##### Reference Pointers
+##### Shader Templates
+##### Strategy Override
+##### Logging
