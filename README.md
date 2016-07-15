@@ -74,7 +74,7 @@ Visit [Enterprise Support and Services](https://www.cginternals.com) for more de
 * [Error](#error)
 * [Debug Message](#debug-message)
 * [Framebuffer](#framebuffer)
-* [Named String](#named string)
+* [Named String](#named-string)
 * [Program](#program)
 * [Program Pipeline](#program-pipeline)
 * [Query](#query)
