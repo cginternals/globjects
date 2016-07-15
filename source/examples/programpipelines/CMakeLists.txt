@@ -12,7 +12,7 @@ find_package(glbinding REQUIRED)
 # 
 
 # Target name
-set(target globjects-programpipelines)
+set(target programpipelines)
 
 # Exit here if required dependencies are not met
 if (NOT GLFW_FOUND)
@@ -38,7 +38,6 @@ set(sources
 
 # Build executable
 add_executable(${target}
-    MACOSX_BUNDLE
     ${sources}
 )
 
