@@ -300,7 +300,7 @@ texture2->bindActive(0); // For traditional texturing
 
 ##### State
 
-OpenGL state is wrapped as States, StateSettings and Capabilities, where thr latter two are mainly used internally.
+OpenGL state is wrapped as States, StateSettings and Capabilities, where the latter two are mainly used internally.
 ```cpp
 State * currentState = State::currentState(); // full current state; usable for resetting
 
