@@ -63,10 +63,10 @@ Visit [Enterprise Support and Services](https://www.cginternals.com) for more de
 * [Tips for Linking](#tips-for-linking)
 * [Basic Example](#basic-example)
 
-##### Context Management
+###### Context Management
 * [Initializing Contexts](#initialize-contexts)
 
-##### Wrapped OpenGL Objects and Code Snippets
+###### Wrapped OpenGL Objects and Code Snippets
 * [Global Functions](#global-functions)
 * [Buffer](#buffer)
 * [Texture](#texture)
