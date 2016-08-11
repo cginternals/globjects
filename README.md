@@ -4,7 +4,7 @@
 
 *globjects* provides object-oriented interfaces to the OpenGL API (3.0 and higher).
 The main goals are much reduced code to use OpenGL in your rendering software and fewer errors
-due to the underlying [glbinding](https://github.com/cginternals/glbinding) and abstraction
+due to the underlying [glbinding](https://github.com/cginternals/glbinding) and further abstraction
 levels on top. Typical processes are automated and missing features in the used OpenGL driver
 are partially simulated or even emulated.
 
@@ -53,20 +53,22 @@ Want to integrate globjects in your software? Our team of globjects experts will
 Visit [Enterprise Support and Services](https://www.cginternals.com) for more details.
 
 ## Resources
-* [List of supported concepts](#supported-concepts)
+
 * [Examples](https://github.com/cginternals/globjects/wiki/examples)
 * [Project Health](#project-health)
 
 ###### Installation and Development
+
 * [Install Instructions](#install-instructions)
 * [Build form Source](#build-instructions)
 * [Tips for Linking](#tips-for-linking)
-* [Basic Example](#basic-example)
 
 ###### Context Management
+
 * [Initializing Contexts](#initialize-contexts)
 
 ###### Wrapped OpenGL Objects and Code Snippets
+
 * [Global Functions](#global-functions)
 * [Buffer](#buffer)
 * [Texture](#texture)
@@ -89,6 +91,7 @@ Visit [Enterprise Support and Services](https://www.cginternals.com) for more de
 * [Vertex Attribute Binding](#vertex-attribute-binding)
 
 ###### Additional Feature Documentation and Code Snippets
+
 * [Reference pointer as memory model](#reference-pointers)
 * [Shader templates](#shader-templates)
 * [Manual strategy override](#strategy-override)
