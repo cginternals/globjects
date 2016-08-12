@@ -345,7 +345,7 @@ DebugMessage::setCallback([](const DebugMessage & message) {
 
 Wraps a canvas with multiple render targets to render on.
 ```cpp
-Framebuffer * fbo = new Framebuffer();
+auto fbo = new Framebuffer();
 fbo->attachTexture(GL_COLOR_ATTACHMENT0, texture1);
 fbo->attachTexture(GL_COLOR_ATTACHMENT1, texture2);
 fbo->attachRenderbuffer(GL_DEPTH_ATTACHMENT, depthRenderbuffer);
@@ -355,28 +355,32 @@ fbo->printStatus(true); // Print errors if fbo is not complete
 fbo->clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 fbo->clearBuffer(GL_COLOR, 0, glm::vec4(1.0f, 1.0f, 1.0f, 0.0f));
 
-fbo->blit(GL_COLOR_ATTACHMENT0, {{ 0, 0, width, height }}, Framebuffer::defaultFBO(), GL_BACK_LEFT, {{ 0, 0, width, height }}, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+fbo->blit(GL_COLOR_ATTACHMENT0, {{ 0, 0, width, height }}, Framebuffer::defaultFBO(),
+    GL_BACK_LEFT, {{ 0, 0, width, height }}, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 ```
 
 ##### Named String
 
-Register compile-time shader replacements for shader ```#include```s.
+Register compile-time shader replacements for shader includes.
 ```cpp
 // typically the only function call you'll need
-NamedString * namedString = new NamedString("/upNormal.glsl", "const vec3 up = vec3(0.0, 1.0, 0.0);");
+auto namedString1 = new NamedString("/upNormal.glsl", "const vec3 up = vec3(0.0, 1.0, 0.0);");
+
+// or reference an actual source file
+auto namedString2 = new NamedString("/phong.glsl", new File("data/shaders/phong.glsl"));
 ```
 
 ##### Program
 
-Can represent both render programs and compute programs. Is automatically relinked upon shader changes.
+The Program object can represent both render programs and compute programs. Prior usage it automatically relinks upon shader changes.
 ```cpp
-Program * renderProgram = new Program();
+auto renderProgram = new Program();
 renderProgram->attach(vertexShader, fragmentShader);
 renderProgram->addUniform("viewProjection", glm::mat4(1.0));
 
 renderProgram->use(); // compiles shaders, links and uses program
 
-Program * computeProgram = new Program();
+auto computeProgram = new Program();
 computeProgram->attach(computeShader);
 
 computeProgram->dispatchCompute(128, 1, 1);
@@ -385,7 +389,7 @@ computeProgram->dispatchCompute(128, 1, 1);
 ##### Program Pipeline
 
 ```cpp
-ProgramPipeline pipeline = new ProgramPipeline();
+auto pipeline = new ProgramPipeline();
 pipeline->useStages(vertexProgram, gl::GL_VERTEX_SHADER_BIT);
 pipeline->useStages(fragmentProgram, gl::GL_FRAGMENT_SHADER_BIT);
 pipeline->use(); // as Program interface
@@ -395,7 +399,7 @@ pipeline->use(); // as Program interface
 
 Query and measure time and perform conditional rendering with passed samples.
 ```cpp
-Query * query = new Query();
+auto query = new Query();
 query->begin(GL_TIME_ELAPSED);
 // calls
 query->end(GL_TIME_ELAPSED);
@@ -405,22 +409,21 @@ if (!query->resultsAvailable())
     query->wait();
 }
 
-GLint elapsed = query->get(GL_QUERY_RESULT);
+auto elapsed = query->get(GL_QUERY_RESULT);
 ```
 
 ##### Renderbuffer
 
-Use Renderbuffers if you don't care that much about internal formats and you don't want to sample from the image.
 ```cpp
-Renderbuffer * renderBuffer = new Renderbuffer();
+auto renderBuffer = new Renderbuffer();
 renderBuffer->storage(GL_RGBA32F, 512, 512);
 ```
 
 ##### Sampler
 
-For temporary overrides of texture parameters.
+For temporary overrides of texture parameters. Note: a newly created sampler is not configured by default, and thus invalid.
 ```cpp
-Sampler * sampler = new Sampler();
+auto sampler = new Sampler();
 sampler->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 sampler->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 sampler->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -431,8 +434,8 @@ sampler->bind(0); // override sampler state for texture at binding point 0
 ##### Shader
 
 ```cpp
-Shader * shader1 = new Shader::fromFile(GL_VERTEX_SHADER, filename);
-Shader * shader2 = new Shader::fromString(GL_FRAGMENT_SHADER, shaderSource);
+auto shader1 = new Shader::fromFile(GL_VERTEX_SHADER, filename);
+auto shader2 = new Shader::fromString(GL_FRAGMENT_SHADER, shaderSource);
 
 Shader::globalReplace("#version 140", "#version 150"); // e.g., useful for OS X
 
@@ -445,7 +448,7 @@ std::cout << shader2->infoLog() << std::endl; // acess compile info log, althoug
 ##### Sync
 
 ```cpp
-Sync * sync = Sync::fence(GL_SYNC_GPU_COMMANDS_COMPLETE);
+auto sync = Sync::fence(GL_SYNC_GPU_COMMANDS_COMPLETE);
 
 sync->clientWait(GL_SYNC_FLUSH_COMMANDS_BIT, 2000000000); // wait on GPU; 2 secs
 sync->waitSync(1000000); // wait on CPU; 1 millisecond
@@ -455,7 +458,7 @@ sync->waitSync(1000000); // wait on CPU; 1 millisecond
 
 Connect shader outputs to buffers and restart drawing.
 ```cpp
-TransformFeedback * tf = new TransformFeedback();
+auto tf = new TransformFeedback();
 tf->setVaryings(program, { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
 
 tf->bind();
@@ -472,8 +475,8 @@ tf->draw(GL_TRIANGLE_STRIP);
 
 Uniforms attached to Programs are updated automatically, even after relinking.
 ```cpp
-Uniform * uniform1 = new Uniform<glm::vec3>("lightPos", glm::vec3(10.0f, 5.0f, 0.0f)); // name-based uniform binding
-Uniform * uniform2 = new Uniform<glm::mat4>(0, glm::mat4(1.0f)); // location-based uniform binding
+auto uniform1 = new Uniform<glm::vec3>("lightPos", glm::vec3(10.0f, 5.0f, 0.0f)); // name-based uniform binding
+auto uniform2 = new Uniform<glm::mat4>(0, glm::mat4(1.0f)); // location-based uniform binding
 
 program->addUniform(uniform1);
 program->addUniform(uniform2);
@@ -485,7 +488,7 @@ program->use(); // uniform values are updated if required
 
 Use uniform blocks for large, often switched chunks of uniforms.
 ```cpp
-UniformBlock * block = program->uniformBlock("uniforms");
+auto block = program->uniformBlock("uniforms");
 block->setBinding(0);
 buffer->bindBase(GL_UNIFORM_BUFFER, 0);
 ```
@@ -494,7 +497,7 @@ buffer->bindBase(GL_UNIFORM_BUFFER, 0);
 
 Use to configure vertex shader inputs and trigger render pipeline processes.
 ```cpp
-VertexArray * vao = new VertexArray();
+auto vao = new VertexArray();
 // configure bindings (see next section)
 
 vao->enable(0);
@@ -507,12 +510,12 @@ vao->drawArrays(GL_POINTS, 0, 10);
 
 ```cpp
 // For attribute pointers
-VertexAttributeBinding * binding1 = vao->binding(0);
+auto binding1 = vao->binding(0);
 binding1->setBuffer(vertexBuffer, 0, sizeof(glm::vec3));
 binding1->setFormat(3, GL_FLOAT, GL_FALSE, 0);
 
 // For static attributes for each vertex
-VertexAttributeBinding * binding2 = vao->binding(0);
+auto binding2 = vao->binding(0);
 binding2->setValue<float>(1.0f);
 ```
 
@@ -522,7 +525,7 @@ binding2->setValue<float>(1.0f);
 
 globjects uses the RAII (resource allocation is initialization) principle, meaning that created objects are also created on the GPU.
 To effectively manage the dual-allocated memory, we use reference pointers.
-We advise that every globjects Object pointer is stored in a ```ref_ptr```.
+We advise that every globjects ```Object``` pointer is stored in a ```ref_ptr```.
 ```cpp
 {
     ref_ptr<Query> query = new Query(); // allocate on CPU and GPU
@@ -539,17 +542,17 @@ program->unref(); // decreare reference count; potentially free program pointer 
 
 ##### Shader Templates
 
-The sources of Shaders, ```ShaderSource```s, can be configured and templated.
+The sources of Shaders (```ShaderSource```) can be configured and templated.
 ```cpp
-StringTemplate * template = new StringTemplate(new File("fragmentShader.frag"));
-template->replace("REPLACE","WITH THIS");
+auto template = new StringTemplate(new File("fragmentShader.frag"));
+template->replace("REPLACE", "WITH THIS");
 
-Shader * shader = new Shader(template);
+auto shader = new Shader(template);
 ```
 
 ##### Strategy Override
 
-Although globjects try to use most current OpenGL APIs, you can override this automatic process.
+Although globjects tries to use most current OpenGL APIs, you can override this automatic process.
 ```cpp
 // Enable CPU shader includes (although supported, some drivers have problems, so disable it)
 globjects::init(Shader::IncludeImplementation::Fallback);
@@ -560,7 +563,7 @@ Buffer::hintBindlessImplementation(Buffer::BindlessImplementation::Legacy);
 
 ##### Logging
 
-Log globjects and glm objects.
+globjects provides logging interfaces to its objects as well as glm objects.
 ```cpp
 std::cout << Framebuffer::defaultFBO();
 std::cout << glm::vec4(1.0, 0.0, 0.0, 1.0);
