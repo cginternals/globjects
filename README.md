@@ -164,6 +164,7 @@ There is currently no precompiled package maintained. Please download the source
 The only mandatory run-time dependencies of globjects are the STL of the used compiler, glbinding, and an OpenGL driver library, dynamically linked with your application. However, compiling *globjects* requires the following required and optional dependencies:
 * [CMake](https://cmake.org/) 3.0 or higher for building globjects from source (mandatory for any build from source)
 * [git](https://git-scm.com/) for version control and script supporting tasks
+* [glbinding](https://github.com/cginternals/glbinding) as OpenGL API binding
 * [GLFW](http://www.glfw.org/) 3.0 or higher for examples
 * [cpplocate](https://github.com/cginternals/cpplocate) for the examples
 * [Qt5](http://www.qt.io/developers/) 5.0 or higher for the qt-based example
