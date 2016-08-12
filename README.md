@@ -44,7 +44,7 @@ program->attach(
 
 program->setUniform("extent", glm::vec2(1.0f, 0.5f)));
 ```
-Additionally, this code performs can perform ```glGetError``` checks after each call and check the shaders for compiler errors and the program for linker errors.
+If enabled, this code checks (1) for GL errors (```glGetError```) after each call, (2) shaders for compilation errors, and (3) the program for linker errors.
 
 ###### globjects for Enterprise
 
