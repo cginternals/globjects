@@ -8,7 +8,7 @@ due to the underlying [glbinding](https://github.com/cginternals/glbinding) and 
 levels on top. Typical processes are automated and missing features in the used OpenGL driver
 are partially simulated or even emulated.
 
-An example OpenGL snippet may look like this:
+The following code snippet shows an exemplary use of the OpenGL API:
 ```cpp
 // OpenGL API
 
@@ -31,7 +31,7 @@ glUseProgram(program);
 glUniform2f(glGetUniformLocation(program, "extent"), 1.0f, 0.5f);
 ```
 
-However, the same functionality can be achieved with globjects using the following code:
+Using *globjects*, this can be reduced to the following code:
 ```cpp
 // globjects API
 
