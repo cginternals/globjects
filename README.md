@@ -42,7 +42,7 @@ program->attach(
   Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderSource)
 );
 
-program->setUniform<glm::vec2>("extent", glm::vec2(1.0f, 0.5f)));
+program->setUniform("extent", glm::vec2(1.0f, 0.5f)));
 ```
 Additionally, this code performs can perform ```glGetError``` checks after each call and check the shaders for compiler errors and the program for linker errors.
 
