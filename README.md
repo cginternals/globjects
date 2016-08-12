@@ -1,6 +1,6 @@
 ![globjects Logo](globjects-logo.png "globjects")
 
-*globjects* is an [MIT licensed](http://opensource.org/licenses/MIT), cross-platform C++ wrapper for [OpenGL API](http://www.opengl.org) objects based on [glbinding](https://github.com/cginternals/glbinding).
+*globjects* is an [MIT licensed](http://opensource.org/licenses/MIT), cross-platform C++ wrapper for [OpenGL API](http://www.opengl.org) objects.
 
 *globjects* provides object-oriented interfaces to the OpenGL API (3.0 and higher).
 The main goals are much reduced code to use OpenGL in your rendering software and fewer errors
