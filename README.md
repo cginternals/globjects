@@ -195,7 +195,7 @@ First create a build directory (we do not recommend in-source builds):
 > cd build
 ```
 
-Configure *glbinding* with your prefered or default generator, e.g., for Visual Studio 2015 in x64 use
+Configure *globjects* with your prefered or default generator, e.g., for Visual Studio 2015 in x64 use
 (note: some IDEs have integrated support for CMake projects, e.g., Qt Creator, and allow you to skip the manual project configuration):
 ```shell
 > cmake .. -G "Visual Studio 14 2015 Win64"
@@ -216,7 +216,7 @@ In the projects CMakeLists.txt, add one of the following lines:
 find_package(globjects QUIET) # if you want to check for existance
 find_package(globjects REQUIRED) # if it is really required in your project
 ```
-Finally, just link glbinding to your own library or executable:
+Finally, just link globjects to your own library or executable:
 ```
 target_link_libraries(${target} ... PUBLIC globjects::globjects)
 ```
@@ -262,7 +262,7 @@ int numExtensions = getInteger(GL_NUM_EXTENSIONS);
 
 if (isCoreProfile())
 {
-    return renderer();
+    return renderer(); // returns the GL_RENDERER string
 }
 ```
 
@@ -270,7 +270,7 @@ if (isCoreProfile())
 
 A buffer in means of OpenGL can be used for vertex attributes, indices, uniform data, atomic counters, texture data, and shader storage data.
 ```cpp
-Buffer * buffer = new Buffer();
+auto buffer = new Buffer();
 
 // Using buffer data
 buffer->setData({{ 0, 1, 2, 3, 4}}, GL_STATIC_DRAW);
@@ -286,7 +286,7 @@ buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 
 Texture supports both traditional interfaces and bindless support.
 ```cpp
-Texture * texture1 = new Texture(GL_TEXTURE_2D); // type has to be fix during lifetime
+auto texture1 = new Texture(GL_TEXTURE_2D); // type has to be fix during lifetime
 texture1->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 texture1->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 texture1->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -296,7 +296,7 @@ texture1->image2D(0, GL_RGBA8, glm::ivec2(512), 0, GL_RGBA, GL_UNSIGNED_BYTE, nu
 texture1->clearImage(0, GL_RGBA, GL_UNSIGNED_BYTE, glm::ivec4(255, 255, 255, 255));
 texture1->generateMipMap();
 
-Texture * texture2 = Texture::createDefault(); // creates a default-configured 2D texture
+auto texture2 = Texture::createDefault(); // creates a default-configured 2D texture
 
 auto handle = texture2->textureHandle(); // for bindless texturing
 texture2->bindActive(0); // For traditional texturing
@@ -306,13 +306,13 @@ texture2->bindActive(0); // For traditional texturing
 
 OpenGL state is wrapped as States, StateSettings and Capabilities, where the latter two are mainly used internally.
 ```cpp
-State * currentState = State::currentState(); // full current state; usable for resetting
+auto currentState = State::currentState(); // full current state; usable for resetting
 
-State * state1 = new State(State::ImmediateMode); // all changes are applied immediately
+auto state1 = new State(State::ImmediateMode); // all changes are applied immediately
 state1->enable(GL_RASTERIZER_DISCARD); // Configuring a Capability
 state1->primitiveRestartIndex(static_cast<GLuint>(-1)); // Configuring a StateSetting
 
-State * state2 = new State(State::DeferredMode); // changes has to be applied explicitly
+auto state2 = new State(State::DeferredMode); // changes has to be applied explicitly
 state2->pointSize(10.0f);
 state2->apply();
 
@@ -322,7 +322,7 @@ currentState->apply(); // Reset manipulated state
 ##### Error
 
 ```cpp
-Error error = Error::get();
+auto error = Error::get();
 
 if (error)
 {
