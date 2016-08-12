@@ -10,11 +10,11 @@ are partially simulated or even emulated.
 
 An example OpenGL snippet may look like this:
 ```cpp
-// Plain OpenGL API
+// OpenGL API
 
-GLuint program = glCreateProgram();
-GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+auto program = glCreateProgram();
+auto vertexShader = glCreateShader(GL_VERTEX_SHADER);
+auto fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
 glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
@@ -35,7 +35,7 @@ However, the same functionality can be achieved with globjects using the followi
 ```cpp
 // globjects API
 
-Program* program = new Program();
+auto program = new Program();
 
 program->attach(
   Shader::fromString(GL_VERTEX_SHADER, vertexShaderSource), 
