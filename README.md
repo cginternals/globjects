@@ -28,7 +28,7 @@ glAttachShader(program, fragmentShader);
 glLinkProgram(program);
 
 glUseProgram(program);
-glUniform2f(glGetUniformLocation(program, "extent"), 1.0, 0.5);
+glUniform2f(glGetUniformLocation(program, "extent"), 1.0f, 0.5f);
 ```
 
 However, the same functionality can be achieved with globjects using the following code:
@@ -42,7 +42,7 @@ program->attach(
   Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderSource)
 );
 
-program->setUniform<glm::vec2>("extent", glm::vec2(1.0, 0.5)));
+program->setUniform<glm::vec2>("extent", glm::vec2(1.0f, 0.5f)));
 ```
 Additionally, this code performs can perform ```glGetError``` checks after each call and check the shaders for compiler errors and the program for linker errors.
 
