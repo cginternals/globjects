@@ -46,16 +46,14 @@ void Registry::registerContext(const glbinding::ContextHandle contextId, const g
         globjects::debug() << "OpenGL context " << contextId << " is already registered";
     }
 
-    g_mutex.lock();
+    std::lock_guard<std::recursive_mutex> lock(g_mutex);
+
     auto it = s_registries.find(sharedContextId);
     assert(it != s_registries.end());
-    g_mutex.unlock();
 
     Registry * registry = new Registry(it->second);
 
-    g_mutex.lock();
     s_registries[contextId] = registry;
-    g_mutex.unlock();
 
     t_currentRegistry = registry;
     //registry->initialize();
@@ -73,12 +71,10 @@ void Registry::setCurrentContext(const glbinding::ContextHandle contextId)
 
 bool Registry::isCurrentContext(glbinding::ContextHandle contextId)
 {
-    g_mutex.lock();
+    std::lock_guard<std::recursive_mutex> lock(g_mutex);
 
     const auto it = s_registries.find(contextId);
     const auto result = it != s_registries.end() && it->second == t_currentRegistry;
-
-    g_mutex.unlock();
 
     return result;
 }
@@ -92,13 +88,13 @@ void Registry::deregisterContext(const glbinding::ContextHandle contextId)
         return;
     }
 
-    g_mutex.lock();
-    delete s_registries[contextId];
-    g_mutex.unlock();
+    {
+        std::lock_guard<std::recursive_mutex> lock(g_mutex);
 
-    g_mutex.lock();
-    s_registries[contextId] = nullptr;
-    g_mutex.unlock();
+        delete s_registries[contextId];
+
+        s_registries[contextId] = nullptr;
+    }
 
     t_currentRegistry = nullptr;
 }
@@ -112,33 +108,28 @@ Registry & Registry::current()
 
 bool Registry::isContextRegistered(const glbinding::ContextHandle contextId)
 {
-    g_mutex.lock();
+    std::lock_guard<std::recursive_mutex> lock(g_mutex);
+
     bool found = s_registries.find(contextId) != s_registries.end();
-    g_mutex.unlock();
 
     return found;
 }
 
 void Registry::setCurrentRegistry(const glbinding::ContextHandle contextId)
 {
-    g_mutex.lock();
+    std::lock_guard<std::recursive_mutex> lock(g_mutex);
+
     auto it = s_registries.find(contextId);
 
     if (it != s_registries.end())
     {
         t_currentRegistry = it->second;
-
-        g_mutex.unlock();
     }
     else
     {
-        g_mutex.unlock();
-
         Registry * registry = new Registry();
 
-        g_mutex.lock();
         s_registries[contextId] = registry;
-        g_mutex.unlock();
 
         t_currentRegistry = registry;
         registry->initialize();

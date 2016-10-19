@@ -98,29 +98,32 @@ namespace globjects
 
 void init()
 {
-    g_mutex.lock();
-    if (!g_globjectsIsInitialized)
     {
-        initializeCallbacks();
+        std::lock_guard<std::mutex> lock(g_mutex);
 
-        g_globjectsIsInitialized = true;
+        if (!g_globjectsIsInitialized)
+        {
+            initializeCallbacks();
+
+            g_globjectsIsInitialized = true;
+        }
     }
-
-    g_mutex.unlock();
 
     registerCurrentContext();
 }
 
 void init(const glbinding::ContextHandle sharedContextId)
 {
-    g_mutex.lock();
-    if (!g_globjectsIsInitialized)
     {
-        initializeCallbacks();
+        std::lock_guard<std::mutex> lock(g_mutex);
 
-        g_globjectsIsInitialized = true;
+        if (!g_globjectsIsInitialized)
+        {
+            initializeCallbacks();
+
+            g_globjectsIsInitialized = true;
+        }
     }
-    g_mutex.unlock();
 
     registerCurrentContext(sharedContextId);
 }
