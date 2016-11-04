@@ -3,7 +3,7 @@
 *globjects* is an [MIT licensed](http://opensource.org/licenses/MIT), cross-platform C++ wrapper for [OpenGL API](http://www.opengl.org) objects.
 
 *globjects* provides object-oriented interfaces to the OpenGL API (3.0 and higher).
-The main goals are to reduce the required OpenGL code in your rendering software and to facilitate coherent OpenGL use via an additional abstraction layer to [glbinding](https://github.com/cginternals/glbinding). Typical processes are automated and missing features of specific OpenGL drivers are partially simulated or even emulated at run-time.
+It reduces the amount of OpenGL code required for rendering and facilitates coherent OpenGL use by means of an additional abstraction layer to [glbinding](https://github.com/cginternals/glbinding). Common rendering tasks and processes are automated and missing features of specific OpenGL drivers are partially simulated or even emulated at run-time.
 
 ![what-is-globjects](https://raw.githubusercontent.com/cginternals/globjects/master/docs/what-is-globjects.png)
 
