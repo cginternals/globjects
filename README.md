@@ -45,11 +45,13 @@ program->setUniform("extent", glm::vec2(1.0f, 0.5f)));
 ```
 If enabled, this code checks (1) for GL errors (```glGetError```) after each call, (2) shaders for compilation errors, and (3) the program for linker errors.
 
-###### globjects for Enterprise
+## Professional Support
 
-Want to integrate globjects in your software? Our team of globjects experts will work closely with your team to help you integrate, customize, and support your globjects setup.
+CG Internals offers computer graphics R&D as well as reliable technology and innovative concepts to support your computer graphics visions. 
+We provide trainings and can help you integrate and customize globjects in your next project.
 
-Visit [Enterprise Support and Services](https://www.cginternals.com) for more details.
+Visit [Professional Support and Services](https://www.cginternals.com) for more details.
+
 
 ## Resources
 
