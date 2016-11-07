@@ -3,7 +3,7 @@
 *globjects* is an [MIT licensed](http://opensource.org/licenses/MIT), cross-platform C++ wrapper for [OpenGL API](http://www.opengl.org) objects.
 
 *globjects* provides object-oriented interfaces to the OpenGL API (3.0 and higher).
-The main goals are to reduce the required OpenGL code in your rendering software and to facilitate coherent OpenGL use via an additional abstraction layer to [glbinding](https://github.com/cginternals/glbinding). Typical processes are automated and missing features of specific OpenGL drivers are partially simulated or even emulated at run-time.
+It reduces the amount of OpenGL code required for rendering and facilitates coherent OpenGL use by means of an additional abstraction layer to [glbinding](https://github.com/cginternals/glbinding). Common rendering tasks and processes are automated and missing features of specific OpenGL drivers are partially simulated or even emulated at run-time.
 
 ![what-is-globjects](https://raw.githubusercontent.com/cginternals/globjects/master/docs/what-is-globjects.png)
 
@@ -45,11 +45,13 @@ program->setUniform("extent", glm::vec2(1.0f, 0.5f)));
 ```
 If enabled, this code checks (1) for GL errors (```glGetError```) after each call, (2) shaders for compilation errors, and (3) the program for linker errors.
 
-###### globjects for Enterprise
+## Professional Support
 
-Want to integrate globjects in your software? Our team of globjects experts will work closely with your team to help you integrate, customize, and support your globjects setup.
+CG Internals offers computer graphics R&D as well as reliable technology and innovative concepts to support your computer graphics visions. 
+We provide trainings and can help you integrate and customize globjects in your next project.
 
-Visit [Enterprise Support and Services](https://www.cginternals.com) for more details.
+Visit [Professional Support and Services](https://www.cginternals.com) for more details.
+
 
 ## Resources
 
@@ -102,10 +104,10 @@ Visit [Enterprise Support and Services](https://www.cginternals.com) for more de
 | Service | System | Compiler | Status |
 | ------- | ------ | -------- | -----: |
 |  [Travis-CI](https://travis-ci.org/cginternals/globjects) | Ubuntu 14.04 | GCC 4.8, Clang 3.5 | [![Build Status](https://travis-ci.org/cginternals/globjects.svg?branch=master)](https://travis-ci.org/cginternals/globjects) |
+|  [Travis-CI](https://travis-ci.org/cginternals/globjects) | OS X | Clang ? | upcoming |
 | [Coverity](https://scan.coverity.com/projects/6829?tab=overview) | Ubuntu 14.04 | GCC 5.3 | [![Coverity Status](https://scan.coverity.com/projects/6829/badge.svg)](https://scan.coverity.com/projects/6829) |
-| Jenkins <br><br><br><br> | Ubuntu 14.04 <br><br><br><br> | GCC 4.8 <br> GCC 4.9 <br> GCC 5.3 <br> Clang 3.5 <br> | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc4.8)](http://jenkins.hpi3d.de/job/globjects-linux-gcc4.8) <br> [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc4.9)](http://jenkins.hpi3d.de/job/globjects-linux-gcc4.9) <br> [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc5.3)](http://jenkins.hpi3d.de/job/globjects-linux-gcc5.3) <br> [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-clang3.5)](http://jenkins.hpi3d.de/job/globjects-linux-clang3.5) <br> |
-| Jenkins <br><br> | Windows 10 <br><br> | MSVC 2013 Update 5 <br>  MSVC 2015 Update 1 <br> | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-windows-msvc2013)](http://jenkins.hpi3d.de/job/globjects-windows-msvc2013) <br> [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-windows-msvc2015)](http://jenkins.hpi3d.de/job/globjects-windows-msvc2015) <br> |
-| Jenkins | OS X 10.10 | AppleClang 6.0 | [![Build Status](http://jenkins.hpi3d.de/buildStatus/icon?job=globjects-osx-clang3.5)](http://jenkins.hpi3d.de/job/globjects-osx-clang3.5) |
+| Jenkins <br><br><br><br> | Ubuntu 14.04 <br><br><br><br> | GCC 4.8 <br> GCC 4.9 <br> GCC 5.4 <br> Clang 3.9 <br> | [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc4.8)](https://jenkins.hpi3d.de/job/globjects-linux-gcc4.8) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc4.9)](https://jenkins.hpi3d.de/job/globjects-linux-gcc4.9) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc5)](https://jenkins.hpi3d.de/job/globjects-linux-gcc5) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-clang3.9)](https://jenkins.hpi3d.de/job/globjects-linux-clang3.9) <br> |
+| Jenkins <br><br> | Windows 10 <br><br> | MSVC 2013 Update 5 <br>  MSVC 2015 Update 1 <br> | [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-windows-msvc2013)](https://jenkins.hpi3d.de/job/globjects-windows-msvc2013) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-windows-msvc2015)](https://jenkins.hpi3d.de/job/globjects-windows-msvc2015) <br> |
 
 Please note that our OS X build node is currently broken (physically). However, *globjects* is maintained for OS X as well and there are many people using it on OS X on a regular basis.
 
