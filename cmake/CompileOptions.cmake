@@ -19,7 +19,7 @@ endif()
 
 set(DEFAULT_PROJECT_OPTIONS
     DEBUG_POSTFIX             "d"
-    CXX_STANDARD              11
+    CXX_STANDARD              11 # Not available before CMake 3.1; see below for manual command line argument addition
     LINKER_LANGUAGE           "CXX"
     POSITION_INDEPENDENT_CODE ON
     CXX_VISIBILITY_PRESET     "hidden"
@@ -66,6 +66,7 @@ set(DEFAULT_COMPILE_OPTIONS)
 # MSVC compiler options
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
     set(DEFAULT_COMPILE_OPTIONS ${DEFAULT_COMPILE_OPTIONS}
+    PRIVATE
         /MP           # -> build with multiple processes
         /W4           # -> warning level 4
         # /WX         # -> treat warnings as errors
@@ -85,12 +86,19 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
         /GL           # -> whole program optimization: enable link-time code generation (disables Zi)
         /GF           # -> enable string pooling
         >
+        
+        # No manual c++11 enable for MSVC as all supported MSVC versions for cmake-init have C++11 implicitly enabled (MSVC >=2013)
+
+    PUBLIC
     )
 endif ()
 
 # GCC and Clang compiler options
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     set(DEFAULT_COMPILE_OPTIONS ${DEFAULT_COMPILE_OPTIONS}
+    PRIVATE
+        #-fno-exceptions # since we use stl and stl is intended to use exceptions, exceptions should not be disabled
+        
         -Wall
         -Wextra
         -Wunused
@@ -124,6 +132,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" OR "${CMAKE_CXX_COMPILER_ID}" MATCH
             -pthread
         >
         
+        # Required for CMake < 3.1; should be removed if minimum required CMake version is raised.
         $<$<VERSION_LESS:${CMAKE_VERSION},3.1>:
             -std=c++11
         >
@@ -140,6 +149,7 @@ set(DEFAULT_LINKER_OPTIONS)
 # Use pthreads on mingw and linux
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" OR "${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
     set(DEFAULT_LINKER_OPTIONS
+    PUBLIC
         -pthread
     )
 endif()
