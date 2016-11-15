@@ -1,10 +1,12 @@
 
+#include <iostream>
 #include <algorithm>
 
 #include <cpplocate/cpplocate.h>
 #include <cpplocate/ModuleInfo.h>
 
 #include <glm/gtc/constants.hpp>
+#include <glm/vec2.hpp>
 
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/extension.h>
@@ -30,7 +32,6 @@
 
 
 using namespace gl;
-using namespace glm;
 using namespace globjects;
 
 
@@ -50,91 +51,16 @@ std::string normalizePath(const std::string & filepath)
     return copy;
 }
 
-}
-
-
-namespace
-{
-
-bool g_toggleFS = false;
-bool g_isFS = false;
 
 Texture * g_texture = nullptr;
 Program * g_computeProgram = nullptr;
 ScreenAlignedQuad * g_quad = nullptr;
-unsigned int g_frame = 0;
+
+auto g_frame = 0u;
+auto g_size = glm::ivec2{ };
 
 }
 
-void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-        glfwSetWindowShouldClose(window, true);
-
-    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        File::reloadAll();
-
-    if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
-        g_toggleFS = true;
-}
-
-GLFWwindow * createWindow(bool fs = false)
-{
-    // Set GLFW window hints
-    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
-
-    // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(1024, 768, "", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
-    if (window == nullptr)
-    {
-        critical() << "Context creation failed. Terminate execution.";
-
-        glfwTerminate();
-        exit(1);
-    }
-    glfwMakeContextCurrent(window);
-
-    // Create callback that when user presses ESC, the context should be destroyed and window closed
-    glfwSetKeyCallback(window, key_callback);
-
-    // Initialize globjects (internally initializes glbinding, and registers the current context)
-    globjects::init();
-
-    globjects::DebugMessage::enable(true);
-
-    // Do only on startup
-    if (!g_toggleFS)
-    {
-       // Dump information about context and graphics card
-       info() << std::endl
-           << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-           << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-           << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
-    }
-
-    if (!hasExtension(GLextension::GL_ARB_compute_shader))
-    {
-        critical() << "Compute shaders are not supported";
-
-        glfwTerminate();
-        exit(1);
-    }
-
-    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-
-    g_isFS = fs;
-    return window;
-}
-
-void destroyWindow(GLFWwindow * window)
-{
-    globjects::detachAllObjects();
-    glfwDestroyWindow(window);
-}
 
 void initialize()
 {
@@ -150,6 +76,8 @@ void initialize()
     g_texture = Texture::createDefault(GL_TEXTURE_2D);
     g_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
     g_texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
+    g_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    g_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     g_texture->ref();
 
     g_computeProgram = new Program();
@@ -167,13 +95,15 @@ void deinitialize()
     g_texture->unref();
     g_computeProgram->unref();
     g_quad->unref();
+
+    globjects::detachAllObjects();
 }
 
 void draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    g_frame = (g_frame + 1) % static_cast<int>(200 * pi<double>());
+    g_frame = (g_frame + 1) % static_cast<int>(200 * glm::pi<double>());
 
     g_computeProgram->setUniform("roll", static_cast<float>(g_frame) * 0.01f);
 
@@ -184,32 +114,91 @@ void draw()
 
     glMemoryBarrier(GL_TEXTURE_UPDATE_BARRIER_BIT);
 
+    glViewport(0, 0, g_size.x, g_size.y);
     g_quad->draw();
 }
 
-int main(int /*argc*/, char * /*argv*/[])
+
+void error(int errnum, const char * errmsg)
 {
-    // Initialize GLFW
-    glfwInit();
+    critical() << errnum << ": " << errmsg << std::endl;
+}
 
-    GLFWwindow * window = createWindow();
+void framebuffer_size_callback(GLFWwindow * /*window*/, int width, int height)
+{
+    g_size = glm::ivec2{ width, height };
+}
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*mods*/)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, 1);
+
+    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
+        File::reloadAll();
+}
+
+
+int main()
+{
+#ifdef SYSTEM_DARWIN
+    critical() << "mac OS does currently not support compute shader (OpenGL 4.3. required)."
+    return 0;
+#endif
+
+    if (!glfwInit())
+        return 1;
+
+    glfwSetErrorCallback(error);
+
+    glfwDefaultWindowHints();
+
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Computer Shader", nullptr, nullptr);
+    if (!window)
+    {
+        critical() << "Context creation failed. Terminate execution.";
+
+        glfwTerminate();
+        return -1;
+    }
+
+    glfwSetKeyCallback(window, key_callback);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    glfwMakeContextCurrent(window);
+
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+    globjects::DebugMessage::enable(true);
+
+    // print some gl infos (query)
+
+    info() << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
+
+    if (!hasExtension(GLextension::GL_ARB_compute_shader))
+    {
+        critical() << "Compute shader not supported. Terminate execution.";
+
+        glfwTerminate();
+        return -1;
+    }
+
+    info() << "Press F5 to reload compute shader." << std::endl << std::endl;
+
     initialize();
+    glfwGetFramebufferSize(window, &g_size[0], &g_size[1]);
 
-    // Main loop
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
-
-        if (g_toggleFS)
-        {
-            deinitialize();
-            destroyWindow(window);
-            window = createWindow(!g_isFS);
-            initialize();
-
-            g_toggleFS = false;
-        }
-
         draw();
         glfwSwapBuffers(window);
     }

@@ -55,17 +55,16 @@ int main(int /*argc*/, char * /*argv*/[])
     std::cout << std::endl
         << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
         << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
-
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
 
     std::cout << std::endl;
-    std::cout << "Testing Standard Types:" << std::endl;
-    std::cout << "  void *        " << &offscreen_context << " : "; info() << static_cast<void *>(&offscreen_context);
+    std::cout << "Test Logging of Standard Types:" << std::endl;
+    std::cout << "  void *      " << &offscreen_context << " : "; info() << static_cast<void *>(&offscreen_context);
     std::cout << "  bool                    true : "; info() << true;
     std::cout << "  char                     'a' : "; info() << 'a';
     std::cout << "  unsigned char            'a' : "; info() << static_cast<unsigned char>('a');
-    std::cout << "  const char *         \"Hello\" : "; info() << "Hello";
-    std::cout << "  const std::string & \"Master\" : "; info() << std::string("Master");
+    std::cout << "  const char *         \"hello\" : "; info() << "hello";
+    std::cout << "  const std::string &  \"world\" : "; info() << std::string("world");
     std::cout << "  short                  32767 : "; info() << 32767;
     std::cout << "  int               2147483647 : "; info() << 2147483647;
     std::cout << "  unsigned integer          23 : "; info() << 23u;
@@ -77,19 +76,12 @@ int main(int /*argc*/, char * /*argv*/[])
     std::cout << "  long double          2.71828 : "; info() << 2.71828l;
     std::cout << std::endl;
 
-    std::cout << "Testing Container Types:" << std::endl;
+    std::cout << "Test Logging of Container Types:" << std::endl;
     std::cout << "  std::array<int, 2> : "; info() << std::array<int, 2>{ { 0, 1 } };
     std::cout << "  std::vector<float> : "; info() << std::vector<float>({ 0.1f, 0.2f, 0.3f });
     std::cout << std::endl;
 
-    std::cout << "Testing String Formating:" << std::endl;
-    std::cout << "  Expected : " << "This is a test: 42 pi = +3.14159E+00" << std::endl;
-    info("    Actual : This is a test: %; pi = %+0E10.5;", 42, 3.141592653589793);
-    std::cout << "  Expected : " << "A string - 255 - ______2.72" << std::endl;
-    info("    Actual : %; - %X; - %rf?_10.2;", "A string", 255, 2.71828182846);
-    std::cout << std::endl;
-
-    std::cout << "Testing globjects objects:" << std::endl;
+    std::cout << "Test Logging of globjects objects:" << std::endl;
     ref_ptr<Buffer> buffer(new Buffer());
     std::cout << "  Buffer                : "; info() << buffer.get();
     std::cout << "  Framebuffer           : "; info() << Framebuffer::defaultFBO();
@@ -116,7 +108,6 @@ int main(int /*argc*/, char * /*argv*/[])
     std::vector<Buffer*> buffers{new Buffer(), new Buffer()};
     std::cout << "  std::vector<Buffer *> : "; info() << buffers;
     std::cout << std::endl;
-
 
     // Properly shutdown GLFW
     glfwTerminate();
