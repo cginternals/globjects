@@ -9,13 +9,13 @@
 #include <iostream>
 #include <algorithm>
 
-#include <cpplocate/cpplocate.h>
-#include <cpplocate/ModuleInfo.h>
-
+#pragma warning(push)
+#pragma warning(disable: 4127)
 #include <QApplication>
 #include <QMainWindow>
 #include <QResizeEvent>
 #include <QSurfaceFormat>
+#pragma warning(pop)
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
@@ -42,28 +42,12 @@
 
 #include "WindowQt.h"
 
+// example commons
+#include "common/contextinfo.inl"
+#include "common/dataPath.inl"
+
 
 using namespace gl;
-using namespace globjects;
-
-
-namespace
-{
-
-// taken from iozeug::FilePath::toPath
-std::string normalizePath(const std::string & filepath)
-{
-    auto copy = filepath;
-    std::replace( copy.begin(), copy.end(), '\\', '/');
-    auto i = copy.find_last_of('/');
-    if (i == copy.size()-1)
-    {
-        copy = copy.substr(0, copy.size()-1);
-    }
-    return copy;
-}
-
-}
 
 
 class Window : public WindowQt
@@ -80,21 +64,10 @@ public:
 
     virtual void initializeGL() override
     {
-        cpplocate::ModuleInfo moduleInfo = cpplocate::findModule("globjects");
+        globjects::init();
+        common::printContextInfo();
 
-        // Get data path
-        std::string dataPath = moduleInfo.value("dataPath");
-        dataPath = normalizePath(dataPath);
-        if (dataPath.size() > 0) dataPath = dataPath + "/";
-        else                     dataPath = "data/";
-
-        init();
-        DebugMessage::enable();
-
-        std::cout << std::endl
-            << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-            << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-            << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
+        globjects::DebugMessage::enable();
 
 #ifdef __APPLE__
         Shader::clearGlobalReplacements();
@@ -105,14 +78,14 @@ public:
 
         glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
-        // Initialize OpenGL objects
-        m_cornerBuffer = new Buffer();
-        m_program = new Program();
-        m_vao = new VertexArray();
+        m_cornerBuffer = new globjects::Buffer();
+        m_program = new globjects::Program();
+        m_vao = new globjects::VertexArray();
 
+        const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
         m_program->attach(
-            Shader::fromFile(GL_VERTEX_SHADER,  dataPath + "qt-example/shader.vert"),
-            Shader::fromFile(GL_FRAGMENT_SHADER, dataPath +"qt-example/shader.frag"));
+            globjects::Shader::fromFile(GL_VERTEX_SHADER,  dataPath +  "qt-example/shader.vert"),
+            globjects::Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "qt-example/shader.frag"));
 
         m_cornerBuffer->setData(std::array<glm::vec2, 4>{ {
                 glm::vec2(0, 0), glm::vec2(1, 0), glm::vec2(0, 1), glm::vec2(1, 1) } }, GL_STATIC_DRAW);
@@ -144,7 +117,7 @@ public:
         switch (event->key())
         {
         case Qt::Key_F5:
-            File::reloadAll();
+            globjects::File::reloadAll();
             break;
         default:
             break;
@@ -154,10 +127,11 @@ public:
 
 
 protected:
-    ref_ptr<Buffer> m_cornerBuffer;
-    ref_ptr<Program> m_program;
-    ref_ptr<VertexArray> m_vao;
+    globjects::ref_ptr<globjects::Buffer> m_cornerBuffer;
+    globjects::ref_ptr<globjects::Program> m_program;
+    globjects::ref_ptr<globjects::VertexArray> m_vao;
 };
+
 
 int main(int argc, char * argv[])
 {
@@ -175,7 +149,8 @@ int main(int argc, char * argv[])
     Window * glwindow = new Window(format);
 
     QMainWindow window;
-    window.setGeometry(0, 0, 1024, 768);
+    window.setMinimumSize(640, 480);
+    window.setWindowTitle("globjects and Qt");
     window.setCentralWidget(QWidget::createWindowContainer(glwindow));
 
     window.show();

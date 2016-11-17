@@ -22,6 +22,9 @@
 #include <globjects/TransformFeedback.h>
 #include <globjects/VertexArray.h>
 
+// example commons
+#include "common/contextInfo.inl"
+
 
 using namespace gl;
 using namespace globjects;
@@ -38,7 +41,7 @@ int main(int /*argc*/, char * /*argv*/[])
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     // Create a context and, if valid, make it current
-    GLFWwindow * offscreen_context = glfwCreateWindow(1024, 768, "", NULL, NULL);
+    GLFWwindow * offscreen_context = glfwCreateWindow(640, 480, "globjects Command Line Output", NULL, NULL);
     if (offscreen_context == nullptr)
     {
         critical() << "Context creation failed. Terminate execution.";
@@ -50,12 +53,7 @@ int main(int /*argc*/, char * /*argv*/[])
 
     // Initialize globjects (internally initializes glbinding, and registers the current context)
     globjects::init();
-
-    // Dump information about context and graphics card
-    std::cout << std::endl
-        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
+    common::printContextInfo();
 
     std::cout << std::endl;
     std::cout << "Test Logging of Standard Types:" << std::endl;

@@ -30,58 +30,38 @@
 
 #include "ScreenAlignedQuad.h"
 
+// example commons
+#include "common/contextinfo.inl"
+#include "common/dataPath.inl"
+
 
 using namespace gl;
-using namespace globjects;
 
 
 namespace
 {
+    globjects::Texture * g_texture = nullptr;
+    globjects::Program * g_computeProgram = nullptr;
+    ScreenAlignedQuad * g_quad = nullptr;
 
-// taken from iozeug::FilePath::toPath
-std::string normalizePath(const std::string & filepath)
-{
-    auto copy = filepath;
-    std::replace( copy.begin(), copy.end(), '\\', '/');
-    auto i = copy.find_last_of('/');
-    if (i == copy.size()-1)
-    {
-        copy = copy.substr(0, copy.size()-1);
-    }
-    return copy;
-}
-
-
-Texture * g_texture = nullptr;
-Program * g_computeProgram = nullptr;
-ScreenAlignedQuad * g_quad = nullptr;
-
-auto g_frame = 0u;
-auto g_size = glm::ivec2{ };
-
+    auto g_frame = 0u;
+    auto g_size = glm::ivec2{ };
 }
 
 
 void initialize()
 {
-    cpplocate::ModuleInfo moduleInfo = cpplocate::findModule("globjects");
-
-    // Get data path
-    std::string dataPath = moduleInfo.value("dataPath");
-    dataPath = normalizePath(dataPath);
-    if (dataPath.size() > 0) dataPath = dataPath + "/";
-    else                     dataPath = "data/";
-
-    // Initialize OpenGL objects
-    g_texture = Texture::createDefault(GL_TEXTURE_2D);
+    g_texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
     g_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
     g_texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
     g_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     g_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     g_texture->ref();
 
-    g_computeProgram = new Program();
-    g_computeProgram->attach(Shader::fromFile(GL_COMPUTE_SHADER, dataPath + "computeshader/cstest.comp"));
+    g_computeProgram = new globjects::Program();
+
+    const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
+    g_computeProgram->attach(globjects::Shader::fromFile(GL_COMPUTE_SHADER, dataPath + "computeshader/cstest.comp"));
     g_computeProgram->setUniform("destTex", 0);
     g_computeProgram->ref();
 
@@ -121,7 +101,7 @@ void draw()
 
 void error(int errnum, const char * errmsg)
 {
-    critical() << errnum << ": " << errmsg << std::endl;
+    globjects::critical() << errnum << ": " << errmsg << std::endl;
 }
 
 void framebuffer_size_callback(GLFWwindow * /*window*/, int width, int height)
@@ -135,22 +115,22 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         glfwSetWindowShouldClose(window, 1);
 
     if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        File::reloadAll();
+        globjects::File::reloadAll();
 }
 
 
 int main()
 {
 #ifdef SYSTEM_DARWIN
-    critical() << "mac OS does currently not support compute shader (OpenGL 4.3. required)."
+    critical() << "macOS does currently not support compute shader (OpenGL 4.3. required)."
     return 0;
 #endif
 
+    // Initialize GLFW
     if (!glfwInit())
         return 1;
 
     glfwSetErrorCallback(error);
-
     glfwDefaultWindowHints();
 
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
@@ -158,10 +138,11 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    // Create a context and, if valid, make it current
     GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Computer Shader", nullptr, nullptr);
     if (!window)
     {
-        critical() << "Context creation failed. Terminate execution.";
+        globjects::critical() << "Context creation failed. Terminate execution.";
 
         glfwTerminate();
         return -1;
@@ -174,35 +155,32 @@ int main()
 
     // Initialize globjects (internally initializes glbinding, and registers the current context)
     globjects::init();
-    globjects::DebugMessage::enable(true);
+    common::printContextInfo();
 
-    // print some gl infos (query)
+    globjects::DebugMessage::enable();
 
-    info() << std::endl
-        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
 
-    if (!hasExtension(GLextension::GL_ARB_compute_shader))
+    if (!globjects::hasExtension(GLextension::GL_ARB_compute_shader))
     {
-        critical() << "Compute shader not supported. Terminate execution.";
+        globjects::critical() << "Compute shader not supported. Terminate execution.";
 
         glfwTerminate();
         return -1;
     }
 
-    info() << "Press F5 to reload compute shader." << std::endl << std::endl;
+    globjects::info() << "Press F5 to reload compute shader." << std::endl << std::endl;
+
 
     initialize();
     glfwGetFramebufferSize(window, &g_size[0], &g_size[1]);
 
+    // Main loop
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
         draw();
         glfwSwapBuffers(window);
     }
-
     deinitialize();
 
     // Properly shutdown GLFW

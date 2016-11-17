@@ -7,8 +7,11 @@
 #pragma GCC diagnostic ignored "-Wswitch"
 #endif
 
+#pragma warning(push)
+#pragma warning(disable: 4127)
 #include <QWindow>
 #include <QScopedPointer>
+#pragma warning(pop)
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop

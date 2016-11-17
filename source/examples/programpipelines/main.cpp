@@ -19,14 +19,16 @@
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/base/StaticStringSource.h>
 
+// example commons
+#include "common/contextInfo.inl"
+
 
 using namespace gl;
-using namespace glm;
-using namespace globjects;
+
 
 namespace 
 {
-    const char * vertexShaderCode = R"(
+    const auto vertexShaderCode = R"(
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
 
@@ -41,7 +43,7 @@ void main()
 }
 
 )";
-    const char * fragmentShaderCode = R"(
+    const auto fragmentShaderCode = R"(
 #version 140
 #extension GL_ARB_explicit_attrib_location : require
 
@@ -56,102 +58,42 @@ void main()
 
 )";
 
-    bool g_toggleFS = false;
-    bool g_isFS = false;
+    globjects::Buffer * g_cornerBuffer = nullptr;
+    globjects::Program * g_vertexProgram = nullptr;
+    globjects::Program * g_fragmentProgram = nullptr;
+    globjects::ProgramPipeline * g_programPipeline = nullptr;
+    globjects::VertexArray * g_vao = nullptr;
 
-    Buffer * g_cornerBuffer = nullptr;
-    Program * g_vertexProgram = nullptr;
-    Program * g_fragmentProgram = nullptr;
-    ProgramPipeline * g_programPipeline = nullptr;
-    VertexArray * g_vao = nullptr;
+    auto g_size = glm::ivec2{ };
 }
 
-
-void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-        glfwSetWindowShouldClose(window, true);
-
-    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        File::reloadAll();
-
-    if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
-        g_toggleFS = true;
-}
-
-GLFWwindow * createWindow(bool fs = false)
-{
-    // Set GLFW window hints
-    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
-
-    // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(1024, 768, "", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
-    if (window == nullptr)
-    {
-        critical() << "Context creation failed. Terminate execution.";
-
-        glfwTerminate();
-        exit(1);
-    }
-    glfwMakeContextCurrent(window);
-
-    // Create callback that when user presses ESC, the context should be destroyed and window closed
-    glfwSetKeyCallback(window, key_callback);
-
-    // Initialize globjects (internally initializes glbinding, and registers the current context)
-    globjects::init();
-
-    // Do only on startup
-    if (!g_toggleFS)
-    {
-       // Dump information about context and graphics card
-       info() << std::endl
-           << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-           << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-           << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
-    }
-
-    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-
-    g_isFS = fs;
-    return window;
-}
-
-void destroyWindow(GLFWwindow * window)
-{
-    globjects::detachAllObjects();
-    glfwDestroyWindow(window);
-}
 
 void initialize()
 {
-    // Initialize OpenGL objects
-    g_cornerBuffer = new Buffer();
+    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
+
+    g_cornerBuffer = new globjects::Buffer();
     g_cornerBuffer->ref();
-    g_vertexProgram = new Program();
+    g_vertexProgram = new globjects::Program();
     g_vertexProgram->ref();
-    g_fragmentProgram = new Program();
+    g_fragmentProgram = new globjects::Program();
     g_fragmentProgram->ref();
-    g_programPipeline = new ProgramPipeline();
+    g_programPipeline = new globjects::ProgramPipeline();
     g_programPipeline->ref();
-    g_vao = new VertexArray();
+    g_vao = new globjects::VertexArray();
     g_vao->ref();
 
-    g_vertexProgram->attach(Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode));
-
-    g_fragmentProgram->attach(Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
+    g_vertexProgram->attach(globjects::Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode));
+    g_fragmentProgram->attach(globjects::Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
 
     g_programPipeline->useStages(g_vertexProgram, gl::GL_VERTEX_SHADER_BIT);
     g_programPipeline->useStages(g_fragmentProgram, gl::GL_FRAGMENT_SHADER_BIT);
 
-    g_cornerBuffer->setData(std::array<vec2, 4>{ {
-        vec2(0, 0), vec2(1, 0), vec2(0, 1), vec2(1, 1) } }, GL_STATIC_DRAW);
+    g_cornerBuffer->setData(std::array<glm::vec2, 4>{ {
+        glm::vec2(0, 0), glm::vec2(1, 0), glm::vec2(0, 1), glm::vec2(1, 1) } }, GL_STATIC_DRAW);
 
     g_vao->binding(0)->setAttribute(0);
-    g_vao->binding(0)->setBuffer(g_cornerBuffer, 0, sizeof(vec2));
+    g_vao->binding(0)->setBuffer(g_cornerBuffer, 0, sizeof(glm::vec2));
     g_vao->binding(0)->setFormat(2, GL_FLOAT);
     g_vao->enable(0);
 }
@@ -163,43 +105,83 @@ void deinitialize()
     g_fragmentProgram->unref();
     g_programPipeline->unref();
     g_vao->unref();
+
+    globjects::detachAllObjects();
 }
 
 void draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glViewport(0, 0, g_size.x, g_size.y);
+
     g_programPipeline->use();
     g_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
+
+void error(int errnum, const char * errmsg)
+{
+    globjects::critical() << errnum << ": " << errmsg << std::endl;
+}
+
+void framebuffer_size_callback(GLFWwindow * /*window*/, int width, int height)
+{
+    g_size = glm::ivec2{ width, height };
+}
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+        glfwSetWindowShouldClose(window, true);
+}
+
+
 int main(int /*argc*/, char * /*argv*/[])
 {
     // Initialize GLFW
-    glfwInit();
+    if (!glfwInit())
+        return 1;
 
-    GLFWwindow * window = createWindow();
+    glfwSetErrorCallback(error);
+    glfwDefaultWindowHints();
+
+    glfwSetErrorCallback([](int /*error*/, const char * description) { puts(description); });
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+
+    // Create a context and, if valid, make it current
+    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Progam Pipelines", NULL, NULL);
+    if (window == nullptr)
+    {
+        globjects::critical() << "Context creation failed. Terminate execution.";
+
+        glfwTerminate();
+        return -1;
+    }
+    glfwSetKeyCallback(window, key_callback);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    glfwMakeContextCurrent(window);
+
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+    common::printContextInfo();
+
+    globjects::info() << "Press F5 to reload compute shader." << std::endl << std::endl;
+
+
     initialize();
+    glfwGetFramebufferSize(window, &g_size[0], &g_size[1]);
 
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
-
-        if (g_toggleFS)
-        {
-            deinitialize();
-            destroyWindow(window);
-            window = createWindow(!g_isFS);
-            initialize();
-
-            g_toggleFS = false;
-        }
-
         draw();
         glfwSwapBuffers(window);
     }
-
     deinitialize();
 
     // Properly shutdown GLFW
