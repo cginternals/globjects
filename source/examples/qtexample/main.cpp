@@ -149,7 +149,7 @@ int main(int argc, char * argv[])
     Window * glwindow = new Window(format);
 
     QMainWindow window;
-    window.setMinimumSize(320, 240);
+    window.setMinimumSize(640, 480);
     window.setWindowTitle("globjects and Qt");
     window.setCentralWidget(QWidget::createWindowContainer(glwindow));
 
