@@ -1,5 +1,5 @@
 
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 #include <glbinding/gl/gl.h>
 #include <glbinding/ContextInfo.h>
@@ -169,7 +169,7 @@ int main(int /*argc*/, char * /*argv*/[])
     globjects::init();
     common::printContextInfo();
 
-    globjects::info() << "Press F5 to reload compute shader." << std::endl << std::endl;
+    globjects::info() << "Press F5 to reload shaders." << std::endl << std::endl;
 
 
     initialize();
