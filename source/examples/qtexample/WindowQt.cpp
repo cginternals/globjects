@@ -1,12 +1,5 @@
 #include "WindowQt.h"
 
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch"
-#endif
-
 #pragma warning(push)  
 #pragma warning(disable: 4127 4800 4244)
 #include <QApplication>
@@ -15,10 +8,6 @@
 #include <QSurfaceFormat>
 #include <QOpenGLContext>
 #pragma warning(pop)  
-
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
 
 
 QSurfaceFormat defaultFormat()
