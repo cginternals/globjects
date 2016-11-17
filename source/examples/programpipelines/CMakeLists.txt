@@ -65,7 +65,6 @@ target_include_directories(${target}
     PRIVATE
     ${DEFAULT_INCLUDE_DIRECTORIES}
     ${PROJECT_BINARY_DIR}/source/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/..
     SYSTEM
     ${GLFW_INCLUDE_DIR}
 )
