@@ -27,11 +27,17 @@ using namespace gl;
 using namespace globjects;
 
 
+void error(int errnum, const char * errmsg)
+{
+    globjects::critical() << errnum << ": " << errmsg << std::endl;
+}
+
+
 int main(int /*argc*/, char * /*argv*/[])
 {
     // Initialize GLFW with error callback and window hints
     glfwInit();
-    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
+    glfwSetErrorCallback(error);
     glfwWindowHint(GLFW_VISIBLE, false);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);

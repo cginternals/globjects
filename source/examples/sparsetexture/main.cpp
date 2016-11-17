@@ -179,8 +179,6 @@ int main(int /*argc*/, char * /*argv*/[])
 
     glfwSetErrorCallback(error);
     glfwDefaultWindowHints();
-
-    glfwSetErrorCallback([](int /*error*/, const char * description) { puts(description); });
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);

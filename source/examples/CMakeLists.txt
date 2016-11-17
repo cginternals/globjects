@@ -61,6 +61,5 @@ add_subdirectory("states")
 add_subdirectory("texture")
 add_subdirectory("tessellation")
 add_subdirectory("transformfeedback")
-add_subdirectory("wikiexample")
 
 add_subdirectory("qtexample")
