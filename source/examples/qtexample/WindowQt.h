@@ -1,21 +1,11 @@
 #pragma once
 
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch"
-#endif
 
 #pragma warning(push)
 #pragma warning(disable: 4127)
 #include <QWindow>
 #include <QScopedPointer>
 #pragma warning(pop)
-
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
 
 
 class QSurfaceFormat;
