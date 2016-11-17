@@ -1,5 +1,9 @@
 
+#include <iostream>
 #include <algorithm>
+#include <array>
+
+#include <glm/vec2.hpp>
 
 #include <cpplocate/cpplocate.h>
 #include <cpplocate/ModuleInfo.h>
@@ -19,127 +23,32 @@
 #include <globjects/Program.h>
 
 #include "ScreenAlignedQuad.h"
+#include "datapath.inl"
+
 
 using namespace gl;
-using namespace glm;
-using namespace globjects;
 
 
-namespace
+namespace 
 {
-
-// taken from iozeug::FilePath::toPath
-std::string normalizePath(const std::string & filepath)
-{
-    auto copy = filepath;
-    std::replace( copy.begin(), copy.end(), '\\', '/');
-    auto i = copy.find_last_of('/');
-    if (i == copy.size()-1)
-    {
-        copy = copy.substr(0, copy.size()-1);
-    }
-    return copy;
-}
-
-}
-
-
-namespace {
-    bool g_toggleFS = false;
-    bool g_isFS = false;
-
     ScreenAlignedQuad * g_quad = nullptr;
-    Buffer * g_buffer = nullptr;
+    globjects::Buffer * g_buffer = nullptr;
+
+    auto g_size = glm::ivec2{};
 }
 
-
-void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-        glfwSetWindowShouldClose(window, true);
-
-    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        File::reloadAll();
-
-    if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
-        g_toggleFS = true;
-}
-
-GLFWwindow * createWindow(bool fs = false)
-{
-    // Set GLFW window hints
-    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
-
-    // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(1024, 768, "", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
-    if (window == nullptr)
-    {
-        critical() << "Context creation failed. Terminate execution.";
-
-        glfwTerminate();
-        exit(1);
-    }
-    glfwMakeContextCurrent(window);
-
-    // Create callback that when user presses ESC, the context should be destroyed and window closed
-    glfwSetKeyCallback(window, key_callback);
-
-    // Initialize globjects (internally initializes glbinding, and registers the current context)
-    globjects::init();
-
-    // Do only on startup
-    if (!g_toggleFS)
-    {
-       // Dump information about context and graphics card
-       info() << std::endl
-           << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-           << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-           << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
-    }
-
-    if (!hasExtension(GLextension::GL_ARB_shader_storage_buffer_object))
-    {
-        critical() << "Shader storage buffer objects not supported.";
-
-        glfwTerminate();
-        exit(1);
-    }
-
-    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-
-    g_isFS = fs;
-    return window;
-}
-
-void destroyWindow(GLFWwindow * window)
-{
-    globjects::detachAllObjects();
-    glfwDestroyWindow(window);
-}
 
 void initialize()
 {
-    cpplocate::ModuleInfo moduleInfo = cpplocate::findModule("globjects");
-
-    // Get data path
-    std::string dataPath = moduleInfo.value("dataPath");
-    dataPath = normalizePath(dataPath);
-    if (dataPath.size() > 0) dataPath = dataPath + "/";
-    else                     dataPath = "data/";
-
-    // Initialize OpenGL objects
-    g_quad = new ScreenAlignedQuad(Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "ssbo/ssbo.frag"));
+    const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
+    g_quad = new ScreenAlignedQuad(globjects::Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "ssbo/ssbo.frag"));
     g_quad->ref();
 
     g_quad->program()->setUniform("maximum",     10);
     g_quad->program()->setUniform("rowCount",    10);
     g_quad->program()->setUniform("columnCount", 10);
 
-    int data[] = {
+    static const auto data = std::array<int, 100> {
         1,2,3,4,5,6,7,8,9,10,
         10,1,2,3,4,5,6,7,8,9,
         9,10,1,2,3,4,5,6,7,8,
@@ -151,9 +60,9 @@ void initialize()
         3,4,5,6,7,8,9,10,1,2,
         2,3,4,5,6,7,8,9,10,1 };
 
-    g_buffer = new Buffer();
+    g_buffer = new globjects::Buffer();
     g_buffer->ref();
-    g_buffer->setData(sizeof(data), data, GL_STATIC_DRAW);
+    g_buffer->setData(sizeof(data), data.data(), GL_STATIC_DRAW);
 
     g_buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 }
@@ -168,37 +77,80 @@ void draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glViewport(0, 0, g_size.x, g_size.y);
     g_quad->draw();
+}
+
+
+void error(int errnum, const char * errmsg)
+{
+    globjects::critical() << errnum << ": " << errmsg << std::endl;
+}
+
+void framebuffer_size_callback(GLFWwindow * /*window*/, int width, int height)
+{
+    g_size = glm::ivec2{ width, height };
+}
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+        glfwSetWindowShouldClose(window, true);
+
+    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
+        globjects::File::reloadAll();
 }
 
 
 int main(int /*argc*/, char * /*argv*/[])
 {
     // Initialize GLFW
-    glfwInit();
+    if (!glfwInit())
+        return 1;
 
-    GLFWwindow * window = createWindow();
+    glfwSetErrorCallback(error);
+    glfwDefaultWindowHints();
+
+    glfwSetErrorCallback([](int /*error*/, const char * description) { puts(description); });
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+
+    // Create a context and, if valid, make it current
+    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Shader Storage Buffer Objects", NULL, NULL);
+    if (window == nullptr)
+    {
+        globjects::critical() << "Context creation failed. Terminate execution.";
+
+        glfwTerminate();
+        return -1;
+    }
+    glfwSetKeyCallback(window, key_callback);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    glfwMakeContextCurrent(window);
+
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+
+    std::cout << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
+
+    globjects::info() << "Press F5 to reload shaders." << std::endl << std::endl;
+
+
     initialize();
+    glfwGetFramebufferSize(window, &g_size[0], &g_size[1]);
 
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
-
-        if (g_toggleFS)
-        {
-            deinitialize();
-            destroyWindow(window);
-            window = createWindow(!g_isFS);
-            initialize();
-
-            g_toggleFS = false;
-        }
-
         draw();
         glfwSwapBuffers(window);
     }
-
     deinitialize();
 
     // Properly shutdown GLFW

@@ -29,8 +29,10 @@ message(STATUS "Example ${target}")
 
 set(sources
     main.cpp
+
     ScreenAlignedQuad.h
     ScreenAlignedQuad.cpp
+    datapath.inl
 )
 
 

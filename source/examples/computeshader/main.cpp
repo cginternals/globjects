@@ -29,9 +29,6 @@
 #include <globjects/Texture.h>
 
 #include "ScreenAlignedQuad.h"
-
-// example commons
-#include "contextinfo.inl"
 #include "datapath.inl"
 
 
@@ -155,7 +152,11 @@ int main()
 
     // Initialize globjects (internally initializes glbinding, and registers the current context)
     globjects::init();
-    common::printContextInfo();
+
+    std::cout << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
 
     globjects::DebugMessage::enable();
 

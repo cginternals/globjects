@@ -1,4 +1,6 @@
 
+#include <iostream>
+
 #include <glm/vec2.hpp>
 
 #include <glbinding/gl/gl.h>
@@ -18,9 +20,6 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 #include <globjects/base/StaticStringSource.h>
-
-// example commons
-#include "contextinfo.inl"
 
 
 using namespace gl;
@@ -70,8 +69,6 @@ void main()
 
 void initialize()
 {
-    glClearColor(0.2f, 0.3f, 0.4f, 1.f);
-
     g_cornerBuffer = new globjects::Buffer();
     g_cornerBuffer->ref();
     g_vertexProgram = new globjects::Program();
@@ -167,10 +164,11 @@ int main(int /*argc*/, char * /*argv*/[])
 
     // Initialize globjects (internally initializes glbinding, and registers the current context)
     globjects::init();
-    common::printContextInfo();
 
-    globjects::info() << "Press F5 to reload shaders." << std::endl << std::endl;
-
+    std::cout << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
 
     initialize();
     glfwGetFramebufferSize(window, &g_size[0], &g_size[1]);

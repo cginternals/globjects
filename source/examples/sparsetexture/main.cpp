@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include <algorithm>
 #include <random>
 
@@ -19,9 +20,6 @@
 #include <globjects/Texture.h>
 
 #include "ScreenAlignedQuad.h"
-
-// example commons
-#include "contextinfo.inl"
 #include "datapath.inl"
 
 
@@ -57,19 +55,19 @@ void initialize()
         exit(1);
     }
 
-    std::vector<int> pageSizesX(numPageSizes);
+    auto pageSizesX = std::vector<int>(numPageSizes);
     glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_X_ARB
         , static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesX.data());
     for (int i = 0; i < numPageSizes; ++i)
         globjects::info("GL_VIRTUAL_PAGE_SIZE_X_ARB[%;] = %;", i, pageSizesX[i]);
 
-    std::vector<int> pageSizesY(numPageSizes);
+    auto pageSizesY = std::vector<int>(numPageSizes);
     glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Y_ARB
         , static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesY.data());
     for (int i = 0; i < numPageSizes; ++i)
         globjects::info("GL_VIRTUAL_PAGE_SIZE_Y_ARB[%;] = %;", i, pageSizesY[i]);
 
-    std::vector<int> pageSizesZ(numPageSizes);
+    auto pageSizesZ = std::vector<int>(numPageSizes);
     glGetInternalformativ(GL_TEXTURE_2D, GL_RGBA8, GL_VIRTUAL_PAGE_SIZE_Z_ARB
         , static_cast<GLsizei>(numPageSizes * sizeof(int)), pageSizesZ.data());
     for (int i = 0; i < numPageSizes; ++i)
@@ -188,7 +186,7 @@ int main(int /*argc*/, char * /*argv*/[])
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(320, 240, "globjects Sparse Textures", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(640, 320, "globjects Sparse Textures", NULL, NULL);
     if (window == nullptr)
     {
         globjects::critical() << "Context creation failed. Terminate execution.";
@@ -203,10 +201,11 @@ int main(int /*argc*/, char * /*argv*/[])
 
     // Initialize globjects (internally initializes glbinding, and registers the current context)
     globjects::init();
-    common::printContextInfo();
 
-    globjects::info() << "Press F5 to reload shaders." << std::endl;
-
+    std::cout << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
 
     initialize();
     glfwGetFramebufferSize(window, &g_size[0], &g_size[1]);

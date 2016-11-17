@@ -30,9 +30,6 @@
 #include <globjects/base/StaticStringSource.h>
 
 #include "WindowQt.h"
-
-// example commons
-#include "contextinfo.inl"
 #include "datapath.inl"
 
 
@@ -54,7 +51,11 @@ public:
     virtual void initializeGL() override
     {
         globjects::init();
-        common::printContextInfo();
+
+        std::cout << std::endl
+            << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+            << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+            << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
 
         globjects::DebugMessage::enable();
 
@@ -64,8 +65,6 @@ public:
 
         debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
 #endif
-
-        glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
         m_cornerBuffer = new globjects::Buffer();
         m_program = new globjects::Program();

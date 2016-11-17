@@ -22,9 +22,6 @@
 #include <globjects/TransformFeedback.h>
 #include <globjects/VertexArray.h>
 
-// example commons
-#include "contextinfo.inl"
-
 
 using namespace gl;
 using namespace globjects;
@@ -53,7 +50,11 @@ int main(int /*argc*/, char * /*argv*/[])
 
     // Initialize globjects (internally initializes glbinding, and registers the current context)
     globjects::init();
-    common::printContextInfo();
+
+    std::cout << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
 
     std::cout << std::endl;
     std::cout << "Test Logging of Standard Types:" << std::endl;

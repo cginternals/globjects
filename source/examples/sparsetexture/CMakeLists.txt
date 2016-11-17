@@ -32,7 +32,6 @@ set(sources
     
     ScreenAlignedQuad.h
     ScreenAlignedQuad.cpp
-    contextinfo.inl
     datapath.inl
 )
 

@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include <algorithm>
 
 #include <cpplocate/cpplocate.h>
@@ -19,9 +20,6 @@
 #include <globjects/base/File.h>
 
 #include "ScreenAlignedQuad.h"
-
-// example commons
-#include "contextinfo.inl"
 #include "datapath.inl"
 
 
@@ -76,6 +74,9 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
         glfwSetWindowShouldClose(window, true);
+
+    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
+        globjects::File::reloadAll();
 }
 
 
@@ -94,7 +95,7 @@ int main(int /*argc*/, char * /*argv*/[])
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(320, 240, "globjects Shader Includes", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(640, 320, "globjects Shader Includes", NULL, NULL);
     if (window == nullptr)
     {
         globjects::critical() << "Context creation failed. Terminate execution.";
@@ -109,7 +110,11 @@ int main(int /*argc*/, char * /*argv*/[])
 
     // Initialize globjects (internally initializes glbinding, and registers the current context)
     globjects::init();
-    common::printContextInfo();
+
+    std::cout << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
 
     globjects::info() << "Press F5 to reload shaders." << std::endl << std::endl;
 
