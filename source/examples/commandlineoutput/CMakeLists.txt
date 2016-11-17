@@ -29,6 +29,7 @@ message(STATUS "Example ${target}")
 
 set(sources
     main.cpp
+    contextinfo.inl
 )
 
 

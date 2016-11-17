@@ -43,6 +43,8 @@ set(sources
     
     WindowQt.cpp
     WindowQt.h
+    contextinfo.inl
+    datapath.inl
 )
 
 

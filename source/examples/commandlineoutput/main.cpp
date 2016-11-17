@@ -23,7 +23,7 @@
 #include <globjects/VertexArray.h>
 
 // example commons
-#include "common/contextInfo.inl"
+#include "contextinfo.inl"
 
 
 using namespace gl;

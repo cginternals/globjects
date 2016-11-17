@@ -20,7 +20,7 @@
 #include <globjects/base/StaticStringSource.h>
 
 // example commons
-#include "common/contextInfo.inl"
+#include "contextinfo.inl"
 
 
 using namespace gl;

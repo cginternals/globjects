@@ -31,8 +31,8 @@
 #include "ScreenAlignedQuad.h"
 
 // example commons
-#include "common/contextinfo.inl"
-#include "common/dataPath.inl"
+#include "contextinfo.inl"
+#include "datapath.inl"
 
 
 using namespace gl;
