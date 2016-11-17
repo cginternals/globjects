@@ -18,28 +18,13 @@
 
 #include "ScreenAlignedQuad.h"
 
+// example commons
+#include "contextinfo.inl"
+#include "datapath.inl"
+
 
 using namespace gl;
 using namespace globjects;
-
-
-namespace
-{
-
-// taken from iozeug::FilePath::toPath
-std::string normalizePath(const std::string & filepath)
-{
-    auto copy = filepath;
-    std::replace( copy.begin(), copy.end(), '\\', '/');
-    auto i = copy.find_last_of('/');
-    if (i == copy.size()-1)
-    {
-        copy = copy.substr(0, copy.size()-1);
-    }
-    return copy;
-}
-
-}
 
 
 namespace
@@ -74,10 +59,10 @@ GLFWwindow * createWindow(bool fs = false)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(1024, 768, "", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Shader Includes Shader", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
     if (window == nullptr)
     {
-        critical() << "Context creation failed. Terminate execution.";
+        globjects::critical() << "Context creation failed. Terminate execution.";
 
         glfwTerminate();
         exit(1);
@@ -98,7 +83,7 @@ GLFWwindow * createWindow(bool fs = false)
            << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
            << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
            << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
-    }   
+    }
 
     glClearColor(0.2f, 0.3f, 0.4f, 1.f);
 
@@ -118,7 +103,7 @@ void initialize()
 
     // Get data path
     std::string dataPath = moduleInfo.value("dataPath");
-    dataPath = normalizePath(dataPath);
+    dataPath = common::normalizePath(dataPath);
     if (dataPath.size() > 0) dataPath = dataPath + "/";
     else                     dataPath = "data/";
 
