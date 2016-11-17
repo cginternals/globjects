@@ -208,7 +208,7 @@ int main(int /*argc*/, char * /*argv*/[])
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(320, 240, "globjects Transform Feedback", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Transform Feedback", NULL, NULL);
     if (window == nullptr)
     {
         globjects::critical() << "Context creation failed. Terminate execution.";
