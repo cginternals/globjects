@@ -103,6 +103,7 @@ void draw()
     g_sphere->release();
 }
 
+
 void error(int errnum, const char * errmsg)
 {
     globjects::critical() << errnum << ": " << errmsg << std::endl;
@@ -134,12 +135,12 @@ int main(int /*argc*/, char * /*argv*/[])
     glfwDefaultWindowHints();
 
     glfwSetErrorCallback([](int /*error*/, const char * description) { puts(description); });
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(320, 240, "globjects Tessellation", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Tessellation", NULL, NULL);
     if (window == nullptr)
     {
         globjects::critical() << "Context creation failed. Terminate execution.";
