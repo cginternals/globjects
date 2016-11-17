@@ -3,24 +3,35 @@
 # External dependencies
 # 
 
-find_package(GLFW)
 find_package(glbinding REQUIRED)
+find_package(Qt5Core    5.1)
+find_package(Qt5Gui     5.1)
+find_package(Qt5Widgets 5.1)
+
+# Enable automoc
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(AUTOMOC_MOC_OPTIONS PROPERTIES FOLDER CMakeAutomocTargets)
+set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
+
+# ENABLE CMP0020: Automatically link Qt executables to qtmain target on Windows.
+cmake_policy(SET CMP0020 NEW)
 
 
 # 
-# Executable name and options
+# Library name and options
 # 
 
 # Target name
-set(target sparse-texture)
+set(target qtexample)
 
 # Exit here if required dependencies are not met
-if (NOT GLFW_FOUND)
-    message("Example ${target} skipped: GLFW not found")
+if (NOT Qt5Core_FOUND)
+    message(STATUS "Example ${target} skipped: Qt5 not found")
     return()
+else()
+    message(STATUS "Example ${target}")
 endif()
-
-message(STATUS "Example ${target}")
 
 
 # 
@@ -29,8 +40,9 @@ message(STATUS "Example ${target}")
 
 set(sources
     main.cpp
-    ScreenAlignedQuad.h
-    ScreenAlignedQuad.cpp
+    
+    WindowQt.cpp
+    WindowQt.h
 )
 
 
@@ -66,8 +78,9 @@ target_include_directories(${target}
     PRIVATE
     ${DEFAULT_INCLUDE_DIRECTORIES}
     ${PROJECT_BINARY_DIR}/source/include
-    SYSTEM
-    ${GLFW_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR} # for UIC generated headers
 )
 
 
@@ -78,8 +91,11 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     ${DEFAULT_LIBRARIES}
-    ${GLFW_LIBRARIES}
     ${META_PROJECT_NAME}::globjects
+    cpplocate::cpplocate
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
 )
 
 
@@ -90,7 +106,6 @@ target_link_libraries(${target}
 target_compile_definitions(${target}
     PRIVATE
     ${DEFAULT_COMPILE_DEFINITIONS}
-    GLFW_INCLUDE_NONE
 )
 
 
@@ -120,6 +135,6 @@ target_link_libraries(${target}
 
 # Executable
 install(TARGETS ${target}
-    RUNTIME DESTINATION ${INSTALL_EXAMPLES} COMPONENT examples_glfw
-    BUNDLE  DESTINATION ${INSTALL_EXAMPLES} COMPONENT examples_glfw
+    RUNTIME DESTINATION ${INSTALL_EXAMPLES} COMPONENT examples_qt
+    BUNDLE  DESTINATION ${INSTALL_EXAMPLES} COMPONENT examples_qt
 )

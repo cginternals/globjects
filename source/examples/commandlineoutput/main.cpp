@@ -41,7 +41,7 @@ int main(int /*argc*/, char * /*argv*/[])
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     // Create a context and, if valid, make it current
-    GLFWwindow * offscreen_context = glfwCreateWindow(640, 480, "globjects Command Line Output", NULL, NULL);
+    GLFWwindow * offscreen_context = glfwCreateWindow(320, 240, "globjects Command Line Output", NULL, NULL);
     if (offscreen_context == nullptr)
     {
         critical() << "Context creation failed. Terminate execution.";
