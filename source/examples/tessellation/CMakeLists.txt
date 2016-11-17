@@ -29,8 +29,10 @@ message(STATUS "Example ${target}")
 
 set(sources
     main.cpp
+
     Icosahedron.h
     Icosahedron.cpp
+    datapath.inl
 )
 
 

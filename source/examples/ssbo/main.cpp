@@ -141,8 +141,8 @@ int main(int /*argc*/, char * /*argv*/[])
     globjects::info() << "Press F5 to reload shaders." << std::endl << std::endl;
 
 
-    initialize();
     glfwGetFramebufferSize(window, &g_size[0], &g_size[1]);
+    initialize();
 
     // Main loop
     while (!glfwWindowShouldClose(window))

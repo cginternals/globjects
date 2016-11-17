@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include <chrono>
 #include <algorithm>
 
@@ -23,145 +24,54 @@
 #include <globjects/Shader.h>
 
 #include "Icosahedron.h"
+#include "datapath.inl"
 
 
 using namespace gl;
-using namespace glm;
-using namespace globjects;
 
 
-namespace
+namespace 
 {
-
-// taken from iozeug::FilePath::toPath
-std::string normalizePath(const std::string & filepath)
-{
-    auto copy = filepath;
-    std::replace( copy.begin(), copy.end(), '\\', '/');
-    auto i = copy.find_last_of('/');
-    if (i == copy.size()-1)
-    {
-        copy = copy.substr(0, copy.size()-1);
-    }
-    return copy;
-}
-
-}
-
-
-namespace {
-    bool g_toggleFS = false;
-    bool g_isFS = false;
-    
-    Program * g_sphere = nullptr;
+    globjects::Program * g_sphere = nullptr;
     Icosahedron * g_icosahedron = nullptr;
     glm::mat4 g_viewProjection;
 
     const std::chrono::high_resolution_clock::time_point g_starttime = std::chrono::high_resolution_clock::now();
+
+    auto g_size = glm::ivec2{};
 }
 
-
-void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
+void resize()
 {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-        glfwSetWindowShouldClose(window, true);
+    static const auto fovy  = glm::radians(40.f);
+    static const auto zNear  = 1.f;
+    static const auto zFar   = 16.f;
+    static const auto eye    = glm::vec3{ 0.f, 1.f, 4.f };
+    static const auto center = glm::vec3{ 0.0, 0.0, 0.0 };
+    static const auto up     = glm::vec3{ 0.0, 1.0, 0.0 };
 
-    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        File::reloadAll();
+    const auto aspect = static_cast<float>(g_size.x) / glm::max(static_cast<float>(g_size.y), 1.f);
 
-    if (key == GLFW_KEY_F11 && action == GLFW_RELEASE)
-        g_toggleFS = true;
-}
-
-GLFWwindow * createWindow(bool fs = false)
-{
-    // Set GLFW window hints
-    glfwSetErrorCallback( [] (int /*error*/, const char * description) { puts(description); } );
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
-
-    // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(1024, 768, "", fs ? glfwGetPrimaryMonitor() : NULL, NULL);
-    if (window == nullptr)
-    {
-        critical() << "Context creation failed. Terminate execution.";
-
-        glfwTerminate();
-        exit(1);
-    }
-    glfwMakeContextCurrent(window);
-
-    // Create callback that when user presses ESC, the context should be destroyed and window closed
-    glfwSetKeyCallback(window, key_callback);
-
-    // Initialize globjects (internally initializes glbinding, and registers the current context)
-    globjects::init();
-
-    // Do only on startup
-    if (!g_toggleFS)
-    {
-       // Dump information about context and graphics card
-       info() << std::endl
-           << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-           << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-           << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl;
-    }
-
-    if (!hasExtension(GLextension::GL_ARB_tessellation_shader))
-    {
-        critical() << "Tesselation not supported.";
-
-        glfwTerminate();
-        exit(1);
-    }
-
-    glClearColor(1.f, 1.f, 1.f, 0.f);
-
-    g_isFS = fs;
-    return window;
-}
-
-void destroyWindow(GLFWwindow * window)
-{
-    globjects::detachAllObjects();
-    glfwDestroyWindow(window);
+    g_viewProjection = glm::perspective(fovy, aspect, zNear, zFar) * glm::lookAt(eye, center, up);
 }
 
 void initialize()
 {
-    cpplocate::ModuleInfo moduleInfo = cpplocate::findModule("globjects");
-
-    // Get data path
-    std::string dataPath = moduleInfo.value("dataPath");
-    dataPath = normalizePath(dataPath);
-    if (dataPath.size() > 0) dataPath = dataPath + "/";
-    else                     dataPath = "data/";
-
-    // Initialize OpenGL objects
-    g_sphere = new Program();
+    g_sphere = new globjects::Program();
     g_sphere->ref();
+    const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
     g_sphere->attach(
-        Shader::fromFile(GL_VERTEX_SHADER,          dataPath + "tessellation/sphere.vert")
-    ,   Shader::fromFile(GL_TESS_CONTROL_SHADER,    dataPath + "tessellation/sphere.tcs")
-    ,   Shader::fromFile(GL_TESS_EVALUATION_SHADER, dataPath + "tessellation/sphere.tes")
-    ,   Shader::fromFile(GL_GEOMETRY_SHADER,        dataPath + "tessellation/sphere.geom")
-    ,   Shader::fromFile(GL_FRAGMENT_SHADER,        dataPath + "tessellation/sphere.frag")
-    ,   Shader::fromFile(GL_FRAGMENT_SHADER,        dataPath + "tessellation/phong.frag"));
+        globjects::Shader::fromFile(GL_VERTEX_SHADER,          dataPath + "tessellation/sphere.vert")
+    ,   globjects::Shader::fromFile(GL_TESS_CONTROL_SHADER,    dataPath + "tessellation/sphere.tcs")
+    ,   globjects::Shader::fromFile(GL_TESS_EVALUATION_SHADER, dataPath + "tessellation/sphere.tes")
+    ,   globjects::Shader::fromFile(GL_GEOMETRY_SHADER,        dataPath + "tessellation/sphere.geom")
+    ,   globjects::Shader::fromFile(GL_FRAGMENT_SHADER,        dataPath + "tessellation/sphere.frag")
+    ,   globjects::Shader::fromFile(GL_FRAGMENT_SHADER,        dataPath + "tessellation/phong.frag"));
 
-
-    float fovy = radians(40.f);
-    float aspect = static_cast<float>(1024) / max(static_cast<float>(768), 1.f);
-    float zNear = 1.f;
-    float zFar = 16.f;
-    vec3 eye(0.f, 1.f, 4.f);
-    vec3 center(0.0, 0.0, 0.0);
-    vec3 up(0.0, 1.0, 0.0);
-    
     g_icosahedron = new Icosahedron();
     g_icosahedron->ref();
-    g_viewProjection = perspective(fovy, aspect, zNear, zFar) * lookAt(eye, center, up);
+
+    resize();
 }
 
 void deinitialize()
@@ -175,15 +85,17 @@ void draw()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     const auto t_elapsed = std::chrono::high_resolution_clock::now() - g_starttime;  
-    float t = static_cast<float>(t_elapsed.count()) * 4e-10f;
-    mat4 R = rotate(t * 10.f, vec3(sin(t * 0.321f), cos(t * 0.234f), sin(t * 0.123f)));
+    const auto t = static_cast<float>(t_elapsed.count()) * 4e-10f;
+    glm::mat4 R = glm::rotate(t * 1.f, glm::vec3(sin(t * 0.321f), cos(t * 0.234f), sin(t * 0.123f)));
 
     g_sphere->setUniform("transform", g_viewProjection);
     g_sphere->setUniform("rotation", R);
 
-    int level = static_cast<int>((sin(t) * 0.5f + 0.5f) * 16) + 1;
+    const auto level = static_cast<int>((sin(t) * 0.5f + 0.5f) * 16) + 1;
     g_sphere->setUniform("level", level);
     g_sphere->use();
+
+    glViewport(0, 0, g_size.x, g_size.y);
 
     glPatchParameteri(GL_PATCH_VERTICES, 3);
     g_icosahedron->draw(GL_PATCHES);
@@ -191,34 +103,75 @@ void draw()
     g_sphere->release();
 }
 
+void error(int errnum, const char * errmsg)
+{
+    globjects::critical() << errnum << ": " << errmsg << std::endl;
+}
+
+void framebuffer_size_callback(GLFWwindow * /*window*/, int width, int height)
+{
+    g_size = glm::ivec2{ width, height };
+    resize();
+}
+
+void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, int /*modes*/)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+        glfwSetWindowShouldClose(window, true);
+
+    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
+        globjects::File::reloadAll();
+}
+
 
 int main(int /*argc*/, char * /*argv*/[])
 {
     // Initialize GLFW
-    glfwInit();
+    if (!glfwInit())
+        return 1;
 
-    GLFWwindow * window = createWindow();
+    glfwSetErrorCallback(error);
+    glfwDefaultWindowHints();
+
+    glfwSetErrorCallback([](int /*error*/, const char * description) { puts(description); });
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+
+    // Create a context and, if valid, make it current
+    GLFWwindow * window = glfwCreateWindow(320, 240, "globjects Tessellation", NULL, NULL);
+    if (window == nullptr)
+    {
+        globjects::critical() << "Context creation failed. Terminate execution.";
+
+        glfwTerminate();
+        return -1;
+    }
+    glfwSetKeyCallback(window, key_callback);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    glfwMakeContextCurrent(window);
+
+    // Initialize globjects (internally initializes glbinding, and registers the current context)
+    globjects::init();
+
+    std::cout << std::endl
+        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
+
+    globjects::info() << "Press F5 to reload shaders." << std::endl << std::endl;
+
+    glfwGetFramebufferSize(window, &g_size[0], &g_size[1]);
     initialize();
 
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
-
-        if (g_toggleFS)
-        {
-            deinitialize();
-            destroyWindow(window);
-            window = createWindow(!g_isFS);
-            initialize();
-
-            g_toggleFS = false;
-        }
-
         draw();
         glfwSwapBuffers(window);
     }
-
     deinitialize();
 
     // Properly shutdown GLFW

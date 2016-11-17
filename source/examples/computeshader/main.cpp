@@ -172,8 +172,8 @@ int main()
     globjects::info() << "Press F5 to reload compute shader." << std::endl << std::endl;
 
 
-    initialize();
     glfwGetFramebufferSize(window, &g_size[0], &g_size[1]);
+    initialize();
 
     // Main loop
     while (!glfwWindowShouldClose(window))

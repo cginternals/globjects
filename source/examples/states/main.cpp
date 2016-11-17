@@ -28,7 +28,6 @@
 
 
 using namespace gl;
-using namespace glm;
 
 
 namespace 
@@ -86,20 +85,17 @@ void initialize()
         globjects::Shader::fromFile(GL_VERTEX_SHADER, dataPath + "states/standard.vert")
       , globjects::Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "states/standard.frag"));
     
-    g_buffer->setData(std::vector<vec2>({
-        vec2(-0.8f, 0.8f), vec2(-0.4f, 0.8f), vec2( 0.0f, 0.8f), vec2( 0.4f, 0.8f), vec2( 0.8f, 0.8f)
-      , vec2(-0.8f, 0.6f), vec2(-0.4f, 0.6f), vec2( 0.0f, 0.6f), vec2( 0.4f, 0.6f), vec2( 0.8f, 0.6f)
-      , vec2(-0.8f, 0.4f), vec2(-0.4f, 0.4f), vec2( 0.0f, 0.4f), vec2( 0.4f, 0.4f), vec2( 0.8f, 0.4f)
-      , vec2(-0.8f, 0.2f), vec2(-0.4f, 0.2f), vec2( 0.0f, 0.2f), vec2( 0.4f, 0.2f), vec2( 0.8f, 0.2f)
-      , vec2(-0.8f, 0.0f), vec2(-0.4f, 0.0f), vec2( 0.0f, 0.0f), vec2( 0.4f, 0.0f), vec2( 0.8f, 0.0f)
-      , vec2(-0.8f,-0.2f), vec2(-0.4f,-0.2f), vec2( 0.0f,-0.2f), vec2( 0.4f,-0.2f), vec2( 0.8f,-0.2f)
-      , vec2(-0.8f,-0.4f), vec2(-0.4f,-0.4f), vec2( 0.0f,-0.4f), vec2( 0.4f,-0.4f), vec2( 0.8f,-0.4f)
-      , vec2(-0.8f,-0.6f), vec2(-0.4f,-0.6f), vec2( 0.0f,-0.6f), vec2( 0.4f,-0.6f), vec2( 0.8f,-0.6f)
-      , vec2(-0.8f,-0.8f), vec2(-0.4f,-0.8f), vec2( 0.0f,-0.8f), vec2( 0.4f,-0.8f), vec2( 0.8f,-0.8f) })
-      , GL_STATIC_DRAW );
+    static auto data = std::vector<glm::vec2>(); 
+    if (data.empty())
+    {
+        for (auto y = 0.8f; y > -1.f; y -= 0.2f)
+            for (auto x = -0.8f; x < 1.f; x += 0.4f)
+                data.push_back(glm::vec2(x, y));
+    }
+    g_buffer->setData(data, GL_STATIC_DRAW );
 
     g_vao->binding(0)->setAttribute(0);
-    g_vao->binding(0)->setBuffer(g_buffer, 0, sizeof(vec2));
+    g_vao->binding(0)->setBuffer(g_buffer, 0, sizeof(glm::vec2));
     g_vao->binding(0)->setFormat(2, GL_FLOAT);
     g_vao->enable(0);
 }
@@ -203,7 +199,7 @@ int main(int /*argc*/, char * /*argv*/[])
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(320, 240, "globjects States", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects States", NULL, NULL);
     if (window == nullptr)
     {
         globjects::critical() << "Context creation failed. Terminate execution.";
@@ -227,8 +223,8 @@ int main(int /*argc*/, char * /*argv*/[])
     globjects::info() << "Press F5 to reload shaders." << std::endl << std::endl;
 
 
-    initialize();
     glfwGetFramebufferSize(window, &g_size[0], &g_size[1]);
+    initialize();
 
     // Main loop
     while (!glfwWindowShouldClose(window))

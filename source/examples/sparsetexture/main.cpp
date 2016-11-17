@@ -207,8 +207,8 @@ int main(int /*argc*/, char * /*argv*/[])
         << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
         << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
 
-    initialize();
     glfwGetFramebufferSize(window, &g_size[0], &g_size[1]);
+    initialize();
 
     // Main loop
     while (!glfwWindowShouldClose(window))
