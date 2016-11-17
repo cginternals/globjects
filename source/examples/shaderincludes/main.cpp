@@ -56,6 +56,8 @@ void deinitialize()
 void draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glViewport(0, 0, g_size.x, g_size.y);
     g_quad->draw();
 }
 

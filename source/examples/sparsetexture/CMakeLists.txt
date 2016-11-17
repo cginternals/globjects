@@ -29,8 +29,11 @@ message(STATUS "Example ${target}")
 
 set(sources
     main.cpp
+    
     ScreenAlignedQuad.h
     ScreenAlignedQuad.cpp
+    contextinfo.inl
+    datapath.inl
 )
 
 
@@ -80,6 +83,7 @@ target_link_libraries(${target}
     ${DEFAULT_LIBRARIES}
     ${GLFW_LIBRARIES}
     ${META_PROJECT_NAME}::globjects
+    cpplocate::cpplocate
 )
 
 
