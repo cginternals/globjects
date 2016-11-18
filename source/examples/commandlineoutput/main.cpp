@@ -35,8 +35,10 @@ void error(int errnum, const char * errmsg)
 
 int main(int /*argc*/, char * /*argv*/[])
 {
-    // Initialize GLFW with error callback and window hints
-    glfwInit();
+    // Initialize GLFW
+    if (!glfwInit())
+        return 1;
+
     glfwSetErrorCallback(error);
     glfwWindowHint(GLFW_VISIBLE, false);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
