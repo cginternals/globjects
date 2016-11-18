@@ -47,6 +47,29 @@ install_module_info(${META_PROJECT_NAME}
 )
 
 
+if(WIN32)
+
+    find_file(GLBINDING_BINARY glbinding.dll
+
+        HINTS
+        ${GLBINDING_INCLUDE_DIR}/..
+
+        PATHS
+        $ENV{GLBINDING_DIR}
+        /lib/x64
+        /lib/cocoa
+
+        PATH_SUFFIXES
+        /lib
+        /bin
+
+        DOC "The glbinding binary")
+
+endif()
+
+install(FILES ${GLBINDING_BINARY} DESTINATION ${INSTALL_EXAMPLES} COMPONENT runtime)
+message(STATUS ${GLBINDING_BINARY})
+
 #
 # Examples
 #
