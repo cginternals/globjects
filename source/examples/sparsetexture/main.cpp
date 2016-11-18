@@ -184,7 +184,7 @@ int main(int /*argc*/, char * /*argv*/[])
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(640, 320, "globjects Sparse Textures", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Sparse Textures", NULL, NULL);
     if (window == nullptr)
     {
         globjects::critical() << "Context creation failed. Terminate execution.";
