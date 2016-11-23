@@ -119,7 +119,7 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
 int main()
 {
 #ifdef SYSTEM_DARWIN
-    critical() << "macOS does currently not support compute shader (OpenGL 4.3. required)."
+    globjects::critical() << "macOS does currently not support compute shader (OpenGL 4.3. required).";
     return 0;
 #endif
 
