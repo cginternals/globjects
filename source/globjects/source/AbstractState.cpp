@@ -120,6 +120,20 @@ void AbstractState::pixelStore(const GLenum pname, const GLboolean param)
     add(setting);
 }
 
+void AbstractState::pixelStore(gl::GLenum pname, const gl::GLint param)
+{
+    auto setting = new StateSetting(static_cast<void(*)(GLenum,GLint)>(glPixelStorei), pname, param);
+    setting->type().specializeType(pname);
+    add(setting);
+}
+
+void AbstractState::pixelStore(gl::GLenum pname, const gl::GLfloat param)
+{
+    auto setting = new StateSetting(glPixelStoref, pname, param);
+    setting->type().specializeType(pname);
+    add(setting);
+}
+
 void AbstractState::pointParameter(const GLenum pname, const GLenum param)
 {
     auto setting = new StateSetting(static_cast<void(*)(GLenum,GLenum)>(glPointParameteri), pname, param);
