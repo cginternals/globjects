@@ -5,7 +5,7 @@
 See what's new in [globjects-1.0.0](https://github.com/cginternals/globjects/releases/tag/v1.0.0).
 
 *globjects* provides object-oriented interfaces to the OpenGL API (3.0 and higher).
-It reduces the amount of OpenGL code required for rendering and facilitates coherent OpenGL use by means of an additional abstraction layer to [glbinding](https://github.com/cginternals/glbinding). Common rendering tasks and processes are automated and missing features of specific OpenGL drivers are partially simulated or even emulated at run-time.
+It reduces the amount of OpenGL code required for rendering and facilitates coherent OpenGL use by means of an additional abstraction layer to [glbinding](https://github.com/cginternals/glbinding) and [GLM](https://github.com/g-truc/glm). Common rendering tasks and processes are automated and missing features of specific OpenGL drivers are partially simulated or even emulated at run-time.
 
 ![what-is-globjects](https://raw.githubusercontent.com/cginternals/globjects/master/docs/what-is-globjects.png)
 
@@ -168,6 +168,7 @@ The only mandatory run-time dependencies of globjects are the STL of the used co
 * [CMake](https://cmake.org/) 3.0 or higher for building globjects from source (mandatory for any build from source)
 * [git](https://git-scm.com/) for version control and script supporting tasks
 * [glbinding](https://github.com/cginternals/glbinding) as OpenGL API binding
+* [GLM](https://github.com/g-truc/glm) for OpenGL math and data structures (0.9.5 or above)
 * [GLFW](http://www.glfw.org/) 3.0 or higher for examples
 * [cpplocate](https://github.com/cginternals/cpplocate) for the examples
 * [Qt5](http://www.qt.io/developers/) 5.0 or higher for the qt-based example
