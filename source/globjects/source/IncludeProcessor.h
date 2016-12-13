@@ -26,7 +26,7 @@ protected:
     CompositeStringSource* process(const AbstractStringSource* source);
     CompositeStringSource* processComposite(const AbstractStringSource* source);
 
-    static std::string expandPath(const std::string& include, const std::string includePath);
+    static std::string expandPath(const std::string& include, const std::string & includePath);
 
     void parseInclude(std::string & trimmedLine, CompositeStringSource* compositeSource, std::stringstream & destinationstream);
     void processInclude(std::string & include, CompositeStringSource * compositeSource, std::stringstream & destinationstream);

@@ -239,7 +239,7 @@ void IncludeProcessor::processInclude(std::string & include, CompositeStringSour
     destinationstream.str("");
 }
 
-std::string IncludeProcessor::expandPath(const std::string& include, const std::string includePath)
+std::string IncludeProcessor::expandPath(const std::string& include, const std::string & includePath)
 {
     return endsWith(includePath, '/') ? includePath + include : includePath + "/" + include;
 }
