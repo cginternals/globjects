@@ -63,18 +63,24 @@ Program::Program(ProgramBinary * binary)
 
 Program::~Program()
 {
-    for (std::pair<LocationIdentity, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
-        uniformPair.second->deregisterProgram(this);
-
-    if (0 == id())
+    for (const auto & uniformPair : m_uniforms)
     {
-        for (auto & shader : m_shaders)
+        uniformPair.second->deregisterProgram(this);
+    }
+
+    if (id() == 0)
+    {
+        for (const auto & shader : m_shaders)
+        {
             shader->deregisterListener(this);
+        }
     }
     else
     {
-        for (ref_ptr<Shader> shader : std::set<ref_ptr<Shader>>(m_shaders))
+        for (const auto & shader : std::set<ref_ptr<Shader>>(m_shaders))
+        {
             detach(shader);
+        }
     }
 }
 
@@ -237,21 +243,27 @@ GLint Program::getUniformLocation(const std::string& name) const
 
 std::vector<GLint> Program::getAttributeLocations(const std::vector<std::string> & names) const
 {
-    std::vector<GLint> locations(names.size());
-    for (unsigned i = 0; i<names.size(); ++i)
+    std::vector<GLint> locations;
+    locations.reserve(names.size());
+
+    for (const auto & name : names)
     {
-        locations[i] = getAttributeLocation(names[i]);
+        locations.push_back(getAttributeLocation(name));
     }
+
     return locations;
 }
 
 std::vector<GLint> Program::getUniformLocations(const std::vector<std::string> & names) const
 {
-    std::vector<GLint> locations(names.size());
-    for (unsigned i = 0; i<names.size(); ++i)
+    std::vector<GLint> locations;
+    locations.reserve(names.size());
+
+    for (const auto & name : names)
     {
-        locations[i] = getUniformLocation(names[i]);
+        locations.push_back(getUniformLocation(name));
     }
+
     return locations;
 }
 
@@ -408,10 +420,16 @@ UniformBlock * Program::getUniformBlockByIdentity(const LocationIdentity & ident
 {
     checkDirty();
 
-    if (m_uniformBlocks.find(identity) == m_uniformBlocks.end())
-        m_uniformBlocks[identity] = UniformBlock(this, identity);
+    const auto it = m_uniformBlocks.find(identity);
 
-    return &m_uniformBlocks[identity];
+    if (it == m_uniformBlocks.end())
+    {
+        auto insertedIt = m_uniformBlocks.emplace(identity, UniformBlock(this, identity));
+
+        return &insertedIt.first->second;
+    }
+
+    return &it->second;
 }
 
 void Program::addUniform(AbstractUniform * uniform)
@@ -438,7 +456,7 @@ void Program::addUniform(AbstractUniform * uniform)
 void Program::updateUniforms() const
 {
 	// Note: uniform update will check if program is linked
-    for (std::pair<LocationIdentity, ref_ptr<AbstractUniform>> uniformPair : m_uniforms)
+    for (const auto & uniformPair : m_uniforms)
     {
         uniformPair.second->update(this, true);
     }
@@ -446,7 +464,7 @@ void Program::updateUniforms() const
 
 void Program::updateUniformBlockBindings() const
 {
-    for (std::pair<LocationIdentity, UniformBlock> pair : m_uniformBlocks)
+    for (const auto & pair : m_uniformBlocks)
         pair.second.updateBinding();
 }
 

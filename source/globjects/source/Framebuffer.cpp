@@ -378,6 +378,7 @@ FramebufferAttachment * Framebuffer::getAttachment(GLenum attachment)
 std::vector<FramebufferAttachment*> Framebuffer::attachments()
 {
 	std::vector<FramebufferAttachment*> attachments;
+    attachments.reserve(m_attachments.size());
 
     for (std::pair<GLenum, ref_ptr<FramebufferAttachment>> pair: m_attachments)
 	{

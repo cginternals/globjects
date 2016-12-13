@@ -167,10 +167,12 @@ void State::disable(const GLenum capability)
 
 bool State::isEnabled(const GLenum capability) const
 {
-    if (m_capabilities.find(capability) == m_capabilities.end())
+    const auto it = m_capabilities.find(capability);
+
+    if (it == m_capabilities.end())
         return false;
 
-    return m_capabilities.at(capability)->isEnabled();
+    return it->second->isEnabled();
 }
 
 void State::enable(const GLenum capability, const int index)
@@ -191,10 +193,12 @@ void State::disable(const GLenum capability, const int index)
 
 bool State::isEnabled(const GLenum capability, const int index) const
 {
-    if (m_capabilities.find(capability) == m_capabilities.end())
+    const auto it = m_capabilities.find(capability);
+
+    if (it == m_capabilities.end())
         return false;
 
-    return m_capabilities.at(capability)->isEnabled(index);
+    return it->second->isEnabled(index);
 }
 
 void State::setMode(const Mode mode)
@@ -221,29 +225,38 @@ void State::apply()
 
 void State::addCapability(Capability * capability)
 {
-    if (m_capabilities.find(capability->capability()) != m_capabilities.end())
+    const auto it = m_capabilities.find(capability->capability());
+    if (it != m_capabilities.end())
     {
-        delete m_capabilities[capability->capability()];
+        delete it->second;
+
+        it->second = capability;
+
+        return;
     }
 
-    m_capabilities[capability->capability()] = capability;
+    m_capabilities.emplace(capability->capability(), capability);
 }
 
 Capability* State::getCapability(GLenum capability)
 {
-    if (m_capabilities.find(capability) == m_capabilities.end())
+    const auto it = m_capabilities.find(capability);
+    if (it == m_capabilities.end())
     {
-        m_capabilities[capability] = new Capability(capability);
+        const auto insertedIt = m_capabilities.emplace(capability, new Capability(capability));
+
+        return insertedIt.first->second;
     }
 
-    return m_capabilities[capability];
+    return it->second;
 }
 
 std::vector<Capability*> State::capabilities() const
 {
     std::vector<Capability*> caps;
+    caps.reserve(m_capabilities.size());
 
-    for (const auto& capability : m_capabilities)
+    for (const auto & capability : m_capabilities)
     {
         caps.push_back(capability.second);
     }
@@ -253,18 +266,24 @@ std::vector<Capability*> State::capabilities() const
 
 Capability* State::capability(const GLenum capability)
 {
-    auto it = m_capabilities.find(capability);
+    const auto it = m_capabilities.find(capability);
+
     if (it == m_capabilities.end())
+    {
         return nullptr;
+    }
 
     return it->second;
 }
 
 const Capability* State::capability(const GLenum capability) const
 {
-    auto it = m_capabilities.find(capability);
+    const auto it = m_capabilities.find(capability);
+
     if (it == m_capabilities.end())
+    {
         return nullptr;
+    }
 
     return it->second;
 }
@@ -272,8 +291,9 @@ const Capability* State::capability(const GLenum capability) const
 std::vector<StateSetting*> State::settings()
 {
     std::vector<StateSetting*> settings;
+    settings.reserve(m_settings.size());
 
-    for (const auto& setting : m_settings)
+    for (const auto & setting : m_settings)
     {
         settings.push_back(setting.second);
     }
@@ -284,8 +304,9 @@ std::vector<StateSetting*> State::settings()
 std::vector<const StateSetting*> State::settings() const
 {
     std::vector<const StateSetting*> settings;
+    settings.reserve(m_settings.size());
 
-    for (const auto& setting : m_settings)
+    for (const auto & setting : m_settings)
     {
         settings.push_back(setting.second);
     }
@@ -295,34 +316,47 @@ std::vector<const StateSetting*> State::settings() const
 
 StateSetting * State::setting(const StateSettingType & type)
 {
-    auto it = m_settings.find(type);
+    const auto it = m_settings.find(type);
+
     if (it == m_settings.end())
+    {
         return nullptr;
+    }
 
     return it->second;
 }
 
 const StateSetting * State::setting(const StateSettingType & type) const
 {
-    auto it = m_settings.find(type);
+    const auto it = m_settings.find(type);
+
     if (it == m_settings.end())
+    {
         return nullptr;
+    }
 
     return it->second;
 }
 
 void State::add(StateSetting * setting)
 {
-    auto type = setting->type();
-    if (m_settings.find(type) != m_settings.end())
+    const auto type = setting->type();
+    const auto it = m_settings.find(type);
+
+    if (it != m_settings.end())
     {
-        delete m_settings[type];
-        m_settings.erase(type);
+        delete it->second;
+        it->second = setting;
     }
-    m_settings[type] = setting;
+    else
+    {
+        m_settings.emplace(type, setting);
+    }
 
     if (m_mode == ImmediateMode)
+    {
         setting->apply();
+    }
 }
 
 

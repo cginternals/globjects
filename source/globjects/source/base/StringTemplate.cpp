@@ -86,7 +86,7 @@ std::string StringTemplate::modifiedSource() const
 {
     std::string source = m_internal->string();
 
-    for (const std::pair<std::string, std::string>& pair: m_replacements)
+    for (const auto & pair: m_replacements)
         replaceAll(source, pair.first, pair.second);
 
     return source;

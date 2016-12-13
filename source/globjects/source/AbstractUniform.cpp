@@ -89,9 +89,11 @@ GLint AbstractUniform::locationFor(const Program *program) const
     if (m_identity.isLocation())
         return m_identity.location();
 
-    if (m_locations.count(program))
+    auto it = m_locations.find(program);
+
+    if (it != m_locations.end())
     {
-        return m_locations.at(program);
+        return it->second;
     }
 
     gl::GLint location = program->getUniformLocation(m_identity.name());

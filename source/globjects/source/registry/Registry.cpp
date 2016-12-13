@@ -119,7 +119,7 @@ void Registry::setCurrentRegistry(const glbinding::ContextHandle contextId)
 {
     std::lock_guard<std::recursive_mutex> lock(g_mutex);
 
-    auto it = s_registries.find(contextId);
+    const auto it = s_registries.find(contextId);
 
     if (it != s_registries.end())
     {

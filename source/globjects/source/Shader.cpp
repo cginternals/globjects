@@ -116,7 +116,7 @@ void Shader::setSource(AbstractStringSource * source)
     {
         StringTemplate * sourceTemplate = new StringTemplate(source);
 
-        for (const std::pair<std::string, std::string> & pair : s_globalReplacements)
+        for (const auto & pair : s_globalReplacements)
             sourceTemplate->replace(pair.first, pair.second);
 
         source = sourceTemplate;

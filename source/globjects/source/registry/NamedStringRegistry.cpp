@@ -33,7 +33,7 @@ bool NamedStringRegistry::hasNamedString(const std::string & name)
 
 NamedString * NamedStringRegistry::namedString(const std::string & name)
 {
-    auto it = m_namedStrings.find(name);
+    const auto it = m_namedStrings.find(name);
 
     return it == m_namedStrings.end() ? nullptr : it->second;
 }
