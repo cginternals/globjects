@@ -35,8 +35,8 @@ void StateSettingType::specializeType(const GLenum subtype)
     m_subtypes.insert(subtype);
 }
 
-StateSetting::StateSetting(AbstractFunctionCall * functionCall)
-: m_functionCall(functionCall)
+StateSetting::StateSetting(std::unique_ptr<AbstractFunctionCall> && functionCall)
+: m_functionCall(std::move(functionCall))
 , m_type(m_functionCall->identifier())
 {
 }

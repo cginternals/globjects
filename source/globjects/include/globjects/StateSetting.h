@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <set>
+#include <memory>
 
 #include <glbinding/gl/types.h>
 
@@ -35,8 +36,6 @@ protected:
 class GLOBJECTS_API StateSetting
 {
 public:
-    StateSetting(AbstractFunctionCall * functionCall);
-
     template <typename... Arguments>
     StateSetting(void (*function)(Arguments...), Arguments... arguments);
 
@@ -48,8 +47,11 @@ public:
     const StateSettingType & type() const;
 
 protected:
-    AbstractFunctionCall * m_functionCall;
+    std::unique_ptr<AbstractFunctionCall> m_functionCall;
     StateSettingType m_type;
+
+protected:
+    StateSetting(std::unique_ptr<AbstractFunctionCall> && functionCall);
 };
 
 } // namespace globjects
