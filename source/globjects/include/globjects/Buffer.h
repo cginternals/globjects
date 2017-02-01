@@ -93,6 +93,11 @@ public:
         \see https://www.opengl.org/sdk/docs/man4/xhtml/glBufferData.xml
     */
     void setData(gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLenum usage);
+
+    /** \brief Convenience method to simplify passing of data in form of a POD struct.
+    */
+    template <typename T>
+    void setData(const T & data, gl::GLenum usage);
     
     /** \brief Convenience method to simplify passing of data in form of an std::vector.
     */
@@ -103,6 +108,7 @@ public:
     */
     template <typename T, std::size_t Count>
     void setData(const std::array<T, Count> & data, gl::GLenum usage);
+
     /** \brief Wraps the OpenGL function glBufferSubData.
         Writes data only to a defined area of the memory.
         \param size size of memory in bytes
@@ -111,6 +117,11 @@ public:
         \see http://www.opengl.org/sdk/docs/man/xhtml/glBufferSubData.xml
     */
     void setSubData(gl::GLintptr offset, gl::GLsizeiptr size, const gl::GLvoid* data = nullptr);
+
+    /** \brief Convenience method to simplify passing of data in form of a POD struct.
+    */
+    template <typename T>
+    void setSubData(const T & data, gl::GLintptr offset = 0);
     
     /** \brief Convenience method to simplify passing of data in form of an std::vector.
     */
@@ -129,6 +140,11 @@ public:
         \see www.opengl.org/sdk/docs/man/xhtml/glBufferStorage.xml
     */
     void setStorage(gl::GLsizeiptr size, const gl::GLvoid * data, gl::BufferStorageMask flags);
+
+    /** \brief Convenience method to simplify passing of data in form of a POD struct.
+    */
+    template <typename T>
+    void setStorage(const T & data, gl::BufferStorageMask flags);
     
     /** \brief Convenience method to simplify passing of data in form of an std::vector.
     */
@@ -238,15 +254,24 @@ public:
     const void * getPointer(gl::GLenum pname) const;
     void * getPointer(gl::GLenum pname);
 
+    /** \brief Wraps the OpenGL function glGetBufferSubData.
+        Retrieves the contents of the buffers data store.
+        \param offset offset from the beginning of the buffer in bytes
+        \param size size of memory in bytes
+        \param data memory location to store the data
+        \see http://www.opengl.org/sdk/docs/man/xhtml/glGetBufferSubData.xml
+    */
     void getSubData(gl::GLintptr offset, gl::GLsizeiptr size, void * data) const;
 
+    /** \brief Convenience method to simplify getting of data in form of an std::vector.
+    */
     template <typename T>
-    const std::vector<T> getSubData(gl::GLsizeiptr size, gl::GLintptr offset = 0) const;
+    std::vector<T> getSubData(gl::GLsizeiptr count, gl::GLintptr offset = 0) const;
     
-    /** \brief Convenience method to simplify passing of data in form of an std::array.
+    /** \brief Convenience method to simplify getting of data in form of an std::array.
     */
     template <typename T, std::size_t Count>
-    const std::array<T, Count> getSubData(gl::GLintptr offset = 0) const;
+    std::array<T, Count> getSubData(gl::GLintptr offset = 0) const;
 
     /** \brief Wraps the OpenGL function gl::glInvalidateBufferData.
         \see https://www.opengl.org/sdk/docs/man/html/glInvalidateBufferData.xhtml
