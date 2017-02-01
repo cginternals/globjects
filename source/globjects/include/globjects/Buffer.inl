@@ -60,16 +60,6 @@ void Buffer::setStorage(const std::array<T, Count> & data, gl::BufferStorageMask
 }
 
 template <typename T>
-T Buffer::getSubData(gl::GLintptr offset) const
-{
-    T data;
-
-    getSubData(offset, sizeof(T), &data);
-
-    return data;
-}
-
-template <typename T>
 std::vector<T> Buffer::getSubData(gl::GLsizeiptr count, gl::GLintptr offset) const
 {
     std::vector<T> data(count);

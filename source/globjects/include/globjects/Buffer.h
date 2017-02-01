@@ -263,11 +263,6 @@ public:
     */
     void getSubData(gl::GLintptr offset, gl::GLsizeiptr size, void * data) const;
 
-    /** \brief Convenience method to simplify getting of data in form of a POD struct.
-    */
-    template <typename T>
-    T getSubData(gl::GLintptr offset = 0) const;
-
     /** \brief Convenience method to simplify getting of data in form of an std::vector.
     */
     template <typename T>
