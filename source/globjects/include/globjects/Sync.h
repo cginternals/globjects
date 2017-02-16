@@ -3,8 +3,6 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects/base/Referenced.h>
-
 #include <globjects/globjects_api.h>
 
 
@@ -12,7 +10,7 @@ namespace globjects
 {
 
 
-class GLOBJECTS_API Sync : public Referenced
+class GLOBJECTS_API Sync
 {
     friend class AbstractObjectNameImplementation;
 

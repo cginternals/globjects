@@ -70,15 +70,10 @@ void main()
 void initialize()
 {
     g_cornerBuffer = new globjects::Buffer();
-    g_cornerBuffer->ref();
     g_vertexProgram = new globjects::Program();
-    g_vertexProgram->ref();
     g_fragmentProgram = new globjects::Program();
-    g_fragmentProgram->ref();
     g_programPipeline = new globjects::ProgramPipeline();
-    g_programPipeline->ref();
     g_vao = new globjects::VertexArray();
-    g_vao->ref();
 
     g_vertexProgram->attach(globjects::Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode));
     g_fragmentProgram->attach(globjects::Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
@@ -97,12 +92,6 @@ void initialize()
 
 void deinitialize()
 {
-    g_cornerBuffer->unref();
-    g_vertexProgram->unref();
-    g_fragmentProgram->unref();
-    g_programPipeline->unref();
-    g_vao->unref();
-
     globjects::detachAllObjects();
 }
 

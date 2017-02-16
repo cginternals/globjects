@@ -6,8 +6,6 @@
 #include <glbinding/gl/types.h>
 
 #include <globjects/base/ChangeListener.h>
-#include <globjects/base/ref_ptr.h>
-#include <globjects/base/Referenced.h>
 
 #include <globjects/globjects_api.h>
 
@@ -18,7 +16,7 @@ namespace globjects
 
 class AbstractStringSource;
 
-class GLOBJECTS_API NamedString : public Referenced, protected ChangeListener
+class GLOBJECTS_API NamedString : protected ChangeListener
 {
 public:
     static NamedString * create(const std::string & name, AbstractStringSource * string);
@@ -60,7 +58,7 @@ protected:
 protected:
     std::string m_name;
 
-    ref_ptr<AbstractStringSource> m_source;
+    AbstractStringSource * m_source;
     gl::GLenum m_type;
 };
 

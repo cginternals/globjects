@@ -1,7 +1,5 @@
 #pragma once
 
-#include <globjects/base/Referenced.h>
-#include <globjects/base/ref_ptr.h>
 
 namespace globjects
 {
@@ -15,7 +13,7 @@ class Shader;
 }
 
 
-class ScreenAlignedQuad : public globjects::Referenced
+class ScreenAlignedQuad
 {
 public:
     ScreenAlignedQuad(globjects::Shader * fragmentShader, globjects::Texture * texture);
@@ -39,15 +37,15 @@ protected:
     void initialize();
 
 protected:
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
+    globjects::VertexArray * m_vao;
 
-    globjects::ref_ptr<globjects::Buffer> m_buffer;
+    globjects::Buffer * m_buffer;
 
-    globjects::ref_ptr<globjects::Shader> m_vertexShader;
-    globjects::ref_ptr<globjects::Shader> m_fragmentShader;
+    globjects::Shader * m_vertexShader;
+    globjects::Shader * m_fragmentShader;
 
-    globjects::ref_ptr<globjects::Program> m_program;
-    globjects::ref_ptr<globjects::Texture> m_texture;
+    globjects::Program * m_program;
+    globjects::Texture * m_texture;
 
     int m_samplerIndex;
 

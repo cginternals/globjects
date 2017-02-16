@@ -5,10 +5,9 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <memory>
 
 #include <glm/fwd.hpp>
-
-#include <globjects/base/ref_ptr.h>
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
@@ -129,13 +128,13 @@ protected:
     Framebuffer(IDResource * resource);
     virtual ~Framebuffer();
 
-    void addAttachment(FramebufferAttachment * attachment);
+    void addAttachment(std::unique_ptr<FramebufferAttachment> && attachment);
 
     static void blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::ClearBufferMask mask, gl::GLenum filter);
     static void blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter);
 
 protected:
-	std::map<gl::GLenum, ref_ptr<FramebufferAttachment>> m_attachments;
+    std::map<gl::GLenum, std::unique_ptr<FramebufferAttachment>> m_attachments;
 };
 
 

@@ -3,8 +3,6 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <globjects/globjects_api.h>
 #include <globjects/FramebufferAttachment.h>
 
@@ -39,7 +37,7 @@ public:
     gl::GLint layer() const;
 
 protected:
-    ref_ptr<Texture> m_texture;
+    Texture * m_texture;
     gl::GLint m_level;
     gl::GLint m_layer;
 };

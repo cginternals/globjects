@@ -115,9 +115,9 @@ public:
 
 
 protected:
-    globjects::ref_ptr<globjects::Buffer> m_cornerBuffer;
-    globjects::ref_ptr<globjects::Program> m_program;
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
+    globjects::Buffer * m_cornerBuffer;
+    globjects::Program * m_program;
+    globjects::VertexArray * m_vao;
 };
 
 

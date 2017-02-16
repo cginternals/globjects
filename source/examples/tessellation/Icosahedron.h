@@ -8,9 +8,6 @@
 
 #include <glbinding/gl/gl.h>
 
-#include <globjects/base/Referenced.h>
-#include <globjects/base/ref_ptr.h>
-
 
 namespace globjects
 {
@@ -21,7 +18,7 @@ class Buffer;
 }
 
 
-class Icosahedron : public globjects::Referenced
+class Icosahedron
 {
 public:
     using Face = std::array<gl::GLushort, 3>;
@@ -63,10 +60,10 @@ protected:
     virtual ~Icosahedron();
 
 protected:
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
+    globjects::VertexArray * m_vao;
 
-    globjects::ref_ptr<globjects::Buffer> m_vertices;
-    globjects::ref_ptr<globjects::Buffer> m_indices;
+    globjects::Buffer * m_vertices;
+    globjects::Buffer * m_indices;
 
     gl::GLsizei m_size;
 };

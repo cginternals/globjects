@@ -53,26 +53,19 @@ void initialize()
     g_texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
     g_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     g_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    g_texture->ref();
 
     g_computeProgram = new globjects::Program();
 
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
     g_computeProgram->attach(globjects::Shader::fromFile(GL_COMPUTE_SHADER, dataPath + "computeshader/cstest.comp"));
     g_computeProgram->setUniform("destTex", 0);
-    g_computeProgram->ref();
 
     g_quad = new ScreenAlignedQuad(g_texture);
     g_quad->setSamplerUniform(0);
-    g_quad->ref();
 }
 
 void deinitialize()
 {
-    g_texture->unref();
-    g_computeProgram->unref();
-    g_quad->unref();
-
     globjects::detachAllObjects();
 }
 

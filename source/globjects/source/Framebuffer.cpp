@@ -110,21 +110,21 @@ void Framebuffer::attachTexture(const GLenum attachment, Texture * texture, cons
 {
     implementation().attachTexture(this, attachment, texture, level);
 
-    addAttachment(new AttachedTexture(this, attachment, texture, level));
+    addAttachment(std::unique_ptr<FramebufferAttachment>(new AttachedTexture(this, attachment, texture, level)));
 }
 
 void Framebuffer::attachTextureLayer(const GLenum attachment, Texture * texture, const GLint level, const GLint layer)
 {
     implementation().attachTextureLayer(this, attachment, texture, level, layer);
 
-    addAttachment(new AttachedTexture(this, attachment, texture, level, layer));
+    addAttachment(std::unique_ptr<FramebufferAttachment>(new AttachedTexture(this, attachment, texture, level, layer)));
 }
 
 void Framebuffer::attachRenderBuffer(const GLenum attachment, Renderbuffer * renderBuffer)
 {
     implementation().attachRenderBuffer(this, attachment, renderBuffer);
 
-    addAttachment(new AttachedRenderbuffer(this, attachment, renderBuffer));
+    addAttachment(std::unique_ptr<FramebufferAttachment>(new AttachedRenderbuffer(this, attachment, renderBuffer)));
 }
 
 bool Framebuffer::detach(const GLenum attachment)
@@ -363,29 +363,29 @@ void Framebuffer::printStatus(bool onlyErrors) const
 	}
 }
 
-void Framebuffer::addAttachment(FramebufferAttachment * attachment)
+void Framebuffer::addAttachment(std::unique_ptr<FramebufferAttachment> && attachment)
 {
     assert(attachment != nullptr);
 
-    m_attachments[attachment->attachment()] = attachment;
+    m_attachments[attachment->attachment()] = std::move(attachment);
 }
 
 FramebufferAttachment * Framebuffer::getAttachment(GLenum attachment)
 {
-	return m_attachments[attachment];
+    return m_attachments[attachment].get();
 }
 
 std::vector<FramebufferAttachment*> Framebuffer::attachments()
 {
-	std::vector<FramebufferAttachment*> attachments;
+    std::vector<FramebufferAttachment*> attachments;
     attachments.reserve(m_attachments.size());
 
-    for (std::pair<GLenum, ref_ptr<FramebufferAttachment>> pair: m_attachments)
-	{
-		attachments.push_back(pair.second);
-	}
+    for (const auto & pair: m_attachments)
+    {
+        attachments.push_back(pair.second.get());
+    }
 
-	return attachments;
+    return attachments;
 }
 
 GLenum Framebuffer::objectType() const

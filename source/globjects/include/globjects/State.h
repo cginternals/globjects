@@ -6,8 +6,6 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects/base/Referenced.h>
-
 #include <globjects/globjects_api.h>
 #include <globjects/AbstractState.h>
 
@@ -19,7 +17,7 @@ namespace globjects
 class StateSetting;
 class Capability;
 
-class GLOBJECTS_API State : public AbstractState, public Referenced
+class GLOBJECTS_API State : public AbstractState
 {
 public:
     enum Mode

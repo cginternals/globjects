@@ -9,8 +9,6 @@
 
 #include <glm/fwd.hpp>
 
-#include <globjects/base/Referenced.h>
-
 #include <globjects/globjects_api.h>
 
 #include <globjects/LocationIdentity.h>
@@ -31,7 +29,7 @@ template<typename T> class Uniform;
  * \see Uniform
  * \see Program
  */
-class GLOBJECTS_API AbstractUniform : public Referenced
+class GLOBJECTS_API AbstractUniform
 {
 	friend class Program; ///< Programs (de)register themselves.
 

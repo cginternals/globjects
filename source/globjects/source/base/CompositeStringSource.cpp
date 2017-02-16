@@ -23,7 +23,7 @@ CompositeStringSource::CompositeStringSource(const std::vector<AbstractStringSou
 
 CompositeStringSource::~CompositeStringSource()
 {
-    for (ref_ptr<AbstractStringSource> source : m_sources)
+    for (auto source : m_sources)
     {
         source->deregisterListener(this);
     }
@@ -66,7 +66,7 @@ std::vector<std::string> CompositeStringSource::strings() const
 
 void CompositeStringSource::flattenInto(std::vector<const AbstractStringSource*>& vector) const
 {
-    for (const ref_ptr<AbstractStringSource>& source : m_sources)
+    for (auto source : m_sources)
     {
         source->flattenInto(vector);
     }
@@ -76,7 +76,7 @@ void CompositeStringSource::update() const
 {
     m_strings.clear();
 
-    for (const ref_ptr<AbstractStringSource>& source : m_sources)
+    for (auto source : m_sources)
     {
         for (const std::string & str : source->strings())
         {
@@ -91,7 +91,7 @@ std::string CompositeStringSource::shortInfo() const
 {
     std::stringstream info;
 
-    for (const ref_ptr<AbstractStringSource>& source : m_sources)
+    for (auto source : m_sources)
     {
         info << source->shortInfo() << std::endl;
     }

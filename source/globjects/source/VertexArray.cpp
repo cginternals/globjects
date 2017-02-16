@@ -87,12 +87,12 @@ VertexAttributeBinding * VertexArray::binding(const GLuint bindingIndex)
 
     if (it == m_bindings.end())
     {
-        const auto insertedIt = m_bindings.emplace(bindingIndex, new VertexAttributeBinding(this, bindingIndex));
+        const auto insertedIt = m_bindings.emplace(bindingIndex, std::unique_ptr<VertexAttributeBinding>(new VertexAttributeBinding(this, bindingIndex)));
 
-        return insertedIt.first->second;
+        return insertedIt.first->second.get();
     }
 
-    return it->second;
+    return it->second.get();
 }
 
 const VertexAttributeBinding* VertexArray::binding(const GLuint bindingIndex) const
@@ -104,7 +104,7 @@ const VertexAttributeBinding* VertexArray::binding(const GLuint bindingIndex) co
         return nullptr;
     }
 
-    return it->second;
+    return it->second.get();
 }
 
 void VertexArray::enable(GLint attributeIndex)
@@ -119,13 +119,13 @@ void VertexArray::disable(GLint attributeIndex)
 
 std::vector<VertexAttributeBinding *> VertexArray::bindings()
 {
-	std::vector<VertexAttributeBinding *> bindings;
+    std::vector<VertexAttributeBinding *> bindings;
     bindings.reserve(m_bindings.size());
 
     for (const auto & pair: m_bindings)
-		bindings.push_back(pair.second);
+        bindings.push_back(pair.second.get());
 
-	return bindings;
+    return bindings;
 }
 
 std::vector<const VertexAttributeBinding*> VertexArray::bindings() const
@@ -135,7 +135,7 @@ std::vector<const VertexAttributeBinding*> VertexArray::bindings() const
 
     for (const auto & pair: m_bindings)
     {
-        bindings.push_back(pair.second);
+        bindings.push_back(pair.second.get());
     }
 
     return bindings;

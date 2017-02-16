@@ -52,7 +52,6 @@ namespace
 void initialize()
 {
     g_shaderProgram = new globjects::Program();
-    g_shaderProgram->ref();
     
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
     g_shaderProgram->attach(
@@ -60,7 +59,6 @@ void initialize()
       , globjects::Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "transformfeedback/simple.frag"));
 
     g_transformFeedbackProgram = new globjects::Program();
-    g_transformFeedbackProgram->ref();
     g_transformFeedbackProgram->attach(
         globjects::Shader::fromFile(GL_VERTEX_SHADER, dataPath + "transformfeedback/transformfeedback.vert"));
 
@@ -88,17 +86,13 @@ void initialize()
       , { 0, 1, 0, 1 } });
 
     g_vertexBuffer1 = new globjects::Buffer();
-    g_vertexBuffer1->ref();
     g_vertexBuffer1->setData(vertexArray, GL_STATIC_DRAW);
     g_vertexBuffer2 = new globjects::Buffer();
-    g_vertexBuffer2->ref();
     g_vertexBuffer2->setData(vertexArray, GL_STATIC_DRAW);
     g_colorBuffer = new globjects::Buffer();
-    g_colorBuffer->ref();
     g_colorBuffer->setData(colorArray, GL_STATIC_DRAW);
 
     g_vao = new globjects::VertexArray();
-    g_vao->ref();
 
     g_vao->binding(0)->setAttribute(0);
     g_vao->binding(0)->setFormat(4, GL_FLOAT);
@@ -113,7 +107,6 @@ void initialize()
 
     // Create and setup TransformFeedback
     g_transformFeedback = new globjects::TransformFeedback();
-    g_transformFeedback->ref();
     g_transformFeedback->setVaryings(g_transformFeedbackProgram, { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
 
 
@@ -122,13 +115,6 @@ void initialize()
 
 void deinitialize()
 {
-    g_vao->unref();
-    g_transformFeedbackProgram->unref();
-    g_transformFeedback->unref();
-    g_shaderProgram->unref();
-    g_vertexBuffer1->unref();
-    g_vertexBuffer2->unref();
-    g_colorBuffer->unref();
 }
 
 void draw()

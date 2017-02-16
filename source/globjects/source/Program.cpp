@@ -55,10 +55,10 @@ Program::Program()
 {
 }
 
-Program::Program(ProgramBinary * binary)
+Program::Program(std::unique_ptr<ProgramBinary> && binary)
 : Program()
 {
-    setBinary(binary);
+    setBinary(std::forward<std::unique_ptr<ProgramBinary>>(binary));
 }
 
 Program::~Program()
@@ -77,7 +77,7 @@ Program::~Program()
     }
     else
     {
-        for (const auto & shader : std::set<ref_ptr<Shader>>(m_shaders))
+        for (const auto & shader : std::set<Shader *>(m_shaders))
         {
             detach(shader);
         }
@@ -158,10 +158,10 @@ void Program::detach(Shader * shader)
 
 std::set<Shader *> Program::shaders() const
 {
-	std::set<Shader *> shaders;
-    for (ref_ptr<Shader> shader: m_shaders)
-		shaders.insert(shader);
-	return shaders;
+    std::set<Shader *> shaders;
+    for (auto shader: m_shaders)
+        shaders.insert(shader);
+    return shaders;
 }
 
 void Program::link() const
@@ -436,18 +436,18 @@ void Program::addUniform(AbstractUniform * uniform)
 {
     assert(uniform != nullptr);
 
-    ref_ptr<AbstractUniform>& uniformReference = m_uniforms[uniform->identity()];
+    auto uniformReference = m_uniforms[uniform->identity()];
 
-	if (uniformReference)
+    if (uniformReference)
     {
-		uniformReference->deregisterProgram(this);
+        uniformReference->deregisterProgram(this);
     }
 
-	uniformReference = uniform;
+    uniformReference = uniform;
 
-	uniform->registerProgram(this);
+    uniform->registerProgram(this);
 
-	if (m_linked)
+    if (m_linked)
     {
         uniform->update(this, true);
     }
@@ -468,7 +468,7 @@ void Program::updateUniformBlockBindings() const
         pair.second.updateBinding();
 }
 
-void Program::setBinary(ProgramBinary * binary)
+void Program::setBinary(std::unique_ptr<ProgramBinary> && binary)
 {
     if (m_binary == binary)
         return;
@@ -476,7 +476,7 @@ void Program::setBinary(ProgramBinary * binary)
     if (m_binary)
         m_binary->deregisterListener(this);
 
-    m_binary = binary;
+    m_binary = std::move(binary);
 
     if (m_binary)
         m_binary->registerListener(this);

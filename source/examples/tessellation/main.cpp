@@ -58,7 +58,6 @@ void resize()
 void initialize()
 {
     g_sphere = new globjects::Program();
-    g_sphere->ref();
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
     g_sphere->attach(
         globjects::Shader::fromFile(GL_VERTEX_SHADER,          dataPath + "tessellation/sphere.vert")
@@ -69,15 +68,12 @@ void initialize()
     ,   globjects::Shader::fromFile(GL_FRAGMENT_SHADER,        dataPath + "tessellation/phong.frag"));
 
     g_icosahedron = new Icosahedron();
-    g_icosahedron->ref();
 
     resize();
 }
 
 void deinitialize()
 {
-    g_sphere->unref();
-    g_icosahedron->unref();
 }
 
 void draw()

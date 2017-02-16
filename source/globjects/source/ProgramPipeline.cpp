@@ -30,7 +30,7 @@ ProgramPipeline::~ProgramPipeline()
     }
     else
     {
-        for (ref_ptr<Program> program : std::set<ref_ptr<Program>>(m_programs))
+        for (auto program : std::set<Program *>(m_programs))
             releaseProgram(program);
     }
 }

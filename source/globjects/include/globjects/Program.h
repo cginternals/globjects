@@ -4,12 +4,12 @@
 #include <set>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
 #include <glm/fwd.hpp>
 
 #include <globjects/base/ChangeListener.h>
 #include <globjects/base/Changeable.h>
-#include <globjects/base/ref_ptr.h>
 
 #include <globjects/globjects_api.h>
 
@@ -92,7 +92,7 @@ public:
 
 public:
 	Program();
-    Program(ProgramBinary * binary);
+    Program(std::unique_ptr<ProgramBinary> && binary);
 
     virtual void accept(ObjectVisitor & visitor) override;
 
@@ -113,7 +113,7 @@ public:
     void link() const;
     void invalidate() const;
 
-    void setBinary(ProgramBinary * binary);
+    void setBinary(std::unique_ptr<ProgramBinary> && binary);
     ProgramBinary * getBinary() const;
 
     std::string infoLog() const;
@@ -228,10 +228,10 @@ protected:
     const UniformBlock * getUniformBlockByIdentity(const LocationIdentity & identity) const;
 
 protected:
-    std::set<ref_ptr<Shader>> m_shaders;
-    ref_ptr<ProgramBinary> m_binary;
+    std::set<Shader *> m_shaders;
+    std::unique_ptr<ProgramBinary> m_binary;
 
-    std::unordered_map<LocationIdentity, ref_ptr<AbstractUniform>> m_uniforms;
+    std::unordered_map<LocationIdentity, AbstractUniform*> m_uniforms;
     std::unordered_map<LocationIdentity, UniformBlock> m_uniformBlocks;
 
     mutable bool m_linked;

@@ -41,13 +41,10 @@ void initialize()
     globjects::NamedString::create("/color.glsl", new globjects::File(dataPath + "shaderincludes/color.glsl"));
 
     g_quad = new ScreenAlignedQuad(globjects::Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "shaderincludes/test.frag"));
-    g_quad->ref();
 }
 
 void deinitialize()
 {
-    g_quad->unref();
-
     globjects::detachAllObjects();
 }
 

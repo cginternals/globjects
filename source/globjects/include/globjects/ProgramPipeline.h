@@ -7,7 +7,6 @@
 
 #include <globjects/globjects_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/base/ChangeListener.h>
 #include <globjects/Object.h>
 
@@ -50,7 +49,7 @@ protected:
 
 protected:
     bool m_dirty;
-    std::set<ref_ptr<Program>> m_programs;
+    std::set<Program *> m_programs;
 };
 
 

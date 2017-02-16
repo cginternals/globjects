@@ -48,18 +48,14 @@ void initialize()
         data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
 
     g_texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
-    g_texture->ref();
     g_texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
     g_quad = new ScreenAlignedQuad(g_texture);
-    g_quad->ref();
     g_quad->setSamplerUniform(0);
 }
 
 void deinitialize()
 {
-    g_texture->unref();
-    g_quad->unref();
 }
 
 void draw()

@@ -84,7 +84,6 @@ void initialize()
     globjects::info("GL_MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
 
     g_texture = new globjects::Texture(GL_TEXTURE_2D);
-    g_texture->ref();
 
     // make texture sparse
     g_texture->setParameter(GL_TEXTURE_SPARSE_ARB, static_cast<GLint>(GL_TRUE));
@@ -105,13 +104,10 @@ void initialize()
     // Create and setup geometry
     g_quad = new ScreenAlignedQuad(g_texture);
     g_quad->setSamplerUniform(0);
-    g_quad->ref();
 }
 
 void deinitialize()
 {
-    g_texture->unref();
-    g_quad->unref();
 }
 
 void mapNextPage()

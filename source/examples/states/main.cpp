@@ -51,34 +51,24 @@ void initialize()
 {
     // Initialize OpenGL objects
     g_defaultPointSizeState = new globjects::State();
-    g_defaultPointSizeState->ref();
     g_defaultPointSizeState->pointSize(globjects::getFloat(GL_POINT_SIZE));
     g_thinnestPointSizeState = new globjects::State();
-    g_thinnestPointSizeState->ref();
     g_thinnestPointSizeState->pointSize(2.0f);
     g_thinPointSizeState = new globjects::State();
-    g_thinPointSizeState->ref();
     g_thinPointSizeState->pointSize(5.0f);
     g_normalPointSizeState = new globjects::State();
-    g_normalPointSizeState->ref();
     g_normalPointSizeState->pointSize(10.0f);
     g_thickPointSizeState = new globjects::State();
-    g_thickPointSizeState->ref();
     g_thickPointSizeState->pointSize(20.0f);
     g_disableRasterizerState = new globjects::State();
-    g_disableRasterizerState->ref();
     g_disableRasterizerState->enable(GL_RASTERIZER_DISCARD);
     g_enableRasterizerState = new globjects::State();
-    g_enableRasterizerState->ref();
     g_enableRasterizerState->disable(GL_RASTERIZER_DISCARD);
 
     g_vao = new globjects::VertexArray();
-    g_vao->ref();
     g_buffer = new globjects::Buffer();
-    g_buffer->ref();
 
     g_shaderProgram = new globjects::Program();
-    g_shaderProgram->ref();
 
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
     g_shaderProgram->attach(
@@ -102,17 +92,6 @@ void initialize()
 
 void deinitialize()
 {
-    g_shaderProgram->unref();
-    g_vao->unref();
-    g_buffer->unref();
-    g_thinnestPointSizeState->unref();
-    g_thinPointSizeState->unref();
-    g_normalPointSizeState->unref();
-    g_thickPointSizeState->unref();
-    g_disableRasterizerState->unref();
-    g_enableRasterizerState->unref();
-    g_defaultPointSizeState->unref();
-
     globjects::detachAllObjects();
 }
 
