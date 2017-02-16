@@ -30,7 +30,7 @@ protected:
     mutable std::string m_modifiedSource;
     mutable bool m_modifiedSourceValid;
 
-	std::map<std::string, std::string> m_replacements;
+    std::map<std::string, std::string> m_replacements;
 
     virtual ~StringTemplate();
 

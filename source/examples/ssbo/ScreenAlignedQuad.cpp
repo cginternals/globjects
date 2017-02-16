@@ -33,7 +33,7 @@ out vec2 v_uv;
 
 void main()
 {
-	v_uv = a_vertex * 0.5 + 0.5;
+    v_uv = a_vertex * 0.5 + 0.5;
     gl_Position = vec4(a_vertex, 0.0, 1.0);
 }
 )";
@@ -101,8 +101,8 @@ ScreenAlignedQuad::ScreenAlignedQuad(Program * program)
 
 void ScreenAlignedQuad::initialize()
 {
-	// By default, counterclockwise polygons are taken to be front-facing.
-	// http://www.opengl.org/sdk/docs/man/xhtml/glFrontFace.xml
+    // By default, counterclockwise polygons are taken to be front-facing.
+    // http://www.opengl.org/sdk/docs/man/xhtml/glFrontFace.xml
 
     static const std::array<vec2, 4> raw { { vec2(+1.f,-1.f), vec2(+1.f,+1.f), vec2(-1.f,-1.f), vec2(-1.f,+1.f) } };
 
@@ -111,11 +111,11 @@ void ScreenAlignedQuad::initialize()
     m_buffer = new Buffer();
     m_buffer->setData(raw, GL_STATIC_DRAW); //needed for some drivers
 
-	auto binding = m_vao->binding(0);
-	binding->setAttribute(0);
-	binding->setBuffer(m_buffer, 0, sizeof(vec2));
-	binding->setFormat(2, GL_FLOAT, GL_FALSE, 0);
-	m_vao->enable(0);
+    auto binding = m_vao->binding(0);
+    binding->setAttribute(0);
+    binding->setBuffer(m_buffer, 0, sizeof(vec2));
+    binding->setFormat(2, GL_FLOAT, GL_FALSE, 0);
+    m_vao->enable(0);
 
     setSamplerUniform(0);
 }
@@ -123,33 +123,33 @@ void ScreenAlignedQuad::initialize()
 void ScreenAlignedQuad::draw()
 {
     if (m_texture)
-	{
+    {
         glActiveTexture(GL_TEXTURE0 + m_samplerIndex);
         m_texture->bind();
-	}
+    }
 
     m_program->use();
     m_vao->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
     m_program->release();
 
-	if (m_texture)
-		m_texture->unbind();
+    if (m_texture)
+        m_texture->unbind();
 }
 
 void ScreenAlignedQuad::setTexture(Texture* texture)
 {
-	m_texture = texture;
+    m_texture = texture;
 }
 
 void ScreenAlignedQuad::setSamplerUniform(int index)
 {
-	m_samplerIndex = index;
-	m_program->setUniform("source", m_samplerIndex);
+    m_samplerIndex = index;
+    m_program->setUniform("source", m_samplerIndex);
 }
 
 Program * ScreenAlignedQuad::program()
 {
-	return m_program;
+    return m_program;
 }
 
 Shader * ScreenAlignedQuad::vertexShader()

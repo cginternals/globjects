@@ -44,7 +44,7 @@ void ObjectRegistry::registerObject(Object * object)
 {
     assert(object != nullptr);
 
-	if (object->id() == 0)
+    if (object->id() == 0)
         return;
 
     m_objects.insert(object);

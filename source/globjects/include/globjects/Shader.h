@@ -66,10 +66,10 @@ public:
 
     virtual void accept(ObjectVisitor& visitor) override;
 
-	gl::GLenum type() const;
+    gl::GLenum type() const;
 
     void setSource(AbstractStringSource * source);
-	void setSource(const std::string & source);
+    void setSource(const std::string & source);
     const AbstractStringSource* source() const;
     void updateSource();
 
@@ -77,13 +77,13 @@ public:
     void setIncludePaths(const IncludePaths & includePaths);
 
     bool compile() const;
-	bool isCompiled() const;
+    bool isCompiled() const;
     void invalidate();
 
     gl::GLint get(gl::GLenum pname) const;
     std::string getSource() const;
     bool checkCompileStatus() const;
-	std::string infoLog() const;
+    std::string infoLog() const;
 
     std::string typeString() const;
 
@@ -100,7 +100,7 @@ protected:
     std::string shaderString() const;
 
 protected:
-	gl::GLenum m_type;
+    gl::GLenum m_type;
     AbstractStringSource * m_source;
     IncludePaths m_includePaths;
 

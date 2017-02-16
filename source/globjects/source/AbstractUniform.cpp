@@ -66,19 +66,19 @@ void AbstractUniform::registerProgram(Program * program)
 {
     assert(program != nullptr);
 
-	m_programs.insert(program);
+    m_programs.insert(program);
 }
 
 void AbstractUniform::deregisterProgram(Program * program)
 {
     assert(program != nullptr);
 
-	m_programs.erase(program);
+    m_programs.erase(program);
 }
 
 void AbstractUniform::changed()
 {
-	for (Program * program : m_programs)
+    for (Program * program : m_programs)
     {
         update(program, false);
     }

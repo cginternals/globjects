@@ -19,8 +19,8 @@ enum class LogMessageLevel : unsigned int;
 
     This is the default LogMessage handler of globjects.
 
-	\see setLoggingHandler
-	\see logging.h
+    \see setLoggingHandler
+    \see logging.h
 */
 class GLOBJECTS_API ConsoleLogger : public AbstractLogHandler
 {

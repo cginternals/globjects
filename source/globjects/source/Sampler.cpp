@@ -69,7 +69,7 @@ GLint Sampler::getParameteri(const GLenum pname) const
     GLint value = 0;
     glGetSamplerParameteriv(id(), pname, &value);
 
-	return value;
+    return value;
 }
 
 GLfloat Sampler::getParameterf(const GLenum pname) const
@@ -77,7 +77,7 @@ GLfloat Sampler::getParameterf(const GLenum pname) const
     GLfloat value = 0;
     glGetSamplerParameterfv(id(), pname, &value);
 
-	return value;
+    return value;
 }
 
 GLenum Sampler::objectType() const

@@ -58,17 +58,17 @@ class Program;
 class GLOBJECTS_API TransformFeedback : public Object
 {
 public:
-	TransformFeedback();
+    TransformFeedback();
 
     virtual void accept(ObjectVisitor & visitor) override;
 
     void bind() const;
     static void unbind();
 
-	void begin(gl::GLenum primitiveMode);
-	void pause();
-	void resume();
-	void end();
+    void begin(gl::GLenum primitiveMode);
+    void pause();
+    void resume();
+    void end();
 
     void draw(gl::GLenum primitiveMode) const;
 

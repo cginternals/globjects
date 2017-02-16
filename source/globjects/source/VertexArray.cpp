@@ -73,12 +73,12 @@ void VertexArray::accept(ObjectVisitor & visitor)
 
 void VertexArray::bind() const
 {
-	glBindVertexArray(id());
+    glBindVertexArray(id());
 }
 
 void VertexArray::unbind()
 {
-	glBindVertexArray(0);
+    glBindVertexArray(0);
 }
 
 VertexAttributeBinding * VertexArray::binding(const GLuint bindingIndex)

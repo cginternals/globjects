@@ -43,7 +43,7 @@ Query * Query::current(const GLenum target)
     {
         return nullptr;
     }
-	
+    
     // TODO: fetch correct query from object registry
     return Query::fromId(id);
 }
@@ -57,17 +57,17 @@ Query * Query::timestamp()
 }
 
 int Query::getCounterBits(const GLenum target)
-{	
+{    
     return get(target, GL_QUERY_COUNTER_BITS);
 }
 
 GLuint Query::genQuery()
 {
-	GLuint id;
+    GLuint id;
 
     glGenQueries(1, &id);
 
-	return id;
+    return id;
 }
 
 GLint Query::get(const GLenum target, const GLenum pname)
@@ -90,7 +90,7 @@ GLint Query::getIndexed(const GLenum target, const GLuint index, const GLenum pn
 
 void Query::accept(ObjectVisitor& visitor)
 {
-	visitor.visitQuery(this);
+    visitor.visitQuery(this);
 }
 
 void Query::begin(const GLenum target) const
@@ -116,19 +116,19 @@ void Query::endIndexed(const GLenum target, const GLuint index) const
 GLuint Query::get(const GLenum pname) const
 {
     GLuint value = 0;
-	
+    
     glGetQueryObjectuiv(id(), pname, &value);
-	
-	return value;
+    
+    return value;
 }
 
 GLuint64 Query::get64(const GLenum pname) const
 {
     GLuint64 value = 0;
-	
+    
     glGetQueryObjectui64v(id(), pname, &value);
-	
-	return value;
+    
+    return value;
 }
 
 bool Query::resultAvailable() const
@@ -155,14 +155,14 @@ void Query::wait(const std::chrono::duration<int, std::nano> & timeout) const
 GLuint Query::waitAndGet(const GLenum pname) const
 {
     wait();
-	
-	return get(pname);
+    
+    return get(pname);
 }
 
 GLuint64 Query::waitAndGet64(const GLenum pname) const
 {
     wait();
-	
+    
     return get64(pname);
 }
 

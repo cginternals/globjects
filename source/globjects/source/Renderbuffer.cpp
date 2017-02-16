@@ -26,7 +26,7 @@ Renderbuffer::~Renderbuffer()
 
 void Renderbuffer::accept(ObjectVisitor& visitor)
 {
-	visitor.visitRenderBufferObject(this);
+    visitor.visitRenderBufferObject(this);
 }
 
 void Renderbuffer::bind() const
@@ -65,13 +65,13 @@ void Renderbuffer::storageMultisample(const GLsizei samples, const GLenum intern
 
 GLint Renderbuffer::getParameter(const GLenum pname) const
 {
-	GLint value = 0;
+    GLint value = 0;
 
     bind(GL_RENDERBUFFER);
 
-	glGetRenderbufferParameteriv(GL_RENDERBUFFER, pname, &value);
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, pname, &value);
 
-	return value;
+    return value;
 }
 
 GLenum Renderbuffer::objectType() const

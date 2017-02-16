@@ -86,12 +86,12 @@ Program::~Program()
 
 void Program::accept(ObjectVisitor & visitor)
 {
-	visitor.visitProgram(this);
+    visitor.visitProgram(this);
 }
 
 void Program::use() const
 {
-	checkDirty();
+    checkDirty();
 
     if (!isLinked())
         return;
@@ -113,17 +113,17 @@ bool Program::isUsed() const
 
 bool Program::isLinked() const
 {
-	return m_linked;
+    return m_linked;
 }
 
 void Program::invalidate() const
 {
-	m_dirty = true;
+    m_dirty = true;
 }
 
 void Program::notifyChanged(const Changeable *)
 {
-	invalidate();
+    invalidate();
 }
 
 void Program::checkDirty() const
@@ -150,10 +150,10 @@ void Program::detach(Shader * shader)
 
     glDetachShader(id(), shader->id());
 
-	shader->deregisterListener(this);
-	m_shaders.erase(shader);
+    shader->deregisterListener(this);
+    m_shaders.erase(shader);
 
-	invalidate();
+    invalidate();
 }
 
 std::set<Shader *> Program::shaders() const
@@ -234,7 +234,7 @@ GLint Program::getFragDataIndex(const std::string & name) const
 
 GLint Program::getUniformLocation(const std::string& name) const
 {
-	checkDirty();
+    checkDirty();
     if (!m_linked)
         return -1;
 
@@ -269,7 +269,7 @@ std::vector<GLint> Program::getUniformLocations(const std::vector<std::string> &
 
 GLint Program::getAttributeLocation(const std::string & name) const
 {
-	checkDirty();
+    checkDirty();
     if (!m_linked)
         return -1;
 
@@ -399,9 +399,9 @@ std::string Program::getActiveUniformName(const GLuint uniformIndex) const
     std::vector<char> name(length);
     glGetActiveUniformName(id(), uniformIndex, length, nullptr, name.data());
 
-	// glGetActiveUniformName() insists we query '\0' as well, but it 
-	// shouldn't be passed to std::string(), otherwise std::string::size()
-	// returns <actual size> + 1 (on clang)	
+    // glGetActiveUniformName() insists we query '\0' as well, but it 
+    // shouldn't be passed to std::string(), otherwise std::string::size()
+    // returns <actual size> + 1 (on clang)    
     auto numChars = length - 1; 
     return std::string(name.data(), numChars);
 }
@@ -455,7 +455,7 @@ void Program::addUniform(AbstractUniform * uniform)
 
 void Program::updateUniforms() const
 {
-	// Note: uniform update will check if program is linked
+    // Note: uniform update will check if program is linked
     for (const auto & uniformPair : m_uniforms)
     {
         uniformPair.second->update(this, true);
@@ -492,7 +492,7 @@ GLint Program::get(const GLenum pname) const
     GLint value = 0;
     glGetProgramiv(id(), pname, &value);
 
-	return value;
+    return value;
 }
 
 void Program::getActiveAttrib(gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * size, gl::GLenum * type, gl::GLchar * name) const
@@ -513,7 +513,7 @@ std::string Program::infoLog() const
 
     glGetProgramInfoLog(id(), length, &length, log.data());
 
-	return std::string(log.data(), length);
+    return std::string(log.data(), length);
 }
 
 void Program::dispatchCompute(const glm::uvec3 & numGroups)
@@ -548,7 +548,7 @@ void Program::dispatchComputeGroupSize(const glm::uvec3 & numGroups, const glm::
 
 void Program::setShaderStorageBlockBinding(const GLuint storageBlockIndex, const GLuint storageBlockBinding) const
 {
-	checkDirty();
+    checkDirty();
     if (!m_linked)
         return;
 

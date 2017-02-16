@@ -73,10 +73,10 @@ Shader * Shader::fromFile(const GLenum type, const std::string & filename, const
 
 Shader::~Shader()
 {
-	if (m_source)
-	{
-		m_source->deregisterListener(this);
-	}
+    if (m_source)
+    {
+        m_source->deregisterListener(this);
+    }
 }
 
 void Shader::globalReplace(const std::string & search, const std::string & replacement)
@@ -96,12 +96,12 @@ void Shader::clearGlobalReplacements()
 
 void Shader::accept(ObjectVisitor & visitor)
 {
-	visitor.visitShader(this);
+    visitor.visitShader(this);
 }
 
 GLenum Shader::type() const
 {
-	return m_type;
+    return m_type;
 }
 
 void Shader::setSource(AbstractStringSource * source)
@@ -109,8 +109,8 @@ void Shader::setSource(AbstractStringSource * source)
     if (source == m_source)
         return;
 
-	if (m_source)
-		m_source->deregisterListener(this);
+    if (m_source)
+        m_source->deregisterListener(this);
 
     if (!s_globalReplacements.empty())
     {
@@ -122,12 +122,12 @@ void Shader::setSource(AbstractStringSource * source)
         source = sourceTemplate;
     }
 
-	m_source = source;
+    m_source = source;
 
-	if (m_source)
-		m_source->registerListener(this);
+    if (m_source)
+        m_source->registerListener(this);
 
-	updateSource();
+    updateSource();
 }
 
 void Shader::setSource(const std::string & source)
@@ -137,12 +137,12 @@ void Shader::setSource(const std::string & source)
 
 const AbstractStringSource* Shader::source() const
 {
-	return m_source;
+    return m_source;
 }
 
 void Shader::notifyChanged(const Changeable *)
 {
-	updateSource();
+    updateSource();
 }
 
 void Shader::updateSource()
@@ -170,7 +170,7 @@ bool Shader::compile() const
 
 bool Shader::isCompiled() const
 {
-	return m_compiled;
+    return m_compiled;
 }
 
 void Shader::invalidate()
@@ -230,16 +230,16 @@ bool Shader::checkCompileStatus() const
 std::string Shader::infoLog() const
 {
     GLsizei length = get(GL_INFO_LOG_LENGTH);
-	std::vector<char> log(length);
+    std::vector<char> log(length);
 
-	glGetShaderInfoLog(id(), length, &length, log.data());
+    glGetShaderInfoLog(id(), length, &length, log.data());
 
-	return std::string(log.data(), length);
+    return std::string(log.data(), length);
 }
 
 std::string Shader::shaderString() const
 {
-	std::stringstream ss;
+    std::stringstream ss;
 
     ss << "Shader(" << typeString(m_type);
 
@@ -247,9 +247,9 @@ std::string Shader::shaderString() const
     if (shortInfo.size() > 0)
         ss << ", " << shortInfo;
 
-	ss << ")";
+    ss << ")";
 
-	return ss.str();
+    return ss.str();
 }
 
 std::string Shader::typeString() const
@@ -260,7 +260,7 @@ std::string Shader::typeString() const
 std::string Shader::typeString(GLenum type)
 {
     switch (type)
-	{
+    {
     case GL_GEOMETRY_SHADER:
         return "GL_GEOMETRY_SHADER";
     case GL_FRAGMENT_SHADER:
@@ -273,9 +273,9 @@ std::string Shader::typeString(GLenum type)
         return "GL_TESS_CONTROL_SHADER";
     case GL_COMPUTE_SHADER:
         return "GL_COMPUTE_SHADER";
-	default:
-		return "Unknown Shader Type";
-	}
+    default:
+        return "Unknown Shader Type";
+    }
 }
 
 GLenum Shader::objectType() const

@@ -21,7 +21,7 @@ class GLOBJECTS_API VertexAttributeBinding
     friend class AbstractVertexAttributeBindingImplementation;
 
 public:
-	VertexAttributeBinding(
+    VertexAttributeBinding(
         VertexArray * vao
     ,   const gl::GLint bindingIndex);
 
@@ -32,7 +32,7 @@ public:
 
     void setDivisor(gl::GLint divisor);
 
-	void setAttribute(gl::GLint attributeIndex);
+    void setAttribute(gl::GLint attributeIndex);
 
     gl::GLint attributeIndex() const;
     gl::GLint bindingIndex() const;
@@ -46,16 +46,16 @@ public:
     ,   gl::GLint baseoffset
     ,   gl::GLint stride);
 
-	void setFormat(
+    void setFormat(
         gl::GLint size
     ,   gl::GLenum type
     ,   gl::GLboolean normalized = gl::GL_FALSE
     ,   gl::GLuint relativeoffset = 0);
-	void setIFormat(
+    void setIFormat(
         gl::GLint size
     ,   gl::GLenum type
     ,   gl::GLuint relativeoffset = 0);
-	void setLFormat(
+    void setLFormat(
         gl::GLint size
     ,   gl::GLenum type
     ,   gl::GLuint relativeoffset = 0);

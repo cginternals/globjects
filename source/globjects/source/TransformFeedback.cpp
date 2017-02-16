@@ -30,7 +30,7 @@ TransformFeedback::~TransformFeedback()
 
 void TransformFeedback::accept(ObjectVisitor& visitor)
 {
-	visitor.visitTransformFeedback(this);
+    visitor.visitTransformFeedback(this);
 }
 
 void TransformFeedback::bind() const
@@ -55,7 +55,7 @@ void TransformFeedback::unbind(const GLenum target)
 
 void TransformFeedback::begin(const GLenum primitiveMode)
 {
-	glBeginTransformFeedback(primitiveMode);
+    glBeginTransformFeedback(primitiveMode);
 }
 
 void TransformFeedback::pause()
@@ -70,7 +70,7 @@ void TransformFeedback::resume()
 
 void TransformFeedback::end()
 {
-	glEndTransformFeedback();
+    glEndTransformFeedback();
 }
 
 void TransformFeedback::draw(const GLenum primitiveMode) const
@@ -88,7 +88,7 @@ void TransformFeedback::setVaryings(const Program * program, const GLsizei count
 
     glTransformFeedbackVaryings(program->id(), count, varyingNames, bufferMode);
 
-	program->invalidate();
+    program->invalidate();
 }
 
 void TransformFeedback::setVaryings(const Program * program, const std::vector<std::string> & varyingNames, GLenum bufferMode)

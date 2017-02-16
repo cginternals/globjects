@@ -20,7 +20,7 @@ class ObjectRegistry
 {
     friend class Object;
 public:
-	ObjectRegistry();
+    ObjectRegistry();
     static ObjectRegistry & current();
 
     std::set<Object *> objects() const;

@@ -400,7 +400,7 @@ void Texture::invalidateSubImage(GLint level, const glm::ivec3& offset, const gl
 
 void Texture::bindImageTexture(const GLuint unit, const GLint level, const GLboolean layered, const GLint layer, const GLenum access, const GLenum format) const
 {
-	glBindImageTexture(unit, id(), level, layered, layer, access, format);
+    glBindImageTexture(unit, id(), level, layered, layer, access, format);
 }
 
 void Texture::unbindImageTexture(const GLuint unit)
@@ -426,7 +426,7 @@ void Texture::cubeMapImage(gl::GLint level, gl::GLenum internalFormat, const glm
 
 void Texture::accept(ObjectVisitor& visitor)
 {
-	visitor.visitTexture(this);
+    visitor.visitTexture(this);
 }
 
 TextureHandle Texture::textureHandle() const

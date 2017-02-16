@@ -22,7 +22,7 @@ public:
     ScreenAlignedQuad(globjects::Shader  * fragmentShader);
     ScreenAlignedQuad(globjects::Program * program);
 
-	void draw();
+    void draw();
 
     globjects::Program * program();
 
@@ -31,7 +31,7 @@ public:
 
     void setTexture(globjects::Texture * texture);
 
-	void setSamplerUniform(int index);
+    void setSamplerUniform(int index);
 
 protected:
     void initialize();
@@ -50,6 +50,6 @@ protected:
     int m_samplerIndex;
 
 protected:
-	static const char * s_defaultVertexShaderSource;
-	static const char * s_defaultFagmentShaderSource;
+    static const char * s_defaultVertexShaderSource;
+    static const char * s_defaultFagmentShaderSource;
 };

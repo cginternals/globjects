@@ -29,7 +29,7 @@ public:
 
     virtual bool isRenderBufferAttachment() const override;
 
-	Renderbuffer * renderBuffer();
+    Renderbuffer * renderBuffer();
     const Renderbuffer * renderBuffer() const;
 
 protected:

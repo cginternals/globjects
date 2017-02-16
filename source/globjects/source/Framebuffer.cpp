@@ -345,22 +345,22 @@ std::string Framebuffer::statusString() const
 
 void Framebuffer::printStatus(bool onlyErrors) const
 {
-	GLenum status = checkStatus();
+    GLenum status = checkStatus();
 
-	if (onlyErrors && status == GL_FRAMEBUFFER_COMPLETE) return;
+    if (onlyErrors && status == GL_FRAMEBUFFER_COMPLETE) return;
 
-	if (status == GL_FRAMEBUFFER_COMPLETE)
-	{
+    if (status == GL_FRAMEBUFFER_COMPLETE)
+    {
         info() << glbinding::Meta::getString(GL_FRAMEBUFFER_COMPLETE);
-	}
-	else
-	{
-		std::stringstream ss;
-		ss.flags(std::ios::hex | std::ios::showbase);
+    }
+    else
+    {
+        std::stringstream ss;
+        ss.flags(std::ios::hex | std::ios::showbase);
         ss << static_cast<unsigned int>(status);
 
         critical() << glbinding::Meta::getString(status) << " (" << ss.str() << ")";
-	}
+    }
 }
 
 void Framebuffer::addAttachment(std::unique_ptr<FramebufferAttachment> && attachment)
