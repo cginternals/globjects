@@ -13,14 +13,14 @@ namespace globjects
 {
 
 
-Sync * Sync::fence(const GLenum condition)
+std::unique_ptr<Sync> Sync::fence(const GLenum condition)
 {
     return fence(condition, GL_UNUSED_BIT);
 }
 
-Sync * Sync::fence(const GLenum condition, const UnusedMask flags)
+std::unique_ptr<Sync> Sync::fence(const GLenum condition, const UnusedMask flags)
 {
-    return new Sync(fenceSync(condition, flags));
+    return std::unique_ptr<Sync>(new Sync(fenceSync(condition, flags)));
 }
 
 Sync::Sync(GLsync sync)

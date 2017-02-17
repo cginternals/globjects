@@ -16,7 +16,7 @@ namespace globjects
 
 
 ProgramPipeline::ProgramPipeline()
-: Object(new ProgramPipelineResource())
+: Object(std::unique_ptr<IDResource>(new ProgramPipelineResource()))
 , m_dirty(true)
 {
 }

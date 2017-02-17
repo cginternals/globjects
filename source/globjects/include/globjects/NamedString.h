@@ -26,7 +26,7 @@ public:
     virtual ~NamedString();
 
     static bool isNamedString(const std::string & name);
-    static NamedString * obtain(const std::string & name);
+    static NamedString * getFromRegistry(const std::string & name);
 
 public:
     const std::string & name() const;

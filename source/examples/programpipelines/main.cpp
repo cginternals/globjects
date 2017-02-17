@@ -57,11 +57,17 @@ void main()
 
 )";
 
-    globjects::Buffer * g_cornerBuffer = nullptr;
-    globjects::Program * g_vertexProgram = nullptr;
-    globjects::Program * g_fragmentProgram = nullptr;
-    globjects::ProgramPipeline * g_programPipeline = nullptr;
-    globjects::VertexArray * g_vao = nullptr;
+    std::unique_ptr<globjects::Buffer> g_cornerBuffer = nullptr;
+    std::unique_ptr<globjects::Program> g_vertexProgram = nullptr;
+    std::unique_ptr<globjects::Program> g_fragmentProgram = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
+    std::unique_ptr<globjects::ProgramPipeline> g_programPipeline = nullptr;
+    std::unique_ptr<globjects::VertexArray> g_vao = nullptr;
 
     auto g_size = glm::ivec2{ };
 }
@@ -69,23 +75,32 @@ void main()
 
 void initialize()
 {
-    g_cornerBuffer = new globjects::Buffer();
-    g_vertexProgram = new globjects::Program();
-    g_fragmentProgram = new globjects::Program();
-    g_programPipeline = new globjects::ProgramPipeline();
-    g_vao = new globjects::VertexArray();
+    g_cornerBuffer = std::unique_ptr<globjects::Buffer>(new globjects::Buffer());
+    g_vertexProgram = std::unique_ptr<globjects::Program>(new globjects::Program());
+    g_fragmentProgram = std::unique_ptr<globjects::Program>(new globjects::Program());
+    g_programPipeline = std::unique_ptr<globjects::ProgramPipeline>(new globjects::ProgramPipeline());
+    g_vao = std::unique_ptr<globjects::VertexArray>(new globjects::VertexArray());
 
-    g_vertexProgram->attach(globjects::Shader::fromString(GL_VERTEX_SHADER,  vertexShaderCode));
-    g_fragmentProgram->attach(globjects::Shader::fromString(GL_FRAGMENT_SHADER, fragmentShaderCode));
+    g_vertexShaderSource = globjects::Shader::sourceFromString(vertexShaderCode);
+    g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
 
-    g_programPipeline->useStages(g_vertexProgram, gl::GL_VERTEX_SHADER_BIT);
-    g_programPipeline->useStages(g_fragmentProgram, gl::GL_FRAGMENT_SHADER_BIT);
+    g_fragmentShaderSource = globjects::Shader::sourceFromString(fragmentShaderCode);
+    g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
+
+    g_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_vertexShaderTemplate.get()));
+    g_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get()));
+
+    g_vertexProgram->attach(g_vertexShader.get());
+    g_fragmentProgram->attach(g_fragmentShader.get());
+
+    g_programPipeline->useStages(g_vertexProgram.get(), gl::GL_VERTEX_SHADER_BIT);
+    g_programPipeline->useStages(g_fragmentProgram.get(), gl::GL_FRAGMENT_SHADER_BIT);
 
     g_cornerBuffer->setData(std::array<glm::vec2, 4>{ {
         glm::vec2(0, 0), glm::vec2(1, 0), glm::vec2(0, 1), glm::vec2(1, 1) } }, GL_STATIC_DRAW);
 
     g_vao->binding(0)->setAttribute(0);
-    g_vao->binding(0)->setBuffer(g_cornerBuffer, 0, sizeof(glm::vec2));
+    g_vao->binding(0)->setBuffer(g_cornerBuffer.get(), 0, sizeof(glm::vec2));
     g_vao->binding(0)->setFormat(2, GL_FLOAT);
     g_vao->enable(0);
 }

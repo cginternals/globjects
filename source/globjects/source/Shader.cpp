@@ -47,8 +47,9 @@ std::map<std::string, std::string> Shader::s_globalReplacements;
 
 
 Shader::Shader(const GLenum type)
-: Object(new ShaderResource(type))
+: Object(std::unique_ptr<IDResource>(new ShaderResource(type)))
 , m_type(type)
+, m_source(nullptr)
 , m_compiled(false)
 , m_compilationFailed(false)
 {
@@ -61,14 +62,24 @@ Shader::Shader(const GLenum type, AbstractStringSource * source, const IncludePa
     setSource(source);
 }
 
-Shader * Shader::fromString(const GLenum type, const std::string & sourceString, const IncludePaths & includePaths)
+std::unique_ptr<AbstractStringSource> Shader::sourceFromString(const std::string & sourceString)
 {
-    return new Shader(type, new StaticStringSource(sourceString), includePaths);
+    return std::unique_ptr<AbstractStringSource>(new StaticStringSource(sourceString));
 }
 
-Shader * Shader::fromFile(const GLenum type, const std::string & filename, const IncludePaths & includePaths)
+std::unique_ptr<AbstractStringSource> Shader::sourceFromFile(const std::string & filename)
 {
-    return new Shader(type, new File(filename, false), includePaths);
+    return std::unique_ptr<AbstractStringSource>(new File(filename, false));
+}
+
+std::unique_ptr<AbstractStringSource> Shader::applyGlobalReplacements(AbstractStringSource * source)
+{
+    StringTemplate * sourceTemplate = new StringTemplate(source);
+
+    for (const auto & pair : s_globalReplacements)
+        sourceTemplate->replace(pair.first, pair.second);
+
+    return std::unique_ptr<AbstractStringSource>(sourceTemplate);
 }
 
 Shader::~Shader()
@@ -112,27 +123,12 @@ void Shader::setSource(AbstractStringSource * source)
     if (m_source)
         m_source->deregisterListener(this);
 
-    if (!s_globalReplacements.empty())
-    {
-        StringTemplate * sourceTemplate = new StringTemplate(source);
-
-        for (const auto & pair : s_globalReplacements)
-            sourceTemplate->replace(pair.first, pair.second);
-
-        source = sourceTemplate;
-    }
-
     m_source = source;
 
     if (m_source)
         m_source->registerListener(this);
 
     updateSource();
-}
-
-void Shader::setSource(const std::string & source)
-{
-    setSource(new StaticStringSource(source));
 }
 
 const AbstractStringSource* Shader::source() const

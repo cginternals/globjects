@@ -49,7 +49,7 @@ void Program::hintBinaryImplementation(const BinaryImplementation impl)
 
 
 Program::Program()
-: Object(new ProgramResource)
+: Object(std::unique_ptr<IDResource>(new ProgramResource))
 , m_linked(false)
 , m_dirty(true)
 {
@@ -58,7 +58,7 @@ Program::Program()
 Program::Program(std::unique_ptr<ProgramBinary> && binary)
 : Program()
 {
-    setBinary(std::forward<std::unique_ptr<ProgramBinary>>(binary));
+    setBinary(std::move(binary));
 }
 
 Program::~Program()

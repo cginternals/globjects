@@ -36,13 +36,25 @@ using namespace gl;
 
 namespace 
 {
-    globjects::VertexArray * g_vao = nullptr;
-    globjects::Program * g_transformFeedbackProgram = nullptr;
-    globjects::TransformFeedback * g_transformFeedback = nullptr;
-    globjects::Program * g_shaderProgram = nullptr;
-    globjects::Buffer * g_vertexBuffer1 = nullptr;
-    globjects::Buffer * g_vertexBuffer2 = nullptr;
-    globjects::Buffer * g_colorBuffer = nullptr;
+    std::unique_ptr<globjects::VertexArray> g_vao = nullptr;
+    std::unique_ptr<globjects::Program> g_transformFeedbackProgram = nullptr;
+    std::unique_ptr<globjects::TransformFeedback> g_transformFeedback = nullptr;
+    std::unique_ptr<globjects::Program> g_shaderProgram = nullptr;
+
+    std::unique_ptr<globjects::AbstractStringSource> g_feedbackShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_feedbackShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_feedbackShader = nullptr;
+
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
+
+    std::unique_ptr<globjects::Buffer> g_vertexBuffer1 = nullptr;
+    std::unique_ptr<globjects::Buffer> g_vertexBuffer2 = nullptr;
+    std::unique_ptr<globjects::Buffer> g_colorBuffer = nullptr;
 
     std::chrono::high_resolution_clock::time_point g_startTime;
 
@@ -51,16 +63,27 @@ namespace
 
 void initialize()
 {
-    g_shaderProgram = new globjects::Program();
-    
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
-    g_shaderProgram->attach(
-        globjects::Shader::fromFile(GL_VERTEX_SHADER,   dataPath + "transformfeedback/simple.vert")
-      , globjects::Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "transformfeedback/simple.frag"));
 
-    g_transformFeedbackProgram = new globjects::Program();
-    g_transformFeedbackProgram->attach(
-        globjects::Shader::fromFile(GL_VERTEX_SHADER, dataPath + "transformfeedback/transformfeedback.vert"));
+    g_shaderProgram = std::unique_ptr<globjects::Program>(new globjects::Program());
+
+    g_vertexShaderSource = globjects::Shader::sourceFromFile(dataPath + "transformfeedback/simple.vert");
+    g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
+    g_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_vertexShaderTemplate.get()));
+
+    g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "transformfeedback/simple.frag");
+    g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
+    g_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get()));
+
+    g_shaderProgram->attach(g_vertexShader.get(), g_fragmentShader.get());
+
+    g_transformFeedbackProgram = std::unique_ptr<globjects::Program>(new globjects::Program());
+
+    g_feedbackShaderSource = globjects::Shader::sourceFromFile(dataPath + "transformfeedback/transformfeedback.vert");
+    g_feedbackShaderTemplate = globjects::Shader::applyGlobalReplacements(g_feedbackShaderSource.get());
+    g_feedbackShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_feedbackShaderTemplate.get()));
+
+    g_transformFeedbackProgram->attach(g_feedbackShader.get());
 
     g_transformFeedbackProgram->setUniform("deltaT", 0.0f);
 
@@ -85,20 +108,20 @@ void initialize()
       , { 0, 0, 1, 1 }
       , { 0, 1, 0, 1 } });
 
-    g_vertexBuffer1 = new globjects::Buffer();
+    g_vertexBuffer1 = std::unique_ptr<globjects::Buffer>(new globjects::Buffer());
     g_vertexBuffer1->setData(vertexArray, GL_STATIC_DRAW);
-    g_vertexBuffer2 = new globjects::Buffer();
+    g_vertexBuffer2 = std::unique_ptr<globjects::Buffer>(new globjects::Buffer());
     g_vertexBuffer2->setData(vertexArray, GL_STATIC_DRAW);
-    g_colorBuffer = new globjects::Buffer();
+    g_colorBuffer = std::unique_ptr<globjects::Buffer>(new globjects::Buffer());
     g_colorBuffer->setData(colorArray, GL_STATIC_DRAW);
 
-    g_vao = new globjects::VertexArray();
+    g_vao = std::unique_ptr<globjects::VertexArray>(new globjects::VertexArray());
 
     g_vao->binding(0)->setAttribute(0);
     g_vao->binding(0)->setFormat(4, GL_FLOAT);
 
     g_vao->binding(1)->setAttribute(1);
-    g_vao->binding(1)->setBuffer(g_colorBuffer, 0, sizeof(glm::vec4));
+    g_vao->binding(1)->setBuffer(g_colorBuffer.get(), 0, sizeof(glm::vec4));
     g_vao->binding(1)->setFormat(4, GL_FLOAT);
 
     g_vao->enable(0);
@@ -106,8 +129,8 @@ void initialize()
 
 
     // Create and setup TransformFeedback
-    g_transformFeedback = new globjects::TransformFeedback();
-    g_transformFeedback->setVaryings(g_transformFeedbackProgram, { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
+    g_transformFeedback = std::unique_ptr<globjects::TransformFeedback>(new globjects::TransformFeedback());
+    g_transformFeedback->setVaryings(g_transformFeedbackProgram.get(), { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
 
 
     g_startTime = std::chrono::high_resolution_clock::now();
@@ -127,8 +150,8 @@ void draw()
     const auto t_elapsed = std::chrono::high_resolution_clock::now() - g_startTime;
     g_startTime = std::chrono::high_resolution_clock::now();
 
-    auto drawBuffer  = g_vertexBuffer1;
-    auto writeBuffer = g_vertexBuffer2;
+    auto drawBuffer  = g_vertexBuffer1.get();
+    auto writeBuffer = g_vertexBuffer2.get();
 
     g_vao->bind();
 

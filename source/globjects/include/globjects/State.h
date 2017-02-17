@@ -29,6 +29,8 @@ public:
 public:
     State(Mode = ImmediateMode);
 
+    virtual ~State();
+
     static State * currentState();
 
     void setMode(Mode mode);
@@ -43,7 +45,7 @@ public:
     virtual void disable(gl::GLenum capability, int index) override;
     virtual bool isEnabled(gl::GLenum capability, int index) const override;
 
-    virtual void add(StateSetting * setting) override;
+    virtual void add(std::unique_ptr<StateSetting> && setting) override;
 
     Capability * capability(gl::GLenum capability);
     const Capability * capability(gl::GLenum capability) const;
@@ -55,16 +57,14 @@ public:
     std::vector<const StateSetting *> settings() const;
 
 protected:
-    void addCapability(Capability * capability);
+    void addCapability(std::unique_ptr<Capability> && capability);
     Capability * getCapability(gl::GLenum capability);
     const Capability * getCapability(gl::GLenum capability) const;
 
 protected:
-    virtual ~State();
-
     Mode m_mode;
-    std::unordered_map<gl::GLenum, Capability *> m_capabilities;
-    std::unordered_map<StateSettingType, StateSetting *> m_settings;
+    std::unordered_map<gl::GLenum, std::unique_ptr<Capability>> m_capabilities;
+    std::unordered_map<StateSettingType, std::unique_ptr<StateSetting>> m_settings;
 };
 
 

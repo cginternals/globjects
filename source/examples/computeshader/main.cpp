@@ -37,9 +37,22 @@ using namespace gl;
 
 namespace
 {
-    globjects::Texture * g_texture = nullptr;
-    globjects::Program * g_computeProgram = nullptr;
-    ScreenAlignedQuad * g_quad = nullptr;
+    std::unique_ptr<globjects::Texture> g_texture = nullptr;
+
+    std::unique_ptr<globjects::Program> g_program = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
+
+    std::unique_ptr<ScreenAlignedQuad> g_quad = nullptr;
+
+    std::unique_ptr<globjects::Program> g_computeProgram = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_shaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_shaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_shader = nullptr;
 
     auto g_frame = 0u;
     auto g_size = glm::ivec2{ };
@@ -48,19 +61,34 @@ namespace
 
 void initialize()
 {
+    const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
+
     g_texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
     g_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
     g_texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
     g_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     g_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    g_computeProgram = new globjects::Program();
+    g_computeProgram = std::unique_ptr<globjects::Program>(new globjects::Program());
+    g_shaderSource = globjects::Shader::sourceFromFile(dataPath + "computeshader/cstest.comp");
+    g_shaderTemplate = globjects::Shader::applyGlobalReplacements(g_shaderSource.get());
+    g_shader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_COMPUTE_SHADER, g_shaderTemplate.get()));
 
-    const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
-    g_computeProgram->attach(globjects::Shader::fromFile(GL_COMPUTE_SHADER, dataPath + "computeshader/cstest.comp"));
+    g_computeProgram->attach(g_shader.get());
     g_computeProgram->setUniform("destTex", 0);
 
-    g_quad = new ScreenAlignedQuad(g_texture);
+    g_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
+    g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
+    g_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_vertexShaderTemplate.get()));
+
+    g_fragmentShaderSource = ScreenAlignedQuad::fragmentShaderSource();
+    g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
+    g_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get()));
+
+    g_program = std::unique_ptr<globjects::Program>(new globjects::Program);
+    g_program->attach(g_vertexShader.get(), g_fragmentShader.get());
+
+    g_quad = std::unique_ptr<ScreenAlignedQuad>(new ScreenAlignedQuad(g_program.get(), g_texture.get()));
     g_quad->setSamplerUniform(0);
 }
 

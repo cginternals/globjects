@@ -91,7 +91,7 @@ int main(int /*argc*/, char * /*argv*/[])
     std::cout << "Test Logging of globjects objects:" << std::endl;
     auto buffer = new Buffer();
     std::cout << "  Buffer                : "; info() << buffer;
-    std::cout << "  Framebuffer           : "; info() << Framebuffer::defaultFBO();
+    std::cout << "  Framebuffer           : "; info() << Framebuffer::defaultFBO().get();
     auto program = new Program();
     std::cout << "  Program               : "; info() << program;
     auto query = new Query();

@@ -94,6 +94,8 @@ public:
     Program();
     Program(std::unique_ptr<ProgramBinary> && binary);
 
+    virtual ~Program();
+
     virtual void accept(ObjectVisitor & visitor) override;
 
     void use() const;
@@ -201,8 +203,6 @@ public:
     virtual gl::GLenum objectType() const override;
 
 protected:
-    virtual ~Program();
-
     bool checkLinkStatus() const;
     void checkDirty() const;
 

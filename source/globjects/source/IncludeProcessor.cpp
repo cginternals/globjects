@@ -213,13 +213,13 @@ void IncludeProcessor::processInclude(std::string & include, CompositeStringSour
     NamedString * namedString = nullptr;
     if (startsWith(include, '/'))
     {
-        namedString = NamedString::obtain(include);
+        namedString = NamedString::getFromRegistry(include);
     }
     else
     {
         for (const std::string & prefix : m_includePaths)
         {
-            namedString = NamedString::obtain(expandPath(include, prefix));
+            namedString = NamedString::getFromRegistry(expandPath(include, prefix));
             if (namedString)
             {
                 break;

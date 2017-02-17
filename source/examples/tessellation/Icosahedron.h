@@ -40,6 +40,8 @@ public:
     ,   const gl::GLint positionLocation = 0
     ,   const gl::GLint normalLocation = 1);
 
+    virtual ~Icosahedron();
+
     /** draws the icosahedron as single triangles (TODO: generate set of triangle strips?)
     */
     void draw();
@@ -55,9 +57,6 @@ protected:
     ,   gl::GLushort b
     ,   std::vector<glm::vec3> & points
     ,   std::unordered_map<glm::uint, gl::GLushort> & cache);
-
-protected:
-    virtual ~Icosahedron();
 
 protected:
     globjects::VertexArray * m_vao;

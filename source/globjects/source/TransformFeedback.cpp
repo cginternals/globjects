@@ -20,7 +20,7 @@ namespace globjects
 
 
 TransformFeedback::TransformFeedback()
-: Object(new TransformFeedbackResource)
+: Object(std::unique_ptr<IDResource>(new TransformFeedbackResource))
 {
 }
 

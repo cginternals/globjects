@@ -16,18 +16,18 @@ namespace globjects
 
 
 Sampler::Sampler()
-: Object(new SamplerResource)
+: Object(std::unique_ptr<IDResource>(new SamplerResource))
 {
 }
 
-Sampler::Sampler(IDResource * resource)
-: Object(resource)
+Sampler::Sampler(std::unique_ptr<IDResource> && resource)
+: Object(std::move(resource))
 {
 }
 
-Sampler * Sampler::fromId(const GLuint id)
+std::unique_ptr<Sampler> Sampler::fromId(const GLuint id)
 {
-    return new Sampler(new ExternalResource(id));
+    return std::unique_ptr<Sampler>(new Sampler(std::unique_ptr<IDResource>(new ExternalResource(id))));
 }
 
 Sampler::~Sampler()

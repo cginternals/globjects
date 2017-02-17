@@ -54,48 +54,11 @@ void main()
 }
 )";
 
-ScreenAlignedQuad::ScreenAlignedQuad(
-    Shader * fragmentShader
-,   Texture * texture)
-:   m_vertexShader  (nullptr)
-,   m_fragmentShader(fragmentShader)
-,   m_program(new Program())
+ScreenAlignedQuad::ScreenAlignedQuad(globjects::Program * program, globjects::Texture * texture)
+:   m_program(program)
 ,   m_texture(texture)
 ,   m_samplerIndex(0)
 {
-    
-    StringTemplate * vertexShaderSource   = new StringTemplate(new StaticStringSource(s_defaultVertexShaderSource));
-    StringTemplate * fragmentShaderSource = new StringTemplate(new StaticStringSource(s_defaultFagmentShaderSource));
-    
-    m_vertexShader   = new Shader(GL_VERTEX_SHADER, vertexShaderSource);
-    
-    if (!m_fragmentShader)
-        m_fragmentShader = new Shader(GL_FRAGMENT_SHADER, fragmentShaderSource);
-
-    m_program->attach(m_vertexShader, m_fragmentShader);
-
-    initialize();
-}
-
-ScreenAlignedQuad::ScreenAlignedQuad(Shader * fragmentShader)
-:   ScreenAlignedQuad(fragmentShader, nullptr)
-{
-}
-
-ScreenAlignedQuad::ScreenAlignedQuad(Texture * texture)
-:   ScreenAlignedQuad(nullptr, texture)
-{
-}
-
-ScreenAlignedQuad::ScreenAlignedQuad(Program * program)
-:   m_vertexShader(nullptr)
-,   m_fragmentShader(nullptr)
-,   m_program(program)
-,   m_texture(nullptr)
-,   m_samplerIndex(0)
-{
-    assert(program != nullptr);
-
     initialize();
 }
 
@@ -106,14 +69,14 @@ void ScreenAlignedQuad::initialize()
 
     static const std::array<vec2, 4> raw { { vec2(+1.f,-1.f), vec2(+1.f,+1.f), vec2(-1.f,-1.f), vec2(-1.f,+1.f) } };
 
-    m_vao = new VertexArray;
+    m_vao = std::unique_ptr<VertexArray>(new VertexArray);
 
-    m_buffer = new Buffer();
+    m_buffer = std::unique_ptr<Buffer>(new Buffer());
     m_buffer->setData(raw, GL_STATIC_DRAW); //needed for some drivers
 
     auto binding = m_vao->binding(0);
     binding->setAttribute(0);
-    binding->setBuffer(m_buffer, 0, sizeof(vec2));
+    binding->setBuffer(m_buffer.get(), 0, sizeof(vec2));
     binding->setFormat(2, GL_FLOAT, GL_FALSE, 0);
     m_vao->enable(0);
 
@@ -152,12 +115,12 @@ Program * ScreenAlignedQuad::program()
     return m_program;
 }
 
-Shader * ScreenAlignedQuad::vertexShader()
+std::unique_ptr<AbstractStringSource> ScreenAlignedQuad::vertexShaderSource()
 {
-    return m_vertexShader;
+    return Shader::sourceFromString(s_defaultVertexShaderSource);
 }
 
-Shader * ScreenAlignedQuad::fragmentShader()
+std::unique_ptr<AbstractStringSource> ScreenAlignedQuad::fragmentShaderSource()
 {
-    return m_fragmentShader;
+    return Shader::sourceFromString(s_defaultFagmentShaderSource);
 }

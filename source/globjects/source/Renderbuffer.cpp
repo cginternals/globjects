@@ -16,7 +16,7 @@ namespace globjects
 
 
 Renderbuffer::Renderbuffer()
-: Object(new RenderBufferObjectResource)
+: Object(std::unique_ptr<IDResource>(new RenderBufferObjectResource))
 {
 }
 

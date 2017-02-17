@@ -33,8 +33,10 @@ public:
 public:
     VertexArray();
 
-    static VertexArray * fromId(gl::GLuint id);
-    static VertexArray * defaultVAO();
+    virtual ~VertexArray();
+
+    static std::unique_ptr<VertexArray> fromId(gl::GLuint id);
+    static std::unique_ptr<VertexArray> defaultVAO();
 
     virtual void accept(ObjectVisitor & visitor) override;
 
@@ -101,8 +103,7 @@ public:
     virtual gl::GLenum objectType() const override;
 
 protected:
-    VertexArray(IDResource * resource);
-    virtual ~VertexArray();
+    VertexArray(std::unique_ptr<IDResource> && resource);
 
 protected:
     std::map<gl::GLuint, std::unique_ptr<VertexAttributeBinding>> m_bindings;

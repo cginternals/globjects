@@ -15,6 +15,8 @@
 
 #include <globjects/globjects.h>
 #include <globjects/NamedString.h>
+#include <globjects/base/AbstractStringSource.h>
+#include <globjects/NamedString.h>
 #include <globjects/Shader.h>
 #include <globjects/logging.h>
 #include <globjects/base/File.h>
@@ -28,8 +30,18 @@ using namespace gl;
 
 namespace
 {
+    std::unique_ptr<globjects::Program> g_program = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
 
-    ScreenAlignedQuad * g_quad = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_namedStringSource = nullptr;
+    std::unique_ptr<globjects::NamedString> g_namedString = nullptr;
+
+    std::unique_ptr<ScreenAlignedQuad> g_quad = nullptr;
 
     auto g_size = glm::ivec2{};
 }
@@ -38,9 +50,22 @@ namespace
 void initialize()
 {
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
-    globjects::NamedString::create("/color.glsl", new globjects::File(dataPath + "shaderincludes/color.glsl"));
 
-    g_quad = new ScreenAlignedQuad(globjects::Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "shaderincludes/test.frag"));
+    g_namedStringSource = std::unique_ptr<globjects::AbstractStringSource>(new globjects::File(dataPath + "shaderincludes/color.glsl"));
+    g_namedString = globjects::NamedString::create("/color.glsl", g_namedStringSource.get());
+
+    g_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
+    g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
+    g_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_vertexShaderTemplate.get()));
+
+    g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "shaderincludes/test.frag");
+    g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
+    g_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get()));
+
+    g_program = std::unique_ptr<globjects::Program>(new globjects::Program);
+    g_program->attach(g_vertexShader.get(), g_fragmentShader.get());
+
+    g_quad = std::unique_ptr<ScreenAlignedQuad>(new ScreenAlignedQuad(g_program.get()));
 }
 
 void deinitialize()

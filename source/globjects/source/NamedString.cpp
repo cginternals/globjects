@@ -131,26 +131,9 @@ GLint NamedString::getParameter(const GLenum pname) const
     }
 }
 
-NamedString * NamedString::obtain(const std::string & name)
+NamedString * NamedString::getFromRegistry(const std::string & name)
 {
-    NamedString * namedString = NamedStringRegistry::current().namedString(name);
-
-    if (!namedString && hasNativeSupport() && isNamedString(name))
-    {
-        GLint type;
-        GLint length;
-
-        glGetNamedStringivARB(static_cast<GLint>(name.size()), name.c_str(), GL_NAMED_STRING_TYPE_ARB, &type);
-        glGetNamedStringivARB(static_cast<GLint>(name.size()), name.c_str(), GL_NAMED_STRING_LENGTH_ARB, &length);
-
-        std::vector<char> string(length);
-
-        glGetNamedStringARB(static_cast<GLint>(name.size()), name.c_str(), length, nullptr, string.data());
-
-        namedString = create(name, std::string(string.data(), string.size()), static_cast<GLenum>(type));
-    }
-
-    return namedString;
+    return NamedStringRegistry::current().namedString(name);
 }
 
 const std::string & NamedString::name() const

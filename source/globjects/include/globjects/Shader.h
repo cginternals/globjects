@@ -53,23 +53,26 @@ public:
     static void hintIncludeImplementation(IncludeImplementation impl);
 
 public:
-    static Shader * fromString(const gl::GLenum type, const std::string & sourceString, const IncludePaths & includePaths = IncludePaths());
-    static Shader * fromFile(const gl::GLenum type, const std::string & filename, const IncludePaths & includePaths = IncludePaths());
+    Shader(const gl::GLenum type, AbstractStringSource * source, const IncludePaths & includePaths = IncludePaths());
 
     static void globalReplace(const std::string & search, const std::string & replacement);
     static void globalReplace(const std::string & search, int i);
     static void clearGlobalReplacements();
 
+    static std::unique_ptr<AbstractStringSource> sourceFromString(const std::string & sourceString);
+    static std::unique_ptr<AbstractStringSource> sourceFromFile(const std::string & filename);
+    static std::unique_ptr<AbstractStringSource> applyGlobalReplacements(AbstractStringSource * source);
+
 public:
     Shader(const gl::GLenum type);
-    Shader(const gl::GLenum type, AbstractStringSource * source, const IncludePaths & includePaths = IncludePaths());
+
+    virtual ~Shader();
 
     virtual void accept(ObjectVisitor& visitor) override;
 
     gl::GLenum type() const;
 
     void setSource(AbstractStringSource * source);
-    void setSource(const std::string & source);
     const AbstractStringSource* source() const;
     void updateSource();
 
@@ -92,7 +95,6 @@ public:
     static std::string typeString(gl::GLenum type);
 
 protected:
-    virtual ~Shader();
 
     virtual void notifyChanged(const Changeable * changeable) override;
 

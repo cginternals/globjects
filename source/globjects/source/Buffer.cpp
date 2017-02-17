@@ -47,18 +47,18 @@ void Buffer::setWorkingTarget(GLenum target)
 
 
 Buffer::Buffer()
-: Buffer(new BufferResource)
+: Buffer(std::unique_ptr<IDResource>(new BufferResource))
 {
 }
 
-Buffer::Buffer(IDResource * resource)
-: Object(resource)
+Buffer::Buffer(std::unique_ptr<IDResource> && resource)
+: Object(std::move(resource))
 {
 }
 
 Buffer * Buffer::fromId(const GLuint id)
 {
-    return new Buffer(new ExternalResource(id));
+    return new Buffer(std::unique_ptr<IDResource>(new ExternalResource(id)));
 }
 
 Buffer::~Buffer()

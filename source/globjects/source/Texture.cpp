@@ -54,20 +54,20 @@ Texture::Texture()
 }
 
 Texture::Texture(const GLenum target)
-: Object(new TextureResource(target))
+: Object(std::unique_ptr<IDResource>(new TextureResource(target)))
 , m_target(target)
 {
 }
 
-Texture::Texture(IDResource * resource, const GLenum target)
-: Object(resource)
+Texture::Texture(std::unique_ptr<IDResource> && resource, const GLenum target)
+: Object(std::move(resource))
 , m_target(target)
 {
 }
 
-Texture * Texture::fromId(const GLuint id, const GLenum target)
+std::unique_ptr<Texture> Texture::fromId(const GLuint id, const GLenum target)
 {
-    return new Texture(new ExternalResource(id), target);
+    return std::unique_ptr<Texture>(new Texture(std::unique_ptr<IDResource>(new ExternalResource(id)), target));
 }
 
 
@@ -75,14 +75,14 @@ Texture::~Texture()
 {
 }
 
-Texture * Texture::createDefault()
+std::unique_ptr<Texture> Texture::createDefault()
 {
     return createDefault(GL_TEXTURE_2D);
 }
 
-Texture * Texture::createDefault(const GLenum target)
+std::unique_ptr<Texture> Texture::createDefault(const GLenum target)
 {
-    Texture* texture = new Texture(target);
+    auto texture = std::unique_ptr<Texture>(new Texture(target));
 
     texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);

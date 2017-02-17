@@ -38,12 +38,12 @@ namespace globjects
 
 
 VertexArray::VertexArray()
-: Object(new VertexArrayObjectResource)
+: Object(std::unique_ptr<IDResource>(new VertexArrayObjectResource))
 {
 }
 
-VertexArray::VertexArray(IDResource * resource)
-: Object(resource)
+VertexArray::VertexArray(std::unique_ptr<IDResource> && resource)
+: Object(std::move(resource))
 {
 }
 
@@ -52,14 +52,14 @@ void VertexArray::hintAttributeImplementation(const AttributeImplementation impl
     ImplementationRegistry::current().initialize(impl);
 }
 
-VertexArray * VertexArray::fromId(const GLuint id)
+std::unique_ptr<VertexArray> VertexArray::fromId(const GLuint id)
 {
-    return new VertexArray(new ExternalResource(id));
+    return std::unique_ptr<VertexArray>(new VertexArray(std::unique_ptr<IDResource>(new ExternalResource(id))));
 }
 
-VertexArray * VertexArray::defaultVAO()
+std::unique_ptr<VertexArray> VertexArray::defaultVAO()
 {
-    return ObjectRegistry::current().defaultVAO();
+    return VertexArray::fromId(0);
 }
 
 VertexArray::~VertexArray()

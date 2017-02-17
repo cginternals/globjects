@@ -1,6 +1,9 @@
 #pragma once
 
 
+#include <memory>
+
+
 namespace globjects
 {
 
@@ -9,6 +12,7 @@ class Program;
 class Buffer;
 class Texture;
 class Shader;
+class AbstractStringSource;
 
 }
 
@@ -16,18 +20,14 @@ class Shader;
 class ScreenAlignedQuad
 {
 public:
-    ScreenAlignedQuad(globjects::Shader * fragmentShader, globjects::Texture * texture);
+    ScreenAlignedQuad(globjects::Program * program, globjects::Texture * texture = nullptr);
 
-    ScreenAlignedQuad(globjects::Texture * texture);
-    ScreenAlignedQuad(globjects::Shader  * fragmentShader);
-    ScreenAlignedQuad(globjects::Program * program);
+    static std::unique_ptr<globjects::AbstractStringSource> vertexShaderSource();
+    static std::unique_ptr<globjects::AbstractStringSource> fragmentShaderSource();
 
     void draw();
 
     globjects::Program * program();
-
-    globjects::Shader * vertexShader();
-    globjects::Shader * fragmentShader();
 
     void setTexture(globjects::Texture * texture);
 
@@ -37,12 +37,8 @@ protected:
     void initialize();
 
 protected:
-    globjects::VertexArray * m_vao;
-
-    globjects::Buffer * m_buffer;
-
-    globjects::Shader * m_vertexShader;
-    globjects::Shader * m_fragmentShader;
+    std::unique_ptr<globjects::VertexArray> m_vao;
+    std::unique_ptr<globjects::Buffer> m_buffer;
 
     globjects::Program * m_program;
     globjects::Texture * m_texture;

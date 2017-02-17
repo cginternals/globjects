@@ -48,23 +48,23 @@ void Framebuffer::hintBindlessImplementation(const BindlessImplementation impl)
 }
 
 Framebuffer::Framebuffer()
-: Object(new FrameBufferObjectResource)
+: Object(std::unique_ptr<IDResource>(new FrameBufferObjectResource))
 {
 }
 
-Framebuffer::Framebuffer(IDResource * resource)
-: Object(resource)
+Framebuffer::Framebuffer(std::unique_ptr<IDResource> && resource)
+: Object(std::move(resource))
 {
 }
 
-Framebuffer * Framebuffer::fromId(const GLuint id)
+std::unique_ptr<Framebuffer> Framebuffer::fromId(const GLuint id)
 {
-    return new Framebuffer(new ExternalResource(id));
+    return std::unique_ptr<Framebuffer>(new Framebuffer(std::unique_ptr<IDResource>(new ExternalResource(id))));
 }
 
-Framebuffer * Framebuffer::defaultFBO()
+std::unique_ptr<Framebuffer> Framebuffer::defaultFBO()
 {
-    return ObjectRegistry::current().defaultFBO();
+    return Framebuffer::fromId(0);
 }
 
 Framebuffer::~Framebuffer()

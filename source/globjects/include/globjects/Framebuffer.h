@@ -56,9 +56,12 @@ public:
 
 public:
     Framebuffer();
-    static Framebuffer * fromId(gl::GLuint id);
 
-    static Framebuffer * defaultFBO();
+    virtual ~Framebuffer();
+
+    static std::unique_ptr<Framebuffer> fromId(gl::GLuint id);
+
+    static std::unique_ptr<Framebuffer> defaultFBO();
 
     virtual void accept(ObjectVisitor& visitor) override;
 
@@ -125,8 +128,7 @@ public:
     virtual gl::GLenum objectType() const override;
 
 protected:
-    Framebuffer(IDResource * resource);
-    virtual ~Framebuffer();
+    Framebuffer(std::unique_ptr<IDResource> && resource);
 
     void addAttachment(std::unique_ptr<FramebufferAttachment> && attachment);
 

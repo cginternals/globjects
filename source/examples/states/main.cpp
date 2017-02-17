@@ -32,16 +32,23 @@ using namespace gl;
 
 namespace 
 {
-    globjects::Program * g_shaderProgram = nullptr;
-    globjects::VertexArray * g_vao = nullptr;
-    globjects::Buffer * g_buffer = nullptr;
-    globjects::State * g_thinnestPointSizeState = nullptr;
-    globjects::State * g_thinPointSizeState = nullptr;
-    globjects::State * g_normalPointSizeState = nullptr;
-    globjects::State * g_thickPointSizeState = nullptr;
-    globjects::State * g_disableRasterizerState = nullptr;
-    globjects::State * g_enableRasterizerState = nullptr;
-    globjects::State * g_defaultPointSizeState = nullptr;
+    std::unique_ptr<globjects::Program> g_shaderProgram = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
+
+    std::unique_ptr<globjects::VertexArray> g_vao = nullptr;
+    std::unique_ptr<globjects::Buffer> g_buffer = nullptr;
+    std::unique_ptr<globjects::State> g_thinnestPointSizeState = nullptr;
+    std::unique_ptr<globjects::State> g_thinPointSizeState = nullptr;
+    std::unique_ptr<globjects::State> g_normalPointSizeState = nullptr;
+    std::unique_ptr<globjects::State> g_thickPointSizeState = nullptr;
+    std::unique_ptr<globjects::State> g_disableRasterizerState = nullptr;
+    std::unique_ptr<globjects::State> g_enableRasterizerState = nullptr;
+    std::unique_ptr<globjects::State> g_defaultPointSizeState = nullptr;
 
     auto g_size = glm::ivec2{};
 }
@@ -50,30 +57,37 @@ namespace
 void initialize()
 {
     // Initialize OpenGL objects
-    g_defaultPointSizeState = new globjects::State();
+    g_defaultPointSizeState = std::unique_ptr<globjects::State>(new globjects::State());
     g_defaultPointSizeState->pointSize(globjects::getFloat(GL_POINT_SIZE));
-    g_thinnestPointSizeState = new globjects::State();
+    g_thinnestPointSizeState = std::unique_ptr<globjects::State>(new globjects::State());
     g_thinnestPointSizeState->pointSize(2.0f);
-    g_thinPointSizeState = new globjects::State();
+    g_thinPointSizeState = std::unique_ptr<globjects::State>(new globjects::State());
     g_thinPointSizeState->pointSize(5.0f);
-    g_normalPointSizeState = new globjects::State();
+    g_normalPointSizeState = std::unique_ptr<globjects::State>(new globjects::State());
     g_normalPointSizeState->pointSize(10.0f);
-    g_thickPointSizeState = new globjects::State();
+    g_thickPointSizeState = std::unique_ptr<globjects::State>(new globjects::State());
     g_thickPointSizeState->pointSize(20.0f);
-    g_disableRasterizerState = new globjects::State();
+    g_disableRasterizerState = std::unique_ptr<globjects::State>(new globjects::State());
     g_disableRasterizerState->enable(GL_RASTERIZER_DISCARD);
-    g_enableRasterizerState = new globjects::State();
+    g_enableRasterizerState = std::unique_ptr<globjects::State>(new globjects::State());
     g_enableRasterizerState->disable(GL_RASTERIZER_DISCARD);
 
-    g_vao = new globjects::VertexArray();
-    g_buffer = new globjects::Buffer();
+    g_vao = std::unique_ptr<globjects::VertexArray>(new globjects::VertexArray());
+    g_buffer = std::unique_ptr<globjects::Buffer>(new globjects::Buffer());
 
-    g_shaderProgram = new globjects::Program();
+    g_shaderProgram = std::unique_ptr<globjects::Program>(new globjects::Program());
 
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
-    g_shaderProgram->attach(
-        globjects::Shader::fromFile(GL_VERTEX_SHADER, dataPath + "states/standard.vert")
-      , globjects::Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "states/standard.frag"));
+
+    g_vertexShaderSource = globjects::Shader::sourceFromFile(dataPath + "states/standard.vert");
+    g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
+    g_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_vertexShaderTemplate.get()));
+
+    g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "states/standard.frag");
+    g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
+    g_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get()));
+
+    g_shaderProgram->attach(g_vertexShader.get(), g_fragmentShader.get());
     
     static auto data = std::vector<glm::vec2>(); 
     if (data.empty())
@@ -85,7 +99,7 @@ void initialize()
     g_buffer->setData(data, GL_STATIC_DRAW );
 
     g_vao->binding(0)->setAttribute(0);
-    g_vao->binding(0)->setBuffer(g_buffer, 0, sizeof(glm::vec2));
+    g_vao->binding(0)->setBuffer(g_buffer.get(), 0, sizeof(glm::vec2));
     g_vao->binding(0)->setFormat(2, GL_FLOAT);
     g_vao->enable(0);
 }
