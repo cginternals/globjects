@@ -92,7 +92,6 @@ set(headers
     ${include_path}/base/formatString.inl
     ${include_path}/base/FunctionCall.h
     ${include_path}/base/FunctionCall.inl
-    ${include_path}/base/HeapOnly.h
     ${include_path}/base/LogMessageBuilder.h
     ${include_path}/base/LogMessageBuilder.inl
     ${include_path}/base/LogMessage.h
@@ -131,7 +130,6 @@ set(sources
     ${source_path}/base/FileRegistry.cpp
     ${source_path}/base/FileRegistry.h
     ${source_path}/base/formatString.cpp
-    ${source_path}/base/HeapOnly.cpp
     ${source_path}/base/LogMessageBuilder.cpp
     ${source_path}/base/LogMessage.cpp
     ${source_path}/base/StaticStringSource.cpp
