@@ -17,34 +17,34 @@ namespace globjects
 {
 
 
-NamedString * NamedString::create(const std::string & name, AbstractStringSource * source)
+std::unique_ptr<NamedString> NamedString::create(const std::string & name, AbstractStringSource * source)
 {
     return create(name, source, GL_SHADER_INCLUDE_ARB);
 }
 
-NamedString * NamedString::create(const std::string & name, const std::string & string)
+std::unique_ptr<NamedString> NamedString::create(const std::string & name, const std::string & string)
 {
     return create(name, string, GL_SHADER_INCLUDE_ARB);
 }
 
-NamedString * NamedString::create(const std::string & name, AbstractStringSource * source, const GLenum type)
+std::unique_ptr<NamedString> NamedString::create(const std::string & name, AbstractStringSource * source, const GLenum type)
 {
     if (isNamedString(name))
     {
         return nullptr;
     }
 
-    return new NamedString(name, source, type);
+    return std::unique_ptr<NamedString>(new NamedString(name, source, type));
 }
 
-NamedString * NamedString::create(const std::string & name, const std::string & string, const GLenum type)
+std::unique_ptr<NamedString> NamedString::create(const std::string & name, const std::string & string, const GLenum type)
 {
     if (isNamedString(name))
     {
         return nullptr;
     }
 
-    return new NamedString(name, new StaticStringSource(string), type);
+    return std::unique_ptr<NamedString>(new NamedString(name, new StaticStringSource(string), type));
 }
 
 NamedString::NamedString(const std::string & name, AbstractStringSource * source, const GLenum type)

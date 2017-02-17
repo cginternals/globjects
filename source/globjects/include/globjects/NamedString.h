@@ -2,6 +2,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include <glbinding/gl/types.h>
 
@@ -19,8 +20,10 @@ class AbstractStringSource;
 class GLOBJECTS_API NamedString : protected ChangeListener
 {
 public:
-    static NamedString * create(const std::string & name, AbstractStringSource * string);
-    static NamedString * create(const std::string & name, const std::string & string);
+    static std::unique_ptr<NamedString> create(const std::string & name, AbstractStringSource * string);
+    static std::unique_ptr<NamedString> create(const std::string & name, const std::string & string);
+
+    virtual ~NamedString();
 
     static bool isNamedString(const std::string & name);
     static NamedString * obtain(const std::string & name);
@@ -39,8 +42,8 @@ public:
 protected:
     static bool hasNativeSupport();
 
-    static NamedString * create(const std::string & name, AbstractStringSource * string, gl::GLenum type);
-    static NamedString * create(const std::string & name, const std::string & string, gl::GLenum type);
+    static std::unique_ptr<NamedString> create(const std::string & name, AbstractStringSource * string, gl::GLenum type);
+    static std::unique_ptr<NamedString> create(const std::string & name, const std::string & string, gl::GLenum type);
 
 protected:
     void updateString();
@@ -49,8 +52,6 @@ protected:
     void deleteNamedString();
 
     NamedString(const std::string & name, AbstractStringSource * source, gl::GLenum type);
-
-    virtual ~NamedString();
 
     void registerNamedString();
     void deregisterNamedString();
