@@ -7,6 +7,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -62,7 +63,7 @@ namespace globjects
     \see http://www.opengl.org/wiki/Query_Object
     \see http://www.opengl.org/registry/specs/ARB/timer_query.txt
  */
-class GLOBJECTS_API Query : public Object
+class GLOBJECTS_API Query : public Object, public Instantiator<Query>
 {
 public:
     Query();

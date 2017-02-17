@@ -5,6 +5,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/AbstractUniform.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -33,7 +34,7 @@ namespace globjects
  * \see http://www.opengl.org/wiki/Uniform
  */
 template<typename T>
-class Uniform : public AbstractUniform
+class Uniform : public AbstractUniform, public Instantiator<Uniform<T>>
 {
 public:
     Uniform(gl::GLint location);

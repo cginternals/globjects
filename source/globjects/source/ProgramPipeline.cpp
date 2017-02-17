@@ -8,7 +8,7 @@
 #include <globjects/Program.h>
 #include <globjects/ObjectVisitor.h>
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 
 namespace globjects

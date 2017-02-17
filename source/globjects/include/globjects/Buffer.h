@@ -8,6 +8,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -32,7 +33,7 @@ namespace globjects
     
     \see http://www.opengl.org/wiki/Buffer_Object
 */
-class GLOBJECTS_API Buffer : public Object
+class GLOBJECTS_API Buffer : public Object, public Instantiator<Buffer>
 {
 public:
     enum class BindlessImplementation

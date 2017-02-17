@@ -11,7 +11,7 @@
 
 #include "registry/ImplementationRegistry.h"
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 #include "implementations/BufferImplementation_Legacy.h"
 

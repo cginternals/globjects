@@ -32,7 +32,7 @@ namespace globjects
 
 
 StringTemplate::StringTemplate(AbstractStringSource * source)
-: StringSourceDecorator(source)
+: AbstractStringSourceDecorator(source)
 , m_modifiedSourceValid(false)
 {
 }

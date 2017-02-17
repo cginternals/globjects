@@ -16,6 +16,7 @@
 #include <globjects/Object.h>
 #include <globjects/LocationIdentity.h>
 #include <globjects/UniformBlock.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -75,7 +76,7 @@ class Uniform;
     \see http://www.opengl.org/wiki/Program_Object
     \see Shader
  */
-class GLOBJECTS_API Program : public Object, protected ChangeListener, public Changeable
+class GLOBJECTS_API Program : public Object, protected ChangeListener, public Changeable, public Instantiator<Program>
 {
     friend class UniformBlock;
     friend class ProgramBinaryImplementation_GetProgramBinaryARB;

@@ -11,6 +11,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -42,7 +43,7 @@ class Buffer;
     \see TextureAttachment
     \see RenderBufferAttachment
  */
-class GLOBJECTS_API Framebuffer : public Object
+class GLOBJECTS_API Framebuffer : public Object, public Instantiator<Framebuffer>
 {
 public:
     enum class BindlessImplementation

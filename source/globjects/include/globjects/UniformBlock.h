@@ -5,6 +5,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/LocationIdentity.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -13,7 +14,7 @@ namespace globjects
 
 class Program;
 
-class GLOBJECTS_API UniformBlock
+class GLOBJECTS_API UniformBlock : public Instantiator<UniformBlock>
 {
     friend class Program;
 public:

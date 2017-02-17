@@ -7,12 +7,14 @@
 
 #include <globjects/globjects_api.h>
 
+#include <globjects/base/Instantiator.h>
+
 
 namespace globjects
 {
 
 
-class GLOBJECTS_API Sync
+class GLOBJECTS_API Sync : public Instantiator<Sync>
 {
     friend class AbstractObjectNameImplementation;
 

@@ -5,6 +5,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -15,7 +16,7 @@ namespace globjects
         
     \see http://www.opengl.org/wiki/Sampler_Object
  */
-class GLOBJECTS_API Sampler : public Object
+class GLOBJECTS_API Sampler : public Object, public Instantiator<Sampler>
 {
 public:
     Sampler();

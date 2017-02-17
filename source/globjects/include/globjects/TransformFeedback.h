@@ -8,6 +8,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -55,7 +56,7 @@ class Program;
     \see http://www.opengl.org/registry/specs/ARB/transform_feedback2.txt
     \see http://www.opengl.org/registry/specs/ARB/transform_feedback3.txt
 */
-class GLOBJECTS_API TransformFeedback : public Object
+class GLOBJECTS_API TransformFeedback : public Object, public Instantiator<TransformFeedback>
 {
 public:
     TransformFeedback();

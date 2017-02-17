@@ -5,6 +5,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/FramebufferAttachment.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -22,7 +23,7 @@ class Framebuffer;
     \see Renderbuffer
     \see Framebuffer
  */
-class GLOBJECTS_API AttachedRenderbuffer : public FramebufferAttachment
+class GLOBJECTS_API AttachedRenderbuffer : public FramebufferAttachment, public Instantiator<AttachedRenderbuffer>
 {
 public:
     AttachedRenderbuffer(Framebuffer * fbo,  gl::GLenum attachment, Renderbuffer * renderBuffer);

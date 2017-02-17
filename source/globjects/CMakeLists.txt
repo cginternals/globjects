@@ -61,6 +61,7 @@ set(headers
     ${include_path}/Query.h
     ${include_path}/AttachedRenderbuffer.h
     ${include_path}/Renderbuffer.h
+    ${include_path}/Resource.h
     ${include_path}/Sampler.h
     ${include_path}/Shader.h
     ${include_path}/State.h
@@ -93,12 +94,14 @@ set(headers
     ${include_path}/base/formatString.inl
     ${include_path}/base/FunctionCall.h
     ${include_path}/base/FunctionCall.inl
+    ${include_path}/base/Instantiator.h
+    ${include_path}/base/Instantiator.inl
     ${include_path}/base/LogMessageBuilder.h
     ${include_path}/base/LogMessageBuilder.inl
     ${include_path}/base/LogMessage.h
     ${include_path}/base/LogMessageLevel.h
     ${include_path}/base/StaticStringSource.h
-    ${include_path}/base/StringSourceDecorator.h
+    ${include_path}/base/AbstractStringSourceDecorator.h
     ${include_path}/base/StringTemplate.h
 )
 
@@ -133,7 +136,7 @@ set(sources
     ${source_path}/base/Singleton.h
     ${source_path}/base/Singleton.inl
     ${source_path}/base/StaticStringSource.cpp
-    ${source_path}/base/StringSourceDecorator.cpp
+    ${source_path}/base/AbstractStringSourceDecorator.cpp
     ${source_path}/base/StringTemplate.cpp
 
     ${source_path}/implementations/AbstractBufferImplementation.cpp
@@ -245,7 +248,6 @@ set(sources
     ${source_path}/AttachedRenderbuffer.cpp
     ${source_path}/Renderbuffer.cpp
     ${source_path}/Resource.cpp
-    ${source_path}/Resource.h
     ${source_path}/Sampler.cpp
     ${source_path}/Shader.cpp
     ${source_path}/State.cpp

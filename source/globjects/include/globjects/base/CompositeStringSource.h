@@ -6,6 +6,7 @@
 
 #include <globjects/globjects_api.h>
 
+#include <globjects/base/Instantiator.h>
 #include <globjects/base/ChangeListener.h>
 #include <globjects/base/AbstractStringSource.h>
 
@@ -14,7 +15,7 @@ namespace globjects
 {
 
 
-class GLOBJECTS_API CompositeStringSource : public AbstractStringSource, protected ChangeListener
+class GLOBJECTS_API CompositeStringSource : public AbstractStringSource, protected ChangeListener, public Instantiator<CompositeStringSource>
 {
 public:
     CompositeStringSource();

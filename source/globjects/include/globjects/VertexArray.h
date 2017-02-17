@@ -9,6 +9,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -18,7 +19,7 @@ namespace globjects
 class VertexAttributeBinding;
 
 // http://www.opengl.org/wiki/Vertex_Array_Object
-class GLOBJECTS_API VertexArray : public Object
+class GLOBJECTS_API VertexArray : public Object, public Instantiator<VertexArray>
 {
 public:
     enum class AttributeImplementation

@@ -15,7 +15,7 @@
 #include "container_helpers.h"
 #include "registry/ObjectRegistry.h"
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 using namespace gl;
 

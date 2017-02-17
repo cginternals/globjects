@@ -7,6 +7,8 @@
 
 #include <globjects/globjects_api.h>
 
+#include <globjects/base/Instantiator.h>
+
 
 namespace globjects
 {
@@ -15,7 +17,7 @@ namespace globjects
 class File;
 
 
-class GLOBJECTS_API FileRegistry
+class GLOBJECTS_API FileRegistry : public Instantiator<FileRegistry>
 {
 public:
     FileRegistry();

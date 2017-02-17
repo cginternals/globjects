@@ -5,7 +5,7 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractObjectNameImplementation.h"
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 using namespace gl;
 

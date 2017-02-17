@@ -5,6 +5,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/FramebufferAttachment.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -21,7 +22,7 @@ class Framebuffer;
     \see Texture
     \see Framebuffer
  */
-class GLOBJECTS_API AttachedTexture : public FramebufferAttachment
+class GLOBJECTS_API AttachedTexture : public FramebufferAttachment, public Instantiator<AttachedTexture>
 {
 public:
     AttachedTexture(Framebuffer * fbo, gl::GLenum attachment, Texture * texture, gl::GLint level, gl::GLint layer = -1);

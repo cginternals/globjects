@@ -8,6 +8,8 @@
 
 #include <globjects/globjects_api.h>
 
+#include <globjects/base/Instantiator.h>
+
 
 namespace globjects 
 {
@@ -16,7 +18,7 @@ namespace globjects
 class Buffer;
 class VertexArray;
 
-class GLOBJECTS_API VertexAttributeBinding
+class GLOBJECTS_API VertexAttributeBinding : public Instantiator<VertexAttributeBinding>
 {
     friend class AbstractVertexAttributeBindingImplementation;
 

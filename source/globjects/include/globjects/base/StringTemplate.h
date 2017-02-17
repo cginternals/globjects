@@ -6,14 +6,15 @@
 
 #include <globjects/globjects_api.h>
 
-#include <globjects/base/StringSourceDecorator.h>
+#include <globjects/base/AbstractStringSourceDecorator.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
 {
 
 
-class GLOBJECTS_API StringTemplate : public StringSourceDecorator
+class GLOBJECTS_API StringTemplate : public AbstractStringSourceDecorator, public Instantiator<StringTemplate>
 {
 public:
     StringTemplate(AbstractStringSource * source);

@@ -18,7 +18,7 @@
 #include <globjects/Shader.h>
 #include <globjects/AbstractUniform.h>
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractProgramBinaryImplementation.h"
 

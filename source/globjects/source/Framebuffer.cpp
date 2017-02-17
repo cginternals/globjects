@@ -20,7 +20,7 @@
 
 #include "implementations/AbstractFramebufferImplementation.h"
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 using namespace gl;
 

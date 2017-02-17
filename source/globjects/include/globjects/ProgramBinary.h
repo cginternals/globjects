@@ -9,6 +9,7 @@
 
 #include <globjects/base/ChangeListener.h>
 #include <globjects/base/Changeable.h>
+#include <globjects/base/Instantiator.h>
 
 namespace globjects
 {
@@ -22,7 +23,7 @@ class AbstractStringSource;
  * \see Program
  * \see http://www.opengl.org/registry/specs/ARB/get_program_binary.txt
  */
-class GLOBJECTS_API ProgramBinary : public Changeable, protected ChangeListener
+class GLOBJECTS_API ProgramBinary : public Changeable, protected ChangeListener, public Instantiator<ProgramBinary>
 {
 public:
     ProgramBinary(gl::GLenum binaryFormat, const std::vector<char> & binaryData);

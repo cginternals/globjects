@@ -9,6 +9,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -27,7 +28,7 @@ class Sampler;
  * \see http://www.opengl.org/wiki/Texture
  * \see http://www.opengl.org/registry/specs/NV/bindless_texture.txt
  */
-class GLOBJECTS_API Texture : public Object
+class GLOBJECTS_API Texture : public Object, public Instantiator<Texture>
 {
 public:
     enum class BindlessImplementation

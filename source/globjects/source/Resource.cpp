@@ -1,5 +1,5 @@
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 #include <glbinding/gl/functions.h>
 

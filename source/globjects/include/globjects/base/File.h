@@ -6,6 +6,7 @@
 #include <globjects/globjects_api.h>
 
 #include <globjects/base/AbstractStringSource.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -19,7 +20,7 @@ namespace globjects
 
     \see StringSource
  */
-class GLOBJECTS_API File : public globjects::AbstractStringSource
+class GLOBJECTS_API File : public globjects::AbstractStringSource, public Instantiator<File>
 {
 public:
     File(const std::string & filePath, bool binary = true);

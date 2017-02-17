@@ -5,6 +5,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -15,7 +16,7 @@ namespace globjects
  
     \see http://www.opengl.org/wiki/Renderbuffer_Objects
  */
-class GLOBJECTS_API Renderbuffer : public Object
+class GLOBJECTS_API Renderbuffer : public Object, public Instantiator<Renderbuffer>
 {
 public:
     Renderbuffer();

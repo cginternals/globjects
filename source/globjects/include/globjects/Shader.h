@@ -13,6 +13,7 @@
 #include <globjects/base/ChangeListener.h>
 
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -39,7 +40,7 @@ class File;
     \see ChangeListener
     \see Changeable
  */
-class GLOBJECTS_API Shader : public Object, protected ChangeListener, public Changeable
+class GLOBJECTS_API Shader : public Object, protected ChangeListener, public Changeable, public Instantiator<Shader>
 {
     friend class Program;
 

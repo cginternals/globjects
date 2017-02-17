@@ -9,6 +9,7 @@
 
 #include <globjects/base/ChangeListener.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -17,7 +18,7 @@ namespace globjects
 
 class Program;
 
-class GLOBJECTS_API ProgramPipeline : public Object, protected ChangeListener
+class GLOBJECTS_API ProgramPipeline : public Object, protected ChangeListener, public Instantiator<ProgramPipeline>
 {
 public:
     ProgramPipeline();

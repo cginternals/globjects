@@ -12,7 +12,7 @@
 #include <globjects/TextureHandle.h>
 
 #include "pixelformat.h"
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractTextureImplementation.h"

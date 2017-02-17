@@ -13,7 +13,7 @@
 #include <globjects/Program.h>
 #include <globjects/ObjectVisitor.h>
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractShadingLanguageIncludeImplementation.h"

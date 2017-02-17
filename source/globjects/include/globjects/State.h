@@ -8,6 +8,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/AbstractState.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -17,7 +18,7 @@ namespace globjects
 class StateSetting;
 class Capability;
 
-class GLOBJECTS_API State : public AbstractState
+class GLOBJECTS_API State : public AbstractState, public Instantiator<State>
 {
 public:
     enum Mode

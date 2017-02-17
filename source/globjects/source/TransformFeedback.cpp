@@ -10,7 +10,7 @@
 #include <globjects/ObjectVisitor.h>
 #include <globjects/Program.h>
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 using namespace gl;
 
