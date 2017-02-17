@@ -96,8 +96,6 @@ set(headers
     ${include_path}/base/LogMessageBuilder.inl
     ${include_path}/base/LogMessage.h
     ${include_path}/base/LogMessageLevel.h
-    ${include_path}/base/Singleton.h
-    ${include_path}/base/Singleton.inl
     ${include_path}/base/StaticStringSource.h
     ${include_path}/base/StringSourceDecorator.h
     ${include_path}/base/StringTemplate.h
@@ -132,6 +130,8 @@ set(sources
     ${source_path}/base/formatString.cpp
     ${source_path}/base/LogMessageBuilder.cpp
     ${source_path}/base/LogMessage.cpp
+    ${source_path}/base/Singleton.h
+    ${source_path}/base/Singleton.inl
     ${source_path}/base/StaticStringSource.cpp
     ${source_path}/base/StringSourceDecorator.cpp
     ${source_path}/base/StringTemplate.cpp

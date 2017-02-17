@@ -3,7 +3,7 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects/base/Singleton.h>
+#include "../base/Singleton.h"
 
 #include <globjects/globjects_api.h>
 

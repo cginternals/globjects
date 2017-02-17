@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <globjects/base/Singleton.h>
+#include "../base/Singleton.h"
 
 #include "AbstractBufferImplementation.h"
 
