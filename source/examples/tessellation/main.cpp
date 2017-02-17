@@ -35,22 +35,22 @@ namespace
     std::unique_ptr<globjects::Program> g_sphere = nullptr;
 
     std::unique_ptr<globjects::Program> g_program = nullptr;
-    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::File> g_vertexShaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
-    std::unique_ptr<globjects::AbstractStringSource> g_tessControlShaderSource = nullptr;
+    std::unique_ptr<globjects::File> g_tessControlShaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_tessControlShaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_tessControlShader = nullptr;
-    std::unique_ptr<globjects::AbstractStringSource> g_tessEvaluationShaderSource = nullptr;
+    std::unique_ptr<globjects::File> g_tessEvaluationShaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_tessEvaluationShaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_tessEvaluationShader = nullptr;
-    std::unique_ptr<globjects::AbstractStringSource> g_geometryShaderSource = nullptr;
+    std::unique_ptr<globjects::File> g_geometryShaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_geometryShaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_geometryShader = nullptr;
-    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::File> g_fragmentShaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
-    std::unique_ptr<globjects::AbstractStringSource> g_phongShaderSource = nullptr;
+    std::unique_ptr<globjects::File> g_phongShaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_phongShaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_phongShader = nullptr;
 
@@ -165,7 +165,14 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         glfwSetWindowShouldClose(window, true);
 
     if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        globjects::File::reloadAll();
+    {
+        g_vertexShaderSource->reload();
+        g_tessControlShaderSource->reload();
+        g_tessEvaluationShaderSource->reload();
+        g_geometryShaderSource->reload();
+        g_fragmentShaderSource->reload();
+        g_phongShaderSource->reload();
+    }
 }
 
 

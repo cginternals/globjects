@@ -101,9 +101,6 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
         glfwSetWindowShouldClose(window, true);
-
-    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        globjects::File::reloadAll();
 }
 
 

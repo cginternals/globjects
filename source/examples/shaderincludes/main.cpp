@@ -34,11 +34,11 @@ namespace
     std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
-    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::File> g_fragmentShaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
 
-    std::unique_ptr<globjects::AbstractStringSource> g_namedStringSource = nullptr;
+    std::unique_ptr<globjects::File> g_namedStringSource = nullptr;
     std::unique_ptr<globjects::NamedString> g_namedString = nullptr;
 
     std::unique_ptr<ScreenAlignedQuad> g_quad = nullptr;
@@ -51,7 +51,7 @@ void initialize()
 {
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
 
-    g_namedStringSource = std::unique_ptr<globjects::AbstractStringSource>(new globjects::File(dataPath + "shaderincludes/color.glsl"));
+    g_namedStringSource = std::unique_ptr<globjects::File>(new globjects::File(dataPath + "shaderincludes/color.glsl"));
     g_namedString = globjects::NamedString::create("/color.glsl", g_namedStringSource.get());
 
     g_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
@@ -98,7 +98,10 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         glfwSetWindowShouldClose(window, true);
 
     if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        globjects::File::reloadAll();
+    {
+        g_namedStringSource->reload();
+        g_fragmentShaderSource->reload();
+    }
 }
 
 

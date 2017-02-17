@@ -50,7 +50,7 @@ namespace
     std::unique_ptr<ScreenAlignedQuad> g_quad = nullptr;
 
     std::unique_ptr<globjects::Program> g_computeProgram = nullptr;
-    std::unique_ptr<globjects::AbstractStringSource> g_shaderSource = nullptr;
+    std::unique_ptr<globjects::File> g_shaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_shaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_shader = nullptr;
 
@@ -133,7 +133,9 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         glfwSetWindowShouldClose(window, 1);
 
     if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        globjects::File::reloadAll();
+    {
+        g_shaderSource->reload();
+    }
 }
 
 

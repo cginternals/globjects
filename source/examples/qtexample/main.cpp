@@ -112,7 +112,8 @@ public:
         switch (event->key())
         {
         case Qt::Key_F5:
-            globjects::File::reloadAll();
+            m_vertexShaderSource->reload();
+            m_fragmentShaderSource->reload();
             break;
         default:
             break;
@@ -124,10 +125,10 @@ public:
 protected:
     std::unique_ptr<globjects::Buffer> m_cornerBuffer;
     std::unique_ptr<globjects::Program> m_program;
-    std::unique_ptr<globjects::AbstractStringSource> m_vertexShaderSource;
+    std::unique_ptr<globjects::File> m_vertexShaderSource;
     std::unique_ptr<globjects::AbstractStringSource> m_vertexShaderTemplate;
     std::unique_ptr<globjects::Shader> m_vertexShader;
-    std::unique_ptr<globjects::AbstractStringSource> m_fragmentShaderSource;
+    std::unique_ptr<globjects::File> m_fragmentShaderSource;
     std::unique_ptr<globjects::AbstractStringSource> m_fragmentShaderTemplate;
     std::unique_ptr<globjects::Shader> m_fragmentShader;
     std::unique_ptr<globjects::VertexArray> m_vao;

@@ -41,14 +41,14 @@ namespace
     std::unique_ptr<globjects::TransformFeedback> g_transformFeedback = nullptr;
     std::unique_ptr<globjects::Program> g_shaderProgram = nullptr;
 
-    std::unique_ptr<globjects::AbstractStringSource> g_feedbackShaderSource = nullptr;
+    std::unique_ptr<globjects::File> g_feedbackShaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_feedbackShaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_feedbackShader = nullptr;
 
-    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::File> g_vertexShaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
-    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::File> g_fragmentShaderSource = nullptr;
     std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
     std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
 
@@ -200,7 +200,11 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         glfwSetWindowShouldClose(window, true);
 
     if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        globjects::File::reloadAll();
+    {
+        g_feedbackShaderSource->reload();
+        g_vertexShaderSource->reload();
+        g_fragmentShaderSource->reload();
+    }
 }
 
 

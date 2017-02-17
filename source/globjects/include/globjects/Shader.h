@@ -20,6 +20,9 @@ namespace globjects
 
 
 class AbstractStringSource;
+class StaticStringSource;
+class File;
+
 
 /** \brief Encapsulates OpenGL shaders.
     
@@ -59,8 +62,8 @@ public:
     static void globalReplace(const std::string & search, int i);
     static void clearGlobalReplacements();
 
-    static std::unique_ptr<AbstractStringSource> sourceFromString(const std::string & sourceString);
-    static std::unique_ptr<AbstractStringSource> sourceFromFile(const std::string & filename);
+    static std::unique_ptr<StaticStringSource> sourceFromString(const std::string & sourceString);
+    static std::unique_ptr<File> sourceFromFile(const std::string & filename);
     static std::unique_ptr<AbstractStringSource> applyGlobalReplacements(AbstractStringSource * source);
 
 public:

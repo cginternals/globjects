@@ -5,8 +5,6 @@
 
 #include <globjects/base/baselogging.h>
 
-#include "FileRegistry.h"
-
 
 namespace globjects
 {
@@ -17,12 +15,10 @@ File::File(const std::string & filePath, bool binary)
 , m_binary(binary)
 , m_valid(false)
 {
-    FileRegistry::registerFile(this);
 }
 
 File::~File()
 {
-    FileRegistry::deregisterFile(this);
 }
 
 std::string File::string() const
@@ -47,11 +43,6 @@ void File::reload()
 {
     m_valid = false;
     changed();
-}
-
-void File::reloadAll()
-{
-    FileRegistry::reloadAll();
 }
 
 void File::loadFileContent() const

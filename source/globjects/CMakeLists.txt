@@ -88,6 +88,7 @@ set(headers
     ${include_path}/base/CompositeStringSource.h
     ${include_path}/base/ConsoleLogger.h
     ${include_path}/base/File.h
+    ${include_path}/base/FileRegistry.h
     ${include_path}/base/formatString.h
     ${include_path}/base/formatString.inl
     ${include_path}/base/FunctionCall.h
@@ -126,7 +127,6 @@ set(sources
     ${source_path}/base/ConsoleLogger.cpp
     ${source_path}/base/File.cpp
     ${source_path}/base/FileRegistry.cpp
-    ${source_path}/base/FileRegistry.h
     ${source_path}/base/formatString.cpp
     ${source_path}/base/LogMessageBuilder.cpp
     ${source_path}/base/LogMessage.cpp
