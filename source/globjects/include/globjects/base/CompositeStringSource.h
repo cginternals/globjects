@@ -21,6 +21,8 @@ public:
     CompositeStringSource();
     CompositeStringSource(const std::vector<AbstractStringSource *> & sources);
 
+    virtual ~CompositeStringSource();
+
     void appendSource(AbstractStringSource * source);
 
     virtual std::string string() const override;
@@ -30,7 +32,6 @@ public:
 
     virtual std::string shortInfo() const override;
 protected:
-    virtual ~CompositeStringSource();
 
     virtual void notifyChanged(const Changeable * changeable) override;
 

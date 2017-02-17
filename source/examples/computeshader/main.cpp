@@ -69,26 +69,26 @@ void initialize()
     g_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     g_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    g_computeProgram = std::unique_ptr<globjects::Program>(new globjects::Program());
+    g_computeProgram = globjects::Program::create();
     g_shaderSource = globjects::Shader::sourceFromFile(dataPath + "computeshader/cstest.comp");
     g_shaderTemplate = globjects::Shader::applyGlobalReplacements(g_shaderSource.get());
-    g_shader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_COMPUTE_SHADER, g_shaderTemplate.get()));
+    g_shader = globjects::Shader::create(GL_COMPUTE_SHADER, g_shaderTemplate.get());
 
     g_computeProgram->attach(g_shader.get());
     g_computeProgram->setUniform("destTex", 0);
 
     g_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
     g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
-    g_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_vertexShaderTemplate.get()));
+    g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
 
     g_fragmentShaderSource = ScreenAlignedQuad::fragmentShaderSource();
     g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
-    g_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get()));
+    g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
 
-    g_program = std::unique_ptr<globjects::Program>(new globjects::Program);
+    g_program = globjects::Program::create();
     g_program->attach(g_vertexShader.get(), g_fragmentShader.get());
 
-    g_quad = std::unique_ptr<ScreenAlignedQuad>(new ScreenAlignedQuad(g_program.get(), g_texture.get()));
+    g_quad = ScreenAlignedQuad::create(g_program.get(), g_texture.get());
     g_quad->setSamplerUniform(0);
 }
 

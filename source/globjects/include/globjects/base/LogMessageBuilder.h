@@ -93,8 +93,18 @@ public:
     // array types
     template <typename T>
     LogMessageBuilder & operator<<(const std::vector<T> & vector);
+    template <typename T>
+    LogMessageBuilder & operator<<(const std::vector<T *> & vector);
+
+    template <typename T>
+    LogMessageBuilder & operator<<(const std::vector<std::unique_ptr<T>> & vector);
+
     template <typename T, std::size_t Count>
     LogMessageBuilder & operator<<(const std::array<T, Count> & array);
+    template <typename T, std::size_t Count>
+    LogMessageBuilder & operator<<(const std::array<T *, Count> & array);
+    template <typename T, std::size_t Count>
+    LogMessageBuilder & operator<<(const std::array<std::unique_ptr<T>, Count> & array);
 
 protected:
     LogMessageLevel m_level;

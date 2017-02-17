@@ -22,7 +22,7 @@ void ShadingLanguageIncludeImplementation_Fallback::updateSources(const Shader *
 
     if (shader->source())
     {
-        AbstractStringSource * resolvedSource = IncludeProcessor::resolveIncludes(shader->source(), shader->includePaths());
+        std::unique_ptr<AbstractStringSource> resolvedSource = IncludeProcessor::resolveIncludes(shader->source(), shader->includePaths());
 
         sources = resolvedSource->strings();
     }

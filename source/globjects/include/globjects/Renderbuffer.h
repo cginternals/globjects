@@ -21,6 +21,8 @@ class GLOBJECTS_API Renderbuffer : public Object, public Instantiator<Renderbuff
 public:
     Renderbuffer();
 
+    virtual ~Renderbuffer();
+
     virtual void accept(ObjectVisitor & visitor) override;
 
     void bind() const;
@@ -34,8 +36,6 @@ public:
     virtual gl::GLenum objectType() const override;
 
 protected:
-    virtual ~Renderbuffer();
-
     void bind(gl::GLenum target) const;
     static void unbind(gl::GLenum target);
 };

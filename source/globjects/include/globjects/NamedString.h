@@ -21,8 +21,8 @@ class AbstractStringSource;
 class GLOBJECTS_API NamedString : protected ChangeListener, public Instantiator<NamedString>
 {
 public:
-    static std::unique_ptr<NamedString> create(const std::string & name, AbstractStringSource * string);
-    static std::unique_ptr<NamedString> create(const std::string & name, const std::string & string);
+    NamedString(const std::string & name, AbstractStringSource * source);
+    NamedString(const std::string & name, AbstractStringSource * source, gl::GLenum type);
 
     virtual ~NamedString();
 
@@ -43,16 +43,11 @@ public:
 protected:
     static bool hasNativeSupport();
 
-    static std::unique_ptr<NamedString> create(const std::string & name, AbstractStringSource * string, gl::GLenum type);
-    static std::unique_ptr<NamedString> create(const std::string & name, const std::string & string, gl::GLenum type);
-
 protected:
     void updateString();
 
     void createNamedString();
     void deleteNamedString();
-
-    NamedString(const std::string & name, AbstractStringSource * source, gl::GLenum type);
 
     void registerNamedString();
     void deregisterNamedString();

@@ -57,7 +57,7 @@ IncludeProcessor::~IncludeProcessor()
 {
 }
 
-AbstractStringSource* IncludeProcessor::resolveIncludes(const AbstractStringSource* source, const std::vector<std::string>& includePaths)
+std::unique_ptr<AbstractStringSource> IncludeProcessor::resolveIncludes(const AbstractStringSource* source, const std::vector<std::string>& includePaths)
 {
     IncludeProcessor processor;
     processor.m_includePaths = includePaths;
@@ -65,21 +65,24 @@ AbstractStringSource* IncludeProcessor::resolveIncludes(const AbstractStringSour
     return processor.processComposite(source);
 }
 
-CompositeStringSource* IncludeProcessor::processComposite(const AbstractStringSource* source)
+std::unique_ptr<CompositeStringSource> IncludeProcessor::processComposite(const AbstractStringSource* source)
 {
-    CompositeStringSource* composite = new CompositeStringSource();
+    auto composite = CompositeStringSource::create();
 
-    for (const AbstractStringSource* innerSource : source->flatten())
+    for (const auto innerSource : source->flatten())
     {
-        composite->appendSource(process(innerSource));
+        auto && source = process(innerSource);
+
+        // [TODO]: remove leak
+        composite->appendSource(source.release());
     }
 
     return composite;
 }
 
-CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* source)
+std::unique_ptr<CompositeStringSource> IncludeProcessor::process(const AbstractStringSource* source)
 {
-    CompositeStringSource* compositeSource = new CompositeStringSource();
+    auto compositeSource = CompositeStringSource::create();
 
     std::istringstream sourcestream(source->string());
     std::stringstream destinationstream;
@@ -124,7 +127,7 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
                     }
                     else if (contains(trimmedLine, "#include"))
                     {
-                        parseInclude(trimmedLine, compositeSource, destinationstream);
+                        parseInclude(trimmedLine, compositeSource.get(), destinationstream);
                     }
                     else
                     {
@@ -154,7 +157,10 @@ CompositeStringSource* IncludeProcessor::process(const AbstractStringSource* sou
 
     if (!destinationstream.str().empty())
     {
-        compositeSource->appendSource(new StaticStringSource(destinationstream.str()));
+        auto && source = StaticStringSource::create(destinationstream.str());
+
+        // [TODO]: remove leak
+        compositeSource->appendSource(source.release());
     }
 
     return compositeSource;
@@ -208,7 +214,11 @@ void IncludeProcessor::processInclude(std::string & include, CompositeStringSour
     }
 
     m_includes.insert(include);
-    compositeSource->appendSource(new StaticStringSource(destinationstream.str()));
+
+    auto source = StaticStringSource::create(destinationstream.str());
+
+    // [TODO]: remove leak
+    compositeSource->appendSource(source.get());
 
     NamedString * namedString = nullptr;
     if (startsWith(include, '/'))
@@ -229,7 +239,10 @@ void IncludeProcessor::processInclude(std::string & include, CompositeStringSour
 
     if (namedString)
     {
-        compositeSource->appendSource(processComposite(namedString->stringSource()));
+        auto source = processComposite(namedString->stringSource());
+
+        // [TODO]: remove leak
+        compositeSource->appendSource(source.release());
     }
     else
     {
