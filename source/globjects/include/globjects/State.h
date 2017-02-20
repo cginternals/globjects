@@ -29,8 +29,11 @@ public:
 
 public:
     State(Mode = ImmediateMode);
+    State(const State &) = delete;
 
     virtual ~State();
+
+    State & operator=(const State &) = delete;
 
     static std::unique_ptr<State> currentState();
 
