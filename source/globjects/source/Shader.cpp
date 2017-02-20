@@ -81,7 +81,7 @@ std::unique_ptr<AbstractStringSource> Shader::applyGlobalReplacements(AbstractSt
         sourceTemplate->replace(pair.first, pair.second);
     }
 
-    return sourceTemplate;
+    return std::unique_ptr<AbstractStringSource>(sourceTemplate.release());
 }
 
 Shader::~Shader()
