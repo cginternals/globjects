@@ -122,6 +122,29 @@ void initialize()
 
 void deinitialize()
 {
+    g_sphere.reset(nullptr);
+
+    g_program.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShader.reset(nullptr);
+    g_tessControlShaderSource.reset(nullptr);
+    g_tessControlShaderTemplate.reset(nullptr);
+    g_tessControlShader.reset(nullptr);
+    g_tessEvaluationShaderSource.reset(nullptr);
+    g_tessEvaluationShaderTemplate.reset(nullptr);
+    g_tessEvaluationShader.reset(nullptr);
+    g_geometryShaderSource.reset(nullptr);
+    g_geometryShaderTemplate.reset(nullptr);
+    g_geometryShader.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShader.reset(nullptr);
+    g_phongShaderSource.reset(nullptr);
+    g_phongShaderTemplate.reset(nullptr);
+    g_phongShader.reset(nullptr);
+
+    g_icosahedron.reset(nullptr);
 }
 
 void draw()

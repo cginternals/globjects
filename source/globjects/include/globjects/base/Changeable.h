@@ -22,12 +22,15 @@ class ChangeListener;
 class GLOBJECTS_API Changeable
 {
 public:
+    Changeable();
+    virtual ~Changeable();
+
     void changed() const;
 
     void registerListener(ChangeListener * listener);
     void deregisterListener(ChangeListener * listener);
 
-private:
+protected:
     std::set<ChangeListener *> m_listeners;
 };
 

@@ -68,18 +68,11 @@ Program::~Program()
         uniformPair.second->deregisterProgram(this);
     }
 
-    if (id() == 0)
+    if (id() != 0)
     {
-        for (const auto & shader : m_shaders)
+        while (!m_shaders.empty())
         {
-            shader->deregisterListener(this);
-        }
-    }
-    else
-    {
-        for (const auto & shader : std::set<Shader *>(m_shaders))
-        {
-            detach(shader);
+            detach(*m_shaders.begin());
         }
     }
 }

@@ -91,6 +91,19 @@ public:
         m_vao->enable(0);
     }
 
+    virtual void deinitializeGL() override
+    {
+        m_cornerBuffer.reset(nullptr);
+        m_program.reset(nullptr);
+        m_vertexShaderSource.reset(nullptr);
+        m_vertexShaderTemplate.reset(nullptr);
+        m_vertexShader.reset(nullptr);
+        m_fragmentShaderSource.reset(nullptr);
+        m_fragmentShaderTemplate.reset(nullptr);
+        m_fragmentShader.reset(nullptr);
+        m_vao.reset(nullptr);
+    }
+
     virtual void resizeGL(QResizeEvent * event) override
     {
         glViewport(0, 0, event->size().width(), event->size().height());

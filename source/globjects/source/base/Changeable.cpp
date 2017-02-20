@@ -10,6 +10,19 @@ namespace globjects
 {
 
 
+Changeable::Changeable()
+{
+}
+
+Changeable::~Changeable()
+{
+    while (!m_listeners.empty())
+    {
+        // calls deregisterListener
+        (*m_listeners.begin())->removeSubject(this);
+    }
+}
+
 void Changeable::changed() const
 {
     for (ChangeListener * listener: m_listeners)
@@ -30,10 +43,14 @@ void Changeable::deregisterListener(ChangeListener * listener)
 {
     assert(listener != nullptr);
 
-    if (m_listeners.find(listener) == m_listeners.end())
-        return;
+    const auto it = m_listeners.find(listener);
 
-    m_listeners.erase(listener);
+    if (it == m_listeners.end())
+    {
+        return;
+    }
+
+    m_listeners.erase(it);
     listener->removeSubject(this);
 }
 

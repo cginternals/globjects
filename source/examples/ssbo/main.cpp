@@ -87,6 +87,16 @@ void initialize()
 
 void deinitialize()
 {
+    g_quad.reset(nullptr);
+    g_buffer.reset(nullptr);
+
+    g_program.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShader.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShader.reset(nullptr);
 }
 
 void draw()

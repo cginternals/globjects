@@ -106,7 +106,23 @@ void initialize()
 
 void deinitialize()
 {
-    globjects::detachAllObjects();
+    g_shaderProgram.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShader.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShader.reset(nullptr);
+
+    g_vao.reset(nullptr);
+    g_buffer.reset(nullptr);
+    g_thinnestPointSizeState.reset(nullptr);
+    g_thinPointSizeState.reset(nullptr);
+    g_normalPointSizeState.reset(nullptr);
+    g_thickPointSizeState.reset(nullptr);
+    g_disableRasterizerState.reset(nullptr);
+    g_enableRasterizerState.reset(nullptr);
+    g_defaultPointSizeState.reset(nullptr);
 }
 
 void draw()

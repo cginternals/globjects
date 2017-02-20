@@ -89,35 +89,37 @@ int main(int /*argc*/, char * /*argv*/[])
     std::cout << std::endl;
 
     std::cout << "Test Logging of globjects objects:" << std::endl;
-    auto buffer = Buffer::create();
-    std::cout << "  Buffer                : "; info() << buffer.get();
-    std::cout << "  Framebuffer           : "; info() << Framebuffer::defaultFBO().get();
-    auto program = Program::create();
-    std::cout << "  Program               : "; info() << program.get();
-    auto query = Query::create();
-    std::cout << "  Query                 : "; info() << query.get();
-    auto rbo = Renderbuffer::create();
-    std::cout << "  Renderbuffer          : "; info() << rbo.get();
-    auto sampler = Sampler::create();
-    std::cout << "  Sampler               : "; info() << sampler.get();
-    auto shader = Shader::create(GL_VERTEX_SHADER);
-    std::cout << "  Shader                : "; info() << shader.get();
-    auto texture = Texture::create();
-    std::cout << "  Texture               : "; info() << texture.get();
-    auto tf = TransformFeedback::create();
-    std::cout << "  TransformFeedback     : "; info() << tf.get();
-    auto vao = VertexArray::create();
-    std::cout << "  VertexArray           : "; info() << vao.get();
-    auto uniform = Uniform<float>::create("Pi", 3.14f);
-    std::cout << "  Uniform               : "; info() << uniform.get();
-    std::cout << "  AbstractUniform       : "; info() << static_cast<AbstractUniform*>(uniform.get());
-    std::cout << "  glbinding::Version    : "; info() << version();
+    {
+        auto buffer = Buffer::create();
+        std::cout << "  Buffer                : "; info() << buffer.get();
+        std::cout << "  Framebuffer           : "; info() << Framebuffer::defaultFBO().get();
+        auto program = Program::create();
+        std::cout << "  Program               : "; info() << program.get();
+        auto query = Query::create();
+        std::cout << "  Query                 : "; info() << query.get();
+        auto rbo = Renderbuffer::create();
+        std::cout << "  Renderbuffer          : "; info() << rbo.get();
+        auto sampler = Sampler::create();
+        std::cout << "  Sampler               : "; info() << sampler.get();
+        auto shader = Shader::create(GL_VERTEX_SHADER);
+        std::cout << "  Shader                : "; info() << shader.get();
+        auto texture = Texture::create();
+        std::cout << "  Texture               : "; info() << texture.get();
+        auto tf = TransformFeedback::create();
+        std::cout << "  TransformFeedback     : "; info() << tf.get();
+        auto vao = VertexArray::create();
+        std::cout << "  VertexArray           : "; info() << vao.get();
+        auto uniform = Uniform<float>::create("Pi", 3.14f);
+        std::cout << "  Uniform               : "; info() << uniform.get();
+        std::cout << "  AbstractUniform       : "; info() << static_cast<AbstractUniform*>(uniform.get());
+        std::cout << "  glbinding::Version    : "; info() << version();
 
-    auto buffer1 = Buffer::create();
-    auto buffer2 = Buffer::create();
-    std::vector<Buffer *> buffers{ buffer1.get(), buffer2.get() };
-    std::cout << "  std::vector<Buffer *> : "; info() << buffers;
-    std::cout << std::endl;
+        auto buffer1 = Buffer::create();
+        auto buffer2 = Buffer::create();
+        std::vector<Buffer *> buffers{ buffer1.get(), buffer2.get() };
+        std::cout << "  std::vector<Buffer *> : "; info() << buffers;
+        std::cout << std::endl;
+    }
 
     // Properly shutdown GLFW
     glfwTerminate();
