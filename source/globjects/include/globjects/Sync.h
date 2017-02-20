@@ -21,6 +21,7 @@ class GLOBJECTS_API Sync : public Instantiator<Sync>
 public:
     static std::unique_ptr<Sync> fence(gl::GLenum condition);
 
+    Sync(gl::GLsync sync);
     virtual ~Sync();
 
     gl::GLenum clientWait(gl::SyncObjectMask flags, gl::GLuint64 timeout);
@@ -32,8 +33,6 @@ public:
     gl::GLsync sync() const;
 
 protected:
-    Sync(gl::GLsync sync);
-
     void wait(gl::UnusedMask flags, gl::GLuint64 timeout);
 
     static gl::GLsync fenceSync(gl::GLenum condition, gl::UnusedMask flags);

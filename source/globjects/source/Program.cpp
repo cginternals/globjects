@@ -482,9 +482,14 @@ void Program::setBinary(std::unique_ptr<ProgramBinary> && binary)
         m_binary->registerListener(this);
 }
 
-ProgramBinary * Program::getBinary() const
+ProgramBinary * Program::binary() const
 {
-    return binaryImplementation().getProgramBinary(this);
+    return m_binary.get();
+}
+
+std::unique_ptr<ProgramBinary> Program::obtainBinary(Program * program)
+{
+    return binaryImplementation().getProgramBinary(program);
 }
 
 GLint Program::get(const GLenum pname) const

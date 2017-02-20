@@ -64,22 +64,24 @@ Shader::Shader(const GLenum type, AbstractStringSource * source, const IncludePa
 
 std::unique_ptr<StaticStringSource> Shader::sourceFromString(const std::string & sourceString)
 {
-    return std::unique_ptr<StaticStringSource>(new StaticStringSource(sourceString));
+    return StaticStringSource::create(sourceString);
 }
 
 std::unique_ptr<File> Shader::sourceFromFile(const std::string & filename)
 {
-    return std::unique_ptr<File>(new File(filename, false));
+    return File::create(filename, false);
 }
 
 std::unique_ptr<AbstractStringSource> Shader::applyGlobalReplacements(AbstractStringSource * source)
 {
-    StringTemplate * sourceTemplate = new StringTemplate(source);
+    auto sourceTemplate = StringTemplate::create(source);
 
     for (const auto & pair : s_globalReplacements)
+    {
         sourceTemplate->replace(pair.first, pair.second);
+    }
 
-    return std::unique_ptr<AbstractStringSource>(sourceTemplate);
+    return sourceTemplate;
 }
 
 Shader::~Shader()

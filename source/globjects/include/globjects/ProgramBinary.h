@@ -23,29 +23,19 @@ class AbstractStringSource;
  * \see Program
  * \see http://www.opengl.org/registry/specs/ARB/get_program_binary.txt
  */
-class GLOBJECTS_API ProgramBinary : public Changeable, protected ChangeListener, public Instantiator<ProgramBinary>
+class GLOBJECTS_API ProgramBinary : public Changeable, public Instantiator<ProgramBinary>
 {
 public:
-    ProgramBinary(gl::GLenum binaryFormat, const std::vector<char> & binaryData);
-    ProgramBinary(gl::GLenum binaryFormat, AbstractStringSource * dataSource);
+    ProgramBinary(gl::GLenum binaryFormat, const std::vector<unsigned char> & data);
     virtual ~ProgramBinary();
 
     gl::GLenum format() const;
     const void * data() const;
     gl::GLsizei length() const;
 
-     virtual void notifyChanged(const Changeable* sender) override;
-
-protected:
-
-    void validate() const;
-
 protected:
     gl::GLenum m_binaryFormat;
-    AbstractStringSource * m_dataSource;
-
-    mutable bool m_valid;
-    mutable std::vector<unsigned char> m_binaryData;
+    std::vector<unsigned char> m_binaryData;
 };
 
 

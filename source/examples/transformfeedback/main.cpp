@@ -65,23 +65,23 @@ void initialize()
 {
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
 
-    g_shaderProgram = std::unique_ptr<globjects::Program>(new globjects::Program());
+    g_shaderProgram = globjects::Program::create();
 
     g_vertexShaderSource = globjects::Shader::sourceFromFile(dataPath + "transformfeedback/simple.vert");
     g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
-    g_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_vertexShaderTemplate.get()));
+    g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
 
     g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "transformfeedback/simple.frag");
     g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
-    g_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get()));
+    g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
 
     g_shaderProgram->attach(g_vertexShader.get(), g_fragmentShader.get());
 
-    g_transformFeedbackProgram = std::unique_ptr<globjects::Program>(new globjects::Program());
+    g_transformFeedbackProgram = globjects::Program::create();
 
     g_feedbackShaderSource = globjects::Shader::sourceFromFile(dataPath + "transformfeedback/transformfeedback.vert");
     g_feedbackShaderTemplate = globjects::Shader::applyGlobalReplacements(g_feedbackShaderSource.get());
-    g_feedbackShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_feedbackShaderTemplate.get()));
+    g_feedbackShader = globjects::Shader::create(GL_VERTEX_SHADER, g_feedbackShaderTemplate.get());
 
     g_transformFeedbackProgram->attach(g_feedbackShader.get());
 
@@ -108,14 +108,14 @@ void initialize()
       , { 0, 0, 1, 1 }
       , { 0, 1, 0, 1 } });
 
-    g_vertexBuffer1 = std::unique_ptr<globjects::Buffer>(new globjects::Buffer());
+    g_vertexBuffer1 = globjects::Buffer::create();
     g_vertexBuffer1->setData(vertexArray, GL_STATIC_DRAW);
-    g_vertexBuffer2 = std::unique_ptr<globjects::Buffer>(new globjects::Buffer());
+    g_vertexBuffer2 = globjects::Buffer::create();
     g_vertexBuffer2->setData(vertexArray, GL_STATIC_DRAW);
-    g_colorBuffer = std::unique_ptr<globjects::Buffer>(new globjects::Buffer());
+    g_colorBuffer = globjects::Buffer::create();
     g_colorBuffer->setData(colorArray, GL_STATIC_DRAW);
 
-    g_vao = std::unique_ptr<globjects::VertexArray>(new globjects::VertexArray());
+    g_vao = globjects::VertexArray::create();
 
     g_vao->binding(0)->setAttribute(0);
     g_vao->binding(0)->setFormat(4, GL_FLOAT);
@@ -129,7 +129,7 @@ void initialize()
 
 
     // Create and setup TransformFeedback
-    g_transformFeedback = std::unique_ptr<globjects::TransformFeedback>(new globjects::TransformFeedback());
+    g_transformFeedback = globjects::TransformFeedback::create();
     g_transformFeedback->setVaryings(g_transformFeedbackProgram.get(), { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
 
 

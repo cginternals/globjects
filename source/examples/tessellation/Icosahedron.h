@@ -8,6 +8,8 @@
 
 #include <glbinding/gl/gl.h>
 
+#include <globjects/base/Instantiator.h>
+
 
 namespace globjects
 {
@@ -18,7 +20,7 @@ class Buffer;
 }
 
 
-class Icosahedron
+class Icosahedron : public globjects::Instantiator<Icosahedron>
 {
 public:
     using Face = std::array<gl::GLushort, 3>;
@@ -59,10 +61,10 @@ protected:
     ,   std::unordered_map<glm::uint, gl::GLushort> & cache);
 
 protected:
-    globjects::VertexArray * m_vao;
+    std::unique_ptr<globjects::VertexArray> m_vao;
 
-    globjects::Buffer * m_vertices;
-    globjects::Buffer * m_indices;
+    std::unique_ptr<globjects::Buffer> m_vertices;
+    std::unique_ptr<globjects::Buffer> m_indices;
 
     gl::GLsizei m_size;
 };

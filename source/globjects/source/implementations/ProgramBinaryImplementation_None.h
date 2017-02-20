@@ -15,7 +15,7 @@ class ProgramBinaryImplementation_None : public AbstractProgramBinaryImplementat
 {
 public:
     virtual bool updateProgramLinkSource(const Program * program) const override;
-    virtual ProgramBinary * getProgramBinary(const Program * program) const override;
+    virtual std::unique_ptr<ProgramBinary> getProgramBinary(const Program * program) const override;
 };
 
 

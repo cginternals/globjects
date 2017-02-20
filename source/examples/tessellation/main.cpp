@@ -80,31 +80,31 @@ void initialize()
 {
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
 
-    g_sphere = std::unique_ptr<globjects::Program>(new globjects::Program());
+    g_sphere = globjects::Program::create();
 
     g_vertexShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/sphere.vert");
     g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
-    g_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_vertexShaderTemplate.get()));
+    g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
 
     g_tessControlShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/sphere.tcs");
     g_tessControlShaderTemplate = globjects::Shader::applyGlobalReplacements(g_tessControlShaderSource.get());
-    g_tessControlShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_TESS_CONTROL_SHADER, g_tessControlShaderTemplate.get()));
+    g_tessControlShader = globjects::Shader::create(GL_TESS_CONTROL_SHADER, g_tessControlShaderTemplate.get());
 
     g_tessEvaluationShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/sphere.tes");
     g_tessEvaluationShaderTemplate = globjects::Shader::applyGlobalReplacements(g_tessEvaluationShaderSource.get());
-    g_tessEvaluationShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_TESS_EVALUATION_SHADER, g_tessEvaluationShaderTemplate.get()));
+    g_tessEvaluationShader = globjects::Shader::create(GL_TESS_EVALUATION_SHADER, g_tessEvaluationShaderTemplate.get());
 
     g_geometryShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/sphere.geom");
     g_geometryShaderTemplate = globjects::Shader::applyGlobalReplacements(g_geometryShaderSource.get());
-    g_geometryShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_GEOMETRY_SHADER, g_geometryShaderTemplate.get()));
+    g_geometryShader = globjects::Shader::create(GL_GEOMETRY_SHADER, g_geometryShaderTemplate.get());
 
     g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/sphere.frag");
     g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
-    g_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get()));
+    g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
 
     g_phongShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/phong.frag");
     g_phongShaderTemplate = globjects::Shader::applyGlobalReplacements(g_phongShaderSource.get());
-    g_phongShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_phongShaderTemplate.get()));
+    g_phongShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_phongShaderTemplate.get());
 
     g_sphere->attach(
         g_vertexShader.get(),
@@ -115,7 +115,7 @@ void initialize()
         g_phongShader.get()
     );
 
-    g_icosahedron = std::unique_ptr<Icosahedron>(new Icosahedron());
+    g_icosahedron = Icosahedron::create();
 
     resize();
 }

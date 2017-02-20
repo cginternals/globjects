@@ -20,7 +20,7 @@ std::unique_ptr<Sync> Sync::fence(const GLenum condition)
 
 std::unique_ptr<Sync> Sync::fence(const GLenum condition, const UnusedMask flags)
 {
-    return std::unique_ptr<Sync>(new Sync(fenceSync(condition, flags)));
+    return Sync::create(fenceSync(condition, flags));
 }
 
 Sync::Sync(GLsync sync)

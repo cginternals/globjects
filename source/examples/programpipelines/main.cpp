@@ -75,11 +75,11 @@ void main()
 
 void initialize()
 {
-    g_cornerBuffer = std::unique_ptr<globjects::Buffer>(new globjects::Buffer());
-    g_vertexProgram = std::unique_ptr<globjects::Program>(new globjects::Program());
-    g_fragmentProgram = std::unique_ptr<globjects::Program>(new globjects::Program());
-    g_programPipeline = std::unique_ptr<globjects::ProgramPipeline>(new globjects::ProgramPipeline());
-    g_vao = std::unique_ptr<globjects::VertexArray>(new globjects::VertexArray());
+    g_cornerBuffer = globjects::Buffer::create();
+    g_vertexProgram = globjects::Program::create();
+    g_fragmentProgram = globjects::Program::create();
+    g_programPipeline = globjects::ProgramPipeline::create();
+    g_vao = globjects::VertexArray::create();
 
     g_vertexShaderSource = globjects::Shader::sourceFromString(vertexShaderCode);
     g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
@@ -87,8 +87,8 @@ void initialize()
     g_fragmentShaderSource = globjects::Shader::sourceFromString(fragmentShaderCode);
     g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
 
-    g_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_vertexShaderTemplate.get()));
-    g_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get()));
+    g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
+    g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
 
     g_vertexProgram->attach(g_vertexShader.get());
     g_fragmentProgram->attach(g_fragmentShader.get());

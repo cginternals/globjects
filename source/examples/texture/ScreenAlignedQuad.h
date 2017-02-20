@@ -16,7 +16,7 @@ class Texture;
 class Shader;
 class AbstractStringSource;
 
-} // namespace globjects
+}
 
 
 class ScreenAlignedQuad : public globjects::Instantiator<ScreenAlignedQuad>

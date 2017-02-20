@@ -25,7 +25,7 @@ void AbstractState::setEnabled(GLenum capability, const int index, const bool en
 
 void AbstractState::blendColor(const GLfloat red, const GLfloat green, const GLfloat blue, const GLfloat alpha)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glBlendColor, red, green, blue, alpha)));
+    add(StateSetting::create(glBlendColor, red, green, blue, alpha));
 }
 
 void AbstractState::blendColor(const std::array<GLfloat, 4> & color)
@@ -35,17 +35,17 @@ void AbstractState::blendColor(const std::array<GLfloat, 4> & color)
 
 void AbstractState::blendFunc(const GLenum sFactor, const GLenum dFactor)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glBlendFunc, sFactor, dFactor)));
+    add(StateSetting::create(glBlendFunc, sFactor, dFactor));
 }
 
 void AbstractState::blendFuncSeparate(const GLenum srcRGB, const GLenum dstRGB, const GLenum srcAlpha, const GLenum dstAlpha)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glBlendFuncSeparate, srcRGB, dstRGB, srcAlpha, dstAlpha)));
+    add(StateSetting::create(glBlendFuncSeparate, srcRGB, dstRGB, srcAlpha, dstAlpha));
 }
 
 void AbstractState::clearColor(const GLfloat red, const GLfloat green, const GLfloat blue, const GLfloat alpha)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glClearColor, red, green, blue, alpha)));
+    add(StateSetting::create(glClearColor, red, green, blue, alpha));
 }
 
 void AbstractState::clearColor(const std::array<GLfloat, 4> & color)
@@ -55,17 +55,17 @@ void AbstractState::clearColor(const std::array<GLfloat, 4> & color)
 
 void AbstractState::clearDepth(const GLfloat depth)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glClearDepthf, depth)));
+    add(StateSetting::create(glClearDepthf, depth));
 }
 
 void AbstractState::clearStencil(const GLint s)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glClearStencil, s)));
+    add(StateSetting::create(glClearStencil, s));
 }
 
 void AbstractState::colorMask(const GLboolean red, const GLboolean green, const GLboolean blue, const GLboolean alpha)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glColorMask, red, green, blue, alpha)));
+    add(StateSetting::create(glColorMask, red, green, blue, alpha));
 }
 
 void AbstractState::colorMask(const std::array<GLboolean, 4> & mask)
@@ -75,27 +75,27 @@ void AbstractState::colorMask(const std::array<GLboolean, 4> & mask)
 
 void AbstractState::cullFace(const GLenum mode)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glCullFace, mode)));
+    add(StateSetting::create(glCullFace, mode));
 }
 
 void AbstractState::depthFunc(const GLenum func)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glDepthFunc, func)));
+    add(StateSetting::create(glDepthFunc, func));
 }
 
 void AbstractState::depthMask(const GLboolean flag)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glDepthMask, flag)));
+    add(StateSetting::create(glDepthMask, flag));
 }
 
 void AbstractState::depthRange(const GLdouble nearVal, const GLdouble farVal)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glDepthRange, nearVal, farVal)));
+    add(StateSetting::create(glDepthRange, nearVal, farVal));
 }
 
 void AbstractState::depthRange(const GLfloat nearVal, const GLfloat farVal)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glDepthRangef, nearVal, farVal)));
+    add(StateSetting::create(glDepthRangef, nearVal, farVal));
 }
 
 void AbstractState::depthRange(const std::array<GLfloat, 2> & range)
@@ -105,77 +105,77 @@ void AbstractState::depthRange(const std::array<GLfloat, 2> & range)
     
 void AbstractState::frontFace(GLenum winding)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glFrontFace, winding)));
+    add(StateSetting::create(glFrontFace, winding));
 }
 
 void AbstractState::logicOp(const GLenum opcode)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glLogicOp, opcode)));
+    add(StateSetting::create(glLogicOp, opcode));
 }
 
 void AbstractState::pixelStore(const GLenum pname, const GLboolean param)
 {
-    auto setting = std::unique_ptr<StateSetting>(new StateSetting(static_cast<void(*)(GLenum,GLboolean)>(glPixelStorei), pname, param));
+    auto setting = StateSetting::create(static_cast<void(*)(GLenum,GLboolean)>(glPixelStorei), pname, param);
     setting->type().specializeType(pname);
     add(std::move(setting));
 }
 
 void AbstractState::pixelStore(gl::GLenum pname, const gl::GLint param)
 {
-    auto setting = std::unique_ptr<StateSetting>(new StateSetting(static_cast<void(*)(GLenum,GLint)>(glPixelStorei), pname, param));
+    auto setting = StateSetting::create(static_cast<void(*)(GLenum,GLint)>(glPixelStorei), pname, param);
     setting->type().specializeType(pname);
     add(std::move(setting));
 }
 
 void AbstractState::pixelStore(gl::GLenum pname, const gl::GLfloat param)
 {
-    auto setting = std::unique_ptr<StateSetting>(new StateSetting(glPixelStoref, pname, param));
+    auto setting = StateSetting::create(glPixelStoref, pname, param);
     setting->type().specializeType(pname);
     add(std::move(setting));
 }
 
 void AbstractState::pointParameter(const GLenum pname, const GLenum param)
 {
-    auto setting = std::unique_ptr<StateSetting>(new StateSetting(static_cast<void(*)(GLenum,GLenum)>(glPointParameteri), pname, param));
+    auto setting = StateSetting::create(static_cast<void(*)(GLenum,GLenum)>(glPointParameteri), pname, param);
     setting->type().specializeType(pname);
     add(std::move(setting));
 }
 
 void AbstractState::pointSize(const GLfloat size)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glPointSize, size)));
+    add(StateSetting::create(glPointSize, size));
 }
 
 void AbstractState::polygonMode(const GLenum face, const GLenum mode)
 {
-    auto setting = std::unique_ptr<StateSetting>(new StateSetting(glPolygonMode, face, mode));
+    auto setting = StateSetting::create(glPolygonMode, face, mode);
     setting->type().specializeType(face);
     add(std::move(setting));
 }
 
 void AbstractState::polygonOffset(const GLfloat factor, const GLfloat units)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glPolygonOffset, factor, units)));
+    add(StateSetting::create(glPolygonOffset, factor, units));
 }
 
 void AbstractState::primitiveRestartIndex(const GLuint index)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glPrimitiveRestartIndex, index)));
+    add(StateSetting::create(glPrimitiveRestartIndex, index));
 }
 
 void AbstractState::provokingVertex(const GLenum provokeMode)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glProvokingVertex, provokeMode)));
+    add(StateSetting::create(glProvokingVertex, provokeMode));
 }
 
 void AbstractState::sampleCoverage(const GLfloat value, const GLboolean invert)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glSampleCoverage, value, invert)));
+    add(StateSetting::create(glSampleCoverage, value, invert));
 }
 
 void AbstractState::scissor(const GLint x, const GLint y, const GLsizei width, const GLsizei height)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glScissor, x, y, width, height)));
+    add(StateSetting::create(glScissor, x, y, width, height));
 }
 
 void AbstractState::scissor(const std::array<GLint, 4> & scissorBox)
@@ -185,36 +185,36 @@ void AbstractState::scissor(const std::array<GLint, 4> & scissorBox)
 
 void AbstractState::stencilFunc(const GLenum func, const GLint ref, const GLuint mask)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glStencilFunc, func, ref, mask)));
+    add(StateSetting::create(glStencilFunc, func, ref, mask));
 }
 
 void AbstractState::stencilMask(const GLuint mask)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glStencilMask, mask)));
+    add(StateSetting::create(glStencilMask, mask));
 }
 
 void AbstractState::stencilOp(const GLenum stencilFail, const GLenum depthFail, const GLenum depthPass)
 {
-    add(std::unique_ptr<StateSetting>(new StateSetting(glStencilOp, stencilFail, depthFail, depthPass)));
+    add(StateSetting::create(glStencilOp, stencilFail, depthFail, depthPass));
 }
 
 void AbstractState::stencilFuncSeparate(const GLenum face, const GLenum func, const GLint ref, const GLuint mask)
 {
-    auto setting = std::unique_ptr<StateSetting>(new StateSetting(glStencilFuncSeparate, face, func, ref, mask));
+    auto setting = StateSetting::create(glStencilFuncSeparate, face, func, ref, mask);
     setting->type().specializeType(face);
     add(std::move(setting));
 }
 
 void AbstractState::stencilMaskSeparate(const GLenum face, const GLuint mask)
 {
-    auto setting = std::unique_ptr<StateSetting>(new StateSetting(glStencilMaskSeparate, face, mask));
+    auto setting = StateSetting::create(glStencilMaskSeparate, face, mask);
     setting->type().specializeType(face);
     add(std::move(setting));
 }
 
 void AbstractState::stencilOpSeparate(const GLenum face, const GLenum stencilFail, const GLenum depthFail, const GLenum depthPass)
 {
-    auto setting = std::unique_ptr<StateSetting>(new StateSetting(glStencilOpSeparate, face, stencilFail, depthFail, depthPass));
+    auto setting = StateSetting::create(glStencilOpSeparate, face, stencilFail, depthFail, depthPass);
     setting->type().specializeType(face);
     add(std::move(setting));
 }

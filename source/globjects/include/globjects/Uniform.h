@@ -23,10 +23,10 @@ namespace globjects
  *
  * Simple usage of an Uniform:
  * \code{.cpp}
- * Uniform<float> * u = new Uniform<float>("u_ratio");
+ * std::unique_ptr<Uniform<float>> u = Uniform<float>::create("u_ratio");
  * u->set(1.618f);
  *
- * program->addUniform(u);
+ * program->addUniform(u.get());
  * \endcode
  *
  * \see AbstractUniform

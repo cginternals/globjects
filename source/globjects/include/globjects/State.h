@@ -32,7 +32,7 @@ public:
 
     virtual ~State();
 
-    static State * currentState();
+    static std::unique_ptr<State> currentState();
 
     void setMode(Mode mode);
     Mode mode() const;

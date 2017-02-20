@@ -66,19 +66,19 @@ public:
         globjects::debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
 #endif
 
-        m_cornerBuffer = std::unique_ptr<globjects::Buffer>(new globjects::Buffer());
-        m_program = std::unique_ptr<globjects::Program>(new globjects::Program());
-        m_vao = std::unique_ptr<globjects::VertexArray>(new globjects::VertexArray());
+        m_cornerBuffer = globjects::Buffer::create();
+        m_program = globjects::Program::create();
+        m_vao = globjects::VertexArray::create();
 
         const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
 
         m_vertexShaderSource = globjects::Shader::sourceFromFile(dataPath + "qt-example/shader.vert");
         m_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(m_vertexShaderSource.get());
-        m_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, m_vertexShaderTemplate.get()));
+        m_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, m_vertexShaderTemplate.get());
 
         m_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "qt-example/shader.frag");
         m_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(m_fragmentShaderSource.get());
-        m_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, m_fragmentShaderTemplate.get()));
+        m_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, m_fragmentShaderTemplate.get());
 
         m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 
@@ -148,12 +148,12 @@ int main(int argc, char * argv[])
 #endif
     format.setDepthBufferSize(16);
 
-    Window * glwindow = new Window(format);
+    std::unique_ptr<Window> glwindow(new Window(format));
 
     QMainWindow window;
     window.setMinimumSize(640, 480);
     window.setWindowTitle("globjects and Qt");
-    window.setCentralWidget(QWidget::createWindowContainer(glwindow));
+    window.setCentralWidget(QWidget::createWindowContainer(glwindow.release()));
 
     window.show();
 

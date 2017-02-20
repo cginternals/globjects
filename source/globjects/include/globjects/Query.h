@@ -32,7 +32,7 @@ namespace globjects
     An example time measurement:
     \code{.cpp}
 
-        Query * query = new Query(gl::GL_TIME_ELAPSED);
+        std::unique_ptr<Query> query = Query::create(gl::GL_TIME_ELAPSED);
         query->begin();
     
         // more GL calls
@@ -50,7 +50,7 @@ namespace globjects
 
         // GL calls
     
-        Query * query = Query::timestamp();
+        std::unique_ptr<Query> query = Query::timestamp();
     
         // even more GL calls
     

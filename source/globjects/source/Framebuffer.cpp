@@ -110,21 +110,21 @@ void Framebuffer::attachTexture(const GLenum attachment, Texture * texture, cons
 {
     implementation().attachTexture(this, attachment, texture, level);
 
-    addAttachment(std::unique_ptr<FramebufferAttachment>(new AttachedTexture(this, attachment, texture, level)));
+    addAttachment(AttachedTexture::create(this, attachment, texture, level));
 }
 
 void Framebuffer::attachTextureLayer(const GLenum attachment, Texture * texture, const GLint level, const GLint layer)
 {
     implementation().attachTextureLayer(this, attachment, texture, level, layer);
 
-    addAttachment(std::unique_ptr<FramebufferAttachment>(new AttachedTexture(this, attachment, texture, level, layer)));
+    addAttachment(AttachedTexture::create(this, attachment, texture, level, layer));
 }
 
 void Framebuffer::attachRenderBuffer(const GLenum attachment, Renderbuffer * renderBuffer)
 {
     implementation().attachRenderBuffer(this, attachment, renderBuffer);
 
-    addAttachment(std::unique_ptr<FramebufferAttachment>(new AttachedRenderbuffer(this, attachment, renderBuffer)));
+    addAttachment(AttachedRenderbuffer::create(this, attachment, renderBuffer));
 }
 
 bool Framebuffer::detach(const GLenum attachment)

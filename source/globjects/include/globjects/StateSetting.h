@@ -9,6 +9,8 @@
 
 #include <globjects/globjects_api.h>
 
+#include <globjects/base/Instantiator.h>
+
 
 namespace globjects
 {
@@ -33,7 +35,7 @@ protected:
 };
 
 
-class GLOBJECTS_API StateSetting
+class GLOBJECTS_API StateSetting : public Instantiator<StateSetting>
 {
 public:
     template <typename... Arguments>

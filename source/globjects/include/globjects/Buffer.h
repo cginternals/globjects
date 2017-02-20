@@ -27,7 +27,7 @@ namespace globjects
     The current bound VertexArrayObject and Program will specify the render pipeline and data.
     
     \code{.cpp}
-    Buffer * buffer = new Buffer(gl::GL_SHADER_STORAGE_BUFFER);
+    std::unique_ptr<Buffer> buffer = Buffer::create(gl::GL_SHADER_STORAGE_BUFFER);
     buffer->setData(sizeof(glm::vec4) * 100, nullptr, gl::GL_DYNAMIC_DRAW); // allocate 100 vec4
     \endcode
     

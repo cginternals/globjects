@@ -72,9 +72,9 @@ const std::array<Icosahedron::Face, 20> Icosahedron::indices()
 }
 
 Icosahedron::Icosahedron(const GLsizei iterations, const GLint positionLocation, const GLint normalLocation)
-: m_vao(new VertexArray)
-, m_vertices(new Buffer)
-, m_indices(new Buffer)
+: m_vao(VertexArray::create())
+, m_vertices(Buffer::create())
+, m_indices(Buffer::create())
 {
     auto v(vertices());
     auto i(indices());
@@ -97,7 +97,7 @@ Icosahedron::Icosahedron(const GLsizei iterations, const GLint positionLocation,
     {
         auto vertexBinding = m_vao->binding(0);
         vertexBinding->setAttribute(positionLocation);
-        vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
+        vertexBinding->setBuffer(m_vertices.get(), 0, sizeof(vec3));
         vertexBinding->setFormat(3, GL_FLOAT, GL_TRUE);
         m_vao->enable(0);
     }
@@ -106,7 +106,7 @@ Icosahedron::Icosahedron(const GLsizei iterations, const GLint positionLocation,
     {
         auto vertexBinding = m_vao->binding(1);
         vertexBinding->setAttribute(normalLocation);
-        vertexBinding->setBuffer(m_vertices, 0, sizeof(vec3));
+        vertexBinding->setBuffer(m_vertices.get(), 0, sizeof(vec3));
         vertexBinding->setFormat(3, GL_FLOAT, GL_TRUE);
         m_vao->enable(1);
     }

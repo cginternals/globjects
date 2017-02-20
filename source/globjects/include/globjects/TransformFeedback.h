@@ -26,9 +26,9 @@ class Program;
     An example usage:
     \code{.cpp}
 
-        Program* program = createProgramIncludingShaders();
-        TransformFeedback* transformFeedback = new TransformFeedback();
-        Buffer* buffer = new Buffer(gl::GL_ARRAY_BUFFER);
+        std::unique_ptr<Program> program = createProgramIncludingShaders();
+        std::unique_ptr<TransformFeedback> transformFeedback = TransformFeedback::create();
+        std::unique_ptr<Buffer> buffer = Buffer::create(gl::GL_ARRAY_BUFFER);
     
         transformFeedback->setVaryings(program, Array<const char*>{ "vertex_out" }, gl::GL_INTERLEAVED_ATTRIBS);
     

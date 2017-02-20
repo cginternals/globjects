@@ -50,7 +50,7 @@ std::unique_ptr<Query> Query::current(const GLenum target)
 
 std::unique_ptr<Query> Query::timestamp()
 {
-    auto query = std::unique_ptr<Query>(new Query());
+    auto query = Query::create();
     query->counter(GL_TIMESTAMP);
 
     return query;

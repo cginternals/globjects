@@ -25,9 +25,9 @@ State::~State()
 {
 }
 
-State * State::currentState()
+std::unique_ptr<State> State::currentState()
 {
-    State * state = new State(DeferredMode);
+    auto state = State::create(DeferredMode);
 
     std::vector<GLenum> capabilities = {
         GL_BLEND,
@@ -233,7 +233,7 @@ Capability* State::getCapability(GLenum capability)
     const auto it = m_capabilities.find(capability);
     if (it == m_capabilities.end())
     {
-        const auto insertedIt = m_capabilities.emplace(capability, std::unique_ptr<Capability>(new Capability(capability)));
+        const auto insertedIt = m_capabilities.emplace(capability, Capability::create(capability));
 
         return insertedIt.first->second.get();
     }

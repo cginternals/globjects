@@ -46,6 +46,7 @@ class Uniform;
 
     Example code for setting up a program and use it for rendering
     
+    [TODO]: Adjust examples
     \code{.cpp}
 
         Program * program = new Program();
@@ -62,6 +63,7 @@ class Uniform;
     \endcode
     
     Example code for using a program as compute program
+    [TODO]: Adjust examples
     \code{.cpp}
 
         Program * program = new Program();
@@ -117,7 +119,9 @@ public:
     void invalidate() const;
 
     void setBinary(std::unique_ptr<ProgramBinary> && binary);
-    ProgramBinary * getBinary() const;
+    ProgramBinary * binary() const;
+
+    static std::unique_ptr<ProgramBinary> obtainBinary(Program * program);
 
     std::string infoLog() const;
     gl::GLint get(gl::GLenum pname) const;

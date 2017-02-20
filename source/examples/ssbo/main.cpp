@@ -52,16 +52,16 @@ void initialize()
 
     g_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
     g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
-    g_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_vertexShaderTemplate.get()));
+    g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
 
     g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "ssbo/ssbo.frag");
     g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
-    g_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get()));
+    g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
 
-    g_program = std::unique_ptr<globjects::Program>(new globjects::Program);
+    g_program = globjects::Program::create();
     g_program->attach(g_vertexShader.get(), g_fragmentShader.get());
 
-    g_quad = std::unique_ptr<ScreenAlignedQuad>(new ScreenAlignedQuad(g_program.get()));
+    g_quad = ScreenAlignedQuad::create(g_program.get());
 
     g_program->setUniform("maximum",     10);
     g_program->setUniform("rowCount",    10);
@@ -79,7 +79,7 @@ void initialize()
         3,4,5,6,7,8,9,10,1,2,
         2,3,4,5,6,7,8,9,10,1 }};
 
-    g_buffer = std::unique_ptr<globjects::Buffer>(new globjects::Buffer());
+    g_buffer = globjects::Buffer::create();
     g_buffer->setData(sizeof(data), data.data(), GL_STATIC_DRAW);
 
     g_buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);

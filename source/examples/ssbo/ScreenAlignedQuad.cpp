@@ -69,9 +69,9 @@ void ScreenAlignedQuad::initialize()
 
     static const std::array<vec2, 4> raw { { vec2(+1.f,-1.f), vec2(+1.f,+1.f), vec2(-1.f,-1.f), vec2(-1.f,+1.f) } };
 
-    m_vao = std::unique_ptr<VertexArray>(new VertexArray);
+    m_vao = VertexArray::create();
 
-    m_buffer = std::unique_ptr<Buffer>(new Buffer());
+    m_buffer = Buffer::create();
     m_buffer->setData(raw, GL_STATIC_DRAW); //needed for some drivers
 
     auto binding = m_vao->binding(0);

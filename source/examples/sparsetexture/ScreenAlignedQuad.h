@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include <globjects/base/Instantiator.h>
+
 
 namespace globjects
 {
@@ -17,7 +19,7 @@ class AbstractStringSource;
 }
 
 
-class ScreenAlignedQuad
+class ScreenAlignedQuad : public globjects::Instantiator<ScreenAlignedQuad>
 {
 public:
     ScreenAlignedQuad(globjects::Program * program, globjects::Texture * texture = nullptr);

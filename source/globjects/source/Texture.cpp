@@ -82,7 +82,7 @@ std::unique_ptr<Texture> Texture::createDefault()
 
 std::unique_ptr<Texture> Texture::createDefault(const GLenum target)
 {
-    auto texture = std::unique_ptr<Texture>(new Texture(target));
+    auto texture = Texture::create(target);
 
     texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);

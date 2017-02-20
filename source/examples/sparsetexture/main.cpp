@@ -92,7 +92,7 @@ void initialize()
     glGetIntegerv(GL_MAX_SPARSE_TEXTURE_SIZE_ARB, &maxSparseTextureSize);
     globjects::info("GL_MAX_SPARSE_TEXTURE_SIZE_ARB = %d;", maxSparseTextureSize);
 
-    g_texture = std::unique_ptr<globjects::Texture>(new globjects::Texture(GL_TEXTURE_2D));
+    g_texture = globjects::Texture::create(GL_TEXTURE_2D);
 
     // make texture sparse
     g_texture->setParameter(GL_TEXTURE_SPARSE_ARB, static_cast<GLint>(GL_TRUE));
@@ -113,16 +113,16 @@ void initialize()
     // Create and setup geometry
     g_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
     g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
-    g_vertexShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_VERTEX_SHADER, g_vertexShaderTemplate.get()));
+    g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
 
     g_fragmentShaderSource = ScreenAlignedQuad::fragmentShaderSource();
     g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
-    g_fragmentShader = std::unique_ptr<globjects::Shader>(new globjects::Shader(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get()));
+    g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
 
-    g_program = std::unique_ptr<globjects::Program>(new globjects::Program);
+    g_program = globjects::Program::create();
     g_program->attach(g_vertexShader.get(), g_fragmentShader.get());
 
-    g_quad = std::unique_ptr<ScreenAlignedQuad>(new ScreenAlignedQuad(g_program.get(), g_texture.get()));
+    g_quad = ScreenAlignedQuad::create(g_program.get(), g_texture.get());
     g_quad->setSamplerUniform(0);
 }
 
