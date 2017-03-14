@@ -14,11 +14,11 @@ namespace globjects
 
 /** \brief Encapsulates a simple log message and its severity level.
 
-	LogMessages are handled and dispatched by the global logging handler which 
+    LogMessages are handled and dispatched by the global logging handler which 
     has to be a subclass of AbstractLogHandler.
 
-	\see logging.h
-	\see AbstractLogHandler
+    \see logging.h
+    \see AbstractLogHandler
 */
 class GLOBJECTS_API LogMessage
 {

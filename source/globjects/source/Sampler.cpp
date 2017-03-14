@@ -6,7 +6,7 @@
 
 #include <globjects/ObjectVisitor.h>
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 using namespace gl;
 
@@ -16,18 +16,18 @@ namespace globjects
 
 
 Sampler::Sampler()
-: Object(new SamplerResource)
+: Object(std::unique_ptr<IDResource>(new SamplerResource))
 {
 }
 
-Sampler::Sampler(IDResource * resource)
-: Object(resource)
+Sampler::Sampler(std::unique_ptr<IDResource> && resource)
+: Object(std::move(resource))
 {
 }
 
-Sampler * Sampler::fromId(const GLuint id)
+std::unique_ptr<Sampler> Sampler::fromId(const GLuint id)
 {
-    return new Sampler(new ExternalResource(id));
+    return std::unique_ptr<Sampler>(new Sampler(std::unique_ptr<IDResource>(new ExternalResource(id))));
 }
 
 Sampler::~Sampler()
@@ -69,7 +69,7 @@ GLint Sampler::getParameteri(const GLenum pname) const
     GLint value = 0;
     glGetSamplerParameteriv(id(), pname, &value);
 
-	return value;
+    return value;
 }
 
 GLfloat Sampler::getParameterf(const GLenum pname) const
@@ -77,7 +77,7 @@ GLfloat Sampler::getParameterf(const GLenum pname) const
     GLfloat value = 0;
     glGetSamplerParameterfv(id(), pname, &value);
 
-	return value;
+    return value;
 }
 
 GLenum Sampler::objectType() const

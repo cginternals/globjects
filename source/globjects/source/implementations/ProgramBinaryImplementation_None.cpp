@@ -5,6 +5,7 @@
 #include <glbinding/gl/boolean.h>
 
 #include <globjects/Program.h>
+#include <globjects/ProgramBinary.h>
 
 
 namespace globjects 
@@ -16,7 +17,7 @@ bool ProgramBinaryImplementation_None::updateProgramLinkSource(const Program * p
     return program->compileAttachedShaders();
 }
 
-ProgramBinary * ProgramBinaryImplementation_None::getProgramBinary(const Program * /*program*/) const
+std::unique_ptr<ProgramBinary> ProgramBinaryImplementation_None::getProgramBinary(const Program * /*program*/) const
 {
     return nullptr;
 }

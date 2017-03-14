@@ -5,6 +5,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/base/AbstractStringSource.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -17,7 +18,7 @@ namespace globjects
     
     \see StringSource
  */
-class GLOBJECTS_API StaticStringSource : public AbstractStringSource
+class GLOBJECTS_API StaticStringSource : public AbstractStringSource, public Instantiator<StaticStringSource>
 {
 public:
     StaticStringSource(const std::string & string);

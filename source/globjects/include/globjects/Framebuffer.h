@@ -5,13 +5,13 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <memory>
 
 #include <glm/fwd.hpp>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -43,7 +43,7 @@ class Buffer;
     \see TextureAttachment
     \see RenderBufferAttachment
  */
-class GLOBJECTS_API Framebuffer : public Object
+class GLOBJECTS_API Framebuffer : public Object, public Instantiator<Framebuffer>
 {
 public:
     enum class BindlessImplementation
@@ -57,9 +57,12 @@ public:
 
 public:
     Framebuffer();
-    static Framebuffer * fromId(gl::GLuint id);
 
-    static Framebuffer * defaultFBO();
+    virtual ~Framebuffer();
+
+    static std::unique_ptr<Framebuffer> fromId(gl::GLuint id);
+
+    static std::unique_ptr<Framebuffer> defaultFBO();
 
     virtual void accept(ObjectVisitor& visitor) override;
 
@@ -126,16 +129,15 @@ public:
     virtual gl::GLenum objectType() const override;
 
 protected:
-    Framebuffer(IDResource * resource);
-    virtual ~Framebuffer();
+    Framebuffer(std::unique_ptr<IDResource> && resource);
 
-    void addAttachment(FramebufferAttachment * attachment);
+    void addAttachment(std::unique_ptr<FramebufferAttachment> && attachment);
 
     static void blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::ClearBufferMask mask, gl::GLenum filter);
     static void blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter);
 
 protected:
-	std::map<gl::GLenum, ref_ptr<FramebufferAttachment>> m_attachments;
+    std::map<gl::GLenum, std::unique_ptr<FramebufferAttachment>> m_attachments;
 };
 
 

@@ -66,22 +66,42 @@ public:
         globjects::debug() << "Using global OS X shader replacement '#version 140' -> '#version 150'" << std::endl;
 #endif
 
-        m_cornerBuffer = new globjects::Buffer();
-        m_program = new globjects::Program();
-        m_vao = new globjects::VertexArray();
+        m_cornerBuffer = globjects::Buffer::create();
+        m_program = globjects::Program::create();
+        m_vao = globjects::VertexArray::create();
 
         const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
-        m_program->attach(
-            globjects::Shader::fromFile(GL_VERTEX_SHADER,  dataPath +  "qt-example/shader.vert"),
-            globjects::Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "qt-example/shader.frag"));
+
+        m_vertexShaderSource = globjects::Shader::sourceFromFile(dataPath + "qt-example/shader.vert");
+        m_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(m_vertexShaderSource.get());
+        m_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, m_vertexShaderTemplate.get());
+
+        m_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "qt-example/shader.frag");
+        m_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(m_fragmentShaderSource.get());
+        m_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, m_fragmentShaderTemplate.get());
+
+        m_program->attach(m_vertexShader.get(), m_fragmentShader.get());
 
         m_cornerBuffer->setData(std::array<glm::vec2, 4>{ {
                 glm::vec2(0, 0), glm::vec2(1, 0), glm::vec2(0, 1), glm::vec2(1, 1) } }, GL_STATIC_DRAW);
 
         m_vao->binding(0)->setAttribute(0);
-        m_vao->binding(0)->setBuffer(m_cornerBuffer, 0, sizeof(glm::vec2));
+        m_vao->binding(0)->setBuffer(m_cornerBuffer.get(), 0, sizeof(glm::vec2));
         m_vao->binding(0)->setFormat(2, GL_FLOAT);
         m_vao->enable(0);
+    }
+
+    virtual void deinitializeGL() override
+    {
+        m_cornerBuffer.reset(nullptr);
+        m_program.reset(nullptr);
+        m_vertexShaderSource.reset(nullptr);
+        m_vertexShaderTemplate.reset(nullptr);
+        m_vertexShader.reset(nullptr);
+        m_fragmentShaderSource.reset(nullptr);
+        m_fragmentShaderTemplate.reset(nullptr);
+        m_fragmentShader.reset(nullptr);
+        m_vao.reset(nullptr);
     }
 
     virtual void resizeGL(QResizeEvent * event) override
@@ -105,7 +125,8 @@ public:
         switch (event->key())
         {
         case Qt::Key_F5:
-            globjects::File::reloadAll();
+            m_vertexShaderSource->reload();
+            m_fragmentShaderSource->reload();
             break;
         default:
             break;
@@ -115,9 +136,15 @@ public:
 
 
 protected:
-    globjects::ref_ptr<globjects::Buffer> m_cornerBuffer;
-    globjects::ref_ptr<globjects::Program> m_program;
-    globjects::ref_ptr<globjects::VertexArray> m_vao;
+    std::unique_ptr<globjects::Buffer> m_cornerBuffer;
+    std::unique_ptr<globjects::Program> m_program;
+    std::unique_ptr<globjects::File> m_vertexShaderSource;
+    std::unique_ptr<globjects::AbstractStringSource> m_vertexShaderTemplate;
+    std::unique_ptr<globjects::Shader> m_vertexShader;
+    std::unique_ptr<globjects::File> m_fragmentShaderSource;
+    std::unique_ptr<globjects::AbstractStringSource> m_fragmentShaderTemplate;
+    std::unique_ptr<globjects::Shader> m_fragmentShader;
+    std::unique_ptr<globjects::VertexArray> m_vao;
 };
 
 
@@ -134,12 +161,12 @@ int main(int argc, char * argv[])
 #endif
     format.setDepthBufferSize(16);
 
-    Window * glwindow = new Window(format);
+    std::unique_ptr<Window> glwindow(new Window(format));
 
     QMainWindow window;
     window.setMinimumSize(640, 480);
     window.setWindowTitle("globjects and Qt");
-    window.setCentralWidget(QWidget::createWindowContainer(glwindow));
+    window.setCentralWidget(QWidget::createWindowContainer(glwindow.release()));
 
     window.show();
 

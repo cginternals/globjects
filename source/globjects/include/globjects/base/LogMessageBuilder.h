@@ -23,26 +23,26 @@ class AbstractLogHandler;
 
 /** \brief Builds a LogMessage from different kinds of primitive types.
 
-	The LogMessageBuilder is  usually created by one of the global functions 
+    The LogMessageBuilder is  usually created by one of the global functions 
     log, debug, warning, error or fatal. It works similar to streams and 
     accepts a number of different types which will be converted to strings 
     automatically. When it goes out of scope, it creates a LogMessage from 
     all streamed objects and sends it to the log handler.
 
     Typical usage of the LogMessageBuilder:
-	\code{.cpp}
+    \code{.cpp}
 
-		warning() << "This is warning number " << 3;
-	
+        warning() << "This is warning number " << 3;
+    
     \endcode
 
-	\see logging.h
-	\see LogMessage
-	\see setLoggingHandler
+    \see logging.h
+    \see LogMessage
+    \see setLoggingHandler
     \see setVerbosityLevel
     \see info
-	\see debug
-	\see warning
+    \see debug
+    \see warning
     \see critical
 */
 class GLOBJECTS_API LogMessageBuilder
@@ -56,7 +56,7 @@ public:
 public:
     LogMessageBuilder(LogMessageLevel level, AbstractLogHandler * handler);
     LogMessageBuilder(const LogMessageBuilder & builder);
-	virtual ~LogMessageBuilder();
+    virtual ~LogMessageBuilder();
 
     LogMessageBuilder & operator<<(const char * c);
     LogMessageBuilder & operator<<(const std::string & str);
@@ -73,7 +73,7 @@ public:
     LogMessageBuilder & operator<<(unsigned char uc);
     LogMessageBuilder & operator<<(const void * pointer);
 
-	// manipulators
+    // manipulators
     LogMessageBuilder & operator<<(std::ostream & (*manipulator)(std::ostream&));
     LogMessageBuilder & operator<<(PrecisionManipulator manipulator);
     LogMessageBuilder & operator<<(FillManipulator manipulator);
@@ -81,20 +81,30 @@ public:
     // in Windows PrecisionManipulator = WidthManipulator
     LogMessageBuilder & operator<<(WidthManipulator manipulator);
 #endif
-	
+    
     // globjects base objects
     template <typename T>
     LogMessageBuilder & operator<<(const ref_ptr<T> & ref_pointer);
-	
-	// pointers
-	template <typename T>
+    
+    // pointers
+    template <typename T>
     LogMessageBuilder & operator<<(const T * pointer);
 
     // array types
     template <typename T>
     LogMessageBuilder & operator<<(const std::vector<T> & vector);
+    template <typename T>
+    LogMessageBuilder & operator<<(const std::vector<T *> & vector);
+
+    template <typename T>
+    LogMessageBuilder & operator<<(const std::vector<std::unique_ptr<T>> & vector);
+
     template <typename T, std::size_t Count>
     LogMessageBuilder & operator<<(const std::array<T, Count> & array);
+    template <typename T, std::size_t Count>
+    LogMessageBuilder & operator<<(const std::array<T *, Count> & array);
+    template <typename T, std::size_t Count>
+    LogMessageBuilder & operator<<(const std::array<std::unique_ptr<T>, Count> & array);
 
 protected:
     LogMessageLevel m_level;

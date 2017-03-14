@@ -3,10 +3,9 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <globjects/globjects_api.h>
 #include <globjects/FramebufferAttachment.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -24,18 +23,18 @@ class Framebuffer;
     \see Renderbuffer
     \see Framebuffer
  */
-class GLOBJECTS_API AttachedRenderbuffer : public FramebufferAttachment
+class GLOBJECTS_API AttachedRenderbuffer : public FramebufferAttachment, public Instantiator<AttachedRenderbuffer>
 {
 public:
     AttachedRenderbuffer(Framebuffer * fbo,  gl::GLenum attachment, Renderbuffer * renderBuffer);
 
     virtual bool isRenderBufferAttachment() const override;
 
-	Renderbuffer * renderBuffer();
+    Renderbuffer * renderBuffer();
     const Renderbuffer * renderBuffer() const;
 
 protected:
-    ref_ptr<Renderbuffer> m_renderBuffer;
+    Renderbuffer * m_renderBuffer;
 };
 
 

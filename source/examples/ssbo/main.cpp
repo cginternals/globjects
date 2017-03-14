@@ -31,8 +31,16 @@ using namespace gl;
 
 namespace 
 {
-    ScreenAlignedQuad * g_quad = nullptr;
-    globjects::Buffer * g_buffer = nullptr;
+    std::unique_ptr<ScreenAlignedQuad> g_quad = nullptr;
+    std::unique_ptr<globjects::Buffer> g_buffer = nullptr;
+
+    std::unique_ptr<globjects::Program> g_program = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
+    std::unique_ptr<globjects::File> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
 
     auto g_size = glm::ivec2{};
 }
@@ -41,14 +49,25 @@ namespace
 void initialize()
 {
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
-    g_quad = new ScreenAlignedQuad(globjects::Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "ssbo/ssbo.frag"));
-    g_quad->ref();
 
-    g_quad->program()->setUniform("maximum",     10);
-    g_quad->program()->setUniform("rowCount",    10);
-    g_quad->program()->setUniform("columnCount", 10);
+    g_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
+    g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
+    g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
 
-    static const auto data = std::array<int, 100> {
+    g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "ssbo/ssbo.frag");
+    g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
+    g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
+
+    g_program = globjects::Program::create();
+    g_program->attach(g_vertexShader.get(), g_fragmentShader.get());
+
+    g_quad = ScreenAlignedQuad::create(g_program.get());
+
+    g_program->setUniform("maximum",     10);
+    g_program->setUniform("rowCount",    10);
+    g_program->setUniform("columnCount", 10);
+
+    static const auto data = std::array<int, 100> {{
         1,2,3,4,5,6,7,8,9,10,
         10,1,2,3,4,5,6,7,8,9,
         9,10,1,2,3,4,5,6,7,8,
@@ -58,10 +77,9 @@ void initialize()
         5,6,7,8,9,10,1,2,3,4,
         4,5,6,7,8,9,10,1,2,3,
         3,4,5,6,7,8,9,10,1,2,
-        2,3,4,5,6,7,8,9,10,1 };
+        2,3,4,5,6,7,8,9,10,1 }};
 
-    g_buffer = new globjects::Buffer();
-    g_buffer->ref();
+    g_buffer = globjects::Buffer::create();
     g_buffer->setData(sizeof(data), data.data(), GL_STATIC_DRAW);
 
     g_buffer->bindBase(GL_SHADER_STORAGE_BUFFER, 1);
@@ -69,8 +87,16 @@ void initialize()
 
 void deinitialize()
 {
-    g_quad->unref();
-    g_buffer->unref();
+    g_quad.reset(nullptr);
+    g_buffer.reset(nullptr);
+
+    g_program.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShader.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShader.reset(nullptr);
 }
 
 void draw()
@@ -98,7 +124,9 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         glfwSetWindowShouldClose(window, true);
 
     if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        globjects::File::reloadAll();
+    {
+        g_fragmentShaderSource->reload();
+    }
 }
 
 

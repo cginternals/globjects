@@ -8,6 +8,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -26,13 +27,13 @@ namespace globjects
     The current bound VertexArrayObject and Program will specify the render pipeline and data.
     
     \code{.cpp}
-    Buffer * buffer = new Buffer(gl::GL_SHADER_STORAGE_BUFFER);
+    std::unique_ptr<Buffer> buffer = Buffer::create(gl::GL_SHADER_STORAGE_BUFFER);
     buffer->setData(sizeof(glm::vec4) * 100, nullptr, gl::GL_DYNAMIC_DRAW); // allocate 100 vec4
     \endcode
     
     \see http://www.opengl.org/wiki/Buffer_Object
 */
-class GLOBJECTS_API Buffer : public Object
+class GLOBJECTS_API Buffer : public Object, public Instantiator<Buffer>
 {
 public:
     enum class BindlessImplementation
@@ -55,6 +56,11 @@ public:
     /** \brief Creates a new OpenGL buffer object.
     */
     Buffer();
+
+    /** Automatically deletes the associated OpenGL buffer unless the object was created with an external id.
+        \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glDeleteBuffers.xml
+    */
+    virtual ~Buffer();
 
     /** \brief Creates a buffer with an external id.
         This object does not own the associated OpenGL object and
@@ -291,12 +297,7 @@ protected:
     /** \brief Creates a buffer with an external id.
         \param id an external OpenGL buffer id
     */
-    Buffer(IDResource * resource);
-
-    /** Automatically deletes the associated OpenGL buffer unless the object was created with an external id.
-        \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glDeleteBuffers.xml
-    */
-    virtual ~Buffer();
+    Buffer(std::unique_ptr<IDResource> && resource);
 };
 
 

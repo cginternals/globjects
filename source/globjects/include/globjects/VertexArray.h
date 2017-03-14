@@ -3,13 +3,13 @@
 
 #include <map>
 #include <vector>
+#include <memory>
 
 #include <glbinding/gl/types.h>
 
-#include <globjects/base/ref_ptr.h>
-
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -19,7 +19,7 @@ namespace globjects
 class VertexAttributeBinding;
 
 // http://www.opengl.org/wiki/Vertex_Array_Object
-class GLOBJECTS_API VertexArray : public Object
+class GLOBJECTS_API VertexArray : public Object, public Instantiator<VertexArray>
 {
 public:
     enum class AttributeImplementation
@@ -34,8 +34,10 @@ public:
 public:
     VertexArray();
 
-    static VertexArray * fromId(gl::GLuint id);
-    static VertexArray * defaultVAO();
+    virtual ~VertexArray();
+
+    static std::unique_ptr<VertexArray> fromId(gl::GLuint id);
+    static std::unique_ptr<VertexArray> defaultVAO();
 
     virtual void accept(ObjectVisitor & visitor) override;
 
@@ -102,11 +104,10 @@ public:
     virtual gl::GLenum objectType() const override;
 
 protected:
-    VertexArray(IDResource * resource);
-    virtual ~VertexArray();
+    VertexArray(std::unique_ptr<IDResource> && resource);
 
 protected:
-    std::map<gl::GLuint, ref_ptr<VertexAttributeBinding>> m_bindings;
+    std::map<gl::GLuint, std::unique_ptr<VertexAttributeBinding>> m_bindings;
 
 };
 

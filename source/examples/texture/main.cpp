@@ -24,8 +24,17 @@ using namespace gl;
 
 namespace 
 {
-    globjects::Texture * g_texture = nullptr;
-    ScreenAlignedQuad * g_quad = nullptr;
+    std::unique_ptr<globjects::Texture> g_texture = nullptr;
+
+    std::unique_ptr<globjects::Program> g_program = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
+
+    std::unique_ptr<ScreenAlignedQuad> g_quad = nullptr;
 
     auto g_size = glm::ivec2{};
 }
@@ -48,18 +57,36 @@ void initialize()
         data[i] = static_cast<unsigned char>(255 - static_cast<unsigned char>(r(generator) * 255));
 
     g_texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
-    g_texture->ref();
     g_texture->image2D(0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-    g_quad = new ScreenAlignedQuad(g_texture);
-    g_quad->ref();
+    g_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
+    g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
+    g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
+
+    g_fragmentShaderSource = ScreenAlignedQuad::fragmentShaderSource();
+    g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
+    g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
+
+    g_program = globjects::Program::create();
+    g_program->attach(g_vertexShader.get(), g_fragmentShader.get());
+
+    g_quad = ScreenAlignedQuad::create(g_program.get(), g_texture.get());
     g_quad->setSamplerUniform(0);
 }
 
 void deinitialize()
 {
-    g_texture->unref();
-    g_quad->unref();
+    g_texture.reset(nullptr);
+
+    g_program.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShader.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShader.reset(nullptr);
+
+    g_quad.reset(nullptr);
 }
 
 void draw()
@@ -85,9 +112,6 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
         glfwSetWindowShouldClose(window, true);
-
-    if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        globjects::File::reloadAll();
 }
 
 

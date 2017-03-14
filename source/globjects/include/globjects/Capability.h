@@ -7,12 +7,14 @@
 
 #include <globjects/globjects_api.h>
 
+#include <globjects/base/Instantiator.h>
+
 
 namespace globjects
 {
 
 
-class GLOBJECTS_API Capability
+class GLOBJECTS_API Capability : public Instantiator<Capability>
 {
 public:
     Capability(gl::GLenum capability);

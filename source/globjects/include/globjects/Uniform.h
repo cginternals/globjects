@@ -5,6 +5,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/AbstractUniform.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -22,10 +23,10 @@ namespace globjects
  *
  * Simple usage of an Uniform:
  * \code{.cpp}
- * Uniform<float> * u = new Uniform<float>("u_ratio");
+ * std::unique_ptr<Uniform<float>> u = Uniform<float>::create("u_ratio");
  * u->set(1.618f);
  *
- * program->addUniform(u);
+ * program->addUniform(u.get());
  * \endcode
  *
  * \see AbstractUniform
@@ -33,7 +34,7 @@ namespace globjects
  * \see http://www.opengl.org/wiki/Uniform
  */
 template<typename T>
-class Uniform : public AbstractUniform
+class Uniform : public AbstractUniform, public Instantiator<Uniform<T>>
 {
 public:
     Uniform(gl::GLint location);
@@ -41,13 +42,13 @@ public:
     Uniform(const std::string & name);
     Uniform(const std::string & name, const T & value);
 
+    virtual ~Uniform();
+
     void set(const T & value);
 
     const T & value() const;
 
 protected:
-    virtual ~Uniform();
-
     virtual void updateAt(const Program * program, gl::GLint location) const override;
 
 protected:

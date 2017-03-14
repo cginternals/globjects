@@ -15,8 +15,6 @@ namespace globjects
 
 
 ObjectRegistry::ObjectRegistry()
-: m_defaultFBO(nullptr)
-, m_defaultVAO(nullptr)
 {
 }
 
@@ -44,7 +42,7 @@ void ObjectRegistry::registerObject(Object * object)
 {
     assert(object != nullptr);
 
-	if (object->id() == 0)
+    if (object->id() == 0)
         return;
 
     m_objects.insert(object);
@@ -58,28 +56,6 @@ void ObjectRegistry::deregisterObject(Object * object)
         return;
 
     m_objects.erase(object);
-}
-
-Framebuffer * ObjectRegistry::defaultFBO()
-{
-    if (m_defaultFBO == nullptr)
-    {
-        m_defaultFBO = Framebuffer::fromId(0);
-        m_defaultFBO->ref();
-    }
-
-    return m_defaultFBO;
-}
-
-VertexArray * ObjectRegistry::defaultVAO()
-{
-    if (m_defaultVAO == nullptr)
-    {
-        m_defaultVAO = VertexArray::fromId(0);
-        m_defaultVAO->ref();
-    }
-
-    return m_defaultVAO;
 }
 
 

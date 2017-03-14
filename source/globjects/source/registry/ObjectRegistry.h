@@ -20,7 +20,7 @@ class ObjectRegistry
 {
     friend class Object;
 public:
-	ObjectRegistry();
+    ObjectRegistry();
     static ObjectRegistry & current();
 
     std::set<Object *> objects() const;
@@ -28,17 +28,12 @@ public:
     std::set<Object *>::iterator begin();
     std::set<Object *>::iterator end();
 
-    Framebuffer * defaultFBO();
-    VertexArray * defaultVAO();
-
 protected:
     void registerObject(Object * object);
     void deregisterObject(Object * object);
 
 protected:
     std::set<Object *> m_objects;
-    Framebuffer * m_defaultFBO;
-    VertexArray * m_defaultVAO;
 };
 
 

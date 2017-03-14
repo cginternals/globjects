@@ -37,9 +37,22 @@ using namespace gl;
 
 namespace
 {
-    globjects::Texture * g_texture = nullptr;
-    globjects::Program * g_computeProgram = nullptr;
-    ScreenAlignedQuad * g_quad = nullptr;
+    std::unique_ptr<globjects::Texture> g_texture = nullptr;
+
+    std::unique_ptr<globjects::Program> g_program = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
+
+    std::unique_ptr<ScreenAlignedQuad> g_quad = nullptr;
+
+    std::unique_ptr<globjects::Program> g_computeProgram = nullptr;
+    std::unique_ptr<globjects::File> g_shaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_shaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_shader = nullptr;
 
     auto g_frame = 0u;
     auto g_size = glm::ivec2{ };
@@ -48,32 +61,55 @@ namespace
 
 void initialize()
 {
+    const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
+
     g_texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
     g_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
     g_texture->bindImageTexture(0, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
     g_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     g_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    g_texture->ref();
 
-    g_computeProgram = new globjects::Program();
+    g_computeProgram = globjects::Program::create();
+    g_shaderSource = globjects::Shader::sourceFromFile(dataPath + "computeshader/cstest.comp");
+    g_shaderTemplate = globjects::Shader::applyGlobalReplacements(g_shaderSource.get());
+    g_shader = globjects::Shader::create(GL_COMPUTE_SHADER, g_shaderTemplate.get());
 
-    const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
-    g_computeProgram->attach(globjects::Shader::fromFile(GL_COMPUTE_SHADER, dataPath + "computeshader/cstest.comp"));
+    g_computeProgram->attach(g_shader.get());
     g_computeProgram->setUniform("destTex", 0);
-    g_computeProgram->ref();
 
-    g_quad = new ScreenAlignedQuad(g_texture);
+    g_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
+    g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
+    g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
+
+    g_fragmentShaderSource = ScreenAlignedQuad::fragmentShaderSource();
+    g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
+    g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
+
+    g_program = globjects::Program::create();
+    g_program->attach(g_vertexShader.get(), g_fragmentShader.get());
+
+    g_quad = ScreenAlignedQuad::create(g_program.get(), g_texture.get());
     g_quad->setSamplerUniform(0);
-    g_quad->ref();
 }
 
 void deinitialize()
 {
-    g_texture->unref();
-    g_computeProgram->unref();
-    g_quad->unref();
+    g_texture.reset(nullptr);
 
-    globjects::detachAllObjects();
+    g_program.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShader.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShader.reset(nullptr);
+
+    g_quad.reset(nullptr);
+
+    g_computeProgram.reset(nullptr);
+    g_shaderSource.reset(nullptr);
+    g_shaderTemplate.reset(nullptr);
+    g_shader.reset(nullptr);
 }
 
 void draw()
@@ -112,7 +148,9 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         glfwSetWindowShouldClose(window, 1);
 
     if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        globjects::File::reloadAll();
+    {
+        g_shaderSource->reload();
+    }
 }
 
 

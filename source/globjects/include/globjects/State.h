@@ -6,10 +6,9 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects/base/Referenced.h>
-
 #include <globjects/globjects_api.h>
 #include <globjects/AbstractState.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -19,7 +18,7 @@ namespace globjects
 class StateSetting;
 class Capability;
 
-class GLOBJECTS_API State : public AbstractState, public Referenced
+class GLOBJECTS_API State : public AbstractState, public Instantiator<State>
 {
 public:
     enum Mode
@@ -30,8 +29,13 @@ public:
 
 public:
     State(Mode = ImmediateMode);
+    State(const State &) = delete;
 
-    static State * currentState();
+    virtual ~State();
+
+    State & operator=(const State &) = delete;
+
+    static std::unique_ptr<State> currentState();
 
     void setMode(Mode mode);
     Mode mode() const;
@@ -45,7 +49,7 @@ public:
     virtual void disable(gl::GLenum capability, int index) override;
     virtual bool isEnabled(gl::GLenum capability, int index) const override;
 
-    virtual void add(StateSetting * setting) override;
+    virtual void add(std::unique_ptr<StateSetting> && setting) override;
 
     Capability * capability(gl::GLenum capability);
     const Capability * capability(gl::GLenum capability) const;
@@ -57,16 +61,14 @@ public:
     std::vector<const StateSetting *> settings() const;
 
 protected:
-    void addCapability(Capability * capability);
+    void addCapability(std::unique_ptr<Capability> && capability);
     Capability * getCapability(gl::GLenum capability);
     const Capability * getCapability(gl::GLenum capability) const;
 
 protected:
-    virtual ~State();
-
     Mode m_mode;
-    std::unordered_map<gl::GLenum, Capability *> m_capabilities;
-    std::unordered_map<StateSettingType, StateSetting *> m_settings;
+    std::unordered_map<gl::GLenum, std::unique_ptr<Capability>> m_capabilities;
+    std::unordered_map<StateSettingType, std::unique_ptr<StateSetting>> m_settings;
 };
 
 

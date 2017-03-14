@@ -26,7 +26,7 @@ bool ProgramBinaryImplementation_GetProgramBinaryARB::updateProgramLinkSource(co
     return program->compileAttachedShaders();
 }
 
-ProgramBinary * ProgramBinaryImplementation_GetProgramBinaryARB::getProgramBinary(const Program * program) const
+std::unique_ptr<ProgramBinary> ProgramBinaryImplementation_GetProgramBinaryARB::getProgramBinary(const Program * program) const
 {
     int length = program->get(GL_PROGRAM_BINARY_LENGTH);
 
@@ -34,11 +34,11 @@ ProgramBinary * ProgramBinaryImplementation_GetProgramBinaryARB::getProgramBinar
         return nullptr;
 
     GLenum format;
-    std::vector<char> binary(length);
+    std::vector<unsigned char> binary(length);
 
     glGetProgramBinary(program->id(), length, nullptr, &format, binary.data());
 
-    return new ProgramBinary(format, binary);
+    return ProgramBinary::create(format, binary);
 }
 
 

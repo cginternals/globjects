@@ -8,7 +8,7 @@
 #include <globjects/Program.h>
 #include <globjects/ObjectVisitor.h>
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 
 namespace globjects
@@ -16,7 +16,7 @@ namespace globjects
 
 
 ProgramPipeline::ProgramPipeline()
-: Object(new ProgramPipelineResource())
+: Object(std::unique_ptr<IDResource>(new ProgramPipelineResource()))
 , m_dirty(true)
 {
 }
@@ -30,7 +30,7 @@ ProgramPipeline::~ProgramPipeline()
     }
     else
     {
-        for (ref_ptr<Program> program : std::set<ref_ptr<Program>>(m_programs))
+        for (auto program : std::set<Program *>(m_programs))
             releaseProgram(program);
     }
 }

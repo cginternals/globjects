@@ -6,17 +6,19 @@
 
 #include <globjects/globjects_api.h>
 
-#include <globjects/base/StringSourceDecorator.h>
+#include <globjects/base/AbstractStringSourceDecorator.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
 {
 
 
-class GLOBJECTS_API StringTemplate : public StringSourceDecorator
+class GLOBJECTS_API StringTemplate : public AbstractStringSourceDecorator, public Instantiator<StringTemplate>
 {
 public:
     StringTemplate(AbstractStringSource * source);
+    virtual ~StringTemplate();
 
     virtual std::string string() const override;
     virtual void update() override;
@@ -30,9 +32,7 @@ protected:
     mutable std::string m_modifiedSource;
     mutable bool m_modifiedSourceValid;
 
-	std::map<std::string, std::string> m_replacements;
-
-    virtual ~StringTemplate();
+    std::map<std::string, std::string> m_replacements;
 
     void invalidate();
     std::string modifiedSource() const;

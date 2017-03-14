@@ -7,6 +7,7 @@
 #include <globjects/globjects_api.h>
 
 #include <globjects/base/AbstractFunctionCall.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -14,7 +15,7 @@ namespace globjects
 
 
 template <typename... Arguments>
-class FunctionCall : public AbstractFunctionCall
+class FunctionCall : public AbstractFunctionCall, public Instantiator<FunctionCall<Arguments...>>
 {
 public:
     using FunctionPointer = void (*)(Arguments...);

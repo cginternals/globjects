@@ -1,6 +1,8 @@
 
 #include <globjects/base/ChangeListener.h>
 
+#include <cassert>
+
 #include <globjects/base/Changeable.h>
 
 
@@ -28,7 +30,17 @@ void ChangeListener::addSubject(Changeable * subject)
 
 void ChangeListener::removeSubject(Changeable * subject)
 {
-    m_subjects.erase(subject);
+    assert(subject != nullptr);
+
+    const auto it = m_subjects.find(subject);
+
+    if (it == m_subjects.end())
+    {
+        return;
+    }
+
+    m_subjects.erase(it);
+    subject->deregisterListener(this);
 }
 
 

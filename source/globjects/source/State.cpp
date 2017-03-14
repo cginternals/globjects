@@ -23,19 +23,11 @@ State::State(const Mode mode)
 
 State::~State()
 {
-    for (const auto & capability : m_capabilities)
-    {
-        delete capability.second;
-    }
-    for (const auto & setting : m_settings)
-    {
-        delete setting.second;
-    }
 }
 
-State * State::currentState()
+std::unique_ptr<State> State::currentState()
 {
-    State * state = new State(DeferredMode);
+    auto state = State::create(DeferredMode);
 
     std::vector<GLenum> capabilities = {
         GL_BLEND,
@@ -223,19 +215,17 @@ void State::apply()
     }
 }
 
-void State::addCapability(Capability * capability)
+void State::addCapability(std::unique_ptr<Capability> && capability)
 {
     const auto it = m_capabilities.find(capability->capability());
     if (it != m_capabilities.end())
     {
-        delete it->second;
-
-        it->second = capability;
+        it->second = std::move(capability);
 
         return;
     }
 
-    m_capabilities.emplace(capability->capability(), capability);
+    m_capabilities.emplace(capability->capability(), std::move(capability));
 }
 
 Capability* State::getCapability(GLenum capability)
@@ -243,12 +233,12 @@ Capability* State::getCapability(GLenum capability)
     const auto it = m_capabilities.find(capability);
     if (it == m_capabilities.end())
     {
-        const auto insertedIt = m_capabilities.emplace(capability, new Capability(capability));
+        const auto insertedIt = m_capabilities.emplace(capability, Capability::create(capability));
 
-        return insertedIt.first->second;
+        return insertedIt.first->second.get();
     }
 
-    return it->second;
+    return it->second.get();
 }
 
 std::vector<Capability*> State::capabilities() const
@@ -258,7 +248,7 @@ std::vector<Capability*> State::capabilities() const
 
     for (const auto & capability : m_capabilities)
     {
-        caps.push_back(capability.second);
+        caps.push_back(capability.second.get());
     }
 
     return caps;
@@ -273,7 +263,7 @@ Capability* State::capability(const GLenum capability)
         return nullptr;
     }
 
-    return it->second;
+    return it->second.get();
 }
 
 const Capability* State::capability(const GLenum capability) const
@@ -285,7 +275,7 @@ const Capability* State::capability(const GLenum capability) const
         return nullptr;
     }
 
-    return it->second;
+    return it->second.get();
 }
 
 std::vector<StateSetting*> State::settings()
@@ -295,7 +285,7 @@ std::vector<StateSetting*> State::settings()
 
     for (const auto & setting : m_settings)
     {
-        settings.push_back(setting.second);
+        settings.push_back(setting.second.get());
     }
 
     return settings;
@@ -308,7 +298,7 @@ std::vector<const StateSetting*> State::settings() const
 
     for (const auto & setting : m_settings)
     {
-        settings.push_back(setting.second);
+        settings.push_back(setting.second.get());
     }
 
     return settings;
@@ -323,7 +313,7 @@ StateSetting * State::setting(const StateSettingType & type)
         return nullptr;
     }
 
-    return it->second;
+    return it->second.get();
 }
 
 const StateSetting * State::setting(const StateSettingType & type) const
@@ -335,27 +325,31 @@ const StateSetting * State::setting(const StateSettingType & type) const
         return nullptr;
     }
 
-    return it->second;
+    return it->second.get();
 }
 
-void State::add(StateSetting * setting)
+void State::add(std::unique_ptr<StateSetting> && setting)
 {
     const auto type = setting->type();
     const auto it = m_settings.find(type);
 
     if (it != m_settings.end())
     {
-        delete it->second;
-        it->second = setting;
+        it->second = std::move(setting);
+
+        if (m_mode == ImmediateMode)
+        {
+            it->second->apply();
+        }
     }
     else
     {
-        m_settings.emplace(type, setting);
-    }
+        auto && newIt = m_settings.emplace(type, std::move(setting));
 
-    if (m_mode == ImmediateMode)
-    {
-        setting->apply();
+        if (m_mode == ImmediateMode)
+        {
+            newIt.first->second->apply();
+        }
     }
 }
 

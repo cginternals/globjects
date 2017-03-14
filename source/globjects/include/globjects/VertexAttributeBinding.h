@@ -6,9 +6,9 @@
 #include <glbinding/gl/types.h>
 #include <glbinding/gl/boolean.h>
 
-#include <globjects/base/Referenced.h>
-
 #include <globjects/globjects_api.h>
+
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -18,21 +18,23 @@ namespace globjects
 class Buffer;
 class VertexArray;
 
-class GLOBJECTS_API VertexAttributeBinding : public Referenced
+class GLOBJECTS_API VertexAttributeBinding : public Instantiator<VertexAttributeBinding>
 {
     friend class AbstractVertexAttributeBindingImplementation;
 
 public:
-	VertexAttributeBinding(
+    VertexAttributeBinding(
         VertexArray * vao
     ,   const gl::GLint bindingIndex);
+
+    virtual ~VertexAttributeBinding();
 
     const VertexArray * vao() const;
     VertexArray * vao();
 
     void setDivisor(gl::GLint divisor);
 
-	void setAttribute(gl::GLint attributeIndex);
+    void setAttribute(gl::GLint attributeIndex);
 
     gl::GLint attributeIndex() const;
     gl::GLint bindingIndex() const;
@@ -46,16 +48,16 @@ public:
     ,   gl::GLint baseoffset
     ,   gl::GLint stride);
 
-	void setFormat(
+    void setFormat(
         gl::GLint size
     ,   gl::GLenum type
     ,   gl::GLboolean normalized = gl::GL_FALSE
     ,   gl::GLuint relativeoffset = 0);
-	void setIFormat(
+    void setIFormat(
         gl::GLint size
     ,   gl::GLenum type
     ,   gl::GLuint relativeoffset = 0);
-	void setLFormat(
+    void setLFormat(
         gl::GLint size
     ,   gl::GLenum type
     ,   gl::GLuint relativeoffset = 0);
@@ -93,11 +95,9 @@ public:
     void setValue(const glm::dmat3 & value);
     void setValue(const glm::dmat4 & value);
 
-protected:
-    virtual ~VertexAttributeBinding();
 
 protected:
-    VertexArray * m_vao; // TODO: weak_ptr?
+    VertexArray * m_vao;
    
     gl::GLint m_bindingIndex;
     gl::GLint m_attributeIndex;

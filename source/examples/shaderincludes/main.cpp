@@ -15,6 +15,8 @@
 
 #include <globjects/globjects.h>
 #include <globjects/NamedString.h>
+#include <globjects/base/AbstractStringSource.h>
+#include <globjects/NamedString.h>
 #include <globjects/Shader.h>
 #include <globjects/logging.h>
 #include <globjects/base/File.h>
@@ -28,8 +30,18 @@ using namespace gl;
 
 namespace
 {
+    std::unique_ptr<globjects::Program> g_program = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
+    std::unique_ptr<globjects::File> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
 
-    ScreenAlignedQuad * g_quad = nullptr;
+    std::unique_ptr<globjects::File> g_namedStringSource = nullptr;
+    std::unique_ptr<globjects::NamedString> g_namedString = nullptr;
+
+    std::unique_ptr<ScreenAlignedQuad> g_quad = nullptr;
 
     auto g_size = glm::ivec2{};
 }
@@ -38,17 +50,38 @@ namespace
 void initialize()
 {
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
-    globjects::NamedString::create("/color.glsl", new globjects::File(dataPath + "shaderincludes/color.glsl"));
 
-    g_quad = new ScreenAlignedQuad(globjects::Shader::fromFile(GL_FRAGMENT_SHADER, dataPath + "shaderincludes/test.frag"));
-    g_quad->ref();
+    g_namedStringSource = globjects::File::create(dataPath + "shaderincludes/color.glsl");
+    g_namedString = globjects::NamedString::create("/color.glsl", g_namedStringSource.get());
+
+    g_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
+    g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
+    g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
+
+    g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "shaderincludes/test.frag");
+    g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
+    g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
+
+    g_program = globjects::Program::create();
+    g_program->attach(g_vertexShader.get(), g_fragmentShader.get());
+
+    g_quad = ScreenAlignedQuad::create(g_program.get());
 }
 
 void deinitialize()
 {
-    g_quad->unref();
+    g_program.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShader.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShader.reset(nullptr);
 
-    globjects::detachAllObjects();
+    g_namedStringSource.reset(nullptr);
+    g_namedString.reset(nullptr);
+
+    g_quad.reset(nullptr);
 }
 
 void draw()
@@ -76,7 +109,10 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         glfwSetWindowShouldClose(window, true);
 
     if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        globjects::File::reloadAll();
+    {
+        g_namedStringSource->reload();
+        g_fragmentShaderSource->reload();
+    }
 }
 
 

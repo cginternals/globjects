@@ -12,7 +12,7 @@ namespace globjects
 template <typename... Arguments>
 void AbstractState::set(void (*function)(Arguments...), Arguments... arguments)
 {
-    add(new StateSetting(function, arguments...));
+    add(StateSetting::create(function, arguments...));
 }
 
 

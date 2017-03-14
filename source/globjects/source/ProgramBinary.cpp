@@ -11,28 +11,14 @@ namespace globjects
 {
 
 
-ProgramBinary::ProgramBinary(const GLenum binaryFormat, const std::vector<char> & binaryData)
-: ProgramBinary(binaryFormat, new StaticStringSource(binaryData.data(), binaryData.size()))
-{
-}
-
-ProgramBinary::ProgramBinary(const GLenum binaryFormat, AbstractStringSource * dataSource)
+ProgramBinary::ProgramBinary(const GLenum binaryFormat, const std::vector<unsigned char> & data)
 : m_binaryFormat(binaryFormat)
-, m_dataSource(dataSource)
-, m_valid(false)
+, m_binaryData(data)
 {
-    if (m_dataSource)
-    {
-        m_dataSource->registerListener(this);
-    }
 }
 
 ProgramBinary::~ProgramBinary()
 {
-    if (m_dataSource)
-    {
-        m_dataSource->deregisterListener(this);
-    }
 }
 
 GLenum ProgramBinary::format() const
@@ -42,39 +28,12 @@ GLenum ProgramBinary::format() const
 
 const void * ProgramBinary::data() const
 {
-    validate();
-
     return reinterpret_cast<const void*>(m_binaryData.data());
 }
 
 GLsizei ProgramBinary::length() const
 {
-    validate();
-
     return static_cast<GLsizei>(m_binaryData.size());
-}
-
-void ProgramBinary::notifyChanged(const Changeable *)
-{
-    m_valid = false;
-    changed();
-}
-
-void ProgramBinary::validate() const
-{
-    if (m_valid)
-        return;
-
-    if (!m_dataSource)
-        return;
-
-    std::string stringData = m_dataSource->string();
-    size_t length = stringData.size();
-    const unsigned char* data = reinterpret_cast<const unsigned char*>(stringData.c_str());
-
-    m_binaryData = std::vector<unsigned char>(data, data+length);
-
-    m_valid = true;
 }
 
 

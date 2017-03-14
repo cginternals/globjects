@@ -5,7 +5,7 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractObjectNameImplementation.h"
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 using namespace gl;
 
@@ -32,8 +32,8 @@ void Object::hintNameImplementation(const NameImplementation impl)
 }
 
 
-Object::Object(IDResource * resource)
-: m_resource(resource)
+Object::Object(std::unique_ptr<IDResource> && resource)
+    : m_resource(std::move(resource))
 , m_objectLabelState(nullptr)
 {
     ObjectRegistry::current().registerObject(this);
@@ -42,7 +42,6 @@ Object::Object(IDResource * resource)
 Object::~Object()
 {
     ObjectRegistry::current().deregisterObject(this);
-    delete m_resource;
 }
 
 GLuint Object::id() const
@@ -77,8 +76,7 @@ void Object::detach()
 
     ObjectRegistry::current().deregisterObject(this);
 
-    delete m_resource;
-    m_resource = new InvalidResource();
+    m_resource.reset(new InvalidResource());
 }
 
 

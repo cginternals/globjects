@@ -7,9 +7,9 @@
 
 #include <globjects/globjects_api.h>
 
-#include <globjects/base/ref_ptr.h>
 #include <globjects/base/ChangeListener.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -18,7 +18,7 @@ namespace globjects
 
 class Program;
 
-class GLOBJECTS_API ProgramPipeline : public Object, protected ChangeListener
+class GLOBJECTS_API ProgramPipeline : public Object, protected ChangeListener, public Instantiator<ProgramPipeline>
 {
 public:
     ProgramPipeline();
@@ -50,7 +50,7 @@ protected:
 
 protected:
     bool m_dirty;
-    std::set<ref_ptr<Program>> m_programs;
+    std::set<Program *> m_programs;
 };
 
 

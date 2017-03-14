@@ -4,6 +4,7 @@
 #include <string>
 #include <set>
 #include <vector>
+#include <memory>
 
 
 namespace globjects
@@ -18,13 +19,13 @@ class IncludeProcessor
 public:
     virtual ~IncludeProcessor();
 
-    static AbstractStringSource* resolveIncludes(const AbstractStringSource* source, const std::vector<std::string>& includePaths);
+    static std::unique_ptr<AbstractStringSource> resolveIncludes(const AbstractStringSource* source, const std::vector<std::string>& includePaths);
 
 protected:
     IncludeProcessor();
 
-    CompositeStringSource* process(const AbstractStringSource* source);
-    CompositeStringSource* processComposite(const AbstractStringSource* source);
+    std::unique_ptr<CompositeStringSource> process(const AbstractStringSource* source);
+    std::unique_ptr<CompositeStringSource> processComposite(const AbstractStringSource* source);
 
     static std::string expandPath(const std::string& include, const std::string & includePath);
 

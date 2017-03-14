@@ -8,6 +8,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects
@@ -25,9 +26,9 @@ class Program;
     An example usage:
     \code{.cpp}
 
-        Program* program = createProgramIncludingShaders();
-        TransformFeedback* transformFeedback = new TransformFeedback();
-        Buffer* buffer = new Buffer(gl::GL_ARRAY_BUFFER);
+        std::unique_ptr<Program> program = createProgramIncludingShaders();
+        std::unique_ptr<TransformFeedback> transformFeedback = TransformFeedback::create();
+        std::unique_ptr<Buffer> buffer = Buffer::create(gl::GL_ARRAY_BUFFER);
     
         transformFeedback->setVaryings(program, Array<const char*>{ "vertex_out" }, gl::GL_INTERLEAVED_ATTRIBS);
     
@@ -55,20 +56,22 @@ class Program;
     \see http://www.opengl.org/registry/specs/ARB/transform_feedback2.txt
     \see http://www.opengl.org/registry/specs/ARB/transform_feedback3.txt
 */
-class GLOBJECTS_API TransformFeedback : public Object
+class GLOBJECTS_API TransformFeedback : public Object, public Instantiator<TransformFeedback>
 {
 public:
-	TransformFeedback();
+    TransformFeedback();
+
+    virtual ~TransformFeedback();
 
     virtual void accept(ObjectVisitor & visitor) override;
 
     void bind() const;
     static void unbind();
 
-	void begin(gl::GLenum primitiveMode);
-	void pause();
-	void resume();
-	void end();
+    void begin(gl::GLenum primitiveMode);
+    void pause();
+    void resume();
+    void end();
 
     void draw(gl::GLenum primitiveMode) const;
 
@@ -84,8 +87,6 @@ public:
     virtual gl::GLenum objectType() const override;
 
 protected:
-    virtual ~TransformFeedback();
-
     void bind(gl::GLenum target) const;
     static void unbind(gl::GLenum target);
 };

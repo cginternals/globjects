@@ -17,34 +17,9 @@ namespace globjects
 {
 
 
-NamedString * NamedString::create(const std::string & name, AbstractStringSource * source)
+NamedString::NamedString(const std::string & name, AbstractStringSource * source)
+: NamedString(name, source, GL_SHADER_INCLUDE_ARB)
 {
-    return create(name, source, GL_SHADER_INCLUDE_ARB);
-}
-
-NamedString * NamedString::create(const std::string & name, const std::string & string)
-{
-    return create(name, string, GL_SHADER_INCLUDE_ARB);
-}
-
-NamedString * NamedString::create(const std::string & name, AbstractStringSource * source, const GLenum type)
-{
-    if (isNamedString(name))
-    {
-        return nullptr;
-    }
-
-    return new NamedString(name, source, type);
-}
-
-NamedString * NamedString::create(const std::string & name, const std::string & string, const GLenum type)
-{
-    if (isNamedString(name))
-    {
-        return nullptr;
-    }
-
-    return new NamedString(name, new StaticStringSource(string), type);
 }
 
 NamedString::NamedString(const std::string & name, AbstractStringSource * source, const GLenum type)
@@ -131,26 +106,9 @@ GLint NamedString::getParameter(const GLenum pname) const
     }
 }
 
-NamedString * NamedString::obtain(const std::string & name)
+NamedString * NamedString::getFromRegistry(const std::string & name)
 {
-    NamedString * namedString = NamedStringRegistry::current().namedString(name);
-
-    if (!namedString && hasNativeSupport() && isNamedString(name))
-    {
-        GLint type;
-        GLint length;
-
-        glGetNamedStringivARB(static_cast<GLint>(name.size()), name.c_str(), GL_NAMED_STRING_TYPE_ARB, &type);
-        glGetNamedStringivARB(static_cast<GLint>(name.size()), name.c_str(), GL_NAMED_STRING_LENGTH_ARB, &length);
-
-        std::vector<char> string(length);
-
-        glGetNamedStringARB(static_cast<GLint>(name.size()), name.c_str(), length, nullptr, string.data());
-
-        namedString = create(name, std::string(string.data(), string.size()), static_cast<GLenum>(type));
-    }
-
-    return namedString;
+    return NamedStringRegistry::current().namedString(name);
 }
 
 const std::string & NamedString::name() const
@@ -170,7 +128,7 @@ GLenum NamedString::type() const
 
 AbstractStringSource * NamedString::stringSource() const
 {
-    return m_source.get();
+    return m_source;
 }
 
 bool NamedString::hasNativeSupport()

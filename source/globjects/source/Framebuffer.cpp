@@ -20,7 +20,7 @@
 
 #include "implementations/AbstractFramebufferImplementation.h"
 
-#include "Resource.h"
+#include <globjects/Resource.h>
 
 using namespace gl;
 
@@ -48,23 +48,23 @@ void Framebuffer::hintBindlessImplementation(const BindlessImplementation impl)
 }
 
 Framebuffer::Framebuffer()
-: Object(new FrameBufferObjectResource)
+: Object(std::unique_ptr<IDResource>(new FrameBufferObjectResource))
 {
 }
 
-Framebuffer::Framebuffer(IDResource * resource)
-: Object(resource)
+Framebuffer::Framebuffer(std::unique_ptr<IDResource> && resource)
+: Object(std::move(resource))
 {
 }
 
-Framebuffer * Framebuffer::fromId(const GLuint id)
+std::unique_ptr<Framebuffer> Framebuffer::fromId(const GLuint id)
 {
-    return new Framebuffer(new ExternalResource(id));
+    return std::unique_ptr<Framebuffer>(new Framebuffer(std::unique_ptr<IDResource>(new ExternalResource(id))));
 }
 
-Framebuffer * Framebuffer::defaultFBO()
+std::unique_ptr<Framebuffer> Framebuffer::defaultFBO()
 {
-    return ObjectRegistry::current().defaultFBO();
+    return Framebuffer::fromId(0);
 }
 
 Framebuffer::~Framebuffer()
@@ -110,21 +110,21 @@ void Framebuffer::attachTexture(const GLenum attachment, Texture * texture, cons
 {
     implementation().attachTexture(this, attachment, texture, level);
 
-    addAttachment(new AttachedTexture(this, attachment, texture, level));
+    addAttachment(AttachedTexture::create(this, attachment, texture, level));
 }
 
 void Framebuffer::attachTextureLayer(const GLenum attachment, Texture * texture, const GLint level, const GLint layer)
 {
     implementation().attachTextureLayer(this, attachment, texture, level, layer);
 
-    addAttachment(new AttachedTexture(this, attachment, texture, level, layer));
+    addAttachment(AttachedTexture::create(this, attachment, texture, level, layer));
 }
 
 void Framebuffer::attachRenderBuffer(const GLenum attachment, Renderbuffer * renderBuffer)
 {
     implementation().attachRenderBuffer(this, attachment, renderBuffer);
 
-    addAttachment(new AttachedRenderbuffer(this, attachment, renderBuffer));
+    addAttachment(AttachedRenderbuffer::create(this, attachment, renderBuffer));
 }
 
 bool Framebuffer::detach(const GLenum attachment)
@@ -345,47 +345,47 @@ std::string Framebuffer::statusString() const
 
 void Framebuffer::printStatus(bool onlyErrors) const
 {
-	GLenum status = checkStatus();
+    GLenum status = checkStatus();
 
-	if (onlyErrors && status == GL_FRAMEBUFFER_COMPLETE) return;
+    if (onlyErrors && status == GL_FRAMEBUFFER_COMPLETE) return;
 
-	if (status == GL_FRAMEBUFFER_COMPLETE)
-	{
+    if (status == GL_FRAMEBUFFER_COMPLETE)
+    {
         info() << glbinding::Meta::getString(GL_FRAMEBUFFER_COMPLETE);
-	}
-	else
-	{
-		std::stringstream ss;
-		ss.flags(std::ios::hex | std::ios::showbase);
+    }
+    else
+    {
+        std::stringstream ss;
+        ss.flags(std::ios::hex | std::ios::showbase);
         ss << static_cast<unsigned int>(status);
 
         critical() << glbinding::Meta::getString(status) << " (" << ss.str() << ")";
-	}
+    }
 }
 
-void Framebuffer::addAttachment(FramebufferAttachment * attachment)
+void Framebuffer::addAttachment(std::unique_ptr<FramebufferAttachment> && attachment)
 {
     assert(attachment != nullptr);
 
-    m_attachments[attachment->attachment()] = attachment;
+    m_attachments[attachment->attachment()] = std::move(attachment);
 }
 
 FramebufferAttachment * Framebuffer::getAttachment(GLenum attachment)
 {
-	return m_attachments[attachment];
+    return m_attachments[attachment].get();
 }
 
 std::vector<FramebufferAttachment*> Framebuffer::attachments()
 {
-	std::vector<FramebufferAttachment*> attachments;
+    std::vector<FramebufferAttachment*> attachments;
     attachments.reserve(m_attachments.size());
 
-    for (std::pair<GLenum, ref_ptr<FramebufferAttachment>> pair: m_attachments)
-	{
-		attachments.push_back(pair.second);
-	}
+    for (const auto & pair: m_attachments)
+    {
+        attachments.push_back(pair.second.get());
+    }
 
-	return attachments;
+    return attachments;
 }
 
 GLenum Framebuffer::objectType() const

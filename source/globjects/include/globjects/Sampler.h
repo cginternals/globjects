@@ -5,6 +5,7 @@
 
 #include <globjects/globjects_api.h>
 #include <globjects/Object.h>
+#include <globjects/base/Instantiator.h>
 
 
 namespace globjects 
@@ -15,11 +16,14 @@ namespace globjects
         
     \see http://www.opengl.org/wiki/Sampler_Object
  */
-class GLOBJECTS_API Sampler : public Object
+class GLOBJECTS_API Sampler : public Object, public Instantiator<Sampler>
 {
 public:
     Sampler();
-    static Sampler * fromId(gl::GLuint id);
+
+    virtual ~Sampler();
+
+    static std::unique_ptr<Sampler> fromId(gl::GLuint id);
 
     virtual void accept(ObjectVisitor & visitor) override;
 
@@ -36,8 +40,7 @@ public:
     virtual gl::GLenum objectType() const override;
 
 protected:
-    Sampler(IDResource * resource);
-    virtual ~Sampler();
+    Sampler(std::unique_ptr<IDResource> && resource);
 };
 
 

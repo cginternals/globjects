@@ -27,11 +27,11 @@ public:
 
     virtual void notifyChanged(const Changeable * sender);
 
-private:
+protected:
     std::set<Changeable*> m_subjects;
 
     void addSubject(Changeable * subject);
-    void removeSubject(Changeable * subject);
+    virtual void removeSubject(Changeable * subject);
 };
 
 

@@ -2,10 +2,9 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include <glbinding/gl/types.h>
-
-#include <globjects/base/Referenced.h>
 
 #include <globjects/globjects_api.h>
 
@@ -23,7 +22,7 @@ class IDResource;
     The OpenGL name (id) of the OpenGL resource that was provided in the constructor can be queried using id().
     Additionally, an Object can have meaningful name wich can be get and set using name() and setName().
  */
-class GLOBJECTS_API Object : public Referenced
+class GLOBJECTS_API Object
 {
     friend class AbstractObjectNameImplementation;
 
@@ -54,11 +53,11 @@ public:
     void detach();
 
 protected:
-    Object(IDResource * resource);
+    Object(std::unique_ptr<IDResource> && resource);
     virtual ~Object();
 
 protected:
-    IDResource * m_resource;
+    std::unique_ptr<IDResource> m_resource;
 
     mutable void * m_objectLabelState;
 };

@@ -32,8 +32,29 @@ using namespace gl;
 
 namespace 
 {
-    globjects::Program * g_sphere = nullptr;
-    Icosahedron * g_icosahedron = nullptr;
+    std::unique_ptr<globjects::Program> g_sphere = nullptr;
+
+    std::unique_ptr<globjects::Program> g_program = nullptr;
+    std::unique_ptr<globjects::File> g_vertexShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_vertexShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_vertexShader = nullptr;
+    std::unique_ptr<globjects::File> g_tessControlShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_tessControlShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_tessControlShader = nullptr;
+    std::unique_ptr<globjects::File> g_tessEvaluationShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_tessEvaluationShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_tessEvaluationShader = nullptr;
+    std::unique_ptr<globjects::File> g_geometryShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_geometryShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_geometryShader = nullptr;
+    std::unique_ptr<globjects::File> g_fragmentShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_fragmentShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_fragmentShader = nullptr;
+    std::unique_ptr<globjects::File> g_phongShaderSource = nullptr;
+    std::unique_ptr<globjects::AbstractStringSource> g_phongShaderTemplate = nullptr;
+    std::unique_ptr<globjects::Shader> g_phongShader = nullptr;
+
+    std::unique_ptr<Icosahedron> g_icosahedron = nullptr;
     glm::mat4 g_viewProjection;
 
     const std::chrono::high_resolution_clock::time_point g_starttime = std::chrono::high_resolution_clock::now();
@@ -57,27 +78,73 @@ void resize()
 
 void initialize()
 {
-    g_sphere = new globjects::Program();
-    g_sphere->ref();
     const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
-    g_sphere->attach(
-        globjects::Shader::fromFile(GL_VERTEX_SHADER,          dataPath + "tessellation/sphere.vert")
-    ,   globjects::Shader::fromFile(GL_TESS_CONTROL_SHADER,    dataPath + "tessellation/sphere.tcs")
-    ,   globjects::Shader::fromFile(GL_TESS_EVALUATION_SHADER, dataPath + "tessellation/sphere.tes")
-    ,   globjects::Shader::fromFile(GL_GEOMETRY_SHADER,        dataPath + "tessellation/sphere.geom")
-    ,   globjects::Shader::fromFile(GL_FRAGMENT_SHADER,        dataPath + "tessellation/sphere.frag")
-    ,   globjects::Shader::fromFile(GL_FRAGMENT_SHADER,        dataPath + "tessellation/phong.frag"));
 
-    g_icosahedron = new Icosahedron();
-    g_icosahedron->ref();
+    g_sphere = globjects::Program::create();
+
+    g_vertexShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/sphere.vert");
+    g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
+    g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
+
+    g_tessControlShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/sphere.tcs");
+    g_tessControlShaderTemplate = globjects::Shader::applyGlobalReplacements(g_tessControlShaderSource.get());
+    g_tessControlShader = globjects::Shader::create(GL_TESS_CONTROL_SHADER, g_tessControlShaderTemplate.get());
+
+    g_tessEvaluationShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/sphere.tes");
+    g_tessEvaluationShaderTemplate = globjects::Shader::applyGlobalReplacements(g_tessEvaluationShaderSource.get());
+    g_tessEvaluationShader = globjects::Shader::create(GL_TESS_EVALUATION_SHADER, g_tessEvaluationShaderTemplate.get());
+
+    g_geometryShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/sphere.geom");
+    g_geometryShaderTemplate = globjects::Shader::applyGlobalReplacements(g_geometryShaderSource.get());
+    g_geometryShader = globjects::Shader::create(GL_GEOMETRY_SHADER, g_geometryShaderTemplate.get());
+
+    g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/sphere.frag");
+    g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
+    g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
+
+    g_phongShaderSource = globjects::Shader::sourceFromFile(dataPath + "tessellation/phong.frag");
+    g_phongShaderTemplate = globjects::Shader::applyGlobalReplacements(g_phongShaderSource.get());
+    g_phongShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_phongShaderTemplate.get());
+
+    g_sphere->attach(
+        g_vertexShader.get(),
+        g_tessControlShader.get(),
+        g_tessEvaluationShader.get(),
+        g_geometryShader.get(),
+        g_fragmentShader.get(),
+        g_phongShader.get()
+    );
+
+    g_icosahedron = Icosahedron::create();
 
     resize();
 }
 
 void deinitialize()
 {
-    g_sphere->unref();
-    g_icosahedron->unref();
+    g_sphere.reset(nullptr);
+
+    g_program.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShader.reset(nullptr);
+    g_tessControlShaderSource.reset(nullptr);
+    g_tessControlShaderTemplate.reset(nullptr);
+    g_tessControlShader.reset(nullptr);
+    g_tessEvaluationShaderSource.reset(nullptr);
+    g_tessEvaluationShaderTemplate.reset(nullptr);
+    g_tessEvaluationShader.reset(nullptr);
+    g_geometryShaderSource.reset(nullptr);
+    g_geometryShaderTemplate.reset(nullptr);
+    g_geometryShader.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShader.reset(nullptr);
+    g_phongShaderSource.reset(nullptr);
+    g_phongShaderTemplate.reset(nullptr);
+    g_phongShader.reset(nullptr);
+
+    g_icosahedron.reset(nullptr);
 }
 
 void draw()
@@ -121,7 +188,14 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         glfwSetWindowShouldClose(window, true);
 
     if (key == GLFW_KEY_F5 && action == GLFW_RELEASE)
-        globjects::File::reloadAll();
+    {
+        g_vertexShaderSource->reload();
+        g_tessControlShaderSource->reload();
+        g_tessEvaluationShaderSource->reload();
+        g_geometryShaderSource->reload();
+        g_fragmentShaderSource->reload();
+        g_phongShaderSource->reload();
+    }
 }
 
 

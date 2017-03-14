@@ -5,8 +5,6 @@
 
 #include <glbinding/gl/types.h>
 
-#include <globjects/base/Referenced.h>
-
 #include <globjects/globjects_api.h>
 
 
@@ -26,28 +24,28 @@ class Framebuffer;
     \see TextureAttachment
     \see RenderBufferAttachment
 */
-class GLOBJECTS_API FramebufferAttachment : public Referenced
+class GLOBJECTS_API FramebufferAttachment
 {
 public:
     FramebufferAttachment(Framebuffer * fbo, gl::GLenum attachment);
 
-	gl::GLenum attachment() const;
+    gl::GLenum attachment() const;
 
     gl::GLint getParameter(gl::GLenum pname) const;
 
-	virtual bool isTextureAttachment() const;
-	virtual bool isRenderBufferAttachment() const;
+    virtual bool isTextureAttachment() const;
+    virtual bool isRenderBufferAttachment() const;
 
     AttachedTexture * asTextureAttachment();
     const AttachedTexture * asTextureAttachment() const;
     AttachedRenderbuffer * asRenderBufferAttachment();
     const AttachedRenderbuffer * asRenderBufferAttachment() const;
 
-	std::string attachmentString() const;
+    std::string attachmentString() const;
 
 protected:
-    Framebuffer * m_fbo; // TODO: weak pointer?
-	gl::GLenum m_attachment;
+    Framebuffer * m_fbo;
+    gl::GLenum m_attachment;
 };
 
 
