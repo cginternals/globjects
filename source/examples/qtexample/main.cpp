@@ -122,16 +122,20 @@ public:
     {
         makeCurrent();
 
+        bool reloadedShaders = false;
         switch (event->key())
         {
         case Qt::Key_F5:
             m_vertexShaderSource->reload();
             m_fragmentShaderSource->reload();
+            reloadedShaders = true;
             break;
         default:
             break;
         }
         doneCurrent();
+        if(reloadedShaders)
+            paint();
     }
 
 
