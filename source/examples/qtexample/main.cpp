@@ -129,6 +129,9 @@ public:
             m_fragmentShaderSource->reload();
             updateGL();
             break;
+        case Qt::Key_Escape:
+            qApp->quit();
+            break;
         default:
             break;
         }

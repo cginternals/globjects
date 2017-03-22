@@ -170,6 +170,7 @@ void WindowQt::resizeGL(QResizeEvent *)
 
 void WindowQt::paintGL()
 {
+    updateGL();
 }
 
 void WindowQt::enterEvent(QEvent *)
