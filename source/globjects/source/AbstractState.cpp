@@ -2,6 +2,7 @@
 #include <globjects/AbstractState.h>
 
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/functions-patches.h>
 #include <glbinding/gl/enum.h>
 
 #include <globjects/StateSetting.h>
