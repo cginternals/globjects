@@ -33,15 +33,17 @@ void AbstractUniform::hintBindlessImplementation(BindlessImplementation impl)
 }
 
 
-AbstractUniform::AbstractUniform(const Program * program, const GLint location)
+AbstractUniform::AbstractUniform(const Program * program, const GLint location, const UniformType type)
 : m_identity(location)
 , m_program(program)
+, m_type(type)
 {
 }
 
-AbstractUniform::AbstractUniform(const Program * program, const std::string & name)
+AbstractUniform::AbstractUniform(const Program * program, const std::string & name, const UniformType type)
 : m_identity(name)
 , m_program(program)
+, m_type(type)
 {
 }
 
@@ -62,6 +64,11 @@ GLint AbstractUniform::location() const
 const LocationIdentity & AbstractUniform::identity() const
 {
     return m_identity;
+}
+
+UniformType AbstractUniform::type() const
+{
+    return m_type;
 }
 
 void AbstractUniform::changed()

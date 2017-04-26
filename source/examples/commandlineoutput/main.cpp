@@ -109,7 +109,7 @@ int main(int /*argc*/, char * /*argv*/[])
         std::cout << "  TransformFeedback     : "; info() << tf.get();
         auto vao = VertexArray::create();
         std::cout << "  VertexArray           : "; info() << vao.get();
-        auto uniform = Uniform<float>::create("Pi", 3.14f);
+        auto uniform = Uniform<float>::create(program.get(), "Pi", 3.14f);
         std::cout << "  Uniform               : "; info() << uniform.get();
         std::cout << "  AbstractUniform       : "; info() << static_cast<AbstractUniform*>(uniform.get());
         std::cout << "  glbinding::Version    : "; info() << version();

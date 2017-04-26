@@ -21,6 +21,7 @@ namespace globjects
 class TextureHandle;
 class Program;
 template<typename T> class Uniform;
+enum class UniformType : unsigned char;
 
 /** \brief Abstract base class for templated Uniforms.
  *
@@ -43,14 +44,16 @@ public:
     static void hintBindlessImplementation(const BindlessImplementation impl);
 
 public:
-    AbstractUniform(const Program * program, gl::GLint location);
-    AbstractUniform(const Program * program, const std::string & name);
+    AbstractUniform(const Program * program, gl::GLint location, UniformType type);
+    AbstractUniform(const Program * program, const std::string & name, UniformType type);
     virtual ~AbstractUniform();
 
     const std::string & name() const;
     gl::GLint location() const;
 
     const LocationIdentity & identity() const;
+
+    UniformType type() const;
 
 protected:
     /** Iterates over all programs attached to and calls update.
@@ -135,6 +138,7 @@ protected:
 protected:
     LocationIdentity m_identity;
     const Program * m_program;
+    const UniformType m_type;
     mutable gl::GLint m_location;
 };
 

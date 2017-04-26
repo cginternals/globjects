@@ -14,7 +14,7 @@ Uniform<T>::Uniform(const Program * program, gl::GLint location)
 
 template<typename T>
 Uniform<T>::Uniform(const Program * program, gl::GLint location, const T & value)
-: AbstractUniform(program, location)
+: AbstractUniform(program, location, UniformTypeHelper<T>::value)
 , m_value(value)
 {
 }
@@ -27,7 +27,7 @@ Uniform<T>::Uniform(const Program * program, const std::string & name)
 
 template<typename T>
 Uniform<T>::Uniform(const Program * program, const std::string & name, const T & value)
-: AbstractUniform(program, name)
+: AbstractUniform(program, name, UniformTypeHelper<T>::value)
 , m_value(value)
 {
 }

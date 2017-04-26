@@ -17,24 +17,30 @@ template<typename T>
 void Program::setUniformByIdentity(const LocationIdentity & identity, const T & value)
 {
     Uniform<T> * uniform = getUniformByIdentity<T>(identity);
-    if (!uniform)
+    if (uniform)
     {
-        warning() << "Uniform type mismatch on set uniform. Uniform will be replaced.";
-
-        addUniform(identity.isName() ? Uniform<T>::create(this, identity.name(), value) : Uniform<T>::create(this, identity.location(), value));
+        uniform->set(value);
         return;
     }
-    uniform->set(value);
+
+    warning() << "Uniform type mismatch on set uniform. Uniform will be replaced.";
+
+    addUniform(identity.isName() ? Uniform<T>::create(this, identity.name(), value) : Uniform<T>::create(this, identity.location(), value));
 }
 
 template<typename T>
 Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identity)
 {
-    if (m_uniforms.count(identity))
-        return dynamic_cast<Uniform<T>* >(m_uniforms.at(identity).get());
+    const auto it = m_uniforms.find(identity);
+
+    if (it != m_uniforms.end())
+    {
+        return it->second->type() == UniformTypeHelper<T>::value
+            ? static_cast<Uniform<T> *>(it->second.get())
+            : nullptr;
+    }
 
     // create new uniform if none named <name> exists
-
     auto uniform = identity.isName() ? Uniform<T>::create(this, identity.name()) : Uniform<T>::create(this, identity.location());
     auto uniformPtr = uniform.get();
 
@@ -46,11 +52,16 @@ Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identity)
 template<typename T>
 const Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identity) const
 {
-    if (m_uniforms.count(identity))
-        return dynamic_cast<Uniform<T> *>(m_uniforms.at(identity).get());
+    const auto it = m_uniforms.find(identity);
+
+    if (it != m_uniforms.end())
+    {
+        return it->second->type() == UniformTypeHelper<T>::value
+            ? static_cast<Uniform<T> *>(it->second.get())
+            : nullptr;
+    }
 
     // create new uniform if none named <name> exists
-
     auto uniform = identity.isName() ? Uniform<T>::create(this, identity.name()) : Uniform<T>::create(this, identity.location());
     auto uniformPtr = uniform.get();
 
