@@ -7,27 +7,27 @@ namespace globjects
 
 
 template<typename T>
-Uniform<T>::Uniform(gl::GLint location)
-: Uniform(location, T())
+Uniform<T>::Uniform(const Program * program, gl::GLint location)
+: Uniform(program, location, T())
 {
 }
 
 template<typename T>
-Uniform<T>::Uniform(gl::GLint location, const T & value)
-: AbstractUniform(location)
+Uniform<T>::Uniform(const Program * program, gl::GLint location, const T & value)
+: AbstractUniform(program, location)
 , m_value(value)
 {
 }
 
 template<typename T>
-Uniform<T>::Uniform(const std::string & name)
-: Uniform(name, T())
+Uniform<T>::Uniform(const Program * program, const std::string & name)
+: Uniform(program, name, T())
 {
 }
 
 template<typename T>
-Uniform<T>::Uniform(const std::string & name, const T & value)
-: AbstractUniform(name)
+Uniform<T>::Uniform(const Program * program, const std::string & name, const T & value)
+: AbstractUniform(program, name)
 , m_value(value)
 {
 }
@@ -44,14 +44,14 @@ const T & Uniform<T>::value() const
 }
 
 template<typename T>
-void Uniform<T>::updateAt(const Program * program, gl::GLint location) const
+void Uniform<T>::updateAt(gl::GLint location) const
 {
     if (location < 0)
     {
         return;
     }
 
-    setValue(program, location, m_value);
+    setValue(location, m_value);
 }
 
 template<typename T>

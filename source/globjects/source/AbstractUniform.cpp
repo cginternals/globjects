@@ -33,13 +33,15 @@ void AbstractUniform::hintBindlessImplementation(BindlessImplementation impl)
 }
 
 
-AbstractUniform::AbstractUniform(const GLint location)
+AbstractUniform::AbstractUniform(const Program * program, const GLint location)
 : m_identity(location)
+, m_program(program)
 {
 }
 
-AbstractUniform::AbstractUniform(const std::string & name)
+AbstractUniform::AbstractUniform(const Program * program, const std::string & name)
 : m_identity(name)
+, m_program(program)
 {
 }
 
@@ -62,302 +64,266 @@ const LocationIdentity & AbstractUniform::identity() const
     return m_identity;
 }
 
-void AbstractUniform::registerProgram(Program * program)
-{
-    assert(program != nullptr);
-
-    m_programs.insert(program);
-}
-
-void AbstractUniform::deregisterProgram(Program * program)
-{
-    assert(program != nullptr);
-
-    m_programs.erase(program);
-}
-
 void AbstractUniform::changed()
 {
-    for (Program * program : m_programs)
-    {
-        update(program, false);
-    }
+    update(false);
 }
 
-GLint AbstractUniform::locationFor(const Program *program) const
+void AbstractUniform::update(bool invalidateLocation) const
 {
-    if (m_identity.isLocation())
-        return m_identity.location();
-
-    auto it = m_locations.find(program);
-
-    if (it != m_locations.end())
+    if (!m_program->isLinked())
     {
-        return it->second;
-    }
+        m_location = -1;
 
-    gl::GLint location = program->getUniformLocation(m_identity.name());
-
-    m_locations.emplace(program, location);
-
-    return location;
-}
-
-void AbstractUniform::update(const Program * program, bool invalidateLocation) const
-{
-    assert(program != nullptr);
-
-    if (invalidateLocation)
-    {
-        m_locations.erase(program);
-    }
-
-    if (!program->isLinked())
-    {
         return;
     }
 
-    updateAt(program, locationFor(program));
+    if (invalidateLocation || m_location == -1)
+    {
+        m_location = m_identity.isName() ? m_program->getUniformLocation(m_identity.name()) : m_identity.location();
+    }
+
+    updateAt(m_location);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const float & value) const
+void AbstractUniform::setValue(const GLint location, const float & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const int & value) const
+void AbstractUniform::setValue(const GLint location, const int & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const unsigned int & value) const
+void AbstractUniform::setValue(const GLint location, const unsigned int & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const bool & value) const
+void AbstractUniform::setValue(const GLint location, const bool & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::vec2 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::vec2 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::vec3 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::vec3 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::vec4 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::vec4 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::ivec2 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::ivec2 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::ivec3 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::ivec3 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::ivec4 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::ivec4 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::uvec2 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::uvec2 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::uvec3 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::uvec3 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::uvec4 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::uvec4 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::mat2 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::mat2 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::mat3 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::mat3 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::mat4 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::mat4 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::mat2x3 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::mat2x3 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::mat3x2 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::mat3x2 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::mat2x4 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::mat2x4 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::mat4x2 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::mat4x2 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::mat3x4 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::mat3x4 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const glm::mat4x3 & value) const
+void AbstractUniform::setValue(const GLint location, const glm::mat4x3 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const GLuint64 & value) const
+void AbstractUniform::setValue(const GLint location, const GLuint64 & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const TextureHandle & value) const
+void AbstractUniform::setValue(const GLint location, const TextureHandle & value) const
 {
-    setValue(program, location, value.handle());
+    setValue(location, value.handle());
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<float> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<float> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<int> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<int> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<unsigned int> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<unsigned int> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<bool> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<bool> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::vec2> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::vec2> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::vec3> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::vec3> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::vec4> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::vec4> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::ivec2> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::ivec2> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::ivec3> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::ivec3> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::ivec4> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::ivec4> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::uvec2> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::uvec2> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::uvec3> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::uvec3> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::uvec4> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::uvec4> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::mat2> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::mat2> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::mat3> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::mat3> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::mat4> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::mat4> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::mat2x3> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::mat2x3> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::mat3x2> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::mat3x2> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::mat2x4> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::mat2x4> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::mat4x2> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::mat4x2> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::mat3x4> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::mat3x4> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<glm::mat4x3> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<glm::mat4x3> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program* program, const GLint location, const std::vector<GLuint64> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<GLuint64> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const Program * program, const GLint location, const std::vector<TextureHandle> & value) const
+void AbstractUniform::setValue(const GLint location, const std::vector<TextureHandle> & value) const
 {
-    implementation().set(program, location, value);
+    implementation().set(m_program, location, value);
 }
 
 

@@ -37,10 +37,10 @@ template<typename T>
 class Uniform : public AbstractUniform, public Instantiator<Uniform<T>>
 {
 public:
-    Uniform(gl::GLint location);
-    Uniform(gl::GLint location, const T & value);
-    Uniform(const std::string & name);
-    Uniform(const std::string & name, const T & value);
+    Uniform(const Program * program, gl::GLint location);
+    Uniform(const Program * program, gl::GLint location, const T & value);
+    Uniform(const Program * program, const std::string & name);
+    Uniform(const Program * program, const std::string & name, const T & value);
 
     virtual ~Uniform();
 
@@ -49,7 +49,7 @@ public:
     const T & value() const;
 
 protected:
-    virtual void updateAt(const Program * program, gl::GLint location) const override;
+    virtual void updateAt(gl::GLint location) const override;
 
 protected:
     T m_value; ///< The uniforms value, explictly required when relinking programs.

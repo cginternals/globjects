@@ -63,11 +63,6 @@ Program::Program(std::unique_ptr<ProgramBinary> && binary)
 
 Program::~Program()
 {
-    for (const auto & uniformPair : m_uniforms)
-    {
-        uniformPair.second->deregisterProgram(this);
-    }
-
     if (id() != 0)
     {
         while (!m_shaders.empty())
@@ -424,24 +419,15 @@ UniformBlock * Program::getUniformBlockByIdentity(const LocationIdentity & ident
     return &it->second;
 }
 
-void Program::addUniform(AbstractUniform * uniform)
+void Program::addUniform(std::unique_ptr<AbstractUniform> && uniform)
 {
     assert(uniform != nullptr);
 
-    auto uniformReference = m_uniforms[uniform->identity()];
-
-    if (uniformReference)
-    {
-        uniformReference->deregisterProgram(this);
-    }
-
-    uniformReference = uniform;
-
-    uniform->registerProgram(this);
+    m_uniforms[uniform->identity()] = std::move(uniform);
 
     if (m_linked)
     {
-        uniform->update(this, true);
+        uniform->update(true);
     }
 }
 
@@ -450,7 +436,7 @@ void Program::updateUniforms() const
     // Note: uniform update will check if program is linked
     for (const auto & uniformPair : m_uniforms)
     {
-        uniformPair.second->update(this, true);
+        uniformPair.second->update(true);
     }
 }
 

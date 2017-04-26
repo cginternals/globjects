@@ -21,8 +21,7 @@ void Program::setUniformByIdentity(const LocationIdentity & identity, const T & 
     {
         warning() << "Uniform type mismatch on set uniform. Uniform will be replaced.";
 
-        // [TODO]: Memomy ownership for uniforms?
-        addUniform(identity.isName() ? new Uniform<T>(identity.name(), value) : new Uniform<T>(identity.location(), value));
+        addUniform(identity.isName() ? Uniform<T>::create(this, identity.name(), value) : Uniform<T>::create(this, identity.location(), value));
         return;
     }
     uniform->set(value);
@@ -32,34 +31,32 @@ template<typename T>
 Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identity)
 {
     if (m_uniforms.count(identity))
-        return dynamic_cast<Uniform<T>* >(m_uniforms.at(identity));
+        return dynamic_cast<Uniform<T>* >(m_uniforms.at(identity).get());
 
     // create new uniform if none named <name> exists
 
-    // [TODO]: Memomy ownership for uniforms?
-    Uniform<T> * uniform = identity.isName() ? new Uniform<T>(identity.name()) : new Uniform<T>(identity.location());
+    auto uniform = identity.isName() ? Uniform<T>::create(this, identity.name()) : Uniform<T>::create(this, identity.location());
+    auto uniformPtr = uniform.get();
 
-    m_uniforms[uniform->identity()] = uniform;
-    uniform->registerProgram(this);
+    m_uniforms[uniform->identity()] = std::move(uniform);
 
-    return uniform;
+    return uniformPtr;
 }
 
 template<typename T>
 const Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identity) const
 {
     if (m_uniforms.count(identity))
-        return dynamic_cast<Uniform<T> *>(m_uniforms.at(identity));
+        return dynamic_cast<Uniform<T> *>(m_uniforms.at(identity).get());
 
     // create new uniform if none named <name> exists
 
-    // [TODO]: Memomy ownership for uniforms?
-    Uniform<T> * uniform = identity.isName() ? new Uniform<T>(identity.name()) : new Uniform<T>(identity.location());
+    auto uniform = identity.isName() ? Uniform<T>::create(this, identity.name()) : Uniform<T>::create(this, identity.location());
+    auto uniformPtr = uniform.get();
 
-    m_uniforms[uniform->identity()] = uniform;
-    uniform->registerProgram(this);
+    m_uniforms[uniform->identity()] = std::move(uniform);
 
-    return uniform;
+    return uniformPtr;
 }
 
 

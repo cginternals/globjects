@@ -191,13 +191,6 @@ public:
     template<typename T>
     const Uniform<T> * getUniform(gl::GLint location) const;
 
-    /** Adds the uniform to the internal list of named uniforms. If an equally
-        named uniform already exists, this program derigisters itself and the uniform
-        gets replaced (and by this the old one gets dereferenced). If the current
-        program is linked, the uniforms value will be passed to the program object.
-    */
-    void addUniform(AbstractUniform * uniform);
-
     void setShaderStorageBlockBinding(gl::GLuint storageBlockIndex, gl::GLuint storageBlockBinding) const;
 
     void dispatchCompute(gl::GLuint numGroupsX, gl::GLuint numGroupsY, gl::GLuint numGroupsZ);
@@ -214,6 +207,8 @@ protected:
     bool compileAttachedShaders() const;
     void updateUniforms() const;
     void updateUniformBlockBindings() const;
+
+    void addUniform(std::unique_ptr<AbstractUniform> && uniform);
 
     // ChangeListener Interface
 
@@ -236,7 +231,7 @@ protected:
     std::set<Shader *> m_shaders;
     std::unique_ptr<ProgramBinary> m_binary;
 
-    std::unordered_map<LocationIdentity, AbstractUniform*> m_uniforms;
+    std::unordered_map<LocationIdentity, std::unique_ptr<AbstractUniform>> m_uniforms;
     std::unordered_map<LocationIdentity, UniformBlock> m_uniformBlocks;
 
     mutable bool m_linked;
