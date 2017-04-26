@@ -11,6 +11,19 @@
 using namespace gl;
 
 
+namespace
+{
+
+
+glbinding::Version getCoreVersion(GLextension extension)
+{
+    return glbinding::Meta::version(extension);
+}
+
+
+}
+
+
 namespace globjects 
 {
 
@@ -82,11 +95,6 @@ bool ExtensionRegistry::hasExtension(const std::string & extensionName)
     {
         return m_unknownAvailableExtensions.find(extensionName) != m_unknownAvailableExtensions.end();
     }
-}
-
-glbinding::Version getCoreVersion(GLextension extension)
-{
-    return glbinding::Meta::version(extension);
 }
 
 bool ExtensionRegistry::isInCoreProfile(GLextension extension, const glbinding::Version & version)
