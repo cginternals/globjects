@@ -23,6 +23,7 @@ namespace globjects
 class AbstractStringSource;
 class StaticStringSource;
 class File;
+class Program;
 
 
 /** \brief Encapsulates OpenGL shaders.
@@ -109,6 +110,7 @@ protected:
     gl::GLenum m_type;
     AbstractStringSource * m_source;
     IncludePaths m_includePaths;
+    std::set<Program *> m_programs;
 
     mutable bool m_compiled;
     mutable bool m_compilationFailed;

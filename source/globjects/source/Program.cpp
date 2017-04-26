@@ -133,6 +133,7 @@ void Program::attach(Shader * shader)
 
     shader->registerListener(this);
     m_shaders.insert(shader);
+    shader->m_programs.insert(this);
 
     invalidate();
 }
@@ -145,16 +146,14 @@ void Program::detach(Shader * shader)
 
     shader->deregisterListener(this);
     m_shaders.erase(shader);
+    shader->m_programs.erase(this);
 
     invalidate();
 }
 
-std::set<Shader *> Program::shaders() const
+const std::set<Shader *> & Program::shaders() const
 {
-    std::set<Shader *> shaders;
-    for (auto shader: m_shaders)
-        shaders.insert(shader);
-    return shaders;
+    return m_shaders;
 }
 
 void Program::link() const
@@ -180,7 +179,7 @@ void Program::link() const
 
 bool Program::compileAttachedShaders() const
 {
-    for (Shader * shader : shaders())
+    for (Shader * shader : m_shaders)
     {
         if (shader->isCompiled())
             continue;

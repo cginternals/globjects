@@ -51,17 +51,6 @@ public:
 
     const LocationIdentity & identity() const;
 
-    /** Simplifies the often required casting of AbstractUniforms.
-     *
-     * @return a specialized Uniform of the requested type, returns a nullptr on a type mismatch
-     *
-     * \code{.cpp}
-     * abstractUniform->as<float>()->setValue(3.142f);
-     * \endcode
-    */
-    template<typename T> Uniform<T> * as();
-    template<typename T> const Uniform<T> * as() const;
-
 protected:
     virtual ~AbstractUniform();
 

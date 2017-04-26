@@ -32,7 +32,7 @@ template<typename T>
 Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identity)
 {
     if (m_uniforms.count(identity))
-        return m_uniforms.at(identity)->as<T>();
+        return dynamic_cast<Uniform<T>* >(m_uniforms.at(identity));
 
     // create new uniform if none named <name> exists
 
@@ -49,7 +49,7 @@ template<typename T>
 const Uniform<T> * Program::getUniformByIdentity(const LocationIdentity & identity) const
 {
     if (m_uniforms.count(identity))
-        return m_uniforms.at(identity)->as<T>();
+        return dynamic_cast<Uniform<T> *>(m_uniforms.at(identity));
 
     // create new uniform if none named <name> exists
 

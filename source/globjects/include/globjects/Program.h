@@ -113,7 +113,7 @@ public:
 
     void detach(Shader * shader);
 
-    std::set<Shader*> shaders() const;
+    const std::set<Shader*> & shaders() const;
 
     void link() const;
     void invalidate() const;
