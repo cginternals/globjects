@@ -305,7 +305,7 @@ if (WriterCompilerDetectionHeaderFound)
     )
 else()
     file(
-        COPY ${PROJECT_SOURCE_DIR}/codegeneration/${target}_features.h
+        COPY ${PROJECT_SOURCE_DIR}/source/codegeneration/${target}_features.h
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/${target}
         USE_SOURCE_PERMISSIONS
     )
@@ -320,6 +320,8 @@ set_target_properties(${target}
     PROPERTIES
     ${DEFAULT_PROJECT_OPTIONS}
     FOLDER "${IDE_FOLDER}"
+    VERSION ${META_VERSION}
+    SOVERSION ${META_VERSION_MAJOR}
 )
 
 
@@ -400,6 +402,17 @@ target_link_libraries(${target}
     ${DEFAULT_LINKER_OPTIONS}
 
     INTERFACE
+)
+
+
+#
+# Target Health
+#
+
+perform_health_checks(
+    ${target}
+    ${sources}
+    ${headers}
 )
 
 

@@ -10,7 +10,6 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-
 include(GenerateExportHeader)
 
 set(WriterCompilerDetectionHeaderFound NOTFOUND)
@@ -22,6 +21,7 @@ endif()
 
 include(cmake/GetGitRevisionDescription.cmake)
 include(cmake/Custom.cmake)
+include(cmake/HealthCheck.cmake)
 
 # Set policies
 set_policy(CMP0028 NEW) # ENABLE CMP0028: Double colon in target name means ALIAS or IMPORTED target.
@@ -37,6 +37,9 @@ set_policy(CMP0063 NEW) # ENABLE CMP0063: Honor visibility properties for all ta
 # Get git revision
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 string(SUBSTRING "${GIT_SHA1}" 0 12 GIT_REV)
+if(NOT GIT_SHA1)
+    set(GIT_REV "0")
+endif()
 
 # Meta information about the project
 set(META_PROJECT_NAME        "globjects")
@@ -50,6 +53,7 @@ set(META_VERSION_PATCH       "0")
 set(META_VERSION_REVISION    "${GIT_REV}")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_NAME_VERSION        "${META_PROJECT_NAME} v${META_VERSION} (${META_VERSION_REVISION})")
+set(META_CMAKE_INIT_SHA      "ffb1664f554764c8db0dee05292d4fbc39791808")
 
 string(MAKE_C_IDENTIFIER ${META_PROJECT_NAME} META_PROJECT_ID)
 string(TOUPPER ${META_PROJECT_ID} META_PROJECT_ID)
@@ -93,6 +97,18 @@ file(WRITE "${PROJECT_BINARY_DIR}/VERSION" "${META_NAME_VERSION}")
 # 
 
 include(cmake/CompileOptions.cmake)
+
+
+#
+# Project Health Check Setup
+#
+
+# Add cmake-init template check cmake targets
+add_check_template_target(${META_CMAKE_INIT_SHA})
+
+# Configure health check tools
+enable_cppcheck(On)
+enable_clang_tidy(On)
 
 
 # 
