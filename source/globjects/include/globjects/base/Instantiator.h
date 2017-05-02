@@ -6,6 +6,8 @@
 
 #include <glbinding/gl/types.h>
 
+#include <globjects/globjects_api.h>
+
 
 namespace globjects
 {
@@ -16,7 +18,7 @@ namespace globjects
 *    CRTP for creating objects similar to std::make_unique
 */
 template <typename Subclass>
-class Instantiator
+class GLOBJECTS_TEMPLATE_API Instantiator
 {
 public:
     template <typename... Args>

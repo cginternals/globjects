@@ -3,12 +3,14 @@
 
 #include <glbinding/gl/types.h>
 
+#include <globjects/globjects_api.h>
+
 
 namespace globjects 
 {
 
 
-class AbstractResource
+class GLOBJECTS_API AbstractResource
 {
 public:
     AbstractResource(bool hasOwnership);
@@ -21,7 +23,7 @@ protected:
 };
 
 
-class IDTrait
+class GLOBJECTS_API IDTrait
 {
 public:
     IDTrait(gl::GLuint id);
@@ -34,7 +36,7 @@ protected:
 };
 
 
-class IDResource : public AbstractResource, public IDTrait
+class GLOBJECTS_API IDResource : public AbstractResource, public IDTrait
 {
 public:
     IDResource(gl::GLuint id);
@@ -44,14 +46,14 @@ protected:
 };
 
 
-class ExternalResource : public IDResource
+class GLOBJECTS_API ExternalResource : public IDResource
 {
 public:
     ExternalResource(gl::GLuint id);
 };
 
 
-class InvalidResource : public IDResource
+class GLOBJECTS_API InvalidResource : public IDResource
 {
 public:
     InvalidResource();
@@ -59,7 +61,7 @@ public:
 };
 
 
-class BufferResource : public IDResource
+class GLOBJECTS_API BufferResource : public IDResource
 {
 public:
     BufferResource();
@@ -67,7 +69,7 @@ public:
 };
 
 
-class FrameBufferObjectResource : public IDResource
+class GLOBJECTS_API FrameBufferObjectResource : public IDResource
 {
 public:
     FrameBufferObjectResource();
@@ -75,7 +77,7 @@ public:
 };
 
 
-class ProgramResource : public IDResource
+class GLOBJECTS_API ProgramResource : public IDResource
 {
 public:
     ProgramResource();
@@ -83,7 +85,7 @@ public:
 };
 
 
-class ProgramPipelineResource : public IDResource
+class GLOBJECTS_API ProgramPipelineResource : public IDResource
 {
 public:
     ProgramPipelineResource();
@@ -91,7 +93,7 @@ public:
 };
 
 
-class QueryResource : public IDResource
+class GLOBJECTS_API QueryResource : public IDResource
 {
 public:
     QueryResource();
@@ -99,7 +101,7 @@ public:
 };
 
 
-class RenderBufferObjectResource : public IDResource
+class GLOBJECTS_API RenderBufferObjectResource : public IDResource
 {
 public:
     RenderBufferObjectResource();
@@ -107,7 +109,7 @@ public:
 };
 
 
-class SamplerResource : public IDResource
+class GLOBJECTS_API SamplerResource : public IDResource
 {
 public:
     SamplerResource();
@@ -115,7 +117,7 @@ public:
 };
 
 
-class ShaderResource : public IDResource
+class GLOBJECTS_API ShaderResource : public IDResource
 {
 public:
     ShaderResource(gl::GLenum type);
@@ -123,7 +125,7 @@ public:
 };
 
 
-class TextureResource : public IDResource
+class GLOBJECTS_API TextureResource : public IDResource
 {
 public:
     TextureResource(gl::GLenum target);
@@ -131,7 +133,7 @@ public:
 };
 
 
-class TransformFeedbackResource : public IDResource
+class GLOBJECTS_API TransformFeedbackResource : public IDResource
 {
 public:
     TransformFeedbackResource();
@@ -139,7 +141,7 @@ public:
 };
 
 
-class VertexArrayObjectResource : public IDResource
+class GLOBJECTS_API VertexArrayObjectResource : public IDResource
 {
 public:
     VertexArrayObjectResource();

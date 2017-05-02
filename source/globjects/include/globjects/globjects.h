@@ -40,8 +40,8 @@ GLOBJECTS_API void init(glbinding::ContextHandle sharedContextId);
 
 /** \brief calls detach on every registered object
     
-    This only releases the GPU counterparts of all  objects, 
-    while leaving the ref_ptred objects in memory, invalidated.
+    This only releases the GPU counterparts of all objects,
+    while leaving the objects in memory invalidated.
 */
 GLOBJECTS_API void detachAllObjects();
 

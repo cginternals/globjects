@@ -16,9 +16,6 @@ namespace globjects
 {
 
 
-template <typename T>
-class ref_ptr;
-
 class AbstractLogHandler;
 
 /** \brief Builds a LogMessage from different kinds of primitive types.
@@ -81,11 +78,7 @@ public:
     // in Windows PrecisionManipulator = WidthManipulator
     LogMessageBuilder & operator<<(WidthManipulator manipulator);
 #endif
-    
-    // globjects base objects
-    template <typename T>
-    LogMessageBuilder & operator<<(const ref_ptr<T> & ref_pointer);
-    
+
     // pointers
     template <typename T>
     LogMessageBuilder & operator<<(const T * pointer);

@@ -15,7 +15,7 @@ namespace globjects
 
 
 template <typename... Arguments>
-class FunctionCall : public AbstractFunctionCall, public Instantiator<FunctionCall<Arguments...>>
+class GLOBJECTS_TEMPLATE_API FunctionCall : public AbstractFunctionCall, public Instantiator<FunctionCall<Arguments...>>
 {
 public:
     using FunctionPointer = void (*)(Arguments...);

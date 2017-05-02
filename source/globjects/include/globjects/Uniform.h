@@ -34,7 +34,7 @@ namespace globjects
  * \see http://www.opengl.org/wiki/Uniform
  */
 template<typename T>
-class Uniform : public AbstractUniform, public Instantiator<Uniform<T>>
+class GLOBJECTS_TEMPLATE_API Uniform : public AbstractUniform, public Instantiator<Uniform<T>>
 {
 public:
     Uniform(const Program * program, gl::GLint location);
