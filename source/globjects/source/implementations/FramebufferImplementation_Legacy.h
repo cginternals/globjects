@@ -26,6 +26,16 @@ public:
     virtual void setReadBuffer(const Framebuffer * fbo, gl::GLenum mode) const override;
     virtual void setDrawBuffer(const Framebuffer * fbo, gl::GLenum mode) const override;
     virtual void setDrawBuffers(const Framebuffer * fbo, gl::GLsizei n, const gl::GLenum * modes) const override;
+
+    virtual void clear(const Framebuffer * fbo, gl::ClearBufferMask mask) const;
+    virtual void clearBufferiv(const Framebuffer * fbo, gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLint * value) const;
+    virtual void clearBufferuiv(const Framebuffer * fbo, gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLuint * value) const;
+    virtual void clearBufferfv(const Framebuffer * fbo, gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLfloat * value) const;
+    virtual void clearBufferfi(const Framebuffer * fbo, gl::GLenum buffer, gl::GLint drawBuffer, gl::GLfloat depth, gl::GLint stencil) const;
+
+    virtual void readPixels(const Framebuffer * fbo, const gl::GLint x, const gl::GLint y, const gl::GLsizei width, const gl::GLsizei height, const gl::GLenum format, const gl::GLenum type, gl::GLvoid * data) const;
+
+    virtual void blit(const Framebuffer * sourceFbo, const Framebuffer * targetFbo, gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::ClearBufferMask mask, gl::GLenum filter) const;
 };
 
 

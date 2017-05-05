@@ -181,52 +181,42 @@ void Framebuffer::setDrawBuffers(const std::vector<GLenum> & modes) const
 
 void Framebuffer::clear(const ClearBufferMask mask)
 {
-    bind();
-
-    glClear(mask);
+    implementation().clear(this, mask);
 }
 
-void Framebuffer::clearBufferiv(const GLenum buffer, const GLint drawBuffer, const GLint * value)
+void Framebuffer::clearBuffer(const GLenum buffer, const GLint drawBuffer, const GLint * value)
 {
-    bind();
-
-    glClearBufferiv(buffer, drawBuffer, value);
+    implementation().clearBufferiv(this, buffer, drawBuffer, value);
 }
 
-void Framebuffer::clearBufferuiv(const GLenum buffer, const GLint drawBuffer, const GLuint * value)
+void Framebuffer::clearBuffer(const GLenum buffer, const GLint drawBuffer, const GLuint * value)
 {
-    bind();
-
-    glClearBufferuiv(buffer, drawBuffer, value);
+    implementation().clearBufferuiv(this, buffer, drawBuffer, value);
 }
 
-void Framebuffer::clearBufferfv(const GLenum buffer, const GLint drawBuffer, const GLfloat * value)
+void Framebuffer::clearBuffer(const GLenum buffer, const GLint drawBuffer, const GLfloat * value)
 {
-    bind();
-
-    glClearBufferfv(buffer, drawBuffer, value);
+    implementation().clearBufferfv(this, buffer, drawBuffer, value);
 }
 
-void Framebuffer::clearBufferfi(const GLenum buffer, const GLint drawBuffer, const GLfloat depth, const GLint stencil)
+void Framebuffer::clearBuffer(const GLenum buffer, const GLfloat depth, const GLint stencil, const GLint drawBuffer)
 {
-    bind();
-
-    glClearBufferfi(buffer, drawBuffer, depth, stencil);
+    implementation().clearBufferfi(this, buffer, drawBuffer, depth, stencil);
 }
 
 void Framebuffer::clearBuffer(const GLenum buffer, const GLint drawBuffer, const glm::ivec4 & value)
 {
-    clearBufferiv(buffer, drawBuffer, glm::value_ptr(value));
+    clearBuffer(buffer, drawBuffer, glm::value_ptr(value));
 }
 
 void Framebuffer::clearBuffer(const GLenum buffer, const GLint drawBuffer, const glm::uvec4 & value)
 {
-    clearBufferuiv(buffer, drawBuffer, glm::value_ptr(value));
+    clearBuffer(buffer, drawBuffer, glm::value_ptr(value));
 }
 
 void Framebuffer::clearBuffer(const GLenum buffer, const GLint drawBuffer, const glm::vec4 & value)
 {
-    clearBufferfv(buffer, drawBuffer, glm::value_ptr(value));
+    clearBuffer(buffer, drawBuffer, glm::value_ptr(value));
 }
 
 void Framebuffer::colorMask(const GLboolean red, const GLboolean green, const GLboolean blue, const GLboolean alpha)
@@ -259,16 +249,14 @@ void Framebuffer::clearColor(const glm::vec4 & color)
     clearColor(color.r, color.g, color.b, color.a);
 }
 
-void Framebuffer::clearDepth(const GLclampd depth)
+void Framebuffer::clearDepth(const GLdouble depth)
 {
     glClearDepth(depth);
 }
 
 void Framebuffer::readPixels(const GLint x, const GLint y, const GLsizei width, const GLsizei height, const GLenum format, const GLenum type, GLvoid * data) const
 {
-    bind(GL_READ_FRAMEBUFFER);
-
-    glReadPixels(x, y, width, height, format, type, data);
+    implementation().readPixels(this, x, y, width, height, format, type, data);
 }
 
 void Framebuffer::readPixels(const std::array<GLint, 4> & rect, const GLenum format, const GLenum type, GLvoid * data) const
@@ -287,6 +275,7 @@ std::vector<unsigned char> Framebuffer::readPixelsToByteArray(const std::array<G
     int size = imageSizeInBytes(rect[2], rect[3], 1, format, type);
     std::vector<unsigned char> data(size);
 
+    Buffer::unbind(GL_PIXEL_PACK_BUFFER);
     readPixels(rect, format, type, data.data());
 
     return data;
@@ -314,23 +303,10 @@ void Framebuffer::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, 
 
 void Framebuffer::blit(GLenum readBuffer, const std::array<GLint, 4> & srcRect, Framebuffer * destFbo, const std::vector<GLenum> & drawBuffers, const std::array<GLint, 4> & destRect, ClearBufferMask mask, GLenum filter) const
 {
-    bind(GL_READ_FRAMEBUFFER);
-    destFbo->bind(GL_DRAW_FRAMEBUFFER);
-
     setReadBuffer(readBuffer);
     destFbo->setDrawBuffers(drawBuffers);
 
-    blit(srcRect, destRect, mask, filter);
-}
-
-void Framebuffer::blit(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint destX0, GLint destY0, GLint destX1, GLint destY1, ClearBufferMask mask, GLenum filter)
-{
-    glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, destX0, destY0, destX1, destY1, mask, filter);
-}
-
-void Framebuffer::blit(const std::array<GLint, 4> & srcRect, const std::array<GLint, 4> & destRect, ClearBufferMask mask, GLenum filter)
-{
-    blit(srcRect[0], srcRect[1], srcRect[2], srcRect[3], destRect[0], destRect[1], destRect[2], destRect[3], mask, filter);
+    implementation().blit(this, destFbo, srcRect[0], srcRect[1], srcRect[2], srcRect[3], destRect[0], destRect[1], destRect[2], destRect[3], mask, filter);
 }
 
 GLenum Framebuffer::checkStatus() const

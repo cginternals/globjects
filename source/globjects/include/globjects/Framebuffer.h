@@ -92,10 +92,10 @@ public:
 
     void clear(gl::ClearBufferMask mask);
 
-    void clearBufferiv(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLint * value);
-    void clearBufferuiv(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLuint * value);
-    void clearBufferfv(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLfloat * value);
-    void clearBufferfi(gl::GLenum buffer, gl::GLint drawBuffer, gl::GLfloat depth, gl::GLint stencil);
+    void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLint * value);
+    void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLuint * value);
+    void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const gl::GLfloat * value);
+    void clearBuffer(gl::GLenum buffer, gl::GLfloat depth, gl::GLint stencil, gl::GLint drawBuffer = 0);
 
     void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const glm::ivec4 & value);
     void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const glm::uvec4 & value);
@@ -107,7 +107,7 @@ public:
     static void colorMaski(gl::GLuint buffer, const glm::bvec4 & mask);
     static void clearColor(gl::GLfloat red, gl::GLfloat green, gl::GLfloat blue, gl::GLfloat alpha);
     static void clearColor(const glm::vec4 & color);
-    static void clearDepth(gl::GLclampd depth);
+    static void clearDepth(gl::GLdouble depth);
 
     void readPixels(gl::GLint x, gl::GLint y, gl::GLsizei width, gl::GLsizei height, gl::GLenum format, gl::GLenum type, gl::GLvoid * data = nullptr) const;
     void readPixels(const std::array<gl::GLint, 4> & rect, gl::GLenum format, gl::GLenum type, gl::GLvoid * data = nullptr) const;
@@ -132,9 +132,6 @@ protected:
     Framebuffer(std::unique_ptr<IDResource> && resource);
 
     void addAttachment(std::unique_ptr<FramebufferAttachment> && attachment);
-
-    static void blit(gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::ClearBufferMask mask, gl::GLenum filter);
-    static void blit(const std::array<gl::GLint, 4> & srcRect, const std::array<gl::GLint, 4> & destRect, gl::ClearBufferMask mask, gl::GLenum filter);
 
 protected:
     std::map<gl::GLenum, std::unique_ptr<FramebufferAttachment>> m_attachments;
