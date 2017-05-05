@@ -168,7 +168,7 @@ The only mandatory run-time dependencies of globjects are the STL of the used co
 * [CMake](https://cmake.org/) 3.0 or higher for building globjects from source (mandatory for any build from source)
 * [git](https://git-scm.com/) for version control and script supporting tasks
 * [glbinding](https://github.com/cginternals/glbinding) as OpenGL API binding
-* [GLM](https://github.com/g-truc/glm) for OpenGL math and data structures (0.9.5 or above)
+* [GLM](https://github.com/g-truc/glm) for OpenGL math and data structures (0.9.7 or above)
 * [GLFW](http://www.glfw.org/) 3.0 or higher for examples
 * [cpplocate](https://github.com/cginternals/cpplocate) for the examples
 * [Qt5](http://www.qt.io/developers/) 5.0 or higher for the qt-based example
