@@ -129,7 +129,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" OR "${CMAKE_CXX_COMPILER_ID}" MATCH
             
             # -Wreturn-stack-address # gives false positives
         >
-    PUBLIC
+    #PUBLIC
         $<$<PLATFORM_ID:Darwin>:
             -pthread
         >
@@ -151,7 +151,7 @@ set(DEFAULT_LINKER_OPTIONS)
 # Use pthreads on mingw and linux
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" OR "${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
     set(DEFAULT_LINKER_OPTIONS
-    PUBLIC
+    PRIVATE
         -pthread
     )
 endif()
