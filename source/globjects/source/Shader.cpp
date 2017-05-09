@@ -86,9 +86,9 @@ std::unique_ptr<AbstractStringSource> Shader::applyGlobalReplacements(AbstractSt
 
 Shader::~Shader()
 {
-    for (auto program : m_programs)
+    while (!m_programs.empty())
     {
-        program->detach(this);
+        (*m_programs.begin())->detach(this);
     }
 }
 
