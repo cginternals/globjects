@@ -1,13 +1,10 @@
 #include "WindowQt.h"
 
-#pragma warning(push)  
-#pragma warning(disable: 4127 4800 4244)
 #include <QApplication>
 #include <QDebug>
 #include <QResizeEvent>
 #include <QSurfaceFormat>
 #include <QOpenGLContext>
-#pragma warning(pop)  
 
 
 QSurfaceFormat defaultFormat()

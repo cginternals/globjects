@@ -1,11 +1,8 @@
 #pragma once
 
 
-#pragma warning(push)
-#pragma warning(disable: 4127)
 #include <QWindow>
 #include <QScopedPointer>
-#pragma warning(pop)
 
 
 class QSurfaceFormat;
@@ -20,7 +17,7 @@ public:
 
     virtual void resizeEvent(QResizeEvent * event) override;
     virtual void exposeEvent(QExposeEvent * event) override;
-    bool event(QEvent * event);
+    bool event(QEvent * event) override;
 
     virtual void enterEvent(QEvent * event);
     virtual void leaveEvent(QEvent * event);

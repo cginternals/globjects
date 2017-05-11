@@ -2,13 +2,10 @@
 #include <iostream>
 #include <algorithm>
 
-#pragma warning(push)
-#pragma warning(disable: 4127)
 #include <QApplication>
 #include <QMainWindow>
 #include <QResizeEvent>
 #include <QSurfaceFormat>
-#pragma warning(pop)
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
