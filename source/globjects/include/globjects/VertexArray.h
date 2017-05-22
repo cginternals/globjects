@@ -17,6 +17,8 @@ namespace globjects
 
 
 class VertexAttributeBinding;
+class Buffer;
+
 
 // http://www.opengl.org/wiki/Vertex_Array_Object
 class GLOBJECTS_API VertexArray : public Object, public Instantiator<VertexArray>
@@ -46,6 +48,8 @@ public:
 
     VertexAttributeBinding * binding(gl::GLuint bindingIndex);
     const VertexAttributeBinding * binding(gl::GLuint bindingIndex) const;
+
+    void bindElementBuffer(const Buffer * buffer);
 
     void enable(gl::GLint attributeIndex);
     void disable(gl::GLint attributeIndex);

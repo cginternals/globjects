@@ -89,9 +89,7 @@ Icosahedron::Icosahedron(const GLsizei iterations, const GLint positionLocation,
 
     m_size = static_cast<GLsizei>(indices.size() * 3);
 
-    m_vao->bind();
-
-    m_indices->bind(GL_ELEMENT_ARRAY_BUFFER);
+    m_vao->bindElementBuffer(m_indices.get());
 
     if (positionLocation >= 0)
     {
@@ -131,8 +129,6 @@ void Icosahedron::draw(const GLenum mode)
     m_vao->bind();
     m_vao->drawElements(mode, m_size, GL_UNSIGNED_SHORT, nullptr);
     m_vao->unbind();
-
-    m_indices->unbind(GL_ELEMENT_ARRAY_BUFFER);
 
     // glDisable(GL_DEPTH_TEST); // TODO: Use stackable states
 }

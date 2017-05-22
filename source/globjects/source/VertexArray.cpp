@@ -107,6 +107,11 @@ const VertexAttributeBinding* VertexArray::binding(const GLuint bindingIndex) co
     return it->second.get();
 }
 
+void VertexArray::bindElementBuffer(const Buffer *buffer)
+{
+    implementation().bindElementBuffer(this, buffer);
+}
+
 void VertexArray::enable(GLint attributeIndex)
 {
     implementation().enable(this, attributeIndex);

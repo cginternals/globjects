@@ -28,6 +28,8 @@ public:
     virtual void enable(const VertexArray * vertexArray, gl::GLint attributeIndex) const = 0;
     virtual void disable(const VertexArray * vertexArray, gl::GLint attributeIndex) const = 0;
 
+    virtual void bindElementBuffer(const VertexArray * vertexArray, const Buffer * ebo) const = 0;
+
     virtual void setAttributeDivisor(const VertexAttributeBinding * binding, gl::GLuint divisor) const = 0;
 
     virtual void bindAttribute(const VertexAttributeBinding * binding, gl::GLint attributeIndex) const = 0;
