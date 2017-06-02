@@ -36,6 +36,11 @@ void VertexAttributeBindingImplementation_VertexAttribBindingARB::disable(const 
     VertexAttributeBindingImplementation_Legacy::instance()->disable(vertexArray, attributeIndex);
 }
 
+void VertexAttributeBindingImplementation_VertexAttribBindingARB::bindElementBuffer(const VertexArray *vertexArray, const Buffer *ebo) const
+{
+    VertexAttributeBindingImplementation_Legacy::instance()->bindElementBuffer(vertexArray, ebo);
+}
+
 void VertexAttributeBindingImplementation_VertexAttribBindingARB::setAttributeDivisor(const VertexAttributeBinding * binding, GLuint divisor) const
 {
     VertexAttributeBindingImplementation_Legacy::instance()->setAttributeDivisor(binding, divisor);

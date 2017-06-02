@@ -36,6 +36,11 @@ void VertexAttributeBindingImplementation_DirectStateAccessARB::disable(const Ve
     glDisableVertexArrayAttrib(vertexArray->id(), attributeIndex);
 }
 
+void VertexAttributeBindingImplementation_DirectStateAccessARB::bindElementBuffer(const VertexArray *vertexArray, const Buffer *ebo) const
+{
+    glVertexArrayElementBuffer(vertexArray->id(), ebo ? ebo->id() : 0);
+}
+
 void VertexAttributeBindingImplementation_DirectStateAccessARB::setAttributeDivisor(const VertexAttributeBinding * binding, GLuint divisor) const
 {
     glVertexArrayBindingDivisor(vao(binding)->id(), bindingIndex(binding), divisor);

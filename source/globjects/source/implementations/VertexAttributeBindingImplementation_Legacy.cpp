@@ -67,6 +67,20 @@ void VertexAttributeBindingImplementation_Legacy::disable(const VertexArray * ve
     glDisableVertexAttribArray(attributeIndex);
 }
 
+void VertexAttributeBindingImplementation_Legacy::bindElementBuffer(const VertexArray *vertexArray, const Buffer *ebo) const
+{
+    vertexArray->bind();
+
+    if (ebo)
+    {
+        ebo->bind(gl::GL_ELEMENT_ARRAY_BUFFER);
+    }
+    else
+    {
+        Buffer::unbind(gl::GL_ELEMENT_ARRAY_BUFFER);
+    }
+}
+
 void VertexAttributeBindingImplementation_Legacy::setAttributeDivisor(const VertexAttributeBinding * binding, GLuint divisor) const
 {
     vao(binding)->bind();

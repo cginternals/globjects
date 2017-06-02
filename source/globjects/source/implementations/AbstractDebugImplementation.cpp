@@ -27,6 +27,7 @@ DebugMessage::Callback AbstractDebugImplementation::s_defaultCallback = [](const
     if (message.type() == GL_DEBUG_TYPE_ERROR_ARB)
     {
 #ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
+        fatal() << message.toString();
         throw std::runtime_error(message.toString());
 #else
         fatal() << message.toString();
