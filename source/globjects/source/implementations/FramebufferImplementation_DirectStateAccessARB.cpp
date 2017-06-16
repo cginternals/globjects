@@ -32,7 +32,15 @@ void FramebufferImplementation_DirectStateAccessARB::destroy(const GLuint id) co
 
 GLenum FramebufferImplementation_DirectStateAccessARB::checkStatus(const Framebuffer * fbo) const
 {
-    return glCheckNamedFramebufferStatus(fbo->id(), GL_FRAMEBUFFER);
+    // glCheckNamedFramebufferStatus seems to fail when checking the default framebuffer
+    if (fbo->isDefault())
+    {
+        fbo->bind(GL_DRAW_FRAMEBUFFER);
+
+        return glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+    }
+
+    return glCheckNamedFramebufferStatus(fbo->id(), GL_DRAW_FRAMEBUFFER);
 }
 
 void FramebufferImplementation_DirectStateAccessARB::setParameter(const Framebuffer * fbo, GLenum pname, GLint param) const

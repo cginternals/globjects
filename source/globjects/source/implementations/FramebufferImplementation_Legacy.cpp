@@ -32,9 +32,9 @@ void FramebufferImplementation_Legacy::destroy(GLuint id) const
 
 GLenum FramebufferImplementation_Legacy::checkStatus(const Framebuffer * fbo) const
 {
-    fbo->bind(s_workingTarget);
+    fbo->bind(GL_DRAW_FRAMEBUFFER);
 
-    return glCheckFramebufferStatus(s_workingTarget);
+    return glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
 }
 
 void FramebufferImplementation_Legacy::setParameter(const Framebuffer * fbo, GLenum pname, GLint param) const

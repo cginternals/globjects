@@ -29,6 +29,14 @@ void FramebufferImplementation_DirectStateAccessEXT::destroy(GLuint id) const
 
 GLenum FramebufferImplementation_DirectStateAccessEXT::checkStatus(const Framebuffer * fbo) const
 {
+    // glCheckNamedFramebufferStatus seems to fail when checking the default framebuffer
+    if (fbo->isDefault())
+    {
+        fbo->bind(GL_DRAW_FRAMEBUFFER);
+
+        return glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+    }
+
     return glCheckNamedFramebufferStatusEXT(fbo->id(), GL_FRAMEBUFFER);
 }
 
