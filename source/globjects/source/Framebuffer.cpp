@@ -219,6 +219,16 @@ void Framebuffer::clearBuffer(const GLenum buffer, const GLint drawBuffer, const
     clearBuffer(buffer, drawBuffer, glm::value_ptr(value));
 }
 
+void Framebuffer::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, int value)
+{
+    clearBuffer(buffer, drawBuffer, value);
+}
+
+void Framebuffer::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, float value)
+{
+    clearBuffer(buffer, drawBuffer, value);
+}
+
 void Framebuffer::colorMask(const GLboolean red, const GLboolean green, const GLboolean blue, const GLboolean alpha)
 {
     glColorMask(red, green, blue, alpha);

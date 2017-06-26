@@ -100,6 +100,8 @@ public:
     void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const glm::ivec4 & value);
     void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const glm::uvec4 & value);
     void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const glm::vec4 & value);
+    void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, int value);
+    void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, float value);
 
     static void colorMask(gl::GLboolean red, gl::GLboolean green, gl::GLboolean blue, gl::GLboolean alpha);
     static void colorMask(const glm::bvec4 & mask);
