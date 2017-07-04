@@ -358,7 +358,9 @@ void Framebuffer::addAttachment(std::unique_ptr<FramebufferAttachment> && attach
 
 FramebufferAttachment * Framebuffer::getAttachment(GLenum attachment)
 {
-    return m_attachments[attachment].get();
+    const auto it = m_attachments.find(attachment);
+
+    return it == m_attachments.end() ? nullptr : it->second.get();
 }
 
 std::vector<FramebufferAttachment*> Framebuffer::attachments()
