@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <glm/fwd.hpp>
+
 #include <glbinding/gl/types.h>
 
 #include <globjects/globjects_api.h>
@@ -33,6 +35,9 @@ public:
     void setParameter(gl::GLenum name, gl::GLenum value);
     void setParameter(gl::GLenum name, gl::GLint value);
     void setParameter(gl::GLenum name, gl::GLfloat value);
+    void setParameter(gl::GLenum name, const glm::vec4 & value);
+    void setParameter(gl::GLenum name, const glm::ivec4 & value);
+    void setParameter(gl::GLenum name, const glm::uvec4 & value);
 
     gl::GLint getParameteri(gl::GLenum pname) const;
     gl::GLfloat getParameterf(gl::GLenum pname) const;
