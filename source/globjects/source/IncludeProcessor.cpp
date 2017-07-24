@@ -218,7 +218,7 @@ void IncludeProcessor::processInclude(std::string & include, CompositeStringSour
     auto source = StaticStringSource::create(destinationstream.str());
 
     // [TODO]: remove leak
-    compositeSource->appendSource(source.get());
+    compositeSource->appendSource(source.release());
 
     NamedString * namedString = nullptr;
     if (startsWith(include, '/'))
