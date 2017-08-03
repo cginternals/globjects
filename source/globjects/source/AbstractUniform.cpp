@@ -37,6 +37,7 @@ AbstractUniform::AbstractUniform(const Program * program, const GLint location, 
 : m_identity(location)
 , m_program(program)
 , m_type(type)
+, m_location(-1)
 {
 }
 
@@ -44,6 +45,7 @@ AbstractUniform::AbstractUniform(const Program * program, const std::string & na
 : m_identity(name)
 , m_program(program)
 , m_type(type)
+, m_location(-1)
 {
 }
 
