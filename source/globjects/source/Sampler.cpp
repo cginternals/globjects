@@ -1,6 +1,9 @@
 
 #include <globjects/Sampler.h>
 
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/vec4.hpp>
+
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 
@@ -62,6 +65,21 @@ void Sampler::setParameter(const GLenum name, const GLint value)
 void Sampler::setParameter(const GLenum name, const GLfloat value)
 {
     glSamplerParameterf(id(), name, value);
+}
+
+void Sampler::setParameter(gl::GLenum name, const glm::vec4 & value)
+{
+    glSamplerParameterfv(id(), name, glm::value_ptr(value));
+}
+
+void Sampler::setParameter(gl::GLenum name, const glm::ivec4 & value)
+{
+    glSamplerParameterIiv(id(), name, glm::value_ptr(value));
+}
+
+void Sampler::setParameter(gl::GLenum name, const glm::uvec4 & value)
+{
+    glSamplerParameterIuiv(id(), name, glm::value_ptr(value));
 }
 
 GLint Sampler::getParameteri(const GLenum pname) const
