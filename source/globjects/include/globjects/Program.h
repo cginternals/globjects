@@ -125,6 +125,8 @@ public:
 
     std::string infoLog() const;
     gl::GLint get(gl::GLenum pname) const;
+    template <size_t Count>
+    std::array<gl::GLint, Count> get(gl::GLenum pname) const;
 
     bool isValid() const;
     void validate();

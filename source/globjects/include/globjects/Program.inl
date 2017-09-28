@@ -115,5 +115,15 @@ void Program::attach(Shader * shader, Shaders... shaders)
     attach(std::forward<Shaders>(shaders)...);
 }
 
+template <size_t Count>
+std::array<gl::GLint, Count> Program::get(gl::GLenum pname) const
+{
+    std::array<gl::GLint, Count> values;
+
+    glGetProgramiv(id(), pname, values.data());
+
+    return values;
+}
+
 
 } // namespace globjects
