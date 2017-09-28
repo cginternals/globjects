@@ -48,6 +48,11 @@ void Texture::hintBindlessImplementation(BindlessImplementation impl)
     ImplementationRegistry::current().initialize(impl);
 }
 
+void Texture::hintStorageImplementation(StorageImplementation impl)
+{
+    ImplementationRegistry::current().initialize(impl);
+}
+
 Texture::Texture()
 : Texture(GL_TEXTURE_2D)
 {
