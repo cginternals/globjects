@@ -131,12 +131,12 @@ void deinitialize()
     g_texture.reset(nullptr);
 
     g_program.reset(nullptr);
-    g_vertexShaderSource.reset(nullptr);
-    g_vertexShaderTemplate.reset(nullptr);
     g_vertexShader.reset(nullptr);
-    g_fragmentShaderSource.reset(nullptr);
-    g_fragmentShaderTemplate.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
     g_fragmentShader.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
 
     g_quad.reset(nullptr);
 }
