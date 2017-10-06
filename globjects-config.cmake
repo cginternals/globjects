@@ -4,6 +4,13 @@
 # 
 # Please adjust the list of submodules to search for.
 
+# find dependencies for globjects
+# - glbindings must searched for before MODULE_NAMES declaration, otherwise it
+#   glbinding-config.cmake overwrites the variable MODULE_NAMES
+include(CMakeFindDependencyMacro)
+find_dependency(glm)
+find_dependency(glbinding)
+
 
 # List of modules
 set(MODULE_NAMES
@@ -30,7 +37,6 @@ macro(find_modules PREFIX)
     endforeach(module_name)
 endmacro()
 
-
 # Try install location
 set(MODULE_FOUND FALSE)
 find_modules("cmake")
@@ -47,6 +53,7 @@ else()
     find_modules("build/cmake")
     find_modules("build-debug/cmake")
 endif()
+
 
 # Signal success/failure to CMake
 set(globjects_FOUND ${MODULE_FOUND})
