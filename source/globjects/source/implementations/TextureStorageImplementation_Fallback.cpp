@@ -57,7 +57,7 @@ void TextureStorageImplementation_Fallback::storage2D(const Texture * texture, g
 
     for (int i = 0; i < levels; i++)
     {
-        implementation.image2D(texture, i, internalFormat, width, height, 0, gl::GL_R, gl::GL_UNSIGNED_BYTE, nullptr);
+        implementation.image2D(texture, i, internalFormat, width, height, 0, gl::GL_RG, gl::GL_UNSIGNED_BYTE, nullptr);
         width = std::max(1, width / 2);
         height = std::max(1, height / 2);
     }
@@ -69,7 +69,7 @@ void TextureStorageImplementation_Fallback::storage3D(const Texture * texture, g
 
     for (int i = 0; i < levels; i++)
     {
-        implementation.image3D(texture, i, internalFormat, width, height, depth, 0, gl::GL_R, gl::GL_UNSIGNED_BYTE, nullptr);
+        implementation.image3D(texture, i, internalFormat, width, height, depth, 0, gl::GL_RGB, gl::GL_UNSIGNED_BYTE, nullptr);
         width = std::max(1, width / 2);
         height = std::max(1, height / 2);
         depth = std::max(1, depth / 2);

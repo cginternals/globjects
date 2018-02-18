@@ -1,0 +1,90 @@
+#!/usr/bin/make -f
+
+BUILDDIR = build
+BUILDDEBUGDIR = build-debug
+
+# firstly called by launchpad
+clean:
+	rm -rf $(BUILDDIR)
+	rm -rf $(BUILDDEBUGDIR)
+
+# secondly called by launchpad
+build: build-arch
+
+build-arch:
+	mkdir $(BUILDDIR)
+	cd $(BUILDDIR);cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DOPTION_BUILD_TESTS=Off -DOPTION_BUILD_EXAMPLES=On -DOPTION_BUILD_DOCS=On ..
+	make -C $(BUILDDIR)
+	mkdir $(BUILDDEBUGDIR)
+	cd $(BUILDDEBUGDIR);cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/usr -DOPTION_BUILD_TESTS=Off -DOPTION_BUILD_EXAMPLES=Off -DOPTION_BUILD_DOCS=Off ..
+	make -C $(BUILDDEBUGDIR)
+
+# thirdly called by launchpad
+binary: binary-arch
+
+binary-arch: libglobjects libglobjects-dev libglobjects-docs libglobjects-dbg libglobjects-examples-data libglobjects-examples-glfw libglobjects-examples-qt libglobjects-all
+
+libglobjects:
+	cd $(BUILDDIR); DESTDIR=../debian/tmp COMPONENT=runtime make component_install
+	mkdir -p debian/tmp/DEBIAN
+	dpkg-gencontrol -plibglobjects
+	dpkg --build debian/tmp ..
+	rm -rf debian/tmp
+
+libglobjects-dev:
+	cd $(BUILDDIR); DESTDIR=../debian/tmp COMPONENT=dev make component_install
+	mkdir -p debian/tmp/DEBIAN
+	dpkg-gencontrol -plibglobjects-dev
+	dpkg --build debian/tmp ..
+	rm -rf debian/tmp
+
+libglobjects-docs:
+	cd $(BUILDDIR); DESTDIR=../debian/tmp COMPONENT=docs make component_install
+	mkdir -p debian/tmp/DEBIAN
+	dpkg-gencontrol -plibglobjects-docs
+	dpkg --build debian/tmp ..
+	rm -rf debian/tmp
+
+libglobjects-dbg:
+	cd $(BUILDDEBUGDIR); DESTDIR=../debian/tmp COMPONENT=runtime make component_install
+	cd $(BUILDDEBUGDIR); DESTDIR=../debian/tmp COMPONENT=dev make component_install
+	rm -rf debian/tmp/usr/include
+	rm debian/tmp/usr/share/*/*-config.cmake
+	rm debian/tmp/usr/share/*/AUTHORS
+	rm debian/tmp/usr/share/*/LICENSE
+	rm debian/tmp/usr/share/*/README.md
+	rm debian/tmp/usr/share/*/VERSION
+	rm debian/tmp/usr/share/*/cmake/*/*-export.cmake
+	mkdir -p debian/tmp/DEBIAN
+	dpkg-gencontrol -plibglobjects-dbg
+	dpkg --build debian/tmp ..
+	rm -rf debian/tmp
+
+libglobjects-examples-data:
+	cd $(BUILDDIR); DESTDIR=../debian/tmp COMPONENT=examples_data make component_install
+	mkdir -p debian/tmp/DEBIAN
+	dpkg-gencontrol -plibglobjects-examples-data
+	dpkg --build debian/tmp ..
+	rm -rf debian/tmp
+
+libglobjects-examples-glfw:
+	cd $(BUILDDIR); DESTDIR=../debian/tmp COMPONENT=examples_glfw make component_install
+	mkdir -p debian/tmp/DEBIAN
+	dpkg-gencontrol -plibglobjects-examples-glfw
+	dpkg --build debian/tmp ..
+	rm -rf debian/tmp
+
+libglobjects-examples-qt:
+	cd $(BUILDDIR); DESTDIR=../debian/tmp COMPONENT=examples_qt make component_install
+	mkdir -p debian/tmp/DEBIAN
+	dpkg-gencontrol -plibglobjects-examples-qt
+	dpkg --build debian/tmp ..
+	rm -rf debian/tmp
+
+libglobjects-all:
+	mkdir -p debian/tmp/DEBIAN
+	dpkg-gencontrol -plibglobjects-all
+	dpkg --build debian/tmp ..
+	rm -rf debian/tmp
+
+.PHONY: build build-arch binary binary-arch clean libglobjects libglobjects-dev libglobjects-docs libglobjects-dbg libglobjects-examples-data libglobjects-examples-glfw libglobjects-examples-qt libglobjects-all

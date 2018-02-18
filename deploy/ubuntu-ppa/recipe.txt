@@ -1,0 +1,3 @@
+# git-build-recipe format 0.4 deb-version {debupstream}+{revno}
+lp:globjects v2.0
+nest-part packaging lp:cpplocate deploy/ubuntu-ppa/debian debian v2.0
