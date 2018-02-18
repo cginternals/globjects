@@ -1,0 +1,52 @@
+Source: libglobjects
+Section: misc
+Priority: optional
+Maintainer: Willy Scheibel <willy.scheibel@cginternals.com>
+Build-Depends: build-essential, cmake, libglbinding-dev, libglm-dev, libglfw3-dev, libcpplocate-dev, libcpplocate-dbg, qtbase5-dev, doxygen, graphviz
+Standards-Version: 3.8.0
+
+Package: libglobjects
+Architecture: any
+Depends: libglbinding
+Homepage: https://globjects.org
+Description: A C++ library strictly wrapping OpenGL objects.
+
+Package: libglobjects-dev
+Architecture: any
+Depends: libglobjects, libglbinding-dev
+Homepage: https://globjects.org
+Description: A C++ library strictly wrapping OpenGL objects.
+
+Package: libglobjects-examples-data
+Architecture: any
+Homepage: https://globjects.org
+Description: A C++ library strictly wrapping OpenGL objects.
+
+Package: libglobjects-examples-glfw
+Architecture: any
+Depends: libglobjects, libglobjects-examples-data, libglfw3
+Homepage: https://globjects.org
+Description: A C++ library strictly wrapping OpenGL objects.
+
+Package: libglobjects-examples-qt
+Architecture: any
+Depends: libglobjects, libglobjects-examples-data, libqt5core5a
+Homepage: https://globjects.org
+Description: A C++ library strictly wrapping OpenGL objects.
+
+Package: libglobjects-docs
+Architecture: any
+Homepage: https://globjects.org
+Description: A C++ library strictly wrapping OpenGL objects.
+
+Package: libglobjects-dbg
+Architecture: any
+Depends: libglobjects, libglobjects-dev
+Homepage: https://globjects.org
+Description: A C++ library strictly wrapping OpenGL objects.
+
+Package: libglobjects-all
+Architecture: any
+Depends: libglobjects, libglobjects-dev, libglobjects-docs, libglobjects-examples-glfw, libglobjects-examples-qt
+Homepage: https://globjects.org
+Description: A C++ library strictly wrapping OpenGL objects.
