@@ -135,7 +135,7 @@ For Ubuntu 16.04 (xenial), 15.10 (wily), and 15.04 (vivid) use the [current PPA]
 Using the current PPA as example, the following lines install *globjects* including the GLFW examples:
 
 ```shell
-> sudo apt-add repository ppa:cginternals/ppa
+> sudo apt-add-repository ppa:cginternals/ppa
 > sudo apt-get update
 > sudo apt-get install libglobjects-examples-glfw
 > # start example
