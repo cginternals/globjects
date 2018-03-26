@@ -607,10 +607,3 @@ std::cout << Framebuffer::defaultFBO();
 std::cout << glm::vec4(1.0, 0.0, 0.0, 1.0);
 warning() << shader;
 ```
-
-# Professional Support
-
-CG Internals offers computer graphics R&D as well as reliable technology and innovative concepts to support your computer graphics visions. 
-We provide trainings and can help you integrate and customize globjects in your next project.
-
-Visit [Professional Support and Services](https://www.cginternals.com) for more details.
