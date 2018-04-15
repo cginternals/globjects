@@ -96,7 +96,7 @@ namespace globjects
 {
 
 
-void init()
+void init(glbinding::GetProcAddress functionPointerResolver)
 {
     {
         std::lock_guard<std::mutex> lock(g_mutex);
@@ -109,10 +109,10 @@ void init()
         }
     }
 
-    registerCurrentContext();
+    registerCurrentContext(functionPointerResolver);
 }
 
-void init(const glbinding::ContextHandle sharedContextId)
+void init(glbinding::GetProcAddress functionPointerResolver, const glbinding::ContextHandle sharedContextId)
 {
     {
         std::lock_guard<std::mutex> lock(g_mutex);
@@ -125,7 +125,7 @@ void init(const glbinding::ContextHandle sharedContextId)
         }
     }
 
-    registerCurrentContext(sharedContextId);
+    registerCurrentContext(functionPointerResolver, sharedContextId);
 }
 
 void detachAllObjects()
@@ -134,15 +134,15 @@ void detachAllObjects()
         object->detach();
 }
 
-void registerCurrentContext()
+void registerCurrentContext(glbinding::GetProcAddress functionPointerResolver)
 {
-    glbinding::Binding::useCurrentContext();
+    glbinding::Binding::initialize(functionPointerResolver);
     Registry::registerContext(0);
 }
 
-void registerCurrentContext(const glbinding::ContextHandle sharedContextId)
+void registerCurrentContext(glbinding::GetProcAddress functionPointerResolver, const glbinding::ContextHandle sharedContextId)
 {
-    glbinding::Binding::useCurrentContext();
+    glbinding::Binding::initialize(functionPointerResolver);
     Registry::registerContext(0, sharedContextId);
 }
 

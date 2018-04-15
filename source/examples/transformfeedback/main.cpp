@@ -256,7 +256,9 @@ int main(int /*argc*/, char * /*argv*/[])
     glfwMakeContextCurrent(window);
 
     // Initialize globjects (internally initializes glbinding, and registers the current context)
-    globjects::init();
+    globjects::init([](const char * name) {
+        return glfwGetProcAddress(name);
+    });
 
     std::cout << std::endl
         << "OpenGL Version:  " << glbinding::aux::ContextInfo::version() << std::endl

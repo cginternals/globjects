@@ -62,17 +62,17 @@ std::array<gl::GLboolean, Count> getBooleans(const gl::GLenum pname)
 }
 
 template <typename T, typename... Args>
-void init(T strategy, Args... args)
+void init(glbinding::GetProcAddress functionPointerResolver, T strategy, Args... args)
 {
-    init(args...);
+    init(functionPointerResolver, args...);
 
     initializeStrategy(strategy);
 }
 
 template <typename T, typename... Args>
-void init(const glbinding::ContextHandle sharedContextId, T strategy, Args... args)
+void init(glbinding::GetProcAddress functionPointerResolver, const glbinding::ContextHandle sharedContextId, T strategy, Args... args)
 {
-    init(sharedContextId, args...);
+    init(functionPointerResolver, sharedContextId, args...);
 
     initializeStrategy(strategy);
 }

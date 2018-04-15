@@ -177,3 +177,20 @@ void WindowQt::enterEvent(QEvent *)
 void WindowQt::leaveEvent(QEvent *)
 {
 }
+
+glbinding::ProcAddress WindowQt::getProcAddress(const char * name)
+{
+    if (name == nullptr)
+    {
+        return nullptr;
+    }
+
+    const auto symbol = std::string(name);
+
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
+    const auto qtSymbol = QByteArray::fromStdString(symbol);
+    #else
+    const auto qtSymbol = QByteArray::fromRawData(symbol.c_str(), symbol.size());
+    #endif
+    return m_context->getProcAddress(qtSymbol);
+}

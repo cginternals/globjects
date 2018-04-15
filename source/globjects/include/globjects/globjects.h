@@ -7,6 +7,7 @@
 
 #include <glbinding/gl/types.h>
 
+#include <glbinding/ProcAddress.h>
 #include <glbinding/ContextHandle.h>
 
 #include <globjects/globjects_api.h>
@@ -35,8 +36,8 @@ namespace globjects
 {
 
 
-GLOBJECTS_API void init();
-GLOBJECTS_API void init(glbinding::ContextHandle sharedContextId);
+GLOBJECTS_API void init(glbinding::GetProcAddress functionPointerResolver);
+GLOBJECTS_API void init(glbinding::GetProcAddress functionPointerResolver, glbinding::ContextHandle sharedContextId);
 
 /** \brief calls detach on every registered object
     
@@ -46,13 +47,13 @@ GLOBJECTS_API void init(glbinding::ContextHandle sharedContextId);
 GLOBJECTS_API void detachAllObjects();
 
 template <typename T, typename... Args>
-void init(T strategy, Args... args);
+void init(glbinding::GetProcAddress functionPointerResolver, T strategy, Args... args);
 
 template <typename T, typename... Args>
-void init(glbinding::ContextHandle sharedContextId, T strategy, Args... args);
+void init(glbinding::GetProcAddress functionPointerResolver, glbinding::ContextHandle sharedContextId, T strategy, Args... args);
 
-GLOBJECTS_API void registerCurrentContext();
-GLOBJECTS_API void registerCurrentContext(glbinding::ContextHandle sharedContextId);
+GLOBJECTS_API void registerCurrentContext(glbinding::GetProcAddress functionPointerResolver);
+GLOBJECTS_API void registerCurrentContext(glbinding::GetProcAddress functionPointerResolver, glbinding::ContextHandle sharedContextId);
 GLOBJECTS_API void setContext(glbinding::ContextHandle contextId);
 GLOBJECTS_API void setCurrentContext();
 
