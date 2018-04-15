@@ -70,13 +70,13 @@ public:
         m_program = globjects::Program::create();
         m_vao = globjects::VertexArray::create();
 
-        const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
+        const auto dataPath = common::determineDataPath();
 
-        m_vertexShaderSource = globjects::Shader::sourceFromFile(dataPath + "qt-example/shader.vert");
+        m_vertexShaderSource = globjects::Shader::sourceFromFile(dataPath + "/qt-example/shader.vert");
         m_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(m_vertexShaderSource.get());
         m_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, m_vertexShaderTemplate.get());
 
-        m_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "qt-example/shader.frag");
+        m_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "/qt-example/shader.frag");
         m_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(m_fragmentShaderSource.get());
         m_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, m_fragmentShaderTemplate.get());
 

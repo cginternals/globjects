@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #include <cpplocate/cpplocate.h>
-#include <cpplocate/ModuleInfo.h>
+#include <cpplocate/cpplocate.h>
 
 #include <glm/gtc/constants.hpp>
 #include <glm/vec2.hpp>
@@ -62,7 +62,7 @@ namespace
 
 void initialize()
 {
-    const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
+    const auto dataPath = common::determineDataPath();
 
     g_texture = globjects::Texture::createDefault(GL_TEXTURE_2D);
     g_texture->image2D(0, GL_R32F, 512, 512, 0, GL_RED, GL_FLOAT, nullptr);
@@ -71,7 +71,7 @@ void initialize()
     g_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     g_computeProgram = globjects::Program::create();
-    g_shaderSource = globjects::Shader::sourceFromFile(dataPath + "computeshader/cstest.comp");
+    g_shaderSource = globjects::Shader::sourceFromFile(dataPath + "/computeshader/cstest.comp");
     g_shaderTemplate = globjects::Shader::applyGlobalReplacements(g_shaderSource.get());
     g_shader = globjects::Shader::create(GL_COMPUTE_SHADER, g_shaderTemplate.get());
 

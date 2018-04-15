@@ -3,7 +3,6 @@
 #include <algorithm>
 
 #include <cpplocate/cpplocate.h>
-#include <cpplocate/ModuleInfo.h>
 
 #include <glm/vec2.hpp>
 
@@ -78,13 +77,13 @@ void initialize()
 
     g_shaderProgram = globjects::Program::create();
 
-    const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
+    const auto dataPath = common::determineDataPath();
 
-    g_vertexShaderSource = globjects::Shader::sourceFromFile(dataPath + "states/standard.vert");
+    g_vertexShaderSource = globjects::Shader::sourceFromFile(dataPath + "/states/standard.vert");
     g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
     g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
 
-    g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "states/standard.frag");
+    g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "/states/standard.frag");
     g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
     g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
 

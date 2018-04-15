@@ -4,6 +4,7 @@
 # 
 
 find_package(glbinding REQUIRED)
+find_package(cpplocate REQUIRED)
 find_package(Qt5Core    5.1)
 find_package(Qt5Gui     5.1)
 find_package(Qt5Widgets 5.1)

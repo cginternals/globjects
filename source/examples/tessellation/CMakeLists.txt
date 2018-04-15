@@ -4,6 +4,7 @@
 # 
 
 find_package(GLFW)
+find_package(cpplocate REQUIRED)
 find_package(glbinding REQUIRED)
 
 

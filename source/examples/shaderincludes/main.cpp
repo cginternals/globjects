@@ -3,7 +3,6 @@
 #include <algorithm>
 
 #include <cpplocate/cpplocate.h>
-#include <cpplocate/ModuleInfo.h>
 
 #include <glbinding/gl/gl.h>
 #include <glbinding/Version.h>
@@ -50,16 +49,16 @@ namespace
 
 void initialize()
 {
-    const auto dataPath = common::retrieveDataPath("globjects", "dataPath");
+    const auto dataPath = common::determineDataPath();
 
-    g_namedStringSource = globjects::File::create(dataPath + "shaderincludes/color.glsl");
+    g_namedStringSource = globjects::File::create(dataPath + "/shaderincludes/color.glsl");
     g_namedString = globjects::NamedString::create("/color.glsl", g_namedStringSource.get());
 
     g_vertexShaderSource = ScreenAlignedQuad::vertexShaderSource();
     g_vertexShaderTemplate = globjects::Shader::applyGlobalReplacements(g_vertexShaderSource.get());
     g_vertexShader = globjects::Shader::create(GL_VERTEX_SHADER, g_vertexShaderTemplate.get());
 
-    g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "shaderincludes/test.frag");
+    g_fragmentShaderSource = globjects::Shader::sourceFromFile(dataPath + "/shaderincludes/test.frag");
     g_fragmentShaderTemplate = globjects::Shader::applyGlobalReplacements(g_fragmentShaderSource.get());
     g_fragmentShader = globjects::Shader::create(GL_FRAGMENT_SHADER, g_fragmentShaderTemplate.get());
 
