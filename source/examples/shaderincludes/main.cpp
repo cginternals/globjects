@@ -6,8 +6,9 @@
 #include <cpplocate/ModuleInfo.h>
 
 #include <glbinding/gl/gl.h>
-#include <glbinding/ContextInfo.h>
 #include <glbinding/Version.h>
+#include <glbinding-aux/ContextInfo.h>
+#include <glbinding-aux/types_to_string.h>
 
 #include <glm/vec2.hpp>
 
@@ -146,9 +147,9 @@ int main(int /*argc*/, char * /*argv*/[])
     globjects::init();
 
     std::cout << std::endl
-        << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-        << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-        << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
+        << "OpenGL Version:  " << glbinding::aux::ContextInfo::version() << std::endl
+        << "OpenGL Vendor:   " << glbinding::aux::ContextInfo::vendor() << std::endl
+        << "OpenGL Renderer: " << glbinding::aux::ContextInfo::renderer() << std::endl << std::endl;
 
     globjects::info() << "Press F5 to reload shaders." << std::endl << std::endl;
 

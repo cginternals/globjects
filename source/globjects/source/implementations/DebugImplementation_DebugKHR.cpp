@@ -1,7 +1,7 @@
 
 #include "DebugImplementation_DebugKHR.h"
 
-#include <glbinding/callbacks.h>
+#include <glbinding/glbinding.h>
 
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>

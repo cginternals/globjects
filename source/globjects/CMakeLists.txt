@@ -361,6 +361,7 @@ target_link_libraries(${target}
     ${DEFAULT_LIBRARIES}
     glm
     glbinding::glbinding
+    glbinding::glbinding-aux
 
     INTERFACE
 )

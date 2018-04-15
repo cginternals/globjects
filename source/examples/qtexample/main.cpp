@@ -12,8 +12,9 @@
 #include <glm/gtx/transform.hpp>
 
 #include <glbinding/gl/gl.h>
-#include <glbinding/ContextInfo.h>
 #include <glbinding/Version.h>
+#include <glbinding-aux/ContextInfo.h>
+#include <glbinding-aux/types_to_string.h>
 
 #include <globjects/globjects.h>
 #include <globjects/base/File.h>
@@ -50,9 +51,9 @@ public:
         globjects::init();
 
         std::cout << std::endl
-            << "OpenGL Version:  " << glbinding::ContextInfo::version() << std::endl
-            << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor() << std::endl
-            << "OpenGL Renderer: " << glbinding::ContextInfo::renderer() << std::endl << std::endl;
+            << "OpenGL Version:  " << glbinding::aux::ContextInfo::version() << std::endl
+            << "OpenGL Vendor:   " << glbinding::aux::ContextInfo::vendor() << std::endl
+            << "OpenGL Renderer: " << glbinding::aux::ContextInfo::renderer() << std::endl << std::endl;
 
         globjects::DebugMessage::enable();
 

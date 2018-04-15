@@ -5,7 +5,7 @@
 
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
-#include <glbinding/Meta.h>
+#include <glbinding-aux/Meta.h>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -326,7 +326,7 @@ GLenum Framebuffer::checkStatus() const
 
 std::string Framebuffer::statusString() const
 {
-    return glbinding::Meta::getString(checkStatus());
+    return glbinding::aux::Meta::getString(checkStatus());
 }
 
 void Framebuffer::printStatus(bool onlyErrors) const
@@ -337,7 +337,7 @@ void Framebuffer::printStatus(bool onlyErrors) const
 
     if (status == GL_FRAMEBUFFER_COMPLETE)
     {
-        info() << glbinding::Meta::getString(GL_FRAMEBUFFER_COMPLETE);
+        info() << glbinding::aux::Meta::getString(GL_FRAMEBUFFER_COMPLETE);
     }
     else
     {
@@ -345,7 +345,7 @@ void Framebuffer::printStatus(bool onlyErrors) const
         ss.flags(std::ios::hex | std::ios::showbase);
         ss << static_cast<unsigned int>(status);
 
-        critical() << glbinding::Meta::getString(status) << " (" << ss.str() << ")";
+        critical() << glbinding::aux::Meta::getString(status) << " (" << ss.str() << ")";
     }
 }
 

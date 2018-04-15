@@ -5,8 +5,9 @@
 #include <iostream>
 
 #include <glbinding/Version.h>
-#include <glbinding/Meta.h>
+#include <glbinding-aux/Meta.h>
 #include <glbinding/Value.h>
+#include <glbinding-aux/types_to_string.h>
 
 
 namespace globjects 
@@ -22,21 +23,21 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const glbinding::Version
 
 LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::GLboolean & value)
 {
-    builder << glbinding::Meta::getString(value);
+    builder << glbinding::aux::Meta::getString(value);
 
     return builder;
 }
 
 LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::GLenum & value)
 {
-    builder << glbinding::Meta::getString(value);
+    builder << glbinding::aux::Meta::getString(value);
 
     return builder;
 }
 
 LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::GLextension & value)
 {
-    builder << glbinding::Meta::getString(value);
+    builder << glbinding::aux::Meta::getString(value);
 
     return builder;
 }
@@ -45,7 +46,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::AttribMask & v
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::AttribMask>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -56,7 +57,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::ClearBufferMas
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::ClearBufferMask>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -67,7 +68,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::ClientAttribMa
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::ClientAttribMask>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -78,7 +79,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::ContextFlagMas
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::ContextFlagMask>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -89,7 +90,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::ContextProfile
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::ContextProfileMask>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -100,7 +101,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::FfdMaskSGIX & 
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::FfdMaskSGIX>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -111,7 +112,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::FragmentShader
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::FragmentShaderColorModMaskATI>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -122,7 +123,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::FragmentShader
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::FragmentShaderDestMaskATI>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -133,7 +134,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::FragmentShader
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::FragmentShaderDestModMaskATI>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -144,7 +145,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::MapBufferUsage
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::MapBufferUsageMask>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -155,7 +156,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::MemoryBarrierM
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::MemoryBarrierMask>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -166,7 +167,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::PathRenderingM
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::PathRenderingMaskNV>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -177,7 +178,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::PerformanceQue
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::PerformanceQueryCapsMaskINTEL>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -188,7 +189,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::SyncObjectMask
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::SyncObjectMask>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -199,7 +200,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::TextureStorage
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::TextureStorageMaskAMD>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -210,7 +211,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::UseProgramStag
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::UseProgramStageMask>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -221,7 +222,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::VertexHintsMas
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::VertexHintsMaskPGI>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -232,7 +233,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::PathFontStyle 
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::PathFontStyle>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -243,7 +244,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::UnusedMask & v
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::UnusedMask>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 
@@ -254,7 +255,7 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::BufferAccessMa
 {
     std::ostringstream stream;
 
-    glbinding::Value<gl::BufferAccessMask>(value).printOn(stream);
+    stream << value;
 
     builder << stream.str();
 

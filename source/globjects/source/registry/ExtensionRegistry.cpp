@@ -2,8 +2,8 @@
 #include "ExtensionRegistry.h"
 #include "Registry.h"
 
-#include <glbinding/Meta.h>
-#include <glbinding/ContextInfo.h>
+#include <glbinding-aux/Meta.h>
+#include <glbinding-aux/ContextInfo.h>
 #include <glbinding/Version.h>
 
 #include <globjects/globjects.h>
@@ -17,7 +17,7 @@ namespace
 
 glbinding::Version getCoreVersion(GLextension extension)
 {
-    return glbinding::Meta::version(extension);
+    return glbinding::aux::Meta::version(extension);
 }
 
 
@@ -66,7 +66,7 @@ void ExtensionRegistry::initialize()
     if (m_initialized)
         return;
 
-    m_availableExtensions = glbinding::ContextInfo::extensions(m_unknownAvailableExtensions);
+    m_availableExtensions = glbinding::aux::ContextInfo::extensions(m_unknownAvailableExtensions);
 
     m_initialized = true;
 }
@@ -85,7 +85,7 @@ bool ExtensionRegistry::hasExtension(const std::string & extensionName)
 {
     initialize();
 
-    GLextension extension = glbinding::Meta::getExtension(extensionName);
+    GLextension extension = glbinding::aux::Meta::getExtension(extensionName);
 
     if (extension != GLextension::UNKNOWN)
     {
@@ -101,7 +101,7 @@ bool ExtensionRegistry::isInCoreProfile(GLextension extension, const glbinding::
 {
     glbinding::Version coreVersion = getCoreVersion(extension);
 
-    if (!coreVersion.isValid())
+    if (coreVersion.isNull())
         return false;
 
     return coreVersion <= version;

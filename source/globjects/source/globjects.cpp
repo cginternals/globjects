@@ -4,12 +4,12 @@
 #include <unordered_map>
 #include <mutex>
 
+#include <glbinding/glbinding.h>
 #include <glbinding/gl/gl.h>
 #include <glbinding/gl/functions.h>
 #include <glbinding/AbstractFunction.h>
 #include <glbinding/Binding.h>
-#include <glbinding/callbacks.h>
-#include <glbinding/ContextInfo.h>
+#include <glbinding-aux/ContextInfo.h>
 #include <glbinding/Version.h>
 
 #include <globjects/Error.h>
@@ -136,18 +136,14 @@ void detachAllObjects()
 
 void registerCurrentContext()
 {
-    glbinding::ContextHandle contextId = glbinding::getCurrentContext();
-
-    glbinding::Binding::useContext(contextId);
-    Registry::registerContext(contextId);
+    glbinding::Binding::useCurrentContext();
+    Registry::registerContext(0);
 }
 
 void registerCurrentContext(const glbinding::ContextHandle sharedContextId)
 {
-    glbinding::ContextHandle contextId = glbinding::getCurrentContext();
-
-    glbinding::Binding::useContext(contextId);
-    Registry::registerContext(contextId, sharedContextId);
+    glbinding::Binding::useCurrentContext();
+    Registry::registerContext(0, sharedContextId);
 }
 
 void setContext(const glbinding::ContextHandle contextId)
@@ -158,8 +154,7 @@ void setContext(const glbinding::ContextHandle contextId)
 
 void setCurrentContext()
 {
-    glbinding::ContextHandle contextId = glbinding::getCurrentContext();
-    setContext(contextId);
+    setContext(0);
 }
 
 std::string getString(const GLenum pname)
@@ -260,12 +255,12 @@ GLboolean getBoolean(const GLenum pname, const GLuint index)
 
 std::string vendor()
 {
-    return glbinding::ContextInfo::vendor();
+    return glbinding::aux::ContextInfo::vendor();
 }
 
 std::string renderer()
 {
-    return glbinding::ContextInfo::renderer();
+    return glbinding::aux::ContextInfo::renderer();
 }
 
 std::string versionString()
@@ -275,7 +270,7 @@ std::string versionString()
 
 glbinding::Version version()
 {
-    return glbinding::ContextInfo::version();
+    return glbinding::aux::ContextInfo::version();
 }
 
 bool isCoreProfile()

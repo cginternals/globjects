@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include <glbinding/Meta.h>
+#include <glbinding-aux/Meta.h>
 
 #include <globjects/Framebuffer.h>
 
@@ -42,7 +42,7 @@ bool FramebufferAttachment::isRenderBufferAttachment() const
 
 std::string FramebufferAttachment::attachmentString() const
 {
-    return glbinding::Meta::getString(m_attachment);
+    return glbinding::aux::Meta::getString(m_attachment);
 }
 
 AttachedTexture * FramebufferAttachment::asTextureAttachment()

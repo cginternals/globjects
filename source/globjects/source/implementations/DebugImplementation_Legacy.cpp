@@ -1,7 +1,7 @@
 
 #include "DebugImplementation_Legacy.h"
 
-#include <glbinding/callbacks.h>
+#include <glbinding/glbinding.h>
 
 using namespace gl;
 
