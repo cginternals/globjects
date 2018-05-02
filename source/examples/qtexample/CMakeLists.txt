@@ -107,6 +107,7 @@ target_link_libraries(${target}
 target_compile_definitions(${target}
     PRIVATE
     ${DEFAULT_COMPILE_DEFINITIONS}
+    GLM_ENABLE_EXPERIMENTAL
 )
 
 
