@@ -119,12 +119,12 @@ void TextureImplementation_DirectStateAccessEXT::subImage3D(const Texture * text
 
 void TextureImplementation_DirectStateAccessEXT::image2DMultisample(const Texture * texture, gl::GLsizei samples, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLboolean fixedSamplesLocations) const
 {
-    gl::glTextureImage2DMultisampleNV(texture->id(), texture->target(), samples, static_cast<gl::GLint>(internalFormat), width, height, fixedSamplesLocations);
+    TextureImplementation_Legacy::instance()->image2DMultisample(texture, samples, internalFormat, width, height, fixedSamplesLocations);
 }
 
 void TextureImplementation_DirectStateAccessEXT::image3DMultisample(const Texture * texture, gl::GLsizei samples, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLboolean fixedSamplesLocations) const
 {
-    gl::glTextureImage3DMultisampleNV(texture->id(), texture->target(), samples, static_cast<gl::GLint>(internalFormat), width, height, depth, fixedSamplesLocations);
+    TextureImplementation_Legacy::instance()->image3DMultisample(texture, samples, internalFormat, width, height, depth, fixedSamplesLocations);
 }
 
 void TextureImplementation_DirectStateAccessEXT::cubeMapImage(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data) const
