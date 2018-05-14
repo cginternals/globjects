@@ -36,6 +36,21 @@ void TextureImplementation_Legacy::destroy(gl::GLuint id) const
     gl::glDeleteTextures(1, &id);
 }
 
+
+void TextureImplementation_Legacy::bindActive(const Texture * texture, gl::GLuint unit) const
+{
+    gl::glActiveTexture(gl::GL_TEXTURE0 + unit);
+    gl::glBindTexture(texture->target(), texture->id());
+}
+
+
+void TextureImplementation_Legacy::unbindActive(const Texture * texture, gl::GLuint unit) const
+{
+    gl::glActiveTexture(gl::GL_TEXTURE0 + unit);
+    gl::glBindTexture(texture->target(), 0);
+}
+
+
 void TextureImplementation_Legacy::setParameter(const Texture * texture, gl::GLenum name, gl::GLint value) const
 {
     texture->bind();

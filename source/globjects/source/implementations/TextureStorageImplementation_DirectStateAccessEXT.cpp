@@ -37,6 +37,17 @@ void TextureStorageImplementation_DirectStateAccessEXT::storage3D(const Texture 
     gl::glTextureStorage3DEXT(texture->id(), texture->target(), levels, internalFormat, width, height, depth);
 }
 
+
+void TextureStorageImplementation_DirectStateAccessEXT::storage2DMultisample(const Texture * texture, gl::GLsizei samples, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLboolean fixedSampleLocations) const
+{
+    gl::glTextureStorage2DMultisampleEXT(texture->id(), texture->target(), samples, internalFormat, width, height, fixedSampleLocations);
+}
+
+void TextureStorageImplementation_DirectStateAccessEXT::storage3DMultisample(const Texture * texture, gl::GLsizei samples, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLboolean fixedSampleLocations) const
+{
+    gl::glTextureStorage3DMultisampleEXT(texture->id(), texture->target(), samples, internalFormat, width, height, depth, fixedSampleLocations);
+}
+
 void TextureStorageImplementation_DirectStateAccessEXT::cubeMapStorage(const Texture * texture, gl::GLint levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height) const
 {
     storage2D(texture, levels, internalFormat, width, height);

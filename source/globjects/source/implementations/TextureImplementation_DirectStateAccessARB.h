@@ -20,6 +20,9 @@ public:
     virtual gl::GLuint create(gl::GLenum target) const override;
     virtual void destroy(gl::GLuint id) const override;
 
+    virtual void bindActive(const Texture * texture, gl::GLuint unit) const override;
+    virtual void unbindActive(const Texture * texture, gl::GLuint unit) const override;
+
     virtual void generateMipMap(const Texture * texture) const override;
 
     virtual void setParameter(const Texture * texture, gl::GLenum name, gl::GLint value) const override;
