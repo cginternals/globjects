@@ -22,6 +22,9 @@ public:
     virtual gl::GLuint create(gl::GLenum target) const = 0;
     virtual void destroy(gl::GLuint id) const = 0;
 
+    virtual void bindActive(const Texture * texture, gl::GLuint unit) const = 0;
+    virtual void unbindActive(const Texture * texture, gl::GLuint unit) const = 0;
+
     virtual void generateMipMap(const Texture * texture) const = 0;
 
     virtual void setParameter(const Texture * texture, gl::GLenum name, gl::GLint value) const = 0;

@@ -76,6 +76,16 @@ void TextureStorageImplementation_Fallback::storage3D(const Texture * texture, g
     }
 }
 
+void TextureStorageImplementation_Fallback::storage2DMultisample(const Texture * texture, gl::GLsizei samples, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLboolean fixedSampleLocations) const
+{
+    bindlessImplementation().image2DMultisample(texture, samples, internalFormat, width, height, fixedSampleLocations);
+}
+
+void TextureStorageImplementation_Fallback::storage3DMultisample(const Texture * texture, gl::GLsizei samples, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLsizei depth, gl::GLboolean fixedSampleLocations) const
+{
+    bindlessImplementation().image3DMultisample(texture, samples, internalFormat, width, height, depth, fixedSampleLocations);
+}
+
 void TextureStorageImplementation_Fallback::cubeMapStorage(const Texture * texture, gl::GLint levels, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height) const
 {
     storage2D(texture, levels, internalFormat, width, height);

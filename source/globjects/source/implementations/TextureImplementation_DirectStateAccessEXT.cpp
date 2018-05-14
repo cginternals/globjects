@@ -34,6 +34,16 @@ void TextureImplementation_DirectStateAccessEXT::destroy(gl::GLuint id) const
     TextureImplementation_Legacy::instance()->destroy(id);
 }
 
+void TextureImplementation_DirectStateAccessEXT::bindActive(const Texture * texture, gl::GLuint unit) const
+{
+    gl::glBindTextureUnit(unit, texture->id());
+}
+
+void TextureImplementation_DirectStateAccessEXT::unbindActive(const Texture * texture, gl::GLuint unit) const
+{
+    gl::glBindTextureUnit(unit, 0);
+}
+
 void TextureImplementation_DirectStateAccessEXT::setParameter(const Texture * texture, gl::GLenum name, gl::GLint value) const
 {
     gl::glTextureParameteriEXT(texture->id(), texture->target(), name, value);

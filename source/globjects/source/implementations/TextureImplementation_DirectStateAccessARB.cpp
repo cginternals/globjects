@@ -39,6 +39,16 @@ void TextureImplementation_DirectStateAccessARB::destroy(gl::GLuint id) const
     get(Texture::BindlessImplementation::Legacy)->destroy(id);
 }
 
+void TextureImplementation_DirectStateAccessARB::bindActive(const Texture * texture, gl::GLuint unit) const
+{
+    gl::glBindTextureUnit(unit, texture->id());
+}
+
+void TextureImplementation_DirectStateAccessARB::unbindActive(const Texture * texture, gl::GLuint unit) const
+{
+    gl::glBindTextureUnit(unit, 0);
+}
+
 void TextureImplementation_DirectStateAccessARB::setParameter(const Texture * texture, gl::GLenum name, gl::GLint value) const
 {
     gl::glTextureParameteri(texture->id(), name, value);

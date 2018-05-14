@@ -115,24 +115,22 @@ void Texture::unbind(const GLenum target)
 
 void Texture::bindActive(const GLenum texture) const
 {
-    glActiveTexture(texture);
-    glBindTexture(m_target, id());
+    bindActive(static_cast<unsigned int>(texture) - static_cast<unsigned int>(gl::GL_TEXTURE0));
 }
 
 void Texture::bindActive(unsigned int index) const
 {
-    bindActive(GL_TEXTURE0 + index);
+    bindlessImplementation().bindActive(this, index);
 }
 
 void Texture::unbindActive(const GLenum texture) const
 {
-    glActiveTexture(texture);
-    glBindTexture(m_target, 0);
+    unbindActive(static_cast<unsigned int>(texture) - static_cast<unsigned int>(gl::GL_TEXTURE0));
 }
 
 void Texture::unbindActive(unsigned int index) const
 {
-    unbindActive(GL_TEXTURE0 + index);
+    bindlessImplementation().unbindActive(this, index);
 }
 
 GLenum Texture::target() const
@@ -326,6 +324,26 @@ void Texture::storage3D(const GLsizei levels, const GLenum internalFormat, const
 void Texture::storage3D(const GLsizei levels, const GLenum internalFormat, const glm::ivec3 & size)
 {
     storage3D(levels, internalFormat, size.x, size.y, size.z);
+}
+
+void Texture::storage2DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLboolean fixedSamplesLocations)
+{
+    storageImplementation().storage2DMultisample(this, samples, internalFormat, width, height, fixedSamplesLocations);
+}
+
+void Texture::storage2DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec2 & size, GLboolean fixedSamplesLocations)
+{
+    storage2DMultisample(samples, internalFormat, size.x, size.y, fixedSamplesLocations);
+}
+
+void Texture::storage3DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedSamplesLocations)
+{
+    storageImplementation().storage3DMultisample(this, samples, internalFormat, width, height, depth, fixedSamplesLocations);
+}
+
+void Texture::storage3DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec3 & size, GLboolean fixedSamplesLocations)
+{
+    storage3DMultisample(samples, internalFormat, size.x, size.y, size.z, fixedSamplesLocations);
 }
 
 void Texture::textureView(const GLuint originalTexture, const GLenum internalFormat, const GLuint minLevel, const GLuint numLevels, const GLuint minLayer, const GLuint numLayers)
