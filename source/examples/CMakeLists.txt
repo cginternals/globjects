@@ -21,3 +21,4 @@ add_subdirectory("tessellation")
 add_subdirectory("transformfeedback")
 
 add_subdirectory("qtexample")
+add_subdirectory("qtexample-es")
