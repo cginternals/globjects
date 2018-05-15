@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 #include <unordered_map>
 
@@ -10,6 +11,7 @@ namespace globjects
 
 
 class NamedString;
+
 
 class NamedStringRegistry
 {
@@ -24,6 +26,8 @@ public:
     NamedString * namedString(const std::string & name);
 
     bool hasNativeSupport();
+
+
 protected:
     std::unordered_map<std::string, NamedString*> m_namedStrings;
 };

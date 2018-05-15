@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <map>
 #include <vector>
 #include <memory>
@@ -32,6 +33,7 @@ public:
     };
 
     static void hintAttributeImplementation(AttributeImplementation impl);
+
 
 public:
     VertexArray();
@@ -107,8 +109,10 @@ public:
 
     virtual gl::GLenum objectType() const override;
 
+
 protected:
     VertexArray(std::unique_ptr<IDResource> && resource);
+
 
 protected:
     std::map<gl::GLuint, std::unique_ptr<VertexAttributeBinding>> m_bindings;

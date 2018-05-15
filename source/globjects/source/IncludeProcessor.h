@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 #include <set>
 #include <vector>
@@ -21,6 +22,7 @@ public:
 
     static std::unique_ptr<AbstractStringSource> resolveIncludes(const AbstractStringSource* source, const std::vector<std::string>& includePaths);
 
+
 protected:
     IncludeProcessor();
 
@@ -31,6 +33,7 @@ protected:
 
     void parseInclude(std::string & trimmedLine, CompositeStringSource* compositeSource, std::stringstream & destinationstream);
     void processInclude(std::string & include, CompositeStringSource * compositeSource, std::stringstream & destinationstream);
+
 
 protected:
     std::set<std::string> m_includes;

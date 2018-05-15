@@ -10,6 +10,7 @@
 
 #include <globjects/globjects.h>
 
+
 using namespace gl;
 
 
@@ -20,7 +21,9 @@ namespace globjects
 void GL_APIENTRY DebugImplementation_DebugKHR::debugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char * message, const void * param)
 {
     if (!param)
+    {
         return;
+    }
 
     const DebugImplementation_DebugKHR * debugImplementation = reinterpret_cast<const DebugImplementation_DebugKHR*>(param);
 

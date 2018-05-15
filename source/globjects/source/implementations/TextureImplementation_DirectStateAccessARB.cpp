@@ -10,6 +10,7 @@
 #include "TextureImplementation_Legacy.h"
 #include "TextureImplementation_DirectStateAccessEXT.h"
 
+
 using namespace gl;
 
 
@@ -44,7 +45,7 @@ void TextureImplementation_DirectStateAccessARB::bindActive(const Texture * text
     gl::glBindTextureUnit(unit, texture->id());
 }
 
-void TextureImplementation_DirectStateAccessARB::unbindActive(const Texture * texture, gl::GLuint unit) const
+void TextureImplementation_DirectStateAccessARB::unbindActive(const Texture * /*texture*/, gl::GLuint unit) const
 {
     gl::glBindTextureUnit(unit, 0);
 }

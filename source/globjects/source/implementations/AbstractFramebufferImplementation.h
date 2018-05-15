@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include <globjects/Framebuffer.h>
@@ -13,6 +14,7 @@ namespace globjects
 class Framebuffer;
 class Texture;
 class Renderbuffer;
+
 
 class AbstractFramebufferImplementation
 {
@@ -46,6 +48,7 @@ public:
     virtual void readPixels(const Framebuffer * fbo, const gl::GLint x, const gl::GLint y, const gl::GLsizei width, const gl::GLsizei height, const gl::GLenum format, const gl::GLenum type, gl::GLvoid * data) const = 0;
 
     virtual void blit(const Framebuffer * sourceFbo, const Framebuffer * targetFbo, gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::ClearBufferMask mask, gl::GLenum filter) const = 0;
+
 
 public:
     static gl::GLenum s_workingTarget;

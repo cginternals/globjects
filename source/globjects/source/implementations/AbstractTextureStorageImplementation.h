@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include <globjects/Texture.h>

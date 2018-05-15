@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glm/fwd.hpp>
 
 #include <glbinding/gl/types.h>
@@ -18,9 +19,11 @@ namespace globjects
 class Buffer;
 class VertexArray;
 
+
 class GLOBJECTS_API VertexAttributeBinding : public Instantiator<VertexAttributeBinding>
 {
     friend class AbstractVertexAttributeBindingImplementation;
+
 
 public:
     VertexAttributeBinding(

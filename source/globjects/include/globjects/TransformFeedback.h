@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <vector>
 #include <array>
 
@@ -16,6 +17,7 @@ namespace globjects
 
 
 class Program;
+
 
 /** \brief Interface to use transform feedback.
     
@@ -85,6 +87,7 @@ public:
     static bool isTransformFeedback(gl::GLuint id);
 
     virtual gl::GLenum objectType() const override;
+
 
 protected:
     void bind(gl::GLenum target) const;

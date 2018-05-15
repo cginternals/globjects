@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <set>
 
 #include <globjects/globjects_api.h>
@@ -11,6 +12,7 @@ namespace globjects
 
 
 class ChangeListener;
+
 
 /** \brief Superclass of all objects that want others to signal that they have changed.
     

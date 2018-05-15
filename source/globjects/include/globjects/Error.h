@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 
 #include <glbinding/gl/types.h>
@@ -32,6 +33,7 @@ public:
 
     bool isError() const;
     operator bool() const;
+
 
 protected:
     gl::GLenum m_errorCode;

@@ -22,6 +22,7 @@
 
 #include <globjects/Resource.h>
 
+
 using namespace gl;
 
 
@@ -132,7 +133,9 @@ bool Framebuffer::detach(const GLenum attachment)
     FramebufferAttachment * attachmentObject = getAttachment(attachment);
 
     if (!attachmentObject)
+    {
         return false;
+    }
 
     if (attachmentObject->isTextureAttachment())
     {
@@ -338,15 +341,15 @@ void Framebuffer::printStatus(bool onlyErrors) const
     if (status == GL_FRAMEBUFFER_COMPLETE)
     {
         info() << glbinding::aux::Meta::getString(GL_FRAMEBUFFER_COMPLETE);
-    }
-    else
-    {
-        std::stringstream ss;
-        ss.flags(std::ios::hex | std::ios::showbase);
-        ss << static_cast<unsigned int>(status);
 
-        critical() << glbinding::aux::Meta::getString(status) << " (" << ss.str() << ")";
+        return;
     }
+
+    std::stringstream ss;
+    ss.flags(std::ios::hex | std::ios::showbase);
+    ss << static_cast<unsigned int>(status);
+
+    critical() << glbinding::aux::Meta::getString(status) << " (" << ss.str() << ")";
 }
 
 void Framebuffer::addAttachment(std::unique_ptr<FramebufferAttachment> && attachment)

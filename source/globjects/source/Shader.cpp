@@ -18,6 +18,7 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractShadingLanguageIncludeImplementation.h"
 
+
 using namespace gl;
 
 
@@ -120,15 +121,21 @@ GLenum Shader::type() const
 void Shader::setSource(AbstractStringSource * source)
 {
     if (source == m_source)
+    {
         return;
+    }
 
     if (m_source)
+    {
         m_source->deregisterListener(this);
+    }
 
     m_source = source;
 
     if (m_source)
+    {
         m_source->registerListener(this);
+    }
 
     updateSource();
 }
@@ -153,7 +160,9 @@ void Shader::updateSource()
 bool Shader::compile() const
 {
     if (m_compilationFailed)
+    {
         return false;
+    }
 
     shadingLanguageIncludeImplementation().compile(this);
 
@@ -243,7 +252,9 @@ std::string Shader::shaderString() const
 
     std::string shortInfo = m_source->shortInfo();
     if (shortInfo.size() > 0)
+    {
         ss << ", " << shortInfo;
+    }
 
     ss << ")";
 

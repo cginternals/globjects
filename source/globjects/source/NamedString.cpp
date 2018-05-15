@@ -10,6 +10,7 @@
 
 #include "registry/NamedStringRegistry.h"
 
+
 using namespace gl;
 
 
@@ -44,7 +45,9 @@ NamedString::~NamedString()
 void NamedString::createNamedString()
 {
     if (!hasNativeSupport())
+    {
         return;
+    }
 
     std::string str = string();
 
@@ -54,7 +57,9 @@ void NamedString::createNamedString()
 void NamedString::deleteNamedString()
 {
     if (!hasNativeSupport())
+    {
         return;
+    }
 
     glDeleteNamedStringARB(static_cast<GLint>(m_name.size()), m_name.c_str());
 }

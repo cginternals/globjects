@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glm/fwd.hpp>
 
 #include <glbinding/gl/types.h>
@@ -14,6 +15,7 @@ namespace globjects
 
 class Texture;
 class Sampler;
+
 
 class GLOBJECTS_API TextureHandle
 {
@@ -33,7 +35,8 @@ public:
     glm::uvec2 asUVec2() const;
     operator glm::uvec2() const;
 
-private:
+
+protected:
     gl::GLuint64 m_handle;
 };
 

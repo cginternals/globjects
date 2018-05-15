@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <memory>
 
 #include <glbinding/gl/types.h>
@@ -18,6 +19,7 @@ class GLOBJECTS_API Sync : public Instantiator<Sync>
 {
     friend class AbstractObjectNameImplementation;
 
+
 public:
     static std::unique_ptr<Sync> fence(gl::GLenum condition);
 
@@ -32,11 +34,13 @@ public:
 
     gl::GLsync sync() const;
 
+
 protected:
     void wait(gl::UnusedMask flags, gl::GLuint64 timeout);
 
     static gl::GLsync fenceSync(gl::GLenum condition, gl::UnusedMask flags);
     static std::unique_ptr<Sync> fence(gl::GLenum condition, gl::UnusedMask flags);
+
 
 protected:
     gl::GLsync m_sync;

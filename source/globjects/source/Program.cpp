@@ -22,6 +22,7 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractProgramBinaryImplementation.h"
 
+
 using namespace gl;
 
 
@@ -63,12 +64,14 @@ Program::Program(std::unique_ptr<ProgramBinary> && binary)
 
 Program::~Program()
 {
-    if (id() != 0)
+    if (id() == 0)
     {
-        while (!m_shaders.empty())
-        {
-            detach(*m_shaders.begin());
-        }
+        return;
+    }
+
+    while (!m_shaders.empty())
+    {
+        detach(*m_shaders.begin());
     }
 }
 
@@ -177,15 +180,20 @@ bool Program::compileAttachedShaders() const
     for (Shader * shader : m_shaders)
     {
         if (shader->isCompiled())
+        {
             continue;
+        }
 
         // Some drivers (e.g. nvidia-331 on Ubuntu 13.04 automatically compile shaders during program linkage)
         // but we don't want to depend on such behavior
         shader->compile();
 
         if (!shader->isCompiled())
+        {
             return false;
+        }
     }
+
     return true;
 }
 
@@ -196,6 +204,7 @@ bool Program::checkLinkStatus() const
         critical() << "Linker error:" << std::endl << infoLog();
         return false;
     }
+
     return true;
 }
 
@@ -222,8 +231,11 @@ GLint Program::getFragDataIndex(const std::string & name) const
 GLint Program::getUniformLocation(const std::string& name) const
 {
     checkDirty();
+
     if (!m_linked)
+    {
         return -1;
+    }
 
     return glGetUniformLocation(id(), name.c_str());
 }
@@ -257,8 +269,11 @@ std::vector<GLint> Program::getUniformLocations(const std::vector<std::string> &
 GLint Program::getAttributeLocation(const std::string & name) const
 {
     checkDirty();
+
     if (!m_linked)
+    {
         return -1;
+    }
 
     return glGetAttribLocation(id(), name.c_str());
 }
@@ -443,21 +458,29 @@ void Program::updateUniforms() const
 void Program::updateUniformBlockBindings() const
 {
     for (const auto & pair : m_uniformBlocks)
+    {
         pair.second.updateBinding();
+    }
 }
 
 void Program::setBinary(std::unique_ptr<ProgramBinary> && binary)
 {
     if (m_binary == binary)
+    {
         return;
+    }
 
     if (m_binary)
+    {
         m_binary->deregisterListener(this);
+    }
 
     m_binary = std::move(binary);
 
     if (m_binary)
+    {
         m_binary->registerListener(this);
+    }
 }
 
 ProgramBinary * Program::binary() const
@@ -490,7 +513,9 @@ std::string Program::infoLog() const
     GLint length = get(GL_INFO_LOG_LENGTH);
 
     if (length == 0)
+    {
         return std::string();
+    }
 
     std::vector<char> log(length);
 
@@ -509,7 +534,9 @@ void Program::dispatchCompute(const GLuint numGroupsX, const GLuint numGroupsY, 
     use();
 
     if (!m_linked)
+    {
         return;
+    }
 
     glDispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
 }
@@ -519,7 +546,9 @@ void Program::dispatchComputeGroupSize(const GLuint numGroupsX, const GLuint num
     use();
 
     if (!m_linked)
+    {
         return;
+    }
 
     glDispatchComputeGroupSizeARB(numGroupsX, numGroupsY, numGroupsZ, groupSizeX, groupSizeY, groupSizeZ);
 }
@@ -532,8 +561,11 @@ void Program::dispatchComputeGroupSize(const glm::uvec3 & numGroups, const glm::
 void Program::setShaderStorageBlockBinding(const GLuint storageBlockIndex, const GLuint storageBlockBinding) const
 {
     checkDirty();
+
     if (!m_linked)
+    {
         return;
+    }
 
     glShaderStorageBlockBinding(id(), storageBlockIndex, storageBlockBinding);
 }

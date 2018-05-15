@@ -74,9 +74,8 @@ bool Registry::isCurrentContext(glbinding::ContextHandle contextId)
     std::lock_guard<std::recursive_mutex> lock(g_mutex);
 
     const auto it = s_registries.find(contextId);
-    const auto result = it != s_registries.end() && it->second == t_currentRegistry;
 
-    return result;
+    return it != s_registries.end() && it->second == t_currentRegistry;
 }
 
 void Registry::deregisterContext(const glbinding::ContextHandle contextId)

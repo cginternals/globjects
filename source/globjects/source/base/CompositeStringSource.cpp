@@ -18,7 +18,9 @@ CompositeStringSource::CompositeStringSource(const std::vector<AbstractStringSou
 : m_dirty(true)
 {
     for (AbstractStringSource * source : sources)
+    {
         m_sources.push_back(source);
+    }
 }
 
 CompositeStringSource::~CompositeStringSource()
@@ -59,7 +61,9 @@ std::string CompositeStringSource::string() const
 std::vector<std::string> CompositeStringSource::strings() const
 {
     if (m_dirty)
+    {
         update();
+    }
 
     return m_strings;
 }

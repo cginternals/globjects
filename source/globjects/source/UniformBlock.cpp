@@ -7,6 +7,7 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 
+
 using namespace gl;
 
 
@@ -55,8 +56,8 @@ void UniformBlock::updateBinding() const
     m_program->checkDirty();
 
     glUniformBlockBinding(m_program->id(), blockIndex(), m_bindingIndex);
-
 }
+
 void UniformBlock::getActive(const GLenum pname, GLint * params) const
 {
     m_program->checkDirty();
@@ -80,7 +81,8 @@ std::vector<GLint> UniformBlock::getActive(const GLenum pname, const GLint param
 
 std::vector<GLint> UniformBlock::getActiveUniformIndices() const
 {
-    return getActive(GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, getActive(GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS));}
+    return getActive(GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, getActive(GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS));
+}
 
 std::string UniformBlock::getName() const
 {

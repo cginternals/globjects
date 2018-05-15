@@ -7,6 +7,7 @@
 
 #include <globjects/Resource.h>
 
+
 using namespace gl;
 
 
@@ -26,11 +27,11 @@ globjects::AbstractObjectNameImplementation & nameImplementation()
 namespace globjects
 {
 
+
 void Object::hintNameImplementation(const NameImplementation impl)
 {
     ImplementationRegistry::current().initialize(impl);
 }
-
 
 Object::Object(std::unique_ptr<IDResource> && resource)
     : m_resource(std::move(resource))

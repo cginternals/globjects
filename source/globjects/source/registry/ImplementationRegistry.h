@@ -27,6 +27,7 @@ class AbstractVertexAttributeBindingImplementation;
 class AbstractTextureImplementation;
 class AbstractTextureStorageImplementation;
 
+
 class ImplementationRegistry
 {
 public:
@@ -58,6 +59,7 @@ public:
     AbstractVertexAttributeBindingImplementation & attributeImplementation();
     AbstractTextureImplementation & textureBindlessImplementation();
     AbstractTextureStorageImplementation & textureStorageImplementation();
+
 
 protected:
     AbstractUniformImplementation * m_uniformImplementation;

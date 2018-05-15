@@ -9,6 +9,7 @@
 
 #include <globjects/Resource.h>
 
+
 using namespace gl;
 
 
@@ -22,7 +23,7 @@ Query::Query()
 }
 
 Query::Query(std::unique_ptr<IDResource> && resource)
-    : Object(std::move(resource))
+: Object(std::move(resource))
 {
 }
 

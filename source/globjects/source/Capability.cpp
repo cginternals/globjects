@@ -6,6 +6,7 @@
 #include <globjects/State.h>
 #include <globjects/globjects.h>
 
+
 using namespace gl;
 
 
@@ -65,13 +66,13 @@ void Capability::apply()
     if (m_indexEnabled.empty())
     {
         setEnabled(m_capability, m_enabled);
+
+        return;
     }
-    else
+
+    for (const std::pair<int, bool>& pair : m_indexEnabled)
     {
-        for (const std::pair<int, bool>& pair : m_indexEnabled)
-        {
-            setEnabled(m_capability, pair.first, pair.second);
-        }
+        setEnabled(m_capability, pair.first, pair.second);
     }
 }
 

@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <globjects/globjects_api.h>
 
 
@@ -20,6 +21,7 @@ class Shader;
 class Texture;
 class TransformFeedback;
 class VertexArray;
+
 
 /** \brief Implements a Visitor Pattern to iterate over all tracked globjects objects.
  

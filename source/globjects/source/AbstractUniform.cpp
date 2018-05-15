@@ -10,6 +10,7 @@
 
 #include "implementations/AbstractUniformImplementation.h"
 
+
 using namespace gl;
 
 
@@ -22,16 +23,18 @@ const globjects::AbstractUniformImplementation & implementation()
     return globjects::ImplementationRegistry::current().uniformImplementation();
 }
 
-}
+
+} // namespace
+
 
 namespace globjects
 {
+
 
 void AbstractUniform::hintBindlessImplementation(BindlessImplementation impl)
 {
     ImplementationRegistry::current().initialize(impl);
 }
-
 
 AbstractUniform::AbstractUniform(const Program * program, const GLint location, const UniformType type)
 : m_identity(location)

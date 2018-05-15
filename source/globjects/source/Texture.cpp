@@ -18,6 +18,7 @@
 #include "implementations/AbstractTextureImplementation.h"
 #include "implementations/AbstractTextureStorageImplementation.h"
 
+
 using namespace gl;
 
 
@@ -74,7 +75,6 @@ std::unique_ptr<Texture> Texture::fromId(const GLuint id, const GLenum target)
 {
     return std::unique_ptr<Texture>(new Texture(std::unique_ptr<IDResource>(new ExternalResource(id)), target));
 }
-
 
 Texture::~Texture()
 {

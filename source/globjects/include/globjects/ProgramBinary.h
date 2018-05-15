@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <vector>
 
 #include <glbinding/gl/types.h>
@@ -11,11 +12,13 @@
 #include <globjects/base/Changeable.h>
 #include <globjects/base/Instantiator.h>
 
+
 namespace globjects
 {
 
 
 class AbstractStringSource;
+
 
 /**
  * \brief The ProgramBinary class is used for directly setting binary sources for a Program.

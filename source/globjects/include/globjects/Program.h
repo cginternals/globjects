@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <set>
 #include <unordered_map>
 #include <vector>
@@ -29,6 +30,7 @@ class Shader;
 
 template <typename T>
 class Uniform;
+
 
 /** \brief Wraps an OpenGL program.
     
@@ -84,6 +86,7 @@ class GLOBJECTS_API Program : public Object, protected ChangeListener, public Ch
     friend class ProgramBinaryImplementation_GetProgramBinaryARB;
     friend class ProgramBinaryImplementation_None;
 
+
 public:
     enum class BinaryImplementation
     {
@@ -92,6 +95,7 @@ public:
     };
 
     static void hintBinaryImplementation(BinaryImplementation impl);
+
 
 public:
     Program();
@@ -202,6 +206,7 @@ public:
 
     virtual gl::GLenum objectType() const override;
 
+
 protected:
     bool checkLinkStatus() const;
     void checkDirty() const;
@@ -216,6 +221,7 @@ protected:
 
     virtual void notifyChanged(const Changeable * sender) override;
 
+
 protected:
     static gl::GLuint createProgram();
 
@@ -228,6 +234,7 @@ protected:
 
     UniformBlock * getUniformBlockByIdentity(const LocationIdentity & identity);
     const UniformBlock * getUniformBlockByIdentity(const LocationIdentity & identity) const;
+
 
 protected:
     std::set<Shader *> m_shaders;

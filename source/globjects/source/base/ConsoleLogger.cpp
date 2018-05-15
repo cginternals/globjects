@@ -14,9 +14,13 @@ namespace globjects
 void ConsoleLogger::handle(const LogMessage& message)
 {
     if (LogMessageLevel::Info > message.level())
+    {
         std::cerr << levelString(message.level()) << message.message() << std::endl;
+    }
     else
+    {
         std::cout << levelString(message.level()) << message.message() << std::endl;
+    }
 }
 
 std::string ConsoleLogger::levelString(const LogMessageLevel level)

@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include "../base/Singleton.h"
@@ -23,6 +24,7 @@ public:
     virtual void setSynchronous(bool synchronous) override;
     virtual void insertMessage(const DebugMessage & message) override;
     virtual void controlMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids, gl::GLboolean enabled) override;
+
 
 protected:
     bool m_isRegistered;

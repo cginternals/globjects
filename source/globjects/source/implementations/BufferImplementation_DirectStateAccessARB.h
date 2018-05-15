@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include "../base/Singleton.h"
 
 #include "AbstractBufferImplementation.h"
@@ -11,6 +12,7 @@ namespace globjects
 
 
 class Buffer;
+
 
 class BufferImplementation_DirectStateAccessARB : public AbstractBufferImplementation
     , public Singleton<BufferImplementation_DirectStateAccessARB>

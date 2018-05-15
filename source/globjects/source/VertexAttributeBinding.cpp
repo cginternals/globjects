@@ -17,6 +17,7 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
+
 using namespace gl;
 
 
@@ -24,9 +25,9 @@ namespace
 {
 
 
-globjects::AbstractVertexAttributeBindingImplementation & attributeImplementation()
+inline globjects::AbstractVertexAttributeBindingImplementation & attributeImplementation()
 {
-return globjects::ImplementationRegistry::current().attributeImplementation();
+    return globjects::ImplementationRegistry::current().attributeImplementation();
 }
 
 

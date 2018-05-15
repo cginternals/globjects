@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <array>
 #include <memory>
 
@@ -14,6 +15,7 @@ namespace globjects
 
 
 class StateSetting;
+
 
 class GLOBJECTS_API AbstractState
 {

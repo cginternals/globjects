@@ -1,12 +1,14 @@
 
 #include "ExtensionRegistry.h"
-#include "Registry.h"
 
 #include <glbinding-aux/Meta.h>
 #include <glbinding-aux/ContextInfo.h>
 #include <glbinding/Version.h>
 
 #include <globjects/globjects.h>
+
+#include "Registry.h"
+
 
 using namespace gl;
 
@@ -21,7 +23,7 @@ glbinding::Version getCoreVersion(GLextension extension)
 }
 
 
-}
+} // namespace
 
 
 namespace globjects 
@@ -38,7 +40,6 @@ ExtensionRegistry & ExtensionRegistry::current()
     return Registry::current().extensions();
 }
 
-
 std::set<GLextension>::iterator ExtensionRegistry::begin()
 {
     return availableExtensions().begin();
@@ -52,19 +53,23 @@ std::set<GLextension>::iterator ExtensionRegistry::end()
 const std::set<GLextension> & ExtensionRegistry::availableExtensions()
 {
     initialize();
+
     return m_availableExtensions;
 }
 
 const std::set<std::string> & ExtensionRegistry::unknownAvailableExtensions()
 {
     initialize();
+
     return m_unknownAvailableExtensions;
 }
 
 void ExtensionRegistry::initialize()
 {
     if (m_initialized)
+    {
         return;
+    }
 
     m_availableExtensions = glbinding::aux::ContextInfo::extensions(m_unknownAvailableExtensions);
 
@@ -76,7 +81,9 @@ bool ExtensionRegistry::hasExtension(GLextension extension)
     initialize();
 
     if (isInCoreProfile(extension))
+    {
         return true;
+    }
 
     return m_availableExtensions.find(extension) != m_availableExtensions.end();
 }
@@ -102,7 +109,9 @@ bool ExtensionRegistry::isInCoreProfile(GLextension extension, const glbinding::
     glbinding::Version coreVersion = getCoreVersion(extension);
 
     if (coreVersion.isNull())
+    {
         return false;
+    }
 
     return coreVersion <= version;
 }

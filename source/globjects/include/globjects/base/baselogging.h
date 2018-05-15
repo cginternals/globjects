@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <globjects/globjects_api.h>
 
 #include <globjects/base/LogMessage.h>
@@ -12,6 +13,7 @@ namespace globjects
 
 
 class AbstractLogHandler;
+
 
 /**
   * Creates a stream like object (LogMessageBuilder) to create a LogMessage from the objects

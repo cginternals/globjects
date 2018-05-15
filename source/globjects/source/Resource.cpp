@@ -9,6 +9,7 @@
 #include "implementations/AbstractFramebufferImplementation.h"
 #include "implementations/AbstractTextureImplementation.h"
 
+
 using namespace gl;
 
 
@@ -27,10 +28,12 @@ GLuint createObject(CreateObjectsFunction function)
 template <typename DeleteObjectsFunction>
 void deleteObject(DeleteObjectsFunction function, const GLuint id, const bool hasOwnership)
 {
-    if (hasOwnership)
+    if (!hasOwnership)
     {
-        function(1, &id);
+        return;
     }
+
+    function(1, &id);
 }
 
 }
@@ -200,7 +203,9 @@ TextureResource::TextureResource(GLenum target)
 TextureResource::~TextureResource()
 {
     if (hasOwnership())
+    {
         ImplementationRegistry::current().textureBindlessImplementation().destroy(id());
+    }
 }
 
 

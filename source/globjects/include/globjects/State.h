@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <unordered_map>
 #include <vector>
 
@@ -18,6 +19,7 @@ namespace globjects
 class StateSetting;
 class Capability;
 
+
 class GLOBJECTS_API State : public AbstractState, public Instantiator<State>
 {
 public:
@@ -26,6 +28,7 @@ public:
         DeferredMode,
         ImmediateMode
     };
+
 
 public:
     State(Mode = ImmediateMode);
@@ -60,10 +63,12 @@ public:
     std::vector<StateSetting *> settings();
     std::vector<const StateSetting *> settings() const;
 
+
 protected:
     void addCapability(std::unique_ptr<Capability> && capability);
     Capability * getCapability(gl::GLenum capability);
     const Capability * getCapability(gl::GLenum capability) const;
+
 
 protected:
     Mode m_mode;

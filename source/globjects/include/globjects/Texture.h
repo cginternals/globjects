@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include <vector>
@@ -19,6 +20,7 @@ namespace globjects
 class Buffer;
 class TextureHandle;
 class Sampler;
+
 
 /** \brief Wraps OpenGL texture objects.
  * A Texture provides both interfaces to bind them for the OpenGL pipeline:
@@ -156,8 +158,10 @@ public:
 
     virtual gl::GLenum objectType() const override;
 
+
 protected:
     Texture(std::unique_ptr<IDResource> && resource, gl::GLenum target);
+
 
 protected:
     gl::GLenum m_target;

@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 #include <functional>
 
@@ -33,6 +34,7 @@ public:
 
     std::size_t hash() const;
 
+
 protected:
     bool m_invalid;
 
@@ -42,11 +44,13 @@ protected:
     bool m_hasName;
 };
 
+
 } // namespace globjects
 
 
 namespace std 
 {
+
 
 template <>
 struct hash<globjects::LocationIdentity>

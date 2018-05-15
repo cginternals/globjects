@@ -15,6 +15,7 @@
 
 #include "implementations/BufferImplementation_Legacy.h"
 
+
 using namespace gl;
 
 
@@ -44,7 +45,6 @@ void Buffer::setWorkingTarget(GLenum target)
 {
     BufferImplementation_Legacy::s_workingTarget = target;
 }
-
 
 Buffer::Buffer()
 : Buffer(std::unique_ptr<IDResource>(new BufferResource))

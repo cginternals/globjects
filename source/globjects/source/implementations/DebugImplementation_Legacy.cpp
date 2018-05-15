@@ -3,6 +3,7 @@
 
 #include <glbinding/glbinding.h>
 
+
 using namespace gl;
 
 
@@ -43,8 +44,10 @@ void DebugImplementation_Legacy::insertMessage(const DebugMessage & message)
 {
     if (m_enabled)
     {
-        handleMessage(message);
+        return;
     }
+
+    handleMessage(message);
 }
 
 void DebugImplementation_Legacy::controlMessages(GLenum , GLenum , GLenum , GLsizei , const GLuint *, GLboolean )

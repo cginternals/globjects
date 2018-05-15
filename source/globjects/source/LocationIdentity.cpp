@@ -1,6 +1,7 @@
 
 #include <globjects/LocationIdentity.h>
 
+
 using namespace gl;
 
 
@@ -53,16 +54,24 @@ const std::string & LocationIdentity::name() const
 bool LocationIdentity::operator==(const LocationIdentity & identity) const
 {
     if (m_invalid)
+    {
         return identity.m_invalid;
+    }
 
     if (identity.m_invalid)
+    {
         return false;
+    }
 
     if (m_hasName != identity.m_hasName)
+    {
         return false;
+    }
 
     if (m_hasName)
+    {
         return m_name == identity.m_name;
+    }
 
     return m_location == identity.m_location;
 }
@@ -75,13 +84,19 @@ bool LocationIdentity::operator!=(const LocationIdentity & identity) const
 bool LocationIdentity::operator<(const LocationIdentity & identity) const
 {
     if (m_invalid || identity.m_invalid)
+    {
         return false;
+    }
 
     if (m_hasName != identity.m_hasName)
+    {
         return !m_hasName; // locations before names
+    }
 
     if (m_hasName)
+    {
         return m_name < identity.m_name;
+    }
 
     return m_location < identity.m_location;
 }

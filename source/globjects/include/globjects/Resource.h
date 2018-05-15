@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include <globjects/globjects_api.h>
@@ -18,6 +19,7 @@ public:
 
     bool hasOwnership() const;
 
+
 protected:
     bool m_hasOwnership;
 };
@@ -31,6 +33,7 @@ public:
 
     gl::GLuint id() const;
 
+
 protected:
     gl::GLuint m_id;
 };
@@ -40,6 +43,7 @@ class GLOBJECTS_API IDResource : public AbstractResource, public IDTrait
 {
 public:
     IDResource(gl::GLuint id);
+
 
 protected:
     IDResource(gl::GLuint id, bool hasOwnership);

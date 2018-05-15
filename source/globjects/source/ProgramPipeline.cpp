@@ -26,12 +26,16 @@ ProgramPipeline::~ProgramPipeline()
     if (0 == id())
     {
         for (auto & program : m_programs)
+        {
             program->deregisterListener(this);
+        }
     }
     else
     {
         for (auto program : std::set<Program *>(m_programs))
+        {
             releaseProgram(program);
+        }
     }
 }
 
@@ -139,7 +143,9 @@ std::string ProgramPipeline::infoLog() const
     gl::GLint length = get(gl::GL_INFO_LOG_LENGTH);
 
     if (length == 0)
+    {
         return std::string();
+    }
 
     std::vector<char> log(length);
 

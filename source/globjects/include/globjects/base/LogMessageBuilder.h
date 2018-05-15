@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <iosfwd>
 #include <string>
 #include <vector>
@@ -17,6 +18,7 @@ namespace globjects
 
 
 class AbstractLogHandler;
+
 
 /** \brief Builds a LogMessage from different kinds of primitive types.
 
@@ -74,6 +76,7 @@ public:
     LogMessageBuilder & operator<<(std::ostream & (*manipulator)(std::ostream&));
     LogMessageBuilder & operator<<(PrecisionManipulator manipulator);
     LogMessageBuilder & operator<<(FillManipulator manipulator);
+
 #ifndef _MSC_VER
     // in Windows PrecisionManipulator = WidthManipulator
     LogMessageBuilder & operator<<(WidthManipulator manipulator);

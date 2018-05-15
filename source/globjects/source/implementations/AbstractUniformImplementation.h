@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -14,6 +15,7 @@ namespace globjects
 
 
 class Program;
+
 
 class AbstractUniformImplementation
 {

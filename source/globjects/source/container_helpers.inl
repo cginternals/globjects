@@ -2,6 +2,10 @@
 #pragma once
 
 
+namespace globjects
+{
+
+
 template <typename T, class InputIterator, class Function>
 std::vector<T> collect(InputIterator first, InputIterator last, Function mapper)
 {
@@ -32,3 +36,6 @@ std::vector<ReturnType> collect_type_member(Container container, MemberType Clas
 {
     return collect<ReturnType>(container, [memberPointer](const Class & object) { return static_cast<ReturnType>(object.*memberPointer); });
 }
+
+
+} // namespace globjects

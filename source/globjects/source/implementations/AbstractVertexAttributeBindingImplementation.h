@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include <globjects/globjects_api.h>
@@ -15,6 +16,7 @@ namespace globjects
 class VertexArray;
 class VertexAttributeBinding;
 class Buffer;
+
 
 class AbstractVertexAttributeBindingImplementation
 {
@@ -38,6 +40,8 @@ public:
     virtual void setFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLboolean normalized, gl::GLuint relativeoffset) const = 0;
     virtual void setIFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset) const = 0;
     virtual void setLFormat(const VertexAttributeBinding * binding, gl::GLint size, gl::GLenum type, gl::GLuint relativeoffset) const = 0;
+
+
 protected:
     gl::GLint attributeIndex(const VertexAttributeBinding * binding) const;
     gl::GLint bindingIndex(const VertexAttributeBinding * binding) const;

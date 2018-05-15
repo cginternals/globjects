@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 #include <set>
 #include <vector>
@@ -23,6 +24,7 @@ class Program;
 template<typename T> class Uniform;
 enum class UniformType : unsigned char;
 
+
 /** \brief Abstract base class for templated Uniforms.
  *
  * Unifies the specialized Uniforms in order to be able to store them in a list or a vector.
@@ -34,6 +36,7 @@ class GLOBJECTS_API AbstractUniform
 {
     friend class Program; ///< Programs (de)register themselves.
 
+
 public:
     enum BindlessImplementation
     {
@@ -42,6 +45,7 @@ public:
     };
 
     static void hintBindlessImplementation(const BindlessImplementation impl);
+
 
 public:
     AbstractUniform(const Program * program, gl::GLint location, UniformType type);
@@ -54,6 +58,7 @@ public:
     const LocationIdentity & identity() const;
 
     UniformType type() const;
+
 
 protected:
     /** Iterates over all programs attached to and calls update.
@@ -68,6 +73,7 @@ protected:
     /** This function requires knowledge of the unifom's value.
     */
     virtual void updateAt(gl::GLint location) const = 0;
+
 
 protected:
     void setValue(gl::GLint location, const float & value) const;
@@ -134,6 +140,7 @@ protected:
 
     template <typename T, std::size_t Count>
     void setValue(gl::GLint location, const std::array<T, Count> & value) const;
+
 
 protected:
     LocationIdentity m_identity;

@@ -36,6 +36,7 @@ struct ApplyHelper
     }
 };
 
+
 template<>
 struct ApplyHelper<0>
 {
@@ -50,6 +51,7 @@ struct ApplyHelper<0>
         );
     }
 };
+
 
 template<typename F, typename T>
 inline auto apply(F && f, T && t)

@@ -10,6 +10,7 @@
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
 
+
 using namespace gl;
 
 
@@ -96,7 +97,9 @@ VertexAttributeBindingImplementation_Legacy::BindingData * & VertexAttributeBind
 void VertexAttributeBindingImplementation_Legacy::bindAttribute(const VertexAttributeBinding * binding, GLint /*attributeIndex*/) const
 {
     if (bindingData(binding) == nullptr)
+    {
         bindingData(binding) = new BindingData();
+    }
 
     bindingData(binding)->hasAttribute = true;
     finishIfComplete(binding);
@@ -105,7 +108,9 @@ void VertexAttributeBindingImplementation_Legacy::bindAttribute(const VertexAttr
 void VertexAttributeBindingImplementation_Legacy::bindBuffer(const VertexAttributeBinding * binding, const Buffer * /*vbo*/, GLint baseoffset, GLint stride) const
 {
     if (bindingData(binding) == nullptr)
+    {
         bindingData(binding) = new BindingData();
+    }
 
     bindingData(binding)->baseoffset = baseoffset;
     bindingData(binding)->stride = stride;
@@ -117,7 +122,9 @@ void VertexAttributeBindingImplementation_Legacy::bindBuffer(const VertexAttribu
 void VertexAttributeBindingImplementation_Legacy::setFormat(const VertexAttributeBinding * binding, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset) const
 {
     if (bindingData(binding) == nullptr)
+    {
         bindingData(binding) = new BindingData();
+    }
 
     bindingData(binding)->format = Format(Format::Method::O, size, type, normalized, relativeoffset);
     bindingData(binding)->hasFormat = true;
@@ -128,7 +135,9 @@ void VertexAttributeBindingImplementation_Legacy::setFormat(const VertexAttribut
 void VertexAttributeBindingImplementation_Legacy::setIFormat(const VertexAttributeBinding * binding, GLint size, GLenum type, GLuint relativeoffset) const
 {
     if (bindingData(binding) == nullptr)
+    {
         bindingData(binding) = new BindingData();
+    }
 
     bindingData(binding)->format = Format(Format::Method::I, size, type, GL_FALSE, relativeoffset);
     bindingData(binding)->hasFormat = true;
@@ -139,7 +148,9 @@ void VertexAttributeBindingImplementation_Legacy::setIFormat(const VertexAttribu
 void VertexAttributeBindingImplementation_Legacy::setLFormat(const VertexAttributeBinding * binding, GLint size, GLenum type, GLuint relativeoffset) const
 {
     if (bindingData(binding) == nullptr)
+    {
         bindingData(binding) = new BindingData();
+    }
 
     bindingData(binding)->format = Format(Format::Method::L, size, type, GL_FALSE, relativeoffset);
     bindingData(binding)->hasFormat = true;
@@ -150,7 +161,9 @@ void VertexAttributeBindingImplementation_Legacy::setLFormat(const VertexAttribu
 void VertexAttributeBindingImplementation_Legacy::finishIfComplete(const VertexAttributeBinding * binding) const
 {
     if (bindingData(binding) == nullptr)
+    {
         bindingData(binding) = new BindingData();
+    }
 
     if (bindingData(binding)->hasAttribute && bindingData(binding)->hasFormat && bindingData(binding)->hasBuffer)
         finish(binding);

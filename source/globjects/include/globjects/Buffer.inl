@@ -5,6 +5,7 @@
 namespace globjects
 {
 
+
 template <typename T>
 void Buffer::setData(const T & data, gl::GLenum usage)
 {

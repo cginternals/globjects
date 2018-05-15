@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 #include <vector>
 
@@ -14,6 +15,7 @@ namespace globjects
 
 
 class CompositeStringSource;
+
 
 /** \brief Superclass for all types of static and dynamic strings, e.g. for the use as Shader code.
  *

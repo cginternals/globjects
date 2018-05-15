@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <map>
 #include <string>
 #include <vector>
@@ -22,6 +23,7 @@ class FramebufferAttachment;
 class Renderbuffer;
 class Texture;
 class Buffer;
+
 
 /** \brief Enables creation of arbitrary render targets that are not directly drawn on the screen.
     
@@ -54,6 +56,7 @@ public:
     };
 
     static void hintBindlessImplementation(BindlessImplementation impl);
+
 
 public:
     Framebuffer();
@@ -130,10 +133,12 @@ public:
 
     virtual gl::GLenum objectType() const override;
 
+
 protected:
     Framebuffer(std::unique_ptr<IDResource> && resource);
 
     void addAttachment(std::unique_ptr<FramebufferAttachment> && attachment);
+
 
 protected:
     std::map<gl::GLenum, std::unique_ptr<FramebufferAttachment>> m_attachments;

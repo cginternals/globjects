@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 #include <vector>
 
@@ -24,6 +25,7 @@ public:
 
     static void hintImplementation(Implementation impl);
 
+
 public:
     using Callback = std::function<void(const DebugMessage &)>;
 
@@ -37,6 +39,7 @@ public:
 
     virtual std::string toString() const;
 
+
 protected:
     gl::GLenum m_source;
     gl::GLenum m_type;
@@ -47,6 +50,7 @@ protected:
     std::string severityString() const;
     std::string sourceString() const;
     std::string typeString() const;
+
 
 public:
     static void enable(bool synchronous = true);

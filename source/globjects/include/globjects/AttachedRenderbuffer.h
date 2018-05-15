@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include <globjects/globjects_api.h>
@@ -32,6 +33,7 @@ public:
 
     Renderbuffer * renderBuffer();
     const Renderbuffer * renderBuffer() const;
+
 
 protected:
     Renderbuffer * m_renderBuffer;

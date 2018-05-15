@@ -1,11 +1,13 @@
 
 #pragma once
 
+
 #include <globjects/globjects_api.h>
 
 
 namespace globjects
 {
+
 
 /**
 * @brief

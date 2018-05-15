@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include "../base/Singleton.h"
 
 #include "AbstractTextureStorageImplementation.h"

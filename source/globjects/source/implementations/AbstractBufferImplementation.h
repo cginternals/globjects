@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include <globjects/Buffer.h>
@@ -11,6 +12,7 @@ namespace globjects
 
 
 class Buffer;
+
 
 class AbstractBufferImplementation
 {

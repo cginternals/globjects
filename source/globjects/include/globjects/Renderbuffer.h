@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include <globjects/globjects_api.h>
@@ -34,6 +35,7 @@ public:
     gl::GLint getParameter(gl::GLenum pname) const;
 
     virtual gl::GLenum objectType() const override;
+
 
 protected:
     void bind(gl::GLenum target) const;

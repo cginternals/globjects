@@ -7,6 +7,7 @@
 
 #include <globjects/globjects.h>
 
+
 using namespace gl;
 
 
@@ -36,7 +37,6 @@ void TextureStorageImplementation_DirectStateAccessEXT::storage3D(const Texture 
 {
     gl::glTextureStorage3DEXT(texture->id(), texture->target(), levels, internalFormat, width, height, depth);
 }
-
 
 void TextureStorageImplementation_DirectStateAccessEXT::storage2DMultisample(const Texture * texture, gl::GLsizei samples, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLboolean fixedSampleLocations) const
 {

@@ -9,6 +9,7 @@
 #include <globjects/Capability.h>
 #include <globjects/StateSetting.h>
 
+
 using namespace gl;
 
 
@@ -115,7 +116,7 @@ std::unique_ptr<State> State::currentState()
     state->stencilMaskSeparate(GL_BACK, getInteger(GL_STENCIL_BACK_WRITEMASK));
 
     // pixel store
-    std::vector<GLenum> pixelstoreParameters = {
+    const std::vector<GLenum> pixelstoreParameters = {
         GL_PACK_SWAP_BYTES,
         GL_PACK_LSB_FIRST,
         GL_PACK_ROW_LENGTH,
@@ -133,6 +134,7 @@ std::unique_ptr<State> State::currentState()
         GL_UNPACK_SKIP_IMAGES,
         GL_UNPACK_ALIGNMENT
     };
+
     for (GLenum param : pixelstoreParameters)
     {
         state->pixelStore(param, getInteger(param));
@@ -145,16 +147,22 @@ void State::enable(const GLenum capability)
 {
     Capability* cap = getCapability(capability);
     cap->enable();
+
     if (m_mode == ImmediateMode)
+    {
         cap->apply();
+    }
 }
 
 void State::disable(const GLenum capability)
 {
     Capability* cap = getCapability(capability);
     cap->disable();
+
     if (m_mode == ImmediateMode)
+    {
         cap->apply();
+    }
 }
 
 bool State::isEnabled(const GLenum capability) const
@@ -162,7 +170,9 @@ bool State::isEnabled(const GLenum capability) const
     const auto it = m_capabilities.find(capability);
 
     if (it == m_capabilities.end())
+    {
         return false;
+    }
 
     return it->second->isEnabled();
 }
@@ -171,16 +181,22 @@ void State::enable(const GLenum capability, const int index)
 {   
     Capability* cap = getCapability(capability);
     cap->enable(index);
+
     if (m_mode == ImmediateMode)
+    {
         cap->apply();
+    }
 }
 
 void State::disable(const GLenum capability, const int index)
 {
     Capability* cap = getCapability(capability);
     cap->disable(index);
+
     if (m_mode == ImmediateMode)
+    {
         cap->apply();
+    }
 }
 
 bool State::isEnabled(const GLenum capability, const int index) const
@@ -188,7 +204,9 @@ bool State::isEnabled(const GLenum capability, const int index) const
     const auto it = m_capabilities.find(capability);
 
     if (it == m_capabilities.end())
+    {
         return false;
+    }
 
     return it->second->isEnabled(index);
 }
@@ -209,6 +227,7 @@ void State::apply()
     {
         capability.second->apply();
     }
+
     for (const auto & setting : m_settings)
     {
         setting.second->apply();
@@ -218,6 +237,7 @@ void State::apply()
 void State::addCapability(std::unique_ptr<Capability> && capability)
 {
     const auto it = m_capabilities.find(capability->capability());
+
     if (it != m_capabilities.end())
     {
         it->second = std::move(capability);
@@ -231,6 +251,7 @@ void State::addCapability(std::unique_ptr<Capability> && capability)
 Capability* State::getCapability(GLenum capability)
 {
     const auto it = m_capabilities.find(capability);
+
     if (it == m_capabilities.end())
     {
         const auto insertedIt = m_capabilities.emplace(capability, Capability::create(capability));

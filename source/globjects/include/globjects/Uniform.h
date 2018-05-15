@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include <globjects/globjects_api.h>
@@ -48,8 +49,10 @@ public:
 
     const T & value() const;
 
+
 protected:
     virtual void updateAt(gl::GLint location) const override;
+
 
 protected:
     T m_value; ///< The uniforms value, explictly required when relinking programs.

@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include <globjects/globjects_api.h>
@@ -14,6 +15,7 @@ namespace globjects
 
 class Texture;
 class Framebuffer;
+
 
 /** \brief Encapsulates texture attachments of a frame buffer object.
     
@@ -36,6 +38,7 @@ public:
 
     bool hasLayer() const;
     gl::GLint layer() const;
+
 
 protected:
     Texture * m_texture;

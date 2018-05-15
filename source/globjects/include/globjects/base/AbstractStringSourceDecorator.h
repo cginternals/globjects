@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <globjects/base/ChangeListener.h>
 #include <globjects/base/AbstractStringSource.h>
 

@@ -16,17 +16,24 @@
 #include <globjects/AbstractUniform.h>
 
 
-namespace globjects
+namespace
 {
 
 
-void logObject(LogMessageBuilder & builder, const Object * object, const std::string & typeName)
+void logObject(globjects::LogMessageBuilder & builder, const globjects::Object * object, const std::string & typeName)
 {
     builder << typeName << "(" << object->id();
     if (object->hasName())
         builder << ", " << object->name();
     builder << ")";
 }
+
+
+} // namespace
+
+
+namespace globjects
+{
 
 
 LogMessageBuilder operator<<(LogMessageBuilder builder, const Object * object)

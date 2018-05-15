@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 
 #include <globjects/globjects_api.h>
@@ -14,6 +15,7 @@ namespace globjects
 
 class LogMessage;
 enum class LogMessageLevel : unsigned int;
+
 
 /** \brief Writes LogMessages to stdout.
 

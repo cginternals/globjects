@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <vector>
 
 #include <globjects/globjects_api.h>
@@ -13,6 +14,7 @@ namespace globjects
 
 
 class Program;
+
 
 class GLOBJECTS_API UniformBlock : public Instantiator<UniformBlock>
 {
@@ -32,6 +34,7 @@ public:
     std::vector<gl::GLint> getActiveUniformIndices() const;
 
     std::string getName() const;
+
 
 protected:
     const Program * m_program;

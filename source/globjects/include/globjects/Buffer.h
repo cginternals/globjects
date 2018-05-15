@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <vector>
 #include <array>
 
@@ -51,6 +52,7 @@ public:
         \param target
     */
     static void setWorkingTarget(gl::GLenum target);
+
 
 public:
     /** \brief Creates a new OpenGL buffer object.
@@ -292,6 +294,7 @@ public:
     void invalidateSubData(gl::GLintptr offset, gl::GLsizeiptr length) const;
 
     virtual gl::GLenum objectType() const override;
+
 
 protected:
     /** \brief Creates a buffer with an external id.

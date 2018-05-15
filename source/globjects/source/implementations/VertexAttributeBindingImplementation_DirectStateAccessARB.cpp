@@ -1,13 +1,12 @@
 
 #include "VertexAttributeBindingImplementation_DirectStateAccessARB.h"
 
-#include <cassert>
-
 #include <glbinding/gl/functions.h>
 
 #include <globjects/Buffer.h>
 #include <globjects/VertexArray.h>
 #include <globjects/VertexAttributeBinding.h>
+
 
 using namespace gl;
 

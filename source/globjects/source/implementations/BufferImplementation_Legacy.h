@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include "../base/Singleton.h"
 
 #include "AbstractBufferImplementation.h"
@@ -40,6 +41,7 @@ public:
 
     virtual void invalidateData(const Buffer * buffer) const override;
     virtual void invalidateSubData(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length) const override;
+
 
 public:
     static gl::GLenum s_workingTarget;

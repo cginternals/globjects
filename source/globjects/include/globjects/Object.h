@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 #include <memory>
 
@@ -16,6 +17,7 @@ namespace globjects
 class ObjectVisitor;
 class IDResource;
 
+
 /** \brief Superclass of all wrapped OpenGL objects.
     
     The superclass is Referenced so that each wrapped OpenGL object supports reference counting.
@@ -26,6 +28,7 @@ class GLOBJECTS_API Object
 {
     friend class AbstractObjectNameImplementation;
 
+
 public:
     enum class NameImplementation
     {
@@ -34,6 +37,7 @@ public:
     };
 
     static void hintNameImplementation(NameImplementation impl);
+
 
 public:
     virtual void accept(ObjectVisitor & visitor) = 0;
@@ -52,9 +56,11 @@ public:
     */
     void detach();
 
+
 protected:
     Object(std::unique_ptr<IDResource> && resource);
     virtual ~Object();
+
 
 protected:
     std::unique_ptr<IDResource> m_resource;

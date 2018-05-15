@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 #include <memory>
 
@@ -18,6 +19,7 @@ namespace globjects
 
 class AbstractStringSource;
 
+
 class GLOBJECTS_API NamedString : protected ChangeListener, public Instantiator<NamedString>
 {
 public:
@@ -28,6 +30,7 @@ public:
 
     static bool isNamedString(const std::string & name);
     static NamedString * getFromRegistry(const std::string & name);
+
 
 public:
     const std::string & name() const;
@@ -40,8 +43,10 @@ public:
 
     virtual void notifyChanged(const Changeable * changeable) override;
 
+
 protected:
     static bool hasNativeSupport();
+
 
 protected:
     void updateString();
@@ -51,6 +56,7 @@ protected:
 
     void registerNamedString();
     void deregisterNamedString();
+
 
 protected:
     std::string m_name;

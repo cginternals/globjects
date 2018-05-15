@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 
 #include <glbinding/gl/types.h>
@@ -15,6 +16,7 @@ namespace globjects
 class AttachedTexture;
 class AttachedRenderbuffer;
 class Framebuffer;
+
 
 /** \brief Wraps attachments to a FrameBufferObject.
     
@@ -42,6 +44,7 @@ public:
     const AttachedRenderbuffer * asRenderBufferAttachment() const;
 
     std::string attachmentString() const;
+
 
 protected:
     Framebuffer * m_fbo;

@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 
 #include <glbinding/gl/types.h>
@@ -14,6 +15,7 @@ namespace globjects
 
 class Object;
 class Sync;
+
 
 class AbstractObjectNameImplementation
 {
@@ -32,6 +34,7 @@ public:
 
     virtual void setLabel(const Object * object, const std::string & label) const = 0;
     virtual void setLabel(const Sync * sync, const std::string & label) const = 0;
+
 
 protected:
     void * objectLabelState(const Object * object) const;

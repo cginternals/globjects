@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <functional>
 #include <set>
 #include <memory>
@@ -18,6 +19,7 @@ namespace globjects
 
 class AbstractFunctionCall;
 
+
 class GLOBJECTS_API StateSettingType
 {
 public:
@@ -28,6 +30,7 @@ public:
     std::size_t hash() const;
 
     void specializeType(gl::GLenum subtype);
+
 
 protected:
     void * m_functionIdentifier;
@@ -48,9 +51,11 @@ public:
     StateSettingType & type();
     const StateSettingType & type() const;
 
+
 protected:
     std::unique_ptr<AbstractFunctionCall> m_functionCall;
     StateSettingType m_type;
+
 
 protected:
     StateSetting(std::unique_ptr<AbstractFunctionCall> && functionCall);
@@ -62,11 +67,13 @@ protected:
 namespace std 
 {
 
+
 template <>
 struct GLOBJECTS_API hash<globjects::StateSettingType>
 {
     size_t operator()(const globjects::StateSettingType & type) const;
 };
+
 
 } // namespace globjects
 

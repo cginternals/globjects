@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <set>
 
 #include <glbinding/gl/types.h>
@@ -17,6 +18,7 @@ namespace globjects
 
 
 class Program;
+
 
 class GLOBJECTS_API ProgramPipeline : public Object, protected ChangeListener, public Instantiator<ProgramPipeline>
 {
@@ -45,8 +47,10 @@ public:
 
     virtual gl::GLenum objectType() const override;
 
+
 protected:
     void invalidate();
+
 
 protected:
     bool m_dirty;

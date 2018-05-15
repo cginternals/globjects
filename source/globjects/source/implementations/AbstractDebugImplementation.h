@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glbinding/gl/types.h>
 
 #include <globjects/DebugMessage.h>
@@ -32,6 +33,8 @@ public:
     virtual void insertMessage(const DebugMessage & message) = 0;
 
     virtual void controlMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids, gl::GLboolean enabled) = 0;
+
+
 protected:
     DebugMessage::Callback m_messageCallback;
     static DebugMessage::Callback s_defaultCallback;

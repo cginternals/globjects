@@ -6,6 +6,7 @@
 #include <globjects/globjects.h>
 #include <globjects/logging.h>
 
+
 using namespace gl;
 
 

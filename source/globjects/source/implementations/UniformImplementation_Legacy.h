@@ -14,7 +14,6 @@ class UniformImplementation_Legacy : public AbstractUniformImplementation
     , public Singleton<UniformImplementation_Legacy>
 {
 public:
-
     virtual void set(const Program * program, gl::GLint location, const float & value) const override;
     virtual void set(const Program * program, gl::GLint location, const int & value) const override;
     virtual void set(const Program * program, gl::GLint location, const unsigned int & value) const override;

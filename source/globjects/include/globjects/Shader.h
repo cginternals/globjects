@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <string>
 #include <vector>
 #include <map>
@@ -45,8 +46,10 @@ class GLOBJECTS_API Shader : public Object, protected ChangeListener, public Cha
 {
     friend class Program;
 
+
 public:
     using IncludePaths = std::vector<std::string>;
+
 
 public:
     enum class IncludeImplementation
@@ -56,6 +59,7 @@ public:
     };
 
     static void hintIncludeImplementation(IncludeImplementation impl);
+
 
 public:
     Shader(const gl::GLenum type, AbstractStringSource * source, const IncludePaths & includePaths = IncludePaths());
@@ -67,6 +71,7 @@ public:
     static std::unique_ptr<StaticStringSource> sourceFromString(const std::string & sourceString);
     static std::unique_ptr<File> sourceFromFile(const std::string & filename);
     static std::unique_ptr<AbstractStringSource> applyGlobalReplacements(AbstractStringSource * source);
+
 
 public:
     Shader(const gl::GLenum type);
@@ -99,12 +104,14 @@ public:
 
     static std::string typeString(gl::GLenum type);
 
-protected:
 
+protected:
     virtual void notifyChanged(const Changeable * changeable) override;
+
 
 protected:
     std::string shaderString() const;
+
 
 protected:
     gl::GLenum m_type;

@@ -4,6 +4,7 @@
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/base/AbstractStringSource.h>
 
+
 using namespace gl;
 
 

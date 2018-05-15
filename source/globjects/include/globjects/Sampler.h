@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <glm/fwd.hpp>
 
 #include <glbinding/gl/types.h>
@@ -43,6 +44,7 @@ public:
     gl::GLfloat getParameterf(gl::GLenum pname) const;
 
     virtual gl::GLenum objectType() const override;
+
 
 protected:
     Sampler(std::unique_ptr<IDResource> && resource);

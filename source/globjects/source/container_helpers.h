@@ -1,9 +1,14 @@
 
 #pragma once
 
+
 #include <functional>
 #include <type_traits>
 #include <vector>
+
+
+namespace globjects
+{
 
 
 template <typename T, class InputIterator, class Function>
@@ -17,6 +22,9 @@ std::vector<MemberType> collect_member(Container container, MemberType Class::*m
 
 template<class ReturnType, class Container, class Class, class MemberType>
 std::vector<ReturnType> collect_type_member(Container container, MemberType Class::*memberPointer);
+
+
+} // namespace globjects
 
 
 #include "container_helpers.inl"

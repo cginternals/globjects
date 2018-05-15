@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <globjects/globjects_api.h>
 
 
@@ -9,6 +10,7 @@ namespace globjects
 
 
 class LogMessage;
+
 
 /** \brief Abstract interface to handle LogMessages.
     

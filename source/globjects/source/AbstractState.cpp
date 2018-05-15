@@ -7,6 +7,7 @@
 
 #include <globjects/StateSetting.h>
 
+
 using namespace gl;
 
 
@@ -16,12 +17,26 @@ namespace globjects
 
 void AbstractState::setEnabled(GLenum capability, const bool enabled)
 {
-    enabled ? enable(capability) : disable(capability);
+    if (enabled)
+    {
+        enable(capability);
+    }
+    else
+    {
+        disable(capability);
+    }
 }
 
 void AbstractState::setEnabled(GLenum capability, const int index, const bool enabled)
 {
-    enabled ? enable(capability) : disable(capability, index);
+    if (enabled)
+    {
+        enable(capability, index);
+    }
+    else
+    {
+        disable(capability, index);
+    }
 }
 
 void AbstractState::blendColor(const GLfloat red, const GLfloat green, const GLfloat blue, const GLfloat alpha)

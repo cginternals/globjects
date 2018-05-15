@@ -30,10 +30,14 @@ LogMessageBuilder::LogMessageBuilder(const LogMessageBuilder & builder)
 LogMessageBuilder::~LogMessageBuilder()
 {
     if (m_stream.use_count() > 1)
+    {
         return;
+    }
 
     if (m_handler)
+    {
         m_handler->handle(LogMessage(m_level, m_stream->str()));
+    }
 }
 
 LogMessageBuilder & LogMessageBuilder::operator<<(const char * c)

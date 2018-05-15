@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 #include <chrono>
 
 #include <glbinding/gl/types.h>
@@ -110,8 +111,8 @@ public:
 
     virtual gl::GLenum objectType() const override;
 
-protected:
 
+protected:
     Query(std::unique_ptr<IDResource> && resource);
 
     static gl::GLuint genQuery();
