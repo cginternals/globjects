@@ -27,9 +27,9 @@ class GLOBJECTS_API VertexArray : public Object, public Instantiator<VertexArray
 public:
     enum class AttributeImplementation
     {
+        Legacy,
+        VertexAttribBindingARB,
         DirectStateAccessARB
-    ,   VertexAttribBindingARB
-    ,   Legacy
     };
 
     static void hintAttributeImplementation(AttributeImplementation impl);

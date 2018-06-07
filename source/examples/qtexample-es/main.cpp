@@ -165,7 +165,7 @@ int main(int argc, char * argv[])
     format.setVersion(3, 2);
     format.setProfile(QSurfaceFormat::CoreProfile);
 #else
-    format.setVersion(3, 2);
+    format.setVersion(3, 1);
 #endif
     format.setDepthBufferSize(16);
 

@@ -35,17 +35,17 @@ class GLOBJECTS_API Texture : public Object, public Instantiator<Texture>
 public:
     enum class BindlessImplementation
     {
+        Legacy,
+        DirectStateAccessEXT,
         DirectStateAccessARB
-    ,   DirectStateAccessEXT
-    ,   Legacy
     };
 
     enum class StorageImplementation
     {
+        Fallback,
+        Legacy,
+        DirectStateAccessEXT,
         DirectStateAccessARB
-    ,   DirectStateAccessEXT
-    ,   Legacy
-    ,   Fallback
     };
 
     static void hintBindlessImplementation(BindlessImplementation impl);

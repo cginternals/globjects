@@ -32,8 +32,8 @@ class GLOBJECTS_API Object
 public:
     enum class NameImplementation
     {
+        Legacy,
         DebugKHR
-    ,   Legacy
     };
 
     static void hintNameImplementation(NameImplementation impl);

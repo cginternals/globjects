@@ -50,9 +50,9 @@ class GLOBJECTS_API Framebuffer : public Object, public Instantiator<Framebuffer
 public:
     enum class BindlessImplementation
     {
+        Legacy,
+        DirectStateAccessEXT,
         DirectStateAccessARB
-    ,   DirectStateAccessEXT
-    ,   Legacy
     };
 
     static void hintBindlessImplementation(BindlessImplementation impl);

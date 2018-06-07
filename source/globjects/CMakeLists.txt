@@ -236,6 +236,7 @@ set(sources
     ${source_path}/Program.cpp
     ${source_path}/ProgramPipeline.cpp
     ${source_path}/Query.cpp
+    
     ${source_path}/registry/ObjectRegistry.h
     ${source_path}/registry/ExtensionRegistry.h
     ${source_path}/registry/NamedStringRegistry.cpp
@@ -246,6 +247,7 @@ set(sources
     ${source_path}/registry/ImplementationRegistry.h
     ${source_path}/registry/Registry.cpp
     ${source_path}/registry/Registry.h
+    
     ${source_path}/AttachedRenderbuffer.cpp
     ${source_path}/Renderbuffer.cpp
     ${source_path}/Resource.cpp

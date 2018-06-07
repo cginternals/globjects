@@ -19,8 +19,8 @@ class GLOBJECTS_API DebugMessage
 public:
     enum class Implementation
     {
+        Legacy,
         DebugKHR
-    ,   Legacy
     };
 
     static void hintImplementation(Implementation impl);

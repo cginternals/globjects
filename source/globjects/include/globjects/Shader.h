@@ -54,8 +54,8 @@ public:
 public:
     enum class IncludeImplementation
     {
+        Fallback,
         ShadingLanguageIncludeARB
-    ,   Fallback
     };
 
     static void hintIncludeImplementation(IncludeImplementation impl);

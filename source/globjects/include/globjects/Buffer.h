@@ -39,9 +39,9 @@ class GLOBJECTS_API Buffer : public Object, public Instantiator<Buffer>
 public:
     enum class BindlessImplementation
     {
-        DirectStateAccessARB
+        Legacy
     ,   DirectStateAccessEXT
-    ,   Legacy
+    ,   DirectStateAccessARB
     };
 
     static void hintBindlessImplementation(BindlessImplementation impl);

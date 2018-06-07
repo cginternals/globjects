@@ -90,8 +90,8 @@ class GLOBJECTS_API Program : public Object, protected ChangeListener, public Ch
 public:
     enum class BinaryImplementation
     {
+        None,
         GetProgramBinaryARB
-    ,   None
     };
 
     static void hintBinaryImplementation(BinaryImplementation impl);

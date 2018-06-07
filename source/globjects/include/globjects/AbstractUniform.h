@@ -40,8 +40,8 @@ class GLOBJECTS_API AbstractUniform
 public:
     enum BindlessImplementation
     {
+        Legacy,
         SeparateShaderObjectsARB
-    ,   Legacy
     };
 
     static void hintBindlessImplementation(const BindlessImplementation impl);
