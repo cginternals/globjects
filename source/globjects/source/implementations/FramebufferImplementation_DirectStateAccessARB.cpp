@@ -127,8 +127,8 @@ void FramebufferImplementation_DirectStateAccessARB::readPixels(const Framebuffe
 void FramebufferImplementation_DirectStateAccessARB::blit(const Framebuffer * sourceFbo, const Framebuffer * targetFbo, gl::GLint srcX0, gl::GLint srcY0, gl::GLint srcX1, gl::GLint srcY1, gl::GLint destX0, gl::GLint destY0, gl::GLint destX1, gl::GLint destY1, gl::ClearBufferMask mask, gl::GLenum filter) const
 {
     // Suppress warnings with Nvidia drivers, although they seem to function properly.
-    sourceFBO->bind(GL_READ_FRAMEBUFFER);
-    targetFBO->bind(GL_DRAW_FRAMEBUFFER);
+    sourceFbo->bind(GL_READ_FRAMEBUFFER);
+    targetFbo->bind(GL_DRAW_FRAMEBUFFER);
 
     glBlitNamedFramebuffer(sourceFbo->id(), targetFbo->id(), srcX0, srcY0, srcX1, srcY1, destX0, destY0, destX1, destY1, mask, filter);
 }
