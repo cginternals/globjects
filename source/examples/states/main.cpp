@@ -107,12 +107,12 @@ void initialize()
 void deinitialize()
 {
     g_shaderProgram.reset(nullptr);
-    g_vertexShaderSource.reset(nullptr);
-    g_vertexShaderTemplate.reset(nullptr);
     g_vertexShader.reset(nullptr);
-    g_fragmentShaderSource.reset(nullptr);
-    g_fragmentShaderTemplate.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
     g_fragmentShader.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
 
     g_vao.reset(nullptr);
     g_buffer.reset(nullptr);
