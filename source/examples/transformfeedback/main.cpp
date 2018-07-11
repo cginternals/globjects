@@ -140,20 +140,20 @@ void deinitialize()
 {
     g_vao.reset(nullptr);
 
-    g_transformFeedbackProgram.reset(nullptr);
     g_transformFeedback.reset(nullptr);
+    g_transformFeedbackProgram.reset(nullptr);
     g_shaderProgram.reset(nullptr);
 
-    g_feedbackShaderSource.reset(nullptr);
-    g_feedbackShaderTemplate.reset(nullptr);
     g_feedbackShader.reset(nullptr);
+    g_feedbackShaderTemplate.reset(nullptr);
+    g_feedbackShaderSource.reset(nullptr);
 
-    g_vertexShaderSource.reset(nullptr);
-    g_vertexShaderTemplate.reset(nullptr);
     g_vertexShader.reset(nullptr);
-    g_fragmentShaderSource.reset(nullptr);
-    g_fragmentShaderTemplate.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
     g_fragmentShader.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
 
     g_vertexBuffer1.reset(nullptr);
     g_vertexBuffer2.reset(nullptr);

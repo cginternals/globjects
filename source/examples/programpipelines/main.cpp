@@ -109,15 +109,15 @@ void initialize()
 void deinitialize()
 {
     g_cornerBuffer.reset(nullptr);
+    g_programPipeline.reset(nullptr);
     g_vertexProgram.reset(nullptr);
     g_fragmentProgram.reset(nullptr);
-    g_vertexShaderSource.reset(nullptr);
-    g_vertexShaderTemplate.reset(nullptr);
     g_vertexShader.reset(nullptr);
-    g_fragmentShaderSource.reset(nullptr);
-    g_fragmentShaderTemplate.reset(nullptr);
+    g_vertexShaderTemplate.reset(nullptr);
+    g_vertexShaderSource.reset(nullptr);
     g_fragmentShader.reset(nullptr);
-    g_programPipeline.reset(nullptr);
+    g_fragmentShaderTemplate.reset(nullptr);
+    g_fragmentShaderSource.reset(nullptr);
     g_vao.reset(nullptr);
 }
 
