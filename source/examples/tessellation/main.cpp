@@ -206,10 +206,17 @@ int main(int /*argc*/, char * /*argv*/[])
         return 1;
 
     glfwSetErrorCallback(error);
+
     glfwDefaultWindowHints();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_VISIBLE, true);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+#ifdef SYSTEM_DARWIN
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#else
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+#endif
 
     // Create a context and, if valid, make it current
     GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Tessellation", NULL, NULL);

@@ -56,9 +56,9 @@ public:
         globjects::Shader::globalReplace("#extension GL_ARB_explicit_attrib_location : require", "precision mediump float;");
 
         std::cout << std::endl
-            << "OpenGL Version:  " << glbinding::aux::ContextInfo::version() << std::endl
-            << "OpenGL Vendor:   " << glbinding::aux::ContextInfo::vendor() << std::endl
-            << "OpenGL Renderer: " << glbinding::aux::ContextInfo::renderer() << std::endl << std::endl;
+            << "OpenGL ES Version:  " << glbinding::aux::ContextInfo::version() << std::endl
+            << "OpenGL ES Vendor:   " << glbinding::aux::ContextInfo::vendor() << std::endl
+            << "OpenGL ES Renderer: " << glbinding::aux::ContextInfo::renderer() << std::endl << std::endl;
 
         globjects::DebugMessage::enable();
 
@@ -161,12 +161,6 @@ int main(int argc, char * argv[])
 
     QSurfaceFormat format;
     format.setRenderableType(QSurfaceFormat::OpenGLES);
-#ifdef __APPLE__
-    format.setVersion(3, 2);
-    format.setProfile(QSurfaceFormat::CoreProfile);
-#else
-    format.setVersion(3, 1);
-#endif
     format.setDepthBufferSize(16);
 
     std::unique_ptr<Window> glwindow(new Window(format));

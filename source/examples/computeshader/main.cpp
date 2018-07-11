@@ -167,6 +167,7 @@ int main()
         return 1;
 
     glfwSetErrorCallback(error);
+
     glfwDefaultWindowHints();
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

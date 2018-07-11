@@ -41,10 +41,17 @@ int main(int /*argc*/, char * /*argv*/[])
         return 1;
 
     glfwSetErrorCallback(error);
+
+    glfwDefaultWindowHints();
     glfwWindowHint(GLFW_VISIBLE, false);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+#ifdef SYSTEM_DARWIN
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#else
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+#endif
 
     // Create a context and, if valid, make it current
     GLFWwindow * offscreen_context = glfwCreateWindow(320, 240, "globjects Command Line Output", NULL, NULL);

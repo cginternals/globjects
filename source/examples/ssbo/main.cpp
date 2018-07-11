@@ -132,18 +132,23 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
 
 int main(int /*argc*/, char * /*argv*/[])
 {
+#ifdef SYSTEM_DARWIN
+    globjects::critical() << "macOS does currently not support shader storage buffer objects (OpenGL 4.3. required).";
+    return 0;
+#endif
+
     // Initialize GLFW
     if (!glfwInit())
         return 1;
 
     glfwSetErrorCallback(error);
     glfwDefaultWindowHints();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Shader Storage Buffer Objects", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Shader Storage Buffer Objects", nullptr, nullptr);
     if (window == nullptr)
     {
         globjects::critical() << "Context creation failed. Terminate execution.";
