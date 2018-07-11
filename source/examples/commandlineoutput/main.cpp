@@ -54,7 +54,7 @@ int main(int /*argc*/, char * /*argv*/[])
 #endif
 
     // Create a context and, if valid, make it current
-    GLFWwindow * offscreen_context = glfwCreateWindow(320, 240, "globjects Command Line Output", NULL, NULL);
+    GLFWwindow * offscreen_context = glfwCreateWindow(320, 240, "globjects Command Line Output", nullptr, nullptr);
     if (offscreen_context == nullptr)
     {
         critical() << "Context creation failed. Terminate execution.";

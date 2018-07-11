@@ -169,7 +169,7 @@ int main(int /*argc*/, char * /*argv*/[])
 #endif
 
     // Create a context and, if valid, make it current
-    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Progam Pipelines", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(640, 480, "globjects Progam Pipelines", nullptr, nullptr);
     if (window == nullptr)
     {
         globjects::critical() << "Context creation failed. Terminate execution.";
