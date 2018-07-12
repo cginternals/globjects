@@ -17,12 +17,7 @@ QSurfaceFormat defaultFormat()
     return format;
 }
 
-WindowQt::WindowQt()
-: WindowQt(defaultFormat())
-{
-}
-
-WindowQt::WindowQt(const QSurfaceFormat & format)
+WindowQt::WindowQt(QApplication & app, const QSurfaceFormat & format)
 : m_context(new QOpenGLContext)
 , m_updatePending(false)
 , m_initialized(false)
@@ -39,18 +34,22 @@ WindowQt::WindowQt(const QSurfaceFormat & format)
         qDebug() << "Could not create OpenGL context.";
         QApplication::quit();
     }
+
+    QObject::connect(&app, &QGuiApplication::lastWindowClosed, [this]() {
+        if (m_initialized)
+        {
+            makeCurrent();
+
+            deinitializeGL();
+
+            doneCurrent();
+        }
+    });
 }
 
 WindowQt::~WindowQt()
 {
-    if (m_initialized)
-    {
-        makeCurrent();
-
-        deinitializeGL();
-
-        doneCurrent();
-    }
+    // cannot deinitialize OpenGL here as it would require the call of a virtual member function
 }
 
 QOpenGLContext * WindowQt::context()

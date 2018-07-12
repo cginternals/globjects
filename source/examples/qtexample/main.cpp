@@ -37,8 +37,8 @@ using namespace gl;
 class Window : public WindowQt
 {
 public:
-    Window(QSurfaceFormat & format)
-    : WindowQt(format)
+    Window(QApplication & app, QSurfaceFormat & format)
+    : WindowQt(app, format)
     {
     }
 
@@ -165,7 +165,7 @@ int main(int argc, char * argv[])
 #endif
     format.setDepthBufferSize(16);
 
-    std::unique_ptr<Window> glwindow(new Window(format));
+    std::unique_ptr<Window> glwindow(new Window(app, format));
 
     QMainWindow window;
     window.setMinimumSize(640, 480);

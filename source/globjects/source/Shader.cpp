@@ -87,6 +87,8 @@ std::unique_ptr<AbstractStringSource> Shader::applyGlobalReplacements(AbstractSt
 
 Shader::~Shader()
 {
+    assert(id() != 0);
+
     while (!m_programs.empty())
     {
         (*m_programs.begin())->detach(this);

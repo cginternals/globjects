@@ -66,6 +66,8 @@ Program::~Program()
 {
     if (id() == 0)
     {
+        assert(m_shaders.empty());
+
         return;
     }
 

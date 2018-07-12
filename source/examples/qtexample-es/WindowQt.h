@@ -13,8 +13,7 @@ class QOpenGLContext;
 class WindowQt : public QWindow
 {
 public:
-    WindowQt();
-    WindowQt(const QSurfaceFormat & format);
+    WindowQt(QApplication & app, const QSurfaceFormat & format);
     virtual ~WindowQt();
 
     virtual void resizeEvent(QResizeEvent * event) override;
