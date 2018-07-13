@@ -5,13 +5,11 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 
 #include <glbinding/gl/types.h>
 
 #include <globjects/globjects_api.h>
-
-#include <globjects/base/Changeable.h>
-#include <globjects/base/ChangeListener.h>
 
 #include <globjects/Object.h>
 #include <globjects/base/Instantiator.h>
@@ -42,7 +40,7 @@ class Program;
     \see ChangeListener
     \see Changeable
  */
-class GLOBJECTS_API Shader : public Object, protected ChangeListener, public Changeable, public Instantiator<Shader>
+class GLOBJECTS_API Shader : public Object, public Instantiator<Shader>
 {
     friend class Program;
 
@@ -104,9 +102,15 @@ public:
 
     static std::string typeString(gl::GLenum type);
 
+    void addSubject(AbstractStringSource * subject);
+    virtual void removeSubject(AbstractStringSource * subject);
 
-protected:
-    virtual void notifyChanged(const Changeable * changeable) override;
+    virtual void notifyChanged(const AbstractStringSource * changeable);
+
+    void changed() const;
+
+    void registerListener(Program * listener);
+    void deregisterListener(Program * listener);
 
 
 protected:
@@ -114,6 +118,8 @@ protected:
 
 
 protected:
+    std::set<Program *> m_programListeners;
+    std::set<AbstractStringSource*> m_sourceSubjects;
     gl::GLenum m_type;
     AbstractStringSource * m_source;
     IncludePaths m_includePaths;

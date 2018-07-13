@@ -77,7 +77,7 @@ void StringTemplate::replace(const std::string & original, const int i)
     replace(original, ss.str());
 }
 
-void StringTemplate::notifyChanged(const globjects::Changeable *)
+void StringTemplate::notifyChanged(const AbstractStringSource *)
 {
     invalidate();
     changed();

@@ -85,8 +85,6 @@ set(headers
     ${include_path}/base/AbstractLogHandler.h
     ${include_path}/base/baselogging.h
     ${include_path}/base/baselogging.inl
-    ${include_path}/base/Changeable.h
-    ${include_path}/base/ChangeListener.h
     ${include_path}/base/CompositeStringSource.h
     ${include_path}/base/ConsoleLogger.h
     ${include_path}/base/File.h
@@ -124,8 +122,6 @@ set(sources
     ${source_path}/base/AbstractFunctionCall.cpp
     ${source_path}/base/AbstractStringSource.cpp
     ${source_path}/base/baselogging.cpp
-    ${source_path}/base/Changeable.cpp
-    ${source_path}/base/ChangeListener.cpp
     ${source_path}/base/CompositeStringSource.cpp
     ${source_path}/base/ConsoleLogger.cpp
     ${source_path}/base/File.cpp

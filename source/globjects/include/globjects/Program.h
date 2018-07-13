@@ -9,9 +9,6 @@
 
 #include <glm/fwd.hpp>
 
-#include <globjects/base/ChangeListener.h>
-#include <globjects/base/Changeable.h>
-
 #include <globjects/globjects_api.h>
 
 #include <globjects/Object.h>
@@ -26,6 +23,7 @@ namespace globjects
 
 class AbstractUniform;
 class ProgramBinary;
+class ProgramPipeline;
 class Shader;
 
 template <typename T>
@@ -80,7 +78,7 @@ class Uniform;
     \see http://www.opengl.org/wiki/Program_Object
     \see Shader
  */
-class GLOBJECTS_API Program : public Object, protected ChangeListener, public Changeable, public Instantiator<Program>
+class GLOBJECTS_API Program : public Object, public Instantiator<Program>
 {
     friend class UniformBlock;
     friend class ProgramBinaryImplementation_GetProgramBinaryARB;
@@ -206,6 +204,20 @@ public:
 
     virtual gl::GLenum objectType() const override;
 
+    virtual void notifyChanged(const Shader * sender);
+    virtual void notifyChanged(const ProgramBinary * sender);
+
+    void addSubject(ProgramBinary * subject);
+    virtual void removeSubject(ProgramBinary * subject);
+
+    void addSubject(Shader * subject);
+    virtual void removeSubject(Shader * subject);
+
+    void registerListener(ProgramPipeline * listener);
+    void deregisterListener(ProgramPipeline * listener);
+
+    void changed() const;
+
 
 protected:
     bool checkLinkStatus() const;
@@ -216,10 +228,6 @@ protected:
     void updateUniformBlockBindings() const;
 
     void addUniform(std::unique_ptr<AbstractUniform> && uniform);
-
-    // ChangeListener Interface
-
-    virtual void notifyChanged(const Changeable * sender) override;
 
 
 protected:
@@ -237,6 +245,9 @@ protected:
 
 
 protected:
+    std::set<Shader*> m_shaderSubjects;
+    std::set<ProgramBinary*> m_programBinarySubjects;
+    std::set<ProgramPipeline *> m_pipelineListeners;
     std::set<Shader *> m_shaders;
     std::unique_ptr<ProgramBinary> m_binary;
 

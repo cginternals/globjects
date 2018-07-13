@@ -8,7 +8,6 @@
 
 #include <globjects/globjects_api.h>
 
-#include <globjects/base/ChangeListener.h>
 #include <globjects/Object.h>
 #include <globjects/base/Instantiator.h>
 
@@ -20,7 +19,7 @@ namespace globjects
 class Program;
 
 
-class GLOBJECTS_API ProgramPipeline : public Object, protected ChangeListener, public Instantiator<ProgramPipeline>
+class GLOBJECTS_API ProgramPipeline : public Object, public Instantiator<ProgramPipeline>
 {
 public:
     ProgramPipeline();
@@ -43,9 +42,12 @@ public:
     std::string infoLog() const;
     gl::GLint get(gl::GLenum pname) const;
 
-    virtual void notifyChanged(const Changeable * sender) override;
+    virtual void notifyChanged(const Program * sender);
 
     virtual gl::GLenum objectType() const override;
+
+    void addSubject(Program * subject);
+    virtual void removeSubject(Program * subject);
 
 
 protected:
@@ -53,6 +55,7 @@ protected:
 
 
 protected:
+    std::set<Program *> m_programSubjects;
     bool m_dirty;
     std::set<Program *> m_programs;
 };

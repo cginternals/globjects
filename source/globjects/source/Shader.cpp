@@ -96,6 +96,18 @@ Shader::~Shader()
 
     // Disconnect as subject
     setSource(nullptr);
+
+    while (!m_sourceSubjects.empty())
+    {
+        // calls removeSubject
+        (*m_sourceSubjects.begin())->deregisterListener(this);
+    }
+
+    while (!m_programListeners.empty())
+    {
+        // calls deregisterListener
+        (*m_programListeners.begin())->removeSubject(this);
+    }
 }
 
 void Shader::globalReplace(const std::string & search, const std::string & replacement)
@@ -150,9 +162,60 @@ const AbstractStringSource* Shader::source() const
     return m_source;
 }
 
-void Shader::notifyChanged(const Changeable *)
+void Shader::notifyChanged(const AbstractStringSource *)
 {
     updateSource();
+}
+
+void Shader::addSubject(AbstractStringSource * subject)
+{
+    m_sourceSubjects.insert(subject);
+}
+
+void Shader::removeSubject(AbstractStringSource * subject)
+{
+    assert(subject != nullptr);
+
+    const auto it = m_sourceSubjects.find(subject);
+
+    if (it == m_sourceSubjects.end())
+    {
+        return;
+    }
+
+    m_sourceSubjects.erase(it);
+    subject->deregisterListener(this);
+}
+
+void Shader::changed() const
+{
+    for (Program * listener: m_programListeners)
+    {
+        listener->notifyChanged(this);
+    }
+}
+
+void Shader::registerListener(Program * listener)
+{
+    assert(listener != nullptr);
+
+    m_programListeners.insert(listener);
+    listener->addSubject(this);
+}
+
+void Shader::deregisterListener(Program * listener)
+{
+    assert(listener != nullptr);
+
+    const auto it = m_programListeners.find(listener);
+
+    if (it == m_programListeners.end())
+    {
+        return;
+    }
+
+    m_programListeners.erase(it);
+    listener->removeSubject(this);
 }
 
 void Shader::updateSource()

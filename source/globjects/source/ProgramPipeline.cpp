@@ -37,6 +37,36 @@ ProgramPipeline::~ProgramPipeline()
             releaseProgram(program);
         }
     }
+
+    while (!m_programSubjects.empty())
+    {
+        // calls removeSubject
+        (*m_programSubjects.begin())->deregisterListener(this);
+    }
+}
+
+void ProgramPipeline::notifyChanged(const Program *)
+{
+}
+
+void ProgramPipeline::addSubject(Program * subject)
+{
+    m_programSubjects.insert(subject);
+}
+
+void ProgramPipeline::removeSubject(Program * subject)
+{
+    assert(subject != nullptr);
+
+    const auto it = m_programSubjects.find(subject);
+
+    if (it == m_programSubjects.end())
+    {
+        return;
+    }
+
+    m_programSubjects.erase(it);
+    subject->deregisterListener(this);
 }
 
 void ProgramPipeline::accept(ObjectVisitor & visitor)
@@ -93,11 +123,6 @@ void ProgramPipeline::releaseProgram(Program * program)
     program->deregisterListener(this);
     m_programs.erase(program);
 
-    invalidate();
-}
-
-void ProgramPipeline::notifyChanged(const Changeable * /*sender*/)
-{
     invalidate();
 }
 
