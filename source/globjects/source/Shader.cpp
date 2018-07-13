@@ -93,6 +93,9 @@ Shader::~Shader()
     {
         (*m_programs.begin())->detach(this);
     }
+
+    // Disconnect as subject
+    setSource(nullptr);
 }
 
 void Shader::globalReplace(const std::string & search, const std::string & replacement)

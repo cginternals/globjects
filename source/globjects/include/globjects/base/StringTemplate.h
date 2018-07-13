@@ -6,7 +6,8 @@
 
 #include <globjects/globjects_api.h>
 
-#include <globjects/base/AbstractStringSourceDecorator.h>
+#include <globjects/base/AbstractStringSource.h>
+#include <globjects/base/ChangeListener.h>
 #include <globjects/base/Instantiator.h>
 
 
@@ -14,14 +15,13 @@ namespace globjects
 {
 
 
-class GLOBJECTS_API StringTemplate : public AbstractStringSourceDecorator, public Instantiator<StringTemplate>
+class GLOBJECTS_API StringTemplate : public globjects::AbstractStringSource, public Instantiator<StringTemplate>, protected globjects::ChangeListener
 {
 public:
     StringTemplate(AbstractStringSource * source);
     virtual ~StringTemplate();
 
     virtual std::string string() const override;
-    virtual void update() override;
 
     void replace(const std::string & original, const std::string & str);
     void replace(const std::string & original, int i);
@@ -29,6 +29,7 @@ public:
     void clearReplacements();
 
 protected:
+    AbstractStringSource * m_internal;
     mutable std::string m_modifiedSource;
     mutable bool m_modifiedSourceValid;
 
@@ -36,6 +37,8 @@ protected:
 
     void invalidate();
     std::string modifiedSource() const;
+
+    virtual void notifyChanged(const Changeable * changeable) override;
 };
 
 

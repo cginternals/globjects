@@ -102,7 +102,6 @@ set(headers
     ${include_path}/base/LogMessage.h
     ${include_path}/base/LogMessageLevel.h
     ${include_path}/base/StaticStringSource.h
-    ${include_path}/base/AbstractStringSourceDecorator.h
     ${include_path}/base/StringTemplate.h
 )
 
@@ -137,7 +136,6 @@ set(sources
     ${source_path}/base/Singleton.h
     ${source_path}/base/Singleton.inl
     ${source_path}/base/StaticStringSource.cpp
-    ${source_path}/base/AbstractStringSourceDecorator.cpp
     ${source_path}/base/StringTemplate.cpp
 
     ${source_path}/implementations/AbstractBufferImplementation.cpp

@@ -32,13 +32,19 @@ namespace globjects
 
 
 StringTemplate::StringTemplate(AbstractStringSource * source)
-: AbstractStringSourceDecorator(source)
+: m_internal(source)
 , m_modifiedSourceValid(false)
 {
+    assert(source != nullptr);
+
+    m_internal->registerListener(this);
+
+    invalidate();
 }
 
 StringTemplate::~StringTemplate()
 {
+    m_internal->deregisterListener(this);
 }
 
 std::string StringTemplate::string() const
@@ -71,9 +77,10 @@ void StringTemplate::replace(const std::string & original, const int i)
     replace(original, ss.str());
 }
 
-void StringTemplate::update()
+void StringTemplate::notifyChanged(const globjects::Changeable *)
 {
     invalidate();
+    changed();
 }
 
 void StringTemplate::invalidate()
