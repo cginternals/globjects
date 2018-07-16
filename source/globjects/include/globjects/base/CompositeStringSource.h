@@ -41,7 +41,6 @@ protected:
     void update() const;
 
 protected:
-    std::set<AbstractStringSource *> m_sourceSubjects;
     std::vector<AbstractStringSource *> m_sources;
     
     mutable bool m_dirty;

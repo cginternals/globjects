@@ -11,7 +11,6 @@
 #include <globjects/base/StringTemplate.h>
 
 #include <globjects/Program.h>
-#include <globjects/ObjectVisitor.h>
 
 #include <globjects/Resource.h>
 
@@ -123,11 +122,6 @@ void Shader::globalReplace(const std::string & search, const int i)
 void Shader::clearGlobalReplacements()
 {
     s_globalReplacements.clear();
-}
-
-void Shader::accept(ObjectVisitor & visitor)
-{
-    visitor.visitShader(this);
 }
 
 GLenum Shader::type() const

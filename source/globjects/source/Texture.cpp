@@ -8,7 +8,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <globjects/Buffer.h>
-#include <globjects/ObjectVisitor.h>
 #include <globjects/TextureHandle.h>
 
 #include "pixelformat.h"
@@ -445,11 +444,6 @@ void Texture::cubeMapImage(gl::GLint level, gl::GLenum internalFormat, gl::GLsiz
 void Texture::cubeMapImage(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data)
 {
     cubeMapImage(level, internalFormat, size.x, size.y, border, format, type, data);
-}
-
-void Texture::accept(ObjectVisitor& visitor)
-{
-    visitor.visitTexture(this);
 }
 
 TextureHandle Texture::textureHandle() const

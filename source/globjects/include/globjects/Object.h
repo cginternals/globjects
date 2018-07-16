@@ -40,8 +40,6 @@ public:
 
 
 public:
-    virtual void accept(ObjectVisitor & visitor) = 0;
-
     gl::GLuint id() const;
 
     std::string name() const;

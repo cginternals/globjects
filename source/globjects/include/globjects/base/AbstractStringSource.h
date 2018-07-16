@@ -49,9 +49,12 @@ public:
     void deregisterListener(NamedString * listener);
 
     void addSubject(AbstractStringSource * subject);
-    virtual void removeSubject(AbstractStringSource * subject);
+    void removeSubject(AbstractStringSource * subject);
 
+
+protected:
     virtual void notifyChanged(const AbstractStringSource * sender);
+
 
 protected:
     std::set<AbstractStringSource *>    m_sourceListener;

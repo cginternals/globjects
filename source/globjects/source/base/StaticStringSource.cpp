@@ -11,6 +11,11 @@ StaticStringSource::StaticStringSource(const std::string & string)
 {
 }
 
+StaticStringSource::StaticStringSource(std::string && string)
+    : m_string(std::move(string))
+{
+}
+
 StaticStringSource::StaticStringSource(const char * data, const size_t length)
 : m_string(data, length)
 {
@@ -29,6 +34,13 @@ std::string StaticStringSource::string() const
 void StaticStringSource::setString(const std::string & string)
 {
     m_string = string;
+
+    changed();
+}
+
+void StaticStringSource::setString(std::string && string)
+{
+    m_string = std::move(string);
 
     changed();
 }

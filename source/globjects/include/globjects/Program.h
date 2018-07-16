@@ -101,8 +101,6 @@ public:
 
     virtual ~Program();
 
-    virtual void accept(ObjectVisitor & visitor) override;
-
     void use() const;
     static void release();
 

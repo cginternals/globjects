@@ -54,7 +54,6 @@ set(headers
     ${include_path}/Object.h
     ${include_path}/objectlogging.h
     ${include_path}/objectlogging.inl
-    ${include_path}/ObjectVisitor.h
     ${include_path}/ProgramBinary.h
     ${include_path}/Program.h
     ${include_path}/Program.inl
@@ -223,7 +222,6 @@ set(sources
     ${source_path}/NamedString.cpp
     ${source_path}/Object.cpp
     ${source_path}/objectlogging.cpp
-    ${source_path}/ObjectVisitor.cpp
     ${source_path}/pixelformat.cpp
     ${source_path}/pixelformat.h
     ${source_path}/ProgramBinary.cpp

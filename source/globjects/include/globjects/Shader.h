@@ -76,8 +76,6 @@ public:
 
     virtual ~Shader();
 
-    virtual void accept(ObjectVisitor& visitor) override;
-
     gl::GLenum type() const;
 
     void setSource(AbstractStringSource * source);

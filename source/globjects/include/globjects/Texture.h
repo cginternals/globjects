@@ -61,8 +61,6 @@ public:
     static std::unique_ptr<Texture> createDefault();
     static std::unique_ptr<Texture> createDefault(gl::GLenum target);
 
-    virtual void accept(ObjectVisitor & visitor) override;
-
     void bind() const;
     void unbind() const;
     static void unbind(gl::GLenum target);

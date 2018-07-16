@@ -6,7 +6,6 @@
 #include <glbinding/gl/functions.h>
 
 #include <globjects/Program.h>
-#include <globjects/ObjectVisitor.h>
 
 #include <globjects/Resource.h>
 
@@ -67,11 +66,6 @@ void ProgramPipeline::removeSubject(Program * subject)
 
     m_programSubjects.erase(it);
     subject->deregisterListener(this);
-}
-
-void ProgramPipeline::accept(ObjectVisitor & visitor)
-{
-    visitor.visitProgramPipeline(this);
 }
 
 void ProgramPipeline::use() const

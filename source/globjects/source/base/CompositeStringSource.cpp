@@ -20,41 +20,12 @@ CompositeStringSource::CompositeStringSource(const std::vector<AbstractStringSou
     for (AbstractStringSource * source : sources)
     {
         m_sources.push_back(source);
+        source->registerListener(this);
     }
 }
 
 CompositeStringSource::~CompositeStringSource()
 {
-    while (!m_sources.empty())
-    {
-        (*m_sources.begin())->deregisterListener(this);
-    }
-
-    while (!m_sourceSubjects.empty())
-    {
-        // calls removeSubject
-        (*m_sourceSubjects.begin())->deregisterListener(this);
-    }
-}
-
-void CompositeStringSource::addSubject(AbstractStringSource * subject)
-{
-    m_sourceSubjects.insert(subject);
-}
-
-void CompositeStringSource::removeSubject(AbstractStringSource * subject)
-{
-    assert(subject != nullptr);
-
-    const auto it = m_sourceSubjects.find(subject);
-
-    if (it == m_sourceSubjects.end())
-    {
-        return;
-    }
-
-    m_sourceSubjects.erase(it);
-    subject->deregisterListener(this);
 }
 
 void CompositeStringSource::appendSource(AbstractStringSource * source)

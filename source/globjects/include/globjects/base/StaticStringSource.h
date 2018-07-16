@@ -23,12 +23,14 @@ class GLOBJECTS_API StaticStringSource : public AbstractStringSource, public Ins
 {
 public:
     StaticStringSource(const std::string & string);
+    StaticStringSource(std::string && string);
     StaticStringSource(const char * data, size_t length);
 
     virtual std::string shortInfo() const override;
     virtual std::string string() const override;
 
     void setString(const std::string & string);
+    void setString(std::string && string);
 
 protected:
     std::string m_string;

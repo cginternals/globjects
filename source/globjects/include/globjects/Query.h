@@ -81,8 +81,6 @@ public:
 
     static gl::GLint getCounterBits(gl::GLenum target);
 
-    virtual void accept(ObjectVisitor& visitor) override;
-
     void begin(gl::GLenum target) const;
     void end(gl::GLenum target) const;
 

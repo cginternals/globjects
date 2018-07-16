@@ -13,7 +13,6 @@
 #include <globjects/globjects.h>
 
 #include <globjects/Uniform.h>
-#include <globjects/ObjectVisitor.h>
 #include <globjects/ProgramBinary.h>
 #include <globjects/Shader.h>
 #include <globjects/AbstractUniform.h>
@@ -82,11 +81,6 @@ Program::~Program()
         // calls removeSubject
         (*m_shaderSubjects.begin())->deregisterListener(this);
     }
-}
-
-void Program::accept(ObjectVisitor & visitor)
-{
-    visitor.visitProgram(this);
 }
 
 void Program::addSubject(Shader * subject)
