@@ -25,9 +25,9 @@ CompositeStringSource::CompositeStringSource(const std::vector<AbstractStringSou
 
 CompositeStringSource::~CompositeStringSource()
 {
-    while (!m_sources.empty())
+    while (!m_subjects.empty())
     {
-        (*m_sources.begin())->deregisterListener(this);
+        (*m_subjects.begin())->deregisterListener(this);
     }
 }
 
