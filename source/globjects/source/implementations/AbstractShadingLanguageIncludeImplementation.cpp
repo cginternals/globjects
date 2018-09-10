@@ -46,6 +46,11 @@ std::vector<const char *> AbstractShadingLanguageIncludeImplementation::collectC
         cStrings.push_back(str.c_str());
     }
 
+    if (cStrings.empty())
+    {
+        cStrings.push_back("");
+    }
+
     return cStrings;
 }
 
