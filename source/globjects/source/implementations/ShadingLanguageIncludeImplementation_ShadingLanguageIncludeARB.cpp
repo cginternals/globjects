@@ -28,8 +28,16 @@ void ShadingLanguageIncludeImplementation_ARB::updateSources(const Shader * shad
 
 void ShadingLanguageIncludeImplementation_ARB::compile(const Shader * shader) const
 {
-    std::vector<const char*> cStrings = collectCStrings(shader->includePaths());
-    glCompileShaderIncludeARB(shader->id(), static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
+    if (!shader->includePaths().empty())
+    {
+        std::vector<const char*> cStrings = collectCStrings(shader->includePaths());
+        glCompileShaderIncludeARB(shader->id(), static_cast<GLint>(cStrings.size()), cStrings.data(), nullptr);
+    }
+    else
+    {
+        glCompileShaderIncludeARB(shader->id(), 0, nullptr, nullptr);
+    }
+
 }
 
 
