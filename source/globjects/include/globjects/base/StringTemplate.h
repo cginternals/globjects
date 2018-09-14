@@ -7,7 +7,6 @@
 #include <globjects/globjects_api.h>
 
 #include <globjects/base/AbstractStringSource.h>
-#include <globjects/base/ChangeListener.h>
 #include <globjects/base/Instantiator.h>
 
 
@@ -15,7 +14,7 @@ namespace globjects
 {
 
 
-class GLOBJECTS_API StringTemplate : public globjects::AbstractStringSource, public Instantiator<StringTemplate>, protected globjects::ChangeListener
+class GLOBJECTS_API StringTemplate : public AbstractStringSource, public Instantiator<StringTemplate>
 {
 public:
     StringTemplate(AbstractStringSource * source);
@@ -38,7 +37,7 @@ protected:
     void invalidate();
     std::string modifiedSource() const;
 
-    virtual void notifyChanged(const Changeable * changeable) override;
+    virtual void notifyChanged(const AbstractStringSource * changeable) override;
 };
 
 

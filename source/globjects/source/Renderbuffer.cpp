@@ -4,8 +4,6 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 
-#include <globjects/ObjectVisitor.h>
-
 #include <globjects/Resource.h>
 
 
@@ -23,11 +21,6 @@ Renderbuffer::Renderbuffer()
 
 Renderbuffer::~Renderbuffer()
 {
-}
-
-void Renderbuffer::accept(ObjectVisitor& visitor)
-{
-    visitor.visitRenderBufferObject(this);
 }
 
 void Renderbuffer::bind() const

@@ -65,8 +65,6 @@ public:
 
     virtual ~TransformFeedback();
 
-    virtual void accept(ObjectVisitor & visitor) override;
-
     void bind() const;
     static void unbind();
 

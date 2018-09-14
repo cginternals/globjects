@@ -1,6 +1,8 @@
 
 #include <globjects/NamedString.h>
 
+#include <cassert>
+
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/boolean.h>
 #include <glbinding/gl/enum.h>
@@ -146,9 +148,29 @@ void NamedString::updateString()
     createNamedString();
 }
 
-void NamedString::notifyChanged(const Changeable *)
+void NamedString::notifyChanged(const AbstractStringSource *)
 {
     updateString();
+}
+
+void NamedString::addSubject(AbstractStringSource * subject)
+{
+    m_sourceSubjects.insert(subject);
+}
+
+void NamedString::removeSubject(AbstractStringSource * subject)
+{
+    assert(subject != nullptr);
+
+    const auto it = m_sourceSubjects.find(subject);
+
+    if (it == m_sourceSubjects.end())
+    {
+        return;
+    }
+
+    m_sourceSubjects.erase(it);
+    subject->deregisterListener(this);
 }
 
 

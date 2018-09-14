@@ -9,7 +9,6 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include <globjects/ObjectVisitor.h>
 #include <globjects/AttachedTexture.h>
 #include <globjects/FramebufferAttachment.h>
 #include <globjects/AttachedRenderbuffer.h>
@@ -70,11 +69,6 @@ std::unique_ptr<Framebuffer> Framebuffer::defaultFBO()
 
 Framebuffer::~Framebuffer()
 {
-}
-
-void Framebuffer::accept(ObjectVisitor & visitor)
-{
-    visitor.visitFrameBufferObject(this);
 }
 
 void Framebuffer::bind() const

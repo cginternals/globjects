@@ -4,10 +4,10 @@
 
 #include <string>
 #include <memory>
+#include <set>
 
 #include <glbinding/gl/types.h>
 
-#include <globjects/base/ChangeListener.h>
 #include <globjects/base/Instantiator.h>
 
 #include <globjects/globjects_api.h>
@@ -20,7 +20,7 @@ namespace globjects
 class AbstractStringSource;
 
 
-class GLOBJECTS_API NamedString : protected ChangeListener, public Instantiator<NamedString>
+class GLOBJECTS_API NamedString : public Instantiator<NamedString>
 {
 public:
     NamedString(const std::string & name, AbstractStringSource * source);
@@ -41,7 +41,10 @@ public:
 
     gl::GLint getParameter(gl::GLenum pname) const;
 
-    virtual void notifyChanged(const Changeable * changeable) override;
+    virtual void notifyChanged(const AbstractStringSource * changeable);
+
+    void addSubject(AbstractStringSource * subject);
+    virtual void removeSubject(AbstractStringSource * subject);
 
 
 protected:
@@ -59,6 +62,8 @@ protected:
 
 
 protected:
+    std::set<AbstractStringSource*> m_sourceSubjects;
+
     std::string m_name;
 
     AbstractStringSource * m_source;

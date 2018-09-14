@@ -8,7 +8,6 @@
 #include <globjects/globjects_api.h>
 
 #include <globjects/base/Instantiator.h>
-#include <globjects/base/ChangeListener.h>
 #include <globjects/base/AbstractStringSource.h>
 
 
@@ -16,7 +15,7 @@ namespace globjects
 {
 
 
-class GLOBJECTS_API CompositeStringSource : public AbstractStringSource, protected ChangeListener, public Instantiator<CompositeStringSource>
+class GLOBJECTS_API CompositeStringSource : public AbstractStringSource, public Instantiator<CompositeStringSource>
 {
 public:
     CompositeStringSource();
@@ -31,10 +30,13 @@ public:
 
     virtual void flattenInto(std::vector<const AbstractStringSource *> & vector) const override;
 
+    void addSubject(AbstractStringSource * subject);
+    void removeSubject(AbstractStringSource * subject);
+
     virtual std::string shortInfo() const override;
 protected:
 
-    virtual void notifyChanged(const Changeable * changeable) override;
+    virtual void notifyChanged(const AbstractStringSource * changeable) override;
 
     void update() const;
 

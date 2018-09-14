@@ -67,8 +67,6 @@ public:
 
     static std::unique_ptr<Framebuffer> defaultFBO();
 
-    virtual void accept(ObjectVisitor& visitor) override;
-
     /** uses GL_FRAMEBUFFER as target
     */
     void bind() const;

@@ -43,8 +43,6 @@ public:
     static std::unique_ptr<VertexArray> fromId(gl::GLuint id);
     static std::unique_ptr<VertexArray> defaultVAO();
 
-    virtual void accept(ObjectVisitor & visitor) override;
-
     void bind() const;
     static void unbind();
 

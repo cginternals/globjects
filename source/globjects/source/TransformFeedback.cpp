@@ -7,7 +7,6 @@
 #include <glbinding/gl/boolean.h>
 #include <glbinding/gl/enum.h>
 
-#include <globjects/ObjectVisitor.h>
 #include <globjects/Program.h>
 
 #include <globjects/Resource.h>
@@ -27,11 +26,6 @@ TransformFeedback::TransformFeedback()
 
 TransformFeedback::~TransformFeedback()
 {
-}
-
-void TransformFeedback::accept(ObjectVisitor& visitor)
-{
-    visitor.visitTransformFeedback(this);
 }
 
 void TransformFeedback::bind() const

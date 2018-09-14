@@ -28,8 +28,6 @@ public:
 
     static std::unique_ptr<Sampler> fromId(gl::GLuint id);
 
-    virtual void accept(ObjectVisitor & visitor) override;
-
     void bind(gl::GLuint unit) const;
     static void unbind(gl::GLuint unit);
 

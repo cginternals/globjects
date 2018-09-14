@@ -5,8 +5,6 @@
 #include <glbinding/gl/boolean.h>
 #include <glbinding/gl/enum.h>
 
-#include <globjects/ObjectVisitor.h>
-
 #include <globjects/Resource.h>
 
 
@@ -87,11 +85,6 @@ GLint Query::getIndexed(const GLenum target, const GLuint index, const GLenum pn
     glGetQueryIndexediv(target, index, pname, &value);
 
     return value;
-}
-
-void Query::accept(ObjectVisitor& visitor)
-{
-    visitor.visitQuery(this);
 }
 
 void Query::begin(const GLenum target) const

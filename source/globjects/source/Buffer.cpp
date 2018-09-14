@@ -7,7 +7,6 @@
 #include <glbinding/gl/enum.h>
 
 #include <globjects/globjects.h>
-#include <globjects/ObjectVisitor.h>
 
 #include "registry/ImplementationRegistry.h"
 
@@ -63,11 +62,6 @@ Buffer * Buffer::fromId(const GLuint id)
 
 Buffer::~Buffer()
 {
-}
-
-void Buffer::accept(ObjectVisitor& visitor)
-{
-    visitor.visitBuffer(this);
 }
 
 void Buffer::bind(const GLenum target) const
