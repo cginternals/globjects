@@ -26,6 +26,10 @@ CompositeStringSource::CompositeStringSource(const std::vector<AbstractStringSou
 
 CompositeStringSource::~CompositeStringSource()
 {
+    while (!m_subjects.empty())
+    {
+        (*m_subjects.begin())->deregisterListener(this);
+    }
 }
 
 void CompositeStringSource::appendSource(AbstractStringSource * source)
