@@ -95,7 +95,8 @@ Shader::~Shader()
     }
 
     // Disconnect as subject
-    setSource(nullptr);
+    // setSource(nullptr);
+    // TODO: this is currently a bug as a registered resource may get destroyed before and fails to deregister from this source
 }
 
 void Shader::globalReplace(const std::string & search, const std::string & replacement)
