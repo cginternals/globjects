@@ -1,8 +1,9 @@
 
 #include <globjects/ProgramBinary.h>
 
-#include <globjects/base/StaticStringSource.h>
-#include <globjects/base/AbstractStringSource.h>
+#include <cassert>
+
+#include <globjects/Program.h>
 
 
 using namespace gl;
@@ -20,6 +21,42 @@ ProgramBinary::ProgramBinary(const GLenum binaryFormat, const std::vector<unsign
 
 ProgramBinary::~ProgramBinary()
 {
+    while (!m_programListeners.empty())
+    {
+        // calls deregisterListener
+        (*m_programListeners.begin())->removeSubject(this);
+    }
+}
+
+void ProgramBinary::changed() const
+{
+    for (Program * listener: m_programListeners)
+    {
+        listener->notifyChanged(this);
+    }
+}
+
+void ProgramBinary::registerListener(Program * listener)
+{
+    assert(listener != nullptr);
+
+    m_programListeners.insert(listener);
+    listener->addSubject(this);
+}
+
+void ProgramBinary::deregisterListener(Program * listener)
+{
+    assert(listener != nullptr);
+
+    const auto it = m_programListeners.find(listener);
+
+    if (it == m_programListeners.end())
+    {
+        return;
+    }
+
+    m_programListeners.erase(it);
+    listener->removeSubject(this);
 }
 
 GLenum ProgramBinary::format() const

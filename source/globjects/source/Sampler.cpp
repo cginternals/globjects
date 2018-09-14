@@ -7,8 +7,6 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 
-#include <globjects/ObjectVisitor.h>
-
 #include <globjects/Resource.h>
 
 
@@ -36,11 +34,6 @@ std::unique_ptr<Sampler> Sampler::fromId(const GLuint id)
 
 Sampler::~Sampler()
 {
-}
-
-void Sampler::accept(ObjectVisitor & visitor)
-{
-    visitor.visitSampler(this);
 }
 
 void Sampler::bind(const GLuint unit) const

@@ -13,10 +13,10 @@
 #include <globjects/globjects.h>
 
 #include <globjects/Uniform.h>
-#include <globjects/ObjectVisitor.h>
 #include <globjects/ProgramBinary.h>
 #include <globjects/Shader.h>
 #include <globjects/AbstractUniform.h>
+#include <globjects/ProgramPipeline.h>
 
 #include <globjects/Resource.h>
 #include "registry/ImplementationRegistry.h"
@@ -75,11 +75,75 @@ Program::~Program()
     {
         detach(*m_shaders.begin());
     }
+
+    while (!m_shaderSubjects.empty())
+    {
+        // calls removeSubject
+        (*m_shaderSubjects.begin())->deregisterListener(this);
+    }
 }
 
-void Program::accept(ObjectVisitor & visitor)
+void Program::addSubject(Shader * subject)
 {
-    visitor.visitProgram(this);
+    m_shaderSubjects.insert(subject);
+}
+
+void Program::removeSubject(Shader * subject)
+{
+    assert(subject != nullptr);
+
+    const auto it = m_shaderSubjects.find(subject);
+
+    if (it == m_shaderSubjects.end())
+    {
+        return;
+    }
+
+    m_shaderSubjects.erase(it);
+    subject->deregisterListener(this);
+}
+
+void Program::addSubject(ProgramBinary * subject)
+{
+    m_programBinarySubjects.insert(subject);
+}
+
+void Program::removeSubject(ProgramBinary * subject)
+{
+    assert(subject != nullptr);
+
+    const auto it = m_programBinarySubjects.find(subject);
+
+    if (it == m_programBinarySubjects.end())
+    {
+        return;
+    }
+
+    m_programBinarySubjects.erase(it);
+    subject->deregisterListener(this);
+}
+
+void Program::registerListener(ProgramPipeline * listener)
+{
+    assert(listener != nullptr);
+
+    m_pipelineListeners.insert(listener);
+    listener->addSubject(this);
+}
+
+void Program::deregisterListener(ProgramPipeline * listener)
+{
+    assert(listener != nullptr);
+
+    const auto it = m_pipelineListeners.find(listener);
+
+    if (it == m_pipelineListeners.end())
+    {
+        return;
+    }
+
+    m_pipelineListeners.erase(it);
+    listener->removeSubject(this);
 }
 
 void Program::use() const
@@ -114,7 +178,12 @@ void Program::invalidate() const
     m_dirty = true;
 }
 
-void Program::notifyChanged(const Changeable *)
+void Program::notifyChanged(const Shader *)
+{
+    invalidate();
+}
+
+void Program::notifyChanged(const ProgramBinary *)
 {
     invalidate();
 }
@@ -154,6 +223,14 @@ void Program::detach(Shader * shader)
 const std::set<Shader *> & Program::shaders() const
 {
     return m_shaders;
+}
+
+void Program::changed() const
+{
+    for (ProgramPipeline * listener: m_pipelineListeners)
+    {
+        listener->notifyChanged(this);
+    }
 }
 
 void Program::link() const

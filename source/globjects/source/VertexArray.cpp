@@ -6,13 +6,12 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 
-#include <globjects/ObjectVisitor.h>
 #include <globjects/VertexAttributeBinding.h>
 
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
-#include "container_helpers.h"
+#include "base/container_helpers.h"
 #include "registry/ObjectRegistry.h"
 
 #include <globjects/Resource.h>
@@ -65,11 +64,6 @@ std::unique_ptr<VertexArray> VertexArray::defaultVAO()
 
 VertexArray::~VertexArray()
 {
-}
-
-void VertexArray::accept(ObjectVisitor & visitor)
-{
-    visitor.visitVertexArray(this);
 }
 
 void VertexArray::bind() const

@@ -71,11 +71,6 @@ public:
     */
     static Buffer * fromId(gl::GLuint id);
 
-    /** \brief Implements the visitor pattern.
-        \param visitor The visitor on which visitBuffer will be called.
-    */
-    virtual void accept(ObjectVisitor & visitor) override;
-
     /** \brief Binds the buffer to target.
         \param target the target for binding
         \see https://www.opengl.org/sdk/docs/man4/xhtml/gl::glBindBuffer.xml

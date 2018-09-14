@@ -20,6 +20,7 @@ CompositeStringSource::CompositeStringSource(const std::vector<AbstractStringSou
     for (AbstractStringSource * source : sources)
     {
         m_sources.push_back(source);
+        source->registerListener(this);
     }
 }
 
@@ -40,7 +41,7 @@ void CompositeStringSource::appendSource(AbstractStringSource * source)
     changed();
 }
 
-void CompositeStringSource::notifyChanged(const Changeable *)
+void CompositeStringSource::notifyChanged(const AbstractStringSource *)
 {
     m_dirty = true;
     changed();
