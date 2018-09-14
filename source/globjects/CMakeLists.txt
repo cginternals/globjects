@@ -115,12 +115,11 @@ set(sources
     ${source_path}/glmlogging.cpp
     ${source_path}/globjects.cpp
     
-    ${source_path}/container_helpers.h
-    ${source_path}/container_helpers.inl
-    
     ${source_path}/base/AbstractFunctionCall.cpp
     ${source_path}/base/AbstractStringSource.cpp
     ${source_path}/base/baselogging.cpp
+    ${source_path}/base/container_helpers.h
+    ${source_path}/base/container_helpers.inl
     ${source_path}/base/CompositeStringSource.cpp
     ${source_path}/base/ConsoleLogger.cpp
     ${source_path}/base/File.cpp

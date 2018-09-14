@@ -11,7 +11,7 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
-#include "container_helpers.h"
+#include "base/container_helpers.h"
 #include "registry/ObjectRegistry.h"
 
 #include <globjects/Resource.h>
