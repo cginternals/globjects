@@ -2,6 +2,7 @@
 #include <globjects/Program.h>
 
 #include <cassert>
+#include <iostream>
 
 #include <glm/vec3.hpp>
 

@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <mutex>
+#include <sstream>
 
 #include <glbinding/glbinding.h>
 #include <glbinding/gl/gl.h>
@@ -14,16 +15,14 @@
 
 #include <globjects/Error.h>
 #include <globjects/logging.h>
+#include <globjects/DebugMessage.h>
+#include <globjects/logging.h>
+#include <globjects/NamedString.h>
 
 #include "registry/Registry.h"
 #include "registry/ObjectRegistry.h"
 #include "registry/ExtensionRegistry.h"
 #include "registry/ImplementationRegistry.h"
-
-#include <globjects/DebugMessage.h>
-#include <globjects/logging.h>
-
-#include <globjects/NamedString.h>
 
 
 using namespace gl;

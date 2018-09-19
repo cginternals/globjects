@@ -2,6 +2,7 @@
 #include <globjects/Framebuffer.h>
 
 #include <cassert>
+#include <sstream>
 
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>

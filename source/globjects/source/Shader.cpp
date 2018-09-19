@@ -1,6 +1,9 @@
 
 #include <globjects/Shader.h>
 
+#include <iostream>
+#include <sstream>
+
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/boolean.h>
@@ -9,9 +12,7 @@
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/base/File.h>
 #include <globjects/base/StringTemplate.h>
-
 #include <globjects/Program.h>
-
 #include <globjects/Resource.h>
 
 #include "registry/ImplementationRegistry.h"

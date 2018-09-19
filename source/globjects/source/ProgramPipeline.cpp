@@ -1,12 +1,13 @@
 
 #include <globjects/ProgramPipeline.h>
 
+#include <iostream>
+
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/boolean.h>
 #include <glbinding/gl/functions.h>
 
 #include <globjects/Program.h>
-
 #include <globjects/Resource.h>
 
 
