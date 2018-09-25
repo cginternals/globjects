@@ -48,6 +48,14 @@ public:
         DirectStateAccessARB
     };
 
+    enum class StorageMultisampleImplementation
+    {
+        Fallback,
+        Legacy,
+        DirectStateAccessEXT,
+        DirectStateAccessARB
+    };
+
     static void hintBindlessImplementation(BindlessImplementation impl);
     static void hintStorageImplementation(StorageImplementation impl);
 

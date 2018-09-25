@@ -12,6 +12,7 @@
 #include "../implementations/AbstractObjectNameImplementation.h"
 #include "../implementations/AbstractTextureImplementation.h"
 #include "../implementations/AbstractTextureStorageImplementation.h"
+#include "../implementations/AbstractTextureStorageMultisampleImplementation.h"
 #include "../implementations/AbstractVertexAttributeBindingImplementation.h"
 
 
@@ -29,6 +30,7 @@ ImplementationRegistry::ImplementationRegistry()
 , m_objectNameImplementation(nullptr)
 , m_textureBindlessImplementation(nullptr)
 , m_textureStorageImplementation(nullptr)
+, m_textureStorageMultisampleImplementation(nullptr)
 , m_attributeImplementation(nullptr)
 {
 }
@@ -45,6 +47,7 @@ ImplementationRegistry::~ImplementationRegistry()
     delete m_attributeImplementation;
     delete m_textureBindlessImplementation;
     delete m_textureStorageImplementation;
+    delete m_textureStorageMultisampleImplementation;
 }
 
 ImplementationRegistry & ImplementationRegistry::current()
@@ -64,6 +67,7 @@ void ImplementationRegistry::initialize()
     m_attributeImplementation = AbstractVertexAttributeBindingImplementation::get();
     m_textureBindlessImplementation = AbstractTextureImplementation::get();
     m_textureStorageImplementation = AbstractTextureStorageImplementation::get();
+    m_textureStorageMultisampleImplementation = AbstractTextureStorageMultisampleImplementation::get();
 }
 
 void ImplementationRegistry::initialize(const AbstractUniform::BindlessImplementation impl)
@@ -114,6 +118,11 @@ void ImplementationRegistry::initialize(Texture::BindlessImplementation impl)
 void ImplementationRegistry::initialize(Texture::StorageImplementation impl)
 {
     m_textureStorageImplementation = AbstractTextureStorageImplementation::get(impl);
+}
+
+void ImplementationRegistry::initialize(Texture::StorageMultisampleImplementation impl)
+{
+    m_textureStorageMultisampleImplementation = AbstractTextureStorageMultisampleImplementation::get(impl);
 }
 
 AbstractUniformImplementation & ImplementationRegistry::uniformImplementation()
@@ -194,6 +203,14 @@ AbstractTextureStorageImplementation & ImplementationRegistry::textureStorageImp
         m_textureStorageImplementation = AbstractTextureStorageImplementation::get();
 
     return *m_textureStorageImplementation;
+}
+
+AbstractTextureStorageMultisampleImplementation & ImplementationRegistry::textureStorageMultisampleImplementation()
+{
+    if (!m_textureStorageMultisampleImplementation)
+        m_textureStorageMultisampleImplementation = AbstractTextureStorageMultisampleImplementation::get();
+
+    return *m_textureStorageMultisampleImplementation;
 }
 
 
