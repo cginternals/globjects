@@ -97,21 +97,10 @@ namespace globjects
 
 void init(glbinding::GetProcAddress functionPointerResolver)
 {
-    {
-        std::lock_guard<std::mutex> lock(g_mutex);
-
-        if (!g_globjectsIsInitialized)
-        {
-            initializeCallbacks();
-
-            g_globjectsIsInitialized = true;
-        }
-    }
-
-    registerCurrentContext(functionPointerResolver);
+    init(0, functionPointerResolver);
 }
 
-void init(glbinding::GetProcAddress functionPointerResolver, const glbinding::ContextHandle sharedContextId)
+void init(glbinding::ContextHandle contextHandle, glbinding::GetProcAddress functionPointerResolver)
 {
     {
         std::lock_guard<std::mutex> lock(g_mutex);
@@ -124,7 +113,28 @@ void init(glbinding::GetProcAddress functionPointerResolver, const glbinding::Co
         }
     }
 
-    registerCurrentContext(functionPointerResolver, sharedContextId);
+    registerContext(contextHandle, functionPointerResolver);
+}
+
+void init(glbinding::GetProcAddress functionPointerResolver, const glbinding::ContextHandle sharedContextId)
+{
+    init(0, functionPointerResolver, sharedContextId);
+}
+
+void init(glbinding::ContextHandle contextHandle, glbinding::GetProcAddress functionPointerResolver, glbinding::ContextHandle sharedContextId)
+{
+    {
+        std::lock_guard<std::mutex> lock(g_mutex);
+
+        if (!g_globjectsIsInitialized)
+        {
+            initializeCallbacks();
+
+            g_globjectsIsInitialized = true;
+        }
+    }
+
+    registerContext(contextHandle, functionPointerResolver, sharedContextId);
 }
 
 void detachAllObjects()
@@ -135,14 +145,24 @@ void detachAllObjects()
 
 void registerCurrentContext(glbinding::GetProcAddress functionPointerResolver)
 {
-    glbinding::Binding::initialize(functionPointerResolver);
-    Registry::registerContext(0);
+    registerContext(0, functionPointerResolver);
 }
 
 void registerCurrentContext(glbinding::GetProcAddress functionPointerResolver, const glbinding::ContextHandle sharedContextId)
 {
+    registerContext(0, functionPointerResolver, sharedContextId);
+}
+
+void registerContext(glbinding::ContextHandle contextHandle, glbinding::GetProcAddress functionPointerResolver)
+{
     glbinding::Binding::initialize(functionPointerResolver);
-    Registry::registerContext(0, sharedContextId);
+    Registry::registerContext(contextHandle);
+}
+
+void registerContext(glbinding::ContextHandle contextHandle, glbinding::GetProcAddress functionPointerResolver, glbinding::ContextHandle sharedContextId)
+{
+    glbinding::Binding::initialize(functionPointerResolver);
+    Registry::registerContext(contextHandle, sharedContextId);
 }
 
 void setContext(const glbinding::ContextHandle contextId)
