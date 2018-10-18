@@ -4,6 +4,16 @@
 
 *globjects* is an [MIT licensed](http://opensource.org/licenses/MIT), cross-platform C++ wrapper for [OpenGL API](http://www.opengl.org) objects.
 
+[![Travis](https://img.shields.io/travis/cginternals/globjects/master.svg?style=flat&logo=travis)](https://travis-ci.org/cginternals/globjects)
+[![Appveyor](https://img.shields.io/appveyor/ci/gruntjs/grunt/master.svg?style=flat&logo=appveyor)](https://ci.appveyor.com/project/scheibel/globjects/branch/master)
+[![Coverity](https://img.shields.io/coverity/scan/6828.svg?style=flat&logo=coverity)](https://scan.coverity.com/projects/6828)
+[![Coveralls](https://img.shields.io/badge/coveralls-ToDo-lightgrey.svg?)](https://coveralls.io/github/cginternals/globjects)
+[![Tokei](https://tokei.rs/b1/github/cginternals/globjects)](https://github.com/Aaronepower/tokei)
+
+[![Documentation](https://img.shields.io/badge/documentation-online-blue.svg?style=flat&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMC41IDEzLjciPjxwYXRoIGQ9Ik0xMS41IDYuOGwtMy43IDYuNEwuNS41aDE0LjdsLTEuMyAyLjFINC4yTDcuOCA5bDIuNS00LjN6bTcuMyA0LjNsMS4yIDIuMWgtOS43TDE3LjYuNWwxLjIgMi4xLTQuOSA4LjV6IiBmaWxsPSIjZmZmIi8%2BPC9zdmc%2B)](https://www.globjects.org/docs.html)
+[![Examples](https://img.shields.io/badge/examples-wiki-blue.svg?style=flat&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMC41IDEzLjciPjxwYXRoIGQ9Ik0xMS41IDYuOGwtMy43IDYuNEwuNS41aDE0LjdsLTEuMyAyLjFINC4yTDcuOCA5bDIuNS00LjN6bTcuMyA0LjNsMS4yIDIuMWgtOS43TDE3LjYuNWwxLjIgMi4xLTQuOSA4LjV6IiBmaWxsPSIjZmZmIi8%2BPC9zdmc%2B)](https://github.com/cginternals/globjects/wiki/Examples)
+
+
 [//]: # (HEADER_END)
 
 *globjects* provides object-oriented interfaces to the OpenGL API (3.0 and higher).
@@ -96,17 +106,6 @@ If enabled, this code checks (1) for GL errors (```glGetError```) after each cal
 * [Shader templates](#shader-templates)
 * [Manual strategy override](#strategy-override)
 * [iostream Integration](#logging)
-
-
-# Project Health
-
-| Service | System | Compiler | Status |
-| ------- | ------ | -------- | -----: |
-|  [Travis-CI](https://travis-ci.org/cginternals/globjects) | Ubuntu 14.04 | GCC 4.8, Clang 3.5 | [![Build Status](https://travis-ci.org/cginternals/globjects.svg?branch=master)](https://travis-ci.org/cginternals/globjects) |
-|  [Travis-CI](https://travis-ci.org/cginternals/globjects) | OS X | Clang ? | upcoming |
-| [Coverity](https://scan.coverity.com/projects/6829?tab=overview) | Ubuntu 14.04 | GCC 5.4 | [![Coverity Status](https://scan.coverity.com/projects/6829/badge.svg)](https://scan.coverity.com/projects/6829) |
-| Jenkins <br><br><br><br> | Ubuntu 14.04 <br><br><br><br> | GCC 4.8 <br> GCC 4.9 <br> GCC 5.4 <br> Clang 3.8 <br> | [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc4.8)](https://jenkins.hpi3d.de/job/globjects-linux-gcc4.8) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc4.9)](https://jenkins.hpi3d.de/job/globjects-linux-gcc4.9) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-gcc5)](https://jenkins.hpi3d.de/job/globjects-linux-gcc5) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-linux-clang3.8)](https://jenkins.hpi3d.de/job/globjects-linux-clang3.8) <br> |
-| Jenkins <br><br> | Windows 10 <br><br> | MSVC 2013 Update 5 <br>  MSVC 2015 Update 1 <br> | [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-windows-msvc2013)](https://jenkins.hpi3d.de/job/globjects-windows-msvc2013) <br> [![Build Status](https://jenkins.hpi3d.de/buildStatus/icon?job=globjects-windows-msvc2015)](https://jenkins.hpi3d.de/job/globjects-windows-msvc2015) <br> |
 
 
 # Install Instructions
