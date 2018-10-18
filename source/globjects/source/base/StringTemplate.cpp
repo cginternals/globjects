@@ -32,19 +32,17 @@ namespace globjects
 
 
 StringTemplate::StringTemplate(AbstractStringSource * source)
-: m_internal(source)
-, m_modifiedSourceValid(false)
+: m_modifiedSourceValid(false)
 {
     assert(source != nullptr);
 
-    m_internal->registerListener(this);
+    source->registerListener(this);
 
     invalidate();
 }
 
 StringTemplate::~StringTemplate()
 {
-    m_internal->deregisterListener(this);
 }
 
 std::string StringTemplate::string() const
@@ -91,7 +89,7 @@ void StringTemplate::invalidate()
 
 std::string StringTemplate::modifiedSource() const
 {
-    std::string source = m_internal->string();
+    std::string source = (*m_subjects.begin())->string();
 
     for (const auto & pair: m_replacements)
         replaceAll(source, pair.first, pair.second);

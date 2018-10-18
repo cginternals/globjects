@@ -28,7 +28,6 @@ public:
     void clearReplacements();
 
 protected:
-    AbstractStringSource * m_internal;
     mutable std::string m_modifiedSource;
     mutable bool m_modifiedSourceValid;
 
