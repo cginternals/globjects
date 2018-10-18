@@ -391,6 +391,11 @@ void initializeStrategy(const Object::NameImplementation impl)
     Registry::current().implementations().initialize(impl);
 }
 
+void initializeStrategy(const Texture::BindlessImplementation impl)
+{
+    Registry::current().implementations().initialize(impl);
+}
+
 void initializeStrategy(const VertexArray::AttributeImplementation impl)
 {
     Registry::current().implementations().initialize(impl);

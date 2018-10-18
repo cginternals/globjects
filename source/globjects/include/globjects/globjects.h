@@ -21,6 +21,7 @@
 #include <globjects/Shader.h>
 #include <globjects/Object.h>
 #include <globjects/VertexArray.h>
+#include <globjects/Texture.h>
 
 
 namespace glbinding
@@ -114,6 +115,7 @@ GLOBJECTS_API void initializeStrategy(DebugMessage::Implementation impl);
 GLOBJECTS_API void initializeStrategy(Program::BinaryImplementation impl);
 GLOBJECTS_API void initializeStrategy(Shader::IncludeImplementation impl);
 GLOBJECTS_API void initializeStrategy(Object::NameImplementation impl);
+GLOBJECTS_API void initializeStrategy(Texture::BindlessImplementation impl);
 GLOBJECTS_API void initializeStrategy(VertexArray::AttributeImplementation impl);
 
 
