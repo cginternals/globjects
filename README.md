@@ -4,6 +4,7 @@
 
 *globjects* is a cross-platform C++ wrapper for [OpenGL API](http://www.opengl.org) objects.
 
+![GitHub release](https://img.shields.io/github/release/cginternals/globjects.svg)
 [![Travis](https://img.shields.io/travis/cginternals/globjects/master.svg?style=flat&logo=travis)](https://travis-ci.org/cginternals/globjects)
 [![Appveyor](https://img.shields.io/appveyor/ci/scheibel/globjects/master.svg?style=flat&logo=appveyor)](https://ci.appveyor.com/project/scheibel/globjects/branch/master)
 [![Coverity](https://img.shields.io/coverity/scan/6828.svg?style=flat&logo=coverity)](https://scan.coverity.com/projects/6828)
