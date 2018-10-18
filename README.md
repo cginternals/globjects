@@ -2,7 +2,7 @@
 
 <br><a href="https://github.com/cginternals/globjects/"><img src="https://raw.githubusercontent.com/cginternals/globjects/master/globjects-logo.svg?sanitize=true" width="50%"></a>
 
-*globjects* is an [MIT licensed](http://opensource.org/licenses/MIT), cross-platform C++ wrapper for [OpenGL API](http://www.opengl.org) objects.
+*globjects* is a cross-platform C++ wrapper for [OpenGL API](http://www.opengl.org) objects.
 
 [![Travis](https://img.shields.io/travis/cginternals/globjects/master.svg?style=flat&logo=travis)](https://travis-ci.org/cginternals/globjects)
 [![Appveyor](https://img.shields.io/appveyor/ci/gruntjs/grunt/master.svg?style=flat&logo=appveyor)](https://ci.appveyor.com/project/scheibel/globjects/branch/master)
