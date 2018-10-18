@@ -46,7 +46,7 @@ public:
     {
     }
 
-    virtual void initializeGL() override
+    virtual bool initializeGL() override
     {
         globjects::init([this](const char * name) {
             return getProcAddress(name);
@@ -89,6 +89,8 @@ public:
         m_vao->binding(0)->setBuffer(m_cornerBuffer.get(), 0, sizeof(glm::vec2));
         m_vao->binding(0)->setFormat(2, GL_FLOAT);
         m_vao->enable(0);
+
+        return true;
     }
 
     virtual void deinitializeGL() override

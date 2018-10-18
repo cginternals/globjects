@@ -82,11 +82,9 @@ void WindowQt::initialize()
 {
     makeCurrent();
 
-    initializeGL();
+    m_initialized = initializeGL();
 
     doneCurrent();
-
-    m_initialized = true;
 }
 
 void WindowQt::resize(QResizeEvent * event)
@@ -152,8 +150,9 @@ bool WindowQt::event(QEvent * event)
     }
 }
 
-void WindowQt::initializeGL()
+bool WindowQt::initializeGL()
 {
+    return false;
 }
 
 void WindowQt::deinitializeGL()

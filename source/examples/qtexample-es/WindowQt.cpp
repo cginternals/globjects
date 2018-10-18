@@ -152,8 +152,9 @@ bool WindowQt::event(QEvent * event)
     }
 }
 
-void WindowQt::initializeGL()
+bool WindowQt::initializeGL()
 {
+    return false;
 }
 
 void WindowQt::deinitializeGL()
