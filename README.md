@@ -1,4 +1,6 @@
-![globjects Logo](globjects-logo.png "globjects")
+[//]: # (Comment)
+
+<br><a href="https://github.com/cginternals/globjects/"><img src="https://raw.githubusercontent.com/cginternals/globjects/master/globjects-logo.svg?sanitize=true" width="50%"></a>
 
 *globjects* is an [MIT licensed](http://opensource.org/licenses/MIT), cross-platform C++ wrapper for [OpenGL API](http://www.opengl.org) objects.
 
