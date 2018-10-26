@@ -48,9 +48,7 @@ public:
 
     virtual bool initializeGL() override
     {
-        globjects::init([this](const char * name) {
-            return getProcAddress(name);
-        });
+        globjects::init(getProcAddress);
 
         std::cout << std::endl
             << "OpenGL Version:  " << glbinding::aux::ContextInfo::version() << std::endl

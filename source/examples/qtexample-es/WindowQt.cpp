@@ -7,6 +7,8 @@
 #include <QOpenGLContext>
 
 
+WindowQt * WindowQt::s_getProcAddressHelper = nullptr;
+
 QSurfaceFormat defaultFormat()
 {
     QSurfaceFormat format;
@@ -22,6 +24,11 @@ WindowQt::WindowQt(QApplication & app, const QSurfaceFormat & format)
 , m_updatePending(false)
 , m_initialized(false)
 {
+    if (!s_getProcAddressHelper)
+    {
+        s_getProcAddressHelper = this;
+    }
+
     QSurfaceFormat f(format);
     //f.setRenderableType(QSurfaceFormat::OpenGLES);
 
@@ -178,7 +185,7 @@ void WindowQt::leaveEvent(QEvent *)
 
 glbinding::ProcAddress WindowQt::getProcAddress(const char * name)
 {
-    if (name == nullptr)
+    if (!s_getProcAddressHelper || name == nullptr)
     {
         return nullptr;
     }
@@ -190,5 +197,5 @@ glbinding::ProcAddress WindowQt::getProcAddress(const char * name)
     #else
     const auto qtSymbol = QByteArray::fromRawData(symbol.c_str(), symbol.size());
     #endif
-    return m_context->getProcAddress(qtSymbol);
+    return s_getProcAddressHelper->m_context->getProcAddress(qtSymbol);
 }

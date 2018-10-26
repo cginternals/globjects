@@ -48,9 +48,7 @@ public:
 
     virtual bool initializeGL() override
     {
-        globjects::init([this](const char * name) {
-            return getProcAddress(name);
-        });
+        globjects::init(getProcAddress);
 
         globjects::Shader::globalReplace("#version 140", "#version 300 es");
         globjects::Shader::globalReplace("#extension GL_ARB_explicit_attrib_location : require", "precision mediump float;");
