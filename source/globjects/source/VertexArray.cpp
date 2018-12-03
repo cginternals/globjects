@@ -161,8 +161,6 @@ void VertexArray::drawArraysInstancedBaseInstance(const GLenum mode, const GLint
 
 void VertexArray::drawArraysIndirect(const GLenum mode, const void* indirect) const
 {
-    assert(indirect != nullptr);
-
     bind();
     glDrawArraysIndirect(mode, indirect);
 }
