@@ -161,8 +161,8 @@ void VertexArray::drawArraysInstancedBaseInstance(const GLenum mode, const GLint
 
 void VertexArray::drawArraysIndirect(const GLenum mode, const void* indirect) const
 {
-    assert(indirect != nullptr);
-
+    // Don't assert a non-null indirect pointer as it may be a zero offset into the indirection buffer in GPU memory
+    
     bind();
     glDrawArraysIndirect(mode, indirect);
 }
