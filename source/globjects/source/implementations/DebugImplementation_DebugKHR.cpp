@@ -56,9 +56,19 @@ void DebugImplementation_DebugKHR::disable()
     globjects::disable(GL_DEBUG_OUTPUT);
 }
 
+bool DebugImplementation_DebugKHR::isEnabled() const
+{
+    return globjects::isEnabled(GL_DEBUG_OUTPUT);
+}
+
 void DebugImplementation_DebugKHR::setSynchronous(bool synchronous)
 {
     setEnabled(GL_DEBUG_OUTPUT_SYNCHRONOUS, synchronous);
+}
+
+bool DebugImplementation_DebugKHR::isSynchronous() const
+{
+    return globjects::isEnabled(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 }
 
 void DebugImplementation_DebugKHR::insertMessage(const DebugMessage & message)

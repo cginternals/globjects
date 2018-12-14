@@ -55,10 +55,12 @@ protected:
 public:
     static void enable(bool synchronous = true);
     static void disable();
+    static bool isEnabled();
 
     static void setCallback(Callback callback);
 
     static void setSynchronous(bool synchronous);
+    static bool isSynchronous();
 
     static void insertMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, gl::GLsizei length, const char * message);
     static void insertMessage(gl::GLenum source, gl::GLenum type, gl::GLuint id, gl::GLenum severity, const std::string & message);

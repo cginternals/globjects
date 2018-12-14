@@ -35,9 +35,19 @@ void DebugImplementation_Legacy::disable()
     glbinding::setCallbackMask(glbinding::CallbackMask::None);
 }
 
+bool DebugImplementation_Legacy::isEnabled() const
+{
+    return m_enabled;
+}
+
 void DebugImplementation_Legacy::setSynchronous(bool)
 {
     // ignore
+}
+
+bool DebugImplementation_Legacy::isSynchronous() const
+{
+    return true;
 }
 
 void DebugImplementation_Legacy::insertMessage(const DebugMessage & message)

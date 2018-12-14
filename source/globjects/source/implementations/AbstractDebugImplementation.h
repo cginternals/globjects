@@ -27,8 +27,10 @@ public:
 
     virtual void enable() = 0;
     virtual void disable() = 0;
+    virtual bool isEnabled() const = 0;
 
     virtual void setSynchronous(bool synchronous) = 0;
+    virtual bool isSynchronous() const = 0;
 
     virtual void insertMessage(const DebugMessage & message) = 0;
 
