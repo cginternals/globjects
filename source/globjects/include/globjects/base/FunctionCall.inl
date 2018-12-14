@@ -7,7 +7,7 @@
 #include <utility>
 
 
-namespace 
+namespace
 {
 
 
@@ -92,7 +92,7 @@ FunctionCall<Arguments...>::FunctionCall()
 template <typename... Arguments>
 void FunctionCall<Arguments...>::operator()()
 {
-    apply(m_function, m_arguments);
+    ::apply(m_function, m_arguments);
 }
 
 template <typename... Arguments>
