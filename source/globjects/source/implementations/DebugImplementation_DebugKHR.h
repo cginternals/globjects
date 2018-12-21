@@ -21,7 +21,9 @@ public:
 
     virtual void enable() override;
     virtual void disable() override;
+    virtual bool isEnabled() const override;
     virtual void setSynchronous(bool synchronous) override;
+    virtual bool isSynchronous() const override;
     virtual void insertMessage(const DebugMessage & message) override;
     virtual void controlMessages(gl::GLenum source, gl::GLenum type, gl::GLenum severity, gl::GLsizei count, const gl::GLuint * ids, gl::GLboolean enabled) override;
 

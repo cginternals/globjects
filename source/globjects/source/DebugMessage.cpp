@@ -160,6 +160,11 @@ void DebugMessage::disable()
     implementation().disable();
 }
 
+bool DebugMessage::isEnabled()
+{
+    return implementation().isEnabled();
+}
+
 void DebugMessage::setCallback(Callback callback)
 {
     implementation().setCallback(callback);
@@ -168,6 +173,11 @@ void DebugMessage::setCallback(Callback callback)
 void DebugMessage::setSynchronous(const bool synchronous)
 {
     implementation().setSynchronous(synchronous);
+}
+
+bool DebugMessage::isSynchronous()
+{
+    return implementation().isSynchronous();
 }
 
 void DebugMessage::insertMessage(const GLenum source, const GLenum type, const GLuint id, const GLenum severity, const GLsizei length, const char * message)
