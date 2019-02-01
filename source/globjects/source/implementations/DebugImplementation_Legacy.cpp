@@ -52,7 +52,7 @@ bool DebugImplementation_Legacy::isSynchronous() const
 
 void DebugImplementation_Legacy::insertMessage(const DebugMessage & message)
 {
-    if (m_enabled)
+    if (!m_enabled)
     {
         return;
     }
