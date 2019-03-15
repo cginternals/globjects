@@ -7,7 +7,9 @@
 #include <utility>
 
 
-namespace 
+namespace globjects
+{
+namespace detail
 {
 
 
@@ -69,11 +71,7 @@ inline auto apply(F && f, T && t)
 }
 
 
-} // namespace
-
-
-namespace globjects
-{
+} // namespace detail
 
 
 template <typename... Arguments>
@@ -92,7 +90,7 @@ FunctionCall<Arguments...>::FunctionCall()
 template <typename... Arguments>
 void FunctionCall<Arguments...>::operator()()
 {
-    apply(m_function, m_arguments);
+    detail::apply(m_function, m_arguments);
 }
 
 template <typename... Arguments>
