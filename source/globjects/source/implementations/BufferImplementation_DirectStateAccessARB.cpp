@@ -34,9 +34,9 @@ void * BufferImplementation_DirectStateAccessARB::map(const Buffer * buffer, GLe
     return glMapNamedBuffer(buffer->id(), access);
 }
 
-void * BufferImplementation_DirectStateAccessARB::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, BufferAccessMask access) const
+void * BufferImplementation_DirectStateAccessARB::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, MapBufferAccessMask access) const
 {
-    return glMapNamedBufferRange(buffer->id(), offset, static_cast<GLsizei>(length), access);
+    return glMapNamedBufferRange(buffer->id(), offset, static_cast<GLsizei>(length), static_cast<BufferAccessMask>(access));
 }
 
 bool BufferImplementation_DirectStateAccessARB::unmap(const Buffer * buffer) const

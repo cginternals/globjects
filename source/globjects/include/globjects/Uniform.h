@@ -27,7 +27,7 @@ namespace globjects
  * std::unique_ptr<Uniform<float>> u = Uniform<float>::create("u_ratio");
  * u->set(1.618f);
  *
- * program->addUniform(u.get());
+ * program->addUniform(std::move(u));
  * \endcode
  *
  * \see AbstractUniform

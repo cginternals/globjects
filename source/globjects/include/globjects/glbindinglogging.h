@@ -36,7 +36,7 @@ GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::FragmentShaderColorModMaskATI & value);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::FragmentShaderDestMaskATI & value);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::FragmentShaderDestModMaskATI & value);
-GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::MapBufferUsageMask & value);
+GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::BufferStorageMask & value);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::MemoryBarrierMask & value);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::PathRenderingMaskNV & value);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::PerformanceQueryCapsMaskINTEL & value);

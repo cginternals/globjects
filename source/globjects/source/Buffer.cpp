@@ -89,7 +89,7 @@ void* Buffer::map(const GLenum access)
     return implementation().map(this, access);
 }
 
-void* Buffer::mapRange(const GLintptr offset, const GLsizeiptr length, const BufferAccessMask access)
+void* Buffer::mapRange(const GLintptr offset, const GLsizeiptr length, const MapBufferAccessMask access)
 {
     return implementation().mapRange(this, offset, length, access);
 }

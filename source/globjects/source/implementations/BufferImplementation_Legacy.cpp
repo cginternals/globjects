@@ -39,7 +39,7 @@ void * BufferImplementation_Legacy::map(const Buffer * buffer, GLenum access) co
     return glMapBuffer(s_workingTarget, access);
 }
 
-void * BufferImplementation_Legacy::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, BufferAccessMask access) const
+void * BufferImplementation_Legacy::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, MapBufferAccessMask access) const
 {
     buffer->bind(s_workingTarget);
 

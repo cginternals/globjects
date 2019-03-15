@@ -194,7 +194,7 @@ public:
         \return pointer to the mapped memory
         \see http://www.opengl.org/sdk/docs/man/xhtml/glMapBufferRange.xml
     */
-    void * mapRange(gl::GLintptr offset, gl::GLsizeiptr length, gl::BufferAccessMask access);
+    void * mapRange(gl::GLintptr offset, gl::GLsizeiptr length, gl::MapBufferAccessMask access);
     
     /** \brief Wraps the OpenGL function glUnmapBuffer.
         \see http://www.opengl.org/sdk/docs/man3/xhtml/glMapBuffer.xml

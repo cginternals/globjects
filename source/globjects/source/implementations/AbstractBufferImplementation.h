@@ -27,7 +27,7 @@ public:
     virtual void destroy(gl::GLuint id) const = 0;
 
     virtual void * map(const Buffer * buffer, gl::GLenum access) const = 0;
-    virtual void * mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::BufferAccessMask access) const = 0;
+    virtual void * mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::MapBufferAccessMask access) const = 0;
     virtual bool unmap(const Buffer * buffer) const = 0;
 
     virtual void setData(const Buffer * buffer, gl::GLsizeiptr size, const gl::GLvoid * data, gl::GLenum usage) const = 0;
