@@ -26,6 +26,7 @@ class AbstractObjectNameImplementation;
 class AbstractVertexAttributeBindingImplementation;
 class AbstractTextureImplementation;
 class AbstractTextureStorageImplementation;
+class AbstractTextureStorageMultisampleImplementation;
 
 
 class ImplementationRegistry
@@ -46,6 +47,7 @@ public:
     void initialize(VertexArray::AttributeImplementation impl);
     void initialize(Texture::BindlessImplementation impl);
     void initialize(Texture::StorageImplementation impl);
+    void initialize(Texture::StorageMultisampleImplementation impl);
 
     static ImplementationRegistry & current();
 
@@ -59,6 +61,7 @@ public:
     AbstractVertexAttributeBindingImplementation & attributeImplementation();
     AbstractTextureImplementation & textureBindlessImplementation();
     AbstractTextureStorageImplementation & textureStorageImplementation();
+    AbstractTextureStorageMultisampleImplementation & textureStorageMultisampleImplementation();
 
 
 protected:
@@ -71,6 +74,7 @@ protected:
     AbstractObjectNameImplementation * m_objectNameImplementation;
     AbstractTextureImplementation * m_textureBindlessImplementation;
     AbstractTextureStorageImplementation * m_textureStorageImplementation;
+    AbstractTextureStorageMultisampleImplementation * m_textureStorageMultisampleImplementation;
     AbstractVertexAttributeBindingImplementation * m_attributeImplementation;
 };
 

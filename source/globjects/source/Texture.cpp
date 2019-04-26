@@ -16,6 +16,7 @@
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractTextureImplementation.h"
 #include "implementations/AbstractTextureStorageImplementation.h"
+#include "implementations/AbstractTextureStorageMultisampleImplementation.h"
 
 
 using namespace gl;
@@ -33,6 +34,11 @@ const globjects::AbstractTextureImplementation & bindlessImplementation()
 const globjects::AbstractTextureStorageImplementation & storageImplementation()
 {
     return globjects::ImplementationRegistry::current().textureStorageImplementation();
+}
+
+const globjects::AbstractTextureStorageMultisampleImplementation & storageMultisampleImplementation()
+{
+    return globjects::ImplementationRegistry::current().textureStorageMultisampleImplementation();
 }
 
 
@@ -327,7 +333,7 @@ void Texture::storage3D(const GLsizei levels, const GLenum internalFormat, const
 
 void Texture::storage2DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLboolean fixedSamplesLocations)
 {
-    storageImplementation().storage2DMultisample(this, samples, internalFormat, width, height, fixedSamplesLocations);
+    storageMultisampleImplementation().storage2DMultisample(this, samples, internalFormat, width, height, fixedSamplesLocations);
 }
 
 void Texture::storage2DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec2 & size, GLboolean fixedSamplesLocations)
@@ -337,7 +343,7 @@ void Texture::storage2DMultisample(GLsizei samples, GLenum internalFormat, const
 
 void Texture::storage3DMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedSamplesLocations)
 {
-    storageImplementation().storage3DMultisample(this, samples, internalFormat, width, height, depth, fixedSamplesLocations);
+    storageMultisampleImplementation().storage3DMultisample(this, samples, internalFormat, width, height, depth, fixedSamplesLocations);
 }
 
 void Texture::storage3DMultisample(GLsizei samples, GLenum internalFormat, const glm::ivec3 & size, GLboolean fixedSamplesLocations)

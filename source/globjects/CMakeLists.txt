@@ -195,6 +195,17 @@ set(sources
     ${source_path}/implementations/TextureStorageImplementation_Fallback.cpp
     ${source_path}/implementations/TextureStorageImplementation_Fallback.h
 
+    ${source_path}/implementations/AbstractTextureStorageMultisampleImplementation.cpp
+    ${source_path}/implementations/AbstractTextureStorageMultisampleImplementation.h
+    ${source_path}/implementations/TextureStorageMultisampleImplementation_DirectStateAccessARB.cpp
+    ${source_path}/implementations/TextureStorageMultisampleImplementation_DirectStateAccessARB.h
+    ${source_path}/implementations/TextureStorageMultisampleImplementation_DirectStateAccessEXT.cpp
+    ${source_path}/implementations/TextureStorageMultisampleImplementation_DirectStateAccessEXT.h
+    ${source_path}/implementations/TextureStorageMultisampleImplementation_Legacy.cpp
+    ${source_path}/implementations/TextureStorageMultisampleImplementation_Legacy.h
+    ${source_path}/implementations/TextureStorageMultisampleImplementation_Fallback.cpp
+    ${source_path}/implementations/TextureStorageMultisampleImplementation_Fallback.h
+
     ${source_path}/implementations/AbstractUniformImplementation.cpp
     ${source_path}/implementations/AbstractUniformImplementation.h
     ${source_path}/implementations/UniformImplementation_Legacy.cpp
