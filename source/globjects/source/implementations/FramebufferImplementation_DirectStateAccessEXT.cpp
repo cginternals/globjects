@@ -67,9 +67,16 @@ void FramebufferImplementation_DirectStateAccessEXT::attachTextureLayer(const Fr
 
 void FramebufferImplementation_DirectStateAccessEXT::attachRenderBuffer(const Framebuffer * fbo, GLenum attachment, Renderbuffer * renderBuffer) const
 {
-    renderBuffer->bind(); // TODO: is this necessary?
+    if (renderBuffer != nullptr)
+    {
+        renderBuffer->bind(); // TODO: is this necessary?
 
-    glNamedFramebufferRenderbufferEXT(fbo->id(), attachment, GL_RENDERBUFFER, renderBuffer->id());
+        glNamedFramebufferRenderbufferEXT(fbo->id(), attachment, GL_RENDERBUFFER, renderBuffer->id());
+    }
+    else
+    {
+        glNamedFramebufferRenderbufferEXT(fbo->id(), attachment, GL_RENDERBUFFER, 0);
+    }
 }
 
 void FramebufferImplementation_DirectStateAccessEXT::setReadBuffer(const Framebuffer * fbo, GLenum mode) const

@@ -70,9 +70,16 @@ void FramebufferImplementation_DirectStateAccessARB::attachTextureLayer(const Fr
 
 void FramebufferImplementation_DirectStateAccessARB::attachRenderBuffer(const Framebuffer * fbo, GLenum attachment, Renderbuffer * renderBuffer) const
 {
-    renderBuffer->bind(); // TODO: is this necessary?
+    if (renderBuffer != nullptr)
+    {
+        renderBuffer->bind(); // TODO: is this necessary?
 
-    glNamedFramebufferRenderbuffer(fbo->id(), attachment, GL_RENDERBUFFER, renderBuffer->id());
+        glNamedFramebufferRenderbuffer(fbo->id(), attachment, GL_RENDERBUFFER, renderBuffer->id());
+    }
+    else
+    {
+        glNamedFramebufferRenderbuffer(fbo->id(), attachment, GL_RENDERBUFFER, 0);
+    }
 }
 
 void FramebufferImplementation_DirectStateAccessARB::setReadBuffer(const Framebuffer * fbo, GLenum mode) const

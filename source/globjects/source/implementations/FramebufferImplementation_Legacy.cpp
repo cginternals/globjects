@@ -98,9 +98,19 @@ void FramebufferImplementation_Legacy::attachTextureLayer(const Framebuffer * fb
 void FramebufferImplementation_Legacy::attachRenderBuffer(const Framebuffer * fbo, GLenum attachment, Renderbuffer * renderBuffer) const
 {
     fbo->bind(s_workingTarget);
-    renderBuffer->bind();
 
-    glFramebufferRenderbuffer(s_workingTarget, attachment, GL_RENDERBUFFER, renderBuffer->id());
+    if (renderBuffer != nullptr)
+    {
+        renderBuffer->bind();
+
+        glFramebufferRenderbuffer(s_workingTarget, attachment, GL_RENDERBUFFER, renderBuffer->id());
+    }
+    else
+    {
+        Renderbuffer::unbind();
+
+        glFramebufferRenderbuffer(s_workingTarget, attachment, GL_RENDERBUFFER, 0);
+    }
 }
 
 void FramebufferImplementation_Legacy::setReadBuffer(const Framebuffer * fbo, GLenum mode) const
