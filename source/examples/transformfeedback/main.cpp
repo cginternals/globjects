@@ -87,7 +87,7 @@ void initialize()
 
     g_transformFeedbackProgram->setUniform("deltaT", 0.0f);
 
-    g_shaderProgram->setUniform("modelView", glm::mat4());
+    g_shaderProgram->setUniform("modelView", glm::mat4(1.0f));
     g_shaderProgram->setUniform("projection", glm::ortho(-0.4f, 1.4f, -0.4f, 1.4f, 0.f, 1.f));
 
 
@@ -119,18 +119,18 @@ void initialize()
 
     g_vao->binding(0)->setAttribute(0);
     g_vao->binding(0)->setFormat(4, GL_FLOAT);
+    g_vao->binding(0)->setBuffer(g_vertexBuffer1.get(), 0, sizeof(glm::vec4));
+    g_vao->enable(0);
 
     g_vao->binding(1)->setAttribute(1);
     g_vao->binding(1)->setBuffer(g_colorBuffer.get(), 0, sizeof(glm::vec4));
     g_vao->binding(1)->setFormat(4, GL_FLOAT);
-
-    g_vao->enable(0);
     g_vao->enable(1);
-
 
     // Create and setup TransformFeedback
     g_transformFeedback = globjects::TransformFeedback::create();
     g_transformFeedback->setVaryings(g_transformFeedbackProgram.get(), { { "next_position" } }, GL_INTERLEAVED_ATTRIBS);
+    g_transformFeedback->unbind();
 
 
     g_startTime = std::chrono::high_resolution_clock::now();
@@ -162,16 +162,13 @@ void deinitialize()
 
 void draw()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    const auto side = std::min<int>(g_size.x, g_size.y);
-    glViewport((g_size.x - side) / 2, (g_size.y - side) / 2, side, side);
-
     const auto t_elapsed = std::chrono::high_resolution_clock::now() - g_startTime;
     g_startTime = std::chrono::high_resolution_clock::now();
 
-    auto drawBuffer  = g_vertexBuffer1.get();
-    auto writeBuffer = g_vertexBuffer2.get();
+    const auto drawBuffer  = g_vertexBuffer1.get();
+    const auto writeBuffer = g_vertexBuffer2.get();
+
+    // RECORD / PROCESS
 
     g_vao->bind();
 
@@ -190,12 +187,21 @@ void draw()
     g_transformFeedback->end();
     glDisable(GL_RASTERIZER_DISCARD);
 
+    // writeBuffer->unbindBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0); // not implemented?
     g_transformFeedback->unbind();
 
+    // DRAW
+
+    // g_vao->bind();
     g_vao->binding(0)->setBuffer(writeBuffer, 0, sizeof(glm::vec4));
 
+    const auto side = std::min<int>(g_size.x, g_size.y);
+    glViewport((g_size.x - side) / 2, (g_size.y - side) / 2, side, side);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     g_shaderProgram->use();
-    g_transformFeedback->draw(GL_TRIANGLE_STRIP);
+    g_transformFeedback->draw(GL_TRIANGLES);
     g_shaderProgram->release();
 
     g_vao->unbind();
