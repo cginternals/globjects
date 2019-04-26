@@ -61,18 +61,30 @@ std::array<gl::GLboolean, Count> getBooleans(const gl::GLenum pname)
     return values;
 }
 
-template <typename T, typename... Args>
+template <typename T, typename ... Args>
 void init(glbinding::GetProcAddress functionPointerResolver, T strategy, Args... args)
 {
-    init(functionPointerResolver, args...);
+    init(0, functionPointerResolver, strategy, args...);
+}
+
+template <typename T, typename... Args>
+void init(glbinding::ContextHandle contextHandle, glbinding::GetProcAddress functionPointerResolver, T strategy, Args... args)
+{
+    init(contextHandle, functionPointerResolver, args...);
 
     initializeStrategy(strategy);
 }
 
-template <typename T, typename... Args>
-void init(glbinding::GetProcAddress functionPointerResolver, const glbinding::ContextHandle sharedContextId, T strategy, Args... args)
+template <typename T, typename ... Args>
+void init(glbinding::GetProcAddress functionPointerResolver, glbinding::ContextHandle sharedContextId, T strategy, Args... args)
 {
-    init(functionPointerResolver, sharedContextId, args...);
+    init(0, functionPointerResolver, sharedContextId, strategy, args...);
+}
+
+template <typename T, typename... Args>
+void init(glbinding::ContextHandle contextHandle, glbinding::GetProcAddress functionPointerResolver, const glbinding::ContextHandle sharedContextId, T strategy, Args... args)
+{
+    init(contextHandle, functionPointerResolver, sharedContextId, args...);
 
     initializeStrategy(strategy);
 }
