@@ -86,6 +86,10 @@ public:
 
     virtual void set(const Program * program, gl::GLint location, const std::vector<gl::GLuint64> & value) const = 0;
     virtual void set(const Program * program, gl::GLint location, const std::vector<TextureHandle> & value) const;
+
+#ifdef GLOBJECTS_USE_EIGEN
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const = 0;
+#endif
 };
 
 

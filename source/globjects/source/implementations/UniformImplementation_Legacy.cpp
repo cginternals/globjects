@@ -298,5 +298,12 @@ void UniformImplementation_Legacy::set(const Program* program, const GLint locat
     glUniformHandleui64vARB(location, static_cast<GLint>(value.size()), value.data());
 }
 
+#ifdef GLOBJECTS_USE_EIGEN
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const {
+    program->use();
+    glUniform2fv(location, 1, value.data());
+}
+#endif
+
 
 } // namespace globjects

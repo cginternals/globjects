@@ -14,6 +14,12 @@
 
 #include <globjects/LocationIdentity.h>
 
+#ifdef GLOBJECTS_USE_EIGEN
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <Eigen/Geometry>
+#include <Eigen/Sparse>
+#endif
 
 namespace globjects
 {
@@ -141,6 +147,81 @@ protected:
     template <typename T, std::size_t Count>
     void setValue(gl::GLint location, const std::array<T, Count> & value) const;
 
+#ifdef GLOBJECTS_USE_EIGEN
+
+  void setValue(gl::GLint location, const Eigen::Vector2f &value) const;
+  //    void setValue(gl::GLint location, const Eigen::vec3 & value) const;
+  //    void setValue(gl::GLint location, const Eigen::vec4 & value) const;
+
+  //  void setValue(gl::GLint location, const Eigen::Vector2i &value) const;
+  //    void setValue(gl::GLint location, const Eigen::ivec3 & value) const;
+  //    void setValue(gl::GLint location, const Eigen::ivec4 & value) const;
+
+  //  void setValue(gl::GLint location,
+  //                const Eigen::Matrix<uint, 3, 1> &value) const;
+  //    void setValue(gl::GLint location, const Eigen::uvec3 & value) const;
+  //    void setValue(gl::GLint location, const Eigen::uvec4 & value) const;
+  /*
+      void setValue(gl::GLint location, const Eigen::mat2 & value) const;
+      void setValue(gl::GLint location, const Eigen::mat3 & value) const;
+      void setValue(gl::GLint location, const Eigen::mat4 & value) const;
+
+      void setValue(gl::GLint location, const Eigen::mat2x3 & value) const;
+      void setValue(gl::GLint location, const Eigen::mat3x2 & value) const;
+      void setValue(gl::GLint location, const Eigen::mat2x4 & value) const;
+      void setValue(gl::GLint location, const Eigen::mat4x2 & value) const;
+      void setValue(gl::GLint location, const Eigen::mat3x4 & value) const;
+      void setValue(gl::GLint location, const Eigen::mat4x3 & value) const;
+
+      void setValue(gl::GLint location, const gl::GLuint64 & value) const;
+      void setValue(gl::GLint location, const TextureHandle & value) const;
+
+      void setValue(gl::GLint location, const std::vector<float> & value) const;
+      void setValue(gl::GLint location, const std::vector<int> & value) const;
+      void setValue(gl::GLint location, const std::vector<unsigned int> & value)
+     const; void setValue(gl::GLint location, const std::vector<bool> & value)
+     const;
+
+      void setValue(gl::GLint location, const std::vector<Eigen::Vector2f> &
+     value) const; void setValue(gl::GLint location, const
+     std::vector<Eigen::vec3> & value) const; void setValue(gl::GLint location,
+     const std::vector<Eigen::vec4> & value) const;
+
+      void setValue(gl::GLint location, const std::vector<Eigen::iVector2f> &
+     value) const; void setValue(gl::GLint location, const
+     std::vector<Eigen::ivec3> & value) const; void setValue(gl::GLint location,
+     const std::vector<Eigen::ivec4> & value) const;
+
+      void setValue(gl::GLint location, const std::vector<Eigen::uVector2f> &
+     value) const; void setValue(gl::GLint location, const
+     std::vector<Eigen::uvec3> & value) const; void setValue(gl::GLint location,
+     const std::vector<Eigen::uvec4> & value) const;
+
+      void setValue(gl::GLint location, const std::vector<Eigen::mat2> & value)
+     const; void setValue(gl::GLint location, const std::vector<Eigen::mat3> &
+     value) const; void setValue(gl::GLint location, const
+     std::vector<Eigen::mat4> & value) const;
+
+      void setValue(gl::GLint location, const std::vector<Eigen::mat2x3> &
+     value) const; void setValue(gl::GLint location, const
+     std::vector<Eigen::mat3x2> & value) const; void setValue(gl::GLint
+     location, const std::vector<Eigen::mat2x4> & value) const; void
+     setValue(gl::GLint location, const std::vector<Eigen::mat4x2> & value)
+     const; void setValue(gl::GLint location, const std::vector<Eigen::mat3x4> &
+     value) const; void setValue(gl::GLint location, const
+     std::vector<Eigen::mat4x3> & value) const;
+
+      void setValue(gl::GLint location, const std::vector<gl::GLuint64> & value)
+     const; void setValue(gl::GLint location, const std::vector<TextureHandle> &
+     value) const;
+
+      template <typename T, std::size_t Count>
+      void setValue(gl::GLint location, const std::array<T, Count> & value)
+     const;
+
+  */
+
+#endif
 
 protected:
     LocationIdentity m_identity;

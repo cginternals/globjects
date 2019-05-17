@@ -252,5 +252,12 @@ void UniformImplementation_SeparateShaderObjectsARB::set(const Program* program,
     glProgramUniformHandleui64vARB(program->id(), location, static_cast<GLint>(value.size()), value.data());
 }
 
+#ifdef GLOBJECTS_USE_EIGEN
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const{
+    glProgramUniform2fv(program->id(), location, 1, value.data());
+}
+#endif
+
+
 
 } // namespace globjects
