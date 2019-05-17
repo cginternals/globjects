@@ -77,7 +77,7 @@ option(OPTION_BUILD_DOCS            "Build documentation."                      
 option(OPTION_BUILD_EXAMPLES        "Build examples."                                              OFF)
 option(OPTION_ENABLE_ERROR_CHECKS   "Check for success of OpenGL Functions."                       ON)
 option(OPTION_ERRORS_AS_EXCEPTION   "Throw exceptions instead of printing OpenGL run-time errors." OFF)
-
+option(OPTION_USE_EIGEN             "Add Eigen types as basic vector type for uniforms."           OFF)
 
 # 
 # Declare project
