@@ -2,7 +2,7 @@
 #pragma once
 
 
-namespace globjects 
+namespace globjects
 {
 
 
@@ -524,6 +524,118 @@ struct UniformTypeHelper<std::array<TextureHandle, Count>>
     static const UniformType value = UniformType::ARRAY_TEXTURE_HANDLE;
 };
 
+
+#ifdef GLOBJECTS_USE_EIGEN
+
+template <>
+struct UniformTypeHelper<Eigen::Vector2f>
+{
+    static const UniformType value = UniformType::FLOAT_VEC2;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Vector3f>
+{
+    static const UniformType value = UniformType::FLOAT_VEC3;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Vector4f>
+{
+    static const UniformType value = UniformType::FLOAT_VEC4;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Vector2i>
+{
+    static const UniformType value = UniformType::INT_VEC2;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Vector3i>
+{
+    static const UniformType value = UniformType::INT_VEC3;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Vector4i>
+{
+    static const UniformType value = UniformType::INT_VEC4;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix<uint, 2, 1>>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT_VEC2;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix<uint, 3, 1>>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT_VEC3;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix<uint, 4, 1>>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT_VEC4;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix2f>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix3f>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix4f>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix<float, 2, 3>>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix<float, 3, 2>>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix<float, 2, 4>>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix<float, 4, 2>>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix<float, 3, 4>>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT;
+};
+
+template <>
+struct UniformTypeHelper<Eigen::Matrix<float, 4, 3>>
+{
+    static const UniformType value = UniformType::UNSIGNED_INT;
+};
+
+#endif
 
 template <typename T, std::size_t Count>
 void AbstractUniform::setValue(const gl::GLint location, const std::array<T, Count> & value) const
