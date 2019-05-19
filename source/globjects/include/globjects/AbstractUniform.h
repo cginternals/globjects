@@ -15,10 +15,7 @@
 #include <globjects/LocationIdentity.h>
 
 #ifdef GLOBJECTS_USE_EIGEN
-#include <Eigen/Core>
 #include <Eigen/Dense>
-#include <Eigen/Geometry>
-#include <Eigen/Sparse>
 #endif
 
 namespace globjects
