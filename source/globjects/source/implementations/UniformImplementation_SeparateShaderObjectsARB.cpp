@@ -11,6 +11,10 @@
 
 using namespace gl;
 
+#ifdef GLOBJECTS_USE_EIGEN
+#include "EigenOpenGLSupport.h"
+#endif
+
 
 namespace globjects
 {
@@ -253,9 +257,13 @@ void UniformImplementation_SeparateShaderObjectsARB::set(const Program* program,
 }
 
 #ifdef GLOBJECTS_USE_EIGEN
-void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const{
-    glProgramUniform2fv(program->id(), location, 1, value.data());
+template<typename Derived> inline void eigenSet(const Program *program, gl::GLint location, const Eigen::DenseBase<Derived>& value) {
+    Eigen::glProgramUniform(program->id(), location, value);
 }
+
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const{ eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector3f &value) const{ eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector4f &value) const{ eigenSet(program, location, value); }
 #endif
 
 

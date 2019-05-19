@@ -148,10 +148,9 @@ protected:
     void setValue(gl::GLint location, const std::array<T, Count> & value) const;
 
 #ifdef GLOBJECTS_USE_EIGEN
-
-  void setValue(gl::GLint location, const Eigen::Vector2f &value) const;
-  //    void setValue(gl::GLint location, const Eigen::vec3 & value) const;
-  //    void setValue(gl::GLint location, const Eigen::vec4 & value) const;
+  void setValue(gl::GLint location, const Eigen::Vector2f & value) const;
+  void setValue(gl::GLint location, const Eigen::Vector3f & value) const;
+  void setValue(gl::GLint location, const Eigen::Vector4f & value) const;
 
   //  void setValue(gl::GLint location, const Eigen::Vector2i &value) const;
   //    void setValue(gl::GLint location, const Eigen::ivec3 & value) const;

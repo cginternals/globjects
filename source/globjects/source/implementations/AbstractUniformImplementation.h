@@ -89,6 +89,8 @@ public:
 
 #ifdef GLOBJECTS_USE_EIGEN
     virtual void set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Vector3f &value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Vector4f &value) const = 0;
 #endif
 };
 

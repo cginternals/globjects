@@ -269,6 +269,13 @@ set(sources
     ${source_path}/VertexAttributeBinding.cpp
 )
 
+
+if(OPTION_USE_EIGEN)
+  list(APPEND ${source}
+    ${source_path}/implementations/EigenOpenGLSupport.h
+)
+endif()
+
 # Group source files
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
@@ -381,6 +388,16 @@ if(OPTION_USE_EIGEN)
       Eigen3::Eigen
       INTERFACE
     )
+
+    target_include_directories(${target}
+      PRIVATE
+      "${EIGEN3_INCLUDE_DIR}"
+
+    PUBLIC
+
+    INTERFACE
+)
+
 endif()
 
 # 

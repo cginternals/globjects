@@ -340,10 +340,10 @@ void AbstractUniform::setValue(const GLint location, const std::vector<TextureHa
 
 
 #ifdef GLOBJECTS_USE_EIGEN
-void AbstractUniform::setValue(gl::GLint location,
-                               const Eigen::Vector2f &value) const {
-  implementation().set(m_program, location, value);
-}
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Vector2f &value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Vector3f &value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Vector4f &value) const { implementation().set(m_program, location, value); }
+
 #endif
 
 } // namespace globjects

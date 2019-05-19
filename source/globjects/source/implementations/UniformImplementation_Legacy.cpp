@@ -11,6 +11,9 @@
 
 using namespace gl;
 
+#ifdef GLOBJECTS_USE_EIGEN
+#include "EigenOpenGLSupport.h"
+#endif
 
 namespace globjects
 {
@@ -299,10 +302,14 @@ void UniformImplementation_Legacy::set(const Program* program, const GLint locat
 }
 
 #ifdef GLOBJECTS_USE_EIGEN
-void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const {
+template<typename Derived> inline void eigenSet(const Program *program, gl::GLint location, const Eigen::DenseBase<Derived>& value) {
     program->use();
-    glUniform2fv(location, 1, value.data());
+    Eigen::glUniform(location, value);
 }
+
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const {  eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector3f &value) const {  eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector4f &value) const {  eigenSet(program, location, value); }
 #endif
 
 
