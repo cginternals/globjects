@@ -79,6 +79,26 @@ public:
     virtual void set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const override;
     virtual void set(const Program *program, gl::GLint location, const Eigen::Vector3f &value) const override;
     virtual void set(const Program *program, gl::GLint location, const Eigen::Vector4f &value) const override;
+
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Vector2i &value) const override;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Vector3i &value) const override;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Vector4i &value) const override;
+
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<uint, 2, 1> &value) const override;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<uint, 3, 1> &value) const override;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<uint, 4, 1> &value) const override;
+
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix2f & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix3f & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix4f & value) const override;
+
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 2, 3> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 3, 2> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 2, 4> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 2> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const override;
+
 #endif
 };
 

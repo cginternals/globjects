@@ -14,7 +14,7 @@
 using namespace gl;
 
 
-namespace 
+namespace
 {
 
 
@@ -343,6 +343,25 @@ void AbstractUniform::setValue(const GLint location, const std::vector<TextureHa
 void AbstractUniform::setValue(gl::GLint location, const Eigen::Vector2f &value) const { implementation().set(m_program, location, value); }
 void AbstractUniform::setValue(gl::GLint location, const Eigen::Vector3f &value) const { implementation().set(m_program, location, value); }
 void AbstractUniform::setValue(gl::GLint location, const Eigen::Vector4f &value) const { implementation().set(m_program, location, value); }
+
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Vector2i &value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Vector3i &value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Vector4i &value) const { implementation().set(m_program, location, value); }
+
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<uint, 2, 1> &value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<uint, 3, 1> &value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<uint, 4, 1> &value) const { implementation().set(m_program, location, value); }
+
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix2f & value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix3f & value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix4f & value) const { implementation().set(m_program, location, value); }
+
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<float, 2, 3> & value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<float, 3, 2> & value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<float, 2, 4> & value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<float, 4, 2> & value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const { implementation().set(m_program, location, value); }
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const { implementation().set(m_program, location, value); }
 
 #endif
 

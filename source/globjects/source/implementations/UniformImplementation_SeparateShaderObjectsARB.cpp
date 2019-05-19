@@ -264,6 +264,26 @@ template<typename Derived> inline void eigenSet(const Program *program, gl::GLin
 void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const{ eigenSet(program, location, value); }
 void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector3f &value) const{ eigenSet(program, location, value); }
 void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector4f &value) const{ eigenSet(program, location, value); }
+
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector2i &value) const{ eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector3i &value) const{ eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector4i &value) const{ eigenSet(program, location, value); }
+
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<uint, 2, 1> &value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<uint, 3, 1> &value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<uint, 4, 1> &value) const { eigenSet(program, location, value); }
+
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix2f & value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix3f & value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix4f & value) const { eigenSet(program, location, value); }
+
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 2, 3> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 3, 2> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 2, 4> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 2> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const { eigenSet(program, location, value); }
+
 #endif
 
 
