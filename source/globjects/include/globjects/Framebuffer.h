@@ -15,7 +15,12 @@
 #include <globjects/base/Instantiator.h>
 
 
-namespace globjects 
+#ifdef GLOBJECTS_USE_EIGEN
+#include <Eigen/Dense>
+#endif
+
+
+namespace globjects
 {
 
 
@@ -26,17 +31,17 @@ class Buffer;
 
 
 /** \brief Enables creation of arbitrary render targets that are not directly drawn on the screen.
-    
-    Different attachments can be added with attachTexture(), attachTexture1D(), 
-    attachTexture2D, attachTextureLayer() and attachRenderBuffer() and queried 
-    using attachment() and attachments().
-    
-    To access the default FBO (e.g. if you want to blit an FBO to it), call 
-    defaultFBO(). To blit between two FBOs, prepare them with setReadBuffer()
-    and setDrawBuffer() and blit with blit(). 
 
-    Draw restrictions can be done with setDrawBuffers(). To read pixels from 
-    an FBO direct into RAM, use readPixels() and to read into an OpenGL buffer 
+    Different attachments can be added with attachTexture(), attachTexture1D(),
+    attachTexture2D, attachTextureLayer() and attachRenderBuffer() and queried
+    using attachment() and attachments().
+
+    To access the default FBO (e.g. if you want to blit an FBO to it), call
+    defaultFBO(). To blit between two FBOs, prepare them with setReadBuffer()
+    and setDrawBuffer() and blit with blit().
+
+    Draw restrictions can be done with setDrawBuffers(). To read pixels from
+    an FBO direct into RAM, use readPixels() and to read into an OpenGL buffer
     use readPixelsToBuffer(). To check if an FBO is setup correctly, the status
     can be checked using checkStatus(), statusString() and printStatus().
 
@@ -103,6 +108,12 @@ public:
     void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const glm::vec4 & value);
     void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, int value);
     void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, float value);
+
+#ifdef GLOBJECTS_USE_EIGEN
+    void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const Eigen::Vector4i & value);
+    void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const Eigen::Matrix<uint, 4, 1> & value);
+    void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const Eigen::Vector4f & value);
+#endif
 
     static void colorMask(gl::GLboolean red, gl::GLboolean green, gl::GLboolean blue, gl::GLboolean alpha);
     static void colorMask(const glm::bvec4 & mask);
