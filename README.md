@@ -66,8 +66,7 @@ If enabled, this code checks (1) for GL errors (```glGetError```) after each cal
 # Resources
 
 * [Examples](https://github.com/cginternals/globjects/wiki/examples)
-* [Project Health](#project-health)
-* [Doxygen Documentations](https://cginternals.github.io/globjects/docs) ([stable](https://cginternals.github.io/globjects/docs/v1.1), [master](https://cginternals.github.io/globjects/docs/master))
+* [Doxygen Documentations](https://globjects.org/docs.html) ([stable](https://globjects.org/docs/v1.1/index.html), [master](https://globjects.org/docs/master/index.html))
 
 ###### Installation and Development
 
