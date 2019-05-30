@@ -226,7 +226,7 @@ For it, *globjects* provides a find configuration script that should be installe
 In the projects CMakeLists.txt, add one of the following lines:
 
 ```
-find_package(globjects QUIET) # if you want to check for existance
+find_package(globjects QUIET) # if you want to check for existence
 find_package(globjects REQUIRED) # if it is really required in your project
 ```
 
