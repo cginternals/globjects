@@ -74,8 +74,8 @@ public:
 
     virtual void set(const Program * program, gl::GLint location, const std::vector<gl::GLuint64> & value) const override;
 
-
 #ifdef GLOBJECTS_USE_EIGEN
+
     virtual void set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const override;
     virtual void set(const Program *program, gl::GLint location, const Eigen::Vector3f &value) const override;
     virtual void set(const Program *program, gl::GLint location, const Eigen::Vector4f &value) const override;
@@ -98,6 +98,14 @@ public:
     virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 2> & value) const override;
     virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const override;
     virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const override;
+
+    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector2f> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector3f> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector4f> & value) const override;
+
+    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector2i> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector3i> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector4i> & value) const override;
 
 #endif
 };

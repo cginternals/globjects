@@ -382,22 +382,9 @@ target_link_libraries(${target}
 
 if(OPTION_USE_EIGEN)
     target_link_libraries(${target}
-      PRIVATE
-
       PUBLIC
       Eigen3::Eigen
-      INTERFACE
     )
-
-    target_include_directories(${target}
-      PRIVATE
-      "${EIGEN3_INCLUDE_DIR}"
-
-    PUBLIC
-
-    INTERFACE
-)
-
 endif()
 
 # 
@@ -417,16 +404,14 @@ target_compile_definitions(${target}
     INTERFACE
 )
 
-
 if(OPTION_USE_EIGEN AND TARGET Eigen3::Eigen)
     target_compile_definitions(${target}
-        PRIVATE
-
         PUBLIC
         GLOBJECTS_USE_EIGEN
-        INTERFACE
     )
 endif()
+
+
 # 
 # Compile options
 # 

@@ -257,8 +257,14 @@ void UniformImplementation_SeparateShaderObjectsARB::set(const Program* program,
 }
 
 #ifdef GLOBJECTS_USE_EIGEN
-template<typename Derived> inline void eigenSet(const Program *program, gl::GLint location, const Eigen::DenseBase<Derived>& value) {
+
+template<typename T> inline void eigenSet(const Program *program, gl::GLint location, const T& value) {
     Eigen::glProgramUniform(program->id(), location, value);
+}
+
+template<typename T> inline void eigenSet(const Program *program, gl::GLint location, const std::vector<T>& value) {
+    // TODO: implement vector variants of Eigen::glProgramUniform
+    // Eigen::glProgramUniform(program->id(), location, value);
 }
 
 void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const{ eigenSet(program, location, value); }
@@ -283,6 +289,14 @@ void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program,
 void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 2> & value) const { eigenSet(program, location, value); }
 void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const { eigenSet(program, location, value); }
 void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const { eigenSet(program, location, value); }
+
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector2f> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector3f> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector4f> & value) const { eigenSet(program, location, value); }
+
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector2i> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector3i> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_SeparateShaderObjectsARB::set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector4i> & value) const { eigenSet(program, location, value); }
 
 #endif
 

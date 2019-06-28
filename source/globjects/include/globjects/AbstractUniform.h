@@ -145,6 +145,7 @@ protected:
     void setValue(gl::GLint location, const std::array<T, Count> & value) const;
 
 #ifdef GLOBJECTS_USE_EIGEN
+
     void setValue(gl::GLint location, const Eigen::Vector2f & value) const;
     void setValue(gl::GLint location, const Eigen::Vector3f & value) const;
     void setValue(gl::GLint location, const Eigen::Vector4f & value) const;
@@ -167,15 +168,16 @@ protected:
     void setValue(gl::GLint location, const Eigen::Matrix<float, 4, 2> & value) const;
     void setValue(gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const;
     void setValue(gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const;
-// Need to use Eigen aware vector
-//    void setValue(gl::GLint location, const std::vector<Eigen::Vector2f> & value) const;
-//    void setValue(gl::GLint location, const std::vector<Eigen::Vector3f> & value) const;
-//    void setValue(gl::GLint location, const std::vector<Eigen::Vector4f> & value) const;
-//
-//    void setValue(gl::GLint location, const std::vector<Eigen::Vector2i> & value) const;
-//    void setValue(gl::GLint location, const std::vector<Eigen::Vector3i> & value) const;
-//    void setValue(gl::GLint location, const std::vector<Eigen::Vector4i> & value) const;
-//
+
+    // Need to use Eigen aware vector
+    void setValue(gl::GLint location, const std::vector<Eigen::Vector2f> & value) const;
+    void setValue(gl::GLint location, const std::vector<Eigen::Vector3f> & value) const;
+    void setValue(gl::GLint location, const std::vector<Eigen::Vector4f> & value) const;
+
+    void setValue(gl::GLint location, const std::vector<Eigen::Vector2i> & value) const;
+    void setValue(gl::GLint location, const std::vector<Eigen::Vector3i> & value) const;
+    void setValue(gl::GLint location, const std::vector<Eigen::Vector4i> & value) const;
+
 //    void setValue(gl::GLint location, const std::vector<Eigen::uVector2f> & value) const;
 //    void setValue(gl::GLint location, const std::vector<Eigen::uvec3> & value) const;
 //    void setValue(gl::GLint location, const std::vector<Eigen::uvec4> & value) const;
@@ -190,7 +192,6 @@ protected:
 //    void setValue(gl::GLint location, const std::vector<Eigen::mat4x2> & value) const;
 //    void setValue(gl::GLint location, const std::vector<Eigen::mat3x4> & value) const;
 //    void setValue(gl::GLint location, const std::vector<Eigen::mat4x3> & value) const;
-//
 
 #endif
 
