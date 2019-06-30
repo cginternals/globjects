@@ -128,6 +128,9 @@ GLOBJECTS_API void initializeStrategy(Object::NameImplementation impl);
 GLOBJECTS_API void initializeStrategy(Texture::BindlessImplementation impl);
 GLOBJECTS_API void initializeStrategy(VertexArray::AttributeImplementation impl);
 
+GLOBJECTS_API bool compiledWithErrorChecking();
+GLOBJECTS_API bool compiledToHandleErrorsAsExceptions();
+
 
 } // namespace globjects
 

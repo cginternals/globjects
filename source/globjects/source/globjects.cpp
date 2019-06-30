@@ -421,5 +421,23 @@ void initializeStrategy(const VertexArray::AttributeImplementation impl)
     Registry::current().implementations().initialize(impl);
 }
 
+bool compiledWithErrorChecking()
+{
+#ifdef GLOBJECTS_CHECK_GL_ERRORS
+    return true;
+#else
+    return false;
+#endif
+}
+
+bool compiledToHandleErrorsAsExceptions()
+{
+#ifdef GLOBJECTS_GL_ERROR_RAISE_EXCEPTION
+    return true;
+#else
+    return false;
+#endif
+}
+
 
 } // namespace globjects
