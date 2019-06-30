@@ -6,6 +6,8 @@
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/values.h>
 
+#include <globjects/DebugMessage.h>
+
 
 using namespace gl;
 
@@ -28,6 +30,18 @@ Sync::Sync(GLsync sync)
 : m_sync(sync)
 , m_objectLabelState(nullptr)
 {
+#ifdef GLOBJECTS_CHECK_GL_ERRORS
+    if (m_sync == nullptr)
+    {
+        DebugMessage::insertMessage(
+            gl::GL_DEBUG_SOURCE_APPLICATION,
+            gl::GL_DEBUG_TYPE_ERROR,
+            0,
+            gl::GL_DEBUG_SEVERITY_NOTIFICATION,
+            "Sync object could not be created"
+        );
+    }
+#endif
 }
 
 Sync::~Sync()

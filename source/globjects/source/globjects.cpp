@@ -16,7 +16,6 @@
 #include <globjects/Error.h>
 #include <globjects/logging.h>
 #include <globjects/DebugMessage.h>
-#include <globjects/logging.h>
 #include <globjects/NamedString.h>
 
 #include "registry/Registry.h"
@@ -54,11 +53,18 @@ void manualErrorCheckAfter(const glbinding::AbstractFunction & function)
     std::stringstream stream;
     stream << function.name() << " generated " << error.name();
 
-    globjects::DebugMessage::insertMessage(GL_DEBUG_SOURCE_API_ARB, GL_DEBUG_TYPE_ERROR_ARB, static_cast<unsigned int>(error.code()), GL_DEBUG_SEVERITY_HIGH_ARB, stream.str());
+    globjects::DebugMessage::insertMessage(
+        gl::GL_DEBUG_SOURCE_API_ARB,
+        gl::GL_DEBUG_TYPE_ERROR_ARB,
+        static_cast<unsigned int>(error.code()),
+        gl::GL_DEBUG_SEVERITY_HIGH_ARB,
+        stream.str()
+    );
 }
 
 void initializeCallbacks()
 {
+#ifdef GLOBJECTS_CHECK_GL_ERRORS
     // Callback mask is configured in AbstractDebugImplementation::enable
     if (glbinding::afterCallback())
     {
@@ -85,6 +91,7 @@ void initializeCallbacks()
 #endif
         });
     }
+#endif
 }
 
 

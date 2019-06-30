@@ -53,6 +53,18 @@ Buffer::Buffer()
 Buffer::Buffer(std::unique_ptr<IDResource> && resource)
 : Object(std::move(resource))
 {
+#ifdef GLOBJECTS_CHECK_GL_ERRORS
+    if (id() == 0 && !m_resource->isExternal())
+    {
+        DebugMessage::insertMessage(
+            gl::GL_DEBUG_SOURCE_APPLICATION,
+            gl::GL_DEBUG_TYPE_ERROR,
+            0,
+            gl::GL_DEBUG_SEVERITY_NOTIFICATION,
+            "Buffer object could not be created"
+        );
+    }
+#endif
 }
 
 Buffer * Buffer::fromId(const GLuint id)

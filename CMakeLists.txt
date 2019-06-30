@@ -75,7 +75,7 @@ option(BUILD_SHARED_LIBS            "Build shared instead of static libraries." 
 option(OPTION_SELF_CONTAINED        "Create a self-contained install with all dependencies."       OFF)
 option(OPTION_BUILD_DOCS            "Build documentation."                                         OFF)
 option(OPTION_BUILD_EXAMPLES        "Build examples."                                              OFF)
-option(OPTION_ENABLE_ERROR_CHECKS   "Test success of OpenGL Functions."                            ON)
+option(OPTION_ENABLE_ERROR_CHECKS   "Check for success of OpenGL Functions."                       ON)
 option(OPTION_ERRORS_AS_EXCEPTION   "Throw exceptions instead of printing OpenGL run-time errors." OFF)
 
 

@@ -15,6 +15,8 @@
 #include <globjects/Program.h>
 #include <globjects/Resource.h>
 
+#include <globjects/DebugMessage.h>
+
 #include "registry/ImplementationRegistry.h"
 #include "implementations/AbstractShadingLanguageIncludeImplementation.h"
 
@@ -54,6 +56,18 @@ Shader::Shader(const GLenum type)
 , m_compiled(false)
 , m_compilationFailed(false)
 {
+#ifdef GLOBJECTS_CHECK_GL_ERRORS
+    if (id() == 0 && !m_resource->isExternal())
+    {
+        DebugMessage::insertMessage(
+            gl::GL_DEBUG_SOURCE_APPLICATION,
+            gl::GL_DEBUG_TYPE_ERROR,
+            0,
+            gl::GL_DEBUG_SEVERITY_NOTIFICATION,
+            "Shader object could not be created"
+        );
+    }
+#endif
 }
 
 Shader::Shader(const GLenum type, AbstractStringSource * source, const IncludePaths & includePaths)
@@ -229,9 +243,14 @@ bool Shader::compile() const
 
     shadingLanguageIncludeImplementation().compile(this);
 
+#ifdef GLOBJECTS_CHECK_GL_ERRORS
     m_compiled = checkCompileStatus();
 
     m_compilationFailed = !m_compiled;
+#else
+    m_compiled = true;
+    m_compilationFailed = false;
+#endif
 
     changed();
 
