@@ -173,55 +173,55 @@ struct UniformTypeHelper<glm::uvec4>
 template <>
 struct UniformTypeHelper<glm::mat2>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::FLOAT_MAT2;
 };
 
 template <>
 struct UniformTypeHelper<glm::mat3>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::FLOAT_MAT3;
 };
 
 template <>
 struct UniformTypeHelper<glm::mat4>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::FLOAT_MAT4;
 };
 
 template <>
 struct UniformTypeHelper<glm::mat2x3>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::FLOAT_MAT2x3;
 };
 
 template <>
 struct UniformTypeHelper<glm::mat3x2>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::FLOAT_MAT3x2;
 };
 
 template <>
 struct UniformTypeHelper<glm::mat2x4>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::FLOAT_MAT2x4;
 };
 
 template <>
 struct UniformTypeHelper<glm::mat4x2>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::FLOAT_MAT4x2;
 };
 
 template <>
 struct UniformTypeHelper<glm::mat3x4>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::FLOAT_MAT3x4;
 };
 
 template <>
 struct UniformTypeHelper<glm::mat4x3>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::FLOAT_MAT4x3;
 };
 
 template <>
@@ -317,55 +317,55 @@ struct UniformTypeHelper<std::vector<glm::uvec4>>
 template <>
 struct UniformTypeHelper<std::vector<glm::mat2>>
 {
-    static const UniformType value = UniformType::VECTOR_UNSIGNED_INT;
+    static const UniformType value = UniformType::VECTOR_FLOAT_MAT2;
 };
 
 template <>
 struct UniformTypeHelper<std::vector<glm::mat3>>
 {
-    static const UniformType value = UniformType::VECTOR_UNSIGNED_INT;
+    static const UniformType value = UniformType::VECTOR_FLOAT_MAT3;
 };
 
 template <>
 struct UniformTypeHelper<std::vector<glm::mat4>>
 {
-    static const UniformType value = UniformType::VECTOR_UNSIGNED_INT;
+    static const UniformType value = UniformType::VECTOR_FLOAT_MAT4;
 };
 
 template <>
 struct UniformTypeHelper<std::vector<glm::mat2x3>>
 {
-    static const UniformType value = UniformType::VECTOR_UNSIGNED_INT;
+    static const UniformType value = UniformType::VECTOR_FLOAT_MAT2x3;
 };
 
 template <>
 struct UniformTypeHelper<std::vector<glm::mat3x2>>
 {
-    static const UniformType value = UniformType::VECTOR_UNSIGNED_INT;
+    static const UniformType value = UniformType::VECTOR_FLOAT_MAT3x2;
 };
 
 template <>
 struct UniformTypeHelper<std::vector<glm::mat2x4>>
 {
-    static const UniformType value = UniformType::VECTOR_UNSIGNED_INT;
+    static const UniformType value = UniformType::VECTOR_FLOAT_MAT2x4;
 };
 
 template <>
 struct UniformTypeHelper<std::vector<glm::mat4x2>>
 {
-    static const UniformType value = UniformType::VECTOR_UNSIGNED_INT;
+    static const UniformType value = UniformType::VECTOR_FLOAT_MAT4x2;
 };
 
 template <>
 struct UniformTypeHelper<std::vector<glm::mat3x4>>
 {
-    static const UniformType value = UniformType::VECTOR_UNSIGNED_INT;
+    static const UniformType value = UniformType::VECTOR_FLOAT_MAT3x4;
 };
 
 template <>
 struct UniformTypeHelper<std::vector<glm::mat4x3>>
 {
-    static const UniformType value = UniformType::VECTOR_UNSIGNED_INT;
+    static const UniformType value = UniformType::VECTOR_FLOAT_MAT4x3;
 };
 
 template <>
@@ -461,55 +461,55 @@ struct UniformTypeHelper<std::array<glm::uvec4, Count>>
 template <size_t Count>
 struct UniformTypeHelper<std::array<glm::mat2, Count>>
 {
-    static const UniformType value = UniformType::ARRAY_UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT2;
 };
 
 template <size_t Count>
 struct UniformTypeHelper<std::array<glm::mat3, Count>>
 {
-    static const UniformType value = UniformType::ARRAY_UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT3;
 };
 
 template <size_t Count>
 struct UniformTypeHelper<std::array<glm::mat4, Count>>
 {
-    static const UniformType value = UniformType::ARRAY_UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT4;
 };
 
 template <size_t Count>
 struct UniformTypeHelper<std::array<glm::mat2x3, Count>>
 {
-    static const UniformType value = UniformType::ARRAY_UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT2x3;
 };
 
 template <size_t Count>
 struct UniformTypeHelper<std::array<glm::mat3x2, Count>>
 {
-    static const UniformType value = UniformType::ARRAY_UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT3x2;
 };
 
 template <size_t Count>
 struct UniformTypeHelper<std::array<glm::mat2x4, Count>>
 {
-    static const UniformType value = UniformType::ARRAY_UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT2x4;
 };
 
 template <size_t Count>
 struct UniformTypeHelper<std::array<glm::mat4x2, Count>>
 {
-    static const UniformType value = UniformType::ARRAY_UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT4x2;
 };
 
 template <size_t Count>
 struct UniformTypeHelper<std::array<glm::mat3x4, Count>>
 {
-    static const UniformType value = UniformType::ARRAY_UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT3x4;
 };
 
 template <size_t Count>
 struct UniformTypeHelper<std::array<glm::mat4x3, Count>>
 {
-    static const UniformType value = UniformType::ARRAY_UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT4x3;
 };
 
 template <size_t Count>
