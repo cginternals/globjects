@@ -83,10 +83,20 @@ IDResource::IDResource(const GLuint id, const bool hasOwnership)
 {
 }
 
+bool IDResource::isExternal() const
+{
+    return false;
+}
+
 
 ExternalResource::ExternalResource(const GLuint id)
 : IDResource(id, false)
 {
+}
+
+bool ExternalResource::isExternal() const
+{
+    return true;
 }
 
 

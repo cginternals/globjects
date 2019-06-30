@@ -9,6 +9,7 @@
 
 #include <globjects/Program.h>
 #include <globjects/Resource.h>
+#include <globjects/DebugMessage.h>
 
 
 namespace globjects
@@ -19,6 +20,18 @@ ProgramPipeline::ProgramPipeline()
 : Object(std::unique_ptr<IDResource>(new ProgramPipelineResource()))
 , m_dirty(true)
 {
+#ifdef GLOBJECTS_CHECK_GL_ERRORS
+    if (id() == 0 && !m_resource->isExternal())
+    {
+        DebugMessage::insertMessage(
+            gl::GL_DEBUG_SOURCE_APPLICATION,
+            gl::GL_DEBUG_TYPE_ERROR,
+            0,
+            gl::GL_DEBUG_SEVERITY_NOTIFICATION,
+            "Program Pipeline object could not be created"
+        );
+    }
+#endif
 }
 
 ProgramPipeline::~ProgramPipeline()

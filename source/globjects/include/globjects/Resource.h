@@ -18,6 +18,7 @@ public:
     virtual ~AbstractResource();
 
     bool hasOwnership() const;
+    virtual bool isExternal() const = 0;
 
 
 protected:
@@ -44,6 +45,8 @@ class GLOBJECTS_API IDResource : public AbstractResource, public IDTrait
 public:
     IDResource(gl::GLuint id);
 
+    virtual bool isExternal() const override;
+
 
 protected:
     IDResource(gl::GLuint id, bool hasOwnership);
@@ -54,6 +57,8 @@ class GLOBJECTS_API ExternalResource : public IDResource
 {
 public:
     ExternalResource(gl::GLuint id);
+
+    virtual bool isExternal() const override;
 };
 
 

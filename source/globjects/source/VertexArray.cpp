@@ -40,6 +40,18 @@ namespace globjects
 VertexArray::VertexArray()
 : Object(std::unique_ptr<IDResource>(new VertexArrayObjectResource))
 {
+#ifdef GLOBJECTS_CHECK_GL_ERRORS
+    if (id() == 0 && !m_resource->isExternal())
+    {
+        DebugMessage::insertMessage(
+            gl::GL_DEBUG_SOURCE_APPLICATION,
+            gl::GL_DEBUG_TYPE_ERROR,
+            0,
+            gl::GL_DEBUG_SEVERITY_NOTIFICATION,
+            "Vertex Array object could not be created"
+        );
+    }
+#endif
 }
 
 VertexArray::VertexArray(std::unique_ptr<IDResource> && resource)

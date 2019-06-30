@@ -68,6 +68,18 @@ Texture::Texture(const GLenum target)
 : Object(std::unique_ptr<IDResource>(new TextureResource(target)))
 , m_target(target)
 {
+#ifdef GLOBJECTS_CHECK_GL_ERRORS
+    if (id() == 0 && !m_resource->isExternal())
+    {
+        DebugMessage::insertMessage(
+            gl::GL_DEBUG_SOURCE_APPLICATION,
+            gl::GL_DEBUG_TYPE_ERROR,
+            0,
+            gl::GL_DEBUG_SEVERITY_NOTIFICATION,
+            "Texture object could not be created"
+        );
+    }
+#endif
 }
 
 Texture::Texture(std::unique_ptr<IDResource> && resource, const GLenum target)
