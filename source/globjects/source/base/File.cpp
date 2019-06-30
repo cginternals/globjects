@@ -66,14 +66,14 @@ void File::loadFileContent() const
         return;
     }
 
-    const std::streamsize size = static_cast<const std::streamsize>(ifs.tellg());
+    const auto position = ifs.tellg();
 
     ifs.seekg(0, std::ios::beg);
 
-    m_source.resize(size);
+    m_source.resize(static_cast<std::size_t>(position));
 
-    ifs.read(const_cast<char*>(m_source.data()), size);
-    m_source.resize(ifs.gcount());
+    ifs.read(const_cast<char*>(m_source.data()), position);
+    m_source.resize(static_cast<std::size_t>(ifs.gcount()));
     ifs.close();
 
     m_valid = true;
