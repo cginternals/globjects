@@ -11,6 +11,10 @@ include(CMakeFindDependencyMacro)
 find_dependency(glm)
 find_dependency(glbinding)
 
+if(OPTION_USE_EIGEN)
+  find_dependency(eigen3 3.3 REQUIRED )
+endif()
+
 
 # List of modules
 set(MODULE_NAMES

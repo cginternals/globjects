@@ -16,6 +16,7 @@
 
 #ifdef GLOBJECTS_USE_EIGEN
 #include <Eigen/Dense>
+#include <Eigen/StdVector>
 #endif
 
 namespace globjects
@@ -48,6 +49,12 @@ public:
     };
 
     static void hintBindlessImplementation(const BindlessImplementation impl);
+
+#ifdef GLOBJECTS_USE_EIGEN
+        // Need to use Eigen aware vector
+    template <typename T>
+    using EigenStdVector = std::vector<T,Eigen::aligned_allocator<T> >;
+#endif
 
 
 public:
@@ -169,14 +176,13 @@ protected:
     void setValue(gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const;
     void setValue(gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const;
 
-    // Need to use Eigen aware vector
-    void setValue(gl::GLint location, const std::vector<Eigen::Vector2f> & value) const;
-    void setValue(gl::GLint location, const std::vector<Eigen::Vector3f> & value) const;
-    void setValue(gl::GLint location, const std::vector<Eigen::Vector4f> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector2f> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector3f> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector4f> & value) const;
 
-    void setValue(gl::GLint location, const std::vector<Eigen::Vector2i> & value) const;
-    void setValue(gl::GLint location, const std::vector<Eigen::Vector3i> & value) const;
-    void setValue(gl::GLint location, const std::vector<Eigen::Vector4i> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector2i> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector3i> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector4i> & value) const;
 
 //    void setValue(gl::GLint location, const std::vector<Eigen::uVector2f> & value) const;
 //    void setValue(gl::GLint location, const std::vector<Eigen::uvec3> & value) const;

@@ -99,13 +99,13 @@ public:
     virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const override;
     virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const override;
 
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector2f> & value) const override;
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector3f> & value) const override;
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector4f> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector2f> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector3f> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector4f> & value) const override;
 
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector2i> & value) const override;
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector3i> & value) const override;
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector4i> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector2i> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector3i> & value) const override;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector4i> & value) const override;
 
 #endif
 };

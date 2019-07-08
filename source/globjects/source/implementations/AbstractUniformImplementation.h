@@ -113,13 +113,13 @@ public:
     virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const = 0;
 
     // Need to use Eigen aware vector
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector2f> & value) const = 0;
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector3f> & value) const = 0;
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector4f> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector2f> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector3f> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector4f> & value) const = 0;
 
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector2i> & value) const = 0;
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector3i> & value) const = 0;
-    virtual void set(const Program *program, gl::GLint location, const std::vector<Eigen::Vector4i> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector2i> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector3i> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector4i> & value) const = 0;
 
 #endif
 
