@@ -8,6 +8,7 @@
 #include "implementations/AbstractBufferImplementation.h"
 #include "implementations/AbstractFramebufferImplementation.h"
 #include "implementations/AbstractTextureImplementation.h"
+#include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
 
 using namespace gl;
@@ -231,13 +232,16 @@ TransformFeedbackResource::~TransformFeedbackResource()
 
 
 VertexArrayObjectResource::VertexArrayObjectResource()
-: IDResource(createObject(glGenVertexArrays))
+: IDResource(ImplementationRegistry::current().attributeImplementation().create())
 {
 }
 
 VertexArrayObjectResource::~VertexArrayObjectResource()
 {
-    deleteObject(glDeleteVertexArrays, id(), hasOwnership());
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().attributeImplementation().destroy(id());
+    }
 }
 
 

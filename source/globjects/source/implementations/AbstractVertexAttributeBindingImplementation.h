@@ -27,6 +27,9 @@ public:
     static AbstractVertexAttributeBindingImplementation * get(VertexArray::AttributeImplementation impl =
         VertexArray::AttributeImplementation::VertexAttribBindingARB);
 
+    virtual gl::GLuint create() const = 0;
+    virtual void destroy(gl::GLuint id) const = 0;
+
     virtual void enable(const VertexArray * vertexArray, gl::GLint attributeIndex) const = 0;
     virtual void disable(const VertexArray * vertexArray, gl::GLint attributeIndex) const = 0;
 

@@ -25,6 +25,20 @@ VertexAttributeBindingImplementation_DirectStateAccessARB::~VertexAttributeBindi
 
 }
 
+gl::GLuint VertexAttributeBindingImplementation_DirectStateAccessARB::create() const
+{
+    gl::GLuint result = 0;
+
+    gl::glCreateVertexArrays(1, &result);
+
+    return result;
+}
+
+void VertexAttributeBindingImplementation_DirectStateAccessARB::destroy(gl::GLuint id) const
+{
+    gl::glDeleteVertexArrays(1, &id);
+}
+
 void VertexAttributeBindingImplementation_DirectStateAccessARB::enable(const VertexArray * vertexArray, GLint attributeIndex) const
 {
     glEnableVertexArrayAttrib(vertexArray->id(), attributeIndex);
