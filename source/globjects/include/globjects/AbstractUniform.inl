@@ -564,19 +564,19 @@ struct UniformTypeHelper<Eigen::Vector4i>
 };
 
 template <>
-struct UniformTypeHelper<Eigen::Matrix<uint, 2, 1>>
+struct UniformTypeHelper<Eigen::Matrix<unsigned int, 2, 1>>
 {
     static const UniformType value = UniformType::UNSIGNED_INT_VEC2;
 };
 
 template <>
-struct UniformTypeHelper<Eigen::Matrix<uint, 3, 1>>
+struct UniformTypeHelper<Eigen::Matrix<unsigned int, 3, 1>>
 {
     static const UniformType value = UniformType::UNSIGNED_INT_VEC3;
 };
 
 template <>
-struct UniformTypeHelper<Eigen::Matrix<uint, 4, 1>>
+struct UniformTypeHelper<Eigen::Matrix<unsigned int, 4, 1>>
 {
     static const UniformType value = UniformType::UNSIGNED_INT_VEC4;
 };

@@ -161,9 +161,10 @@ protected:
     void setValue(gl::GLint location, const Eigen::Vector3i & value) const;
     void setValue(gl::GLint location, const Eigen::Vector4i & value) const;
 
-    void setValue(gl::GLint location, const Eigen::Matrix<uint, 2, 1> &value) const;
-    void setValue(gl::GLint location, const Eigen::Matrix<uint, 3, 1> &value) const;
-    void setValue(gl::GLint location, const Eigen::Matrix<uint, 4, 1> &value) const;
+  /// a.k.a  Vector2ui
+    void setValue(gl::GLint location, const Eigen::Matrix<unsigned int, 2, 1> &value) const;
+    void setValue(gl::GLint location, const Eigen::Matrix<unsigned int, 3, 1> &value) const;
+    void setValue(gl::GLint location, const Eigen::Matrix<unsigned int, 4, 1> &value) const;
 
     void setValue(gl::GLint location, const Eigen::Matrix2f & value) const;
     void setValue(gl::GLint location, const Eigen::Matrix3f & value) const;

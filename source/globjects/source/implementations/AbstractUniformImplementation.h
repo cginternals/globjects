@@ -97,9 +97,9 @@ public:
     virtual void set(const Program *program, gl::GLint location, const Eigen::Vector3i &value) const = 0;
     virtual void set(const Program *program, gl::GLint location, const Eigen::Vector4i &value) const = 0;
 
-    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<uint, 2, 1> &value) const = 0;
-    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<uint, 3, 1> &value) const = 0;
-    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<uint, 4, 1> &value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<unsigned int, 2, 1> &value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<unsigned int, 3, 1> &value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<unsigned int, 4, 1> &value) const = 0;
 
     virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix2f & value) const = 0;
     virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix3f & value) const = 0;

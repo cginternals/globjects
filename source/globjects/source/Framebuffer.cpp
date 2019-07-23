@@ -245,7 +245,7 @@ void Framebuffer::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const Eig
     clearBuffer(buffer, drawBuffer, value.data());
 }
 
-void Framebuffer::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const Eigen::Matrix<uint, 4, 1> & value)
+void Framebuffer::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const Eigen::Matrix<unsigned int, 4, 1> & value)
 {
     clearBuffer(buffer, drawBuffer, value.data());
 }

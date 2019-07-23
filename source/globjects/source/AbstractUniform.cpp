@@ -370,17 +370,17 @@ void AbstractUniform::setValue(gl::GLint location, const Eigen::Vector4i &value)
     implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<uint, 2, 1> &value) const
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<unsigned int, 2, 1> &value) const
 {
     implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<uint, 3, 1> &value) const
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<unsigned int, 3, 1> &value) const
 {
     implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<uint, 4, 1> &value) const
+void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<unsigned int, 4, 1> &value) const
 {
     implementation().set(m_program, location, value);
 }
