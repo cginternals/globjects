@@ -67,6 +67,13 @@ namespace globjects
 class GLOBJECTS_API Query : public Object, public Instantiator<Query>
 {
 public:
+    enum class Implementation
+    {
+        Legacy
+    };
+
+
+public:
     Query();
 
     virtual ~Query();

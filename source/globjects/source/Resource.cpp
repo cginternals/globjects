@@ -10,6 +10,7 @@
 #include "implementations/AbstractProgramPipelineImplementation.h"
 #include "implementations/AbstractFramebufferImplementation.h"
 #include "implementations/AbstractTextureImplementation.h"
+#include "implementations/AbstractQueryImplementation.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
 
@@ -172,13 +173,16 @@ ProgramPipelineResource::~ProgramPipelineResource()
 
 
 QueryResource::QueryResource()
-: IDResource(createObject(glGenQueries)) // TODO: convert to implementation
+: IDResource(ImplementationRegistry::current().queryImplementation().create())
 {
 }
 
 QueryResource::~QueryResource()
 {
-    deleteObject(glDeleteQueries, id(), hasOwnership()); // TODO: convert to implementation
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().queryImplementation().destroy(id());
+    }
 }
 
 
@@ -202,6 +206,7 @@ SamplerResource::~SamplerResource()
 {
     deleteObject(glDeleteSamplers, id(), hasOwnership()); // TODO: convert to implementation
 }
+
 
 ShaderResource::ShaderResource(GLenum type)
 : IDResource(glCreateShader(type)) // TODO: convert to implementation

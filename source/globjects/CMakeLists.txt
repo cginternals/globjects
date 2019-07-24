@@ -178,6 +178,11 @@ set(sources
     ${source_path}/implementations/ProgramBinaryImplementation_None.cpp
     ${source_path}/implementations/ProgramBinaryImplementation_None.h
 
+    ${source_path}/implementations/AbstractQueryImplementation.cpp
+    ${source_path}/implementations/AbstractQueryImplementation.h
+    ${source_path}/implementations/QueryImplementation_Legacy.cpp
+    ${source_path}/implementations/QueryImplementation_Legacy.h
+
     ${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.cpp
     ${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.h
     ${source_path}/implementations/ShadingLanguageIncludeImplementation_ShadingLanguageIncludeARB.cpp

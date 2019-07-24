@@ -10,6 +10,7 @@
 #include <globjects/DebugMessage.h>
 #include <globjects/Object.h>
 #include <globjects/Texture.h>
+#include <globjects/Query.h>
 #include <globjects/VertexArray.h>
 
 
@@ -24,6 +25,7 @@ class AbstractDebugImplementation;
 class AbstractProgramImplementation;
 class AbstractProgramBinaryImplementation;
 class AbstractProgramPipelineImplementation;
+class AbstractQueryImplementation;
 class AbstractShadingLanguageIncludeImplementation;
 class AbstractObjectNameImplementation;
 class AbstractVertexAttributeBindingImplementation;
@@ -47,6 +49,7 @@ public:
     void initialize(Program::Implementation impl);
     void initialize(Program::BinaryImplementation impl);
     void initialize(ProgramPipeline::Implementation impl);
+    void initialize(Query::Implementation impl);
     void initialize(Shader::IncludeImplementation impl);
     void initialize(Object::NameImplementation impl);
     void initialize(VertexArray::AttributeImplementation impl);
@@ -63,6 +66,7 @@ public:
     AbstractProgramImplementation & programImplementation();
     AbstractProgramBinaryImplementation & programBinaryImplementation();
     AbstractProgramPipelineImplementation & programPipelineImplementation();
+    AbstractQueryImplementation & queryImplementation();
     AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation();
     AbstractObjectNameImplementation & objectNameImplementation();
     AbstractVertexAttributeBindingImplementation & attributeImplementation();
@@ -79,6 +83,7 @@ protected:
     AbstractProgramImplementation * m_programImplementation;
     AbstractProgramBinaryImplementation * m_programBinaryImplementation;
     AbstractProgramPipelineImplementation * m_programPipelineImplementation;
+    AbstractQueryImplementation * m_queryImplementation;
     AbstractShadingLanguageIncludeImplementation * m_shadingLanguageIncludeImplementation;
     AbstractObjectNameImplementation * m_objectNameImplementation;
     AbstractTextureImplementation * m_textureBindlessImplementation;
