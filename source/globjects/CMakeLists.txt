@@ -236,6 +236,11 @@ set(sources
     ${source_path}/implementations/TextureStorageMultisampleImplementation_Fallback.cpp
     ${source_path}/implementations/TextureStorageMultisampleImplementation_Fallback.h
 
+    ${source_path}/implementations/AbstractTransformfeedbackImplementation.cpp
+    ${source_path}/implementations/AbstractTransformfeedbackImplementation.h
+    ${source_path}/implementations/TransformfeedbackImplementation_Legacy.cpp
+    ${source_path}/implementations/TransformfeedbackImplementation_Legacy.h
+
     ${source_path}/implementations/AbstractUniformImplementation.cpp
     ${source_path}/implementations/AbstractUniformImplementation.h
     ${source_path}/implementations/UniformImplementation_Legacy.cpp

@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <globjects/Shader.h>
 #include <globjects/Program.h>
 #include <globjects/ProgramPipeline.h>
 #include <globjects/AbstractUniform.h>
@@ -14,6 +13,7 @@
 #include <globjects/Renderbuffer.h>
 #include <globjects/Sampler.h>
 #include <globjects/Shader.h>
+#include <globjects/TransformFeedback.h>
 #include <globjects/VertexArray.h>
 
 
@@ -38,6 +38,7 @@ class AbstractVertexAttributeBindingImplementation;
 class AbstractTextureImplementation;
 class AbstractTextureStorageImplementation;
 class AbstractTextureStorageMultisampleImplementation;
+class AbstractTransformfeedbackImplementation;
 
 
 class ImplementationRegistry
@@ -65,6 +66,7 @@ public:
     void initialize(Texture::BindlessImplementation impl);
     void initialize(Texture::StorageImplementation impl);
     void initialize(Texture::StorageMultisampleImplementation impl);
+    void initialize(TransformFeedback::Implementation impl);
 
     static ImplementationRegistry & current();
 
@@ -85,6 +87,7 @@ public:
     AbstractTextureImplementation & textureBindlessImplementation();
     AbstractTextureStorageImplementation & textureStorageImplementation();
     AbstractTextureStorageMultisampleImplementation & textureStorageMultisampleImplementation();
+    AbstractTransformfeedbackImplementation & transformfeedbackImplementation();
 
 
 protected:
@@ -105,6 +108,7 @@ protected:
     AbstractTextureStorageImplementation * m_textureStorageImplementation;
     AbstractTextureStorageMultisampleImplementation * m_textureStorageMultisampleImplementation;
     AbstractVertexAttributeBindingImplementation * m_attributeImplementation;
+    AbstractTransformfeedbackImplementation * m_transformfeedbackImplementation;
 };
 
 

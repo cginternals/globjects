@@ -19,6 +19,7 @@
 #include "../implementations/AbstractTextureImplementation.h"
 #include "../implementations/AbstractTextureStorageImplementation.h"
 #include "../implementations/AbstractTextureStorageMultisampleImplementation.h"
+#include "../implementations/AbstractTransformfeedbackImplementation.h"
 #include "../implementations/AbstractVertexAttributeBindingImplementation.h"
 
 
@@ -44,6 +45,7 @@ ImplementationRegistry::ImplementationRegistry()
 , m_textureStorageImplementation(nullptr)
 , m_textureStorageMultisampleImplementation(nullptr)
 , m_attributeImplementation(nullptr)
+, m_transformfeedbackImplementation(nullptr)
 {
 }
 
@@ -66,6 +68,7 @@ ImplementationRegistry::~ImplementationRegistry()
     delete m_textureBindlessImplementation;
     delete m_textureStorageImplementation;
     delete m_textureStorageMultisampleImplementation;
+    delete m_transformfeedbackImplementation;
 }
 
 ImplementationRegistry & ImplementationRegistry::current()
@@ -92,6 +95,7 @@ void ImplementationRegistry::initialize()
     m_textureBindlessImplementation = AbstractTextureImplementation::get();
     m_textureStorageImplementation = AbstractTextureStorageImplementation::get();
     m_textureStorageMultisampleImplementation = AbstractTextureStorageMultisampleImplementation::get();
+    m_transformfeedbackImplementation = AbstractTransformfeedbackImplementation::get();
 }
 
 void ImplementationRegistry::initialize(const AbstractUniform::BindlessImplementation impl)
@@ -177,6 +181,11 @@ void ImplementationRegistry::initialize(Texture::StorageImplementation impl)
 void ImplementationRegistry::initialize(Texture::StorageMultisampleImplementation impl)
 {
     m_textureStorageMultisampleImplementation = AbstractTextureStorageMultisampleImplementation::get(impl);
+}
+
+void ImplementationRegistry::initialize(const TransformFeedback::Implementation impl)
+{
+    m_transformfeedbackImplementation = AbstractTransformfeedbackImplementation::get(impl);
 }
 
 AbstractUniformImplementation & ImplementationRegistry::uniformImplementation()
@@ -313,6 +322,14 @@ AbstractTextureStorageMultisampleImplementation & ImplementationRegistry::textur
         m_textureStorageMultisampleImplementation = AbstractTextureStorageMultisampleImplementation::get();
 
     return *m_textureStorageMultisampleImplementation;
+}
+
+AbstractTransformfeedbackImplementation & ImplementationRegistry::transformfeedbackImplementation()
+{
+    if (!m_transformfeedbackImplementation)
+        m_transformfeedbackImplementation = AbstractTransformfeedbackImplementation::get();
+
+    return *m_transformfeedbackImplementation;
 }
 
 

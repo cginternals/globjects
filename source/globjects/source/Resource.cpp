@@ -14,6 +14,7 @@
 #include "implementations/AbstractRenderbufferImplementation.h"
 #include "implementations/AbstractSamplerImplementation.h"
 #include "implementations/AbstractShaderImplementation.h"
+#include "implementations/AbstractTransformfeedbackImplementation.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
 
@@ -246,13 +247,16 @@ TextureResource::~TextureResource()
 
 
 TransformFeedbackResource::TransformFeedbackResource()
-: IDResource(createObject(glGenTransformFeedbacks)) // TODO: convert to implementation
+: IDResource(ImplementationRegistry::current().transformfeedbackImplementation().create())
 {
 }
 
 TransformFeedbackResource::~TransformFeedbackResource()
 {
-    deleteObject(glDeleteTransformFeedbacks, id(), hasOwnership()); // TODO: convert to implementation
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().transformfeedbackImplementation().destroy(id());
+    }
 }
 
 
