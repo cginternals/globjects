@@ -12,6 +12,7 @@
 #include "implementations/AbstractTextureImplementation.h"
 #include "implementations/AbstractQueryImplementation.h"
 #include "implementations/AbstractRenderbufferImplementation.h"
+#include "implementations/AbstractSamplerImplementation.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
 
@@ -188,7 +189,7 @@ QueryResource::~QueryResource()
 
 
 RenderBufferObjectResource::RenderBufferObjectResource()
-    : IDResource(ImplementationRegistry::current().renderbufferImplementation().create())
+: IDResource(ImplementationRegistry::current().renderbufferImplementation().create())
 {
 }
 
@@ -202,13 +203,16 @@ RenderBufferObjectResource::~RenderBufferObjectResource()
 
 
 SamplerResource::SamplerResource()
-: IDResource(createObject(glGenSamplers)) // TODO: convert to implementation
+: IDResource(ImplementationRegistry::current().samplerImplementation().create())
 {
 }
 
 SamplerResource::~SamplerResource()
 {
-    deleteObject(glDeleteSamplers, id(), hasOwnership()); // TODO: convert to implementation
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().samplerImplementation().destroy(id());
+    }
 }
 
 

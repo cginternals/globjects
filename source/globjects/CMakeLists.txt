@@ -188,6 +188,11 @@ set(sources
     ${source_path}/implementations/RenderbufferImplementation_Legacy.cpp
     ${source_path}/implementations/RenderbufferImplementation_Legacy.h
 
+    ${source_path}/implementations/AbstractSamplerImplementation.cpp
+    ${source_path}/implementations/AbstractSamplerImplementation.h
+    ${source_path}/implementations/SamplerImplementation_Legacy.cpp
+    ${source_path}/implementations/SamplerImplementation_Legacy.h
+
     ${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.cpp
     ${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.h
     ${source_path}/implementations/ShadingLanguageIncludeImplementation_ShadingLanguageIncludeARB.cpp
