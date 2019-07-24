@@ -11,6 +11,7 @@
 #include "../implementations/AbstractProgramBinaryImplementation.h"
 #include "../implementations/AbstractProgramPipelineImplementation.h"
 #include "../implementations/AbstractQueryImplementation.h"
+#include "../implementations/AbstractRenderbufferImplementation.h"
 #include "../implementations/AbstractShadingLanguageIncludeImplementation.h"
 #include "../implementations/AbstractObjectNameImplementation.h"
 #include "../implementations/AbstractTextureImplementation.h"
@@ -32,6 +33,7 @@ ImplementationRegistry::ImplementationRegistry()
 , m_programBinaryImplementation(nullptr)
 , m_programPipelineImplementation(nullptr)
 , m_queryImplementation(nullptr)
+, m_renderbufferImplementation(nullptr)
 , m_shadingLanguageIncludeImplementation(nullptr)
 , m_objectNameImplementation(nullptr)
 , m_textureBindlessImplementation(nullptr)
@@ -51,6 +53,7 @@ ImplementationRegistry::~ImplementationRegistry()
     delete m_programBinaryImplementation;
     delete m_programPipelineImplementation;
     delete m_queryImplementation;
+    delete m_renderbufferImplementation;
     delete m_shadingLanguageIncludeImplementation;
     delete m_objectNameImplementation;
     delete m_attributeImplementation;
@@ -74,6 +77,7 @@ void ImplementationRegistry::initialize()
     m_programBinaryImplementation = AbstractProgramBinaryImplementation::get();
     m_programPipelineImplementation = AbstractProgramPipelineImplementation::get();
     m_queryImplementation = AbstractQueryImplementation::get();
+    m_renderbufferImplementation = AbstractRenderbufferImplementation::get();
     m_shadingLanguageIncludeImplementation = AbstractShadingLanguageIncludeImplementation::get();
     m_objectNameImplementation = AbstractObjectNameImplementation::get();
     m_attributeImplementation = AbstractVertexAttributeBindingImplementation::get();
@@ -120,6 +124,11 @@ void ImplementationRegistry::initialize(const ProgramPipeline::Implementation im
 void ImplementationRegistry::initialize(const Query::Implementation impl)
 {
     m_queryImplementation = AbstractQueryImplementation::get(impl);
+}
+
+void ImplementationRegistry::initialize(const Renderbuffer::Implementation impl)
+{
+    m_renderbufferImplementation = AbstractRenderbufferImplementation::get(impl);
 }
 
 void ImplementationRegistry::initialize(const Shader::IncludeImplementation impl)
@@ -214,6 +223,14 @@ AbstractQueryImplementation & ImplementationRegistry::queryImplementation()
         m_queryImplementation = AbstractQueryImplementation::get();
 
     return *m_queryImplementation;
+}
+
+AbstractRenderbufferImplementation & ImplementationRegistry::renderbufferImplementation()
+{
+    if (!m_renderbufferImplementation)
+        m_renderbufferImplementation = AbstractRenderbufferImplementation::get();
+
+    return *m_renderbufferImplementation;
 }
 
 AbstractShadingLanguageIncludeImplementation & ImplementationRegistry::shadingLanguageIncludeImplementation()

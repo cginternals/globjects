@@ -20,6 +20,13 @@ namespace globjects
 class GLOBJECTS_API Renderbuffer : public Object, public Instantiator<Renderbuffer>
 {
 public:
+    enum class Implementation
+    {
+        Legacy
+    };
+
+
+public:
     Renderbuffer();
 
     virtual ~Renderbuffer();

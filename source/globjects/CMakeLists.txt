@@ -183,6 +183,11 @@ set(sources
     ${source_path}/implementations/QueryImplementation_Legacy.cpp
     ${source_path}/implementations/QueryImplementation_Legacy.h
 
+    ${source_path}/implementations/AbstractRenderbufferImplementation.cpp
+    ${source_path}/implementations/AbstractRenderbufferImplementation.h
+    ${source_path}/implementations/RenderbufferImplementation_Legacy.cpp
+    ${source_path}/implementations/RenderbufferImplementation_Legacy.h
+
     ${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.cpp
     ${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.h
     ${source_path}/implementations/ShadingLanguageIncludeImplementation_ShadingLanguageIncludeARB.cpp

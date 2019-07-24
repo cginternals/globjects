@@ -11,6 +11,7 @@
 #include "implementations/AbstractFramebufferImplementation.h"
 #include "implementations/AbstractTextureImplementation.h"
 #include "implementations/AbstractQueryImplementation.h"
+#include "implementations/AbstractRenderbufferImplementation.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
 
@@ -187,13 +188,16 @@ QueryResource::~QueryResource()
 
 
 RenderBufferObjectResource::RenderBufferObjectResource()
-: IDResource(createObject(glGenRenderbuffers)) // TODO: convert to implementation
+    : IDResource(ImplementationRegistry::current().renderbufferImplementation().create())
 {
 }
 
 RenderBufferObjectResource::~RenderBufferObjectResource()
 {
-    deleteObject(glDeleteRenderbuffers, id(), hasOwnership()); // TODO: convert to implementation
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().renderbufferImplementation().destroy(id());
+    }
 }
 
 

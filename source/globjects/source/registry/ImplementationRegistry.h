@@ -11,6 +11,7 @@
 #include <globjects/Object.h>
 #include <globjects/Texture.h>
 #include <globjects/Query.h>
+#include <globjects/Renderbuffer.h>
 #include <globjects/VertexArray.h>
 
 
@@ -26,6 +27,7 @@ class AbstractProgramImplementation;
 class AbstractProgramBinaryImplementation;
 class AbstractProgramPipelineImplementation;
 class AbstractQueryImplementation;
+class AbstractRenderbufferImplementation;
 class AbstractShadingLanguageIncludeImplementation;
 class AbstractObjectNameImplementation;
 class AbstractVertexAttributeBindingImplementation;
@@ -50,6 +52,7 @@ public:
     void initialize(Program::BinaryImplementation impl);
     void initialize(ProgramPipeline::Implementation impl);
     void initialize(Query::Implementation impl);
+    void initialize(Renderbuffer::Implementation impl);
     void initialize(Shader::IncludeImplementation impl);
     void initialize(Object::NameImplementation impl);
     void initialize(VertexArray::AttributeImplementation impl);
@@ -67,6 +70,7 @@ public:
     AbstractProgramBinaryImplementation & programBinaryImplementation();
     AbstractProgramPipelineImplementation & programPipelineImplementation();
     AbstractQueryImplementation & queryImplementation();
+    AbstractRenderbufferImplementation & renderbufferImplementation();
     AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation();
     AbstractObjectNameImplementation & objectNameImplementation();
     AbstractVertexAttributeBindingImplementation & attributeImplementation();
@@ -84,6 +88,7 @@ protected:
     AbstractProgramBinaryImplementation * m_programBinaryImplementation;
     AbstractProgramPipelineImplementation * m_programPipelineImplementation;
     AbstractQueryImplementation * m_queryImplementation;
+    AbstractRenderbufferImplementation * m_renderbufferImplementation;
     AbstractShadingLanguageIncludeImplementation * m_shadingLanguageIncludeImplementation;
     AbstractObjectNameImplementation * m_objectNameImplementation;
     AbstractTextureImplementation * m_textureBindlessImplementation;
