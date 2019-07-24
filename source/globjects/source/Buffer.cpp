@@ -78,17 +78,17 @@ Buffer::~Buffer()
 
 void Buffer::bind(const GLenum target) const
 {
-    glBindBuffer(target, id());
+    return implementation().bind(this, target);
 }
 
 void Buffer::unbind(const GLenum target)
 {
-    glBindBuffer(target, 0);
+    return implementation().unbind(target);
 }
 
 void Buffer::unbind(const GLenum target, const GLuint index)
 {
-    glBindBufferBase(target, index, 0);
+    return implementation().unbindBase(target, index);
 }
 
 const void * Buffer::map() const
@@ -143,12 +143,12 @@ GLint64 Buffer::getParameter64(const GLenum pname) const
 
 void Buffer::bindBase(const GLenum target, const GLuint index) const
 {
-    glBindBufferBase(target, index, id());
+    return implementation().bindBase(this, target, index);
 }
 
 void Buffer::bindRange(const GLenum target, const GLuint index, const GLintptr offset, const GLsizeiptr size) const
 {
-    glBindBufferRange(target, index, id(), offset, size);
+    return implementation().bindRange(this, target, index, offset, size);
 }
 
 void Buffer::copySubData(Buffer * buffer, const GLintptr readOffset, const GLintptr writeOffset, const GLsizeiptr size) const

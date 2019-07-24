@@ -20,6 +20,13 @@ public:
     virtual gl::GLuint create() const override;
     virtual void destroy(gl::GLuint id) const override;
 
+    virtual void bind(const Buffer * buffer, gl::GLenum target) const override;
+    virtual void unbind(gl::GLenum target) const override;
+    virtual void bindBase(const Buffer * buffer, gl::GLenum target, const gl::GLuint index) const override;
+    virtual void unbindBase(gl::GLenum target, const gl::GLuint index) const override;
+
+    virtual void bindRange(const Buffer * buffer, gl::GLenum target, gl::GLuint index, gl::GLintptr offset, gl::GLsizeiptr size) const override;
+
     virtual void * map(const Buffer * buffer, gl::GLenum access) const override;
     virtual void * mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::MapBufferAccessMask access) const override;
     virtual bool unmap(const Buffer * buffer) const override;
