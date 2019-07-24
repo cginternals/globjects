@@ -20,6 +20,7 @@ class AbstractUniformImplementation;
 class AbstractBufferImplementation;
 class AbstractFramebufferImplementation;
 class AbstractDebugImplementation;
+class AbstractProgramImplementation;
 class AbstractProgramBinaryImplementation;
 class AbstractShadingLanguageIncludeImplementation;
 class AbstractObjectNameImplementation;
@@ -41,6 +42,7 @@ public:
     void initialize(Buffer::BindlessImplementation impl);
     void initialize(Framebuffer::BindlessImplementation impl);
     void initialize(DebugMessage::Implementation impl);
+    void initialize(Program::Implementation impl);
     void initialize(Program::BinaryImplementation impl);
     void initialize(Shader::IncludeImplementation impl);
     void initialize(Object::NameImplementation impl);
@@ -55,6 +57,7 @@ public:
     AbstractBufferImplementation & bufferImplementation();
     AbstractFramebufferImplementation & framebufferImplementation();
     AbstractDebugImplementation & debugImplementation();
+    AbstractProgramImplementation & programImplementation();
     AbstractProgramBinaryImplementation & programBinaryImplementation();
     AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation();
     AbstractObjectNameImplementation & objectNameImplementation();
@@ -69,6 +72,7 @@ protected:
     AbstractBufferImplementation * m_bufferImplementation;
     AbstractFramebufferImplementation * m_framebufferImplementation;
     AbstractDebugImplementation * m_debugImplementation;
+    AbstractProgramImplementation * m_programImplementation;
     AbstractProgramBinaryImplementation * m_programBinaryImplementation;
     AbstractShadingLanguageIncludeImplementation * m_shadingLanguageIncludeImplementation;
     AbstractObjectNameImplementation * m_objectNameImplementation;

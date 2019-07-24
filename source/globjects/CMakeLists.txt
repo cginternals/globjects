@@ -161,6 +161,11 @@ set(sources
     ${source_path}/implementations/FramebufferImplementation_Legacy.cpp
     ${source_path}/implementations/FramebufferImplementation_Legacy.h
 
+    ${source_path}/implementations/AbstractProgramImplementation.cpp
+    ${source_path}/implementations/AbstractProgramImplementation.h
+    ${source_path}/implementations/ProgramImplementation_Legacy.cpp
+    ${source_path}/implementations/ProgramImplementation_Legacy.h
+
     ${source_path}/implementations/AbstractProgramBinaryImplementation.cpp
     ${source_path}/implementations/AbstractProgramBinaryImplementation.h
     ${source_path}/implementations/ProgramBinaryImplementation_GetProgramBinaryARB.cpp

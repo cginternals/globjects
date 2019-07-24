@@ -7,6 +7,7 @@
 #include "../implementations/AbstractBufferImplementation.h"
 #include "../implementations/AbstractFramebufferImplementation.h"
 #include "../implementations/AbstractDebugImplementation.h"
+#include "../implementations/AbstractProgramImplementation.h"
 #include "../implementations/AbstractProgramBinaryImplementation.h"
 #include "../implementations/AbstractShadingLanguageIncludeImplementation.h"
 #include "../implementations/AbstractObjectNameImplementation.h"
@@ -25,6 +26,7 @@ ImplementationRegistry::ImplementationRegistry()
 , m_bufferImplementation(nullptr)
 , m_framebufferImplementation(nullptr)
 , m_debugImplementation(nullptr)
+, m_programImplementation(nullptr)
 , m_programBinaryImplementation(nullptr)
 , m_shadingLanguageIncludeImplementation(nullptr)
 , m_objectNameImplementation(nullptr)
@@ -41,6 +43,7 @@ ImplementationRegistry::~ImplementationRegistry()
     delete m_bufferImplementation;
     delete m_framebufferImplementation;
     delete m_debugImplementation;
+    delete m_programImplementation;
     delete m_programBinaryImplementation;
     delete m_shadingLanguageIncludeImplementation;
     delete m_objectNameImplementation;
@@ -61,6 +64,7 @@ void ImplementationRegistry::initialize()
     m_bufferImplementation = AbstractBufferImplementation::get();
     m_framebufferImplementation = AbstractFramebufferImplementation::get();
     m_debugImplementation = AbstractDebugImplementation::get();
+    m_programImplementation = AbstractProgramImplementation::get();
     m_programBinaryImplementation = AbstractProgramBinaryImplementation::get();
     m_shadingLanguageIncludeImplementation = AbstractShadingLanguageIncludeImplementation::get();
     m_objectNameImplementation = AbstractObjectNameImplementation::get();
@@ -88,6 +92,11 @@ void ImplementationRegistry::initialize(const Framebuffer::BindlessImplementatio
 void ImplementationRegistry::initialize(const DebugMessage::Implementation impl)
 {
     m_debugImplementation = AbstractDebugImplementation::get(impl);
+}
+
+void ImplementationRegistry::initialize(const Program::Implementation impl)
+{
+    m_programImplementation = AbstractProgramImplementation::get(impl);
 }
 
 void ImplementationRegistry::initialize(const Program::BinaryImplementation impl)
@@ -155,6 +164,14 @@ AbstractDebugImplementation & ImplementationRegistry::debugImplementation()
         m_debugImplementation = AbstractDebugImplementation::get();
 
     return *m_debugImplementation;
+}
+
+AbstractProgramImplementation & ImplementationRegistry::programImplementation()
+{
+    if (!m_programImplementation)
+        m_programImplementation = AbstractProgramImplementation::get();
+
+    return *m_programImplementation;
 }
 
 AbstractProgramBinaryImplementation & ImplementationRegistry::programBinaryImplementation()

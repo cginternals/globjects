@@ -31,6 +31,11 @@ namespace
 {
 
 
+const globjects::AbstractProgramImplementation & implementation()
+{
+    return globjects::ImplementationRegistry::current().programImplementation();
+}
+
 const globjects::AbstractProgramBinaryImplementation & binaryImplementation()
 {
     return globjects::ImplementationRegistry::current().programBinaryImplementation();
@@ -43,6 +48,11 @@ const globjects::AbstractProgramBinaryImplementation & binaryImplementation()
 namespace globjects
 {
 
+
+void Program::hintImplementation(const Implementation impl)
+{
+    ImplementationRegistry::current().initialize(impl);
+}
 
 void Program::hintBinaryImplementation(const BinaryImplementation impl)
 {

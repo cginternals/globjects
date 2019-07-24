@@ -6,6 +6,7 @@
 #include "registry/ImplementationRegistry.h"
 
 #include "implementations/AbstractBufferImplementation.h"
+#include "implementations/AbstractProgramImplementation.h"
 #include "implementations/AbstractFramebufferImplementation.h"
 #include "implementations/AbstractTextureImplementation.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
@@ -119,7 +120,9 @@ BufferResource::BufferResource()
 BufferResource::~BufferResource()
 {
     if (hasOwnership())
+    {
         ImplementationRegistry::current().bufferImplementation().destroy(id());
+    }
 }
 
 
@@ -131,12 +134,14 @@ FrameBufferObjectResource::FrameBufferObjectResource()
 FrameBufferObjectResource::~FrameBufferObjectResource()
 {
     if (hasOwnership())
+    {
         ImplementationRegistry::current().framebufferImplementation().destroy(id());
+    }
 }
 
 
 ProgramResource::ProgramResource()
-: IDResource(glCreateProgram())
+    : IDResource(ImplementationRegistry::current().programImplementation().create())
 {
 }
 
@@ -144,7 +149,7 @@ ProgramResource::~ProgramResource()
 {
     if (hasOwnership())
     {
-        glDeleteProgram(id());
+        ImplementationRegistry::current().programImplementation().destroy(id());
     }
 }
 

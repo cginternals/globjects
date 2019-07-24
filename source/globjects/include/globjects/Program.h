@@ -86,12 +86,18 @@ class GLOBJECTS_API Program : public Object, public Instantiator<Program>
 
 
 public:
+    enum class Implementation
+    {
+        Legacy
+    };
+
     enum class BinaryImplementation
     {
         None,
         GetProgramBinaryARB
     };
 
+    static void hintImplementation(Implementation impl);
     static void hintBinaryImplementation(BinaryImplementation impl);
 
 
