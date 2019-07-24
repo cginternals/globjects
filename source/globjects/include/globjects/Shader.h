@@ -50,6 +50,11 @@ public:
 
 
 public:
+    enum class Implementation
+    {
+        Legacy
+    };
+
     enum class IncludeImplementation
     {
         Fallback,

@@ -193,6 +193,11 @@ set(sources
     ${source_path}/implementations/SamplerImplementation_Legacy.cpp
     ${source_path}/implementations/SamplerImplementation_Legacy.h
 
+    ${source_path}/implementations/AbstractShaderImplementation.cpp
+    ${source_path}/implementations/AbstractShaderImplementation.h
+    ${source_path}/implementations/ShaderImplementation_Legacy.cpp
+    ${source_path}/implementations/ShaderImplementation_Legacy.h
+
     ${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.cpp
     ${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.h
     ${source_path}/implementations/ShadingLanguageIncludeImplementation_ShadingLanguageIncludeARB.cpp

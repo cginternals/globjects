@@ -13,6 +13,7 @@
 #include "implementations/AbstractQueryImplementation.h"
 #include "implementations/AbstractRenderbufferImplementation.h"
 #include "implementations/AbstractSamplerImplementation.h"
+#include "implementations/AbstractShaderImplementation.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
 
@@ -217,7 +218,7 @@ SamplerResource::~SamplerResource()
 
 
 ShaderResource::ShaderResource(GLenum type)
-: IDResource(glCreateShader(type)) // TODO: convert to implementation
+: IDResource(ImplementationRegistry::current().shaderImplementation().create(type))
 {
 }
 
@@ -225,7 +226,7 @@ ShaderResource::~ShaderResource()
 {
     if (hasOwnership())
     {
-        glDeleteShader(id()); // TODO: convert to implementation
+        ImplementationRegistry::current().shaderImplementation().destroy(id());
     }
 }
 
