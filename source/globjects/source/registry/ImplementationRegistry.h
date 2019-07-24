@@ -3,6 +3,7 @@
 
 #include <globjects/Shader.h>
 #include <globjects/Program.h>
+#include <globjects/ProgramPipeline.h>
 #include <globjects/AbstractUniform.h>
 #include <globjects/Buffer.h>
 #include <globjects/Framebuffer.h>
@@ -22,6 +23,7 @@ class AbstractFramebufferImplementation;
 class AbstractDebugImplementation;
 class AbstractProgramImplementation;
 class AbstractProgramBinaryImplementation;
+class AbstractProgramPipelineImplementation;
 class AbstractShadingLanguageIncludeImplementation;
 class AbstractObjectNameImplementation;
 class AbstractVertexAttributeBindingImplementation;
@@ -44,6 +46,7 @@ public:
     void initialize(DebugMessage::Implementation impl);
     void initialize(Program::Implementation impl);
     void initialize(Program::BinaryImplementation impl);
+    void initialize(ProgramPipeline::Implementation impl);
     void initialize(Shader::IncludeImplementation impl);
     void initialize(Object::NameImplementation impl);
     void initialize(VertexArray::AttributeImplementation impl);
@@ -59,6 +62,7 @@ public:
     AbstractDebugImplementation & debugImplementation();
     AbstractProgramImplementation & programImplementation();
     AbstractProgramBinaryImplementation & programBinaryImplementation();
+    AbstractProgramPipelineImplementation & programPipelineImplementation();
     AbstractShadingLanguageIncludeImplementation & shadingLanguageIncludeImplementation();
     AbstractObjectNameImplementation & objectNameImplementation();
     AbstractVertexAttributeBindingImplementation & attributeImplementation();
@@ -74,6 +78,7 @@ protected:
     AbstractDebugImplementation * m_debugImplementation;
     AbstractProgramImplementation * m_programImplementation;
     AbstractProgramBinaryImplementation * m_programBinaryImplementation;
+    AbstractProgramPipelineImplementation * m_programPipelineImplementation;
     AbstractShadingLanguageIncludeImplementation * m_shadingLanguageIncludeImplementation;
     AbstractObjectNameImplementation * m_objectNameImplementation;
     AbstractTextureImplementation * m_textureBindlessImplementation;

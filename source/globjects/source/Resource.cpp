@@ -7,6 +7,7 @@
 
 #include "implementations/AbstractBufferImplementation.h"
 #include "implementations/AbstractProgramImplementation.h"
+#include "implementations/AbstractProgramPipelineImplementation.h"
 #include "implementations/AbstractFramebufferImplementation.h"
 #include "implementations/AbstractTextureImplementation.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
@@ -19,6 +20,7 @@ namespace
 {
 
 
+// TODO: remove after all code is used within implementations
 template <typename CreateObjectsFunction>
 GLuint createObject(CreateObjectsFunction function)
 {
@@ -27,6 +29,7 @@ GLuint createObject(CreateObjectsFunction function)
     return id;
 }
 
+// TODO: remove after all code is used within implementations
 template <typename DeleteObjectsFunction>
 void deleteObject(DeleteObjectsFunction function, const GLuint id, const bool hasOwnership)
 {
@@ -155,50 +158,53 @@ ProgramResource::~ProgramResource()
 
 
 ProgramPipelineResource::ProgramPipelineResource()
-: IDResource(createObject(glGenProgramPipelines))
+: IDResource(ImplementationRegistry::current().programPipelineImplementation().create())
 {
 }
 
 ProgramPipelineResource::~ProgramPipelineResource()
 {
-    deleteObject(glDeleteProgramPipelines, id(), hasOwnership());
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().programPipelineImplementation().destroy(id());
+    }
 }
 
 
 QueryResource::QueryResource()
-: IDResource(createObject(glGenQueries))
+: IDResource(createObject(glGenQueries)) // TODO: convert to implementation
 {
 }
 
 QueryResource::~QueryResource()
 {
-    deleteObject(glDeleteQueries, id(), hasOwnership());
+    deleteObject(glDeleteQueries, id(), hasOwnership()); // TODO: convert to implementation
 }
 
 
 RenderBufferObjectResource::RenderBufferObjectResource()
-: IDResource(createObject(glGenRenderbuffers))
+: IDResource(createObject(glGenRenderbuffers)) // TODO: convert to implementation
 {
 }
 
 RenderBufferObjectResource::~RenderBufferObjectResource()
 {
-    deleteObject(glDeleteRenderbuffers, id(), hasOwnership());
+    deleteObject(glDeleteRenderbuffers, id(), hasOwnership()); // TODO: convert to implementation
 }
 
 
 SamplerResource::SamplerResource()
-: IDResource(createObject(glGenSamplers))
+: IDResource(createObject(glGenSamplers)) // TODO: convert to implementation
 {
 }
 
 SamplerResource::~SamplerResource()
 {
-    deleteObject(glDeleteSamplers, id(), hasOwnership());
+    deleteObject(glDeleteSamplers, id(), hasOwnership()); // TODO: convert to implementation
 }
 
 ShaderResource::ShaderResource(GLenum type)
-: IDResource(glCreateShader(type))
+: IDResource(glCreateShader(type)) // TODO: convert to implementation
 {
 }
 
@@ -206,7 +212,7 @@ ShaderResource::~ShaderResource()
 {
     if (hasOwnership())
     {
-        glDeleteShader(id());
+        glDeleteShader(id()); // TODO: convert to implementation
     }
 }
 
@@ -226,13 +232,13 @@ TextureResource::~TextureResource()
 
 
 TransformFeedbackResource::TransformFeedbackResource()
-: IDResource(createObject(glGenTransformFeedbacks))
+: IDResource(createObject(glGenTransformFeedbacks)) // TODO: convert to implementation
 {
 }
 
 TransformFeedbackResource::~TransformFeedbackResource()
 {
-    deleteObject(glDeleteTransformFeedbacks, id(), hasOwnership());
+    deleteObject(glDeleteTransformFeedbacks, id(), hasOwnership()); // TODO: convert to implementation
 }
 
 

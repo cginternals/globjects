@@ -9,6 +9,7 @@
 #include "../implementations/AbstractDebugImplementation.h"
 #include "../implementations/AbstractProgramImplementation.h"
 #include "../implementations/AbstractProgramBinaryImplementation.h"
+#include "../implementations/AbstractProgramPipelineImplementation.h"
 #include "../implementations/AbstractShadingLanguageIncludeImplementation.h"
 #include "../implementations/AbstractObjectNameImplementation.h"
 #include "../implementations/AbstractTextureImplementation.h"
@@ -28,6 +29,7 @@ ImplementationRegistry::ImplementationRegistry()
 , m_debugImplementation(nullptr)
 , m_programImplementation(nullptr)
 , m_programBinaryImplementation(nullptr)
+, m_programPipelineImplementation(nullptr)
 , m_shadingLanguageIncludeImplementation(nullptr)
 , m_objectNameImplementation(nullptr)
 , m_textureBindlessImplementation(nullptr)
@@ -45,6 +47,7 @@ ImplementationRegistry::~ImplementationRegistry()
     delete m_debugImplementation;
     delete m_programImplementation;
     delete m_programBinaryImplementation;
+    delete m_programPipelineImplementation;
     delete m_shadingLanguageIncludeImplementation;
     delete m_objectNameImplementation;
     delete m_attributeImplementation;
@@ -66,6 +69,7 @@ void ImplementationRegistry::initialize()
     m_debugImplementation = AbstractDebugImplementation::get();
     m_programImplementation = AbstractProgramImplementation::get();
     m_programBinaryImplementation = AbstractProgramBinaryImplementation::get();
+    m_programPipelineImplementation = AbstractProgramPipelineImplementation::get();
     m_shadingLanguageIncludeImplementation = AbstractShadingLanguageIncludeImplementation::get();
     m_objectNameImplementation = AbstractObjectNameImplementation::get();
     m_attributeImplementation = AbstractVertexAttributeBindingImplementation::get();
@@ -102,6 +106,11 @@ void ImplementationRegistry::initialize(const Program::Implementation impl)
 void ImplementationRegistry::initialize(const Program::BinaryImplementation impl)
 {
     m_programBinaryImplementation = AbstractProgramBinaryImplementation::get(impl);
+}
+
+void ImplementationRegistry::initialize(const ProgramPipeline::Implementation impl)
+{
+    m_programPipelineImplementation = AbstractProgramPipelineImplementation::get(impl);
 }
 
 void ImplementationRegistry::initialize(const Shader::IncludeImplementation impl)
@@ -180,6 +189,14 @@ AbstractProgramBinaryImplementation & ImplementationRegistry::programBinaryImple
         m_programBinaryImplementation = AbstractProgramBinaryImplementation::get();
 
     return *m_programBinaryImplementation;
+}
+
+AbstractProgramPipelineImplementation & ImplementationRegistry::programPipelineImplementation()
+{
+    if (!m_programPipelineImplementation)
+        m_programPipelineImplementation = AbstractProgramPipelineImplementation::get();
+
+    return *m_programPipelineImplementation;
 }
 
 AbstractShadingLanguageIncludeImplementation & ImplementationRegistry::shadingLanguageIncludeImplementation()

@@ -166,6 +166,11 @@ set(sources
     ${source_path}/implementations/ProgramImplementation_Legacy.cpp
     ${source_path}/implementations/ProgramImplementation_Legacy.h
 
+    ${source_path}/implementations/AbstractProgramPipelineImplementation.cpp
+    ${source_path}/implementations/AbstractProgramPipelineImplementation.h
+    ${source_path}/implementations/ProgramPipelineImplementation_Legacy.cpp
+    ${source_path}/implementations/ProgramPipelineImplementation_Legacy.h
+
     ${source_path}/implementations/AbstractProgramBinaryImplementation.cpp
     ${source_path}/implementations/AbstractProgramBinaryImplementation.h
     ${source_path}/implementations/ProgramBinaryImplementation_GetProgramBinaryARB.cpp
