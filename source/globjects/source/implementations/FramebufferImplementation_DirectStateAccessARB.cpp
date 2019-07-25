@@ -31,6 +31,26 @@ void FramebufferImplementation_DirectStateAccessARB::destroy(const GLuint id) co
     FramebufferImplementation_Legacy::instance()->destroy(id);
 }
 
+void FramebufferImplementation_DirectStateAccessARB::bind(const Framebuffer * fbo) const
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo->id());
+}
+
+void FramebufferImplementation_DirectStateAccessARB::bind(const Framebuffer * fbo, gl::GLenum target) const
+{
+    glBindFramebuffer(target, fbo->id());
+}
+
+void FramebufferImplementation_DirectStateAccessARB::unbind() const
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void FramebufferImplementation_DirectStateAccessARB::unbind(gl::GLenum target) const
+{
+    glBindFramebuffer(target, 0);
+}
+
 GLenum FramebufferImplementation_DirectStateAccessARB::checkStatus(const Framebuffer * fbo) const
 {
     // glCheckNamedFramebufferStatus seems to fail when checking the default framebuffer

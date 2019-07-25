@@ -104,14 +104,6 @@ public:
     void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, int value);
     void clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, float value);
 
-    static void colorMask(gl::GLboolean red, gl::GLboolean green, gl::GLboolean blue, gl::GLboolean alpha);
-    static void colorMask(const glm::bvec4 & mask);
-    static void colorMaski(gl::GLuint buffer, gl::GLboolean red, gl::GLboolean green, gl::GLboolean blue, gl::GLboolean alpha);
-    static void colorMaski(gl::GLuint buffer, const glm::bvec4 & mask);
-    static void clearColor(gl::GLfloat red, gl::GLfloat green, gl::GLfloat blue, gl::GLfloat alpha);
-    static void clearColor(const glm::vec4 & color);
-    static void clearDepth(gl::GLdouble depth);
-
     void readPixels(gl::GLint x, gl::GLint y, gl::GLsizei width, gl::GLsizei height, gl::GLenum format, gl::GLenum type, gl::GLvoid * data = nullptr) const;
     void readPixels(const std::array<gl::GLint, 4> & rect, gl::GLenum format, gl::GLenum type, gl::GLvoid * data = nullptr) const;
     void readPixels(gl::GLenum readBuffer, const std::array<gl::GLint, 4> & rect, gl::GLenum format, gl::GLenum type, gl::GLvoid * data = nullptr) const;

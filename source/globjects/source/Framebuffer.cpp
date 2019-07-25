@@ -86,22 +86,22 @@ Framebuffer::~Framebuffer()
 
 void Framebuffer::bind() const
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, id());
+    implementation().bind(this);
 }
 
 void Framebuffer::bind(const GLenum target) const
 {
-    glBindFramebuffer(target, id());
+    implementation().bind(this, target);
 }
 
 void Framebuffer::unbind()
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    implementation().unbind();
 }
 
 void Framebuffer::unbind(const GLenum target)
 {
-    glBindFramebuffer(target, 0);
+    implementation().unbind(target);
 }
 
 void Framebuffer::setParameter(const GLenum pname, const GLint param)
@@ -237,41 +237,6 @@ void Framebuffer::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, int value
 void Framebuffer::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, float value)
 {
     clearBuffer(buffer, drawBuffer, &value);
-}
-
-void Framebuffer::colorMask(const GLboolean red, const GLboolean green, const GLboolean blue, const GLboolean alpha)
-{
-    glColorMask(red, green, blue, alpha);
-}
-
-void Framebuffer::colorMask(const glm::bvec4 & mask)
-{
-    colorMask(static_cast<GLboolean>(mask[0]), static_cast<GLboolean>(mask[1]), static_cast<GLboolean>(mask[2]), static_cast<GLboolean>(mask[3]));
-}
-
-void Framebuffer::colorMaski(const GLuint buffer, const GLboolean red, const GLboolean green, const GLboolean blue, const GLboolean alpha)
-{
-    glColorMaski(buffer, red, green, blue, alpha);
-}
-
-void Framebuffer::colorMaski(const GLuint buffer, const glm::bvec4 & mask)
-{
-    colorMaski(buffer, static_cast<GLboolean>(mask[0]), static_cast<GLboolean>(mask[1]), static_cast<GLboolean>(mask[2]), static_cast<GLboolean>(mask[3]));
-}
-
-void Framebuffer::clearColor(const GLfloat red, const GLfloat green, const GLfloat blue, const GLfloat alpha)
-{
-    glClearColor(red, green, blue, alpha);
-}
-
-void Framebuffer::clearColor(const glm::vec4 & color)
-{
-    clearColor(color.r, color.g, color.b, color.a);
-}
-
-void Framebuffer::clearDepth(const GLdouble depth)
-{
-    glClearDepth(depth);
 }
 
 void Framebuffer::readPixels(const GLint x, const GLint y, const GLsizei width, const GLsizei height, const GLenum format, const GLenum type, GLvoid * data) const

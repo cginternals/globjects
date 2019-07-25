@@ -30,6 +30,26 @@ void FramebufferImplementation_Legacy::destroy(GLuint id) const
     glDeleteFramebuffers(1, &id);
 }
 
+void FramebufferImplementation_Legacy::bind(const Framebuffer * fbo) const
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo->id());
+}
+
+void FramebufferImplementation_Legacy::bind(const Framebuffer * fbo, gl::GLenum target) const
+{
+    glBindFramebuffer(target, fbo->id());
+}
+
+void FramebufferImplementation_Legacy::unbind() const
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void FramebufferImplementation_Legacy::unbind(gl::GLenum target) const
+{
+    glBindFramebuffer(target, 0);
+}
+
 GLenum FramebufferImplementation_Legacy::checkStatus(const Framebuffer * fbo) const
 {
     fbo->bind(GL_DRAW_FRAMEBUFFER);
