@@ -24,6 +24,12 @@ public:
 
     virtual gl::GLuint create() const = 0;
     virtual void destroy(gl::GLuint id) const = 0;
+
+    virtual void bind(const Renderbuffer * renderbuffer, gl::GLenum target) const = 0;
+    virtual void unbind(gl::GLenum target) const = 0;
+    virtual void storage(const Renderbuffer * renderbuffer, gl::GLenum internalformat, gl::GLsizei width, gl::GLsizei height) const = 0;
+    virtual void storageMultisample(const Renderbuffer * renderbuffer, gl::GLsizei samples, gl::GLenum internalformat, gl::GLsizei width, const gl::GLsizei height) const = 0;
+    virtual gl::GLint getParameterInt(const Renderbuffer * renderbuffer, gl::GLenum pname) const = 0;
 };
 
 

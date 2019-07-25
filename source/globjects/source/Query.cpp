@@ -73,15 +73,6 @@ int Query::getCounterBits(const GLenum target)
     return get(target, GL_QUERY_COUNTER_BITS);
 }
 
-GLuint Query::genQuery()
-{
-    GLuint id;
-
-    glGenQueries(1, &id);
-
-    return id;
-}
-
 GLint Query::get(const GLenum target, const GLenum pname)
 {
     GLint value = 0;
@@ -209,7 +200,7 @@ void Query::counter(const GLenum target) const
 
 bool Query::isQuery(const GLuint id)
 {
-    return glIsQuery(id) == GL_TRUE;
+    return glIsQuery(id) == gl::GL_TRUE;
 }
 
 GLenum Query::objectType() const

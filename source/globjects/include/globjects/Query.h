@@ -120,8 +120,6 @@ public:
 protected:
     Query(std::unique_ptr<IDResource> && resource);
 
-    static gl::GLuint genQuery();
-
     void counter(gl::GLenum target) const;
 };
 
