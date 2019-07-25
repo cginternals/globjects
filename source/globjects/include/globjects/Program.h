@@ -134,6 +134,8 @@ public:
     template <size_t Count>
     std::array<gl::GLint, Count> get(gl::GLenum pname) const;
 
+    void get(gl::GLenum pname, std::size_t count, gl::GLint * values) const;
+
     bool isValid() const;
     void validate();
 

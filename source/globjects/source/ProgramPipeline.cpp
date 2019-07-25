@@ -11,6 +11,22 @@
 #include <globjects/Resource.h>
 #include <globjects/DebugMessage.h>
 
+#include "registry/ImplementationRegistry.h"
+#include "implementations/AbstractProgramPipelineImplementation.h"
+
+
+namespace
+{
+
+
+globjects::AbstractProgramPipelineImplementation & implementation()
+{
+    return globjects::ImplementationRegistry::current().programPipelineImplementation();
+}
+
+
+} // namespace
+
 
 namespace globjects
 {
@@ -96,13 +112,13 @@ void ProgramPipeline::use() const
         checkUseStatus();
     }
 
-    gl::glUseProgram(0);
-    gl::glBindProgramPipeline(id());
+    Program::release();
+    implementation().use(this);
 }
 
 void ProgramPipeline::release()
 {
-    gl::glBindProgramPipeline(0);
+    implementation().release();
 }
 
 void ProgramPipeline::useStages(Program * program, gl::UseProgramStageMask stages)
@@ -114,14 +130,14 @@ void ProgramPipeline::useStages(Program * program, gl::UseProgramStageMask stage
 
     program->link();
 
-    gl::glUseProgramStages(id(), stages, program->id());
+    implementation().useStages(this, program, stages);
 
     invalidate();
 }
 
 void ProgramPipeline::releaseStages(gl::UseProgramStageMask stages)
 {
-    gl::glUseProgramStages(id(), stages, 0);
+    implementation().releaseStages(this, stages);
 
     invalidate();
 }
@@ -141,7 +157,7 @@ bool ProgramPipeline::isValid() const
 
 void ProgramPipeline::validate() const
 {
-    gl::glValidateProgramPipeline(id());
+    implementation().validate(this);
 }
 
 void ProgramPipeline::invalidate()
@@ -165,26 +181,12 @@ bool ProgramPipeline::checkUseStatus() const
 
 gl::GLint ProgramPipeline::get(const gl::GLenum pname) const
 {
-    gl::GLint value = 0;
-    gl::glGetProgramPipelineiv(id(), pname, &value);
-
-    return value;
+    return implementation().getInt(this, pname);
 }
 
 std::string ProgramPipeline::infoLog() const
 {
-    gl::GLint length = get(gl::GL_INFO_LOG_LENGTH);
-
-    if (length == 0)
-    {
-        return std::string();
-    }
-
-    std::vector<char> log(length);
-
-    gl::glGetProgramPipelineInfoLog(id(), length, &length, log.data());
-
-    return std::string(log.data(), length);
+    return implementation().getInfoLog(this);
 }
 
 gl::GLenum ProgramPipeline::objectType() const

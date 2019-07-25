@@ -603,6 +603,11 @@ GLint Program::get(const GLenum pname) const
     return value;
 }
 
+void Program::get(gl::GLenum pname, std::size_t /*count*/, gl::GLint * values) const
+{
+    glGetProgramiv(id(), pname, values);
+}
+
 void Program::getActiveAttrib(gl::GLuint index, gl::GLsizei bufSize, gl::GLsizei * length, gl::GLint * size, gl::GLenum * type, gl::GLchar * name) const
 {
     checkDirty();
