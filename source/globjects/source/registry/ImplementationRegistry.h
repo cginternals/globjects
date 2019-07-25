@@ -38,7 +38,7 @@ class AbstractVertexAttributeBindingImplementation;
 class AbstractTextureImplementation;
 class AbstractTextureStorageImplementation;
 class AbstractTextureStorageMultisampleImplementation;
-class AbstractTransformfeedbackImplementation;
+class AbstractTransformFeedbackImplementation;
 
 
 class ImplementationRegistry
@@ -87,7 +87,7 @@ public:
     AbstractTextureImplementation & textureBindlessImplementation();
     AbstractTextureStorageImplementation & textureStorageImplementation();
     AbstractTextureStorageMultisampleImplementation & textureStorageMultisampleImplementation();
-    AbstractTransformfeedbackImplementation & transformfeedbackImplementation();
+    AbstractTransformFeedbackImplementation & transformfeedbackImplementation();
 
 
 protected:
@@ -108,7 +108,7 @@ protected:
     AbstractTextureStorageImplementation * m_textureStorageImplementation;
     AbstractTextureStorageMultisampleImplementation * m_textureStorageMultisampleImplementation;
     AbstractVertexAttributeBindingImplementation * m_attributeImplementation;
-    AbstractTransformfeedbackImplementation * m_transformfeedbackImplementation;
+    AbstractTransformFeedbackImplementation * m_transformfeedbackImplementation;
 };
 
 

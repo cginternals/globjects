@@ -13,13 +13,13 @@ namespace globjects
 {
 
 
-class AbstractTransformfeedbackImplementation
+class AbstractTransformFeedbackImplementation
 {
 public:
-    AbstractTransformfeedbackImplementation();
-    virtual ~AbstractTransformfeedbackImplementation();
+    AbstractTransformFeedbackImplementation();
+    virtual ~AbstractTransformFeedbackImplementation();
 
-    static AbstractTransformfeedbackImplementation * get(TransformFeedback::Implementation impl =
+    static AbstractTransformFeedbackImplementation * get(TransformFeedback::Implementation impl =
         TransformFeedback::Implementation::Legacy);
 
     virtual gl::GLuint create() const = 0;

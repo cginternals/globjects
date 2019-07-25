@@ -19,7 +19,7 @@
 #include "../implementations/AbstractTextureImplementation.h"
 #include "../implementations/AbstractTextureStorageImplementation.h"
 #include "../implementations/AbstractTextureStorageMultisampleImplementation.h"
-#include "../implementations/AbstractTransformfeedbackImplementation.h"
+#include "../implementations/AbstractTransformFeedbackImplementation.h"
 #include "../implementations/AbstractVertexAttributeBindingImplementation.h"
 
 
@@ -95,7 +95,7 @@ void ImplementationRegistry::initialize()
     m_textureBindlessImplementation = AbstractTextureImplementation::get();
     m_textureStorageImplementation = AbstractTextureStorageImplementation::get();
     m_textureStorageMultisampleImplementation = AbstractTextureStorageMultisampleImplementation::get();
-    m_transformfeedbackImplementation = AbstractTransformfeedbackImplementation::get();
+    m_transformfeedbackImplementation = AbstractTransformFeedbackImplementation::get();
 }
 
 void ImplementationRegistry::initialize(const AbstractUniform::BindlessImplementation impl)
@@ -185,7 +185,7 @@ void ImplementationRegistry::initialize(Texture::StorageMultisampleImplementatio
 
 void ImplementationRegistry::initialize(const TransformFeedback::Implementation impl)
 {
-    m_transformfeedbackImplementation = AbstractTransformfeedbackImplementation::get(impl);
+    m_transformfeedbackImplementation = AbstractTransformFeedbackImplementation::get(impl);
 }
 
 AbstractUniformImplementation & ImplementationRegistry::uniformImplementation()
@@ -324,10 +324,10 @@ AbstractTextureStorageMultisampleImplementation & ImplementationRegistry::textur
     return *m_textureStorageMultisampleImplementation;
 }
 
-AbstractTransformfeedbackImplementation & ImplementationRegistry::transformfeedbackImplementation()
+AbstractTransformFeedbackImplementation & ImplementationRegistry::transformfeedbackImplementation()
 {
     if (!m_transformfeedbackImplementation)
-        m_transformfeedbackImplementation = AbstractTransformfeedbackImplementation::get();
+        m_transformfeedbackImplementation = AbstractTransformFeedbackImplementation::get();
 
     return *m_transformfeedbackImplementation;
 }

@@ -14,39 +14,12 @@
 #include "implementations/AbstractRenderbufferImplementation.h"
 #include "implementations/AbstractSamplerImplementation.h"
 #include "implementations/AbstractShaderImplementation.h"
-#include "implementations/AbstractTransformfeedbackImplementation.h"
+#include "implementations/AbstractTransformFeedbackImplementation.h"
 #include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
 
 using namespace gl;
 
-
-namespace 
-{
-
-
-// TODO: remove after all code is used within implementations
-template <typename CreateObjectsFunction>
-GLuint createObject(CreateObjectsFunction function)
-{
-    GLuint id;
-    function(1, &id);
-    return id;
-}
-
-// TODO: remove after all code is used within implementations
-template <typename DeleteObjectsFunction>
-void deleteObject(DeleteObjectsFunction function, const GLuint id, const bool hasOwnership)
-{
-    if (!hasOwnership)
-    {
-        return;
-    }
-
-    function(1, &id);
-}
-
-}
 
 namespace globjects 
 {

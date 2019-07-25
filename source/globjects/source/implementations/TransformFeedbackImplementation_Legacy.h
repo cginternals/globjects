@@ -6,15 +6,15 @@
 
 #include "../base/Singleton.h"
 
-#include "AbstractTransformfeedbackImplementation.h"
+#include "AbstractTransformFeedbackImplementation.h"
 
 
 namespace globjects
 {
 
 
-class TransformfeedbackImplementation_Legacy : public AbstractTransformfeedbackImplementation
-    , public Singleton<TransformfeedbackImplementation_Legacy>
+class TransformFeedbackImplementation_Legacy : public AbstractTransformFeedbackImplementation
+    , public Singleton<TransformFeedbackImplementation_Legacy>
 {
 public:
     virtual gl::GLuint create() const override;
