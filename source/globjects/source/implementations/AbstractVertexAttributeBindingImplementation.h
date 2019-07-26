@@ -30,6 +30,31 @@ public:
     virtual gl::GLuint create() const = 0;
     virtual void destroy(gl::GLuint id) const = 0;
 
+    virtual void bind(const VertexArray * vertexArray) const;
+    virtual void unbind() const;
+
+    virtual void drawArrays(const VertexArray * vertexArray, gl::GLenum mode, gl::GLint first, gl::GLsizei count) const;
+    virtual void drawArraysInstanced(const VertexArray * vertexArray, gl::GLenum mode, gl::GLint first, gl::GLsizei count, gl::GLsizei instanceCount) const;
+    virtual void drawArraysInstancedBaseInstance(const VertexArray * vertexArray, gl::GLenum mode, gl::GLint first, gl::GLsizei count, gl::GLsizei instanceCount, gl::GLuint baseInstance) const;
+    virtual void drawArraysIndirect(const VertexArray * vertexArray, gl::GLenum mode, const void * indirect = nullptr) const;
+
+    virtual void multiDrawArrays(const VertexArray * vertexArray, gl::GLenum mode, gl::GLint * first, const gl::GLsizei * count, gl::GLsizei drawCount) const;
+    virtual void multiDrawArraysIndirect(const VertexArray * vertexArray, gl::GLenum mode, const void * indirect, gl::GLsizei drawCount, gl::GLsizei stride) const;
+
+    virtual void drawElements(const VertexArray * vertexArray, gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void * indices = nullptr) const;
+    virtual void drawElementsBaseVertex(const VertexArray * vertexArray, gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void * indices, gl::GLint baseVertex) const;
+    virtual void drawElementsInstanced(const VertexArray * vertexArray, gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void * indices, gl::GLsizei primitiveCount) const;
+    virtual void drawElementsInstancedBaseInstance(const VertexArray * vertexArray, gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void * indices, gl::GLsizei instanceCount, gl::GLuint baseInstance) const;
+    virtual void drawElementsInstancedBaseVertex(const VertexArray * vertexArray, gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void * indices, gl::GLsizei instanceCount, gl::GLint baseVertex) const;
+    virtual void drawElementsInstancedBaseVertexBaseInstance(const VertexArray * vertexArray, gl::GLenum mode, gl::GLsizei count, gl::GLenum type, const void * indices, gl::GLsizei instanceCount, gl::GLint baseVertex, gl::GLuint baseInstance) const;
+
+    virtual void multiDrawElements(const VertexArray * vertexArray, gl::GLenum mode, const gl::GLsizei * count, gl::GLenum type, const void ** indices, gl::GLsizei drawCount) const;
+    virtual void multiDrawElementsBaseVertex(const VertexArray * vertexArray, gl::GLenum mode, const gl::GLsizei * count, gl::GLenum type, const void ** indices, gl::GLsizei drawCount, gl::GLint * baseVertex) const;
+    virtual void multiDrawElementsIndirect(const VertexArray * vertexArray, gl::GLenum mode, gl::GLenum type, const void * indirect, gl::GLsizei drawCount, gl::GLsizei stride) const;
+
+    virtual void drawRangeElements(const VertexArray * vertexArray, gl::GLenum mode, gl::GLuint start, gl::GLuint end, gl::GLsizei count, gl::GLenum type, const void * indices = nullptr) const;
+    virtual void drawRangeElementsBaseVertex(const VertexArray * vertexArray, gl::GLenum mode, gl::GLuint start, gl::GLuint end, gl::GLsizei count, gl::GLenum type, const void * indices, gl::GLint baseVertex) const;
+
     virtual void enable(const VertexArray * vertexArray, gl::GLint attributeIndex) const = 0;
     virtual void disable(const VertexArray * vertexArray, gl::GLint attributeIndex) const = 0;
 
