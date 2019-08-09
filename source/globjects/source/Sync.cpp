@@ -51,7 +51,7 @@ Sync::~Sync()
 
 GLsync Sync::fenceSync(const GLenum condition, const UnusedMask flags)
 {
-    return glFenceSync(condition, flags);
+    return glFenceSync(condition, static_cast<GLbitfield>(flags));
 }
 
 GLsync Sync::sync() const
@@ -71,7 +71,7 @@ void Sync::wait(const GLuint64 timeout)
 
 void Sync::wait(const UnusedMask flags, const GLuint64 timeout)
 {
-    glWaitSync(m_sync, flags, timeout);
+    glWaitSync(m_sync, static_cast<GLbitfield>(flags), timeout);
 }
 
 void Sync::get(const GLenum pname, const GLsizei bufsize, GLsizei * length, GLint * values)

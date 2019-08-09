@@ -46,7 +46,6 @@ GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::VertexHintsMaskPGI & value);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::PathFontStyle & value);
 GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::UnusedMask & value);
-GLOBJECTS_API LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::BufferAccessMask & value);
 
 
 } // namespace globjects

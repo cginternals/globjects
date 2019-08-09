@@ -251,16 +251,5 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::UnusedMask & v
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::BufferAccessMask & value)
-{
-    std::ostringstream stream;
-
-    stream << value;
-
-    builder << stream.str();
-
-    return builder;
-}
-
 
 } // namespace globjects
