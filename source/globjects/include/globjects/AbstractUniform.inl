@@ -2,7 +2,7 @@
 #pragma once
 
 
-namespace globjects
+namespace globjects 
 {
 
 
@@ -584,55 +584,55 @@ struct UniformTypeHelper<Eigen::Matrix<unsigned int, 4, 1>>
 template <>
 struct UniformTypeHelper<Eigen::Matrix2f>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT2;
 };
 
 template <>
 struct UniformTypeHelper<Eigen::Matrix3f>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT3;
 };
 
 template <>
 struct UniformTypeHelper<Eigen::Matrix4f>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT4;
 };
 
 template <>
 struct UniformTypeHelper<Eigen::Matrix<float, 2, 3>>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT2x3;
 };
 
 template <>
 struct UniformTypeHelper<Eigen::Matrix<float, 3, 2>>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT3x2;
 };
 
 template <>
 struct UniformTypeHelper<Eigen::Matrix<float, 2, 4>>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT2x4;
 };
 
 template <>
 struct UniformTypeHelper<Eigen::Matrix<float, 4, 2>>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT4x2;
 };
 
 template <>
 struct UniformTypeHelper<Eigen::Matrix<float, 3, 4>>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT3x4;
 };
 
 template <>
 struct UniformTypeHelper<Eigen::Matrix<float, 4, 3>>
 {
-    static const UniformType value = UniformType::UNSIGNED_INT;
+    static const UniformType value = UniformType::ARRAY_FLOAT_MAT4x3;
 };
 
 #endif

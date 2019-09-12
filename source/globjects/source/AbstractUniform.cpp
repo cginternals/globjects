@@ -14,7 +14,7 @@
 using namespace gl;
 
 
-namespace
+namespace 
 {
 
 

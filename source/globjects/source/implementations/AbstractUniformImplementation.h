@@ -23,7 +23,7 @@ public:
     AbstractUniformImplementation();
     virtual ~AbstractUniformImplementation();
 
-    static AbstractUniformImplementation * get(AbstractUniform::BindlessImplementation impl =
+    static AbstractUniformImplementation * get(AbstractUniform::BindlessImplementation impl = 
         AbstractUniform::BindlessImplementation::SeparateShaderObjectsARB);
 
     virtual void set(const Program * program, gl::GLint location, const float & value) const = 0;
