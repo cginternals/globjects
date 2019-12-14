@@ -271,9 +271,9 @@ set(sources
 
 
 if(OPTION_USE_EIGEN)
-  list(APPEND ${source}
-    ${source_path}/implementations/EigenOpenGLSupport.h
-)
+    list(APPEND sources
+        ${source_path}/implementations/EigenOpenGLSupport.h
+    )
 endif()
 
 # Group source files
