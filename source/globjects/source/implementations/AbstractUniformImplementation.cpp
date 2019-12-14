@@ -37,6 +37,11 @@ AbstractUniformImplementation * AbstractUniformImplementation::get(const Abstrac
     }
 }
 
+void AbstractUniformImplementation::set(const Program* program, GLint location, const TextureHandle & value) const
+{
+    set(program, location, value.handle());
+}
+
 void AbstractUniformImplementation::set(const Program* program, GLint location, const std::vector<TextureHandle> & value) const
 {
     set(program, location, std::vector<GLuint64>{ value.begin(), value.end() });

@@ -118,6 +118,28 @@ void AbstractUniform::setValue(const GLint location, const bool & value) const
     implementation().set(m_program, location, value);
 }
 
+void AbstractUniform::setValue(const GLint location, const GLuint64 & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(const GLint location, const TextureHandle & value) const
+{
+    setValue(location, value.handle());
+}
+
+void AbstractUniform::setValue(const GLint location, const std::vector<GLuint64> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(const GLint location, const std::vector<TextureHandle> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+// glm specifics
+
 void AbstractUniform::setValue(const GLint location, const glm::vec2 & value) const
 {
     implementation().set(m_program, location, value);
@@ -206,16 +228,6 @@ void AbstractUniform::setValue(const GLint location, const glm::mat3x4 & value) 
 void AbstractUniform::setValue(const GLint location, const glm::mat4x3 & value) const
 {
     implementation().set(m_program, location, value);
-}
-
-void AbstractUniform::setValue(const GLint location, const GLuint64 & value) const
-{
-    implementation().set(m_program, location, value);
-}
-
-void AbstractUniform::setValue(const GLint location, const TextureHandle & value) const
-{
-    setValue(location, value.handle());
 }
 
 void AbstractUniform::setValue(const GLint location, const std::vector<float> & value) const
@@ -328,15 +340,7 @@ void AbstractUniform::setValue(const GLint location, const std::vector<glm::mat4
     implementation().set(m_program, location, value);
 }
 
-void AbstractUniform::setValue(const GLint location, const std::vector<GLuint64> & value) const
-{
-    implementation().set(m_program, location, value);
-}
-
-void AbstractUniform::setValue(const GLint location, const std::vector<TextureHandle> & value) const
-{
-    implementation().set(m_program, location, value);
-}
+// eigen specifics
 
 #ifdef GLOBJECTS_USE_EIGEN
 
@@ -430,6 +434,9 @@ void AbstractUniform::setValue(gl::GLint location, const Eigen::Matrix<float, 4,
     implementation().set(m_program, location, value);
 }
 
+// Not yet implemented
+
+/*
 void AbstractUniform::setValue(gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector2f> & value) const
 {
     implementation().set(m_program, location, value);
@@ -460,6 +467,69 @@ void AbstractUniform::setValue(gl::GLint location, const AbstractUniform::EigenS
     implementation().set(m_program, location, value);
 }
 
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<unsigned int, 2, 1>> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<unsigned int, 3, 1>> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<unsigned int, 4, 1>> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix2f> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix3f> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix4f> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 2, 3>> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 3, 2>> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 2, 4>> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 4, 2>> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 3, 4>> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+void AbstractUniform::setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 4, 3>> & value) const
+{
+    implementation().set(m_program, location, value);
+}
+
+*/
+
 #endif
+
 
 } // namespace globjects

@@ -55,11 +55,17 @@ public:
     virtual void set(const Program * program, gl::GLint location, const glm::mat4x3 & value) const = 0;
 
     virtual void set(const Program * program, gl::GLint location, const gl::GLuint64 & value) const = 0;
+    virtual void set(const Program * program, gl::GLint location, const TextureHandle & value) const;
 
     virtual void set(const Program * program, gl::GLint location, const std::vector<float> & value) const = 0;
     virtual void set(const Program * program, gl::GLint location, const std::vector<int> & value) const = 0;
     virtual void set(const Program * program, gl::GLint location, const std::vector<unsigned int> & value) const = 0;
     virtual void set(const Program * program, gl::GLint location, const std::vector<bool> & value) const = 0;
+
+    virtual void set(const Program * program, gl::GLint location, const std::vector<gl::GLuint64> & value) const = 0;
+    virtual void set(const Program * program, gl::GLint location, const std::vector<TextureHandle> & value) const;
+
+    // glm specifics
 
     virtual void set(const Program * program, gl::GLint location, const std::vector<glm::vec2> & value) const = 0;
     virtual void set(const Program * program, gl::GLint location, const std::vector<glm::vec3> & value) const = 0;
@@ -84,8 +90,7 @@ public:
     virtual void set(const Program * program, gl::GLint location, const std::vector<glm::mat3x4> & value) const = 0;
     virtual void set(const Program * program, gl::GLint location, const std::vector<glm::mat4x3> & value) const = 0;
 
-    virtual void set(const Program * program, gl::GLint location, const std::vector<gl::GLuint64> & value) const = 0;
-    virtual void set(const Program * program, gl::GLint location, const std::vector<TextureHandle> & value) const;
+    // eigen specifics
 
 #ifdef GLOBJECTS_USE_EIGEN
 
@@ -112,6 +117,9 @@ public:
     virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const = 0;
     virtual void set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const = 0;
 
+    // Not implemented yet
+
+    /*
     // Need to use Eigen aware vector
     virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector2f> & value) const = 0;
     virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector3f> & value) const = 0;
@@ -120,6 +128,22 @@ public:
     virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector2i> & value) const = 0;
     virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector3i> & value) const = 0;
     virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector4i> & value) const = 0;
+
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix<unsigned int, 2, 1>> &value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix<unsigned int, 3, 1>> &value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix<unsigned int, 4, 1>> &value) const = 0;
+
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix2f> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix3f >& value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix4f> & value) const = 0;
+
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix<float, 2, 3>> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix<float, 3, 2>> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix<float, 2, 4>> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix<float, 4, 2>> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix<float, 3, 4>> & value) const = 0;
+    virtual void set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Matrix<float, 4, 3>> & value) const = 0;
+    */
 
 #endif
 

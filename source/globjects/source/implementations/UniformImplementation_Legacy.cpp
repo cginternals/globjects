@@ -309,12 +309,14 @@ inline void eigenSet(const Program *program, gl::GLint location, const T& value)
     Eigen::glUniform(location, value);
 }
 
+/*
 template<typename T>
 inline void eigenSet(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<T>& value) {
     program->use();
     // TODO: implement vector variants of Eigen::glUniform
     // Eigen::glUniform(location, value);
 }
+*/
 
 void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const { eigenSet(program, location, value); }
 void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector3f &value) const { eigenSet(program, location, value); }
@@ -339,7 +341,9 @@ void UniformImplementation_Legacy::set(const Program *program, gl::GLint locatio
 void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const { eigenSet(program, location, value); }
 void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const { eigenSet(program, location, value); }
 
+// not yet implemented
 
+/*
 // these are not tested ...
 void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector2f> & value) const { program->use();
     glUniform2fv(location, static_cast<GLint>(value.size()), reinterpret_cast<const float*>(value.data())); }
@@ -354,6 +358,7 @@ void UniformImplementation_Legacy::set(const Program *program, gl::GLint locatio
     glUniform3iv(location, static_cast<GLint>(value.size()), reinterpret_cast<const int*>(value.data())); }
 void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector4i> & value) const { program->use();
     glUniform4iv(location, static_cast<GLint>(value.size()), reinterpret_cast<const int*>(value.data())); }
+*/
 
 #endif
 
