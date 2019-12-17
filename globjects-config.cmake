@@ -12,7 +12,7 @@ find_dependency(glm)
 find_dependency(glbinding)
 
 if(OPTION_USE_EIGEN)
-  find_dependency(eigen3 3.3 REQUIRED )
+  find_dependency(Eigen3 3.3 REQUIRED )
 endif()
 
 
