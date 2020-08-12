@@ -8,6 +8,8 @@
 # - glbindings must searched for before MODULE_NAMES declaration, otherwise it
 #   glbinding-config.cmake overwrites the variable MODULE_NAMES
 include(CMakeFindDependencyMacro)
+
+find_package(KHR QUIET)
 find_dependency(glm)
 find_dependency(glbinding)
 
