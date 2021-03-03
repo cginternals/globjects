@@ -26,6 +26,13 @@ public:
     virtual gl::GLuint create() const = 0;
     virtual void destroy(gl::GLuint id) const = 0;
 
+    virtual void bind(const Buffer * buffer, gl::GLenum target) const = 0;
+    virtual void unbind(gl::GLenum target) const = 0;
+    virtual void bindBase(const Buffer * buffer, gl::GLenum target, const gl::GLuint index) const = 0;
+    virtual void unbindBase(gl::GLenum target, const gl::GLuint index) const = 0;
+
+    virtual void bindRange(const Buffer * buffer, gl::GLenum target, gl::GLuint index, gl::GLintptr offset, gl::GLsizeiptr size) const = 0;
+
     virtual void * map(const Buffer * buffer, gl::GLenum access) const = 0;
     virtual void * mapRange(const Buffer * buffer, gl::GLintptr offset, gl::GLsizeiptr length, gl::MapBufferAccessMask access) const = 0;
     virtual bool unmap(const Buffer * buffer) const = 0;

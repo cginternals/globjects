@@ -46,6 +46,20 @@ VertexAttributeBindingImplementation_Legacy::BindingData::BindingData()
 {
 }
 
+gl::GLuint VertexAttributeBindingImplementation_Legacy::create() const
+{
+    gl::GLuint result = 0;
+
+    gl::glGenVertexArrays(1, &result);
+
+    return result;
+}
+
+void VertexAttributeBindingImplementation_Legacy::destroy(gl::GLuint id) const
+{
+    gl::glDeleteVertexArrays(1, &id);
+}
+
 VertexAttributeBindingImplementation_Legacy::VertexAttributeBindingImplementation_Legacy()
 {
 }

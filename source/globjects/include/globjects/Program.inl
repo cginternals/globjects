@@ -120,7 +120,7 @@ std::array<gl::GLint, Count> Program::get(gl::GLenum pname) const
 {
     std::array<gl::GLint, Count> values;
 
-    glGetProgramiv(id(), pname, values.data());
+    get(pname, Count, values.data());
 
     return values;
 }

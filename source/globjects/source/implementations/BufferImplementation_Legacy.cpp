@@ -32,6 +32,31 @@ void BufferImplementation_Legacy::destroy(const GLuint id) const
     glDeleteBuffers(1, &id);
 }
 
+void BufferImplementation_Legacy::bind(const Buffer * buffer, gl::GLenum target) const
+{
+    glBindBuffer(target, buffer->id());
+}
+
+void BufferImplementation_Legacy::unbind(gl::GLenum target) const
+{
+    glBindBuffer(target, 0);
+}
+
+void BufferImplementation_Legacy::bindBase(const Buffer * buffer, gl::GLenum target, const gl::GLuint index) const
+{
+    glBindBufferBase(target, index, buffer->id());
+}
+
+void BufferImplementation_Legacy::unbindBase(gl::GLenum target, const gl::GLuint index) const
+{
+    glBindBufferBase(target, index, 0);
+}
+
+void BufferImplementation_Legacy::bindRange(const Buffer * buffer, gl::GLenum target, gl::GLuint index, gl::GLintptr offset, gl::GLsizeiptr size) const
+{
+    glBindBufferRange(target, index, buffer->id(), offset, size);
+}
+
 void * BufferImplementation_Legacy::map(const Buffer * buffer, GLenum access) const
 {
     buffer->bind(s_workingTarget);

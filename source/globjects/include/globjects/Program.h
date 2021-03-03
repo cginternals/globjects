@@ -86,12 +86,18 @@ class GLOBJECTS_API Program : public Object, public Instantiator<Program>
 
 
 public:
+    enum class Implementation
+    {
+        Legacy
+    };
+
     enum class BinaryImplementation
     {
         None,
         GetProgramBinaryARB
     };
 
+    static void hintImplementation(Implementation impl);
     static void hintBinaryImplementation(BinaryImplementation impl);
 
 
@@ -127,6 +133,8 @@ public:
     gl::GLint get(gl::GLenum pname) const;
     template <size_t Count>
     std::array<gl::GLint, Count> get(gl::GLenum pname) const;
+
+    void get(gl::GLenum pname, std::size_t count, gl::GLint * values) const;
 
     bool isValid() const;
     void validate();

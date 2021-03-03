@@ -6,37 +6,20 @@
 #include "registry/ImplementationRegistry.h"
 
 #include "implementations/AbstractBufferImplementation.h"
+#include "implementations/AbstractProgramImplementation.h"
+#include "implementations/AbstractProgramPipelineImplementation.h"
 #include "implementations/AbstractFramebufferImplementation.h"
 #include "implementations/AbstractTextureImplementation.h"
+#include "implementations/AbstractQueryImplementation.h"
+#include "implementations/AbstractRenderbufferImplementation.h"
+#include "implementations/AbstractSamplerImplementation.h"
+#include "implementations/AbstractShaderImplementation.h"
+#include "implementations/AbstractTransformFeedbackImplementation.h"
+#include "implementations/AbstractVertexAttributeBindingImplementation.h"
 
 
 using namespace gl;
 
-
-namespace 
-{
-
-
-template <typename CreateObjectsFunction>
-GLuint createObject(CreateObjectsFunction function)
-{
-    GLuint id;
-    function(1, &id);
-    return id;
-}
-
-template <typename DeleteObjectsFunction>
-void deleteObject(DeleteObjectsFunction function, const GLuint id, const bool hasOwnership)
-{
-    if (!hasOwnership)
-    {
-        return;
-    }
-
-    function(1, &id);
-}
-
-}
 
 namespace globjects 
 {
@@ -118,7 +101,9 @@ BufferResource::BufferResource()
 BufferResource::~BufferResource()
 {
     if (hasOwnership())
+    {
         ImplementationRegistry::current().bufferImplementation().destroy(id());
+    }
 }
 
 
@@ -130,12 +115,14 @@ FrameBufferObjectResource::FrameBufferObjectResource()
 FrameBufferObjectResource::~FrameBufferObjectResource()
 {
     if (hasOwnership())
+    {
         ImplementationRegistry::current().framebufferImplementation().destroy(id());
+    }
 }
 
 
 ProgramResource::ProgramResource()
-: IDResource(glCreateProgram())
+    : IDResource(ImplementationRegistry::current().programImplementation().create())
 {
 }
 
@@ -143,56 +130,69 @@ ProgramResource::~ProgramResource()
 {
     if (hasOwnership())
     {
-        glDeleteProgram(id());
+        ImplementationRegistry::current().programImplementation().destroy(id());
     }
 }
 
 
 ProgramPipelineResource::ProgramPipelineResource()
-: IDResource(createObject(glGenProgramPipelines))
+: IDResource(ImplementationRegistry::current().programPipelineImplementation().create())
 {
 }
 
 ProgramPipelineResource::~ProgramPipelineResource()
 {
-    deleteObject(glDeleteProgramPipelines, id(), hasOwnership());
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().programPipelineImplementation().destroy(id());
+    }
 }
 
 
 QueryResource::QueryResource()
-: IDResource(createObject(glGenQueries))
+: IDResource(ImplementationRegistry::current().queryImplementation().create())
 {
 }
 
 QueryResource::~QueryResource()
 {
-    deleteObject(glDeleteQueries, id(), hasOwnership());
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().queryImplementation().destroy(id());
+    }
 }
 
 
 RenderBufferObjectResource::RenderBufferObjectResource()
-: IDResource(createObject(glGenRenderbuffers))
+: IDResource(ImplementationRegistry::current().renderbufferImplementation().create())
 {
 }
 
 RenderBufferObjectResource::~RenderBufferObjectResource()
 {
-    deleteObject(glDeleteRenderbuffers, id(), hasOwnership());
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().renderbufferImplementation().destroy(id());
+    }
 }
 
 
 SamplerResource::SamplerResource()
-: IDResource(createObject(glGenSamplers))
+: IDResource(ImplementationRegistry::current().samplerImplementation().create())
 {
 }
 
 SamplerResource::~SamplerResource()
 {
-    deleteObject(glDeleteSamplers, id(), hasOwnership());
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().samplerImplementation().destroy(id());
+    }
 }
 
+
 ShaderResource::ShaderResource(GLenum type)
-: IDResource(glCreateShader(type))
+: IDResource(ImplementationRegistry::current().shaderImplementation().create(type))
 {
 }
 
@@ -200,7 +200,7 @@ ShaderResource::~ShaderResource()
 {
     if (hasOwnership())
     {
-        glDeleteShader(id());
+        ImplementationRegistry::current().shaderImplementation().destroy(id());
     }
 }
 
@@ -220,24 +220,30 @@ TextureResource::~TextureResource()
 
 
 TransformFeedbackResource::TransformFeedbackResource()
-: IDResource(createObject(glGenTransformFeedbacks))
+: IDResource(ImplementationRegistry::current().transformfeedbackImplementation().create())
 {
 }
 
 TransformFeedbackResource::~TransformFeedbackResource()
 {
-    deleteObject(glDeleteTransformFeedbacks, id(), hasOwnership());
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().transformfeedbackImplementation().destroy(id());
+    }
 }
 
 
 VertexArrayObjectResource::VertexArrayObjectResource()
-: IDResource(createObject(glGenVertexArrays))
+: IDResource(ImplementationRegistry::current().attributeImplementation().create())
 {
 }
 
 VertexArrayObjectResource::~VertexArrayObjectResource()
 {
-    deleteObject(glDeleteVertexArrays, id(), hasOwnership());
+    if (hasOwnership())
+    {
+        ImplementationRegistry::current().attributeImplementation().destroy(id());
+    }
 }
 
 

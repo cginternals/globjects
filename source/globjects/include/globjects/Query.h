@@ -67,6 +67,13 @@ namespace globjects
 class GLOBJECTS_API Query : public Object, public Instantiator<Query>
 {
 public:
+    enum class Implementation
+    {
+        Legacy
+    };
+
+
+public:
     Query();
 
     virtual ~Query();
@@ -112,8 +119,6 @@ public:
 
 protected:
     Query(std::unique_ptr<IDResource> && resource);
-
-    static gl::GLuint genQuery();
 
     void counter(gl::GLenum target) const;
 };

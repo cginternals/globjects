@@ -27,6 +27,20 @@ VertexAttributeBindingImplementation_VertexAttribBindingARB::~VertexAttributeBin
 {
 }
 
+gl::GLuint VertexAttributeBindingImplementation_VertexAttribBindingARB::create() const
+{
+    gl::GLuint result = 0;
+
+    gl::glGenVertexArrays(1, &result);
+
+    return result;
+}
+
+void VertexAttributeBindingImplementation_VertexAttribBindingARB::destroy(gl::GLuint id) const
+{
+    gl::glDeleteVertexArrays(1, &id);
+}
+
 void VertexAttributeBindingImplementation_VertexAttribBindingARB::enable(const VertexArray * vertexArray, GLint attributeIndex) const
 {
     VertexAttributeBindingImplementation_Legacy::instance()->enable(vertexArray, attributeIndex);

@@ -29,6 +29,26 @@ void BufferImplementation_DirectStateAccessARB::destroy(const GLuint id) const
     BufferImplementation_Legacy::instance()->destroy(id);
 }
 
+void BufferImplementation_DirectStateAccessARB::bind(const Buffer * buffer, gl::GLenum target) const
+{
+    glBindBuffer(target, buffer->id());
+}
+
+void BufferImplementation_DirectStateAccessARB::unbind(gl::GLenum target) const
+{
+    glBindBuffer(target, 0);
+}
+
+void BufferImplementation_DirectStateAccessARB::bindBase(const Buffer * buffer, gl::GLenum target, const gl::GLuint index) const
+{
+    glBindBufferBase(target, index, buffer->id());
+}
+
+void BufferImplementation_DirectStateAccessARB::unbindBase(gl::GLenum target, const gl::GLuint index) const
+{
+    glBindBufferBase(target, index, 0);
+}
+
 void * BufferImplementation_DirectStateAccessARB::map(const Buffer * buffer, GLenum access) const
 {
     return glMapNamedBuffer(buffer->id(), access);
@@ -37,6 +57,11 @@ void * BufferImplementation_DirectStateAccessARB::map(const Buffer * buffer, GLe
 void * BufferImplementation_DirectStateAccessARB::mapRange(const Buffer * buffer, GLintptr offset, GLsizeiptr length, MapBufferAccessMask access) const
 {
     return glMapNamedBufferRange(buffer->id(), offset, static_cast<GLsizei>(length), access);
+}
+
+void BufferImplementation_DirectStateAccessARB::bindRange(const Buffer * buffer, gl::GLenum target, gl::GLuint index, gl::GLintptr offset, gl::GLsizeiptr size) const
+{
+    glBindBufferRange(target, index, buffer->id(), offset, size);
 }
 
 bool BufferImplementation_DirectStateAccessARB::unmap(const Buffer * buffer) const

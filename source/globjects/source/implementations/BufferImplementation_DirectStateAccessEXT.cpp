@@ -26,6 +26,31 @@ void BufferImplementation_DirectStateAccessEXT::destroy(const GLuint id) const
     BufferImplementation_Legacy::instance()->destroy(id);
 }
 
+void BufferImplementation_DirectStateAccessEXT::bind(const Buffer * buffer, gl::GLenum target) const
+{
+    glBindBuffer(target, buffer->id());
+}
+
+void BufferImplementation_DirectStateAccessEXT::unbind(gl::GLenum target) const
+{
+    glBindBuffer(target, 0);
+}
+
+void BufferImplementation_DirectStateAccessEXT::bindBase(const Buffer * buffer, gl::GLenum target, const gl::GLuint index) const
+{
+    glBindBufferBase(target, index, buffer->id());
+}
+
+void BufferImplementation_DirectStateAccessEXT::unbindBase(gl::GLenum target, const gl::GLuint index) const
+{
+    glBindBufferBase(target, index, 0);
+}
+
+void BufferImplementation_DirectStateAccessEXT::bindRange(const Buffer * buffer, gl::GLenum target, gl::GLuint index, gl::GLintptr offset, gl::GLsizeiptr size) const
+{
+    glBindBufferRange(target, index, buffer->id(), offset, size);
+}
+
 void * BufferImplementation_DirectStateAccessEXT::map(const Buffer * buffer, GLenum access) const
 {
     return glMapNamedBufferEXT(buffer->id(), access);

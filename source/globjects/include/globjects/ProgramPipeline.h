@@ -22,6 +22,13 @@ class Program;
 class GLOBJECTS_API ProgramPipeline : public Object, public Instantiator<ProgramPipeline>
 {
 public:
+    enum class Implementation
+    {
+        Legacy
+    };
+
+
+public:
     ProgramPipeline();
     virtual ~ProgramPipeline();
 

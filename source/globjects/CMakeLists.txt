@@ -162,12 +162,42 @@ set(sources
     ${source_path}/implementations/FramebufferImplementation_Legacy.cpp
     ${source_path}/implementations/FramebufferImplementation_Legacy.h
 
+    ${source_path}/implementations/AbstractProgramImplementation.cpp
+    ${source_path}/implementations/AbstractProgramImplementation.h
+    ${source_path}/implementations/ProgramImplementation_Legacy.cpp
+    ${source_path}/implementations/ProgramImplementation_Legacy.h
+
+    ${source_path}/implementations/AbstractProgramPipelineImplementation.cpp
+    ${source_path}/implementations/AbstractProgramPipelineImplementation.h
+    ${source_path}/implementations/ProgramPipelineImplementation_Legacy.cpp
+    ${source_path}/implementations/ProgramPipelineImplementation_Legacy.h
+
     ${source_path}/implementations/AbstractProgramBinaryImplementation.cpp
     ${source_path}/implementations/AbstractProgramBinaryImplementation.h
     ${source_path}/implementations/ProgramBinaryImplementation_GetProgramBinaryARB.cpp
     ${source_path}/implementations/ProgramBinaryImplementation_GetProgramBinaryARB.h
     ${source_path}/implementations/ProgramBinaryImplementation_None.cpp
     ${source_path}/implementations/ProgramBinaryImplementation_None.h
+
+    ${source_path}/implementations/AbstractQueryImplementation.cpp
+    ${source_path}/implementations/AbstractQueryImplementation.h
+    ${source_path}/implementations/QueryImplementation_Legacy.cpp
+    ${source_path}/implementations/QueryImplementation_Legacy.h
+
+    ${source_path}/implementations/AbstractRenderbufferImplementation.cpp
+    ${source_path}/implementations/AbstractRenderbufferImplementation.h
+    ${source_path}/implementations/RenderbufferImplementation_Legacy.cpp
+    ${source_path}/implementations/RenderbufferImplementation_Legacy.h
+
+    ${source_path}/implementations/AbstractSamplerImplementation.cpp
+    ${source_path}/implementations/AbstractSamplerImplementation.h
+    ${source_path}/implementations/SamplerImplementation_Legacy.cpp
+    ${source_path}/implementations/SamplerImplementation_Legacy.h
+
+    ${source_path}/implementations/AbstractShaderImplementation.cpp
+    ${source_path}/implementations/AbstractShaderImplementation.h
+    ${source_path}/implementations/ShaderImplementation_Legacy.cpp
+    ${source_path}/implementations/ShaderImplementation_Legacy.h
 
     ${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.cpp
     ${source_path}/implementations/AbstractShadingLanguageIncludeImplementation.h
@@ -206,6 +236,11 @@ set(sources
     ${source_path}/implementations/TextureStorageMultisampleImplementation_Legacy.h
     ${source_path}/implementations/TextureStorageMultisampleImplementation_Fallback.cpp
     ${source_path}/implementations/TextureStorageMultisampleImplementation_Fallback.h
+
+    ${source_path}/implementations/AbstractTransformFeedbackImplementation.cpp
+    ${source_path}/implementations/AbstractTransformFeedbackImplementation.h
+    ${source_path}/implementations/TransformFeedbackImplementation_Legacy.cpp
+    ${source_path}/implementations/TransformFeedbackImplementation_Legacy.h
 
     ${source_path}/implementations/AbstractUniformImplementation.cpp
     ${source_path}/implementations/AbstractUniformImplementation.h

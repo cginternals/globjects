@@ -61,6 +61,13 @@ class Program;
 class GLOBJECTS_API TransformFeedback : public Object, public Instantiator<TransformFeedback>
 {
 public:
+    enum class Implementation
+    {
+        Legacy
+    };
+
+
+public:
     TransformFeedback();
 
     virtual ~TransformFeedback();

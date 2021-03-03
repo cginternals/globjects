@@ -7,8 +7,24 @@
 #include <globjects/Resource.h>
 #include <globjects/DebugMessage.h>
 
+#include "registry/ImplementationRegistry.h"
+#include "implementations/AbstractRenderbufferImplementation.h"
+
 
 using namespace gl;
+
+
+namespace
+{
+
+
+globjects::AbstractRenderbufferImplementation & implementation()
+{
+    return globjects::ImplementationRegistry::current().renderbufferImplementation();
+}
+
+
+} // namespace
 
 
 namespace globjects
@@ -48,37 +64,27 @@ void Renderbuffer::unbind()
 
 void Renderbuffer::bind(const GLenum target) const
 {
-    glBindRenderbuffer(target, id());
+    implementation().bind(this, target);
 }
 
 void Renderbuffer::unbind(const GLenum target)
 {
-    glBindRenderbuffer(target, 0);
+    implementation().unbind(target);
 }
 
 void Renderbuffer::storage(const GLenum internalformat, const GLsizei width, const GLsizei height)
 {
-    bind(GL_RENDERBUFFER);
-
-    glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
+    implementation().storage(this, internalformat, width, height);
 }
 
 void Renderbuffer::storageMultisample(const GLsizei samples, const GLenum internalformat, const GLsizei width, const GLsizei height)
 {
-    bind(GL_RENDERBUFFER);
-
-    glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, internalformat, width, height);
+    implementation().storageMultisample(this, samples, internalformat, width, height);
 }
 
 GLint Renderbuffer::getParameter(const GLenum pname) const
 {
-    GLint value = 0;
-
-    bind(GL_RENDERBUFFER);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, pname, &value);
-
-    return value;
+    return implementation().getParameterInt(this, pname);
 }
 
 GLenum Renderbuffer::objectType() const

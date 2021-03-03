@@ -29,6 +29,11 @@ public:
     virtual gl::GLuint create() const = 0;
     virtual void destroy(gl::GLuint id) const = 0;
 
+    virtual void bind(const Framebuffer * fbo) const = 0;
+    virtual void bind(const Framebuffer * fbo, gl::GLenum target) const = 0;
+    virtual void unbind() const = 0;
+    virtual void unbind(gl::GLenum target) const = 0;
+
     virtual gl::GLenum checkStatus(const Framebuffer * fbo) const = 0;
     virtual void setParameter(const Framebuffer * fbo, gl::GLenum pname, gl::GLint param) const = 0;
     virtual gl::GLint getAttachmentParameter(const Framebuffer * fbo, gl::GLenum attachment, gl::GLenum pname) const = 0;

@@ -22,6 +22,9 @@ public:
     VertexAttributeBindingImplementation_VertexAttribBindingARB();
     virtual ~VertexAttributeBindingImplementation_VertexAttribBindingARB();
 
+    virtual gl::GLuint create() const override;
+    virtual void destroy(gl::GLuint id) const override;
+
     virtual void enable(const VertexArray * vertexArray, gl::GLint attributeIndex) const override;
     virtual void disable(const VertexArray * vertexArray, gl::GLint attributeIndex) const override;
 

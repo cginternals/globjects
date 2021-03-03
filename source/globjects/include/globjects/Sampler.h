@@ -22,6 +22,13 @@ namespace globjects
 class GLOBJECTS_API Sampler : public Object, public Instantiator<Sampler>
 {
 public:
+    enum class Implementation
+    {
+        Legacy
+    };
+
+
+public:
     Sampler();
 
     virtual ~Sampler();
