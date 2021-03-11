@@ -169,6 +169,7 @@ The only mandatory run-time dependencies of globjects are the STL of the used co
 * [git](https://git-scm.com/) for version control and script supporting tasks
 * [glbinding](https://github.com/cginternals/glbinding) as OpenGL API binding
 * [GLM](https://github.com/g-truc/glm) for OpenGL math and data structures (0.9.7 or above)
+* [Eigen3](https://eigen.tuxfamily.org/) as alternative to pass vector data to OpenGL (3.3 or above)
 * [GLFW](http://www.glfw.org/) 3.0 or higher for examples
 * [cpplocate](https://github.com/cginternals/cpplocate) for the examples
 * [Qt5](http://www.qt.io/developers/) 5.0 or higher for the qt-based example

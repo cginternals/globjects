@@ -12,10 +12,7 @@ include(CMakeFindDependencyMacro)
 find_package(KHR QUIET)
 find_dependency(glm)
 find_dependency(glbinding)
-
-if(OPTION_USE_EIGEN)
-  find_dependency(Eigen3 3.3 REQUIRED )
-endif()
+find_package(Eigen3 3.3 QUIET)
 
 
 # List of modules
