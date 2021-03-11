@@ -271,7 +271,7 @@ set(sources
 )
 
 
-if(OPTION_USE_EIGEN)
+if(OPTION_USE_EIGEN AND TARGET Eigen3::Eigen)
     list(APPEND sources
         ${source_path}/implementations/EigenOpenGLSupport.h
     )
@@ -381,10 +381,10 @@ target_link_libraries(${target}
 )
 
 
-if(OPTION_USE_EIGEN)
+if(OPTION_USE_EIGEN AND TARGET Eigen3::Eigen)
     target_link_libraries(${target}
-      PUBLIC
-      Eigen3::Eigen
+        PUBLIC
+        Eigen3::Eigen
     )
 endif()
 
