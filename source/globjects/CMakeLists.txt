@@ -4,6 +4,7 @@
 # 
 
 find_package(glm REQUIRED)
+# find_package(KHR QUIET)
 find_package(glbinding REQUIRED)
 
 
@@ -372,7 +373,7 @@ target_link_libraries(${target}
 
     PUBLIC
     ${DEFAULT_LIBRARIES}
-    glm
+    glm::glm
     glbinding::glbinding
     glbinding::glbinding-aux
 
