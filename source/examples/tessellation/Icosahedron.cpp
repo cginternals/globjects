@@ -138,7 +138,7 @@ void Icosahedron::refine(
 ,   std::vector<Face> & indices
 ,   const unsigned char levels)
 {
-    std::unordered_map<uint, GLushort> cache;
+    std::unordered_map<unsigned int, GLushort> cache;
 
     for(int i = 0; i < levels; ++i)
     {
@@ -169,7 +169,7 @@ GLushort Icosahedron::split(
     const GLushort a
 ,   const GLushort b
 ,   std::vector<vec3> & points
-,   std::unordered_map<uint, GLushort> & cache)
+,   std::unordered_map<unsigned int, GLushort> & cache)
 {
     const bool aSmaller(a < b);
 

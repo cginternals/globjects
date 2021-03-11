@@ -14,6 +14,10 @@
 
 #include <globjects/LocationIdentity.h>
 
+#ifdef GLOBJECTS_USE_EIGEN
+#include <Eigen/Dense>
+#include <Eigen/StdVector>
+#endif
 
 namespace globjects
 {
@@ -45,6 +49,12 @@ public:
     };
 
     static void hintBindlessImplementation(const BindlessImplementation impl);
+
+#ifdef GLOBJECTS_USE_EIGEN
+        // Need to use Eigen aware vector
+    template <typename T>
+    using EigenStdVector = std::vector<T,Eigen::aligned_allocator<T> >;
+#endif
 
 
 public:
@@ -81,6 +91,21 @@ protected:
     void setValue(gl::GLint location, const unsigned int & value) const;
     void setValue(gl::GLint location, const bool & value) const;
 
+    void setValue(gl::GLint location, const std::vector<float> & value) const;
+    void setValue(gl::GLint location, const std::vector<int> & value) const;
+    void setValue(gl::GLint location, const std::vector<unsigned int> & value) const;
+    void setValue(gl::GLint location, const std::vector<bool> & value) const;
+
+    void setValue(gl::GLint location, const gl::GLuint64 & value) const;
+    void setValue(gl::GLint location, const TextureHandle & value) const;
+
+    void setValue(gl::GLint location, const std::vector<gl::GLuint64> & value) const;
+    void setValue(gl::GLint location, const std::vector<TextureHandle> & value) const;
+
+    template <typename T, std::size_t Count>
+    void setValue(gl::GLint location, const std::array<T, Count> & value) const;
+
+    // glm-specific setters
     void setValue(gl::GLint location, const glm::vec2 & value) const;
     void setValue(gl::GLint location, const glm::vec3 & value) const;
     void setValue(gl::GLint location, const glm::vec4 & value) const;
@@ -103,14 +128,6 @@ protected:
     void setValue(gl::GLint location, const glm::mat4x2 & value) const;
     void setValue(gl::GLint location, const glm::mat3x4 & value) const;
     void setValue(gl::GLint location, const glm::mat4x3 & value) const;
-
-    void setValue(gl::GLint location, const gl::GLuint64 & value) const;
-    void setValue(gl::GLint location, const TextureHandle & value) const;
-
-    void setValue(gl::GLint location, const std::vector<float> & value) const;
-    void setValue(gl::GLint location, const std::vector<int> & value) const;
-    void setValue(gl::GLint location, const std::vector<unsigned int> & value) const;
-    void setValue(gl::GLint location, const std::vector<bool> & value) const;
 
     void setValue(gl::GLint location, const std::vector<glm::vec2> & value) const;
     void setValue(gl::GLint location, const std::vector<glm::vec3> & value) const;
@@ -135,12 +152,62 @@ protected:
     void setValue(gl::GLint location, const std::vector<glm::mat3x4> & value) const;
     void setValue(gl::GLint location, const std::vector<glm::mat4x3> & value) const;
 
-    void setValue(gl::GLint location, const std::vector<gl::GLuint64> & value) const;
-    void setValue(gl::GLint location, const std::vector<TextureHandle> & value) const;
+    // Eigen-specific setters
 
-    template <typename T, std::size_t Count>
-    void setValue(gl::GLint location, const std::array<T, Count> & value) const;
+#ifdef GLOBJECTS_USE_EIGEN
 
+    void setValue(gl::GLint location, const Eigen::Vector2f & value) const;
+    void setValue(gl::GLint location, const Eigen::Vector3f & value) const;
+    void setValue(gl::GLint location, const Eigen::Vector4f & value) const;
+
+    void setValue(gl::GLint location, const Eigen::Vector2i &value) const;
+    void setValue(gl::GLint location, const Eigen::Vector3i & value) const;
+    void setValue(gl::GLint location, const Eigen::Vector4i & value) const;
+
+    /// a.k.a  Vector2ui
+    void setValue(gl::GLint location, const Eigen::Matrix<unsigned int, 2, 1> &value) const;
+    void setValue(gl::GLint location, const Eigen::Matrix<unsigned int, 3, 1> &value) const;
+    void setValue(gl::GLint location, const Eigen::Matrix<unsigned int, 4, 1> &value) const;
+
+    void setValue(gl::GLint location, const Eigen::Matrix2f & value) const;
+    void setValue(gl::GLint location, const Eigen::Matrix3f & value) const;
+    void setValue(gl::GLint location, const Eigen::Matrix4f & value) const;
+
+    void setValue(gl::GLint location, const Eigen::Matrix<float, 2, 3> & value) const;
+    void setValue(gl::GLint location, const Eigen::Matrix<float, 3, 2> & value) const;
+    void setValue(gl::GLint location, const Eigen::Matrix<float, 2, 4> & value) const;
+    void setValue(gl::GLint location, const Eigen::Matrix<float, 4, 2> & value) const;
+    void setValue(gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const;
+    void setValue(gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const;
+
+    // Not implemented yet
+
+    /*
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector2f> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector3f> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector4f> & value) const;
+
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector2i> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector3i> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Vector4i> & value) const;
+
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<unsigned int, 2, 1>> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<unsigned int, 3, 1>> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<unsigned int, 4, 1>> & value) const;
+
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix2f> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix3f> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix4f> & value) const;
+
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 2, 3>> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 3, 2>> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 2, 4>> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 4, 2>> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 3, 4>> & value) const;
+    void setValue(gl::GLint location, const EigenStdVector<Eigen::Matrix<float, 4, 3>> & value) const;
+    */
+
+#endif
 
 protected:
     LocationIdentity m_identity;

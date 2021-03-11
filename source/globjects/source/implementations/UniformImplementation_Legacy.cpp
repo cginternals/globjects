@@ -11,6 +11,9 @@
 
 using namespace gl;
 
+#ifdef GLOBJECTS_USE_EIGEN
+#include "EigenOpenGLSupport.h"
+#endif
 
 namespace globjects
 {
@@ -297,6 +300,67 @@ void UniformImplementation_Legacy::set(const Program* program, const GLint locat
     program->use();
     glUniformHandleui64vARB(location, static_cast<GLint>(value.size()), value.data());
 }
+
+#ifdef GLOBJECTS_USE_EIGEN
+
+template<typename T>
+inline void eigenSet(const Program *program, gl::GLint location, const T& value) {
+    program->use();
+    Eigen::glUniform(location, value);
+}
+
+/*
+template<typename T>
+inline void eigenSet(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<T>& value) {
+    program->use();
+    // TODO: implement vector variants of Eigen::glUniform
+    // Eigen::glUniform(location, value);
+}
+*/
+
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector2f &value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector3f &value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector4f &value) const { eigenSet(program, location, value); }
+
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector2i &value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector3i &value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Vector4i &value) const { eigenSet(program, location, value); }
+
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix<unsigned int, 2, 1> &value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix<unsigned int, 3, 1> &value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix<unsigned int, 4, 1> &value) const { eigenSet(program, location, value); }
+
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix2f & value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix3f & value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix4f & value) const { eigenSet(program, location, value); }
+
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 2, 3> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 3, 2> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 2, 4> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 2> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 3, 4> & value) const { eigenSet(program, location, value); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const Eigen::Matrix<float, 4, 3> & value) const { eigenSet(program, location, value); }
+
+// not yet implemented
+
+/*
+// these are not tested ...
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector2f> & value) const { program->use();
+    glUniform2fv(location, static_cast<GLint>(value.size()), reinterpret_cast<const float*>(value.data())); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector3f> & value) const { program->use();
+    glUniform3fv(location, static_cast<GLint>(value.size()), reinterpret_cast<const float*>(value.data())); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector4f> & value) const { program->use();
+    glUniform4fv(location, static_cast<GLint>(value.size()), reinterpret_cast<const float*>(value.data())); }
+
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector2i> & value) const { program->use();
+    glUniform2iv(location, static_cast<GLint>(value.size()), reinterpret_cast<const int*>(value.data())); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector3i> & value) const { program->use();
+    glUniform3iv(location, static_cast<GLint>(value.size()), reinterpret_cast<const int*>(value.data())); }
+void UniformImplementation_Legacy::set(const Program *program, gl::GLint location, const AbstractUniform::EigenStdVector<Eigen::Vector4i> & value) const { program->use();
+    glUniform4iv(location, static_cast<GLint>(value.size()), reinterpret_cast<const int*>(value.data())); }
+*/
+
+#endif
 
 
 } // namespace globjects

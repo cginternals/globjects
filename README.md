@@ -211,6 +211,24 @@ Configure *globjects* with your prefered or default generator, e.g., for Visual 
 > cmake .. -G "Visual Studio 14 2015 Win64"
 ```
 
+Several options are available :
+
+```
+# Project options
+option(BUILD_SHARED_LIBS          "Build shared instead of static libraries."                    ON)
+option(OPTION_SELF_CONTAINED      "Create a self-contained install with all dependencies."       OFF)
+option(OPTION_BUILD_DOCS          "Build documentation."                                         OFF)
+option(OPTION_BUILD_EXAMPLES      "Build examples."                                              OFF)
+option(OPTION_ERRORS_AS_EXCEPTION "Throw exceptions instead of printing OpenGL run-time errors." OFF)
+option(OPTION_USE_EIGEN           "Add Eigen types as basic vector type for uniforms."           OFF)
+```
+
+These option are activated with CMake invocation, for instance
+```shell 
+> cmake .. -DOPTION_USE_EIGEN=ON
+```
+
+
 In order to compile the project, either use you favorite Editor/IDE with the created project or use CMake as follows:
 
 ```shell

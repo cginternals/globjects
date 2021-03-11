@@ -7,6 +7,12 @@ find_package(glm REQUIRED)
 # find_package(KHR QUIET)
 find_package(glbinding REQUIRED)
 
+
+if(OPTION_USE_EIGEN)
+  find_package(Eigen3 3.3 REQUIRED)
+endif()
+
+
 # 
 # Library name and options
 # 
@@ -264,6 +270,13 @@ set(sources
     ${source_path}/VertexAttributeBinding.cpp
 )
 
+
+if(OPTION_USE_EIGEN)
+    list(APPEND sources
+        ${source_path}/implementations/EigenOpenGLSupport.h
+    )
+endif()
+
 # Group source files
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
@@ -368,6 +381,13 @@ target_link_libraries(${target}
 )
 
 
+if(OPTION_USE_EIGEN)
+    target_link_libraries(${target}
+      PUBLIC
+      Eigen3::Eigen
+    )
+endif()
+
 # 
 # Compile definitions
 # 
@@ -384,6 +404,14 @@ target_compile_definitions(${target}
 
     INTERFACE
 )
+
+if(OPTION_USE_EIGEN AND TARGET Eigen3::Eigen)
+    target_compile_definitions(${target}
+        PUBLIC
+        GLOBJECTS_USE_EIGEN
+    )
+endif()
+
 
 # 
 # Compile options

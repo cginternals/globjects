@@ -239,6 +239,23 @@ void Framebuffer::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, float val
     clearBuffer(buffer, drawBuffer, &value);
 }
 
+#ifdef GLOBJECTS_USE_EIGEN
+void Framebuffer::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const Eigen::Vector4i & value)
+{
+    clearBuffer(buffer, drawBuffer, value.data());
+}
+
+void Framebuffer::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const Eigen::Matrix<unsigned int, 4, 1> & value)
+{
+    clearBuffer(buffer, drawBuffer, value.data());
+}
+
+void Framebuffer::clearBuffer(gl::GLenum buffer, gl::GLint drawBuffer, const Eigen::Vector4f & value)
+{
+    clearBuffer(buffer, drawBuffer, value.data());
+}
+#endif
+
 void Framebuffer::colorMask(const GLboolean red, const GLboolean green, const GLboolean blue, const GLboolean alpha)
 {
     glColorMask(red, green, blue, alpha);
