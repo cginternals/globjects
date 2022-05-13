@@ -4,6 +4,7 @@
 
 #include <glbinding/gl/types.h>
 
+#include <array>
 #include <vector>
 
 #include <glm/fwd.hpp>
@@ -153,9 +154,38 @@ public:
 
     void generateMipmap();
 
+    /**
+    * This function initializes all 6 sides of an OpenGL Cubemap with the same image data.
+    */
     void cubeMapImage(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    
+    /**
+    * This function initializes all 6 sides of an OpenGL Cubemap with the same image data.
+    */
     void cubeMapImage(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const gl::GLvoid * data);
+    
+    /**
+    * This function initializes the 6 sides of an OpenGL Cubemap with the 6 passed image data.
+    * The order is:
+    * - GL_TEXTURE_CUBE_MAP_POSITIVE_X
+    * - GL_TEXTURE_CUBE_MAP_NEGATIVE_X
+    * - GL_TEXTURE_CUBE_MAP_POSITIVE_Y
+    * - GL_TEXTURE_CUBE_MAP_NEGATIVE_Y
+    * - GL_TEXTURE_CUBE_MAP_POSITIVE_Z
+    * - GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+    */
     void cubeMapImage(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const std::array<const gl::GLvoid *, 6> & data);
+    
+    /**
+    * This function initializes the 6 sides of an OpenGL Cubemap with the 6 passed image data.
+    * The order is:
+    * - GL_TEXTURE_CUBE_MAP_POSITIVE_X
+    * - GL_TEXTURE_CUBE_MAP_NEGATIVE_X
+    * - GL_TEXTURE_CUBE_MAP_POSITIVE_Y
+    * - GL_TEXTURE_CUBE_MAP_NEGATIVE_Y
+    * - GL_TEXTURE_CUBE_MAP_POSITIVE_Z
+    * - GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+    */
     void cubeMapImage(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const std::array<const gl::GLvoid *, 6> & data);
 
     TextureHandle textureHandle() const;
