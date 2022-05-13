@@ -464,6 +464,16 @@ void Texture::cubeMapImage(gl::GLint level, gl::GLenum internalFormat, const glm
     cubeMapImage(level, internalFormat, size.x, size.y, border, format, type, data);
 }
 
+void Texture::cubeMapImage(gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const std::array<const gl::GLvoid *, 6> & data)
+{
+    bindlessImplementation().cubeMapImage(this, level, internalFormat, width, height, border, format, type, data);
+}
+
+void Texture::cubeMapImage(gl::GLint level, gl::GLenum internalFormat, const glm::ivec2 & size, gl::GLint border, gl::GLenum format, gl::GLenum type, const std::array<const gl::GLvoid *, 6> & data)
+{
+    cubeMapImage(level, internalFormat, size.x, size.y, border, format, type, data);
+}
+
 TextureHandle Texture::textureHandle() const
 {
     return TextureHandle(this);

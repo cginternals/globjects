@@ -188,6 +188,16 @@ void TextureImplementation_Legacy::cubeMapImage(const Texture * texture, gl::GLi
     }
 }
 
+void TextureImplementation_Legacy::cubeMapImage(const Texture * texture, gl::GLint level, gl::GLenum internalFormat, gl::GLsizei width, gl::GLsizei height, gl::GLint border, gl::GLenum format, gl::GLenum type, const std::array<const gl::GLvoid *, 6> & data) const
+{
+    texture->bind();
+
+    for (int i = 0; i < 6; ++i)
+    {
+        gl::glTexImage2D(gl::GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, level, static_cast<gl::GLint>(internalFormat), width, height, border, format, type, data[i]);
+    }
+}
+
 void TextureImplementation_Legacy::texBuffer(const Texture * texture, const gl::GLenum internalFormat, Buffer * buffer) const
 {
     texture->bind();
