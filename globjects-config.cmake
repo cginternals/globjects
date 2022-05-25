@@ -9,7 +9,6 @@
 #   glbinding-config.cmake overwrites the variable MODULE_NAMES
 include(CMakeFindDependencyMacro)
 
-find_package(KHR QUIET)
 find_dependency(glm)
 find_dependency(glbinding)
 find_package(Eigen3 3.3 QUIET)
