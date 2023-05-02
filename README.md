@@ -173,7 +173,7 @@ The only mandatory run-time dependencies of globjects are the STL of the used co
 * [GLFW](http://www.glfw.org/) 3.0 or higher for examples
 * [cpplocate](https://github.com/cginternals/cpplocate) for the examples
 * [Qt5](http://www.qt.io/developers/) 5.0 or higher for the qt-based example
-* [Doxygen](http://www.stack.nl/~dimitri/doxygen/) 1.8 or higher for generating the documentation on your system
+* [Doxygen](https://www.doxygen.nl/) 1.8 or higher for generating the documentation on your system
   * [graphviz](http://www.graphviz.org/) for generating diagrams (optional)
 
 #### Compile Instructions
