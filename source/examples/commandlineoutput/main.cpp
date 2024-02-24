@@ -33,12 +33,23 @@ void error(int errnum, const char * errmsg)
     globjects::critical() << errnum << ": " << errmsg << std::endl;
 }
 
+void glfwError(int error_code, const char *description)
+{
+    globjects::info() << "glfw3 (" << error_code << "): " << description << std::endl;
+}
+
 
 int main(int /*argc*/, char * /*argv*/[])
 {
+    glfwSetErrorCallback(glfwError);
+    
     // Initialize GLFW
     if (!glfwInit())
+    {
+        globjects::critical() << "GLFW could not be initialized. Terminate execution.";
+
         return 1;
+    }
 
     glfwSetErrorCallback(error);
 
