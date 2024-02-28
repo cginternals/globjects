@@ -163,17 +163,6 @@ LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::MemoryBarrierM
     return builder;
 }
 
-LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::PathRenderingMaskNV & value)
-{
-    std::ostringstream stream;
-
-    stream << value;
-
-    builder << stream.str();
-
-    return builder;
-}
-
 LogMessageBuilder operator<<(LogMessageBuilder builder, const gl::PerformanceQueryCapsMaskINTEL & value)
 {
     std::ostringstream stream;
