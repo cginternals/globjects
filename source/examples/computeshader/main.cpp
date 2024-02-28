@@ -154,9 +154,16 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
     }
 }
 
-
-int main()
+void glfwError(int error_code, const char *description)
 {
+    globjects::info() << "glfw3 (" << error_code << "): " << description << std::endl;
+}
+
+
+int main(int /*argc*/, char * /*argv*/[])
+{
+    glfwSetErrorCallback(glfwError);
+
 #ifdef SYSTEM_DARWIN
     globjects::critical() << "macOS does currently not support compute shader (OpenGL 4.3. required).";
     return 0;
@@ -164,7 +171,11 @@ int main()
 
     // Initialize GLFW
     if (!glfwInit())
+    {
+        globjects::critical() << "GLFW could not be initialized. Terminate execution.";
+
         return 1;
+    }
 
     glfwSetErrorCallback(error);
 

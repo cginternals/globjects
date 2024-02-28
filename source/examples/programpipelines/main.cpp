@@ -148,12 +148,23 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
         glfwSetWindowShouldClose(window, true);
 }
 
+void glfwError(int error_code, const char *description)
+{
+    globjects::info() << "glfw3 (" << error_code << "): " << description << std::endl;
+}
+
 
 int main(int /*argc*/, char * /*argv*/[])
 {
+    glfwSetErrorCallback(glfwError);
+    
     // Initialize GLFW
     if (!glfwInit())
+    {
+        globjects::critical() << "GLFW could not be initialized. Terminate execution.";
+
         return 1;
+    }
 
     glfwSetErrorCallback(error);
 

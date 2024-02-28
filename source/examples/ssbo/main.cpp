@@ -129,9 +129,16 @@ void key_callback(GLFWwindow * window, int key, int /*scancode*/, int action, in
     }
 }
 
+void glfwError(int error_code, const char *description)
+{
+    globjects::info() << "glfw3 (" << error_code << "): " << description << std::endl;
+}
+
 
 int main(int /*argc*/, char * /*argv*/[])
 {
+    glfwSetErrorCallback(glfwError);
+    
 #ifdef SYSTEM_DARWIN
     globjects::critical() << "macOS does currently not support shader storage buffer objects (OpenGL 4.3. required).";
     return 0;
@@ -139,7 +146,11 @@ int main(int /*argc*/, char * /*argv*/[])
 
     // Initialize GLFW
     if (!glfwInit())
+    {
+        globjects::critical() << "GLFW could not be initialized. Terminate execution.";
+
         return 1;
+    }
 
     glfwSetErrorCallback(error);
     glfwDefaultWindowHints();
