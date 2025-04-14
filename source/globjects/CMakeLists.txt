@@ -3,7 +3,7 @@
 # External dependencies
 # 
 
-find_package(glm REQUIRED)
+find_package(glm CONFIG REQUIRED)
 # find_package(KHR QUIET)
 find_package(glbinding REQUIRED)
 
