@@ -89,7 +89,14 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(IDE_FOLDER "")
 
 # Declare project
-project(${META_PROJECT_NAME} C CXX)
+# Declare project
+project(${META_PROJECT_NAME}
+    VERSION ${META_VERSION}
+    DESCRIPTION ${META_PROJECT_DESCRIPTION}
+)
+
+enable_language(C)
+enable_language(CXX)
 
 # Set output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
